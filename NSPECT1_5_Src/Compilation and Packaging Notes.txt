@@ -1,0 +1,21 @@
+N-SPECT 
+------------------------------------------------------------------------------------
+
+Step 1: 
+- Check out NSPECT from file://csc-s-intranet/c$/CSC_SVN_REPO/CSC_ArcGISTools/NSPECT or update a local copy.
+
+Step 2:
+- Recompile "NSPECT" using Visual Baisc 6 and ArcGIS 9.2/9.3.
+
+Step 3:
+- Commit the changes into SVN repository.
+
+Step 4:
+- Check out NSPECT or update its local copy on another workstation.
+
+Step 5:
+- Rebuild "NSPECTInstall" using Visual Studio 2005.  (No ArcGIS is required).
+- The latest installer is "Installer\NSPECTInstall.msi", which should be automatically updated at the end of the rebuild.  You may copy and rename the installer and make it an official or test release.
+
+Step 6:
+- Commit the changes into SVN repository so that the installer will be saved.
