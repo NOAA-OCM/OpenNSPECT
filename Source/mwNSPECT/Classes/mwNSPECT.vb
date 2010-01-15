@@ -159,6 +159,28 @@ Public Class mwNSPECT
         addMenus()
         addToolbars()
 
+
+        Dim nspectPath As String
+
+
+        ' Detects and sets the path to N-SPECT's application folder (installation directory)
+        'nspectPath = My.Application.Info.DirectoryPath
+        nspectPath = "C:\NSPECT\"
+
+        If Right(nspectPath, 1) = "\" Then
+            nspectPath = Left(nspectPath, Len(nspectPath) - 1)
+        End If
+        If Right(nspectPath, 4) = "\bin" Then
+            nspectPath = Left(nspectPath, Len(nspectPath) - 4)
+        End If
+
+        modUtil.g_nspectPath = nspectPath
+
+        modUtil.g_nspectDocPath = nspectPath
+
+        modUtil.DBConnection()
+
+
     End Sub
 
     ''' <summary>
@@ -212,6 +234,8 @@ Public Class mwNSPECT
                 ShowAdvWSDelinForm()
             Case g_mnuNSPECTAdvSoils
                 ShowAdvSoilsForm()
+            Case g_mnuNSPECTHelp
+                ShowHelpIntro()
         End Select
     End Sub
 
@@ -310,6 +334,10 @@ Public Class mwNSPECT
     Private Sub ShowAdvSoilsForm()
         Dim tmp As New frmSoils
         tmp.ShowDialog()
+    End Sub
+
+    Private Sub ShowHelpIntro()
+        System.Windows.Forms.Help.ShowHelp(Nothing, modUtil.g_nspectPath & "\Help\nspect.chm", "Introduction.htm")
     End Sub
 
 #End Region

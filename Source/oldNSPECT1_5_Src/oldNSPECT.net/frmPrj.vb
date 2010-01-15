@@ -3241,4 +3241,8 @@ ErrHandler:
 		EnableChkWaterShed = False
 		
 	End Function
+
+    Private Sub cboLCLayer_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboWSDelin.KeyDown, cboWQStd.KeyDown, cboPrecipScen.KeyDown, cboLCUnits.KeyDown, cboLCType.KeyDown, cboLCLayer.KeyDown
+        e.SuppressKeyPress = True
+    End Sub
 End Class
