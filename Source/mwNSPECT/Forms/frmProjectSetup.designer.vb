@@ -16,10 +16,94 @@
     End Sub
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
-    'Public WithEvents Label1 As Microsoft.VisualBasic.Compatibility.VB6.LabelArray
-    'Public WithEvents chkIgnore As Microsoft.VisualBasic.Compatibility.VB6.CheckBoxArray
-    'Public WithEvents chkIgnoreLU As Microsoft.VisualBasic.Compatibility.VB6.CheckBoxArray
-    'Public WithEvents chkIgnoreMgmt As Microsoft.VisualBasic.Compatibility.VB6.CheckBoxArray
+    Public ToolTip1 As System.Windows.Forms.ToolTip
+    Public WithEvents mnuNew As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuOpen As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuSpace As System.Windows.Forms.ToolStripSeparator
+    Public WithEvents mnuSave As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuSaveAs As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuSpace1 As System.Windows.Forms.ToolStripSeparator
+    Public WithEvents mnuExit As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuFile As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuGeneralHelp As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuBigHelp As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuLUAdd As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuLUEdit As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuLUDelete As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuOptions As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuManAppen As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuManInsert As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuManDelete As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuManagement As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents MainMenu1 As System.Windows.Forms.MenuStrip
+    Public WithEvents cboWQStd As System.Windows.Forms.ComboBox
+    Public WithEvents _Label1_6 As System.Windows.Forms.Label
+    Public WithEvents Frame6 As System.Windows.Forms.GroupBox
+    Public WithEvents cboWSDelin As System.Windows.Forms.ComboBox
+    Public WithEvents _Label1_3 As System.Windows.Forms.Label
+    Public WithEvents Frame5 As System.Windows.Forms.GroupBox
+    Public WithEvents cboPrecipScen As System.Windows.Forms.ComboBox
+    Public WithEvents _Label1_7 As System.Windows.Forms.Label
+    Public WithEvents Frame4 As System.Windows.Forms.GroupBox
+    Public WithEvents cboSelectPoly As System.Windows.Forms.ComboBox
+    Public WithEvents chkSelectedPolys As System.Windows.Forms.CheckBox
+    Public WithEvents chkLocalEffects As System.Windows.Forms.CheckBox
+    Public WithEvents lblLayer As System.Windows.Forms.Label
+    Public WithEvents frm_raintype As System.Windows.Forms.GroupBox
+    Public WithEvents cmdOpenWS As System.Windows.Forms.Button
+    Public WithEvents txtOutputWS As System.Windows.Forms.TextBox
+    Public WithEvents txtProjectName As System.Windows.Forms.TextBox
+    Public WithEvents Label5 As System.Windows.Forms.Label
+    Public WithEvents Label4 As System.Windows.Forms.Label
+    Public WithEvents Frame3 As System.Windows.Forms.GroupBox
+    Public WithEvents cboSoilsLayer As System.Windows.Forms.ComboBox
+    Public WithEvents Label6 As System.Windows.Forms.Label
+    Public WithEvents lblSoilsHyd As System.Windows.Forms.Label
+    Public WithEvents Label2 As System.Windows.Forms.Label
+    Public WithEvents Frame1 As System.Windows.Forms.GroupBox
+    Public WithEvents cboLCUnits As System.Windows.Forms.ComboBox
+    Public WithEvents cboLCLayer As System.Windows.Forms.ComboBox
+    Public WithEvents cboLCType As System.Windows.Forms.ComboBox
+    Public WithEvents _Label1_5 As System.Windows.Forms.Label
+    Public WithEvents _Label1_0 As System.Windows.Forms.Label
+    Public WithEvents _Label1_2 As System.Windows.Forms.Label
+    Public WithEvents fraLC As System.Windows.Forms.GroupBox
+    Public WithEvents Timer1 As System.Windows.Forms.Timer
+    Public WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
+    Public WithEvents lblErodFactor As System.Windows.Forms.Label
+    Public WithEvents lblKFactor As System.Windows.Forms.Label
+    Public WithEvents Label3 As System.Windows.Forms.Label
+    Public WithEvents Label7 As System.Windows.Forms.Label
+    Public WithEvents chkCalcErosion As System.Windows.Forms.CheckBox
+    Public WithEvents txtRainValue As System.Windows.Forms.TextBox
+    Public WithEvents cboRainGrid As System.Windows.Forms.ComboBox
+    Public WithEvents optUseValue As System.Windows.Forms.RadioButton
+    Public WithEvents optUseGRID As System.Windows.Forms.RadioButton
+    Public WithEvents frameRainFall As System.Windows.Forms.GroupBox
+    Public WithEvents cboErodFactor As System.Windows.Forms.ComboBox
+    Public WithEvents cboSoilAttribute As System.Windows.Forms.ComboBox
+    Public WithEvents cmdOpenSDR As System.Windows.Forms.Button
+    Public WithEvents txtSDRGRID As System.Windows.Forms.TextBox
+    Public WithEvents chkSDR As System.Windows.Forms.CheckBox
+    Public WithEvents frmSDR As System.Windows.Forms.GroupBox
+    Public WithEvents _SSTab1_TabPage1 As System.Windows.Forms.TabPage
+    Public WithEvents _SSTab1_TabPage2 As System.Windows.Forms.TabPage
+    Public WithEvents _SSTab1_TabPage3 As System.Windows.Forms.TabPage
+    Public WithEvents SSTab1 As System.Windows.Forms.TabControl
+    Public WithEvents cmdRun As System.Windows.Forms.Button
+    Public WithEvents cmdQuit As System.Windows.Forms.Button
+    Public dlgXMLOpen As System.Windows.Forms.OpenFileDialog
+    Public dlgXMLSave As System.Windows.Forms.SaveFileDialog
+    Public WithEvents _chkIgnore_0 As System.Windows.Forms.CheckBox
+    Public WithEvents _chkIgnoreMgmt_0 As System.Windows.Forms.CheckBox
+    Public WithEvents _chkIgnoreLU_0 As System.Windows.Forms.CheckBox
+    Public WithEvents txtThemeName As System.Windows.Forms.TextBox
+    Public WithEvents cmdOutputBrowse As System.Windows.Forms.Button
+    Public WithEvents txtOutputFile As System.Windows.Forms.TextBox
+    Public WithEvents _Label1_11 As System.Windows.Forms.Label
+    Public WithEvents _Label1_12 As System.Windows.Forms.Label
+    Public WithEvents Frame2 As System.Windows.Forms.GroupBox
+
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
@@ -82,13 +166,14 @@
         Me._Label1_5 = New System.Windows.Forms.Label
         Me._Label1_0 = New System.Windows.Forms.Label
         Me._Label1_2 = New System.Windows.Forms.Label
-        Me.cboAreaLayer = New System.Windows.Forms.ComboBox
-        Me.cboClass = New System.Windows.Forms.ComboBox
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.cboCoeffSet = New System.Windows.Forms.ComboBox
-        Me.cboCoeff = New System.Windows.Forms.ComboBox
         Me.SSTab1 = New System.Windows.Forms.TabControl
         Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage
+        Me.dgvPollutants = New System.Windows.Forms.DataGridView
+        Me.PollApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage
         Me.lblErodFactor = New System.Windows.Forms.Label
         Me.lblKFactor = New System.Windows.Forms.Label
@@ -105,7 +190,14 @@
         Me.txtSDRGRID = New System.Windows.Forms.TextBox
         Me.chkSDR = New System.Windows.Forms.CheckBox
         Me._SSTab1_TabPage2 = New System.Windows.Forms.TabPage
+        Me.dgvLandUse = New System.Windows.Forms.DataGridView
+        Me.LUApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.LUScenario = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me._SSTab1_TabPage3 = New System.Windows.Forms.TabPage
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView
+        Me.ManageApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.ChangeAreaLayer = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.ChangeToClass = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.cmdRun = New System.Windows.Forms.Button
         Me.cmdQuit = New System.Windows.Forms.Button
         Me.dlgXMLOpen = New System.Windows.Forms.OpenFileDialog
@@ -117,6 +209,7 @@
         Me.txtThemeName = New System.Windows.Forms.TextBox
         Me.cmdOutputBrowse = New System.Windows.Forms.Button
         Me._Label1_11 = New System.Windows.Forms.Label
+        Me.cboClass = New System.Windows.Forms.ComboBox
         Me.MainMenu1.SuspendLayout()
         Me.Frame6.SuspendLayout()
         Me.Frame5.SuspendLayout()
@@ -126,9 +219,15 @@
         Me.Frame1.SuspendLayout()
         Me.fraLC.SuspendLayout()
         Me.SSTab1.SuspendLayout()
+        Me._SSTab1_TabPage0.SuspendLayout()
+        CType(Me.dgvPollutants, System.ComponentModel.ISupportInitialize).BeginInit()
         Me._SSTab1_TabPage1.SuspendLayout()
         Me.frameRainFall.SuspendLayout()
         Me.frmSDR.SuspendLayout()
+        Me._SSTab1_TabPage2.SuspendLayout()
+        CType(Me.dgvLandUse, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me._SSTab1_TabPage3.SuspendLayout()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Frame2.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -166,7 +265,6 @@
         '
         Me.cboLCLayer.BackColor = System.Drawing.SystemColors.Window
         Me.cboLCLayer.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboLCLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLCLayer.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboLCLayer.ForeColor = System.Drawing.SystemColors.WindowText
         Me.cboLCLayer.Location = New System.Drawing.Point(69, 23)
@@ -381,13 +479,12 @@
         '
         Me.cboWQStd.BackColor = System.Drawing.SystemColors.Window
         Me.cboWQStd.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboWQStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWQStd.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboWQStd.ForeColor = System.Drawing.SystemColors.WindowText
         Me.cboWQStd.Location = New System.Drawing.Point(49, 22)
         Me.cboWQStd.Name = "cboWQStd"
         Me.cboWQStd.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboWQStd.Size = New System.Drawing.Size(143, 22)
+        Me.cboWQStd.Size = New System.Drawing.Size(141, 22)
         Me.cboWQStd.TabIndex = 59
         '
         '_Label1_6
@@ -423,7 +520,6 @@
         '
         Me.cboWSDelin.BackColor = System.Drawing.SystemColors.Window
         Me.cboWSDelin.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboWSDelin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWSDelin.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboWSDelin.ForeColor = System.Drawing.SystemColors.WindowText
         Me.cboWSDelin.Location = New System.Drawing.Point(46, 22)
@@ -465,7 +561,6 @@
         '
         Me.cboPrecipScen.BackColor = System.Drawing.SystemColors.Window
         Me.cboPrecipScen.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboPrecipScen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPrecipScen.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboPrecipScen.ForeColor = System.Drawing.SystemColors.WindowText
         Me.cboPrecipScen.Location = New System.Drawing.Point(47, 22)
@@ -558,7 +653,7 @@
         Me.cmdOpenWS.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOpenWS.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdOpenWS.Image = CType(resources.GetObject("cmdOpenWS.Image"), System.Drawing.Image)
-        Me.cmdOpenWS.Location = New System.Drawing.Point(586, 15)
+        Me.cmdOpenWS.Location = New System.Drawing.Point(570, 14)
         Me.cmdOpenWS.Name = "cmdOpenWS"
         Me.cmdOpenWS.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdOpenWS.Size = New System.Drawing.Size(23, 20)
@@ -577,7 +672,7 @@
         Me.txtOutputWS.MaxLength = 0
         Me.txtOutputWS.Name = "txtOutputWS"
         Me.txtOutputWS.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtOutputWS.Size = New System.Drawing.Size(206, 20)
+        Me.txtOutputWS.Size = New System.Drawing.Size(192, 20)
         Me.txtOutputWS.TabIndex = 39
         '
         'txtProjectName
@@ -712,7 +807,6 @@
         '
         Me.cboLCUnits.BackColor = System.Drawing.SystemColors.Window
         Me.cboLCUnits.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboLCUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLCUnits.Enabled = False
         Me.cboLCUnits.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboLCUnits.ForeColor = System.Drawing.SystemColors.WindowText
@@ -727,7 +821,6 @@
         '
         Me.cboLCType.BackColor = System.Drawing.SystemColors.Window
         Me.cboLCType.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboLCType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLCType.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboLCType.ForeColor = System.Drawing.SystemColors.WindowText
         Me.cboLCType.Location = New System.Drawing.Point(69, 80)
@@ -775,65 +868,9 @@
         Me._Label1_2.TabIndex = 6
         Me._Label1_2.Text = "Type:"
         '
-        'cboAreaLayer
-        '
-        Me.cboAreaLayer.BackColor = System.Drawing.SystemColors.Window
-        Me.cboAreaLayer.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboAreaLayer.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboAreaLayer.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboAreaLayer.Location = New System.Drawing.Point(231, 480)
-        Me.cboAreaLayer.Name = "cboAreaLayer"
-        Me.cboAreaLayer.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboAreaLayer.Size = New System.Drawing.Size(97, 22)
-        Me.cboAreaLayer.TabIndex = 33
-        Me.cboAreaLayer.Visible = False
-        '
-        'cboClass
-        '
-        Me.cboClass.BackColor = System.Drawing.SystemColors.Window
-        Me.cboClass.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboClass.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboClass.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboClass.Location = New System.Drawing.Point(110, 475)
-        Me.cboClass.Name = "cboClass"
-        Me.cboClass.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboClass.Size = New System.Drawing.Size(81, 22)
-        Me.cboClass.TabIndex = 32
-        Me.cboClass.Text = "cboClass"
-        Me.cboClass.Visible = False
-        '
         'Timer1
         '
         Me.Timer1.Interval = 1
-        '
-        'cboCoeffSet
-        '
-        Me.cboCoeffSet.BackColor = System.Drawing.SystemColors.Window
-        Me.cboCoeffSet.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboCoeffSet.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboCoeffSet.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboCoeffSet.Location = New System.Drawing.Point(100, 474)
-        Me.cboCoeffSet.Name = "cboCoeffSet"
-        Me.cboCoeffSet.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboCoeffSet.Size = New System.Drawing.Size(97, 22)
-        Me.cboCoeffSet.TabIndex = 31
-        Me.cboCoeffSet.Text = "cboCoeffSet"
-        Me.cboCoeffSet.Visible = False
-        '
-        'cboCoeff
-        '
-        Me.cboCoeff.BackColor = System.Drawing.SystemColors.Window
-        Me.cboCoeff.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboCoeff.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboCoeff.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboCoeff.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboCoeff.Items.AddRange(New Object() {"Type 1", "Type 2", "Type 3", "Type 4"})
-        Me.cboCoeff.Location = New System.Drawing.Point(94, 476)
-        Me.cboCoeff.Name = "cboCoeff"
-        Me.cboCoeff.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboCoeff.Size = New System.Drawing.Size(113, 22)
-        Me.cboCoeff.TabIndex = 14
-        Me.cboCoeff.Visible = False
         '
         'SSTab1
         '
@@ -852,11 +889,54 @@
         '
         '_SSTab1_TabPage0
         '
+        Me._SSTab1_TabPage0.Controls.Add(Me.dgvPollutants)
         Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
         Me._SSTab1_TabPage0.Size = New System.Drawing.Size(610, 177)
         Me._SSTab1_TabPage0.TabIndex = 0
         Me._SSTab1_TabPage0.Text = "Pollutants"
+        '
+        'dgvPollutants
+        '
+        Me.dgvPollutants.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvPollutants.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.PollApply, Me.PollutantName, Me.CoefSet, Me.WhichCoeff})
+        Me.dgvPollutants.Location = New System.Drawing.Point(3, 3)
+        Me.dgvPollutants.Name = "dgvPollutants"
+        Me.dgvPollutants.Size = New System.Drawing.Size(600, 168)
+        Me.dgvPollutants.TabIndex = 0
+        '
+        'PollApply
+        '
+        Me.PollApply.HeaderText = "Apply"
+        Me.PollApply.Name = "PollApply"
+        Me.PollApply.Width = 53
+        '
+        'PollutantName
+        '
+        Me.PollutantName.HeaderText = "PollutantName"
+        Me.PollutantName.Name = "PollutantName"
+        Me.PollutantName.ReadOnly = True
+        Me.PollutantName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.PollutantName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.PollutantName.Width = 180
+        '
+        'CoefSet
+        '
+        Me.CoefSet.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.CoefSet.DisplayStyleForCurrentCellOnly = True
+        Me.CoefSet.HeaderText = "Coefficient Set"
+        Me.CoefSet.Name = "CoefSet"
+        Me.CoefSet.ReadOnly = True
+        Me.CoefSet.Width = 180
+        '
+        'WhichCoeff
+        '
+        Me.WhichCoeff.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.WhichCoeff.DisplayStyleForCurrentCellOnly = True
+        Me.WhichCoeff.HeaderText = "Which Coefficient"
+        Me.WhichCoeff.Name = "WhichCoeff"
+        Me.WhichCoeff.ReadOnly = True
+        Me.WhichCoeff.Width = 120
         '
         '_SSTab1_TabPage1
         '
@@ -1082,19 +1162,75 @@
         '
         '_SSTab1_TabPage2
         '
+        Me._SSTab1_TabPage2.Controls.Add(Me.dgvLandUse)
         Me._SSTab1_TabPage2.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage2.Name = "_SSTab1_TabPage2"
         Me._SSTab1_TabPage2.Size = New System.Drawing.Size(610, 177)
         Me._SSTab1_TabPage2.TabIndex = 2
         Me._SSTab1_TabPage2.Text = "Land Uses"
         '
+        'dgvLandUse
+        '
+        Me.dgvLandUse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvLandUse.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LUApply, Me.LUScenario})
+        Me.dgvLandUse.Location = New System.Drawing.Point(3, 3)
+        Me.dgvLandUse.Name = "dgvLandUse"
+        Me.dgvLandUse.Size = New System.Drawing.Size(604, 175)
+        Me.dgvLandUse.TabIndex = 0
+        '
+        'LUApply
+        '
+        Me.LUApply.HeaderText = "Apply"
+        Me.LUApply.Name = "LUApply"
+        Me.LUApply.Width = 53
+        '
+        'LUScenario
+        '
+        Me.LUScenario.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.LUScenario.HeaderText = "Land Use Scenario"
+        Me.LUScenario.Name = "LUScenario"
+        Me.LUScenario.ReadOnly = True
+        Me.LUScenario.Width = 280
+        '
         '_SSTab1_TabPage3
         '
+        Me._SSTab1_TabPage3.Controls.Add(Me.DataGridView1)
         Me._SSTab1_TabPage3.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage3.Name = "_SSTab1_TabPage3"
         Me._SSTab1_TabPage3.Size = New System.Drawing.Size(610, 177)
         Me._SSTab1_TabPage3.TabIndex = 3
         Me._SSTab1_TabPage3.Text = "Management Scenarios"
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ManageApply, Me.ChangeAreaLayer, Me.ChangeToClass})
+        Me.DataGridView1.Location = New System.Drawing.Point(2, 3)
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.Size = New System.Drawing.Size(601, 167)
+        Me.DataGridView1.TabIndex = 0
+        '
+        'ManageApply
+        '
+        Me.ManageApply.HeaderText = "Apply"
+        Me.ManageApply.Name = "ManageApply"
+        Me.ManageApply.Width = 53
+        '
+        'ChangeAreaLayer
+        '
+        Me.ChangeAreaLayer.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.ChangeAreaLayer.HeaderText = "Change Area Layer"
+        Me.ChangeAreaLayer.Name = "ChangeAreaLayer"
+        Me.ChangeAreaLayer.ReadOnly = True
+        Me.ChangeAreaLayer.Width = 180
+        '
+        'ChangeToClass
+        '
+        Me.ChangeToClass.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.ChangeToClass.HeaderText = "Change To Class"
+        Me.ChangeToClass.Name = "ChangeToClass"
+        Me.ChangeToClass.ReadOnly = True
+        Me.ChangeToClass.Width = 180
         '
         'cmdRun
         '
@@ -1236,12 +1372,27 @@
         Me._Label1_11.TabIndex = 21
         Me._Label1_11.Text = "Layer Name:"
         '
+        'cboClass
+        '
+        Me.cboClass.BackColor = System.Drawing.SystemColors.Window
+        Me.cboClass.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cboClass.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboClass.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.cboClass.Location = New System.Drawing.Point(57, 474)
+        Me.cboClass.Name = "cboClass"
+        Me.cboClass.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.cboClass.Size = New System.Drawing.Size(81, 22)
+        Me.cboClass.TabIndex = 60
+        Me.cboClass.Text = "cboClass"
+        Me.cboClass.Visible = False
+        '
         'frmProjectSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(642, 502)
+        Me.Controls.Add(Me.cboClass)
         Me.Controls.Add(Me.Frame6)
         Me.Controls.Add(Me.Frame5)
         Me.Controls.Add(Me.Frame4)
@@ -1249,10 +1400,6 @@
         Me.Controls.Add(Me.Frame3)
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.fraLC)
-        Me.Controls.Add(Me.cboAreaLayer)
-        Me.Controls.Add(Me.cboClass)
-        Me.Controls.Add(Me.cboCoeffSet)
-        Me.Controls.Add(Me.cboCoeff)
         Me.Controls.Add(Me.SSTab1)
         Me.Controls.Add(Me.cmdRun)
         Me.Controls.Add(Me.cmdQuit)
@@ -1281,107 +1428,35 @@
         Me.Frame1.ResumeLayout(False)
         Me.fraLC.ResumeLayout(False)
         Me.SSTab1.ResumeLayout(False)
+        Me._SSTab1_TabPage0.ResumeLayout(False)
+        CType(Me.dgvPollutants, System.ComponentModel.ISupportInitialize).EndInit()
         Me._SSTab1_TabPage1.ResumeLayout(False)
         Me.frameRainFall.ResumeLayout(False)
         Me.frameRainFall.PerformLayout()
         Me.frmSDR.ResumeLayout(False)
         Me.frmSDR.PerformLayout()
+        Me._SSTab1_TabPage2.ResumeLayout(False)
+        CType(Me.dgvLandUse, System.ComponentModel.ISupportInitialize).EndInit()
+        Me._SSTab1_TabPage3.ResumeLayout(False)
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Frame2.ResumeLayout(False)
         Me.Frame2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents ToolTip1 As System.Windows.Forms.ToolTip
-    Private WithEvents mnuNew As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuOpen As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuSpace As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents mnuSave As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuSaveAs As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuSpace1 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents mnuExit As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuFile As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuGeneralHelp As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuBigHelp As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuLUAdd As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuLUEdit As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuLUDelete As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuOptions As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuManAppen As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuManInsert As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuManDelete As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuManagement As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents MainMenu1 As System.Windows.Forms.MenuStrip
-    Private WithEvents cboWQStd As System.Windows.Forms.ComboBox
-    Private WithEvents _Label1_6 As System.Windows.Forms.Label
-    Private WithEvents Frame6 As System.Windows.Forms.GroupBox
-    Private WithEvents cboWSDelin As System.Windows.Forms.ComboBox
-    Private WithEvents _Label1_3 As System.Windows.Forms.Label
-    Private WithEvents Frame5 As System.Windows.Forms.GroupBox
-    Private WithEvents cboPrecipScen As System.Windows.Forms.ComboBox
-    Private WithEvents _Label1_7 As System.Windows.Forms.Label
-    Private WithEvents Frame4 As System.Windows.Forms.GroupBox
-    Private WithEvents cboSelectPoly As System.Windows.Forms.ComboBox
-    Private WithEvents chkSelectedPolys As System.Windows.Forms.CheckBox
-    Private WithEvents chkLocalEffects As System.Windows.Forms.CheckBox
-    Private WithEvents lblLayer As System.Windows.Forms.Label
-    Private WithEvents frm_raintype As System.Windows.Forms.GroupBox
-    Private WithEvents cmdOpenWS As System.Windows.Forms.Button
-    Private WithEvents txtOutputWS As System.Windows.Forms.TextBox
-    Private WithEvents txtProjectName As System.Windows.Forms.TextBox
-    Private WithEvents Label5 As System.Windows.Forms.Label
-    Private WithEvents Label4 As System.Windows.Forms.Label
-    Private WithEvents Frame3 As System.Windows.Forms.GroupBox
-    Private WithEvents cboSoilsLayer As System.Windows.Forms.ComboBox
-    Private WithEvents Label6 As System.Windows.Forms.Label
-    Private WithEvents lblSoilsHyd As System.Windows.Forms.Label
-    Private WithEvents Label2 As System.Windows.Forms.Label
-    Private WithEvents Frame1 As System.Windows.Forms.GroupBox
-    Private WithEvents cboLCUnits As System.Windows.Forms.ComboBox
-    Private WithEvents cboLCLayer As System.Windows.Forms.ComboBox
-    Private WithEvents cboLCType As System.Windows.Forms.ComboBox
-    Private WithEvents _Label1_5 As System.Windows.Forms.Label
-    Private WithEvents _Label1_0 As System.Windows.Forms.Label
-    Private WithEvents _Label1_2 As System.Windows.Forms.Label
-    Private WithEvents fraLC As System.Windows.Forms.GroupBox
-    Private WithEvents cboAreaLayer As System.Windows.Forms.ComboBox
-    Private WithEvents cboClass As System.Windows.Forms.ComboBox
-    Private WithEvents Timer1 As System.Windows.Forms.Timer
-    Private WithEvents cboCoeffSet As System.Windows.Forms.ComboBox
-    Private WithEvents cboCoeff As System.Windows.Forms.ComboBox
-    Private WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
-    Private WithEvents lblErodFactor As System.Windows.Forms.Label
-    Private WithEvents lblKFactor As System.Windows.Forms.Label
-    Private WithEvents Label3 As System.Windows.Forms.Label
-    Private WithEvents Label7 As System.Windows.Forms.Label
-    Private WithEvents chkCalcErosion As System.Windows.Forms.CheckBox
-    Private WithEvents txtRainValue As System.Windows.Forms.TextBox
-    Private WithEvents cboRainGrid As System.Windows.Forms.ComboBox
-    Private WithEvents optUseValue As System.Windows.Forms.RadioButton
-    Private WithEvents optUseGRID As System.Windows.Forms.RadioButton
-    Private WithEvents frameRainFall As System.Windows.Forms.GroupBox
-    Private WithEvents cboErodFactor As System.Windows.Forms.ComboBox
-    Private WithEvents cboSoilAttribute As System.Windows.Forms.ComboBox
-    Private WithEvents cmdOpenSDR As System.Windows.Forms.Button
-    Private WithEvents txtSDRGRID As System.Windows.Forms.TextBox
-    Private WithEvents chkSDR As System.Windows.Forms.CheckBox
-    Private WithEvents frmSDR As System.Windows.Forms.GroupBox
-    Private WithEvents _SSTab1_TabPage1 As System.Windows.Forms.TabPage
-    Private WithEvents _SSTab1_TabPage2 As System.Windows.Forms.TabPage
-    Private WithEvents _SSTab1_TabPage3 As System.Windows.Forms.TabPage
-    Private WithEvents SSTab1 As System.Windows.Forms.TabControl
-    Private WithEvents cmdRun As System.Windows.Forms.Button
-    Private WithEvents cmdQuit As System.Windows.Forms.Button
-    Private WithEvents dlgXMLOpen As System.Windows.Forms.OpenFileDialog
-    Private WithEvents dlgXMLSave As System.Windows.Forms.SaveFileDialog
-    Private WithEvents _chkIgnore_0 As System.Windows.Forms.CheckBox
-    Private WithEvents _chkIgnoreMgmt_0 As System.Windows.Forms.CheckBox
-    Private WithEvents _chkIgnoreLU_0 As System.Windows.Forms.CheckBox
-    Private WithEvents txtThemeName As System.Windows.Forms.TextBox
-    Private WithEvents cmdOutputBrowse As System.Windows.Forms.Button
-    Private WithEvents txtOutputFile As System.Windows.Forms.TextBox
-    Private WithEvents _Label1_11 As System.Windows.Forms.Label
-    Private WithEvents _Label1_12 As System.Windows.Forms.Label
-    Private WithEvents Frame2 As System.Windows.Forms.GroupBox
+    Friend WithEvents dgvPollutants As System.Windows.Forms.DataGridView
+    Friend WithEvents PollApply As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents PollutantName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents CoefSet As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents WhichCoeff As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents dgvLandUse As System.Windows.Forms.DataGridView
+    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
+    Friend WithEvents LUApply As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents LUScenario As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents ManageApply As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents ChangeAreaLayer As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents ChangeToClass As System.Windows.Forms.DataGridViewComboBoxColumn
+    Public WithEvents cboClass As System.Windows.Forms.ComboBox
 #End Region
 End Class

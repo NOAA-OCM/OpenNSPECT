@@ -214,28 +214,4 @@
         RWtYDhxJdOM4IiOIuR9fTiDDpFB6+gRRmYveDBlw+sOo5QVdpmrUrhF2SQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="Label1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>446, 17</value>
-  </metadata>
-  <metadata name="chkIgnore.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>533, 17</value>
-  </metadata>
-  <metadata name="chkIgnoreLU.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>639, 17</value>
-  </metadata>
-  <metadata name="chkIgnoreMgmt.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>759, 17</value>
-  </metadata>
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAEBAQbAAAAACoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
-        AAD///8AAAAAiIiAAAAAAIZmZmaAAAAIZmZmZmgAAIZmZmZmZoAAZm6IZmZmYAhmZmj45mZgBmbo+Ij2
-        ZmgGbv90RIhmaAaP90RESP5oD/+ERERE+GgP+Ej4iIiPgACESPiIiEjwAIRERERERwAACERERERwAAAA
-        h0RERwAAAAAAh3gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPwfAADwBwAA4AMAAMABAADAAQAAgAEAAIAAAACAAAAAgAAAAIAA
-        AACAAQAAwAEAAMADAADgBwAA8A8AAPw/AAA=
-</value>
-  </data>
 </root>
