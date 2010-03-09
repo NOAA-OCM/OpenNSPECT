@@ -6,50 +6,7 @@ mwNSPECT
 </name>
 </assembly>
 <members>
-<member name="M:mwNSPECT.Globals.getShapefileFieldByName(MapWinGIS.Shapefile,System.String)">
-	<summary>
- Gets a field index from a shapefile by its name
- </summary>
-	<param name="sf"></param>
-	<param name="currField"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:mwNSPECT.Globals.getLayerIndexByPath(System.String)">
-	<summary>
- Gets a layer index by a given path
- </summary>
-	<param name="currPath"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:mwNSPECT.Globals.getLayerPathByName(System.String)">
-	<summary>
- Function used to get a layer path by its name
- </summary>
-	<param name="strName"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:mwNSPECT.Globals.getLayerNameByPath(System.String)">
-	<summary>
- Function used to get a layer name by its path
- </summary>
-	<param name="strPath"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:mwNSPECT.Globals.getLayerIndexByName(System.String)">
-	<summary>
- Function used to get a layer index by its name
- </summary>
-	<param name="strName"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:mwNSPECT.Globals.layerExists(System.String)">
-	<summary>
- Function used to check if a layer of a given path exists
- </summary>
-	<param name="strPath"></param>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:mwNSPECT.My.Resources.Resources.ResourceManager">
+<member name="P:mwNSPECT.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
