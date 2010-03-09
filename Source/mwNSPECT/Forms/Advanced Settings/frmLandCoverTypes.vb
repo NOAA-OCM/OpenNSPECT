@@ -1,6 +1,5 @@
 Imports System.Data
 Imports System.Data.OleDb
-
 Imports System.Windows.Forms
 
 Friend Class frmLandCoverTypes
@@ -9,6 +8,7 @@ Friend Class frmLandCoverTypes
     Private _intRow As Short 'Current Row
     Private _intCol As Short 'Current Col.
     Private _intLCTypeID As Integer 'LCTypeID#
+    Private _intLCClassID As Integer
     Private _intCount As Short 'Number of rows in old GRID
     Private _bolGridChanged As Boolean 'Flag for whether or not grid values have changed
     Private _bolSaved As Boolean 'Flag for saved/not saved changes
@@ -18,6 +18,10 @@ Friend Class frmLandCoverTypes
     Private _strUndoDescrip As String 'same but for the Description
     Private _intMouseButton As Short 'Integer for mouse button click - added to avoid right click change cell value problem
 
+    Private _LCAdapter As OleDbDataAdapter
+    Private _cBuilder As OleDbCommandBuilder
+    Private _dTable As DataTable
+    Private _bSource As BindingSource
 
     Dim WithEvents _dbConn As OleDbConnection
 
@@ -43,19 +47,20 @@ Friend Class frmLandCoverTypes
         If _bolGridChanged And _bolBegin Then
 
             Dim intYesNo As MsgBoxResult = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNoTitle)
-            'Since we're changing records for LCTypes...good time to save changes, ergo CommitTrans
             If intYesNo = MsgBoxResult.Yes Then
-                UpdateValues()
+                SaveToDB()
                 _bolGridChanged = False
                 CmdSaveEnabled()
+                cboLCType_SelectedIndexChanged(eventSender, eventArgs)
             ElseIf intYesNo = MsgBoxResult.No Then
                 _bolGridChanged = False
                 CmdSaveEnabled()
+                cboLCType_SelectedIndexChanged(eventSender, eventArgs)
             End If
 
         Else
             _intCount = dgvLCTypes.RowCount
-            CheckCCAPDefault((cmbxLCType.Text))
+            CheckCCAPDefault(cmbxLCType.Text)
 
             'Selection based on combo box
             strSQLLCType = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & cmbxLCType.Text & "'"
@@ -69,12 +74,33 @@ Friend Class frmLandCoverTypes
 
                 txtLCTypeDesc.Text = dataLCType.Item("Description")
 
+                _intLCTypeID = dataLCType.Item("LCTypeID")
+
                 strSQLLCClass = "SELECT LCCLASS.Value, LCCLASS.Name, LCCLASS.[CN-A], LCCLASS.[CN-B]," & " LCCLASS.[CN-C], LCCLASS.[CN-D], LCCLASS.CoverFactor, LCCLASS.W_WL, LCCLASS.LCTYPEID, LCCLASS.LCCLASSID FROM LCCLASS WHERE" & " LCTYPEID = " & dataLCType.Item("LCTypeID") & " ORDER BY LCCLass.Value"
                 Dim LCClassCmd As OleDbCommand = New OleDbCommand(strSQLLCClass, _dbConn)
-                Dim dataLCClass As OleDbDataAdapter = New OleDbDataAdapter(LCClassCmd)
-                Dim dt As New System.Data.DataTable
-                dataLCClass.Fill(dt)
-                dgvLCTypes.DataSource = dt
+                _LCAdapter = New OleDbDataAdapter(LCClassCmd)
+                _cBuilder = New OleDbCommandBuilder(_LCAdapter)
+                _cBuilder.QuotePrefix = "["
+                _cBuilder.QuoteSuffix = "]"
+                _dTable = New DataTable
+
+                _LCAdapter.Fill(_dTable)
+
+                _dTable.Columns(0).DefaultValue = "0"
+                _dTable.Columns(1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
+                _dTable.Columns(2).DefaultValue = "0"
+                _dTable.Columns(3).DefaultValue = "0"
+                _dTable.Columns(4).DefaultValue = "0"
+                _dTable.Columns(5).DefaultValue = "0"
+                _dTable.Columns(6).DefaultValue = "0"
+                _dTable.Columns(7).DefaultValue = "0"
+                _dTable.Columns(8).DefaultValue = _intLCTypeID
+                '_dTable.Columns(9).DefaultValue = _intLCClassID
+
+
+                _bSource = New BindingSource
+                _bSource.DataSource = _dTable
+                dgvLCTypes.DataSource = _bSource
 
                 If Not _bolBegin Then
                     _bolBegin = True
@@ -106,8 +132,7 @@ Friend Class frmLandCoverTypes
             If intYesNo = MsgBoxResult.Yes Then
 
                 If ValidateGridValues() Then
-                    UpdateValues()
-                    'TODO: save data
+                    SaveToDB()
                     MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Save Successful")
                     _bolGridChanged = False
                     _bolSaved = True
@@ -136,8 +161,7 @@ Friend Class frmLandCoverTypes
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
             If ValidateGridValues() Then
-                UpdateValues()
-                'TODO: Save data
+                SaveToDB()
                 _bolBegin = False
 
                 MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Data Saved Successfully")
@@ -155,7 +179,7 @@ Friend Class frmLandCoverTypes
                 Exit Sub
             End If
 
-            MsgBox("There was an error saving changes.", MsgBoxStyle.Critical, "Error Saving Changes")
+            MsgBox("There was an error saving changes: " + ex.Message, MsgBoxStyle.Critical, "Error Saving Changes")
         End Try
     End Sub
 
@@ -170,35 +194,27 @@ Friend Class frmLandCoverTypes
 
             'Dim i As Short
             If intYesNo = MsgBoxResult.Yes Then
-                'rsCCAPDefault = New ADODB.Recordset
-
-                ''Selection based on combo box
-                'strCCAP = "SELECT * From LCCLASSDEFAULTS"
-
-                'rsCCAPDefault.Open(strCCAP, modUtil.g_ADOConn, ADODB.CursorTypeEnum.adOpenKeyset, ADODB.LockTypeEnum.adLockOptimistic)
-                'rsCCAPDefault.MoveFirst()
-
-                'grdLCClasses.Rows = rsCCAPDefault.RecordCount + 1
-                ''UPGRADE_NOTE: Refresh was upgraded to CtlRefresh. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"'
-                'grdLCClasses.CtlRefresh()
-                'm_intCount = grdLCClasses.Rows
-
-                ''Clear out the old dataset - again, column 10 contains the LCClassID
-                'For i = 1 To rsCCAPDefault.RecordCount 'grdLCClasses.Rows - 1
-
-                '    grdLCClasses.set_TextMatrix(i, 1, rsCCAPDefault.Fields("Value").Value)
-                '    grdLCClasses.set_TextMatrix(i, 2, rsCCAPDefault.Fields("Name").Value)
-                '    grdLCClasses.set_TextMatrix(i, 3, rsCCAPDefault.Fields("CN-A").Value)
-                '    grdLCClasses.set_TextMatrix(i, 4, rsCCAPDefault.Fields("CN-B").Value)
-                '    grdLCClasses.set_TextMatrix(i, 5, rsCCAPDefault.Fields("CN-C").Value)
-                '    grdLCClasses.set_TextMatrix(i, 6, rsCCAPDefault.Fields("CN-D").Value)
-                '    grdLCClasses.set_TextMatrix(i, 7, rsCCAPDefault.Fields("CoverFactor").Value)
-                '    grdLCClasses.set_TextMatrix(i, 8, rsCCAPDefault.Fields("W_WL").Value)
-
-                '    rsCCAPDefault.MoveNext()
-
-                'Next
                 
+                'Selection based on combo box
+                Dim strCCAP As String = "SELECT * From LCCLASSDEFAULTS"
+                Dim cmdCCAP As New OleDbCommand(strCCAP, g_DBConn)
+                Dim datCCAP As OleDbDataReader = cmdCCAP.ExecuteReader()
+
+                Dim idx As Integer = 0
+                Do While datCCAP.Read()
+                    _dTable.Rows(idx).Item(0) = datCCAP.Item("Value")
+                    _dTable.Rows(idx).Item(1) = datCCAP.Item("Name")
+                    _dTable.Rows(idx).Item(2) = datCCAP.Item("CN-A")
+                    _dTable.Rows(idx).Item(3) = datCCAP.Item("CN-B")
+                    _dTable.Rows(idx).Item(4) = datCCAP.Item("CN-C")
+                    _dTable.Rows(idx).Item(5) = datCCAP.Item("CN-D")
+                    _dTable.Rows(idx).Item(6) = datCCAP.Item("CoverFactor")
+                    _dTable.Rows(idx).Item(7) = datCCAP.Item("W_WL")
+
+                    idx = idx + 1
+                Loop
+                datCCAP.Close()
+
                 _bolGridChanged = True
                 CmdSaveEnabled()
             End If
@@ -211,6 +227,7 @@ Friend Class frmLandCoverTypes
 
     Private Sub mnuNewLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewLCType.Click
         Dim newLC As New frmNewLCType
+        newLC.Init(Me)
         newLC.ShowDialog()
     End Sub
 
@@ -219,41 +236,39 @@ Friend Class frmLandCoverTypes
         Dim intAns As Short
         intAns = MsgBox("Are you sure you want to delete the land cover type '" & cmbxLCType.Text & "' and all associated Coefficient Sets?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
 
-        'Dim strLCTypeDelete As String
-        'Dim strLCClassDelete As String
-        'Dim rsLCTypeDelete As ADODB.Recordset
-        'Dim rsLCClassDelete As ADODB.Recordset
+        Dim strLCTypeDelete As String
+        Dim strLCClassDelete As String
 
         If intAns = MsgBoxResult.Yes Then
-            'strLCTypeDelete = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & cboLCType.Text & "'"
+            strLCTypeDelete = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & cmbxLCType.Text & "'"
+            Dim cmdLCType As New OleDbCommand(strLCTypeDelete, g_DBConn)
+            Dim datLC As OleDbDataReader = cmdLCType.ExecuteReader()
+            datLC.Read()
 
-            'rsLCTypeDelete = New ADODB.Recordset
+            strLCClassDelete = "Delete * FROM LCCLASS WHERE LCTYPEID =" & datLC("LCTypeID")
 
-            'rsLCTypeDelete.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-            'rsLCTypeDelete.Open(strLCTypeDelete, modUtil.g_ADOConn, ADODB.CursorTypeEnum.adOpenForwardOnly, ADODB.LockTypeEnum.adLockOptimistic)
+            datLC.Close()
+            If Not (cmbxLCType.Text = "") Then
 
-            'strLCClassDelete = "Delete * FROM LCCLASS WHERE LCTYPEID =" & rsLCTypeDelete.Fields("LCTypeID").Value
+                'code to handle response
 
-            'If Not (cboLCType.Text = "") Then
+                Dim cmdDel As New OleDbCommand(strLCClassDelete, g_DBConn)
+                cmdDel.ExecuteNonQuery()
 
-            '    'code to handle response
+                strLCTypeDelete = "Delete * FROM LCTYPE WHERE NAME LIKE '" & cmbxLCType.Text & "'"
+                cmdDel = New OleDbCommand(strLCTypeDelete, g_DBConn)
+                cmdDel.ExecuteNonQuery()
 
-            '    modUtil.g_ADOConn.Execute(strLCClassDelete)
+                MsgBox(cmbxLCType.Text & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
-            '    'Set up a delete rs and get rid of it
-            '    rsLCTypeDelete.Delete(ADODB.AffectEnum.adAffectCurrent)
-            '    rsLCTypeDelete.Update()
+                cmbxLCType.Items.Clear()
+                _bolGridChanged = False
+                modUtil.InitComboBox(cmbxLCType, "LCType")
+                Me.Refresh()
 
-            '    MsgBox(VB6.GetItemString(cboLCType, cboLCType.SelectedIndex) & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
-
-            '    cboLCType.Items.Clear()
-            '    m_bolGridChanged = False
-            '    modUtil.InitComboBox(cboLCType, "LCType")
-            '    Me.Refresh()
-
-            'Else
-            '    MsgBox("Please select a Land class", MsgBoxStyle.Critical, "No Land Class Selected")
-            'End If
+            Else
+                MsgBox("Please select a Land class", MsgBoxStyle.Critical, "No Land Class Selected")
+            End If
         ElseIf intAns = MsgBoxResult.No Then
             _bolGridChanged = False
             Exit Sub
@@ -293,133 +308,84 @@ Friend Class frmLandCoverTypes
     End Sub
 
     Private Sub mnuAppend_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAppend.Click
-
-        'clsLCClassData.LCTypeID = getLCTypeID
-        'clsLCClassData.AddNew()
-
-        ''add row to end of  grid
-        'With grdLCClasses
-        '    .Rows = .Rows + 1
-        '    .row = .Rows - 1
-        '    .set_TextMatrix(.row, 0, "")
-        '    .set_TextMatrix(.row, 1, "0")
-        '    .set_TextMatrix(.row, 2, "Landclass" & .row)
-        '    .set_TextMatrix(.row, 3, "0")
-        '    .set_TextMatrix(.row, 4, "0")
-        '    .set_TextMatrix(.row, 5, "0")
-        '    .set_TextMatrix(.row, 6, "0")
-        '    .set_TextMatrix(.row, 7, "0")
-        '    .set_TextMatrix(.row, 8, "0")
-        '    .set_TextMatrix(.row, 9, clsLCClassData.LCTypeID)
-        '    .set_TextMatrix(.row, 10, g_intLCClassid)
-
-        'End With
-        ''IsCellVisible
-
-        'm_intCount = grdLCClasses.Rows
-
-        'CreateCheckBoxes(False, grdLCClasses.row)
-
-        'm_bolGridChanged = True
-        'CmdSaveEnabled()
+        AddRow()
     End Sub
 
     Private Sub mnuInsertRow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuInsertRow.Click
-        ''Insert row above current row in grdLCClasses- Thanks, Andrew
-
-        ''Get a hold of LCTYPEID, must have it to insert new records
-        'clsLCClassData.LCTypeID = m_intLCTypeID
-        'clsLCClassData.AddNew()
-
-        'Dim row, R, col As Short
-        'With grdLCClasses
-        '    If .row < .FixedRows Then 'make sure we don't insert above header Rows
-        '        mnuAppend_Click(mnuAppend, New System.EventArgs())
-        '    Else
-        '        R = .row
-        '        .Rows = .Rows + 1 'add a row
-
-        '        For row = .Rows - 1 To R + 1 Step -1 'move data dn 1 row
-        '            For col = 1 To .get_Cols() - 1
-        '                .set_TextMatrix(row, col, .get_TextMatrix(row - 1, col))
-        '            Next col
-        '        Next row
-        '        For col = 1 To .get_Cols() - 1 ' clear all cells in this row
-        '            If (col = 2) Then
-        '                .set_TextMatrix(R, col, "")
-        '            Else
-        '                .set_TextMatrix(R, col, "0")
-        '            End If
-        '        Next col
-        '        .set_TextMatrix(R, 9, clsLCClassData.LCTypeID)
-        '        .set_TextMatrix(R, 10, g_intLCClassid)
-
-
-        '    End If
-        'End With
-
-        'txtActiveCell.Visible = False
-        'm_intCount = grdLCClasses.Rows
-
-        'ClearCheckBoxes(True, m_intCount - 1)
-        'CreateCheckBoxes(True)
-
-        'm_bolGridChanged = True 'reset
-        'CmdSaveEnabled()
+        InsertRow()
     End Sub
 
     Private Sub mnuDeleteRow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDeleteRow.Click
-        ''delete current row
-
-        'Dim row, R, C, col As Short
-        'Dim lngLCClassID As Integer
-
-        'With grdLCClasses
-
-        '    lngLCClassID = CInt(.get_TextMatrix(m_intRow, 10))
-
-        '    If .Rows > .FixedRows Then 'make sure we don't del header Rows
-        '        For col = 1 To .get_Cols() - 1
-        '            If ((Trim(.get_TextMatrix(.row, col)) > "" And col = 2) Or (.get_TextMatrix(.row, col) <> "0" And col = 1) Or (.get_TextMatrix(.row, col) <> "0" And col >= 3)) Then 'data?
-        '                C = 1
-        '                Exit For
-        '            End If
-        '        Next col
-        '        If C Then
-        '            R = MsgBox("There is data in Row" & Str(.row) & " ! Delete anyway?", MsgBoxStyle.YesNo, "Delete Row!")
-        '        End If
-        '        If C = 0 Or R = MsgBoxResult.Yes Then 'no exist. data or YES
-        '            If .row = .Rows - 1 Then 'last row?
-        '                .row = .row - 1 'move active cell
-        '            Else
-        '                For row = .row To .Rows - 2 'move data up 1 row
-        '                    For col = 1 To .get_Cols() - 1
-        '                        .set_TextMatrix(row, col, .get_TextMatrix(row + 1, col))
-        '                    Next col
-        '                Next row
-        '            End If
-        '            .Rows = .Rows - 1 'del last row
-        '            clsLCClassData.Load(lngLCClassID)
-        '            clsLCClassData.Delete()
-        '        End If
-        '    End If
-        'End With
-
-        'm_intCount = grdLCClasses.Rows
-        'ClearCheckBoxes(True, m_intCount + 1)
-        'CreateCheckBoxes(True)
-
-        'm_bolGridChanged = True 'reset
-        'CmdSaveEnabled()
+        DeleteRow()
     End Sub
 
     Private Sub mnuLCHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuLCHelp.Click
         Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "land_cover.htm")
     End Sub
 
+    Private Sub dgvLCTypes_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvLCTypes.MouseClick
+        If e.Button = Windows.Forms.MouseButtons.Right Then
+            cntxmnuGrid.Show(dgvLCTypes, New Drawing.Point(e.X, e.Y))
+        End If
+
+    End Sub
+
+    Private Sub AddRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddRowToolStripMenuItem.Click
+        AddRow()
+    End Sub
+
+    Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertRowToolStripMenuItem.Click
+        InsertRow()
+    End Sub
+
+    Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteRowToolStripMenuItem.Click
+        DeleteRow()
+    End Sub
+
+
+    Private Sub dgvLCTypes_CellEndEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvLCTypes.CellEndEdit
+        _bolGridChanged = True
+        CmdSaveEnabled()
+    End Sub
+
+    Private Sub dgvLCTypes_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvLCTypes.DataError
+        MsgBox("Please enter a valid number in the cell on row " + (e.RowIndex + 1).ToString + " and column " + (e.ColumnIndex + 1).ToString + ".", MsgBoxStyle.Exclamation, "Data Error")
+    End Sub
 #End Region
 
 #Region "Helper Functions"
+    Private Sub SaveToDB()
+        _bSource.EndEdit()
+        _LCAdapter.Update(_dTable)
+    End Sub
+
+    Private Sub AddRow()
+        _dTable.Columns(1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
+
+        Dim dr As DataRow = _dTable.NewRow()
+        _dTable.Rows.Add(dr)
+        _bolGridChanged = True
+        CmdSaveEnabled()
+    End Sub
+
+    Private Sub InsertRow()
+        If Not dgvLCTypes.CurrentRow Is Nothing Then
+            _dTable.Columns(1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
+            Dim dr As DataRow = _dTable.NewRow()
+            _dTable.Rows.InsertAt(dr, dgvLCTypes.CurrentRow.Index)
+            _bolGridChanged = True
+            CmdSaveEnabled()
+        End If
+    End Sub
+
+    Private Sub DeleteRow()
+        If Not dgvLCTypes.CurrentRow Is Nothing Then
+            dgvLCTypes.Rows.Remove(dgvLCTypes.CurrentRow)
+            _bolGridChanged = True
+            CmdSaveEnabled()
+        End If
+    End Sub
+
     Private Sub CmdSaveEnabled()
 
         btnSave.Enabled = _bolGridChanged
@@ -431,43 +397,19 @@ Friend Class frmLandCoverTypes
         If strName = "CCAP" Then
             btnRestoreDefaults.Enabled = True
             mnuDelLCType.Enabled = False
-            mnuPopUp.Enabled = False
+            mnuEdit.Enabled = False
+            cntxmnuGrid.Enabled = False
             ToolTip1.SetToolTip(dgvLCTypes, "")
         Else
             btnRestoreDefaults.Enabled = False
             mnuDelLCType.Enabled = True
-            mnuPopUp.Enabled = True
+            mnuEdit.Enabled = True
+            cntxmnuGrid.Enabled = True
             ToolTip1.SetToolTip(dgvLCTypes, "Right click to add, delete, or insert a row")
         End If
 
     End Sub
 
-    Private Sub UpdateValues()
-
-        'Dim i As Short
-
-        'For i = 1 To grdLCClasses.Rows - 1
-
-        '    With clsLCClassData
-
-        '        .Load(grdLCClasses.get_TextMatrix(i, 10))
-        '        .Value = CInt(grdLCClasses.get_TextMatrix(i, 1))
-        '        .Name = grdLCClasses.get_TextMatrix(i, 2)
-        '        .CNA = CSng(grdLCClasses.get_TextMatrix(i, 3))
-        '        .CNB = CSng(grdLCClasses.get_TextMatrix(i, 4))
-        '        .CNC = CSng(grdLCClasses.get_TextMatrix(i, 5))
-        '        .CND = CSng(grdLCClasses.get_TextMatrix(i, 6))
-        '        .CoverFactor = CSng(grdLCClasses.get_TextMatrix(i, 7))
-        '        .W_WL = CInt(grdLCClasses.get_TextMatrix(i, 8))
-        '        .LCTypeID = CInt(grdLCClasses.get_TextMatrix(i, 9))
-        '        .LCClassID = CInt(grdLCClasses.get_TextMatrix(i, 10))
-
-        '        .SaveChanges()
-
-        '    End With
-        'Next i
-
-    End Sub
 
     Private Function ValidateGridValues() As Boolean
 
@@ -477,114 +419,60 @@ Friend Class frmLandCoverTypes
 
         ''Returns: True or False
 
-        'Dim varActive As Object 'txtActiveCell value
-        'Dim varColumn2Value As Object 'Value of Column 2 ([VALUE]) - have to check for unique
-        'Dim i As Short
-        'Dim j As Short
-        'Dim k As Short
+        Dim dr, dr2 As DataRow
+        Dim val As Object
 
-        'For i = 1 To grdLCClasses.Rows - 1
+        For i As Integer = 0 To _dTable.Rows.Count - 1
+            If _dTable.Rows(i).RowState <> DataRowState.Deleted Then
+                dr = _dTable.Rows(i)
+                For j As Integer = 0 To _dTable.Columns.Count - 1
+                    val = dr.Item(j)
+                    Select Case j
+                        Case 0
+                            If Not IsNumeric(val) Then
+                                ErrorGenerator(Err1, i, j)
+                                ValidateGridValues = False
+                                Exit Function
+                            Else
+                                For k As Integer = 0 To _dTable.Rows.Count - 1
+                                    If _dTable.Rows(k).RowState <> DataRowState.Deleted Then
+                                        dr2 = _dTable.Rows(k)
+                                        If k <> i Then 'Don't want to compare value to itself
+                                            If val = dr2.Item(j) Then
+                                                ErrorGenerator(Err2, i, j)
+                                                ValidateGridValues = False
+                                                Exit Function
+                                            End If
+                                        End If
+                                    End If
+                                Next k
+                            End If
 
-        '    For j = 1 To 7
+                        Case 1
+                            If IsNumeric(val) Then
+                                ErrorGenerator(Err1, i, j)
+                                ValidateGridValues = False
+                                Exit Function
+                            End If
 
-        '        'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        '        varActive = grdLCClasses.get_TextMatrix(i, j)
-
-        '        Select Case j
-
-        '            Case 1
-        '                If Not IsNumeric(varActive) Then
-        '                    ErrorGenerator(Err1, i, j)
-        '                Else
-        '                    For k = 1 To grdLCClasses.Rows - 1
-
-        '                        'UPGRADE_WARNING: Couldn't resolve default property of object varColumn2Value. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        '                        varColumn2Value = grdLCClasses.get_TextMatrix(k, 1)
-        '                        If k <> i Then 'Don't want to compare value to itself
-        '                            'UPGRADE_WARNING: Couldn't resolve default property of object varColumn2Value. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        '                            If varColumn2Value = grdLCClasses.get_TextMatrix(i, 1) Then
-        '                                ErrorGenerator(Err2, i, j)
-        '                                grdLCClasses.col = j
-        '                                grdLCClasses.row = i
-        '                                ValidateGridValues = False
-        '                                KeyMoveUpdate()
-        '                                Exit Function
-        '                            End If
-        '                        End If
-        '                    Next k
-        '                End If
-
-
-        '            Case 2
-        '                If IsNumeric(varActive) Then
-        '                    ErrorGenerator(Err1, i, j)
-        '                    grdLCClasses.col = j
-        '                    grdLCClasses.row = i
-        '                    ValidateGridValues = False
-        '                    KeyMoveUpdate()
-        '                    Exit Function
-        '                End If
-
-        '            Case 3
-        '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 1)) Or (Len(varActive) > 6) Then
-        '                    ErrorGenerator(Err1, i, j)
-        '                    grdLCClasses.col = j
-        '                    grdLCClasses.row = i
-        '                    ValidateGridValues = False
-        '                    KeyMoveUpdate()
-        '                    Exit Function
-        '                End If
-
-        '            Case 4
-        '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 1)) Or (Len(varActive) > 6) Then
-        '                    ErrorGenerator(Err1, i, j)
-        '                    grdLCClasses.col = j
-        '                    grdLCClasses.row = i
-        '                    ValidateGridValues = False
-        '                    KeyMoveUpdate()
-        '                    Exit Function
-        '                End If
-
-        '            Case 5
-        '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 1)) Or (Len(varActive) > 6) Then
-        '                    ErrorGenerator(Err1, i, j)
-        '                    grdLCClasses.col = j
-        '                    grdLCClasses.row = i
-        '                    ValidateGridValues = False
-        '                    KeyMoveUpdate()
-        '                    Exit Function
-        '                End If
-
-        '            Case 6
-        '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 1)) Or (Len(varActive) > 6) Then
-        '                    ErrorGenerator(Err1, i, j)
-        '                    grdLCClasses.col = j
-        '                    grdLCClasses.row = i
-        '                    ValidateGridValues = False
-        '                    KeyMoveUpdate()
-        '                    Exit Function
-        '                End If
-
-        '            Case 7
-        '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 1)) Or (Len(varActive) > 5) Then
-        '                    ErrorGenerator(Err3, i, j)
-        '                    grdLCClasses.col = j
-        '                    grdLCClasses.row = i
-        '                    ValidateGridValues = False
-        '                    KeyMoveUpdate()
-        '                    Exit Function
-        '                End If
-        '        End Select
-        '    Next j
-        'Next i
+                        Case 2, 3, 4, 5
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 6) Then
+                                ErrorGenerator(Err1, i, j)
+                                ValidateGridValues = False
+                                Exit Function
+                            End If
+                        Case 6
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 5) Then
+                                ErrorGenerator(Err3, i, j)
+                                ValidateGridValues = False
+                                Exit Function
+                            End If
+                    End Select
+                Next
+            End If
+        Next
 
         ValidateGridValues = True
-
     End Function
 
     Private Sub AddDefaultValues()
@@ -646,6 +534,14 @@ Friend Class frmLandCoverTypes
         ''UPGRADE_NOTE: Object fl may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
         'fl = Nothing
 
+    End Sub
+
+
+    Public Sub UpdateCombo(ByVal strName As String)
+        cmbxLCType.Items.Clear()
+        _bolGridChanged = False
+        modUtil.InitComboBox(cmbxLCType, "LCType")
+        cmbxLCType.SelectedItem = strName
     End Sub
 
 #End Region

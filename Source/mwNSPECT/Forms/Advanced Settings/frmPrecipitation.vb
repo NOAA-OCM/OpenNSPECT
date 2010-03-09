@@ -186,6 +186,7 @@ Friend Class frmPrecipitation
 
     Private Sub mnuNewPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewPrecip.Click
         Dim newpre As New frmNewPrecip
+        newpre.Init(Nothing, Me)
         newpre.ShowDialog()
     End Sub
 
@@ -310,6 +311,14 @@ Friend Class frmPrecipitation
         _boolChange = True
 
     End Sub
+
+
+    Public Sub UpdatePrecip(ByVal strPrecName As String)
+        cboScenName.Items.Clear()
+        modUtil.InitComboBox(cboScenName, "PrecipScenario")
+        cboScenName.SelectedIndex = modUtil.GetCboIndex(strPrecName, cboScenName)
+    End Sub
+
 #End Region
 
 

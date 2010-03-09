@@ -52,7 +52,12 @@
         Me.WetCheck = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.LCTYPEID = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.LCClassID = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.cntxmnuGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.cntxmnuGrid.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtLCTypeDesc
@@ -188,6 +193,8 @@
         '
         'dgvLCTypes
         '
+        Me.dgvLCTypes.AllowUserToAddRows = False
+        Me.dgvLCTypes.AllowUserToDeleteRows = False
         Me.dgvLCTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLCTypes.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Value, Me.NameCol, Me.CNA, Me.CNB, Me.CNC, Me.CND, Me.CoverFactor, Me.WetCheck, Me.LCTYPEID, Me.LCClassID})
         Me.dgvLCTypes.Location = New System.Drawing.Point(10, 85)
@@ -267,6 +274,30 @@
         Me.LCClassID.Name = "LCClassID"
         Me.LCClassID.Visible = False
         '
+        'cntxmnuGrid
+        '
+        Me.cntxmnuGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteRowToolStripMenuItem})
+        Me.cntxmnuGrid.Name = "ContextMenuStrip1"
+        Me.cntxmnuGrid.Size = New System.Drawing.Size(134, 70)
+        '
+        'AddRowToolStripMenuItem
+        '
+        Me.AddRowToolStripMenuItem.Name = "AddRowToolStripMenuItem"
+        Me.AddRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.AddRowToolStripMenuItem.Text = "Add Row"
+        '
+        'InsertRowToolStripMenuItem
+        '
+        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
+        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
+        '
+        'DeleteRowToolStripMenuItem
+        '
+        Me.DeleteRowToolStripMenuItem.Name = "DeleteRowToolStripMenuItem"
+        Me.DeleteRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.DeleteRowToolStripMenuItem.Text = "Delete Row"
+        '
         'frmNewLCType
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
@@ -295,6 +326,7 @@
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "New Land Cover Type"
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cntxmnuGrid.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -310,5 +342,9 @@
     Friend WithEvents WetCheck As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents LCTYPEID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LCClassID As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents cntxmnuGrid As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents AddRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents InsertRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents DeleteRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 #End Region 
 End Class

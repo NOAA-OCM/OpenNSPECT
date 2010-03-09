@@ -115,6 +115,17 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\clsWrapperManScen.vb" />
+    <Compile Include="Classes\clsWrapperPoll.vb" />
+    <Compile Include="Classes\clsXMLCoeffTypeDef.vb" />
+    <Compile Include="Classes\clsXMLLandUseItem.vb" />
+    <Compile Include="Classes\clsXMLLandUseItems.vb" />
+    <Compile Include="Classes\clsXMLMgmtScenItem.vb" />
+    <Compile Include="Classes\clsXMLMgmtScenItems.vb" />
+    <Compile Include="Classes\clsXMLPollItems.vb" />
+    <Compile Include="Classes\clsXMLPollutantItem.vb" />
+    <Compile Include="Classes\clsXMLPollutantItems.vb" />
+    <Compile Include="Classes\clsXMLPrjFile.vb" />
     <Compile Include="Classes\mwNSPECT.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -261,6 +272,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modules\modErrorCodes.vb" />
+    <Compile Include="Modules\modLanduse.vb" />
+    <Compile Include="Modules\modMainRun.vb" />
+    <Compile Include="Modules\modMgmtScen.vb" />
+    <Compile Include="Modules\modMUSLE.vb" />
+    <Compile Include="Modules\modPollutantCalcs.vb" />
+    <Compile Include="Modules\modProgDialog.vb" />
+    <Compile Include="Modules\modRunoff.vb" />
+    <Compile Include="Modules\modRusle.vb" />
     <Compile Include="Modules\modUtil.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>

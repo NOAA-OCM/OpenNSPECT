@@ -16,93 +16,6 @@
     End Sub
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
-    Public ToolTip1 As System.Windows.Forms.ToolTip
-    Public WithEvents mnuNew As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuOpen As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuSpace As System.Windows.Forms.ToolStripSeparator
-    Public WithEvents mnuSave As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuSaveAs As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuSpace1 As System.Windows.Forms.ToolStripSeparator
-    Public WithEvents mnuExit As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuFile As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuGeneralHelp As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuBigHelp As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuLUAdd As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuLUEdit As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuLUDelete As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuOptions As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuManAppen As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuManInsert As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuManDelete As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuManagement As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents MainMenu1 As System.Windows.Forms.MenuStrip
-    Public WithEvents cboWQStd As System.Windows.Forms.ComboBox
-    Public WithEvents _Label1_6 As System.Windows.Forms.Label
-    Public WithEvents Frame6 As System.Windows.Forms.GroupBox
-    Public WithEvents cboWSDelin As System.Windows.Forms.ComboBox
-    Public WithEvents _Label1_3 As System.Windows.Forms.Label
-    Public WithEvents Frame5 As System.Windows.Forms.GroupBox
-    Public WithEvents cboPrecipScen As System.Windows.Forms.ComboBox
-    Public WithEvents _Label1_7 As System.Windows.Forms.Label
-    Public WithEvents Frame4 As System.Windows.Forms.GroupBox
-    Public WithEvents cboSelectPoly As System.Windows.Forms.ComboBox
-    Public WithEvents chkSelectedPolys As System.Windows.Forms.CheckBox
-    Public WithEvents chkLocalEffects As System.Windows.Forms.CheckBox
-    Public WithEvents lblLayer As System.Windows.Forms.Label
-    Public WithEvents frm_raintype As System.Windows.Forms.GroupBox
-    Public WithEvents cmdOpenWS As System.Windows.Forms.Button
-    Public WithEvents txtOutputWS As System.Windows.Forms.TextBox
-    Public WithEvents txtProjectName As System.Windows.Forms.TextBox
-    Public WithEvents Label5 As System.Windows.Forms.Label
-    Public WithEvents Label4 As System.Windows.Forms.Label
-    Public WithEvents Frame3 As System.Windows.Forms.GroupBox
-    Public WithEvents cboSoilsLayer As System.Windows.Forms.ComboBox
-    Public WithEvents Label6 As System.Windows.Forms.Label
-    Public WithEvents lblSoilsHyd As System.Windows.Forms.Label
-    Public WithEvents Label2 As System.Windows.Forms.Label
-    Public WithEvents Frame1 As System.Windows.Forms.GroupBox
-    Public WithEvents cboLCUnits As System.Windows.Forms.ComboBox
-    Public WithEvents cboLCLayer As System.Windows.Forms.ComboBox
-    Public WithEvents cboLCType As System.Windows.Forms.ComboBox
-    Public WithEvents _Label1_5 As System.Windows.Forms.Label
-    Public WithEvents _Label1_0 As System.Windows.Forms.Label
-    Public WithEvents _Label1_2 As System.Windows.Forms.Label
-    Public WithEvents fraLC As System.Windows.Forms.GroupBox
-    Public WithEvents Timer1 As System.Windows.Forms.Timer
-    Public WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
-    Public WithEvents lblErodFactor As System.Windows.Forms.Label
-    Public WithEvents lblKFactor As System.Windows.Forms.Label
-    Public WithEvents Label3 As System.Windows.Forms.Label
-    Public WithEvents Label7 As System.Windows.Forms.Label
-    Public WithEvents chkCalcErosion As System.Windows.Forms.CheckBox
-    Public WithEvents txtRainValue As System.Windows.Forms.TextBox
-    Public WithEvents cboRainGrid As System.Windows.Forms.ComboBox
-    Public WithEvents optUseValue As System.Windows.Forms.RadioButton
-    Public WithEvents optUseGRID As System.Windows.Forms.RadioButton
-    Public WithEvents frameRainFall As System.Windows.Forms.GroupBox
-    Public WithEvents cboErodFactor As System.Windows.Forms.ComboBox
-    Public WithEvents cboSoilAttribute As System.Windows.Forms.ComboBox
-    Public WithEvents cmdOpenSDR As System.Windows.Forms.Button
-    Public WithEvents txtSDRGRID As System.Windows.Forms.TextBox
-    Public WithEvents chkSDR As System.Windows.Forms.CheckBox
-    Public WithEvents frmSDR As System.Windows.Forms.GroupBox
-    Public WithEvents _SSTab1_TabPage1 As System.Windows.Forms.TabPage
-    Public WithEvents _SSTab1_TabPage2 As System.Windows.Forms.TabPage
-    Public WithEvents _SSTab1_TabPage3 As System.Windows.Forms.TabPage
-    Public WithEvents SSTab1 As System.Windows.Forms.TabControl
-    Public WithEvents cmdRun As System.Windows.Forms.Button
-    Public WithEvents cmdQuit As System.Windows.Forms.Button
-    Public dlgXMLOpen As System.Windows.Forms.OpenFileDialog
-    Public dlgXMLSave As System.Windows.Forms.SaveFileDialog
-    Public WithEvents _chkIgnore_0 As System.Windows.Forms.CheckBox
-    Public WithEvents _chkIgnoreMgmt_0 As System.Windows.Forms.CheckBox
-    Public WithEvents _chkIgnoreLU_0 As System.Windows.Forms.CheckBox
-    Public WithEvents txtThemeName As System.Windows.Forms.TextBox
-    Public WithEvents cmdOutputBrowse As System.Windows.Forms.Button
-    Public WithEvents txtOutputFile As System.Windows.Forms.TextBox
-    Public WithEvents _Label1_11 As System.Windows.Forms.Label
-    Public WithEvents _Label1_12 As System.Windows.Forms.Label
-    Public WithEvents Frame2 As System.Windows.Forms.GroupBox
 
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.
@@ -129,14 +42,6 @@
         Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuBigHelp = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuGeneralHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuOptions = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuLUAdd = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuLUEdit = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuLUDelete = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuManagement = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuManAppen = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuManInsert = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuManDelete = New System.Windows.Forms.ToolStripMenuItem
         Me.Frame6 = New System.Windows.Forms.GroupBox
         Me.cboWQStd = New System.Windows.Forms.ComboBox
         Me._Label1_6 = New System.Windows.Forms.Label
@@ -174,6 +79,8 @@
         Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.TypeDef = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage
         Me.lblErodFactor = New System.Windows.Forms.Label
         Me.lblKFactor = New System.Windows.Forms.Label
@@ -190,18 +97,19 @@
         Me.txtSDRGRID = New System.Windows.Forms.TextBox
         Me.chkSDR = New System.Windows.Forms.CheckBox
         Me._SSTab1_TabPage2 = New System.Windows.Forms.TabPage
+        Me.Label1 = New System.Windows.Forms.Label
         Me.dgvLandUse = New System.Windows.Forms.DataGridView
         Me.LUApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.LUScenario = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.LUScenario = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.LUScenarioXML = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me._SSTab1_TabPage3 = New System.Windows.Forms.TabPage
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView
+        Me.lblManageNote = New System.Windows.Forms.Label
+        Me.dgvManagementScen = New System.Windows.Forms.DataGridView
         Me.ManageApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.ChangeAreaLayer = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.ChangeToClass = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.cmdRun = New System.Windows.Forms.Button
         Me.cmdQuit = New System.Windows.Forms.Button
-        Me.dlgXMLOpen = New System.Windows.Forms.OpenFileDialog
-        Me.dlgXMLSave = New System.Windows.Forms.SaveFileDialog
         Me._chkIgnore_0 = New System.Windows.Forms.CheckBox
         Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox
         Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox
@@ -209,7 +117,14 @@
         Me.txtThemeName = New System.Windows.Forms.TextBox
         Me.cmdOutputBrowse = New System.Windows.Forms.Button
         Me._Label1_11 = New System.Windows.Forms.Label
-        Me.cboClass = New System.Windows.Forms.ComboBox
+        Me.cnxtmnuLandUse = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.AddScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.EditScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DeleteScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.cnxtmnuManagement = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.AppendRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DeleteCurrentRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.MainMenu1.SuspendLayout()
         Me.Frame6.SuspendLayout()
         Me.Frame5.SuspendLayout()
@@ -227,8 +142,10 @@
         Me._SSTab1_TabPage2.SuspendLayout()
         CType(Me.dgvLandUse, System.ComponentModel.ISupportInitialize).BeginInit()
         Me._SSTab1_TabPage3.SuspendLayout()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvManagementScen, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Frame2.SuspendLayout()
+        Me.cnxtmnuLandUse.SuspendLayout()
+        Me.cnxtmnuManagement.SuspendLayout()
         Me.SuspendLayout()
         '
         'chkSelectedPolys
@@ -338,7 +255,7 @@
         '
         'MainMenu1
         '
-        Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFile, Me.mnuBigHelp, Me.mnuOptions, Me.mnuManagement})
+        Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFile, Me.mnuBigHelp})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
         Me.MainMenu1.Size = New System.Drawing.Size(642, 24)
@@ -408,56 +325,6 @@
         Me.mnuGeneralHelp.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F1), System.Windows.Forms.Keys)
         Me.mnuGeneralHelp.Size = New System.Drawing.Size(210, 22)
         Me.mnuGeneralHelp.Text = "N-SPECT Help..."
-        '
-        'mnuOptions
-        '
-        Me.mnuOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLUAdd, Me.mnuLUEdit, Me.mnuLUDelete})
-        Me.mnuOptions.Name = "mnuOptions"
-        Me.mnuOptions.Size = New System.Drawing.Size(12, 20)
-        Me.mnuOptions.Visible = False
-        '
-        'mnuLUAdd
-        '
-        Me.mnuLUAdd.Name = "mnuLUAdd"
-        Me.mnuLUAdd.Size = New System.Drawing.Size(164, 22)
-        Me.mnuLUAdd.Text = "Add Scenario..."
-        '
-        'mnuLUEdit
-        '
-        Me.mnuLUEdit.Name = "mnuLUEdit"
-        Me.mnuLUEdit.Size = New System.Drawing.Size(164, 22)
-        Me.mnuLUEdit.Text = "Edit Scenario..."
-        '
-        'mnuLUDelete
-        '
-        Me.mnuLUDelete.Name = "mnuLUDelete"
-        Me.mnuLUDelete.Size = New System.Drawing.Size(164, 22)
-        Me.mnuLUDelete.Text = "Delete Scenario..."
-        '
-        'mnuManagement
-        '
-        Me.mnuManagement.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuManAppen, Me.mnuManInsert, Me.mnuManDelete})
-        Me.mnuManagement.Name = "mnuManagement"
-        Me.mnuManagement.Size = New System.Drawing.Size(12, 20)
-        Me.mnuManagement.Visible = False
-        '
-        'mnuManAppen
-        '
-        Me.mnuManAppen.Name = "mnuManAppen"
-        Me.mnuManAppen.Size = New System.Drawing.Size(176, 22)
-        Me.mnuManAppen.Text = "Append Row"
-        '
-        'mnuManInsert
-        '
-        Me.mnuManInsert.Name = "mnuManInsert"
-        Me.mnuManInsert.Size = New System.Drawing.Size(176, 22)
-        Me.mnuManInsert.Text = "Insert Row"
-        '
-        'mnuManDelete
-        '
-        Me.mnuManDelete.Name = "mnuManDelete"
-        Me.mnuManDelete.Size = New System.Drawing.Size(176, 22)
-        Me.mnuManDelete.Text = "Delete Current Row"
         '
         'Frame6
         '
@@ -898,10 +765,14 @@
         '
         'dgvPollutants
         '
+        Me.dgvPollutants.AllowUserToAddRows = False
+        Me.dgvPollutants.AllowUserToDeleteRows = False
         Me.dgvPollutants.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvPollutants.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.PollApply, Me.PollutantName, Me.CoefSet, Me.WhichCoeff})
+        Me.dgvPollutants.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.PollApply, Me.PollutantName, Me.CoefSet, Me.WhichCoeff, Me.Threshold, Me.TypeDef})
         Me.dgvPollutants.Location = New System.Drawing.Point(3, 3)
+        Me.dgvPollutants.MultiSelect = False
         Me.dgvPollutants.Name = "dgvPollutants"
+        Me.dgvPollutants.ShowEditingIcon = False
         Me.dgvPollutants.Size = New System.Drawing.Size(600, 168)
         Me.dgvPollutants.TabIndex = 0
         '
@@ -913,7 +784,7 @@
         '
         'PollutantName
         '
-        Me.PollutantName.HeaderText = "PollutantName"
+        Me.PollutantName.HeaderText = "Pollutant Name"
         Me.PollutantName.Name = "PollutantName"
         Me.PollutantName.ReadOnly = True
         Me.PollutantName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
@@ -926,7 +797,6 @@
         Me.CoefSet.DisplayStyleForCurrentCellOnly = True
         Me.CoefSet.HeaderText = "Coefficient Set"
         Me.CoefSet.Name = "CoefSet"
-        Me.CoefSet.ReadOnly = True
         Me.CoefSet.Width = 180
         '
         'WhichCoeff
@@ -934,9 +804,21 @@
         Me.WhichCoeff.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
         Me.WhichCoeff.DisplayStyleForCurrentCellOnly = True
         Me.WhichCoeff.HeaderText = "Which Coefficient"
+        Me.WhichCoeff.Items.AddRange(New Object() {"Type 1", "Type 2", "Type 3", "Type 4"})
         Me.WhichCoeff.Name = "WhichCoeff"
-        Me.WhichCoeff.ReadOnly = True
         Me.WhichCoeff.Width = 120
+        '
+        'Threshold
+        '
+        Me.Threshold.HeaderText = "Threshold"
+        Me.Threshold.Name = "Threshold"
+        Me.Threshold.Visible = False
+        '
+        'TypeDef
+        '
+        Me.TypeDef.HeaderText = "TypeDef"
+        Me.TypeDef.Name = "TypeDef"
+        Me.TypeDef.Visible = False
         '
         '_SSTab1_TabPage1
         '
@@ -1048,12 +930,11 @@
         Me.cboRainGrid.Enabled = False
         Me.cboRainGrid.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboRainGrid.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboRainGrid.Location = New System.Drawing.Point(100, 25)
+        Me.cboRainGrid.Location = New System.Drawing.Point(101, 24)
         Me.cboRainGrid.Name = "cboRainGrid"
         Me.cboRainGrid.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cboRainGrid.Size = New System.Drawing.Size(122, 22)
         Me.cboRainGrid.TabIndex = 25
-        Me.cboRainGrid.Text = "cboRainGRID"
         '
         'optUseGRID
         '
@@ -1063,10 +944,10 @@
         Me.optUseGRID.Enabled = False
         Me.optUseGRID.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.optUseGRID.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.optUseGRID.Location = New System.Drawing.Point(19, 30)
+        Me.optUseGRID.Location = New System.Drawing.Point(19, 25)
         Me.optUseGRID.Name = "optUseGRID"
         Me.optUseGRID.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.optUseGRID.Size = New System.Drawing.Size(91, 13)
+        Me.optUseGRID.Size = New System.Drawing.Size(91, 18)
         Me.optUseGRID.TabIndex = 23
         Me.optUseGRID.TabStop = True
         Me.optUseGRID.Text = "Use GRID: "
@@ -1162,6 +1043,7 @@
         '
         '_SSTab1_TabPage2
         '
+        Me._SSTab1_TabPage2.Controls.Add(Me.Label1)
         Me._SSTab1_TabPage2.Controls.Add(Me.dgvLandUse)
         Me._SSTab1_TabPage2.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage2.Name = "_SSTab1_TabPage2"
@@ -1169,13 +1051,26 @@
         Me._SSTab1_TabPage2.TabIndex = 2
         Me._SSTab1_TabPage2.Text = "Land Uses"
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(3, 154)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(344, 14)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = "Note: Right-click the table to Add, Edit, and Delete Land Use Scenarios"
+        '
         'dgvLandUse
         '
+        Me.dgvLandUse.AllowUserToAddRows = False
+        Me.dgvLandUse.AllowUserToDeleteRows = False
         Me.dgvLandUse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvLandUse.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LUApply, Me.LUScenario})
+        Me.dgvLandUse.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LUApply, Me.LUScenario, Me.LUScenarioXML})
         Me.dgvLandUse.Location = New System.Drawing.Point(3, 3)
+        Me.dgvLandUse.MultiSelect = False
         Me.dgvLandUse.Name = "dgvLandUse"
-        Me.dgvLandUse.Size = New System.Drawing.Size(604, 175)
+        Me.dgvLandUse.ShowEditingIcon = False
+        Me.dgvLandUse.Size = New System.Drawing.Size(604, 145)
         Me.dgvLandUse.TabIndex = 0
         '
         'LUApply
@@ -1186,29 +1081,48 @@
         '
         'LUScenario
         '
-        Me.LUScenario.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
         Me.LUScenario.HeaderText = "Land Use Scenario"
         Me.LUScenario.Name = "LUScenario"
         Me.LUScenario.ReadOnly = True
-        Me.LUScenario.Width = 280
+        Me.LUScenario.Width = 250
+        '
+        'LUScenarioXML
+        '
+        Me.LUScenarioXML.HeaderText = "LUScenarioXML"
+        Me.LUScenarioXML.Name = "LUScenarioXML"
+        Me.LUScenarioXML.Visible = False
         '
         '_SSTab1_TabPage3
         '
-        Me._SSTab1_TabPage3.Controls.Add(Me.DataGridView1)
+        Me._SSTab1_TabPage3.Controls.Add(Me.lblManageNote)
+        Me._SSTab1_TabPage3.Controls.Add(Me.dgvManagementScen)
         Me._SSTab1_TabPage3.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage3.Name = "_SSTab1_TabPage3"
         Me._SSTab1_TabPage3.Size = New System.Drawing.Size(610, 177)
         Me._SSTab1_TabPage3.TabIndex = 3
         Me._SSTab1_TabPage3.Text = "Management Scenarios"
         '
-        'DataGridView1
+        'lblManageNote
         '
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ManageApply, Me.ChangeAreaLayer, Me.ChangeToClass})
-        Me.DataGridView1.Location = New System.Drawing.Point(2, 3)
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(601, 167)
-        Me.DataGridView1.TabIndex = 0
+        Me.lblManageNote.AutoSize = True
+        Me.lblManageNote.Location = New System.Drawing.Point(9, 154)
+        Me.lblManageNote.Name = "lblManageNote"
+        Me.lblManageNote.Size = New System.Drawing.Size(303, 14)
+        Me.lblManageNote.TabIndex = 1
+        Me.lblManageNote.Text = "Note: Right-click the table to Append, Insert, and Delete Rows"
+        '
+        'dgvManagementScen
+        '
+        Me.dgvManagementScen.AllowUserToAddRows = False
+        Me.dgvManagementScen.AllowUserToDeleteRows = False
+        Me.dgvManagementScen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvManagementScen.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ManageApply, Me.ChangeAreaLayer, Me.ChangeToClass})
+        Me.dgvManagementScen.Location = New System.Drawing.Point(2, 3)
+        Me.dgvManagementScen.MultiSelect = False
+        Me.dgvManagementScen.Name = "dgvManagementScen"
+        Me.dgvManagementScen.ShowEditingIcon = False
+        Me.dgvManagementScen.Size = New System.Drawing.Size(601, 145)
+        Me.dgvManagementScen.TabIndex = 0
         '
         'ManageApply
         '
@@ -1219,17 +1133,17 @@
         'ChangeAreaLayer
         '
         Me.ChangeAreaLayer.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.ChangeAreaLayer.DisplayStyleForCurrentCellOnly = True
         Me.ChangeAreaLayer.HeaderText = "Change Area Layer"
         Me.ChangeAreaLayer.Name = "ChangeAreaLayer"
-        Me.ChangeAreaLayer.ReadOnly = True
         Me.ChangeAreaLayer.Width = 180
         '
         'ChangeToClass
         '
         Me.ChangeToClass.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.ChangeToClass.DisplayStyleForCurrentCellOnly = True
         Me.ChangeToClass.HeaderText = "Change To Class"
         Me.ChangeToClass.Name = "ChangeToClass"
-        Me.ChangeToClass.ReadOnly = True
         Me.ChangeToClass.Width = 180
         '
         'cmdRun
@@ -1372,19 +1286,53 @@
         Me._Label1_11.TabIndex = 21
         Me._Label1_11.Text = "Layer Name:"
         '
-        'cboClass
+        'cnxtmnuLandUse
         '
-        Me.cboClass.BackColor = System.Drawing.SystemColors.Window
-        Me.cboClass.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboClass.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboClass.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboClass.Location = New System.Drawing.Point(57, 474)
-        Me.cboClass.Name = "cboClass"
-        Me.cboClass.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboClass.Size = New System.Drawing.Size(81, 22)
-        Me.cboClass.TabIndex = 60
-        Me.cboClass.Text = "cboClass"
-        Me.cboClass.Visible = False
+        Me.cnxtmnuLandUse.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddScenarioToolStripMenuItem, Me.EditScenarioToolStripMenuItem, Me.DeleteScenarioToolStripMenuItem})
+        Me.cnxtmnuLandUse.Name = "cnxtmnuLandUse"
+        Me.cnxtmnuLandUse.Size = New System.Drawing.Size(165, 70)
+        '
+        'AddScenarioToolStripMenuItem
+        '
+        Me.AddScenarioToolStripMenuItem.Name = "AddScenarioToolStripMenuItem"
+        Me.AddScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
+        Me.AddScenarioToolStripMenuItem.Text = "Add Scenario..."
+        '
+        'EditScenarioToolStripMenuItem
+        '
+        Me.EditScenarioToolStripMenuItem.Name = "EditScenarioToolStripMenuItem"
+        Me.EditScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
+        Me.EditScenarioToolStripMenuItem.Text = "Edit Scenario..."
+        '
+        'DeleteScenarioToolStripMenuItem
+        '
+        Me.DeleteScenarioToolStripMenuItem.Name = "DeleteScenarioToolStripMenuItem"
+        Me.DeleteScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
+        Me.DeleteScenarioToolStripMenuItem.Text = "Delete Scenario..."
+        '
+        'cnxtmnuManagement
+        '
+        Me.cnxtmnuManagement.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AppendRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteCurrentRowToolStripMenuItem})
+        Me.cnxtmnuManagement.Name = "cnxtmnuManagement"
+        Me.cnxtmnuManagement.Size = New System.Drawing.Size(177, 70)
+        '
+        'AppendRowToolStripMenuItem
+        '
+        Me.AppendRowToolStripMenuItem.Name = "AppendRowToolStripMenuItem"
+        Me.AppendRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.AppendRowToolStripMenuItem.Text = "Append Row"
+        '
+        'InsertRowToolStripMenuItem
+        '
+        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
+        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
+        '
+        'DeleteCurrentRowToolStripMenuItem
+        '
+        Me.DeleteCurrentRowToolStripMenuItem.Name = "DeleteCurrentRowToolStripMenuItem"
+        Me.DeleteCurrentRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.DeleteCurrentRowToolStripMenuItem.Text = "Delete Current Row"
         '
         'frmProjectSetup
         '
@@ -1392,7 +1340,6 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(642, 502)
-        Me.Controls.Add(Me.cboClass)
         Me.Controls.Add(Me.Frame6)
         Me.Controls.Add(Me.Frame5)
         Me.Controls.Add(Me.Frame4)
@@ -1436,27 +1383,120 @@
         Me.frmSDR.ResumeLayout(False)
         Me.frmSDR.PerformLayout()
         Me._SSTab1_TabPage2.ResumeLayout(False)
+        Me._SSTab1_TabPage2.PerformLayout()
         CType(Me.dgvLandUse, System.ComponentModel.ISupportInitialize).EndInit()
         Me._SSTab1_TabPage3.ResumeLayout(False)
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me._SSTab1_TabPage3.PerformLayout()
+        CType(Me.dgvManagementScen, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Frame2.ResumeLayout(False)
         Me.Frame2.PerformLayout()
+        Me.cnxtmnuLandUse.ResumeLayout(False)
+        Me.cnxtmnuManagement.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents dgvPollutants As System.Windows.Forms.DataGridView
-    Friend WithEvents PollApply As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents PollutantName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents CoefSet As System.Windows.Forms.DataGridViewComboBoxColumn
-    Friend WithEvents WhichCoeff As System.Windows.Forms.DataGridViewComboBoxColumn
-    Friend WithEvents dgvLandUse As System.Windows.Forms.DataGridView
-    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
-    Friend WithEvents LUApply As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents LUScenario As System.Windows.Forms.DataGridViewComboBoxColumn
+    Private WithEvents Frame6 As System.Windows.Forms.GroupBox
+    Private WithEvents Frame5 As System.Windows.Forms.GroupBox
+    Private WithEvents Frame4 As System.Windows.Forms.GroupBox
+    Private WithEvents frm_raintype As System.Windows.Forms.GroupBox
+    Private WithEvents Frame3 As System.Windows.Forms.GroupBox
+    Private WithEvents Frame1 As System.Windows.Forms.GroupBox
+    Private WithEvents fraLC As System.Windows.Forms.GroupBox
+    Private WithEvents SSTab1 As System.Windows.Forms.TabControl
+    Private WithEvents cmdRun As System.Windows.Forms.Button
+    Private WithEvents cmdQuit As System.Windows.Forms.Button
+    Private WithEvents _chkIgnore_0 As System.Windows.Forms.CheckBox
+    Private WithEvents _chkIgnoreMgmt_0 As System.Windows.Forms.CheckBox
+    Private WithEvents _chkIgnoreLU_0 As System.Windows.Forms.CheckBox
+    Private WithEvents Frame2 As System.Windows.Forms.GroupBox
+    Private WithEvents ToolTip1 As System.Windows.Forms.ToolTip
+    Private WithEvents mnuNew As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuOpen As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuSpace As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents mnuSave As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuSaveAs As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuSpace1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents mnuExit As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuFile As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuGeneralHelp As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuBigHelp As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents MainMenu1 As System.Windows.Forms.MenuStrip
+    Private WithEvents _Label1_6 As System.Windows.Forms.Label
+    Private WithEvents _Label1_3 As System.Windows.Forms.Label
+    Private WithEvents _Label1_7 As System.Windows.Forms.Label
+    Private WithEvents cboSelectPoly As System.Windows.Forms.ComboBox
+    Private WithEvents chkSelectedPolys As System.Windows.Forms.CheckBox
+    Private WithEvents chkLocalEffects As System.Windows.Forms.CheckBox
+    Private WithEvents lblLayer As System.Windows.Forms.Label
+    Private WithEvents cmdOpenWS As System.Windows.Forms.Button
+    Private WithEvents txtOutputWS As System.Windows.Forms.TextBox
+    Private WithEvents txtProjectName As System.Windows.Forms.TextBox
+    Private WithEvents Label5 As System.Windows.Forms.Label
+    Private WithEvents Label4 As System.Windows.Forms.Label
+    Private WithEvents cboSoilsLayer As System.Windows.Forms.ComboBox
+    Private WithEvents Label6 As System.Windows.Forms.Label
+    Private WithEvents lblSoilsHyd As System.Windows.Forms.Label
+    Private WithEvents Label2 As System.Windows.Forms.Label
+    Private WithEvents cboLCUnits As System.Windows.Forms.ComboBox
+    Private WithEvents cboLCLayer As System.Windows.Forms.ComboBox
+    Private WithEvents cboLCType As System.Windows.Forms.ComboBox
+    Private WithEvents _Label1_5 As System.Windows.Forms.Label
+    Private WithEvents _Label1_0 As System.Windows.Forms.Label
+    Private WithEvents _Label1_2 As System.Windows.Forms.Label
+    Private WithEvents Timer1 As System.Windows.Forms.Timer
+    Private WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
+    Private WithEvents lblErodFactor As System.Windows.Forms.Label
+    Private WithEvents lblKFactor As System.Windows.Forms.Label
+    Private WithEvents Label3 As System.Windows.Forms.Label
+    Private WithEvents Label7 As System.Windows.Forms.Label
+    Private WithEvents chkCalcErosion As System.Windows.Forms.CheckBox
+    Private WithEvents txtRainValue As System.Windows.Forms.TextBox
+    Private WithEvents cboRainGrid As System.Windows.Forms.ComboBox
+    Private WithEvents optUseValue As System.Windows.Forms.RadioButton
+    Private WithEvents optUseGRID As System.Windows.Forms.RadioButton
+    Private WithEvents frameRainFall As System.Windows.Forms.GroupBox
+    Private WithEvents cboErodFactor As System.Windows.Forms.ComboBox
+    Private WithEvents cboSoilAttribute As System.Windows.Forms.ComboBox
+    Private WithEvents cmdOpenSDR As System.Windows.Forms.Button
+    Private WithEvents txtSDRGRID As System.Windows.Forms.TextBox
+    Private WithEvents chkSDR As System.Windows.Forms.CheckBox
+    Private WithEvents frmSDR As System.Windows.Forms.GroupBox
+    Private WithEvents _SSTab1_TabPage1 As System.Windows.Forms.TabPage
+    Private WithEvents _SSTab1_TabPage2 As System.Windows.Forms.TabPage
+    Private WithEvents _SSTab1_TabPage3 As System.Windows.Forms.TabPage
+    Private WithEvents txtThemeName As System.Windows.Forms.TextBox
+    Private WithEvents cmdOutputBrowse As System.Windows.Forms.Button
+    Private WithEvents txtOutputFile As System.Windows.Forms.TextBox
+    Private WithEvents _Label1_11 As System.Windows.Forms.Label
+    Private WithEvents _Label1_12 As System.Windows.Forms.Label
+    Private WithEvents dgvPollutants As System.Windows.Forms.DataGridView
+    Private WithEvents dgvLandUse As System.Windows.Forms.DataGridView
+    Private WithEvents dgvManagementScen As System.Windows.Forms.DataGridView
+    Private WithEvents cnxtmnuLandUse As System.Windows.Forms.ContextMenuStrip
+    Private WithEvents AddScenarioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents EditScenarioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents DeleteScenarioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cnxtmnuManagement As System.Windows.Forms.ContextMenuStrip
+    Private WithEvents AppendRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents InsertRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents DeleteCurrentRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents PollApply As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Private WithEvents PollutantName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents CoefSet As System.Windows.Forms.DataGridViewComboBoxColumn
+    Private WithEvents WhichCoeff As System.Windows.Forms.DataGridViewComboBoxColumn
+    Private WithEvents Threshold As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents TypeDef As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ManageApply As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents ChangeAreaLayer As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents ChangeToClass As System.Windows.Forms.DataGridViewComboBoxColumn
-    Public WithEvents cboClass As System.Windows.Forms.ComboBox
+    Friend WithEvents LUApply As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents LUScenario As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents LUScenarioXML As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblManageNote As System.Windows.Forms.Label
+    Friend WithEvents cboWQStd As System.Windows.Forms.ComboBox
+    Friend WithEvents cboWSDelin As System.Windows.Forms.ComboBox
+    Friend WithEvents cboPrecipScen As System.Windows.Forms.ComboBox
 #End Region
 End Class

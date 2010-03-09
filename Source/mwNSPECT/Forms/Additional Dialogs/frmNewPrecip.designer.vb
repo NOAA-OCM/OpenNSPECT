@@ -151,7 +151,7 @@
         Me.txtPrecipName.MaxLength = 0
         Me.txtPrecipName.Name = "txtPrecipName"
         Me.txtPrecipName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtPrecipName.Size = New System.Drawing.Size(109, 21)
+        Me.txtPrecipName.Size = New System.Drawing.Size(109, 20)
         Me.txtPrecipName.TabIndex = 0
         '
         'txtDesc
@@ -165,7 +165,7 @@
         Me.txtDesc.MaxLength = 0
         Me.txtDesc.Name = "txtDesc"
         Me.txtDesc.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtDesc.Size = New System.Drawing.Size(269, 21)
+        Me.txtDesc.Size = New System.Drawing.Size(269, 20)
         Me.txtDesc.TabIndex = 1
         '
         'txtPrecipFile
@@ -179,7 +179,7 @@
         Me.txtPrecipFile.MaxLength = 0
         Me.txtPrecipFile.Name = "txtPrecipFile"
         Me.txtPrecipFile.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtPrecipFile.Size = New System.Drawing.Size(269, 21)
+        Me.txtPrecipFile.Size = New System.Drawing.Size(269, 20)
         Me.txtPrecipFile.TabIndex = 3
         '
         'cmdBrowseFile
@@ -388,6 +388,7 @@
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "New Precipitation Scenario"
         Me.Frame1.ResumeLayout(False)
+        Me.Frame1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
