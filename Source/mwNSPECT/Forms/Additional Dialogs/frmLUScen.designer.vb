@@ -168,9 +168,10 @@
         Me.cmdCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdCancel.BackColor = System.Drawing.SystemColors.Control
         Me.cmdCancel.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCancel.Location = New System.Drawing.Point(312, 353)
+        Me.cmdCancel.Location = New System.Drawing.Point(312, 458)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
@@ -184,9 +185,10 @@
         Me.cmdOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdOK.BackColor = System.Drawing.SystemColors.Control
         Me.cmdOK.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdOK.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOK.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOK.Location = New System.Drawing.Point(240, 353)
+        Me.cmdOK.Location = New System.Drawing.Point(240, 458)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdOK.Size = New System.Drawing.Size(65, 25)
@@ -434,12 +436,14 @@
         Me._Label1_19.Location = New System.Drawing.Point(21, 58)
         Me._Label1_19.Name = "_Label1_19"
         Me._Label1_19.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_19.Size = New System.Drawing.Size(33, 19)
+        Me._Label1_19.Size = New System.Drawing.Size(62, 19)
         Me._Label1_19.TabIndex = 10
         Me._Label1_19.Text = "Layer:"
         '
         'dgvCoef
         '
+        Me.dgvCoef.AllowUserToAddRows = False
+        Me.dgvCoef.AllowUserToDeleteRows = False
         Me.dgvCoef.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -447,7 +451,7 @@
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Pollutant, Me.Type1, Me.Type2, Me.Type3, Me.Type4})
         Me.dgvCoef.Location = New System.Drawing.Point(11, 214)
         Me.dgvCoef.Name = "dgvCoef"
-        Me.dgvCoef.Size = New System.Drawing.Size(377, 131)
+        Me.dgvCoef.Size = New System.Drawing.Size(377, 236)
         Me.dgvCoef.TabIndex = 26
         '
         'Pollutant
@@ -486,7 +490,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(410, 389)
+        Me.ClientSize = New System.Drawing.Size(410, 494)
         Me.Controls.Add(Me.dgvCoef)
         Me.Controls.Add(Me.chkSelectedPolys)
         Me.Controls.Add(Me.chkWatWetlands)

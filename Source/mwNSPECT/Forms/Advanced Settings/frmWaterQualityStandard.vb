@@ -298,6 +298,13 @@ Friend Class frmWaterQualityStandard
             HandleError(False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Function
+
+    Public Sub UpdateWQ(ByVal strWQName As String)
+        cboWQStdName.Items.Clear()
+        modUtil.InitComboBox(cboWQStdName, "WQCRITERIA")
+        cboWQStdName.SelectedIndex = modUtil.GetCboIndex(strWQName, cboWQStdName)
+    End Sub
+
 #End Region
 
 End Class

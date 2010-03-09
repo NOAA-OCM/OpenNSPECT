@@ -128,6 +128,8 @@
         '
         'dgvWaterQuality
         '
+        Me.dgvWaterQuality.AllowUserToAddRows = False
+        Me.dgvWaterQuality.AllowUserToDeleteRows = False
         Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Pollutant, Me.Threshold})
         Me.dgvWaterQuality.Location = New System.Drawing.Point(22, 66)

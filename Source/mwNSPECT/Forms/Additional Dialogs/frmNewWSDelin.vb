@@ -1,12 +1,10 @@
-Option Strict Off
-Option Explicit On
-Imports VB = Microsoft.VisualBasic
 Friend Class frmNewWSDelin
-	Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 
     Private _booProject As Boolean
-
     Private Const c_sModuleFileName As String = "frmNewWSDelin.vb"
+
+#Region "Events"
 
     Private Sub frmNewWSDelin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
@@ -66,4 +64,9 @@ Friend Class frmNewWSDelin
         End Try
 
     End Sub
+#End Region
+
+#Region "Helper Functions"
+
+#End Region
 End Class

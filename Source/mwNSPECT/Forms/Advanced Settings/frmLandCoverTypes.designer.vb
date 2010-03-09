@@ -16,7 +16,6 @@
     End Sub
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
-    Public ToolTip1 As System.Windows.Forms.ToolTip
     Public WithEvents mnuNewLCType As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents mnuDelLCType As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents mnuImpLCType As System.Windows.Forms.ToolStripMenuItem
@@ -25,7 +24,7 @@
     Public WithEvents mnuAppend As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents mnuInsertRow As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents mnuDeleteRow As System.Windows.Forms.ToolStripMenuItem
-    Public WithEvents mnuPopUp As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuEdit As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents mnuLCHelp As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents mnuHelp As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents MainMenu1 As System.Windows.Forms.MenuStrip
@@ -46,14 +45,13 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainMenu1 = New System.Windows.Forms.MenuStrip
         Me.mnuLCTypes = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuNewLCType = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuDelLCType = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuImpLCType = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuExpLCType = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuPopUp = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuEdit = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuAppend = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuInsertRow = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuDeleteRow = New System.Windows.Forms.ToolStripMenuItem
@@ -82,13 +80,19 @@
         Me.colWetCheck = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.colLCTYPEID = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.colLCClassID = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.cntxmnuGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainMenu1.SuspendLayout()
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.cntxmnuGrid.SuspendLayout()
         Me.SuspendLayout()
         '
         'MainMenu1
         '
-        Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLCTypes, Me.mnuPopUp, Me.mnuHelp})
+        Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLCTypes, Me.mnuEdit, Me.mnuHelp})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
         Me.MainMenu1.Size = New System.Drawing.Size(618, 24)
@@ -125,13 +129,12 @@
         Me.mnuExpLCType.Size = New System.Drawing.Size(119, 22)
         Me.mnuExpLCType.Text = "&Export..."
         '
-        'mnuPopUp
+        'mnuEdit
         '
-        Me.mnuPopUp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAppend, Me.mnuInsertRow, Me.mnuDeleteRow})
-        Me.mnuPopUp.Name = "mnuPopUp"
-        Me.mnuPopUp.Size = New System.Drawing.Size(39, 20)
-        Me.mnuPopUp.Text = "Edit"
-        Me.mnuPopUp.Visible = False
+        Me.mnuEdit.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAppend, Me.mnuInsertRow, Me.mnuDeleteRow})
+        Me.mnuEdit.Name = "mnuEdit"
+        Me.mnuEdit.Size = New System.Drawing.Size(39, 20)
+        Me.mnuEdit.Text = "Edit"
         '
         'mnuAppend
         '
@@ -313,13 +316,17 @@
         '
         'dgvLCTypes
         '
+        Me.dgvLCTypes.AllowUserToAddRows = False
+        Me.dgvLCTypes.AllowUserToDeleteRows = False
         Me.dgvLCTypes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvLCTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLCTypes.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colValue, Me.colNameCol, Me.colCNA, Me.colCNB, Me.colCNC, Me.colCND, Me.colCoverFactor, Me.colWetCheck, Me.colLCTYPEID, Me.colLCClassID})
         Me.dgvLCTypes.Location = New System.Drawing.Point(7, 100)
+        Me.dgvLCTypes.MultiSelect = False
         Me.dgvLCTypes.Name = "dgvLCTypes"
+        Me.dgvLCTypes.ShowCellToolTips = False
         Me.dgvLCTypes.Size = New System.Drawing.Size(604, 444)
         Me.dgvLCTypes.TabIndex = 15
         '
@@ -395,6 +402,30 @@
         Me.colLCClassID.Name = "colLCClassID"
         Me.colLCClassID.Visible = False
         '
+        'cntxmnuGrid
+        '
+        Me.cntxmnuGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteRowToolStripMenuItem})
+        Me.cntxmnuGrid.Name = "ContextMenuStrip1"
+        Me.cntxmnuGrid.Size = New System.Drawing.Size(134, 70)
+        '
+        'AddRowToolStripMenuItem
+        '
+        Me.AddRowToolStripMenuItem.Name = "AddRowToolStripMenuItem"
+        Me.AddRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.AddRowToolStripMenuItem.Text = "Add Row"
+        '
+        'InsertRowToolStripMenuItem
+        '
+        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
+        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
+        '
+        'DeleteRowToolStripMenuItem
+        '
+        Me.DeleteRowToolStripMenuItem.Name = "DeleteRowToolStripMenuItem"
+        Me.DeleteRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.DeleteRowToolStripMenuItem.Text = "Delete Row"
+        '
         'frmLandCoverTypes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
@@ -427,6 +458,7 @@
         Me.MainMenu1.ResumeLayout(False)
         Me.MainMenu1.PerformLayout()
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cntxmnuGrid.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -442,5 +474,10 @@
     Friend WithEvents colWetCheck As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents colLCTYPEID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colLCClassID As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents cntxmnuGrid As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents AddRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents InsertRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents DeleteRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
 #End Region
 End Class
