@@ -8,7 +8,6 @@ Friend Class frmProjectSetup
 
 #Region "Class Vars"
     Private _strFileName As String 'Name of Open doc
-    Private _strWorkspace As String 'String holding workspace, set it
     Private _strWShed As String 'String
 
     Private _XMLPrjParams As clsXMLPrjFile 'xml doc that holds inputs
@@ -115,8 +114,8 @@ Friend Class frmProjectSetup
             PopulateManagement(0)
 
             'Test workspace persistence
-            If Len(_strWorkspace) > 0 Then
-                txtOutputWS.Text = _strWorkspace
+            If Len(g_strWorkspace) > 0 Then
+                txtOutputWS.Text = g_strWorkspace
             End If
 
         Catch ex As Exception
@@ -146,7 +145,7 @@ Friend Class frmProjectSetup
             dlgBrowser.SelectedPath = initFolder
             If dlgBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then
                 txtOutputWS.Text = dlgBrowser.SelectedPath
-                _strWorkspace = txtOutputWS.Text
+                g_strWorkspace = txtOutputWS.Text
             End If
         Catch ex As Exception
             HandleError(True, "cmdOpenWS_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
@@ -591,11 +590,11 @@ Friend Class frmProjectSetup
 
         'STEP 3: Find out if user is making use of only the selected Sheds -----------------------------------------------
         'Selected Sheds only
+        Dim lyrSelectedPolyLayer As MapWindow.Interfaces.Layer = Nothing
         If _XMLPrjParams.intSelectedPolys = 1 Then
             g_booSelectedPolys = True
             lngWShedLayerIndex = modUtil.GetLayerIndex(cboSelectPoly.Text)
-            'TODO
-            'pSelectedPolyLayer = m_pMap.Layer(lngWShedLayerIndex)
+            lyrSelectedPolyLayer = g_MapWin.Layers(lngWShedLayerIndex)
         Else
             g_booSelectedPolys = False
         End If
@@ -604,14 +603,14 @@ Friend Class frmProjectSetup
         'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
         'If they're using, we send them over to modMgmtScen to implement
         If _XMLPrjParams.clsMgmtScenHolder.Count > 0 Then
-            modMgmtScen.MgmtScenSetup((_XMLPrjParams.clsMgmtScenHolder), (_XMLPrjParams.strLCGridType), (_XMLPrjParams.strLCGridFileName), (_XMLPrjParams.strProjectWorkspace))
+            modMgmtScen.MgmtScenSetup(_XMLPrjParams.clsMgmtScenHolder, _XMLPrjParams.strLCGridType, _XMLPrjParams.strLCGridFileName, _XMLPrjParams.strProjectWorkspace)
         End If
         'END STEP 4: ---------------------------------------------------------------------------------------------------------
 
         'STEP 5: Pollutant Dictionary creation, needed for Landuse -----------------------------------------------------------
         'Go through and find the pollutants, if they're used and what the CoeffSet is
         'We're creating a dictionary that will hold Pollutant, Coefficient Set for use in the Landuse Scenarios
-        For i = 1 To _XMLPrjParams.clsPollItems.Count
+        For i = 0 To _XMLPrjParams.clsPollItems.Count - 1
             If _XMLPrjParams.clsPollItems.Item(i).intApply = 1 Then
                 dictPollutants.Add(_XMLPrjParams.clsPollItems.Item(i).strPollName, _XMLPrjParams.clsPollItems.Item(i).strCoeffSet)
             End If
@@ -619,10 +618,10 @@ Friend Class frmProjectSetup
         'END STEP 5: ---------------------------------------------------------------------------------------------------------
 
         'STEP 6: Landuses sent off to modLanduse for processing -----------------------------------------------------
-        For i = 1 To _XMLPrjParams.clsLUItems.Count
+        For i = 0 To _XMLPrjParams.clsLUItems.Count - 1
             If _XMLPrjParams.clsLUItems.Item(i).intApply = 1 Then
                 booLUItems = True
-                modLanduse.Begin((_XMLPrjParams.strLCGridType), (_XMLPrjParams.clsLUItems), dictPollutants, (_XMLPrjParams.strLCGridFileName), (_XMLPrjParams.strProjectWorkspace))
+                modLanduse.Begin(_XMLPrjParams.strLCGridType, _XMLPrjParams.clsLUItems, dictPollutants, _XMLPrjParams.strLCGridFileName, _XMLPrjParams.strProjectWorkspace)
                 Exit For
             Else
                 booLUItems = False
@@ -636,25 +635,23 @@ Friend Class frmProjectSetup
         strWaterShed = "Select * from WSDelineation Where Name like '" & _XMLPrjParams.strWaterShedDelin & "'"
         Dim cmdWS As New OleDbCommand(strWaterShed, g_DBConn)
 
-
         'END STEP 7: -----------------------------------------------------------------------------------------------------
 
         'STEP 8: ---------------------------------------------------------------------------------------------------------
         'Set the Analysis Environment and globals for output workspace
 
-        modMainRun.SetGlobalEnvironment(cmdWS, (_XMLPrjParams.strProjectWorkspace))
+        modMainRun.SetGlobalEnvironment(cmdWS, lyrSelectedPolyLayer)
 
         'END STEP 8: -----------------------------------------------------------------------------------------------------
 
         'STEP 8a: --------------------------------------------------------------------------------------------------------
         'Added 1/08/2007 to account for non-adjacent polygons
-        'TODO
         If _XMLPrjParams.intSelectedPolys = 1 Then
-            'If modMainRun.CheckMultiPartPolygon(pPolygon) Then
-            '    MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
-            '    System.Windows.Forms.Cursor.Current = Cursors.Default
-            '    Exit Sub
-            'End If
+            If modMainRun.CheckMultiPartPolygon(g_pSelectedPolyClip) Then
+                MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
+                System.Windows.Forms.Cursor.Current = Cursors.Default
+                Exit Sub
+            End If
         End If
 
         'STEP 9: ---------------------------------------------------------------------------------------------------------
@@ -662,7 +659,11 @@ Friend Class frmProjectSetup
         'Get the precip scenario stuff
         strPrecip = "Select * from PrecipScenario where name like '" & _XMLPrjParams.strPrecipScenario & "'"
         Dim cmdPrecip As New OleDbCommand(strPrecip, g_DBConn)
-
+        Dim dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
+        dataPrecip.Read()
+        'Added 6/04 to account for different PrecipTypes
+        modMainRun.g_intPrecipType = dataPrecip.Item("PrecipType")
+        dataPrecip.Close()
 
         'If there has been a land use added, then a new LCType has been created, hence we get it from g_strLCTypename
         Dim strLCType As String
@@ -672,22 +673,17 @@ Friend Class frmProjectSetup
             strLCType = _XMLPrjParams.strLCGridType
         End If
 
-        Dim dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
-        dataPrecip.Read()
-        'Added 6/04 to account for different PrecipTypes
-        modMainRun.g_intPrecipType = dataPrecip.Item("PrecipType")
-        dataPrecip.Close()
-        If Not modRunoff.CreateRunoffGrid((_XMLPrjParams.strLCGridFileName), strLCType, cmdPrecip, _XMLPrjParams.strSoilsHydFileName) Then
+        If Not modRunoff.CreateRunoffGrid(_XMLPrjParams.strLCGridFileName, strLCType, cmdPrecip, _XMLPrjParams.strSoilsHydFileName) Then
             Exit Sub
         End If
         'END STEP 9: -----------------------------------------------------------------------------------------------------
 
         'STEP 10: ---------------------------------------------------------------------------------------------------------
         'Process pollutants
-        For i = 1 To _XMLPrjParams.clsPollItems.Count
+        For i = 0 To _XMLPrjParams.clsPollItems.Count - 1
             If _XMLPrjParams.clsPollItems.Item(i).intApply = 1 Then
                 'If user is NOT ignoring the pollutant then send the whole item over along with LCType
-                If Not modPollutantCalcs.PollutantConcentrationSetup(_XMLPrjParams.clsPollItems.Item(i), (_XMLPrjParams.strLCGridType), (_XMLPrjParams.strWaterQuality)) Then
+                If Not modPollutantCalcs.PollutantConcentrationSetup(_XMLPrjParams.clsPollItems.Item(i), _XMLPrjParams.strLCGridType, _XMLPrjParams.strWaterQuality) Then
                     Exit Sub
                 End If
             End If
