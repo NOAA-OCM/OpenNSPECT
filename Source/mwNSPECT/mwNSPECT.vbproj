@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="Classes\clsWrapperManScen.vb" />
     <Compile Include="Classes\clsWrapperPoll.vb" />
+    <Compile Include="Classes\clsXMLBase.vb" />
     <Compile Include="Classes\clsXMLCoeffTypeDef.vb" />
     <Compile Include="Classes\clsXMLLandUseItem.vb" />
     <Compile Include="Classes\clsXMLLandUseItems.vb" />

@@ -1,6 +1,7 @@
 Imports System.Xml
 
 Public Class clsXMLLUScen
+    Inherits clsXMLBase
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
@@ -57,68 +58,27 @@ Public Class clsXMLLUScen
     End Property
 
 
-    Public Property XML() As String
-        Get
-            'Retrieve the XML string that this class represents. The XML returned is
-            'built from the values of this class's properties.
-
-            XML = Me.CreateNode().OuterXml
-
-        End Get
-        Set(ByVal Value As String)
-            'Assign a new XML string to this class. The newly assigned XML is parsed,
-            'and the class's properties are set accordingly.
-
-            Dim dom As New xmlDocument
-            Dim node As xmlNode
-
-            If InStr(Value, ".xml") > 0 Then
-                dom.Load(Value)
-            Else
-                dom.loadXML(Value)
-            End If
-
-            node = dom.documentElement
-
-            LoadNode(node)
-
-        End Set
-    End Property
-
-    Public Sub SaveFile(ByRef strXML As String)
-
-        Dim dom As New xmlDocument
-
-        dom.loadXML(strXML)
-
-        'TODO
-        'frmPrj.grdLU.set_TextMatrix(CInt(g_intManScenRow), 3, strXML)
-
-    End Sub
-
-    Public Function CreateNode(Optional ByRef Parent As xmlNode = Nothing) As xmlNode
+    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         'Return an XML DOM node that represents this class's properties. If a
         'parent DOM node is passed in, then the returned node is also added as a
         'child node of the parent.
 
-        Dim node As xmlNode
-        Dim dom As xmlDocument
+        Dim node As XmlNode
+        Dim dom As XmlDocument
 
         'If no parent was passed in, then create a DOM and document element.
         If Parent Is Nothing Then
-            dom = New xmlDocument
-            dom.loadXML("<" & NODE_NAME & "/>")
-            node = dom.documentElement
+            dom = New XmlDocument
+            dom.LoadXml("<" & NODE_NAME & "/>")
+            node = dom.DocumentElement
             'Otherwise use passed-in parent.
         Else
-            dom = Parent.ownerDocument
-            node = dom.createElement(NODE_NAME)
-            Parent.appendChild(node)
+            dom = Parent.OwnerDocument
+            node = dom.CreateElement(NODE_NAME)
+            Parent.AppendChild(node)
         End If
 
         '*********************************************************************
-        'TODO: Add code here to save attributes and child elements to the
-        'node. Look to the commented-out code below for samples.
         NodeAppendChildElement(dom, node, NODE_ManScenName, strLUScenName)
         NodeAppendChildElement(dom, node, NODE_ManScenLyrName, strLUScenLyrName)
         NodeAppendChildElement(dom, node, NODE_ManScenFileName, strLUScenFileName)
@@ -136,7 +96,7 @@ Public Class clsXMLLUScen
 
     End Function
 
-    Public Sub LoadNode(ByRef node As xmlNode)
+    Public Overrides Sub LoadNode(ByRef node As XmlNode)
         'Set this class's properties based on the data found in the
         'given node.
 
@@ -154,95 +114,14 @@ Public Class clsXMLLUScen
         lngCoverFactor = CDbl(GetNodeText(node, NODE_CoverFactor))
         intWaterWetlands = CShort(GetNodeText(node, NODE_WaterWetlands))
 
-        clsPollItems.LoadNode(node.selectSingleNode(clsPollItems.NodeName))
+        clsPollItems.LoadNode(node.SelectSingleNode(clsPollItems.NodeName))
 
     End Sub
 
-    'UPGRADE_NOTE: Class_Initialize was upgraded to Class_Initialize_Renamed. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"'
-    Private Sub Class_Initialize_Renamed()
-
+    Public Sub New()
         clsPollutant = New clsXMLLUScenPollItem
         clsPollItems = New clsXMLLUScenPollItems
 
     End Sub
-    Public Sub New()
-        MyBase.New()
-        Class_Initialize_Renamed()
-    End Sub
 
-    'UPGRADE_NOTE: Class_Terminate was upgraded to Class_Terminate_Renamed. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"'
-    Private Sub Class_Terminate_Renamed()
-
-        'UPGRADE_NOTE: Object clsPollutant may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        clsPollutant = Nothing
-        'UPGRADE_NOTE: Object clsPollItems may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        clsPollItems = Nothing
-
-    End Sub
-    Protected Overrides Sub Finalize()
-        Class_Terminate_Renamed()
-        MyBase.Finalize()
-    End Sub
-
-    Private Function NodeGetText(ByVal node As xmlNode, ByVal strNodeName As String) As String
-        'The NodeGetText function uses selectSingleNode on the passed-in node to
-        'find the child node having the given name. When found, the text of that
-        'node is returned. If the child node is not found in the node, then an
-        'empty string is returned.
-
-        NodeGetText = "" 'default return value
-        On Error Resume Next
-        NodeGetText = node.SelectSingleNode(strNodeName).Value
-
-    End Function
-
-    Private Sub NodeAppendAttribute(ByVal dom As xmlDocument, ByVal node As xmlNode, ByVal strName As String, ByVal varValue As Object)
-        'The NodeAppendAttribute subroutine creates an attribute having the given
-        'name and value, and adds it to the given node's Attributes collection.
-
-        Dim attr As XmlAttribute
-
-        'Create a new attribute and set its value.
-        attr = dom.createAttribute(strName)
-        'UPGRADE_WARNING: Couldn't resolve default property of object varValue. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        attr.Value = varValue
-
-        node.Attributes.Append(attr)
-
-    End Sub
-
-    Private Sub NodeAppendChildElement(ByVal dom As xmlDocument, ByVal node As xmlNode, ByVal Name As String, ByVal Value As Object)
-        'The NodeAppendChildElement subroutine creates an element having the given
-        'name and value, and adds the element as a child of the given node.
-
-        Dim element As XmlElement
-
-        'Create a new child element and set its value.
-        element = dom.createElement(Name)
-        'UPGRADE_WARNING: Couldn't resolve default property of object Value. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        element.InnerText = CStr(Value)
-
-        'Append the new child element to the node.
-        'UPGRADE_WARNING: Couldn't resolve default property of object element. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        node.appendChild(element)
-
-    End Sub
-
-    Public Function GetNodeText(ByRef Parent As xmlNode, ByRef ChildName As String) As String
-        'The GetNodeText function retrieves the value of the given child element
-        'within the given parent element. If the requested child element is not
-        'found, then an empty string is returned.
-
-        Dim node As xmlNode
-
-        On Error GoTo ErrorHandler
-
-        GetNodeText = Parent.SelectSingleNode(ChildName).InnerText
-        Exit Function
-
-ErrorHandler:
-
-        GetNodeText = ""
-
-    End Function
 End Class

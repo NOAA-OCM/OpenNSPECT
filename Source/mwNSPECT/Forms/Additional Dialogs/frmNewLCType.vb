@@ -60,8 +60,6 @@ Friend Class frmNewLCType
             Dim strDescript As String
             Dim strCmd As String 'INSERT function
             Dim arrParams(7) As Object 'Array that holds each row's contents
-            Dim i As Short
-            Dim j As Short
 
 
             If ValidateGridValues() Then

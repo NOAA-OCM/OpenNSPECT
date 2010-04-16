@@ -4,6 +4,10 @@ Imports System.Windows.Forms
 Module modUtil
     Public g_nspectPath As String
     Public g_nspectDocPath As String
+    Public g_strWorkspace As String
+
+
+    Public g_strSelectedExportPath As String = ""
 
     'Database Variables
     Public g_DBConn As OleDbConnection 'Connection
@@ -320,6 +324,62 @@ Module modUtil
         
     End Function
 
+    Public Function ReturnFeature(ByRef strFeatureFileName As String) As MapWinGIS.Shapefile
+
+        If IO.Path.GetExtension(strFeatureFileName) = "" Then
+            If IO.File.Exists(strFeatureFileName + ".shp") Then
+                Dim sf As New MapWinGIS.Shapefile
+                If sf.Open(strFeatureFileName + ".shp") Then
+                    Return sf
+                Else
+                    Return Nothing
+                End If
+            Else
+                Return Nothing
+            End If
+        Else
+            If IO.File.Exists(strFeatureFileName) Then
+                Dim sf As New MapWinGIS.Shapefile
+                If sf.Open(strFeatureFileName) Then
+                    Return sf
+                Else
+                    Return Nothing
+                End If
+            Else
+                Return Nothing
+            End If
+        End If
+
+    End Function
+
+    Public Function ReturnRaster(ByRef strRasterFileName As String) As MapWinGIS.Grid
+        If IO.Path.GetExtension(strRasterFileName) = "" Then
+            If IO.File.Exists(strRasterFileName + "\sta.adf") Then
+                Dim g As New MapWinGIS.Grid
+                If g.Open(strRasterFileName + "\sta.adf") Then
+                    Return g
+                Else
+                    Return Nothing
+                End If
+            Else
+                Return Nothing
+            End If
+        Else
+            If IO.File.Exists(strRasterFileName) Then
+                Dim g As New MapWinGIS.Grid
+                If g.Open(strRasterFileName) Then
+                    Return g
+                Else
+                    Return Nothing
+                End If
+            Else
+                Return Nothing
+            End If
+        End If
+
+    End Function
+
+
 
     Public Function BrowseForFileName(ByRef strType As String, ByRef frm As System.Windows.Forms.Form, ByRef strTitle As String) As String
 
@@ -528,5 +588,139 @@ Module modUtil
             HandleError(True, "UniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
+
+    'Tests name inputs to insure unique values for databases
+    Public Function CreateUniqueName(ByRef strTableName As String, ByRef strName As String) As String
+        CreateUniqueName = ""
+        Try
+            Dim strCmdText As String
+            Dim sCurrNum As String
+            Dim strCurrNameRecord As String
+            strCmdText = "SELECT * FROM " & strTableName '& " WHERE NAME LIKE '" & strName & "'"
+            Dim cmd As New OleDbCommand(strCmdText, g_DBConn)
+            Dim data As OleDbDataReader = cmd.ExecuteReader
+            sCurrNum = "0"
+
+            While data.Read()
+                strCurrNameRecord = CStr(data("Name"))
+                If InStr(1, strCurrNameRecord, strName, 1) > 0 Then
+                    If IsNumeric(Right(strCurrNameRecord, 2)) Then
+                        If (CShort(Right(strCurrNameRecord, 2)) > CShort(sCurrNum)) Then
+                            sCurrNum = Right(strCurrNameRecord, 2)
+                        Else
+                            Exit While
+                        End If
+                    Else
+                        If IsNumeric(Right(strCurrNameRecord, 1)) Then
+                            If (CShort(Right(strCurrNameRecord, 1)) > CShort(sCurrNum)) Then
+                                sCurrNum = Right(strCurrNameRecord, 1)
+                            End If
+                        End If
+                    End If
+                End If
+            End While
+
+            If sCurrNum = "0" Then
+                CreateUniqueName = strName & "1"
+            Else
+                CreateUniqueName = strName & CStr(CShort(sCurrNum) + 1)
+            End If
+
+            data.Close()
+
+        Catch ex As Exception
+            HandleError(True, "CreateUniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+        End Try
+    End Function
+
+
+    Public Function GetUniqueName(ByRef Name As String, ByRef folderPath As String, ByVal Extension As String) As String
+        GetUniqueName = ""
+        Dim i As Integer = 0
+        Dim nameAttempt As String
+
+        Do
+            i = i + 1
+            nameAttempt = folderPath + IO.Path.DirectorySeparatorChar + Name + i.ToString + Extension
+        Loop While IO.File.Exists(nameAttempt) And i < 1000
+
+        If i < 1000 Then
+            GetUniqueName = nameAttempt
+        End If
+    End Function
+
+    Public Function ExportSelectedFeatures() As String
+        ' Modified from http://www.mapwindow.org/wiki/index.php/MapWinGIS:SampleCode-VB_Net:ExportSelectedShapes
+        Dim Result As Boolean
+        Dim SelectedShape As MapWindow.Interfaces.SelectedShape
+        Dim cdlSave As New SaveFileDialog
+        Dim sFileName, sLayerType As String
+        Dim iFileCnt As Integer = 1
+        Dim myShapeFile, newShapefile As MapWinGIS.Shapefile
+        Dim myShape As MapWinGIS.Shape
+        Dim ShapefileType As MapWinGIS.ShpfileType
+        Dim iShapeHandle, iFieldCnt As Integer
+
+        ExportSelectedFeatures = Nothing
+        If g_strSelectedExportPath <> "" Then
+            Return g_strSelectedExportPath
+        Else
+            'First check to see if any features have been selected
+            If g_MapWin.View.SelectedShapes.NumSelected <= 0 Then Exit Function
+
+            Try
+                myShapeFile = g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).GetObject()
+
+                'Determine if shape is polygon, line, or point
+                sLayerType = Strings.LCase(g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).LayerType.ToString)
+                If InStr(sLayerType, "line", CompareMethod.Text) > 0 Then
+                    ShapefileType = MapWinGIS.ShpfileType.SHP_POLYLINE
+                ElseIf InStr(sLayerType, "polygon", CompareMethod.Text) > 0 Then
+                    ShapefileType = MapWinGIS.ShpfileType.SHP_POLYGON
+                ElseIf InStr(sLayerType, "point", CompareMethod.Text) > 0 Then
+                    ShapefileType = MapWinGIS.ShpfileType.SHP_POINT
+                End If
+
+                sFileName = modUtil.GetUniqueName("selpoly", g_strWorkspace, ".shp")
+
+                'Create the new shapefile
+                newShapefile = New MapWinGIS.Shapefile
+                newShapefile.CreateNew(sFileName, ShapefileType)
+
+                'The new shapefile has no fields at this point
+                For iFieldCnt = 0 To myShapeFile.NumFields - 1
+                    newShapefile.EditInsertField(myShapeFile.Field(iFieldCnt), iFieldCnt)
+                Next iFieldCnt
+
+                'Start an edit session in the shapefile
+                newShapefile.StartEditingShapes(True, Nothing)
+
+                'Iterate through each of the selected feature
+                For i As Integer = 0 To g_MapWin.View.SelectedShapes.NumSelected - 1
+                    'Set to the selected shape
+                    SelectedShape = g_MapWin.View.SelectedShapes(i)
+                    myShape = myShapeFile.Shape(SelectedShape.ShapeIndex)
+
+                    'insert the selected shape
+                    iShapeHandle = newShapefile.NumShapes
+                    Result = newShapefile.EditInsertShape(myShape, iShapeHandle)
+
+                    'Populate the aspatial data
+                    For iFieldCnt = 0 To myShapeFile.NumFields - 1
+                        newShapefile.EditCellValue(iFieldCnt, iShapeHandle, myShapeFile.CellValue(iFieldCnt, SelectedShape.ShapeIndex))
+                    Next iFieldCnt
+                Next i
+
+                newShapefile.StopEditingShapes()
+                newShapefile.Close()
+                Return sFileName
+            Catch ex As Exception
+                MsgBox("Error in exporting selected features.", MsgBoxStyle.Exclamation, "Exporting Selected Error")
+            End Try
+        End If
+
+
+    End Function
+
 
 End Module
