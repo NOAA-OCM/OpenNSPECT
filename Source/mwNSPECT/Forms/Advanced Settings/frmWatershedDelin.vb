@@ -55,7 +55,6 @@ Friend Class frmWatershedDelin
         'strSQLWSDel = "SELECT * FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
 
         'If Not (cboWSDelin.Text = "") Then
-        '    'UPGRADE_WARNING: Couldn't resolve default property of object intAns. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
         '    intAns = MsgBox("Are you sure you want to delete the watershed delineation scenario '" & VB6.GetItemString(cboWSDelin, cboWSDelin.SelectedIndex) & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
         '    'code to handle response
         '    If intAns = MsgBoxResult.Yes Then

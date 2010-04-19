@@ -436,18 +436,6 @@ Module modUtil
             '    pDataset = pEnumRasterDataset.Next
             'Loop
 
-            ''Cleanup
-            ''UPGRADE_NOTE: Object pWorkspaceFactory may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'pWorkspaceFactory = Nothing
-            ''UPGRADE_NOTE: Object pWorkspace may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'pWorkspace = Nothing
-            ''UPGRADE_NOTE: Object pDataset may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'pDataset = Nothing
-            ''UPGRADE_NOTE: Object pEnumRasterDataset may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'pEnumRasterDataset = Nothing
-            ''UPGRADE_NOTE: Object pEnv may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'pEnv = Nothing
-
         Catch ex As Exception
             HandleError(True, "CleanupRasterFolder " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
@@ -458,12 +446,10 @@ Module modUtil
             ''Sub to rid the world of stragling GRIDS, i.e. the ones established for global usse
 
             'If Not modMainRun.g_pFeatWorkspace Is Nothing Then
-            '    'UPGRADE_NOTE: Object modMainRun.g_pFeatWorkspace may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    modMainRun.g_pFeatWorkspace = Nothing
             'End If
 
             'If Not modMainRun.g_pRasWorkspace Is Nothing Then
-            '    'UPGRADE_NOTE: Object modMainRun.g_pRasWorkspace may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    modMainRun.g_pRasWorkspace = Nothing
             'End If
 
@@ -471,97 +457,78 @@ Module modUtil
             ''job, so we have to manually set each and everyone to nothing
 
             'If Not g_pSCS100Raster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pSCS100Raster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pSCS100Raster = Nothing
             'End If
 
             'If Not g_pAbstractRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pAbstractRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pAbstractRaster = Nothing
             'End If
 
             'If Not g_pRunoffRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pRunoffRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pRunoffRaster = Nothing
             'End If
 
             'If Not g_pRunoffInchRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pRunoffInchRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pRunoffInchRaster = Nothing
             'End If
 
             'If Not g_pCellAreaSqMiRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pCellAreaSqMiRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pCellAreaSqMiRaster = Nothing
             'End If
 
             'If Not g_pRunoffCFRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pRunoffCFRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pRunoffCFRaster = Nothing
             'End If
 
             'If Not g_pRunoffAFRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pRunoffAFRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pRunoffAFRaster = Nothing
             'End If
 
             'If Not g_pMetRunoffRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pMetRunoffRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pMetRunoffRaster = Nothing
             'End If
 
             'If Not g_pRunoffRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pRunoffRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pRunoffRaster = Nothing
             'End If
 
             'If Not g_pDEMRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pDEMRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pDEMRaster = Nothing
             'End If
 
             'If Not g_pFlowAccRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pFlowAccRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pFlowAccRaster = Nothing
             'End If
 
             'If Not g_pFlowDirRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pFlowDirRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pFlowDirRaster = Nothing
             'End If
 
             'If Not g_pLSRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pLSRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pLSRaster = Nothing
             'End If
 
             'If Not g_pWaterShedFeatClass Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pWaterShedFeatClass may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pWaterShedFeatClass = Nothing
             'End If
 
             'If Not g_KFactorRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_KFactorRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_KFactorRaster = Nothing
             'End If
 
             'If Not g_pPrecipRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pPrecipRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pPrecipRaster = Nothing
             'End If
 
             'If Not g_pSoilsRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pSoilsRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pSoilsRaster = Nothing
             'End If
 
             'If Not g_LandCoverRaster Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_LandCoverRaster may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_LandCoverRaster = Nothing
             'End If
 
             'If Not g_pSelectedPolyClip Is Nothing Then
-            '    'UPGRADE_NOTE: Object g_pSelectedPolyClip may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
             '    g_pSelectedPolyClip = Nothing
             'End If
         Catch ex As Exception
@@ -723,4 +690,91 @@ Module modUtil
     End Function
 
 
+    Public Delegate Function RasterMathCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Public Delegate Function RasterMathCellCalcNulls(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single) As Single
+
+    Public Sub RasterMath(ByRef InputGrid1 As MapWinGIS.Grid, ByRef InputGrid2 As MapWinGIS.Grid, ByRef Inputgrid3 As MapWinGIS.Grid, ByRef Inputgrid4 As MapWinGIS.Grid, ByRef Inputgrid5 As MapWinGIS.Grid, ByRef Outputgrid As MapWinGIS.Grid, ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
+        Dim head1, head2, head3, head4, head5, headnew As MapWinGIS.GridHeader
+        Dim ncol As Integer
+        Dim nrow As Integer
+        Dim nodata1, nodata2, nodata3, nodata4, nodata5 As Single
+        Dim rowvals1(), rowvals2(), rowvals3(), rowvals4(), rowvals5(), rowvalsout() As Single
+
+        head1 = InputGrid1.Header
+        headnew = New MapWinGIS.GridHeader
+        headnew.CopyFrom(head1)
+        Outputgrid = New MapWinGIS.Grid()
+        Outputgrid.CreateNew("", headnew, MapWinGIS.GridDataType.FloatDataType, headnew.NodataValue)
+        ncol = head1.NumberCols - 1
+        nrow = head1.NumberRows - 1
+        nodata1 = head1.NodataValue
+        If Not InputGrid2 Is Nothing Then
+            head2 = InputGrid2.Header
+            nodata2 = head2.NodataValue
+        Else
+            nodata2 = nodata1
+        End If
+        If Not Inputgrid3 Is Nothing Then
+            head3 = Inputgrid3.Header
+            nodata3 = head3.NodataValue
+        Else
+            nodata3 = nodata1
+        End If
+        If Not Inputgrid4 Is Nothing Then
+            head4 = Inputgrid4.Header
+            nodata4 = head4.NodataValue
+        Else
+            nodata4 = nodata1
+        End If
+        If Not Inputgrid5 Is Nothing Then
+            head5 = Inputgrid5.Header
+            nodata5 = head5.NodataValue
+        Else
+            nodata4 = nodata1
+        End If
+        ReDim rowvals1(ncol)
+        ReDim rowvals2(ncol)
+        ReDim rowvals3(ncol)
+        ReDim rowvals4(ncol)
+        ReDim rowvals5(ncol)
+        ReDim rowvalsout(ncol)
+
+        For row As Integer = 0 To nrow
+            InputGrid1.GetRow(row, rowvals1(0))
+            If Not InputGrid2 Is Nothing Then
+                InputGrid2.GetRow(row, rowvals2(0))
+            Else
+                InputGrid1.GetRow(row, rowvals2(0))
+            End If
+            If Not Inputgrid3 Is Nothing Then
+                Inputgrid3.GetRow(row, rowvals3(0))
+            Else
+                InputGrid1.GetRow(row, rowvals3(0))
+            End If
+            If Not Inputgrid4 Is Nothing Then
+                Inputgrid4.GetRow(row, rowvals4(0))
+            Else
+                InputGrid1.GetRow(row, rowvals4(0))
+            End If
+            If Not Inputgrid5 Is Nothing Then
+                Inputgrid5.GetRow(row, rowvals5(0))
+            Else
+                InputGrid1.GetRow(row, rowvals5(0))
+            End If
+
+            For col As Integer = 0 To ncol
+                If checkNullFirst Then
+                    If rowvals1(col) <> nodata1 And rowvals2(col) <> nodata2 And rowvals3(col) <> nodata3 And rowvals4(col) <> nodata4 Then
+                        rowvalsout(col) = CellCalc.Invoke(rowvals1(col), rowvals2(col), rowvals3(col), rowvals4(col), rowvals5(col))
+                    Else
+                        rowvalsout(col) = nodata1
+                    End If
+                Else
+                    rowvalsout(col) = CellCalcNull.Invoke(rowvals1(col), nodata1, rowvals2(col), nodata2, rowvals3(col), nodata3, rowvals4(col), nodata4, rowvals5(col), nodata5)
+                End If
+            Next
+
+            Outputgrid.PutRow(row, rowvalsout(0))
+        Next
+    End Sub
 End Module

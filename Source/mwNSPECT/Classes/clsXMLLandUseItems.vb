@@ -118,9 +118,6 @@ Public Class clsXMLLandUseItems
             m_colItems.Add(clsLandUse)
         Next LuNode
 
-        'UPGRADE_NOTE: Object clsLandUse may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        clsLandUse = Nothing
-
     End Sub
 
     Public Sub New()

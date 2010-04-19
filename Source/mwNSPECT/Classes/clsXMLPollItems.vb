@@ -80,9 +80,6 @@ Public Class clsXMLLUScenPollItems
             clsPoll.CreateNode(node)
         Next clsPoll
 
-        'UPGRADE_NOTE: Object clsPoll may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        clsPoll = Nothing
-
         CreateNode = node
 
     End Function
@@ -108,9 +105,6 @@ Public Class clsXMLLUScenPollItems
             clsPoll.LoadNode(PollNode)
             m_colItems.Add(clsPoll)
         Next PollNode
-
-        'UPGRADE_NOTE: Object clsPoll may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        clsPoll = Nothing
 
     End Sub
 

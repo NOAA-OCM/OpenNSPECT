@@ -555,230 +555,231 @@ Friend Class frmProjectSetup
 
     'TODO
     Private Sub cmdRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRun.Click
+        Try
+            Dim strWaterShed As String 'Connection string
+            Dim strPrecip As String 'Connection String
+            Dim lngWShedLayerIndex As Integer 'Watershed layer index
 
-        Dim strWaterShed As String 'Connection string
-        Dim strPrecip As String 'Connection String
-        Dim lngWShedLayerIndex As Integer 'Watershed layer index
+            Dim booLUItems As Boolean 'Are there Landuse Scenarios???
+            Dim dictPollutants As New Generic.Dictionary(Of String, String) 'Dict to hold all pollutants
+            Dim i As Integer
+            Dim strProjectInfo As String 'String that will hold contents of prj file for inclusion in metatdata
 
-        Dim booLUItems As Boolean 'Are there Landuse Scenarios???
-        Dim dictPollutants As New Generic.Dictionary(Of String, String) 'Dict to hold all pollutants
-        Dim i As Integer
-        Dim strProjectInfo As String 'String that will hold contents of prj file for inclusion in metatdata
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
 
-        System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
-
-        'STEP 1: Save file, populate xml params: -------------------------------------------------------------------------
-        If Not SaveXMLFile() Then
-            System.Windows.Forms.Cursor.Current = Cursors.Default
-            Exit Sub
-        End If
-
-        'Init your global dictionary to hold the metadata records as well as the global xml prj file
-        g_dicMetadata = New Generic.Dictionary(Of String, String)
-        g_clsXMLPrjFile = _XMLPrjParams
-        'END STEP 1: -----------------------------------------------------------------------------------------------------
-
-
-        'STEP 2: Identify if local effects are being used : --------------------------------------------------------------
-        'Local Effects Global
-        If _XMLPrjParams.intLocalEffects = 1 Then
-            g_booLocalEffects = True
-        Else
-            g_booLocalEffects = False
-        End If
-        'END STEP 2: -----------------------------------------------------------------------------------------------------
-
-        'STEP 3: Find out if user is making use of only the selected Sheds -----------------------------------------------
-        'Selected Sheds only
-        Dim lyrSelectedPolyLayer As MapWindow.Interfaces.Layer = Nothing
-        If _XMLPrjParams.intSelectedPolys = 1 Then
-            g_booSelectedPolys = True
-            lngWShedLayerIndex = modUtil.GetLayerIndex(cboSelectPoly.Text)
-            lyrSelectedPolyLayer = g_MapWin.Layers(lngWShedLayerIndex)
-        Else
-            g_booSelectedPolys = False
-        End If
-        'END STEP 3: ---------------------------------------------------------------------------------------------------------
-
-        'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
-        'If they're using, we send them over to modMgmtScen to implement
-        If _XMLPrjParams.clsMgmtScenHolder.Count > 0 Then
-            modMgmtScen.MgmtScenSetup(_XMLPrjParams.clsMgmtScenHolder, _XMLPrjParams.strLCGridType, _XMLPrjParams.strLCGridFileName, _XMLPrjParams.strProjectWorkspace)
-        End If
-        'END STEP 4: ---------------------------------------------------------------------------------------------------------
-
-        'STEP 5: Pollutant Dictionary creation, needed for Landuse -----------------------------------------------------------
-        'Go through and find the pollutants, if they're used and what the CoeffSet is
-        'We're creating a dictionary that will hold Pollutant, Coefficient Set for use in the Landuse Scenarios
-        For i = 0 To _XMLPrjParams.clsPollItems.Count - 1
-            If _XMLPrjParams.clsPollItems.Item(i).intApply = 1 Then
-                dictPollutants.Add(_XMLPrjParams.clsPollItems.Item(i).strPollName, _XMLPrjParams.clsPollItems.Item(i).strCoeffSet)
-            End If
-        Next i
-        'END STEP 5: ---------------------------------------------------------------------------------------------------------
-
-        'STEP 6: Landuses sent off to modLanduse for processing -----------------------------------------------------
-        For i = 0 To _XMLPrjParams.clsLUItems.Count - 1
-            If _XMLPrjParams.clsLUItems.Item(i).intApply = 1 Then
-                booLUItems = True
-                modLanduse.Begin(_XMLPrjParams.strLCGridType, _XMLPrjParams.clsLUItems, dictPollutants, _XMLPrjParams.strLCGridFileName, _XMLPrjParams.strProjectWorkspace)
-                Exit For
-            Else
-                booLUItems = False
-            End If
-        Next i
-        'END STEP 6: ---------------------------------------------------------------------------------------------------------
-
-        'STEP 7: ---------------------------------------------------------------------------------------------------------
-        'Obtain Watershed values
-
-        strWaterShed = "Select * from WSDelineation Where Name like '" & _XMLPrjParams.strWaterShedDelin & "'"
-        Dim cmdWS As New OleDbCommand(strWaterShed, g_DBConn)
-
-        'END STEP 7: -----------------------------------------------------------------------------------------------------
-
-        'STEP 8: ---------------------------------------------------------------------------------------------------------
-        'Set the Analysis Environment and globals for output workspace
-
-        modMainRun.SetGlobalEnvironment(cmdWS, lyrSelectedPolyLayer)
-
-        'END STEP 8: -----------------------------------------------------------------------------------------------------
-
-        'STEP 8a: --------------------------------------------------------------------------------------------------------
-        'Added 1/08/2007 to account for non-adjacent polygons
-        If _XMLPrjParams.intSelectedPolys = 1 Then
-            If modMainRun.CheckMultiPartPolygon(g_pSelectedPolyClip) Then
-                MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
+            'STEP 1: Save file, populate xml params: -------------------------------------------------------------------------
+            If Not SaveXMLFile() Then
                 System.Windows.Forms.Cursor.Current = Cursors.Default
                 Exit Sub
             End If
-        End If
 
-        'STEP 9: ---------------------------------------------------------------------------------------------------------
-        'Create the runoff GRID
-        'Get the precip scenario stuff
-        strPrecip = "Select * from PrecipScenario where name like '" & _XMLPrjParams.strPrecipScenario & "'"
-        Dim cmdPrecip As New OleDbCommand(strPrecip, g_DBConn)
-        Dim dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
-        dataPrecip.Read()
-        'Added 6/04 to account for different PrecipTypes
-        modMainRun.g_intPrecipType = dataPrecip.Item("PrecipType")
-        dataPrecip.Close()
+            'Init your global dictionary to hold the metadata records as well as the global xml prj file
+            g_dicMetadata = New Generic.Dictionary(Of String, String)
+            g_clsXMLPrjFile = _XMLPrjParams
+            g_strWorkspace = g_clsXMLPrjFile.strProjectWorkspace
+            'END STEP 1: -----------------------------------------------------------------------------------------------------
 
-        'If there has been a land use added, then a new LCType has been created, hence we get it from g_strLCTypename
-        Dim strLCType As String
-        If booLUItems Then
-            strLCType = modLanduse.g_strLCTypeName
-        Else
-            strLCType = _XMLPrjParams.strLCGridType
-        End If
 
-        If Not modRunoff.CreateRunoffGrid(_XMLPrjParams.strLCGridFileName, strLCType, cmdPrecip, _XMLPrjParams.strSoilsHydFileName) Then
-            Exit Sub
-        End If
-        'END STEP 9: -----------------------------------------------------------------------------------------------------
+            'STEP 2: Identify if local effects are being used : --------------------------------------------------------------
+            'Local Effects Global
+            If _XMLPrjParams.intLocalEffects = 1 Then
+                g_booLocalEffects = True
+            Else
+                g_booLocalEffects = False
+            End If
+            'END STEP 2: -----------------------------------------------------------------------------------------------------
 
-        'STEP 10: ---------------------------------------------------------------------------------------------------------
-        'Process pollutants
-        For i = 0 To _XMLPrjParams.clsPollItems.Count - 1
-            If _XMLPrjParams.clsPollItems.Item(i).intApply = 1 Then
-                'If user is NOT ignoring the pollutant then send the whole item over along with LCType
-                If Not modPollutantCalcs.PollutantConcentrationSetup(_XMLPrjParams.clsPollItems.Item(i), _XMLPrjParams.strLCGridType, _XMLPrjParams.strWaterQuality) Then
+            'STEP 3: Find out if user is making use of only the selected Sheds -----------------------------------------------
+            'Selected Sheds only
+            Dim lyrSelectedPolyLayer As MapWindow.Interfaces.Layer = Nothing
+            If _XMLPrjParams.intSelectedPolys = 1 Then
+                g_booSelectedPolys = True
+                lngWShedLayerIndex = modUtil.GetLayerIndex(cboSelectPoly.Text)
+                lyrSelectedPolyLayer = g_MapWin.Layers(lngWShedLayerIndex)
+            Else
+                g_booSelectedPolys = False
+            End If
+            'END STEP 3: ---------------------------------------------------------------------------------------------------------
+
+            'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
+            'If they're using, we send them over to modMgmtScen to implement
+            If _XMLPrjParams.clsMgmtScenHolder.Count > 0 Then
+                modMgmtScen.MgmtScenSetup(_XMLPrjParams.clsMgmtScenHolder, _XMLPrjParams.strLCGridType, _XMLPrjParams.strLCGridFileName, _XMLPrjParams.strProjectWorkspace)
+            End If
+            'END STEP 4: ---------------------------------------------------------------------------------------------------------
+
+            'STEP 5: Pollutant Dictionary creation, needed for Landuse -----------------------------------------------------------
+            'Go through and find the pollutants, if they're used and what the CoeffSet is
+            'We're creating a dictionary that will hold Pollutant, Coefficient Set for use in the Landuse Scenarios
+            For i = 0 To _XMLPrjParams.clsPollItems.Count - 1
+                If _XMLPrjParams.clsPollItems.Item(i).intApply = 1 Then
+                    dictPollutants.Add(_XMLPrjParams.clsPollItems.Item(i).strPollName, _XMLPrjParams.clsPollItems.Item(i).strCoeffSet)
+                End If
+            Next i
+            'END STEP 5: ---------------------------------------------------------------------------------------------------------
+
+            'STEP 6: Landuses sent off to modLanduse for processing -----------------------------------------------------
+            For i = 0 To _XMLPrjParams.clsLUItems.Count - 1
+                If _XMLPrjParams.clsLUItems.Item(i).intApply = 1 Then
+                    booLUItems = True
+                    modLanduse.Begin(_XMLPrjParams.strLCGridType, _XMLPrjParams.clsLUItems, dictPollutants, _XMLPrjParams.strLCGridFileName, _XMLPrjParams.strProjectWorkspace)
+                    Exit For
+                Else
+                    booLUItems = False
+                End If
+            Next i
+            'END STEP 6: ---------------------------------------------------------------------------------------------------------
+
+            'STEP 7: ---------------------------------------------------------------------------------------------------------
+            'Obtain Watershed values
+
+            strWaterShed = "Select * from WSDelineation Where Name like '" & _XMLPrjParams.strWaterShedDelin & "'"
+            Dim cmdWS As New OleDbCommand(strWaterShed, g_DBConn)
+
+            'END STEP 7: -----------------------------------------------------------------------------------------------------
+
+            'STEP 8: ---------------------------------------------------------------------------------------------------------
+            'Set the Analysis Environment and globals for output workspace
+
+            modMainRun.SetGlobalEnvironment(cmdWS, lyrSelectedPolyLayer)
+
+            'END STEP 8: -----------------------------------------------------------------------------------------------------
+
+            'STEP 8a: --------------------------------------------------------------------------------------------------------
+            'Added 1/08/2007 to account for non-adjacent polygons
+            If _XMLPrjParams.intSelectedPolys = 1 Then
+                If modMainRun.CheckMultiPartPolygon(g_pSelectedPolyClip) Then
+                    MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
+                    System.Windows.Forms.Cursor.Current = Cursors.Default
                     Exit Sub
                 End If
             End If
-        Next i
-        'END STEP 10: -----------------------------------------------------------------------------------------------------
 
-        'Step 11: Erosion -------------------------------------------------------------------------------------------------
-        'Check that they have chosen Erosion
-        Dim dataWS As OleDbDataReader = cmdWS.ExecuteReader
-        dataWS.Read()
-        If _XMLPrjParams.intCalcErosion = 1 Then
-            If _booAnnualPrecip Then 'If Annual (0) then TRUE, ergo RUSLE
-                If _XMLPrjParams.intRainGridBool Then
-                    If Not modRusle.RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XMLPrjParams.strRainGridFileName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strSDRGridFileName, _XMLPrjParams.strLCGridType) Then
-                        Exit Sub
-                    End If
-                ElseIf _XMLPrjParams.intRainConstBool Then
-                    If Not modRusle.RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XMLPrjParams.strRainGridFileName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strSDRGridFileName, _XMLPrjParams.strLCGridType, _XMLPrjParams.dblRainConstValue) Then
-                        Exit Sub
-                    End If
-                End If
+            'STEP 9: ---------------------------------------------------------------------------------------------------------
+            'Create the runoff GRID
+            'Get the precip scenario stuff
+            strPrecip = "Select * from PrecipScenario where name like '" & _XMLPrjParams.strPrecipScenario & "'"
+            Dim cmdPrecip As New OleDbCommand(strPrecip, g_DBConn)
+            Dim dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
+            dataPrecip.Read()
+            'Added 6/04 to account for different PrecipTypes
+            modMainRun.g_intPrecipType = dataPrecip.Item("PrecipType")
+            dataPrecip.Close()
 
-            Else 'If event (1) then False, ergo MUSLE
-                If Not modMUSLE.MUSLESetup(_XMLPrjParams.strSoilsDefName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strLCGridType) Then
-                    Exit Sub
-                End If
-            End If
-        End If
-        dataWS.Close()
-        'STEP 11: ----------------------------------------------------------------------------------------------------------
-
-        'STEP 12 : Cleanup any temp critters -------------------------------------------------------------------------------
-        'g_DictTempNames holds the names of all temporary landuses and/or coefficient sets created during the Landuse scenario
-        'portion of our program, for example CCAP1, or NitSet1.  We now must eliminate them from the database if they exist.
-        If g_DictTempNames.Count > 0 Then
+            'If there has been a land use added, then a new LCType has been created, hence we get it from g_strLCTypename
+            Dim strLCType As String
             If booLUItems Then
-                modLanduse.Cleanup(g_DictTempNames, (_XMLPrjParams.clsPollItems), (_XMLPrjParams.strLCGridType))
+                strLCType = modLanduse.g_strLCTypeName
+            Else
+                strLCType = _XMLPrjParams.strLCGridType
             End If
-        End If
-        'END STEP 12: -------------------------------------------------------------------------------------------------------
 
-        'TODO
-        'STEP 13: -----------------------------------------------------------------------------------------------------------
-        'g_pGroupLayer has been created earlier and has been taken on GRIDs since.  Now lets add it
-        'Add the group layer.
-        'With g_pGroupLayer
-        '    .Expanded = True 'Are going to 'expand' it
-        '    .Name = _XMLPrjParams.strProjectName 'The name equals whatever the user entered
-        'End With
+            If Not modRunoff.CreateRunoffGrid(_XMLPrjParams.strLCGridFileName, strLCType, cmdPrecip, _XMLPrjParams.strSoilsHydFileName) Then
+                Exit Sub
+            End If
+            'END STEP 9: -----------------------------------------------------------------------------------------------------
 
-        ''UPGRADE_WARNING: Couldn't resolve default property of object g_pGroupLayer. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-        'm_pMap.AddLayer(g_pGroupLayer)
-        'END STEP 13: -------------------------------------------------------------------------------------------------------
+            'STEP 10: ---------------------------------------------------------------------------------------------------------
+            'Process pollutants
+            For i = 0 To _XMLPrjParams.clsPollItems.Count - 1
+                If _XMLPrjParams.clsPollItems.Item(i).intApply = 1 Then
+                    'If user is NOT ignoring the pollutant then send the whole item over along with LCType
+                    If Not modPollutantCalcs.PollutantConcentrationSetup(_XMLPrjParams.clsPollItems.Item(i), _XMLPrjParams.strLCGridType, _XMLPrjParams.strWaterQuality) Then
+                        Exit Sub
+                    End If
+                End If
+            Next i
+            'END STEP 10: -----------------------------------------------------------------------------------------------------
 
-        'STEP 14 save out group layer ---------------------------------------------------------------------------------------
-        'TODO figure alternative for layer
-        'modUtil.ExportLayerToPath(g_pGroupLayer, _XMLPrjParams.strProjectWorkspace & "\" & _XMLPrjParams.strProjectName & ".lyr")
-        'END STEP 14: -------------------------------------------------------------------------------------------------------
+            'Step 11: Erosion -------------------------------------------------------------------------------------------------
+            'Check that they have chosen Erosion
+            Dim dataWS As OleDbDataReader = cmdWS.ExecuteReader
+            dataWS.Read()
+            If _XMLPrjParams.intCalcErosion = 1 Then
+                If _booAnnualPrecip Then 'If Annual (0) then TRUE, ergo RUSLE
+                    If _XMLPrjParams.intRainGridBool Then
+                        If Not modRusle.RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XMLPrjParams.strRainGridFileName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strSDRGridFileName, _XMLPrjParams.strLCGridType) Then
+                            Exit Sub
+                        End If
+                    ElseIf _XMLPrjParams.intRainConstBool Then
+                        If Not modRusle.RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XMLPrjParams.strRainGridFileName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strSDRGridFileName, _XMLPrjParams.strLCGridType, _XMLPrjParams.dblRainConstValue) Then
+                            Exit Sub
+                        End If
+                    End If
+                Else 'If event (1) then False, ergo MUSLE
+                    If Not modMUSLE.MUSLESetup(_XMLPrjParams.strSoilsDefName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strLCGridType) Then
+                        Exit Sub
+                    End If
+                End If
+            End If
+            dataWS.Close()
+            'STEP 11: ----------------------------------------------------------------------------------------------------------
 
-        'STEP 15: create string describing project parameters ---------------------------------------------------------------
-        'TODO metadata stuff
-        'strProjectInfo = modUtil.ParseProjectforMetadata(_XMLPrjParams, _strFileName)
-        'END STEP 15: -------------------------------------------------------------------------------------------------------
+            'STEP 12 : Cleanup any temp critters -------------------------------------------------------------------------------
+            'g_DictTempNames holds the names of all temporary landuses and/or coefficient sets created during the Landuse scenario
+            'portion of our program, for example CCAP1, or NitSet1.  We now must eliminate them from the database if they exist.
+            If g_DictTempNames.Count > 0 Then
+                If booLUItems Then
+                    modLanduse.Cleanup(g_DictTempNames, (_XMLPrjParams.clsPollItems), (_XMLPrjParams.strLCGridType))
+                End If
+            End If
+            'END STEP 12: -------------------------------------------------------------------------------------------------------
 
-        'STEP 16: Apply the metadata to each of the rasters in the group layer ----------------------------------------------
-        'TODO
-        'm_App.StatusBar.Message(0) = "Creating metadata for the N-SPECT group layer..."
-        'modUtil.CreateMetadata(g_pGroupLayer, strProjectInfo)
-        'END STEP 16: -------------------------------------------------------------------------------------------------------
+            'STEP 13: -----------------------------------------------------------------------------------------------------------
+            'TODO: add layer stff
+            'g_pGroupLayer has been created earlier and has been taken on GRIDs since.  Now lets add it
+            'Add the group layer.
+            'With g_pGroupLayer
+            '    .Expanded = True 'Are going to 'expand' it
+            '    .Name = _XMLPrjParams.strProjectName 'The name equals whatever the user entered
+            'End With
+            'm_pMap.AddLayer(g_pGroupLayer)
+            'END STEP 13: -------------------------------------------------------------------------------------------------------
 
-        'Cleanup ------------------------------------------------------------------------------------------------------------
-        'TODO
-        'm_App.StatusBar.Message(0) = "Deleting temporary files..."
+            'STEP 14 save out group layer ---------------------------------------------------------------------------------------
+            'TODO figure alternative for layer
+            'modUtil.ExportLayerToPath(g_pGroupLayer, _XMLPrjParams.strProjectWorkspace & "\" & _XMLPrjParams.strProjectName & ".lyr")
+            'END STEP 14: -------------------------------------------------------------------------------------------------------
 
-        'Go into workspace and rid it of all rasters
-        modUtil.CleanGlobals()
-        modUtil.CleanupRasterFolder((_XMLPrjParams.strProjectWorkspace))
+            'STEP 15: create string describing project parameters ---------------------------------------------------------------
+            'TODO metadata stuff
+            'strProjectInfo = modUtil.ParseProjectforMetadata(_XMLPrjParams, _strFileName)
+            'END STEP 15: -------------------------------------------------------------------------------------------------------
 
-        System.Windows.Forms.Cursor.Current = Cursors.Default
+            'STEP 16: Apply the metadata to each of the rasters in the group layer ----------------------------------------------
+            'TODO
+            'm_App.StatusBar.Message(0) = "Creating metadata for the N-SPECT group layer..."
+            'modUtil.CreateMetadata(g_pGroupLayer, strProjectInfo)
+            'END STEP 16: -------------------------------------------------------------------------------------------------------
 
-        'TODO
-        'm_App.StatusBar.Message(0) = "N-SPECT processing complete!"
+            'Cleanup ------------------------------------------------------------------------------------------------------------
+            'TODO
+            'm_App.StatusBar.Message(0) = "Deleting temporary files..."
 
-        Me.Close()
+            'Go into workspace and rid it of all rasters
+            modUtil.CleanGlobals()
+            modUtil.CleanupRasterFolder((_XMLPrjParams.strProjectWorkspace))
 
-        Exit Sub
+            System.Windows.Forms.Cursor.Current = Cursors.Default
 
-UserCancel:
-        modProgDialog.KillDialog()
-        System.Windows.Forms.Cursor.Current = Cursors.Default
-        MsgBox("Processing has been stopped.", MsgBoxStyle.Information, "Analysis Stopped")
+            'TODO
+            'm_App.StatusBar.Message(0) = "N-SPECT processing complete!"
 
-ErrorHandler:
-        HandleError(True, "cmdRun_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-        System.Windows.Forms.Cursor.Current = Cursors.Default
+            Me.Close()
+
+            Exit Sub
+
+            'TODO: determine how to handle canceling
+            'UserCancel:
+            '            modProgDialog.KillDialog()
+            '            System.Windows.Forms.Cursor.Current = Cursors.Default
+            '            MsgBox("Processing has been stopped.", MsgBoxStyle.Information, "Analysis Stopped")
+
+
+        Catch ex As Exception
+            HandleError(True, "cmdRun_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            System.Windows.Forms.Cursor.Current = Cursors.Default
+        End Try
 
     End Sub
 

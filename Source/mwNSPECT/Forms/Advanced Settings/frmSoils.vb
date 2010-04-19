@@ -51,7 +51,6 @@ Friend Class frmSoils
         strSQLSoilsDel = "SELECT * FROM SOILS WHERE NAME LIKE '" & cboSoils.Text & "'"
 
         If Not (cboSoils.Text = "") Then
-            ''UPGRADE_WARNING: Couldn't resolve default property of object intAns. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
             'intAns = MsgBox("Are you sure you want to delete the soils setup '" & VB6.GetItemString(cboSoils, cboSoils.SelectedIndex) & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
             ''code to handle response
             'If intAns = MsgBoxResult.Yes Then
