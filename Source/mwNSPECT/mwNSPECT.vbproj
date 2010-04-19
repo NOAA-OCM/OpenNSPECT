@@ -86,6 +86,10 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.TKTAUDEMLib, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MapWindow4Dev\Bin\Interop.TKTAUDEMLib.dll</HintPath>
+    </Reference>
     <Reference Include="MapWinGeoProc, Version=4.8.1.28499, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\MapWindow4Dev\Bin\MapWinGeoProc.dll</HintPath>

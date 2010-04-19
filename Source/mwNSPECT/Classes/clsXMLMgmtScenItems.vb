@@ -117,9 +117,6 @@ Public Class clsXMLMgmtScenItems
             m_colItems.Add(clsMgmtScen)
         Next MgmtNode
 
-        'UPGRADE_NOTE: Object clsMgmtScen may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        clsMgmtScen = Nothing
-
     End Sub
 
     Public Sub New()

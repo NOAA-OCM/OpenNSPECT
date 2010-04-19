@@ -177,7 +177,6 @@ Friend Class frmWaterQualityStandard
             ''browse...get output filename
             'dlgCMD1Open.FileName = CStr(Nothing)
             'dlgCMD1Save.FileName = CStr(Nothing)
-            ''UPGRADE_WARNING: CommonDialog variable was not upgraded Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="671167DC-EA81-475D-B690-7A40C7BF4A23"'
             'With dlgCMD1
             '    'UPGRADE_WARNING: Filter has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"'
             '    .Filter = Replace(MSG1, "<name>", "Water Quality Standard")
