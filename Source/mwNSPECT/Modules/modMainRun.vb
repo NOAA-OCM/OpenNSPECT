@@ -43,6 +43,8 @@ Module modMainRun
 
     Public g_pSelectedPolyClip As MapWinGIS.Shape
 
+    Public g_pGroupLayer As Integer
+
 
     Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByRef pWShedlayer As MapWindow.Interfaces.Layer = Nothing)
         'GOAL:  Set the analysis environment based on the properties of the DEM, and establish
@@ -131,6 +133,8 @@ Module modMainRun
         Else
             strError = "Length Slope raster does not Exist: " & strLS
         End If
+
+
 
         If Len(strError) > 0 Then
             MsgBox(strError, MsgBoxStyle.Critical, "Missing Data")

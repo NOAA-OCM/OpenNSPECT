@@ -109,7 +109,7 @@ Module modPollutantCalcs
         'later be added to the global dictionary
 
         Dim strConstructMetaData As String
-        Dim strLandClassCoeff As String
+        Dim strLandClassCoeff As String = ""
         Dim strHeader As String
         Dim i As Short
 
@@ -297,29 +297,26 @@ Module modPollutantCalcs
 
     Private Function CalcPollutantConcentration(ByRef strConStatement As String) As Boolean
 
-        Dim pLandSampleRaster As MapWinGIS.Grid
-        Dim pPollMassRaster As MapWinGIS.Grid
-        Dim pMassVolumeRaster As MapWinGIS.Grid
-        Dim pPermMassVolumeRaster As MapWinGIS.Grid
-        Dim pAccumPollRaster As MapWinGIS.Grid
-        Dim pTemp1PollRaster As MapWinGIS.Grid
-        Dim pTemp2PollRaster As MapWinGIS.Grid
-        Dim pTotalPollConcRaster As MapWinGIS.Grid
-        Dim pPermAccPollRaster As MapWinGIS.Grid
-        Dim pPermTotalConcRaster As MapWinGIS.Grid
-        Dim pTotalPollConc0Raster As MapWinGIS.Grid 'gets rid of no data...replace with 0
+        Dim pLandSampleRaster As MapWinGIS.Grid = Nothing
+        Dim pPollMassRaster As MapWinGIS.Grid = Nothing
+        Dim pMassVolumeRaster As MapWinGIS.Grid = Nothing
+        Dim pPermMassVolumeRaster As MapWinGIS.Grid = Nothing
+        Dim pAccumPollRaster As MapWinGIS.Grid = Nothing
+        Dim pTemp1PollRaster As MapWinGIS.Grid = Nothing
+        Dim pTemp2PollRaster As MapWinGIS.Grid = Nothing
+        Dim pTotalPollConcRaster As MapWinGIS.Grid = Nothing
+        Dim pPermAccPollRaster As MapWinGIS.Grid = Nothing
+        Dim pPermTotalConcRaster As MapWinGIS.Grid = Nothing
+        Dim pTotalPollConc0Raster As MapWinGIS.Grid = Nothing  'gets rid of no data...replace with 0
 
         'Dim pPollRasterLayer As ESRI.ArcGIS.Carto.IRasterLayer
         'Dim pAccPollRasterLayer As ESRI.ArcGIS.Carto.IRasterLayer
 
         'String to hold calculations
-        Dim strExpression As String
         Dim strTitle As String
         strTitle = "Processing " & _strPollName & " Conc. Calculation..."
         Dim strOutConc As String
         Dim strAccPoll As String
-
-        pLandSampleRaster = Nothing
 
         Try
             modProgDialog.ProgDialog("Checking landcover cell size...", strTitle, 0, 13, 1, 0)
@@ -344,7 +341,6 @@ Module modPollutantCalcs
                 _picks = strConStatement.Split(",")
 
                 Dim pollmasscalc As New RasterMathCellCalc(AddressOf pollmassCellCalc)
-                pPollMassRaster = Nothing
                 RasterMath(pLandSampleRaster, Nothing, Nothing, Nothing, Nothing, pPollMassRaster, pollmasscalc)
 
                 'END STEP 1: ------------------------------------------------------------------------------
@@ -355,7 +351,6 @@ Module modPollutantCalcs
             If modProgDialog.g_boolCancel Then
                 'STEP 2: MASS OF PHOSPHORUS PRODUCED BY EACH CELL -----------------------------------------
                 Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
-                pMassVolumeRaster = Nothing
                 RasterMath(g_pMetRunoffRaster, pPollMassRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
 
                 'END STEP 2: -------------------------------------------------------------------------------
@@ -375,7 +370,6 @@ Module modPollutantCalcs
                         'TODO: get these functions working
                         'pClipAccPollRaster = modUtil.ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, pEnv)
                         'pPermMassVolumeRaster = modUtil.ReturnPermanentRaster(pClipAccPollRaster, pEnv.OutWorkspace.PathName, strOutConc)
-                        pClipAccPollRaster = Nothing
                     Else
                         'TODO get this working
                         'pPermMassVolumeRaster = modUtil.ReturnPermanentRaster(pMassVolumeRaster, pEnv.OutWorkspace.PathName, strOutConc)
@@ -424,7 +418,6 @@ Module modPollutantCalcs
                     'TODO: Get this working
                     'pClipAccPoll2Raster = modUtil.ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, pEnv)
                     'pPermAccPollRaster = modUtil.ReturnPermanentRaster(pClipAccPoll2Raster, pEnv.OutWorkspace.PathName, strAccPoll)
-                    pClipAccPoll2Raster = Nothing
                 Else
                     'TODO
                     'pPermAccPollRaster = modUtil.ReturnPermanentRaster(pAccumPollRaster, pEnv.OutWorkspace.PathName, strAccPoll)
@@ -447,7 +440,6 @@ Module modPollutantCalcs
             If modProgDialog.g_boolCancel Then
                 'STEP 5: DERIVE TOTAL CONCENTRATION (AT EACH CELL) ----------------------------------------
                 Dim temp1calc As New RasterMathCellCalc(AddressOf temp1CellCalc)
-                pTemp1PollRaster = Nothing
                 RasterMath(pMassVolumeRaster, pAccumPollRaster, Nothing, Nothing, Nothing, pTemp1PollRaster, temp1calc)
                 'END STEP 5: -------------------------------------------------------------------------------
             End If
@@ -456,7 +448,6 @@ Module modPollutantCalcs
             If modProgDialog.g_boolCancel Then
                 'STEP 6: -----------------------------------------------------------------------------------
                 Dim temp2calc As New RasterMathCellCalc(AddressOf temp2CellCalc)
-                pTemp2PollRaster = Nothing
                 RasterMath(g_pMetRunoffRaster, g_pRunoffRaster, Nothing, Nothing, Nothing, pTemp2PollRaster, temp2calc)
                
                 'END STEP 6: ------------------------------------------------------------------------------
@@ -466,7 +457,6 @@ Module modPollutantCalcs
             If modProgDialog.g_boolCancel Then
                 'STEP 7: FINAL CONCENTRATION ---------------------------------------------------------------
                 Dim totconcalc As New RasterMathCellCalc(AddressOf totconCellCalc)
-                pTotalPollConcRaster = Nothing
                 RasterMath(pTemp1PollRaster, pTemp2PollRaster, Nothing, Nothing, Nothing, pTotalPollConcRaster, totconcalc)
                 'END STEP 7: --------------------------------------------------------------------------------
             End If
@@ -475,7 +465,6 @@ Module modPollutantCalcs
             If modProgDialog.g_boolCancel Then
                 'STEP 8: FINAL CONCENTRATION -remove all noData values ---------------------------------------
                 Dim totconnonullcalc As New RasterMathCellCalcNulls(AddressOf totconnonullCellCalc)
-                pTotalPollConc0Raster = Nothing
                 RasterMath(g_pDEMRaster, pTotalPollConcRaster, Nothing, Nothing, Nothing, pTotalPollConc0Raster, Nothing, False, totconnonullcalc)
                 'END STEP 7: --------------------------------------------------------------------------------
             End If
@@ -492,7 +481,6 @@ Module modPollutantCalcs
                     'TODO: again
                     'pClipTotalConcRaster = modUtil.ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, pEnv)
                     'pPermTotalConcRaster = modUtil.ReturnPermanentRaster(pClipTotalConcRaster, pEnv.OutWorkspace.PathName, strOutConc)
-                    pClipTotalConcRaster = Nothing
                 Else
                     'TODO: Again
                     'pPermTotalConcRaster = modUtil.ReturnPermanentRaster(pTotalPollConc0Raster, pEnv.OutWorkspace.PathName, strOutConc)
@@ -543,14 +531,13 @@ Module modPollutantCalcs
         Dim strWQVAlue As Object
 
         'Get the zone dataset from the first layer in ArcMap
-        Dim pMaxRaster As MapWinGIS.Grid
-        Dim pConRaster As MapWinGIS.Grid
-        Dim pPermWQRaster As MapWinGIS.Grid
-        Dim pWQRasterLayer As MapWinGIS.Grid
-        Dim pMapAlgebraOp As MapWinGIS.Grid
+        Dim pMaxRaster As MapWinGIS.Grid = Nothing
+        Dim pConRaster As MapWinGIS.Grid = Nothing
+        Dim pPermWQRaster As MapWinGIS.Grid = Nothing
+        Dim pWQRasterLayer As MapWinGIS.Grid = Nothing
         Dim dblConvertValue As Double
         Dim strOutWQ As String
-        Dim strExpression As String
+        Dim strExpression As String = ""
         Dim strMetadata As String
 
         Try
@@ -586,7 +573,6 @@ Module modPollutantCalcs
                 'TODO: again
                 'pClipWQRaster = modUtil.ClipBySelectedPoly(pConRaster, g_pSelectedPolyClip, pEnv)
                 'pPermWQRaster = modUtil.ReturnPermanentRaster(pClipWQRaster, pEnv.OutWorkspace.PathName, strOutWQ)
-                pClipWQRaster = Nothing
             Else
                 'TODO
                 'pPermWQRaster = modUtil.ReturnPermanentRaster(pConRaster, pEnv.OutWorkspace.PathName, strOutWQ)
@@ -621,8 +607,8 @@ Module modPollutantCalcs
 
     Private Function ReturnWQValue(ByRef strPollName As String, ByRef strWQstdName As String) As String
         Dim strPoll As String
-        Dim strWQStd As String
-
+        Dim strWQStd As String = ""
+        ReturnWQValue = ""
         Try
 
             strPoll = "Select * from Pollutant where name like '" & strPollName & "'"

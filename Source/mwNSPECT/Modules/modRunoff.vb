@@ -321,47 +321,36 @@ Module modRunoff
         'The rasters                             'Associated Steps
 
         Try
-            Dim pLandCoverRaster As MapWinGIS.Grid 'STEP 1: LandCover Raster
-            Dim pLandSampleRaster As MapWinGIS.Grid 'STEP 1: Properly sized landcover
-            Dim pHydSoilsRaster As MapWinGIS.Grid 'STEP 2: Soils Raster
-            Dim pPrecipRaster As MapWinGIS.Grid 'STEP 3: Create Precip Grid
-            Dim pSCSRaster As MapWinGIS.Grid 'STEP 1: Create Curve Number GRID
-            Dim pDailyRainRaster As MapWinGIS.Grid 'Rain
-            Dim pSCS100Raster As MapWinGIS.Grid 'STEP 2: SCS * 100
-            Dim pRetentionRaster As MapWinGIS.Grid 'STEP 3: Retention
-            Dim pAbstractRaster As MapWinGIS.Grid
-            Dim pTemp1RunoffRaster As MapWinGIS.Grid
-            Dim pTemp2RunoffRaster As MapWinGIS.Grid
-            Dim pRunoffInRaster As MapWinGIS.Grid
-            Dim pMaskRaster As MapWinGIS.Grid
-            Dim pMetRunoffRaster As MapWinGIS.Grid
-            Dim pMetRunoffNoNullRaster As MapWinGIS.Grid 'STEP 6a:  no nulls
-            Dim pAccumRunoffRaster As MapWinGIS.Grid
-            Dim pAccumRunoffRaster1 As MapWinGIS.Grid
-            Dim pCellAreaSMRaster As MapWinGIS.Grid
-            Dim pCellAreaSqKMRaster As MapWinGIS.Grid 'STEP 5a1: Square km
-            Dim pCellAreaSqMileRaster As MapWinGIS.Grid 'STEP 5a2: Square miles
-            Dim pCellAreaSFRaster As MapWinGIS.Grid
-            Dim pCellAreaSIRaster As MapWinGIS.Grid
-            Dim pCellAreaAcreRaster As MapWinGIS.Grid
-            Dim pCellAreaCIRaster As MapWinGIS.Grid
-            Dim pCellAreaCFRaster As MapWinGIS.Grid
-            Dim pCellAreaAFRaster As MapWinGIS.Grid
-            Dim pPermAccumRunoffRaster As MapWinGIS.Grid
-            Dim pRunoffRasterLayer As MapWindow.Interfaces.Layer 'Rasterlayer of runoff
-            Dim pPermAccumLocRunoffRaster As MapWinGIS.Grid
-            Dim pLocRunoffRasterLayer As MapWindow.Interfaces.Layer 'Rasterlayer of local effects runoff
+            Dim pLandCoverRaster As MapWinGIS.Grid = Nothing  'STEP 1: LandCover Raster
+            Dim pLandSampleRaster As MapWinGIS.Grid = Nothing  'STEP 1: Properly sized landcover
+            Dim pHydSoilsRaster As MapWinGIS.Grid = Nothing  'STEP 2: Soils Raster
+            Dim pPrecipRaster As MapWinGIS.Grid = Nothing  'STEP 3: Create Precip Grid
+            Dim pDailyRainRaster As MapWinGIS.Grid = Nothing  'Rain
+            Dim pSCS100Raster As MapWinGIS.Grid = Nothing  'STEP 2: SCS * 100
+            Dim pRetentionRaster As MapWinGIS.Grid = Nothing  'STEP 3: Retention
+            Dim pAbstractRaster As MapWinGIS.Grid = Nothing
+            Dim pRunoffInRaster As MapWinGIS.Grid = Nothing
+            Dim pMetRunoffRaster As MapWinGIS.Grid = Nothing
+            Dim pMetRunoffNoNullRaster As MapWinGIS.Grid = Nothing  'STEP 6a:  no nulls
+            Dim pAccumRunoffRaster As MapWinGIS.Grid = Nothing
+            Dim pAccumRunoffRaster1 As MapWinGIS.Grid = Nothing
+            Dim pCellAreaSMRaster As MapWinGIS.Grid = Nothing
+            Dim pCellAreaSqMileRaster As MapWinGIS.Grid = Nothing  'STEP 5a2: Square miles
+            Dim pCellAreaSIRaster As MapWinGIS.Grid = Nothing
+            Dim pCellAreaAcreRaster As MapWinGIS.Grid = Nothing
+            Dim pCellAreaCIRaster As MapWinGIS.Grid = Nothing
+            Dim pCellAreaCFRaster As MapWinGIS.Grid = Nothing
+            Dim pCellAreaAFRaster As MapWinGIS.Grid = Nothing
+            Dim pPermAccumRunoffRaster As MapWinGIS.Grid = Nothing
+            Dim pPermAccumLocRunoffRaster As MapWinGIS.Grid = Nothing
 
 
             'String to hold calculations
-            Dim strExpression As String
+            Dim strExpression As String = ""
             Dim strOutAccum As String
             Const strTitle As String = "Processing Runoff Calculation..."
 
-            'TEMP CODE
-            Dim strTemp As String
-            Dim pTempRaster As MapWinGIS.Grid
-
+           
             'Assign rasters
             pHydSoilsRaster = pInSoilsRaster
             pLandCoverRaster = pInLandCoverRaster
@@ -554,31 +543,25 @@ Module modRunoff
             g_pMetRunoffRaster = pMetRunoffNoNullRaster
 
 
-            Dim pClipLocAccumRaster As MapWinGIS.Grid
             If g_booLocalEffects Then
                 modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 10, 10, 0)
                 If modProgDialog.g_boolCancel Then
 
                     'STEP 12: Local Effects -------------------------------------------------
-                    strOutAccum = modUtil.GetUniqueName("locaccum", g_strWorkspace, ".tif")
+                    strOutAccum = modUtil.GetUniqueName("locaccum", g_strWorkspace, ".bgd")
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
-                        'TODO: Implement these modutil
-                        'pClipLocAccumRaster = modUtil.ClipBySelectedPoly(pMetRunoffNoNullRaster, g_pSelectedPolyClip, pEnv)
-                        'pPermAccumLocRunoffRaster = modUtil.ReturnPermanentRaster(pClipLocAccumRaster, pEnv.OutWorkspace.PathName, strOutAccum)
-                        pClipLocAccumRaster = Nothing
+                        pPermAccumLocRunoffRaster = modUtil.ClipBySelectedPoly(pMetRunoffNoNullRaster, g_pSelectedPolyClip, strOutAccum)
                     Else
-                        'TODO
-                        'pPermAccumLocRunoffRaster = modUtil.ReturnPermanentRaster(pMetRunoffNoNullRaster, pEnv.OutWorkspace.PathName, strOutAccum)
+                        pPermAccumLocRunoffRaster = modUtil.ReturnPermanentRaster(pMetRunoffNoNullRaster, strOutAccum)
                     End If
 
                     g_dicMetadata.Add("Runoff Local Effects (L)", _strRunoffMetadata)
 
-                    'TODO Add raster result with stretched color ramp and nonvisible inside g_pgrouplayer
-                    'pLocRunoffRasterLayer = modUtil.ReturnRaster((frmPrj.m_App), pPermAccumLocRunoffRaster, "Runoff Local Effects (L)")
-                    'pLocRunoffRasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pLocRunoffRasterLayer, "Blue")
-                    'pLocRunoffRasterLayer.Visible = False
-                    'g_pGroupLayer.Add(pLocRunoffRasterLayer)
+                    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermAccumLocRunoffRaster, "Blue")
+                    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermAccumLocRunoffRaster, cs, "Runoff Local Effects (L)")
+                    lyr.Visible = False
+                    lyr.MoveTo(0, g_pGroupLayer)
 
                     RunoffCalculation = True
                     modProgDialog.KillDialog()
@@ -615,7 +598,6 @@ Module modRunoff
                 'STEP 7: ------------------------------------------------------------------------------------
                 'Derive the real Accumulated Runoff
                 Dim accumcalc As New RasterMathCellCalc(AddressOf accumCellCalc)
-                pAccumRunoffRaster = Nothing
                 'TODO: Wait til accumulation is actually working to uncomment this
                 'RasterMath(pAccumRunoffRaster1, pMetRunoffNoNullRaster, Nothing, pAccumRunoffRaster, accumcalc)
 
@@ -624,35 +606,32 @@ Module modRunoff
                 Exit Function
             End If
 
+            'TODO: wait for the accum to be finished
             'Add this then map as our runoff grid
-            modProgDialog.ProgDialog("Creating Runoff Layer...", strTitle, 0, 10, 10, 0)
-            Dim pClipAccumRaster As MapWinGIS.Grid
-            If modProgDialog.g_boolCancel Then
-                'Get a unique name for accumulation GRID
-                strOutAccum = modUtil.GetUniqueName("runoff", g_strWorkspace, ".tif")
+            'modProgDialog.ProgDialog("Creating Runoff Layer...", strTitle, 0, 10, 10, 0)
+            'If modProgDialog.g_boolCancel Then
+            '    'Get a unique name for accumulation GRID
+            '    strOutAccum = modUtil.GetUniqueName("runoff", g_strWorkspace, ".tif")
 
-                'Clip to selected polys if chosen
-                If g_booSelectedPolys Then
-                    'TODO: Implement
-                    'pClipAccumRaster = modUtil.ClipBySelectedPoly(pAccumRunoffRaster, g_pSelectedPolyClip, pEnv)
-                    'pPermAccumRunoffRaster = modUtil.ReturnPermanentRaster(pClipAccumRaster, pEnv.OutWorkspace.PathName, strOutAccum)
-                Else
-                    'pPermAccumRunoffRaster = modUtil.ReturnPermanentRaster(pAccumRunoffRaster, pEnv.OutWorkspace.PathName, strOutAccum)
-                End If
+            '    'Clip to selected polys if chosen
+            '    If g_booSelectedPolys Then
+            '        pPermAccumRunoffRaster = modUtil.ClipBySelectedPoly(pAccumRunoffRaster, g_pSelectedPolyClip, strOutAccum)
+            '    Else
+            '        pPermAccumRunoffRaster = modUtil.ReturnPermanentRaster(pAccumRunoffRaster, strOutAccum)
+            '    End If
 
-                'TODO: add accumulation raster
-                'Add Completed raster to the g_pGroupLayer
-                'pRunoffRasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermAccumRunoffRaster, "Accumulated Runoff (L)")
-                'pRunoffRasterLayer.Renderer = ReturnRasterStretchColorRampRender(pRunoffRasterLayer, "Blue")
-                'g_pGroupLayer.Add(pRunoffRasterLayer)
+            '    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermAccumRunoffRaster, "Blue")
+            '    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermAccumRunoffRaster, cs, "Accumulated Runoff (L)")
+            '    lyr.Visible = False
+            '    lyr.MoveTo(0, g_pGroupLayer)
 
-                g_dicMetadata.Add("Accumulated Runoff (L)", _strRunoffMetadata)
+            '    g_dicMetadata.Add("Accumulated Runoff (L)", _strRunoffMetadata)
 
-                'Global Runoff
-                g_pRunoffRaster = pPermAccumRunoffRaster
-            Else
-                Exit Function
-            End If
+            '    'Global Runoff
+            '    g_pRunoffRaster = pPermAccumRunoffRaster
+            'Else
+            '    Exit Function
+            'End If
 
             RunoffCalculation = True
 
