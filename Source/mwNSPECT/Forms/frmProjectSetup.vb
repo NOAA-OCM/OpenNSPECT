@@ -5,6 +5,8 @@ Imports System.Windows.Forms
 
 Friend Class frmProjectSetup
     Inherits System.Windows.Forms.Form
+    Implements MapWinGIS.ICallback
+
 
 #Region "Class Vars"
     Private _strFileName As String 'Name of Open doc
@@ -44,6 +46,7 @@ Friend Class frmProjectSetup
 
     Private Sub frmProjectSetup_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
+            g_cb = Me
             SSTab1.SelectedIndex = 0
             'Check the DPI setting: This was put in place because the alignment of the checkboxes will be
             'messed up if DPI settings are anything other than Normal
@@ -572,6 +575,8 @@ Friend Class frmProjectSetup
                 System.Windows.Forms.Cursor.Current = Cursors.Default
                 Exit Sub
             End If
+
+            g_pGroupLayer = g_MapWin.Layers.Groups.Add(_XMLPrjParams.strProjectName)
 
             'Init your global dictionary to hold the metadata records as well as the global xml prj file
             g_dicMetadata = New Generic.Dictionary(Of String, String)
@@ -1808,7 +1813,7 @@ Friend Class frmProjectSetup
 
                 End If
             Next
-           
+
 
             ValidateMgmtScenario = True
 
@@ -1839,4 +1844,11 @@ Friend Class frmProjectSetup
 #End Region
 
 
+    Public Sub [Error](ByVal KeyOfSender As String, ByVal ErrorMsg As String) Implements MapWinGIS.ICallback.Error
+        MsgBox(ErrorMsg)
+    End Sub
+
+    Public Sub Progress(ByVal KeyOfSender As String, ByVal Percent As Integer, ByVal Message As String) Implements MapWinGIS.ICallback.Progress
+
+    End Sub
 End Class

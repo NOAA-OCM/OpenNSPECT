@@ -6,6 +6,7 @@ Module modUtil
     Public g_nspectDocPath As String
     Public g_strWorkspace As String
 
+    Public g_cb As frmProjectSetup
 
     Public g_strSelectedExportPath As String = ""
 
@@ -321,7 +322,7 @@ Module modUtil
         Else
             Return IO.File.Exists(strRasterFileName)
         End If
-        
+
     End Function
 
     Public Function ReturnFeature(ByRef strFeatureFileName As String) As MapWinGIS.Shapefile
@@ -377,6 +378,83 @@ Module modUtil
             End If
         End If
 
+    End Function
+
+    Public Function ReturnPermanentRaster(ByRef pRaster As MapWinGIS.Grid, ByRef sOutputName As String) As MapWinGIS.Grid
+        pRaster.Save(sOutputName)
+        Return pRaster
+    End Function
+
+    Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As MapWinGIS.Grid, ByRef strColor As String) As MapWinGIS.GridColorScheme
+        Try
+            Dim rTo As Integer
+            Dim bTo As Integer
+            Dim gTo As Integer
+
+            Dim rFrom As Integer
+            Dim bFrom As Integer
+            Dim gFrom As Integer
+
+            Select Case strColor
+                Case "Blue"
+                    ' 242, 245, 255
+                    rFrom = 242
+                    gFrom = 245
+                    bFrom = 255
+
+                    '18, 73, 255
+                    rTo = 18
+                    gTo = 73
+                    bTo = 255
+                Case "Brown"
+                    '255, 242, 217
+                    rFrom = 255
+                    gFrom = 242
+                    bFrom = 217
+
+                    '176, 117, 0
+                    rTo = 176
+                    gTo = 117
+                    bTo = 0
+                Case Else
+                    rFrom = CInt(Split(strColor, ",")(0))
+                    gFrom = CInt(Split(strColor, ",")(1))
+                    bFrom = CInt(Split(strColor, ",")(2))
+
+
+                    rTo = CInt(Split(strColor, ",")(3))
+                    gTo = CInt(Split(strColor, ",")(4))
+                    bTo = CInt(Split(strColor, ",")(5))
+            End Select
+
+
+
+            Dim cs As New MapWinGIS.GridColorScheme
+            Dim csbrk As New MapWinGIS.GridColorBreak
+            csbrk.LowValue = pRaster.Minimum
+            csbrk.HighValue = pRaster.Maximum
+            csbrk.LowColor = Convert.ToUInt32(RGB(rFrom, gFrom, bFrom))
+            csbrk.HighColor = Convert.ToUInt32(RGB(rTo, gTo, bTo))
+            csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
+            cs.InsertBreak(csbrk)
+
+            Return cs
+        Catch ex As Exception
+            HandleError(True, "ReturnRasterStretchColorRampRender " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+        End Try
+    End Function
+
+    
+    Public Function ClipBySelectedPoly(ByRef pAccumRunoffRaster As MapWinGIS.Grid, ByVal g_pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As MapWinGIS.Grid
+        Dim strtmp1 As String = IO.Path.GetTempFileName
+        MapWinGeoProc.DataManagement.DeleteGrid(strtmp1 + ".bgd")
+        pAccumRunoffRaster.Save(+".bgd")
+
+        MapWinGeoProc.SpatialOperations.ClipGridWithPolygon(strtmp1, g_pSelectedPolyClip, outputFileName)
+
+        Dim out As New MapWinGIS.Grid
+        out.Open(outputFileName)
+        Return out
     End Function
 
 

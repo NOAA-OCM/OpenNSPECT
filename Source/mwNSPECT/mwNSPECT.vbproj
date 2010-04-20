@@ -188,6 +188,12 @@
     <Compile Include="Forms\Additional Dialogs\frmPrjCalc.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\Additional Dialogs\frmProgressDialog.Designer.vb">
+      <DependentUpon>frmProgressDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Additional Dialogs\frmProgressDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\Advanced Settings\frmLandCoverTypes.designer.vb">
       <DependentUpon>frmLandCoverTypes.vb</DependentUpon>
     </Compile>
@@ -319,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\frmPrjCalc.resX">
       <DependentUpon>frmPrjCalc.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Additional Dialogs\frmProgressDialog.resx">
+      <DependentUpon>frmProgressDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Advanced Settings\frmLandCoverTypes.resX">
       <DependentUpon>frmLandCoverTypes.vb</DependentUpon>

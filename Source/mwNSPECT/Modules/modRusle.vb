@@ -374,33 +374,28 @@ Module modRusle
 
     Private Function CalcRUSLE(ByRef strConStatement As String) As Boolean
 
-        Dim pLandSampleRaster As MapWinGIS.Grid 'LC Cover sampleized
-        Dim pCFactorRaster As MapWinGIS.Grid 'C Factor
-        Dim pSoilLossRaster As MapWinGIS.Grid 'Soil Loss
-        Dim pSoilLossAcres As MapWinGIS.Grid 'Soil Loss Acres
-        Dim pZSedDelRaster As MapWinGIS.Grid 'And I quote, Dave's Whacky Sediment Delivery Ratio
-        Dim pCellAreaKMRaster As MapWinGIS.Grid 'Cell Area KM
-        Dim pDASedDelRaster As MapWinGIS.Grid 'da_sed_del
-        Dim pTemp3Raster As MapWinGIS.Grid 'Temp3
-        Dim pTemp4Raster As MapWinGIS.Grid 'Temp4
-        Dim pTemp5Raster As MapWinGIS.Grid 'Temp5
-        Dim pTemp6Raster As MapWinGIS.Grid 'Temp6
-        Dim pSDRRaster As MapWinGIS.Grid 'SDR
-        Dim pSedYieldRaster As MapWinGIS.Grid 'Sediment Yield
-        Dim pAccumSedRaster As MapWinGIS.Grid 'Accumulated Sed Raster
-        Dim pTotalAccumSedRaster As MapWinGIS.Grid 'Total accumulated sediment raster
-        Dim pPermAccumSedRaster As MapWinGIS.Grid 'Permanent accumulated sediment raster
-        Dim pConcSedRaster As MapWinGIS.Grid 'Concentration sed raster
-        Dim pPermConcSedRaster As MapWinGIS.Grid 'Permanent sediment concentration raster
-        Dim pPermRUSLELocRaster As MapWinGIS.Grid 'RUSLE Local Effects raster
-        Dim pTempRaster As MapWinGIS.Grid 'Temp raster added 8/29/06
-        Dim strTemp As String
+        Dim pLandSampleRaster As MapWinGIS.Grid = Nothing 'LC Cover sampleized
+        Dim pCFactorRaster As MapWinGIS.Grid = Nothing  'C Factor
+        Dim pSoilLossRaster As MapWinGIS.Grid = Nothing  'Soil Loss
+        Dim pSoilLossAcres As MapWinGIS.Grid = Nothing  'Soil Loss Acres
+        Dim pZSedDelRaster As MapWinGIS.Grid = Nothing  'And I quote, Dave's Whacky Sediment Delivery Ratio
+        Dim pCellAreaKMRaster As MapWinGIS.Grid = Nothing  'Cell Area KM
+        Dim pDASedDelRaster As MapWinGIS.Grid = Nothing  'da_sed_del
+        Dim pTemp3Raster As MapWinGIS.Grid = Nothing  'Temp3
+        Dim pTemp4Raster As MapWinGIS.Grid = Nothing  'Temp4
+        Dim pTemp5Raster As MapWinGIS.Grid = Nothing  'Temp5
+        Dim pTemp6Raster As MapWinGIS.Grid = Nothing  'Temp6
+        Dim pSDRRaster As MapWinGIS.Grid = Nothing  'SDR
+        Dim pSedYieldRaster As MapWinGIS.Grid = Nothing  'Sediment Yield
+        Dim pAccumSedRaster As MapWinGIS.Grid = Nothing  'Accumulated Sed Raster
+        Dim pTotalAccumSedRaster As MapWinGIS.Grid = Nothing  'Total accumulated sediment raster
+        Dim pPermAccumSedRaster As MapWinGIS.Grid = Nothing  'Permanent accumulated sediment raster
+        Dim pPermRUSLELocRaster As MapWinGIS.Grid = Nothing  'RUSLE Local Effects raster
 
         'String to hold calculations
-        Dim strExpression As String
+        Dim strExpression As String = ""
         Const strTitle As String = "Processing RUSLE Calculation..."
         Dim strOutYield As String
-        Dim strOutConc As String
 
 
         Try
@@ -426,7 +421,6 @@ Module modRusle
                 _picks = strConStatement.Split(",")
 
                 Dim factcalc As New RasterMathCellCalc(AddressOf factCellCalc)
-                pCFactorRaster = Nothing
                 RasterMath(pLandSampleRaster, Nothing, Nothing, Nothing, Nothing, pCFactorRaster, factcalc)
 
                 'END STEP 1: ------------------------------------------------------------------------------
@@ -437,8 +431,6 @@ Module modRusle
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
 
                 Dim soillosscalc As New RasterMathCellCalc(AddressOf soillossCellCalc)
-                pSoilLossRaster = Nothing
-
                 If Not _booUsingConstantValue Then 'If not using a constant
                     RasterMath(g_pLSRaster, g_KFactorRaster, pCFactorRaster, g_RFactorRaster, Nothing, pSoilLossRaster, soillosscalc)
                     'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
@@ -454,7 +446,6 @@ Module modRusle
             If modProgDialog.g_boolCancel Then
                 'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
                 Dim lossaccalc As New RasterMathCellCalc(AddressOf lossacCellCalc)
-                pSoilLossAcres = Nothing
                 RasterMath(pSoilLossRaster, Nothing, Nothing, Nothing, Nothing, pSoilLossAcres, lossaccalc)
 
                 'END STEP 3: ------------------------------------------------------------------------------
@@ -468,7 +459,6 @@ Module modRusle
                 If modProgDialog.g_boolCancel Then
                     'STEP 4: DAVE'S WACKY CALCULATION OF RELIEF-LENGTH RATIO FOR SEDIMENT DELIVERY RATIO-------
                     Dim pZSedcalc As New RasterMathCellCalc(AddressOf pZSedCellCalc)
-                    pZSedDelRaster = Nothing
                     RasterMath(g_NibbleRaster, g_DEMTwoCellRaster, Nothing, Nothing, Nothing, pZSedDelRaster, pZSedcalc)
 
                     'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
@@ -480,7 +470,6 @@ Module modRusle
                 If modProgDialog.g_boolCancel Then
                     'STEP 5: CALCULATE SEDIMENT DELIVERY RATIO ------------------------------------------------
                     Dim areaKMcalc As New RasterMathCellCalc(AddressOf areaKMCellCalc)
-                    pCellAreaKMRaster = Nothing
                     RasterMath(g_pDEMRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaKMRaster, areaKMcalc)
                     
                     'NOTE: Original equation is cellarea_km = ([cellsize] / 1000).  To get cell_size I do a CON on the DEM.
@@ -494,7 +483,6 @@ Module modRusle
                 If modProgDialog.g_boolCancel Then
                     'STEP 6: -----------------------------------------------------------------------------------
                     Dim pDAcalc As New RasterMathCellCalc(AddressOf pDACellCalc)
-                    pDASedDelRaster = Nothing
                     RasterMath(pCellAreaKMRaster, Nothing, Nothing, Nothing, Nothing, pDASedDelRaster, pDAcalc)
                     'strExpression = "Pow([cellarea_km], 2)"
 
@@ -506,7 +494,6 @@ Module modRusle
 
                     'STEP 7: temp3 = Pow([da_sed_del], -0.998) ---------------------------------------------------
                     Dim temp3calc As New RasterMathCellCalc(AddressOf temp3CellCalc)
-                    pTemp3Raster = Nothing
                     RasterMath(pDASedDelRaster, Nothing, Nothing, Nothing, Nothing, pTemp3Raster, temp3calc)
                     'strExpression = "Pow([da_sed_del], -0.0998)"
                     'END STEP 7: --------------------------------------------------------------------------------
@@ -517,7 +504,6 @@ Module modRusle
 
                     'STEP 8: temp4 = Pow([zl_sed_del], -0.0998) ---------------------------------------------------
                     Dim temp4calc As New RasterMathCellCalc(AddressOf temp4CellCalc)
-                    pTemp4Raster = Nothing
                     RasterMath(pZSedDelRaster, Nothing, Nothing, Nothing, Nothing, pTemp4Raster, temp4calc)
                     'strExpression = "Pow([zl_sed_del], 0.3629)"
 
@@ -529,7 +515,6 @@ Module modRusle
 
                     'STEP 9: temp5 = Pow([scsgrid100], 5.444) ---------------------------------------------------
                     Dim temp5calc As New RasterMathCellCalc(AddressOf temp5CellCalc)
-                    pTemp5Raster = Nothing
                     RasterMath(g_pSCS100Raster, Nothing, Nothing, Nothing, Nothing, pTemp5Raster, temp5calc)
                     'strExpression = "Pow([scsgrid100], 5.444)"
                     'END STEP 9: --------------------------------------------------------------------------------
@@ -539,7 +524,6 @@ Module modRusle
                 If modProgDialog.g_boolCancel Then
                     'STEP 9: temp6 = 1.366 * [temp2] * [temp3] * [temp4] * [temp5] -------------------------------
                     Dim temp6calc As New RasterMathCellCalc(AddressOf temp6CellCalc)
-                    pTemp6Raster = Nothing
                     RasterMath(pTemp3Raster, pTemp4Raster, pTemp5Raster, Nothing, Nothing, pTemp6Raster, temp6calc)
                     'strExpression = "1.366 * (Pow(10, -11)) * [temp3] * [temp4] * [temp5]"
                     'END STEP 9: --------------------------------------------------------------------------------
@@ -550,7 +534,6 @@ Module modRusle
 
                     'STEP 10:
                     Dim SDRcalc As New RasterMathCellCalc(AddressOf SDRCellCalc)
-                    pSDRRaster = Nothing
                     RasterMath(pTemp6Raster, Nothing, Nothing, Nothing, Nothing, pSDRRaster, SDRcalc)
                     'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
                     'END STEP 10: --------------------------------------------------------------------------------
@@ -567,7 +550,6 @@ Module modRusle
             If modProgDialog.g_boolCancel Then
                 'STEP 11: sed_yield = [soil_loss_ac] * [sdr] -------------------------------------------------
                 Dim SedYieldcalc As New RasterMathCellCalc(AddressOf SedYieldCellCalc)
-                pSedYieldRaster = Nothing
                 RasterMath(pSDRRaster, pSoilLossAcres, Nothing, Nothing, Nothing, pSedYieldRaster, SedYieldcalc)
                 'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
                 'END STEP 11: --------------------------------------------------------------------------------
@@ -587,7 +569,6 @@ Module modRusle
                         'TODO again
                         'pClipLocRusleRaster = modUtil.ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, pEnv)
                         'pPermRUSLELocRaster = modUtil.ReturnPermanentRaster(pClipLocRusleRaster, pEnv.OutWorkspace.PathName, strOutYield)
-                        'pClipLocRusleRaster = Nothing
                     Else
                         'TODO: again
                         'pPermRUSLELocRaster = modUtil.ReturnPermanentRaster(pSedYieldRaster, pEnv.OutWorkspace.PathName, strOutYield)
@@ -635,7 +616,6 @@ Module modRusle
 
                 'STEP 13: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
                 Dim totacccalc As New RasterMathCellCalc(AddressOf totaccCellCalc)
-                pTotalAccumSedRaster = Nothing
                 RasterMath(pAccumSedRaster, pSedYieldRaster, Nothing, Nothing, Nothing, pTotalAccumSedRaster, totacccalc)
                 'strExpression = "[accumsed] + [sedyield]"
 
@@ -643,30 +623,30 @@ Module modRusle
             End If
 
 
-            'modProgDialog.ProgDialog("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, 13, (frmPrj.m_App.hwnd))
+            modProgDialog.ProgDialog("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, 13, 0)
 
-            'Dim pClipRUSLERaster As ESRI.ArcGIS.Geodatabase.IRaster
-            'If modProgDialog.g_boolCancel Then
-            '    strOutYield = modUtil.GetUniqueName("RUSLE", modUtil.SplitWorkspaceName(pEnv.OutWorkspace.PathName))
+            Dim pClipRUSLERaster As MapWinGIS.Grid
+            If modProgDialog.g_boolCancel Then
+                strOutYield = modUtil.GetUniqueName("RUSLE", g_strWorkspace, ".tif")
 
-            '    'Clip to selected polys if chosen
-            '    If g_booSelectedPolys Then
-            '        pClipRUSLERaster = modUtil.ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, pEnv)
-            '        pPermAccumSedRaster = modUtil.ReturnPermanentRaster(pClipRUSLERaster, pEnv.OutWorkspace.PathName, strOutYield)
-            '        pClipRUSLERaster = Nothing
-            '    Else
-            '        pPermAccumSedRaster = modUtil.ReturnPermanentRaster(pTotalAccumSedRaster, pEnv.OutWorkspace.PathName, strOutYield)
-            '    End If
+                'Clip to selected polys if chosen
+                If g_booSelectedPolys Then
+                    'TODO
+                    'pClipRUSLERaster = modUtil.ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, pEnv)
+                    'pPermAccumSedRaster = modUtil.ReturnPermanentRaster(pClipRUSLERaster, pEnv.OutWorkspace.PathName, strOutYield)
+                Else
+                    'pPermAccumSedRaster = modUtil.ReturnPermanentRaster(pTotalAccumSedRaster, pEnv.OutWorkspace.PathName, strOutYield)
+                End If
 
-            '    pRUSLERasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermAccumSedRaster, "Accumulated Sediment (kg)")
-            '    pRUSLERasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pRUSLERasterLayer, "Brown")
-            '    pRUSLERasterLayer.Visible = False
+                'Metadata
+                g_dicMetadata.Add("Accumulated Sediment (kg)", _strRusleMetadata)
 
-            '    'Metadata
-            '    g_dicMetadata.Add(pRUSLERasterLayer.Name, m_strRusleMetadata)
-
-            '    g_pGroupLayer.Add(pRUSLERasterLayer)
-            'End If
+                'TODO
+                'pRUSLERasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermAccumSedRaster, "Accumulated Sediment (kg)")
+                'pRUSLERasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pRUSLERasterLayer, "Brown")
+                'pRUSLERasterLayer.Visible = False
+                'g_pGroupLayer.Add(pRUSLERasterLayer)
+            End If
 
 
             CalcRUSLE = True
