@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<metadata>
+	<idinfo>
+		<citation>
+			<citeinfo>
+				<origin>NOAA Coastal Services Center</origin>
+				<pubdate>20040806</pubdate>
+				<title>landcover</title>
+				<geoform>Map</geoform>
+				<pubinfo>
+					<pubplace>NOAA Coastal Services Center, Charleston, SC</pubplace>
+					<publish>NOAA Coastal Services Center</publish>
+				</pubinfo>
+				<lworkcit>
+					<citeinfo>
+						<origin>NOAA Coastal Services Center</origin>
+						<pubdate>20040806</pubdate>
+						<title>N-SPECT</title>
+						<pubinfo>
+							<pubplace>NOAA Coastal Services Center, Charleston, SC</pubplace>
+							<publish>NOAA Coastal Services Center</publish>
+						</pubinfo>
+						<onlink>http://www.csc.noaa.gov/crs</onlink>
+					</citeinfo>
+				</lworkcit>
+				<ftname Sync="TRUE">landcover</ftname><onlink Sync="TRUE">\\CSC-WS-00824348\C$\NSPECT\WaianaeData\landcover</onlink></citeinfo>
+		</citation>
+		<descript>
+			<abstract>
+Wai'anae Landcover
+The Nonpoint Source Pollution and Erosion Comparison Tool (N-SPECT)
+was developed by the National Oceanic and Atmospheric Administration
+(NOAA) Coastal Services Center to accompany the Wai'anae Ecological
+Characterization being developed by the Hawaii Coastal Zone
+Management (CZM) program.  N-SPECT examines the relationship between
+land cover, nonpoint source pollution, and erosion.  N-SPECT is an
+extension to Environmental Systems Research Institutes (ESRI) ArcGIS
+software package, version 8.3 and requires the Spatial Analyst
+extension.  N-SPECT is designed to be portable to any watershed,
+provided the user has access to the necessary data. Data provided
+with N-SPECT are for the Wai'anae ahupua'a, the original study area
+located on the western side of Oahu, Hawaii.  The Wai'anae ahupua'a
+is the collection of catchments that drain the Wai'anae mountains
+westward to the Wai'anae coast (west coast of Oahu, HI), including
+Kaluakauila, Makua, Keaau, Makaha, Kaupuni, Kamaileunu, Mailiili,
+Ulehawa, and Nanakuli.  The Landcover data file is a grid that
+represents different land cover classes as determined by the NOAA
+Coastal Change Analysis Program (C-CAP).
+</abstract>
+			<purpose>
+This data set was created to provide resource managers working in the
+Wai'anae Ahupua'a with an accurate representation of land cover
+classes.  Land cover data is the basis of N-SPECT’s functionality.
+Land cover is used to estimate pollutant loads by applying
+coefficients for each pollutant to each land cover classification.
+</purpose>
+			<langdata Sync="TRUE">en</langdata></descript>
+		<timeperd>
+			<timeinfo>
+				<rngdates>
+					<begdate>20000901</begdate>
+					<enddate>20010815</enddate>
+				</rngdates>
+				<sngdate><caldate>REQUIRED: The year (and optionally month, or month and day) for which the data set corresponds to the ground.</caldate></sngdate></timeinfo>
+			<current>Ground conditions</current>
+		</timeperd>
+		<status>
+			<progress>Complete</progress>
+			<update>None planned</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc>-158.281681</westbc>
+				<eastbc>-158.089438</eastbc>
+				<northbc>21.574541</northbc>
+				<southbc>21.368444</southbc>
+			</bounding>
+			<lboundng><leftbc Sync="TRUE">574469.461065</leftbc><rightbc Sync="TRUE">594269.461065</rightbc><bottombc Sync="TRUE">2363234.375478</bottombc><topbc Sync="TRUE">2385884.375478</topbc></lboundng></spdom>
+		<keywords>
+			<theme>
+				<themekt>None</themekt>
+				<themekey>Land cover</themekey>
+				<themekey>C-CAP</themekey>
+			</theme>
+			<place>
+				<placekt>None</placekt>
+				<placekey>USA</placekey>
+				<placekey>Hawaii</placekey>
+				<placekey>Coastal Zone</placekey>
+				<placekey>Oahu</placekey>
+				<placekey>Wai'anae</placekey>
+			</place>
+		</keywords>
+		<accconst>None</accconst>
+		<useconst>
+Data set is not for use in litigation. While efforts have been
+made to ensure that these data are accurate and reliable within
+the state of the art, NOAA, cannot assume liability for any
+damages, or misrepresentations, caused by any inaccuracies in the
+data, or as a result of the data to be used on a particular
+system. NOAA makes no warranty, expressed or implied, nor does the
+fact of distribution constitute such a warranty.
+</useconst>
+		<ptcontac>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>NOAA Coastal Services Center</cntorg>
+				</cntorgp>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>2234 S. Hobson Ave.</address>
+					<city>Charleston</city>
+					<state>South Carolina</state>
+					<postal>29405-2413</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>(843) 740-1200</cntvoice>
+				<cntfax>(843) 740-1290</cntfax>
+			</cntinfo>
+		</ptcontac>
+		<native Sync="TRUE">Microsoft Windows 2000 Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 8.3.0.800</native><natvform Sync="TRUE">Raster Dataset</natvform></idinfo>
+	<dataqual>
+		<attracc>
+			<attraccr>
+A team of field investigators participated in data verification exercises
+in June 2001.  Data validation teams consisted of personnel from the NOAA
+Coastal Services Center and Hawaii Dept. of Forestry and Wildlife.  The team
+was equipped with a portable color laptop computer linked to a Global
+Positioning System (GPS). The field computer runs software that supports
+the classified data as a raster background with the road network as a vector
+overlay with a simultaneous display of live GPS coordinates. Accuracy
+assessment points were generated with ERDAS Imagine software using a stratified
+random sample in 3x3 pixel homogeneous windows. To make the acquisition of the
+field reference data more practical, a twenty pixel buffer area around roads
+(i.e. 10 pixels on each side of the road) was created. 5,000 random points
+were generated within this area for the accuracy assessment. Out of these 5,000 points
+353 were visitred for accuracy verification procedures.
+
+Pre-Processing Steps:
+Reprojected from Albers Equal Area Conic to UTM
+NAD 1983
+
+Ancillary data sets:
+MAjor and Minor Roads from HI DNLR, Wetlands from HI DNLR,
+10 meter DEM from USGS, 1-3 meter black/white 1997 DOQ data derived from
+multiple sources, Agricultural Lands from HI DNLR.
+
+Shoreline features can be extracted from Landsat images by
+detecting the land/water interface.  However, care must be used
+to avoid misinterpreting tidal differences as changes in
+shorelines, since the satellite images from which these land
+cover images are derived and acquired at different tidal stages,
+depending on when the satellite is overhead. The land cover
+classifications represent the instantaneous state of the
+shoreline at the moment of image acquisition.
+C-CAP data are mapped at 1:100,000 scale with 22 standard
+classes constituting major landscape components. They are not
+jurisdictional (can't be used for permitting) and will not
+identify individual species. However, they are useful for
+identifying regional landscape patterns, major functional
+niches, environmental impact assessment, urban planning, and
+zoning applications. If you need change analysis data at this
+scale, C-CAP may be your only option. C-CAP is designed around a
+1 to 5 year revisit cycle.
+Land Cover is the complete human and natural landscape recorded
+as surface components - forest, water, wetlands, concrete,
+asphalt, etc. Land cover can be documented by analyzing spectral
+signatures of satellite and aerial imagery.
+Land Use is the documentation of human uses of the landscape -
+residential, commercial, agricultural, etc. Land use can be
+inferred but, not explicitly derived from satellite and aerial
+imagery. There is no spectral basis for land use determination
+in satellite imagery.
+C-CAP data can be used to identify concrete and asphalt as land
+cover, but we can only infer that these materials denote a
+residential or commercial use.
+
+Post-Processing Steps:
+None
+
+Known Problems:
+The combination of tropical latitudes, steep
+topography, and large bodies of open water
+contribute to frequent cloud cover in the Hawaiian
+Islands.  While ETM imagery was selected to
+minimize the amount of cloud cover, multiple scene
+dates were still required to map each island.  In
+some cases no clear imagery was available for
+portions of the land surface, therefore an
+unclassified category is included.
+Accuracy Results:
+
+This data set was found to be 94.9%
+accurate with a kappa coefficient of agreement
+equal to .94
+</attraccr>
+		</attracc>
+		<logic>
+Tests for logical consistency indicate that all row and column positions
+in the selected latitude/longitude window contain data. Conversion and
+integration with vector files indicates that all positions are
+consistent with earth coordinates covering the same area. Attribute
+files appear to be logically consistent.
+</logic>
+		<complete>
+The classification scheme comprehensively includes all anticipated land
+covers, however, not all pixels have been classified. The NOAA Coastal Change
+Analysis Program (C-CAP): Guidance for Regional Implementation, NOAA
+National Marine Fisheries Service Report 123, discusses the interagency
+effort to develop the land cover classification scheme and defines all
+categories.
+</complete>
+		<posacc>
+			<horizpa>
+				<horizpar>
+Precision corrected images were purchased from the EROS Data Center
+in Albers Equal Area WGS 84 to an RMSE +/- 0.5 pixels.
+</horizpar>
+			</horizpa>
+			<vertacc>
+				<vertaccr>
+There was no terrain correction in the georeferencing
+procedure.
+</vertaccr>
+			</vertacc>
+		</posacc>
+		<lineage>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>EROS Data Center</origin>
+						<pubdate>Unknown</pubdate>
+						<title>Landsat Enhanced Thematic Mapper</title>
+						<geoform>remote-sensing image</geoform>
+						<pubinfo>
+							<pubplace>Sioux Falls, SD</pubplace>
+							<publish>EROS Data Center</publish>
+						</pubinfo>
+						<onlink>http://edc.usgs.gov/eros-home.html</onlink>
+					</citeinfo>
+				</srccite>
+				<typesrc>cdrom</typesrc>
+				<srctime>
+					<timeinfo>
+						<mdattim>
+							<sngdate>
+								<caldate>20000127</caldate>
+							</sngdate>
+							<sngdate>
+								<caldate>20000212</caldate>
+							</sngdate>
+							<sngdate>
+								<caldate>20000221</caldate>
+							</sngdate>
+							<sngdate>
+								<caldate>19990703</caldate>
+							</sngdate>
+						</mdattim>
+					</timeinfo>
+					<srccurr>publication date</srccurr>
+				</srctime>
+				<srccitea>EROS</srccitea>
+				<srccontr>C-CAP Program</srccontr>
+			</srcinfo>
+			<procstep>
+				<procdesc>
+The processing steps for each C-CAP Hawaii Land Cover, Oahu
+Island product are intricately associated. Each
+database is the result of many processing steps with numerous
+iterations for each step. The output of one processing step or
+database is often the input data for another processing
+step. A brief description of the processing steps used in the
+land cover classification of the this project follows. Further
+description of the processing steps can be found in the NOAA
+Coastal Change Analysis Program (C-CAP): Guidance for Regional
+Implementation, NOAA National Marine Fisheries Service Report
+123 (Dobson et al, 1995).
+Baseline Classification Process:
+The Hawaii Oahu Island land cover product was processed using an iterative
+classification approach.  Landsat Enhanced Thematic Mapper data
+for path/row/dates: 664/46 1-27-00, 64/45 7-3-99, 64/45 2-28-00,
+64/45 2-12-00 were analyzed to create a land cover for the island
+of Oahu.  Each scene was individually classified, focusing first
+on separating major categories (e.g. water, forest, marsh, herbaceous
+upland, and developed) using standard supervised classification techniques.
+Through field work in December 2000 numerous individual areas were
+chosen as training sites for the land cover classification.  The
+mean and covariance statistics for these areas are passed to an
+isodata classification algorithm that assigns an unknown pixel to
+the class in which it has the highest probability of being a member.
+Then iterative unsupervised classifications were performed on each
+major category individually by masking out all other major categories.
+With this type of unsupervised classification, the computer is allowed
+to query the multispectral properties of the masked scene using user
+specified criteria and to identify X mutually exclusive clusters in
+N-dimensional feature space.  By masking out all data but a single
+major category, the spectral variance is greatly reduced thus decreasing
+classification errors.  After several classification iterations of the
+masked data, final classification labels were assigned to the spectral clusters.
+Changes among major categories were permitted to occur even at this stage of
+processing.  Subsequent field work and the use of collateral data such as
+multiple source DOQs, TIGER road data, wetlands from HI DLNR, and 10 Meter
+DEMs from USGS led to further refinements in the image classification.
+In small areas where landcover class confusion could not be separated spectrally,
+human pattern recognition was used to recode the data.
+
+Attribute Table
+0       Background
+1       Unclassified
+2       High Intensity Developed
+3       Low Intensity Developed
+4       Cultivated Land
+5       Grassland
+6       Deciduous Forest
+7       Evergreen Forest
+8       Mixed Forest
+9       Scrub/Shrub
+10      Palustrine Forested Wetland
+11      Palustrine Scrub/Shrub Wetland
+12      Palustrine Emergent Wetland
+13      Estuarine Forested Wetland
+14      Estuarine Scrub/Shrub Wetland
+15      Estuarine Emergent Wetland
+16      Unconsolidated Shore
+17      Bare Land
+18      Water
+19      Palustrine Aquatic Bed
+20      Estuarine Aquatic Bed
+21      Tundra
+22      Snow/Ice
+</procdesc>
+				<procdate>20000601</procdate>
+				<proccont>
+					<cntinfo>
+						<cntorgp>
+							<cntorg>
+NOAA Coastal Services Center Coastal Change
+Analysis Program (C-CAP)
+</cntorg>
+						</cntorgp>
+						<cntpos>CRS Program Manager</cntpos>
+						<cntaddr>
+							<addrtype>mailing and physical address</addrtype>
+							<address>2234 S. Hobson Ave.</address>
+							<city>Charleston</city>
+							<state>SC</state>
+							<postal>29405</postal>
+							<country>USA</country>
+						</cntaddr>
+						<cntvoice>843-740-1210</cntvoice>
+						<cntfax>843-740-1224</cntfax>
+						<cntemail>csc@csc.noaa.gov</cntemail>
+						<hours>
+Monday to Friday, 8 a.m. to 5 p.m., Eastern
+Standard Time
+</hours>
+					</cntinfo>
+				</proccont>
+			</procstep>
+			<procstep>
+				<procdesc>
+This data was projected to Universal Transverse Mercator zone
+4 with a horizontal datum of NAD83 using ERDAS Imagine.
+</procdesc>
+				<procdate>Unknown</procdate>
+				<proccont>
+					<cntinfo>
+						<cntorgp>
+							<cntorg>NOAA Coastal Services Center</cntorg>
+						</cntorgp>
+						<cntpos>CRS Program Manager</cntpos>
+						<cntaddr>
+							<addrtype>mailing and physical address</addrtype>
+							<address>2234 S. Hobson Ave.</address>
+							<city>Charleston</city>
+							<state>SC</state>
+							<postal>29405</postal>
+							<country>USA</country>
+						</cntaddr>
+						<cntvoice>843-740-1210</cntvoice>
+						<cntfax>843-740-1224</cntfax>
+						<cntemail>csc@csc.noaa.gov</cntemail>
+						<hours>Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time</hours>
+					</cntinfo>
+				</proccont>
+			</procstep>
+			<procstep>
+				<procdesc>
+This data was subset from the island wide data set using the raster
+file dem_30 to define the spatial extent.  This operation
+was performed using ESRI's ArcGIS Spatial Analyst extension.
+</procdesc>
+				<procdate>Unknown</procdate>
+				<proccont>
+					<cntinfo>
+						<cntorgp>
+							<cntorg>NOAA Coastal Services Center</cntorg>
+						</cntorgp>
+						<cntpos>N-SPECT Project Manager</cntpos>
+						<cntaddr>
+							<addrtype>mailing and physical address</addrtype>
+							<address>2234 S. Hobson Ave.</address>
+							<city>Charleston</city>
+							<state>SC</state>
+							<postal>29405</postal>
+							<country>USA</country>
+						</cntaddr>
+						<cntvoice>843-740-1210</cntvoice>
+						<cntfax>843-740-1224</cntfax>
+						<cntemail>csc@csc.noaa.gov</cntemail>
+						<hours>Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time</hours>
+					</cntinfo>
+				</proccont>
+			</procstep>
+			<procstep><procdesc Sync="TRUE">Metadata imported.</procdesc><srcused Sync="TRUE">C:\DOCUME~1\edempsey\LOCALS~1\Temp\xmlD.tmp</srcused><date Sync="TRUE">20041104</date><time Sync="TRUE">08161800</time></procstep></lineage>
+	</dataqual>
+	<spdoinfo>
+		<direct>Raster</direct>
+		<rastinfo><rasttype Sync="TRUE">Grid Cell</rasttype><rowcount Sync="TRUE">755</rowcount><colcount Sync="TRUE">660</colcount><rastxsz Sync="TRUE">30.000000</rastxsz><rastysz Sync="TRUE">30.000000</rastysz><rastbpp Sync="TRUE">8</rastbpp><vrtcount Sync="TRUE">1</vrtcount><rastorig Sync="TRUE">Upper Left</rastorig><rastcmap Sync="TRUE">FALSE</rastcmap><rastcomp Sync="TRUE">Default</rastcomp><rastband Sync="TRUE">1</rastband><rastdtyp Sync="TRUE">matrix values</rastdtyp><rastplyr Sync="TRUE">FALSE</rastplyr><rastifor Sync="TRUE">ESRI GRID</rastifor></rastinfo></spdoinfo>
+	<spref>
+		<horizsys>
+			<planar>
+				<planci>
+					<plance>Row and column</plance>
+					<coordrep>
+						<absres>30</absres>
+						<ordres>30</ordres>
+					</coordrep>
+					<plandu>Meters</plandu>
+				</planci>
+				<gridsys><gridsysn Sync="TRUE">Universal Transverse Mercator</gridsysn><utm><utmzone Sync="TRUE">4</utmzone><transmer><sfctrmer Sync="TRUE">0.999600</sfctrmer><longcm Sync="TRUE">-159.000000</longcm><latprjo Sync="TRUE">0.000000</latprjo><feast Sync="TRUE">500000.000000</feast><fnorth Sync="TRUE">0.000000</fnorth></transmer></utm></gridsys></planar>
+			<geodetic>
+				<horizdn>North American Datum of 1983</horizdn>
+				<ellips>GRS 80</ellips>
+				<semiaxis>6378137.0000000</semiaxis>
+				<denflat>298.26</denflat>
+			</geodetic>
+			<cordsysn><geogcsn Sync="TRUE">GCS_North_American_1983</geogcsn><projcsn Sync="TRUE">NAD_1983_UTM_Zone_4N</projcsn></cordsysn></horizsys>
+	</spref>
+	<eainfo>
+		<detailed Name="landcov_final">
+			<enttyp>
+				<enttypl>Hawaii</enttypl>
+				<enttypd>
+Hawaii coastal zone as delineated by
+Landsat WRS path/row(s) 64/46 1-27-00, 64/45 7-3-99, 64/45 2-28-00,
+64/45 2-12-00, 65/45 12-3-00, 65/45 12-19-00,65/45 11-17-00,
+65/45 11-15-99, 65/45 7-3-99, 65/45 12-17-99.
+</enttypd>
+				<enttypds>unknown</enttypds>
+				<enttypt Sync="TRUE">Table</enttypt><enttypc Sync="TRUE">10</enttypc></enttyp>
+			<attr>
+				<attrlabl>value</attrlabl>
+				<attrdef>
+Landcover Classification as determined by
+NOAA Coastal Change Analysis Program (C- CAP): Guidance for Regional
+Implementation.
+</attrdef>
+				<attrdefs>
+Dobson, J. et al, NOAA Coastal Change Analysis Program (C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</attrdefs>
+				<attrdomv>
+					<edom>
+						<edomv>1 Unclassified</edomv>
+						<edomvd>
+This class contains no
+data due to cloud conditions or data voids.
+</edomvd>
+						<edomvds>N/A</edomvds>
+					</edom>
+					<edom>
+						<edomv>2 High Intensity Developed</edomv>
+						<edomvd>
+Contains little or no vegetation. This subclass includes
+heavily built-up urban centers as well as large
+constructed surfaces in suburban and rural areas.  Large
+buildings (such as multiple family housing, hangars, and
+large barns), interstate highways, and runways typically
+fall into this subclass.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>3 Low Intensity Developed</edomv>
+						<edomvd>
+Contains substantial amounts of constructed surface mixed
+with substantial amounts of vegetated surface. Small
+buildings (such as single family housing, farm
+outbuildings, and sheds), streets, roads, and cemeteries
+with associated grasses and trees typically fall into this
+subclass.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>4 Cultivated Land</edomv>
+						<edomvd>
+Includes herbaceous (cropland) and woody (e.g., orchards,
+nurseries, and vineyards) cultivated lands.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>5 Grassland</edomv>
+						<edomvd>
+Dominated by grasses and non-grasses
+(forbs).
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>6 Deciduous Forest</edomv>
+						<edomvd>
+Includes areas dominated by single stemmed, woody
+vegetation unbranched 0.6 to 1 meter (2 to 3 feet) above
+the ground and having a height greater than 6 meters (20
+feet).
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>7 Evergreen Forest</edomv>
+						<edomvd>
+Includes areas in which more than 67 percent of the trees
+remain green throughout the year. Both coniferous and
+broad-leaved evergreens are included in this category.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>8 Mixed Forest</edomv>
+						<edomvd>
+Contains all forested areas in which both evergreen and
+deciduous trees are growing and neither predominate.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>9 Scrub/Shrub</edomv>
+						<edomvd>
+Areas dominated by woody vegetation less than 6 meters in
+height. This class includes true shrubs,young trees, and
+trees or shrubs that are small or stunted because of
+environmental conditions.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>10 Palustrine Forested Wetland</edomv>
+						<edomvd>
+Includes all nontidal wetlands dominated by woody
+vegetation greater than or equal to 6 meters in height,
+and all such wetlands that occur in tidal areas in which
+salinity due to ocean-derived salts is below 0.5 parts per
+thousand (ppt).
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>11 Palustrine Scrub/Shrub Wetland</edomv>
+						<edomvd>
+Includes all nontidal wetlands dominated by woody
+vegetation less than or equal to 6 meters in height, and
+all such wetlands that occur in tidal areas in which
+salinity due to ocean-derived salts is below 0.5 ppt.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>12 Palustrine Emergent Wetland</edomv>
+						<edomvd>
+Includes all nontidal wetlands dominated by trees, shrubs,
+persistent emergents, emergent mosses, or lichens, and all
+such wetlands that occur in tidal areas in which salinity
+due to ocean- derived salts is below 0.5 ppt.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>13 Estuarine Forest Wetland</edomv>
+						<edomvd>
+Includes all tidal wetlands dominated by woody vegetation
+greater than or equal to 6 meters in height, and all such
+wetlands that occur in tidal areas in which salinity due
+to ocean-derived salts is above 0.5 parts per thousand
+(ppt).
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>14 Estuarine Scrub/Shrub Wetland</edomv>
+						<edomvd>
+Includes all tidal wetlands dominated by woody vegetation
+less than or equal to 6 meters in height, and all such
+wetlands that occur in tidal areas in which salinity due
+to ocean-derived salts is above 0.5 ppt.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>15 Estuarine Emergent</edomv>
+						<edomvd>
+Characterized by erect, rooted, herbaceous hydrophytes
+(excluding mosses and lichens) that are present for most
+of the growing season in most years. Perennial plants
+usually dominate these wetlands. All water regimes are
+included except those that are subtidal and irregularly
+exposed.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>16 Unconsolidated Shore</edomv>
+						<edomvd>
+Characterized by substrates lacking vegetation except for
+pioneering plants that become established during brief
+periods when growing conditions are favorable. Erosion and
+deposition by waves and currents produce a number of
+landforms, such as beaches, bars, and flats, all of which
+are included in this class.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>17 Bare Land</edomv>
+						<edomvd>
+Composed of bare soil, rock, sand, silt, gravel, or other
+earthen material with little or no vegetation.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>18 Water</edomv>
+						<edomvd>
+Includes all areas of open water with less than 30 percent
+cover of trees, shrubs, persistent emergent plants,
+emergent mosses, or lichens.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>19 Palustrine Aquatic Bed</edomv>
+						<edomvd>
+Includes wetlands and deepwater habitats dominated by
+plants that grow principally on or below the surface of
+the water for most of the growing season in most years.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>20 Estuarine Aquatic Bed</edomv>
+						<edomvd>
+Includes widespread and diverse Algal Beds in the Marine
+and Estuarine Systems, where they occupy substrates
+characterized by a wide range of sediment depths and
+textures. They occur in both the Subtidal and Intertidal
+Subsystems and may grow to depths of 30 m (98 feet).
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>21 Tundra</edomv>
+						<edomvd>
+Includes treeless cover beyond the latitudinal limit of
+the boreal forest in poleward regions and above the
+elevation range of the boreal forest in high mountains.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<edom>
+						<edomv>22 Snow/Ice</edomv>
+						<edomvd>
+Includes persistent snow and ice persist for greater
+portions of the year.
+</edomvd>
+						<edomvds>
+Dobson, J. et  al, NOAA Coastal Change Analysis Program(C-CAP):
+Guidance for Regional Implementation, NOAA Technical
+Report NMFS 123, U.S. Department of Commerce, April
+1995.
+</edomvds>
+					</edom>
+					<udom Sync="TRUE">Sequential unique whole numbers that are automatically generated.</udom></attrdomv>
+				<attalias Sync="TRUE">ObjectID</attalias><attrtype Sync="TRUE">OID</attrtype><attwidth Sync="TRUE">4</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>Count</attrlabl>
+				<attrdef>Number of pixels with same value</attrdef>
+				<attrdefs>Software generated</attrdefs>
+				<attrdomv>
+					<udom>Software computed</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">Value</attalias><attrtype Sync="TRUE">Integer</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr><attrlabl Sync="TRUE">Count</attrlabl><attalias Sync="TRUE">Count</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl Sync="TRUE">Name</attrlabl><attalias Sync="TRUE">Name</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">50</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr></detailed>
+	</eainfo>
+	<distinfo>
+		<distrib>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>NOAA Coastal Services Center</cntorg>
+				</cntorgp>
+				<cntpos>N-SPECT Project Manager</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>2234 S Hobson Ave.</address>
+					<city>Charleston</city>
+					<state>SC</state>
+					<postal>29405</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>843-740-1200</cntvoice>
+				<cntfax>843-740-1224</cntfax>
+				<cntemail>csc@csc.noaa.gov</cntemail>
+				<hours>Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.</hours>
+			</cntinfo>
+		</distrib>
+		<distliab>
+Users must assume responsibility to determine the usability of these
+data.
+</distliab>
+		<resdesc Sync="TRUE">Downloadable Data</resdesc><stdorder><digform><digtinfo><transize Sync="TRUE">0.174</transize><dssize Sync="TRUE">0.174</dssize></digtinfo></digform></stdorder></distinfo>
+	<metainfo>
+		<metd>20040809</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>NOAA Coastal Services Center</cntorg>
+					<cntper>REQUIRED: The person responsible for the metadata information.</cntper></cntorgp>
+				<cntpos>N-SPECT Metadata Manager</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>2234 S Hobson Ave.</address>
+					<city>Charleston</city>
+					<state>SC</state>
+					<postal>29405</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>843-740-1200</cntvoice>
+				<cntfax>843-740-1224</cntfax>
+				<cntemail>csc@csc.noaa.gov</cntemail>
+				<hours>Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.</hours>
+			</cntinfo>
+		</metc>
+		<metstdn>FGDC CSDGM</metstdn>
+		<metstdv>FGDC-STD-001-1998</metstdv>
+		<langmeta Sync="TRUE">en</langmeta><mettc Sync="TRUE">local time</mettc><metextns><onlink Sync="TRUE">http://www.esri.com/metadata/esriprof80.html</onlink><metprof Sync="TRUE">ESRI Metadata Profile</metprof></metextns></metainfo>
+	<Esri><MetaID>{03E93C10-2711-4614-B261-8DB289FB691B}</MetaID><CreaDate>20041104</CreaDate><CreaTime>08161800</CreaTime><SyncOnce>FALSE</SyncOnce><SyncDate>20041130</SyncDate><SyncTime>13490800</SyncTime><ModDate>20041130</ModDate><ModTime>13490800</ModTime></Esri><dataIdInfo><envirDesc Sync="TRUE">Microsoft Windows 2000 Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 8.3.0.800</envirDesc><dataLang><languageCode Sync="TRUE" value="en"></languageCode></dataLang><idCitation><resTitle Sync="TRUE">landcover</resTitle><presForm><PresFormCd Sync="TRUE" value="005"></PresFormCd></presForm></idCitation><spatRpType><SpatRepTypCd Sync="TRUE" value="002"></SpatRepTypCd></spatRpType><dataExt><geoEle><GeoBndBox esriExtentType="native"><westBL Sync="TRUE">574469.461065</westBL><eastBL Sync="TRUE">594269.461065</eastBL><northBL Sync="TRUE">2385884.375478</northBL><southBL Sync="TRUE">2363234.375478</southBL><exTypeCode Sync="TRUE">1</exTypeCode></GeoBndBox></geoEle></dataExt><geoBox esriExtentType="decdegrees"><westBL Sync="TRUE">-158.281687</westBL><eastBL Sync="TRUE">-158.089447</eastBL><northBL Sync="TRUE">21.57433</northBL><southBL Sync="TRUE">21.368774</southBL><exTypeCode Sync="TRUE">1</exTypeCode></geoBox></dataIdInfo><mdLang><languageCode Sync="TRUE" value="en"></languageCode></mdLang><mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName><mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer><mdChar><CharSetCd Sync="TRUE" value="004"></CharSetCd></mdChar><mdHrLv><ScopeCd Sync="TRUE" value="005"></ScopeCd></mdHrLv><mdHrLvName Sync="TRUE">dataset</mdHrLvName><distInfo><distributor><distorTran><onLineSrc><orDesc Sync="TRUE">002</orDesc><linkage Sync="TRUE">file://\\CSC-WS-00824348\C$\NSPECT\WaianaeData\landcover</linkage><protocol Sync="TRUE">Local Area Network</protocol></onLineSrc><transSize Sync="TRUE">0.174</transSize></distorTran><distorFormat><formatName Sync="TRUE">Raster Dataset</formatName></distorFormat></distributor></distInfo><refSysInfo><RefSystem><refSysID><identCode Sync="TRUE">NAD_1983_UTM_Zone_4N</identCode></refSysID></RefSystem></refSysInfo><spatRepInfo><GridSpatRep><numDims Sync="TRUE">2</numDims><axDimProps><Dimen><dimName><DimNameTypCd Sync="TRUE" value="002"></DimNameTypCd></dimName><dimSize Sync="TRUE">660</dimSize><dimResol Sync="TRUE">30</dimResol></Dimen><Dimen><dimName><DimNameTypCd Sync="TRUE" value="001"></DimNameTypCd></dimName><dimSize Sync="TRUE">755</dimSize><dimResol Sync="TRUE">30</dimResol></Dimen></axDimProps><cellGeo><CellGeoCd Sync="TRUE" value="002"></CellGeoCd></cellGeo><tranParaAv Sync="TRUE">1</tranParaAv></GridSpatRep></spatRepInfo><mdDateSt Sync="TRUE">20041130</mdDateSt></metadata>
