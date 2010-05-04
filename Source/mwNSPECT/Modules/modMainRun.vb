@@ -185,7 +185,7 @@ Module modMainRun
         Dim sfSelected As MapWinGIS.Shapefile = modUtil.ReturnFeature(strInputSF)
         If Not sfSelected Is Nothing Then
             Dim unionShape As MapWinGIS.Shape = sfSelected.Shape(0)
-            For i As Integer = 1 To sfSelected.NumShapes
+            For i As Integer = 0 To sfSelected.NumShapes
                 unionShape = MapWinGeoProc.SpatialOperations.Union(unionShape, sfSelected.Shape(i))
             Next
             sfSelected.Close()

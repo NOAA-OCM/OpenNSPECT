@@ -37,71 +37,59 @@ Friend Class frmWatershedDelin
 
     Private Sub mnuNewWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewWSDelin.Click
         Dim newWS As New frmNewWSDelin
+        newWS.Init(Me, Nothing)
         newWS.ShowDialog()
     End Sub
 
     Private Sub mnuNewExist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewExist.Click
         Dim newWS As New frmUserWShed
+        newWS.Init(Me, Nothing)
         newWS.ShowDialog()
     End Sub
 
     Private Sub mnuDelWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelWSDelin.Click
 
-        'Dim intAns As Object
-        'Dim strSQLWSDel As String
-        'Dim fldWSDelin As Scripting.FileSystemObject
-        'Dim strFolder As String
+        Dim intAns As Object
+        Dim strSQLWSDel As String
+        Dim strFolder As String
 
-        'strSQLWSDel = "SELECT * FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
+        strSQLWSDel = "DELETE FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
 
-        'If Not (cboWSDelin.Text = "") Then
-        '    intAns = MsgBox("Are you sure you want to delete the watershed delineation scenario '" & VB6.GetItemString(cboWSDelin, cboWSDelin.SelectedIndex) & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
-        '    'code to handle response
-        '    If intAns = MsgBoxResult.Yes Then
+        If Not (cboWSDelin.Text = "") Then
+            intAns = MsgBox("Are you sure you want to delete the watershed delineation scenario '" & cboWSDelin.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
+            'code to handle response
+            If intAns = MsgBoxResult.Yes Then
 
-        '        'Set up a delete rs and get rid of it
-        '        rsWSDelinDelete = New ADODB.Recordset
-        '        rsWSDelinDelete.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-        '        rsWSDelinDelete.Open(strSQLWSDel, modUtil.g_ADOConn, ADODB.CursorTypeEnum.adOpenForwardOnly, ADODB.LockTypeEnum.adLockOptimistic)
+                'Set up a delete rs and get rid of it
+                Dim cmdDel As New OleDbCommand(strSQLWSDel, g_DBConn)
+                cmdDel.ExecuteNonQuery()
 
-        '        rsWSDelinDelete.Delete(ADODB.AffectEnum.adAffectCurrent)
-        '        rsWSDelinDelete.Update()
+                strFolder = modUtil.g_nspectPath & "\wsdelin\" & cboWSDelin.Text
+                If IO.Directory.Exists(strFolder) Then
+                    IO.Directory.Delete(strFolder, True)
+                End If
 
-        '        fldWSDelin = CreateObject("Scripting.FileSystemObject")
-        '        strFolder = modUtil.g_nspectPath & "\wsdelin\" & cboWSDelin.Text
-        '        If fldWSDelin.FolderExists(strFolder) Then
-        '            fldWSDelin.DeleteFolder(strFolder, True)
-        '        End If
+                'Confirm
+                MsgBox(cboWSDelin.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
-        '        'Confirm
-        '        MsgBox(VB6.GetItemString(cboWSDelin, cboWSDelin.SelectedIndex) & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
+                'Clear everything, clean up form
+                cboWSDelin.Items.Clear()
+                chkHydroCorr.CheckState = System.Windows.Forms.CheckState.Unchecked
+                txtDEMFile.Text = ""
+                txtStream.Text = ""
+                txtWSFile.Text = ""
+                txtFlowAccumGrid.Text = ""
 
-        '        'Clear everything, clean up form
-        '        cboWSDelin.Items.Clear()
-        '        chkHydroCorr.CheckState = System.Windows.Forms.CheckState.Unchecked
-        '        txtDEMFile.Text = ""
-        '        txtStream.Text = ""
-        '        txtWSFile.Text = ""
-        '        txtFlowAccumGrid.Text = ""
+                modUtil.InitComboBox(cboWSDelin, "WSDELINEATION")
 
-        '        modUtil.InitComboBox(cboWSDelin, "WSDELINEATION")
+                Me.Refresh()
 
-        '        Me.Refresh()
-
-        '    ElseIf intAns = MsgBoxResult.No Then
-        '        Exit Sub
-        '    End If
-        'Else
-        '    MsgBox("Please select a watershed delineation", MsgBoxStyle.Critical, "No Scenario Selected")
-        'End If
-
-        ''cleanup
-        ''UPGRADE_NOTE: Object fldWSDelin may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        'fldWSDelin = Nothing
-        'rsWSDelinDelete.Close()
-        ''UPGRADE_NOTE: Object rsWSDelinDelete may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        'rsWSDelinDelete = Nothing
-
+            ElseIf intAns = MsgBoxResult.No Then
+                Exit Sub
+            End If
+        Else
+            MsgBox("Please select a watershed delineation", MsgBoxStyle.Critical, "No Scenario Selected")
+        End If
     End Sub
 
     Private Sub mnuWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuWSDelin.Click

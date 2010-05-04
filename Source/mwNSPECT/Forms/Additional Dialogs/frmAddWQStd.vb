@@ -29,7 +29,7 @@ Friend Class frmAddWQStd
                 dgvWaterQuality.Rows(idx).Cells("Pollutant").Value = datPoll.Item("Name")
             Loop
             datPoll.Close()
-
+            cmdSave.Enabled = False
         Catch ex As Exception
             HandleError(True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
@@ -114,6 +114,9 @@ Friend Class frmAddWQStd
         End Try
     End Sub
 
+    Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
+        cmdSave.Enabled = True
+    End Sub
 #End Region
 
 #Region "Helper Functions"
@@ -172,4 +175,6 @@ Friend Class frmAddWQStd
         End Try
     End Sub
 #End Region
+
+
 End Class

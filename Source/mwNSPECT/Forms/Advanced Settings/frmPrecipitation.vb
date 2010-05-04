@@ -6,6 +6,7 @@ Friend Class frmPrecipitation
     Private _boolChange As Boolean
     Private _boolLoad As Boolean
 
+    Private _pInputPrecipDS As MapWinGIS.Grid
 
 #Region "Events"
 
@@ -53,51 +54,35 @@ Friend Class frmPrecipitation
     End Sub
 
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
-        Try
-            'Dim pPrecipRasterDataset As ESRI.ArcGIS.Geodatabase.IRasterDataset
-            'Dim pDistUnit As ESRI.ArcGIS.Geometry.ILinearUnit
-            'Dim intUnit As Short
-            'Dim pProjCoord As ESRI.ArcGIS.Geometry.IProjectedCoordinateSystem
+        Dim pPrecipRasterDataset As MapWinGIS.Grid
+        Dim strProj As String
 
-            'On Error GoTo ErrHandler
+        _pInputPrecipDS = modUtil.AddInputFromGxBrowserText(txtPrecipFile, "Choose Precipitation GRID", Me, 0)
 
-            'm_pInputPrecipDS = AddInputFromGxBrowserText(txtPrecipFile, "Choose Precipitation GRID", Me, 0)
+        If _pInputPrecipDS Is Nothing Then
+            Exit Sub
+        Else
 
-            'If m_pInputPrecipDS Is Nothing Then
-            '    Exit Sub
-            'Else
+            pPrecipRasterDataset = _pInputPrecipDS
+            strProj = CheckSpatialReference(pPrecipRasterDataset)
+            If strProj = "" Then
 
-            '    pPrecipRasterDataset = m_pInputPrecipDS
+                MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                txtPrecipFile.Text = ""
+                Exit Sub
 
-            '    If CheckSpatialReference(pPrecipRasterDataset) Is Nothing Then
+            Else
+                If strProj.ToLower.Contains("units=m") Then
+                    cboPrecipUnits.SelectedIndex = 0
+                Else
+                    cboPrecipUnits.SelectedIndex = 1
+                End If
 
-            '        MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
-            '        txtPrecipFile.Text = ""
-            '        Exit Sub
+                cboPrecipUnits.Refresh()
+            End If
 
-            '    Else
+        End If
 
-            '        pProjCoord = CheckSpatialReference(pPrecipRasterDataset)
-            '        pDistUnit = pProjCoord.CoordinateUnit
-            '        intUnit = pDistUnit.MetersPerUnit
-
-            '        If intUnit = 1 Then
-            '            cboPrecipUnits.SelectedIndex = 0
-            '        Else
-            '            cboPrecipUnits.SelectedIndex = 1
-            '        End If
-
-            '        cboPrecipUnits.Refresh()
-            '    End If
-
-            'End If
-
-
-
-        Catch ex As Exception
-
-        End Try
- 
     End Sub
 
     Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGridUnits.SelectedIndexChanged
@@ -135,32 +120,36 @@ Friend Class frmPrecipitation
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
 
         If CheckParams() = True Then
+            Dim strSQLPrecip As String = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
 
-            'rsPrecipCboClick.Fields("Name").Value = cboScenName.Text
-            'rsPrecipCboClick.Fields("Description").Value = txtDesc.Text
-            'rsPrecipCboClick.Fields("PrecipFileName").Value = txtPrecipFile.Text
-            'rsPrecipCboClick.Fields("PrecipGridUnits").Value = cboGridUnits.SelectedIndex
-            'rsPrecipCboClick.Fields("PrecipUnits").Value = cboPrecipUnits.SelectedIndex
-            'rsPrecipCboClick.Fields("PrecipType").Value = cboPrecipType.SelectedIndex
-            'rsPrecipCboClick.Fields("Type").Value = cboTimePeriod.SelectedIndex
+            Dim precipCmd As New OleDbCommand(strSQLPrecip, modUtil.g_DBConn)
+            Dim precipAdapter As New OleDbDataAdapter(precipCmd)
+            Dim cBuilder As New OleDbCommandBuilder(precipAdapter)
+            cBuilder.QuotePrefix = "["
+            cBuilder.QuoteSuffix = "]"
+            Dim dt As New Data.DataTable
+            precipAdapter.Fill(dt)
 
-            'If cboTimePeriod.SelectedIndex = 0 Then
-            '    rsPrecipCboClick.Fields("RainingDays").Value = CShort(txtRainingDays.Text)
-            'Else
-            '    rsPrecipCboClick.Fields("RainingDays").Value = 0
-            'End If
+            dt.Rows(0)("Name") = cboScenName.Text
+            dt.Rows(0)("Description") = txtDesc.Text
+            dt.Rows(0)("PrecipFileName") = txtPrecipFile.Text
+            dt.Rows(0)("PrecipGridUnits") = cboGridUnits.SelectedIndex
+            dt.Rows(0)("PrecipUnits") = cboPrecipUnits.SelectedIndex
+            dt.Rows(0)("PrecipType") = cboPrecipType.SelectedIndex
+            dt.Rows(0)("Type") = cboTimePeriod.SelectedIndex
 
-            'rsPrecipCboClick.Update()
-            'boolChange = False
+            If cboTimePeriod.SelectedIndex = 0 Then
+                dt.Rows(0)("RainingDays") = CShort(txtRainingDays.Text)
+            Else
+                dt.Rows(0)("RainingDays") = 0
+            End If
+            precipAdapter.Update(dt)
 
-            'MsgBox(cboScenName.Text & " saved successfully.", MsgBoxStyle.OkOnly, "Record Saved")
-            'Me.Close()
+            _boolChange = False
 
-            ''UPGRADE_NOTE: Object rsPrecipCboClick may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'rsPrecipCboClick = Nothing
-
+            MsgBox(cboScenName.Text & " saved successfully.", MsgBoxStyle.OkOnly, "Record Saved")
+            Me.Close()
         Else
-
             Exit Sub
 
         End If
@@ -192,42 +181,36 @@ Friend Class frmPrecipitation
 
     Private Sub mnuDelPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelPrecip.Click
 
-        'Dim intAns As Object
+        Dim intAns As Object
         Dim strSQLPrecipDel As String
         'Dim cntrl As System.Windows.Forms.Control
 
-        strSQLPrecipDel = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
+        strSQLPrecipDel = "DELETE FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
 
         If Not (cboScenName.Text = "") Then
-            'intAns = MsgBox("Are you sure you want to delete the precipitation scenario '" & VB6.GetItemString(cboScenName, cboScenName.SelectedIndex) & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
-            ''code to handle response
-            'If intAns = MsgBoxResult.Yes Then
+            intAns = MsgBox("Are you sure you want to delete the precipitation scenario '" & cboScenName.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
+            'code to handle response
+            If intAns = MsgBoxResult.Yes Then
+                'Set up a delete rs and get rid of it
+                Dim cmdDel As New OleDbCommand(strSQLPrecipDel, g_DBConn)
+                cmdDel.ExecuteNonQuery()
 
-            '    'Set up a delete rs and get rid of it
-            '    rsPrecipDelete = New ADODB.Recordset
-            '    rsPrecipDelete.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-            '    rsPrecipDelete.Open(strSQLPrecipDel, modUtil.g_ADOConn, ADODB.CursorTypeEnum.adOpenForwardOnly, ADODB.LockTypeEnum.adLockOptimistic)
+                MsgBox(cboScenName.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
-            '    rsPrecipDelete.Delete(ADODB.AffectEnum.adAffectCurrent)
-            '    rsPrecipDelete.Update()
-            '    MsgBox(VB6.GetItemString(cboScenName, cboScenName.SelectedIndex) & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
+                'Clear everything, clean up form
+                cboScenName.Items.Clear()
 
-            '    'Clear everything, clean up form
-            '    cboScenName.Items.Clear()
-            '    'cboGridUnits.Clear
-            '    'cboPrecipUnits.Clear
+                txtDesc.Text = ""
+                'txtDuration.Text = ""
+                txtPrecipFile.Text = ""
 
-            '    txtDesc.Text = ""
-            '    'txtDuration.Text = ""
-            '    txtPrecipFile.Text = ""
+                modUtil.InitComboBox(cboScenName, "PRECIPSCENARIO")
 
-            '    modUtil.InitComboBox(cboScenName, "PRECIPSCENARIO")
+                Me.Refresh()
 
-            '    Me.Refresh()
-
-            'ElseIf intAns = MsgBoxResult.No Then
-            '    Exit Sub
-            'End If
+            ElseIf intAns = MsgBoxResult.No Then
+                Exit Sub
+            End If
         Else
             MsgBox("Please select a Precipitation Scenario", MsgBoxStyle.Critical, "No Scenario Selected")
         End If

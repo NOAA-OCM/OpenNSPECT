@@ -62,7 +62,7 @@
         Me.txtCoeffSetName.MaxLength = 0
         Me.txtCoeffSetName.Name = "txtCoeffSetName"
         Me.txtCoeffSetName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtCoeffSetName.Size = New System.Drawing.Size(175, 21)
+        Me.txtCoeffSetName.Size = New System.Drawing.Size(175, 20)
         Me.txtCoeffSetName.TabIndex = 0
         '
         'cmdCancel
@@ -149,6 +149,7 @@
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Add Coefficient Set"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 #End Region 

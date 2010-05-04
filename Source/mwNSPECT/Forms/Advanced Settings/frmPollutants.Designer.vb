@@ -30,11 +30,6 @@
 	Public WithEvents mnuCoeffHelp As System.Windows.Forms.ToolStripMenuItem
 	Public WithEvents mnuHelp As System.Windows.Forms.ToolStripMenuItem
 	Public WithEvents MainMenu1 As System.Windows.Forms.MenuStrip
-	Public dlgColorOpen As System.Windows.Forms.OpenFileDialog
-	Public dlgColorSave As System.Windows.Forms.SaveFileDialog
-	Public dlgColorFont As System.Windows.Forms.FontDialog
-	Public dlgColorColor As System.Windows.Forms.ColorDialog
-	Public dlgColorPrint As System.Windows.Forms.PrintDialog
     Public WithEvents _Label1_5 As System.Windows.Forms.Label
 	Public WithEvents _Label1_6 As System.Windows.Forms.Label
 	Public WithEvents _Label1_7 As System.Windows.Forms.Label
@@ -51,9 +46,7 @@
 	Public WithEvents cmdSave As System.Windows.Forms.Button
 	Public WithEvents cmdQuit As System.Windows.Forms.Button
 	Public WithEvents cboPollName As System.Windows.Forms.ComboBox
-	Public dlgCMD1Open As System.Windows.Forms.OpenFileDialog
-	Public dlgCMD1Save As System.Windows.Forms.SaveFileDialog
-	Public WithEvents _Label1_0 As System.Windows.Forms.Label
+    Public WithEvents _Label1_0 As System.Windows.Forms.Label
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
@@ -73,14 +66,17 @@
         Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuPollHelp = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuCoeffHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.dlgColorOpen = New System.Windows.Forms.OpenFileDialog
-        Me.dlgColorSave = New System.Windows.Forms.SaveFileDialog
-        Me.dlgColorFont = New System.Windows.Forms.FontDialog
-        Me.dlgColorColor = New System.Windows.Forms.ColorDialog
-        Me.dlgColorPrint = New System.Windows.Forms.PrintDialog
         Me.SSTab1 = New System.Windows.Forms.TabControl
         Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage
         Me.dgvCoef = New System.Windows.Forms.DataGridView
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn8 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me._Label1_6 = New System.Windows.Forms.Label
         Me._Label1_7 = New System.Windows.Forms.Label
         Me._Label1_1 = New System.Windows.Forms.Label
@@ -92,25 +88,15 @@
         Me._Label1_5 = New System.Windows.Forms.Label
         Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage
         Me.dgvWaterQuality = New System.Windows.Forms.DataGridView
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.cmdQuit = New System.Windows.Forms.Button
-        Me.cboPollName = New System.Windows.Forms.ComboBox
-        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog
-        Me.dlgCMD1Save = New System.Windows.Forms.SaveFileDialog
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn8 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ColName = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Description = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.PollID = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.cmdSave = New System.Windows.Forms.Button
+        Me.cmdQuit = New System.Windows.Forms.Button
+        Me.cboPollName = New System.Windows.Forms.ComboBox
+        Me._Label1_0 = New System.Windows.Forms.Label
         Me.MainMenu1.SuspendLayout()
         Me.SSTab1.SuspendLayout()
         Me._SSTab1_TabPage0.SuspendLayout()
@@ -156,31 +142,31 @@
         'mnuCoeffNewSet
         '
         Me.mnuCoeffNewSet.Name = "mnuCoeffNewSet"
-        Me.mnuCoeffNewSet.Size = New System.Drawing.Size(138, 22)
+        Me.mnuCoeffNewSet.Size = New System.Drawing.Size(152, 22)
         Me.mnuCoeffNewSet.Text = "&New Set..."
         '
         'mnuCoeffCopySet
         '
         Me.mnuCoeffCopySet.Name = "mnuCoeffCopySet"
-        Me.mnuCoeffCopySet.Size = New System.Drawing.Size(138, 22)
+        Me.mnuCoeffCopySet.Size = New System.Drawing.Size(152, 22)
         Me.mnuCoeffCopySet.Text = "&Copy Set..."
         '
         'mnuCoeffDeleteSet
         '
         Me.mnuCoeffDeleteSet.Name = "mnuCoeffDeleteSet"
-        Me.mnuCoeffDeleteSet.Size = New System.Drawing.Size(138, 22)
+        Me.mnuCoeffDeleteSet.Size = New System.Drawing.Size(152, 22)
         Me.mnuCoeffDeleteSet.Text = "&Delete Set..."
         '
         'mnuCoeffImportSet
         '
         Me.mnuCoeffImportSet.Name = "mnuCoeffImportSet"
-        Me.mnuCoeffImportSet.Size = New System.Drawing.Size(138, 22)
+        Me.mnuCoeffImportSet.Size = New System.Drawing.Size(152, 22)
         Me.mnuCoeffImportSet.Text = "&Import Set..."
         '
         'mnuCoeffExportSet
         '
         Me.mnuCoeffExportSet.Name = "mnuCoeffExportSet"
-        Me.mnuCoeffExportSet.Size = New System.Drawing.Size(138, 22)
+        Me.mnuCoeffExportSet.Size = New System.Drawing.Size(152, 22)
         Me.mnuCoeffExportSet.Text = "&Export Set..."
         '
         'mnuHelp
@@ -240,12 +226,73 @@
         '
         'dgvCoef
         '
+        Me.dgvCoef.AllowUserToAddRows = False
+        Me.dgvCoef.AllowUserToDeleteRows = False
+        Me.dgvCoef.AllowUserToResizeColumns = False
         Me.dgvCoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn6, Me.DataGridViewTextBoxColumn7, Me.DataGridViewTextBoxColumn8})
         Me.dgvCoef.Location = New System.Drawing.Point(14, 106)
         Me.dgvCoef.Name = "dgvCoef"
         Me.dgvCoef.Size = New System.Drawing.Size(486, 348)
         Me.dgvCoef.TabIndex = 20
+        '
+        'DataGridViewTextBoxColumn1
+        '
+        Me.DataGridViewTextBoxColumn1.DataPropertyName = "Value"
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Value"
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        Me.DataGridViewTextBoxColumn1.Width = 53
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        Me.DataGridViewTextBoxColumn2.DataPropertyName = "Name"
+        Me.DataGridViewTextBoxColumn2.HeaderText = "Name"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        Me.DataGridViewTextBoxColumn2.Width = 165
+        '
+        'DataGridViewTextBoxColumn3
+        '
+        Me.DataGridViewTextBoxColumn3.DataPropertyName = "Type1"
+        Me.DataGridViewTextBoxColumn3.HeaderText = "Type 1"
+        Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
+        Me.DataGridViewTextBoxColumn3.Width = 53
+        '
+        'DataGridViewTextBoxColumn4
+        '
+        Me.DataGridViewTextBoxColumn4.DataPropertyName = "Type2"
+        Me.DataGridViewTextBoxColumn4.HeaderText = "Type 2"
+        Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
+        Me.DataGridViewTextBoxColumn4.Width = 53
+        '
+        'DataGridViewTextBoxColumn5
+        '
+        Me.DataGridViewTextBoxColumn5.DataPropertyName = "Type3"
+        Me.DataGridViewTextBoxColumn5.HeaderText = "Type 3"
+        Me.DataGridViewTextBoxColumn5.Name = "DataGridViewTextBoxColumn5"
+        Me.DataGridViewTextBoxColumn5.Width = 53
+        '
+        'DataGridViewTextBoxColumn6
+        '
+        Me.DataGridViewTextBoxColumn6.DataPropertyName = "Type4"
+        Me.DataGridViewTextBoxColumn6.HeaderText = "Type 4"
+        Me.DataGridViewTextBoxColumn6.Name = "DataGridViewTextBoxColumn6"
+        Me.DataGridViewTextBoxColumn6.Width = 53
+        '
+        'DataGridViewTextBoxColumn7
+        '
+        Me.DataGridViewTextBoxColumn7.DataPropertyName = "CoeffID"
+        Me.DataGridViewTextBoxColumn7.HeaderText = "SetID"
+        Me.DataGridViewTextBoxColumn7.Name = "DataGridViewTextBoxColumn7"
+        Me.DataGridViewTextBoxColumn7.Visible = False
+        '
+        'DataGridViewTextBoxColumn8
+        '
+        Me.DataGridViewTextBoxColumn8.DataPropertyName = "LCCLASSID"
+        Me.DataGridViewTextBoxColumn8.HeaderText = "LCClassID"
+        Me.DataGridViewTextBoxColumn8.Name = "DataGridViewTextBoxColumn8"
+        Me.DataGridViewTextBoxColumn8.Visible = False
         '
         '_Label1_6
         '
@@ -353,11 +400,11 @@
         Me.txtLCType.Enabled = False
         Me.txtLCType.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtLCType.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtLCType.Location = New System.Drawing.Point(365, 32)
+        Me.txtLCType.Location = New System.Drawing.Point(374, 32)
         Me.txtLCType.MaxLength = 0
         Me.txtLCType.Name = "txtLCType"
         Me.txtLCType.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtLCType.Size = New System.Drawing.Size(111, 20)
+        Me.txtLCType.Size = New System.Drawing.Size(102, 20)
         Me.txtLCType.TabIndex = 7
         '
         '_Label1_5
@@ -385,12 +432,45 @@
         '
         'dgvWaterQuality
         '
+        Me.dgvWaterQuality.AllowUserToAddRows = False
+        Me.dgvWaterQuality.AllowUserToDeleteRows = False
+        Me.dgvWaterQuality.AllowUserToResizeColumns = False
         Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColName, Me.Description, Me.Threshold, Me.PollID})
         Me.dgvWaterQuality.Location = New System.Drawing.Point(22, 29)
         Me.dgvWaterQuality.Name = "dgvWaterQuality"
         Me.dgvWaterQuality.Size = New System.Drawing.Size(479, 312)
         Me.dgvWaterQuality.TabIndex = 19
+        '
+        'ColName
+        '
+        Me.ColName.DataPropertyName = "Name"
+        Me.ColName.HeaderText = "Name"
+        Me.ColName.Name = "ColName"
+        Me.ColName.ReadOnly = True
+        Me.ColName.Width = 133
+        '
+        'Description
+        '
+        Me.Description.DataPropertyName = "Description"
+        Me.Description.HeaderText = "Description"
+        Me.Description.Name = "Description"
+        Me.Description.ReadOnly = True
+        Me.Description.Width = 205
+        '
+        'Threshold
+        '
+        Me.Threshold.DataPropertyName = "Threshold"
+        Me.Threshold.HeaderText = "Threshold"
+        Me.Threshold.Name = "Threshold"
+        Me.Threshold.Width = 95
+        '
+        'PollID
+        '
+        Me.PollID.DataPropertyName = "POLL_WQCRITID"
+        Me.PollID.HeaderText = "PollID"
+        Me.PollID.Name = "PollID"
+        Me.PollID.Visible = False
         '
         'Label2
         '
@@ -461,94 +541,6 @@
         Me._Label1_0.Size = New System.Drawing.Size(89, 17)
         Me._Label1_0.TabIndex = 0
         Me._Label1_0.Text = "Pollutant Name:"
-        '
-        'DataGridViewTextBoxColumn1
-        '
-        Me.DataGridViewTextBoxColumn1.DataPropertyName = "Value"
-        Me.DataGridViewTextBoxColumn1.HeaderText = "Value"
-        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
-        Me.DataGridViewTextBoxColumn1.ReadOnly = True
-        Me.DataGridViewTextBoxColumn1.Width = 53
-        '
-        'DataGridViewTextBoxColumn2
-        '
-        Me.DataGridViewTextBoxColumn2.DataPropertyName = "Name"
-        Me.DataGridViewTextBoxColumn2.HeaderText = "Name"
-        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
-        Me.DataGridViewTextBoxColumn2.ReadOnly = True
-        Me.DataGridViewTextBoxColumn2.Width = 165
-        '
-        'DataGridViewTextBoxColumn3
-        '
-        Me.DataGridViewTextBoxColumn3.DataPropertyName = "Type1"
-        Me.DataGridViewTextBoxColumn3.HeaderText = "Type 1"
-        Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
-        Me.DataGridViewTextBoxColumn3.Width = 53
-        '
-        'DataGridViewTextBoxColumn4
-        '
-        Me.DataGridViewTextBoxColumn4.DataPropertyName = "Type2"
-        Me.DataGridViewTextBoxColumn4.HeaderText = "Type 2"
-        Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
-        Me.DataGridViewTextBoxColumn4.Width = 53
-        '
-        'DataGridViewTextBoxColumn5
-        '
-        Me.DataGridViewTextBoxColumn5.DataPropertyName = "Type3"
-        Me.DataGridViewTextBoxColumn5.HeaderText = "Type 3"
-        Me.DataGridViewTextBoxColumn5.Name = "DataGridViewTextBoxColumn5"
-        Me.DataGridViewTextBoxColumn5.Width = 53
-        '
-        'DataGridViewTextBoxColumn6
-        '
-        Me.DataGridViewTextBoxColumn6.DataPropertyName = "Type4"
-        Me.DataGridViewTextBoxColumn6.HeaderText = "Type 4"
-        Me.DataGridViewTextBoxColumn6.Name = "DataGridViewTextBoxColumn6"
-        Me.DataGridViewTextBoxColumn6.Width = 53
-        '
-        'DataGridViewTextBoxColumn7
-        '
-        Me.DataGridViewTextBoxColumn7.DataPropertyName = "CoeffID"
-        Me.DataGridViewTextBoxColumn7.HeaderText = "SetID"
-        Me.DataGridViewTextBoxColumn7.Name = "DataGridViewTextBoxColumn7"
-        Me.DataGridViewTextBoxColumn7.Visible = False
-        '
-        'DataGridViewTextBoxColumn8
-        '
-        Me.DataGridViewTextBoxColumn8.DataPropertyName = "LCCLASSID"
-        Me.DataGridViewTextBoxColumn8.HeaderText = "LCClassID"
-        Me.DataGridViewTextBoxColumn8.Name = "DataGridViewTextBoxColumn8"
-        Me.DataGridViewTextBoxColumn8.Visible = False
-        '
-        'ColName
-        '
-        Me.ColName.DataPropertyName = "Name"
-        Me.ColName.HeaderText = "Name"
-        Me.ColName.Name = "ColName"
-        Me.ColName.ReadOnly = True
-        Me.ColName.Width = 133
-        '
-        'Description
-        '
-        Me.Description.DataPropertyName = "Description"
-        Me.Description.HeaderText = "Description"
-        Me.Description.Name = "Description"
-        Me.Description.ReadOnly = True
-        Me.Description.Width = 205
-        '
-        'Threshold
-        '
-        Me.Threshold.DataPropertyName = "Threshold"
-        Me.Threshold.HeaderText = "Threshold"
-        Me.Threshold.Name = "Threshold"
-        Me.Threshold.Width = 95
-        '
-        'PollID
-        '
-        Me.PollID.DataPropertyName = "POLL_WQCRITID"
-        Me.PollID.HeaderText = "PollID"
-        Me.PollID.Name = "PollID"
-        Me.PollID.Visible = False
         '
         'frmPollutants
         '

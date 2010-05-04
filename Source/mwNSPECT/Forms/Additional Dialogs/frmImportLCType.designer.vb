@@ -22,8 +22,7 @@
 	Public WithEvents cmdOK As System.Windows.Forms.Button
 	Public WithEvents cmdCancel As System.Windows.Forms.Button
 	Public WithEvents cmdBrowse As System.Windows.Forms.Button
-	Public dlgCMD1Open As System.Windows.Forms.OpenFileDialog
-	Public WithEvents _Label1_5 As System.Windows.Forms.Label
+    Public WithEvents _Label1_5 As System.Windows.Forms.Label
 	Public WithEvents _Label1_0 As System.Windows.Forms.Label
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.
@@ -37,7 +36,6 @@
         Me.cmdOK = New System.Windows.Forms.Button
         Me.cmdCancel = New System.Windows.Forms.Button
         Me.cmdBrowse = New System.Windows.Forms.Button
-        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog
         Me._Label1_5 = New System.Windows.Forms.Label
         Me._Label1_0 = New System.Windows.Forms.Label
         Me.SuspendLayout()
@@ -53,7 +51,7 @@
         Me.txtLCType.MaxLength = 0
         Me.txtLCType.Name = "txtLCType"
         Me.txtLCType.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtLCType.Size = New System.Drawing.Size(158, 19)
+        Me.txtLCType.Size = New System.Drawing.Size(158, 20)
         Me.txtLCType.TabIndex = 1
         '
         'txtImpFile
@@ -67,7 +65,7 @@
         Me.txtImpFile.MaxLength = 0
         Me.txtImpFile.Name = "txtImpFile"
         Me.txtImpFile.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtImpFile.Size = New System.Drawing.Size(236, 19)
+        Me.txtImpFile.Size = New System.Drawing.Size(236, 20)
         Me.txtImpFile.TabIndex = 2
         '
         'cmdOK
@@ -167,6 +165,7 @@
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Import Land Cover Type"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 #End Region 

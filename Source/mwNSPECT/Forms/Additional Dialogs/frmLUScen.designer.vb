@@ -517,9 +517,13 @@
         Me.Controls.Add(Me.MainMenu1)
         Me.Cursor = System.Windows.Forms.Cursors.Default
         Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Location = New System.Drawing.Point(4, 23)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "frmLUScen"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Edit Land Use Scenario"
         Me.MainMenu1.ResumeLayout(False)

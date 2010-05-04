@@ -22,8 +22,7 @@
 	Public WithEvents cmdOK As System.Windows.Forms.Button
 	Public WithEvents txtImpFile As System.Windows.Forms.TextBox
 	Public WithEvents txtStdName As System.Windows.Forms.TextBox
-	Public dlgCMD1Open As System.Windows.Forms.OpenFileDialog
-	Public WithEvents _Label1_0 As System.Windows.Forms.Label
+    Public WithEvents _Label1_0 As System.Windows.Forms.Label
 	Public WithEvents _Label1_5 As System.Windows.Forms.Label
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.
@@ -37,7 +36,6 @@
         Me.cmdOK = New System.Windows.Forms.Button
         Me.txtImpFile = New System.Windows.Forms.TextBox
         Me.txtStdName = New System.Windows.Forms.TextBox
-        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog
         Me._Label1_0 = New System.Windows.Forms.Label
         Me._Label1_5 = New System.Windows.Forms.Label
         Me.SuspendLayout()
@@ -100,7 +98,7 @@
         Me.txtImpFile.MaxLength = 0
         Me.txtImpFile.Name = "txtImpFile"
         Me.txtImpFile.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtImpFile.Size = New System.Drawing.Size(200, 19)
+        Me.txtImpFile.Size = New System.Drawing.Size(200, 20)
         Me.txtImpFile.TabIndex = 1
         '
         'txtStdName
@@ -114,7 +112,7 @@
         Me.txtStdName.MaxLength = 0
         Me.txtStdName.Name = "txtStdName"
         Me.txtStdName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtStdName.Size = New System.Drawing.Size(162, 19)
+        Me.txtStdName.Size = New System.Drawing.Size(162, 20)
         Me.txtStdName.TabIndex = 0
         '
         '_Label1_0
@@ -171,6 +169,7 @@
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Import Water Quality Standard"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 #End Region 

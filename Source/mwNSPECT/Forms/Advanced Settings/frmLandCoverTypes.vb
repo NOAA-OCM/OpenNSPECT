@@ -141,8 +141,6 @@ Friend Class frmLandCoverTypes
                 End If
 
             ElseIf intYesNo = MsgBoxResult.No Then
-
-                'TODO: roll back data
                 _bolBegin = False
                 Me.Close()
 
@@ -151,7 +149,10 @@ Friend Class frmLandCoverTypes
 
             End If
         Else
-            'TODO: save data
+            SaveToDB()
+            MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Save Successful")
+            _bolGridChanged = False
+            _bolSaved = True
             _bolBegin = False
             Me.Close()
         End If
@@ -277,34 +278,19 @@ Friend Class frmLandCoverTypes
 
     Private Sub mnuImpLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuImpLCType.Click
         Dim impLC As New frmImportLCType
+        impLC.Init(Me)
         impLC.ShowDialog()
     End Sub
 
     Private Sub mnuExpLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExpLCType.Click
-        'Dim intAns As Short
+        Dim dlgsave As New SaveFileDialog
+        dlgsave.Filter = Replace(MSG1, "<name>", "Land Cover Type")
+        dlgsave.Title = Replace(MSG3, "<name>", "Land Cover Type")
+        dlgsave.DefaultExt = ".txt"
 
-        ''browse...get output filename
-        'dlgCMD1Open.FileName = CStr(Nothing)
-        'dlgCMD1Save.FileName = CStr(Nothing)
-        ''UPGRADE_WARNING: CommonDialog variable was not upgraded Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="671167DC-EA81-475D-B690-7A40C7BF4A23"'
-        'With dlgCMD1Open
-        '    'UPGRADE_WARNING: Filter has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"'
-        '    .Filter = Replace(MSG1, "<name>", "Land Cover Type")
-        '    .Title = Replace(MSG3, "<name>", "Land Cover Type")
-        '    .FilterIndex = 1
-        '    .DefaultExt = ".txt"
-        '    'UPGRADE_WARNING: FileOpenConstants constant FileOpenConstants.cdlOFNHideReadOnly was upgraded to OpenFileDialog.ShowReadOnly which has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="DFCDE711-9694-47D7-9C50-45A99CD8E91E"'
-        '    'UPGRADE_WARNING: MSComDlg.CommonDialog property dlgCMD1.Flags was upgraded to dlgCMD1Open.ShowReadOnly which has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="DFCDE711-9694-47D7-9C50-45A99CD8E91E"'
-        '    'UPGRADE_WARNING: FileOpenConstants constant FileOpenConstants.cdlOFNHideReadOnly was upgraded to OpenFileDialog.ShowReadOnly which has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="DFCDE711-9694-47D7-9C50-45A99CD8E91E"'
-        '    .ShowReadOnly = False
-        '    'UPGRADE_WARNING: MSComDlg.CommonDialog property dlgCMD1.Flags was upgraded to dlgCMD1Save.OverwritePrompt which has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="DFCDE711-9694-47D7-9C50-45A99CD8E91E"'
-        '    .OverwritePrompt = True
-        '    .ShowDialog()
-        'End With
-        'If Len(dlgCMD1Open.FileName) > 0 Then
-        '    'Export land cover type to file - dlgCMD1.FileName
-        '    ExportLandCover((dlgCMD1Open.FileName))
-        'End If
+        If dlgsave.ShowDialog = Windows.Forms.DialogResult.OK Then
+            ExportLandCover(dlgsave.FileName)
+        End If
     End Sub
 
     Private Sub mnuAppend_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAppend.Click
@@ -360,6 +346,7 @@ Friend Class frmLandCoverTypes
     End Sub
 
     Private Sub AddRow()
+        _dTable.Columns(0).DefaultValue = _dTable.Rows.Count + 1
         _dTable.Columns(1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
 
         Dim dr As DataRow = _dTable.NewRow()
@@ -505,34 +492,23 @@ Friend Class frmLandCoverTypes
     End Sub
 
     Private Sub ExportLandCover(ByRef strFileName As String)
-        ''Exports your current LCType/LCClasses to text or csv.
+        'Exports your current LCType/LCClasses to text or csv.
 
-        'Dim fso As New Scripting.FileSystemObject
-        'Dim fl As Scripting.TextStream
-        'Dim rsNew As ADODB.Recordset
-        'Dim theLine As Object
+        Dim out As New IO.StreamWriter(strFileName)
 
-        'fl = fso.CreateTextFile(strFileName, True)
+        'Write the name and descript.
+        out.WriteLine(cmbxLCType.Text + "," + txtLCTypeDesc.Text)
 
-        ''Write the name and descript.
-        'With fl
-        '    .WriteLine(cboLCType.Text & "," & txtLCTypeDesc.Text)
-        'End With
+        'Write name of pollutant and threshold
+        Dim dr As DataRow
+        For i As Integer = 0 To _dTable.Rows.Count - 1
+            If _dTable.Rows(i).RowState <> DataRowState.Deleted Then
+                dr = _dTable.Rows(i)
+                out.WriteLine(dr(0).ToString + "," + dr(1).ToString + "," + dr(2).ToString + "," + dr(3).ToString + "," + dr(4).ToString + "," + dr(5).ToString + "," + dr(6).ToString + "," + dr(7).ToString)
+            End If
+        Next
 
-        'Dim i As Short
-
-        ''Write name of pollutant and threshold
-        'For i = 1 To grdLCClasses.Rows - 1
-        '    fl.WriteLine(grdLCClasses.get_TextMatrix(i, 1) & "," & grdLCClasses.get_TextMatrix(i, 2) & "," & grdLCClasses.get_TextMatrix(i, 3) & "," & grdLCClasses.get_TextMatrix(i, 4) & "," & grdLCClasses.get_TextMatrix(i, 5) & "," & grdLCClasses.get_TextMatrix(i, 6) & "," & grdLCClasses.get_TextMatrix(i, 7) & "," & grdLCClasses.get_TextMatrix(i, 8))
-
-        'Next i
-
-        'fl.Close()
-
-        ''UPGRADE_NOTE: Object fso may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        'fso = Nothing
-        ''UPGRADE_NOTE: Object fl may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-        'fl = Nothing
+        out.Close()
 
     End Sub
 

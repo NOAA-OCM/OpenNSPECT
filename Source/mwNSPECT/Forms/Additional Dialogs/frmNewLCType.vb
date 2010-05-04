@@ -142,120 +142,83 @@ Friend Class frmNewLCType
         End If
     End Sub
 
-    'TODO
     Private Function ValidateGridValues() As Boolean
         Try
-            ''Need to validate each grid value before saving.  Essentially we take it a row at a time,
-            ''then rifle through each column of each row.  Case Select tests each each x,y value depending
-            ''on column... eg Column 1 must be unique, 3-6 must be 1-100 range, 7 must be <= 1
+            'Need to validate each grid value before saving.  Essentially we take it a row at a time,
+            'then rifle through each column of each row.  Case Select tests each each x,y value depending
+            'on column... eg Column 1 must be unique, 3-6 must be 1-100 range, 7 must be <= 1
 
-            ''Returns: True or False
+            'Returns: True or False
 
-            'Dim varActive As Object 'txtActiveCell value
-            'Dim varColumn2Value As Object 'Value of Column 2 ([VALUE]) - have to check for unique
-            'Dim i As Short
-            'Dim j As Short
-            'Dim k As Short
+            Dim val As String 'txtActiveCell value
+            Dim val2 As String 'Value of Column 2 ([VALUE]) - have to check for unique
+            Dim i As Short
+            Dim j As Short
+            Dim k As Short
 
-            'For i = 1 To grdLCClasses.Rows - 1
+            For i = 0 To dgvLCTypes.Rows.Count - 1
 
-            '    For j = 1 To 7
+                For j = 0 To 6
 
-            '        'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '        varActive = grdLCClasses.get_TextMatrix(i, j)
+                    val = dgvLCTypes.Rows(i).Cells(j).Value
 
-            '        Select Case j
+                    Select Case j
 
-            '            Case 1
-            '                If Not IsNumeric(varActive) Then
-            '                    ErrorGenerator(Err1, i, j)
-            '                Else
-            '                    For k = 1 To grdLCClasses.Rows - 1
+                        Case 1
+                            If Not IsNumeric(val) Then
+                                ErrorGenerator(Err1, i, j)
+                            Else
+                                For k = 0 To dgvLCTypes.Rows.Count - 1
 
-            '                        'UPGRADE_WARNING: Couldn't resolve default property of object varColumn2Value. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '                        varColumn2Value = grdLCClasses.get_TextMatrix(k, 1)
-            '                        If k <> i Then 'Don't want to compare value to itself
-            '                            'UPGRADE_WARNING: Couldn't resolve default property of object varColumn2Value. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '                            If varColumn2Value = grdLCClasses.get_TextMatrix(i, 1) Then
-            '                                ErrorGenerator(Err2, i, j)
-            '                                grdLCClasses.col = j
-            '                                grdLCClasses.row = i
-            '                                ValidateGridValues = False
-            '                                KeyMoveUpdate()
-            '                                Exit Function
-            '                            End If
-            '                        End If
-            '                    Next k
-            '                End If
+                                    val2 = dgvLCTypes.Rows(k).Cells(0).Value
+                                    If k <> i Then 'Don't want to compare value to itself
+                                        If val2 = dgvLCTypes.Rows(i).Cells(0).Value Then
+                                            ErrorGenerator(Err2, i, j)
+                                            Return False
+                                        End If
+                                    End If
+                                Next k
+                            End If
 
 
-            '            Case 2
-            '                If IsNumeric(varActive) Then
-            '                    ErrorGenerator(Err1, i, j)
-            '                    grdLCClasses.col = j
-            '                    grdLCClasses.row = i
-            '                    ValidateGridValues = False
-            '                    KeyMoveUpdate()
-            '                    Exit Function
-            '                End If
+                        Case 2
+                            If IsNumeric(val) Then
+                                ErrorGenerator(Err1, i, j)
+                                Return False
+                            End If
 
-            '            Case 3
-            '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 100)) Then
-            '                    ErrorGenerator(Err1, i, j)
-            '                    grdLCClasses.col = j
-            '                    grdLCClasses.row = i
-            '                    ValidateGridValues = False
-            '                    KeyMoveUpdate()
-            '                    Exit Function
-            '                End If
+                        Case 3
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
+                                ErrorGenerator(Err1, i, j)
+                                Return False
+                            End If
 
-            '            Case 4
-            '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 100)) Then
-            '                    ErrorGenerator(Err1, i, j)
-            '                    grdLCClasses.col = j
-            '                    grdLCClasses.row = i
-            '                    ValidateGridValues = False
-            '                    KeyMoveUpdate()
-            '                    Exit Function
-            '                End If
+                        Case 4
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
+                                ErrorGenerator(Err1, i, j)
+                                Return False
+                            End If
 
-            '            Case 5
-            '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 100)) Then
-            '                    ErrorGenerator(Err1, i, j)
-            '                    grdLCClasses.col = j
-            '                    grdLCClasses.row = i
-            '                    ValidateGridValues = False
-            '                    KeyMoveUpdate()
-            '                    Exit Function
-            '                End If
+                        Case 5
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
+                                ErrorGenerator(Err1, i, j)
+                                Return False
+                            End If
 
-            '            Case 6
-            '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 100)) Then
-            '                    ErrorGenerator(Err1, i, j)
-            '                    grdLCClasses.col = j
-            '                    grdLCClasses.row = i
-            '                    ValidateGridValues = False
-            '                    KeyMoveUpdate()
-            '                    Exit Function
-            '                End If
+                        Case 6
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
+                                ErrorGenerator(Err1, i, j)
+                                Return False
+                            End If
 
-            '            Case 7
-            '                'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '                If Not IsNumeric(varActive) Or ((varActive < 0) Or (varActive > 1)) Then
-            '                    ErrorGenerator(Err3, i, j)
-            '                    grdLCClasses.col = j
-            '                    grdLCClasses.row = i
-            '                    ValidateGridValues = False
-            '                    KeyMoveUpdate()
-            '                    Exit Function
-            '                End If
-            '        End Select
-            '    Next j
-            'Next i
+                        Case 7
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Then
+                                ErrorGenerator(Err3, i, j)
+                                Return False
+                            End If
+                    End Select
+                Next j
+            Next i
 
             ValidateGridValues = True
 

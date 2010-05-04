@@ -40,8 +40,7 @@
 	Public WithEvents Label3 As System.Windows.Forms.Label
 	Public WithEvents Label1 As System.Windows.Forms.Label
 	Public WithEvents Frame1 As System.Windows.Forms.GroupBox
-	Public dlgOpenOpen As System.Windows.Forms.OpenFileDialog
-	Public WithEvents Label4 As System.Windows.Forms.Label
+    Public WithEvents Label4 As System.Windows.Forms.Label
 	Public WithEvents Label5 As System.Windows.Forms.Label
 	'NOTE: The following procedure is required by the Windows Form Designer
 	'It can be modified using the Windows Form Designer.
@@ -73,7 +72,6 @@
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
-        Me.dlgOpenOpen = New System.Windows.Forms.OpenFileDialog
         Me.Label4 = New System.Windows.Forms.Label
         Me.Label5 = New System.Windows.Forms.Label
         Me.Frame2.SuspendLayout()
@@ -458,7 +456,7 @@
         Me.Controls.Add(Me.Label5)
         Me.Cursor = System.Windows.Forms.Cursors.Default
         Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Location = New System.Drawing.Point(3, 22)
         Me.MaximizeBox = False
         Me.MinimizeBox = False

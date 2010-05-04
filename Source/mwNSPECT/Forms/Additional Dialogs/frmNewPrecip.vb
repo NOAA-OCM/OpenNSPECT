@@ -44,6 +44,17 @@ Friend Class frmNewPrecip
             If g.Open(dlgOpen.FileName) Then
                 txtPrecipFile.Text = dlgOpen.FileName
                 Dim proj As String = g.Header.Projection
+                If IO.Path.GetFileName(dlgOpen.FileName) = "sta.adf" Then
+                    If IO.File.Exists(IO.Path.GetDirectoryName(dlgOpen.FileName) + IO.Path.DirectorySeparatorChar + "prj.adf") Then
+                        Dim infile As New IO.StreamReader(IO.Path.GetDirectoryName(dlgOpen.FileName) + IO.Path.DirectorySeparatorChar + "prj.adf")
+                        If infile.ReadToEnd.Contains("METERS") Then
+                            proj = "units=m"
+                        End If
+                    Else
+                        MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                        Exit Sub
+                    End If
+                End If
                 If proj = "" Then
                     MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
                     Exit Sub

@@ -34,8 +34,6 @@
     Public WithEvents cmdSave As System.Windows.Forms.Button
     Public WithEvents cboWQStdName As System.Windows.Forms.ComboBox
     Public WithEvents txtWQStdDesc As System.Windows.Forms.TextBox
-    Public dlgCMD1Open As System.Windows.Forms.OpenFileDialog
-    Public dlgCMD1Save As System.Windows.Forms.SaveFileDialog
     Public WithEvents _Label1_1 As System.Windows.Forms.Label
     Public WithEvents _Label1_0 As System.Windows.Forms.Label
     'NOTE: The following procedure is required by the Windows Form Designer
@@ -61,13 +59,12 @@
         Me.cmdSave = New System.Windows.Forms.Button
         Me.cboWQStdName = New System.Windows.Forms.ComboBox
         Me.txtWQStdDesc = New System.Windows.Forms.TextBox
-        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog
-        Me.dlgCMD1Save = New System.Windows.Forms.SaveFileDialog
         Me._Label1_1 = New System.Windows.Forms.Label
         Me._Label1_0 = New System.Windows.Forms.Label
         Me.dgvWaterQuality = New System.Windows.Forms.DataGridView
         Me.colPollutant = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.colThreshold = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Poll_WQCritID = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.MainMenu1.SuspendLayout()
         CType(Me.dgvWaterQuality, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -90,31 +87,31 @@
         'mnuNewWQStd
         '
         Me.mnuNewWQStd.Name = "mnuNewWQStd"
-        Me.mnuNewWQStd.Size = New System.Drawing.Size(119, 22)
+        Me.mnuNewWQStd.Size = New System.Drawing.Size(152, 22)
         Me.mnuNewWQStd.Text = "New..."
         '
         'mnuDelWQStd
         '
         Me.mnuDelWQStd.Name = "mnuDelWQStd"
-        Me.mnuDelWQStd.Size = New System.Drawing.Size(119, 22)
+        Me.mnuDelWQStd.Size = New System.Drawing.Size(152, 22)
         Me.mnuDelWQStd.Text = "Delete..."
         '
         'mnuCopyWQStd
         '
         Me.mnuCopyWQStd.Name = "mnuCopyWQStd"
-        Me.mnuCopyWQStd.Size = New System.Drawing.Size(119, 22)
+        Me.mnuCopyWQStd.Size = New System.Drawing.Size(152, 22)
         Me.mnuCopyWQStd.Text = "Copy..."
         '
         'mnuImpWQStd
         '
         Me.mnuImpWQStd.Name = "mnuImpWQStd"
-        Me.mnuImpWQStd.Size = New System.Drawing.Size(119, 22)
+        Me.mnuImpWQStd.Size = New System.Drawing.Size(152, 22)
         Me.mnuImpWQStd.Text = "Import..."
         '
         'mnuExpWQStd
         '
         Me.mnuExpWQStd.Name = "mnuExpWQStd"
-        Me.mnuExpWQStd.Size = New System.Drawing.Size(119, 22)
+        Me.mnuExpWQStd.Size = New System.Drawing.Size(152, 22)
         Me.mnuExpWQStd.Text = "Export..."
         '
         'mnuEditCell
@@ -245,11 +242,14 @@
         '
         'dgvWaterQuality
         '
+        Me.dgvWaterQuality.AllowUserToAddRows = False
+        Me.dgvWaterQuality.AllowUserToDeleteRows = False
+        Me.dgvWaterQuality.AllowUserToResizeColumns = False
         Me.dgvWaterQuality.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colPollutant, Me.colThreshold})
+        Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colPollutant, Me.colThreshold, Me.Poll_WQCritID})
         Me.dgvWaterQuality.Location = New System.Drawing.Point(18, 84)
         Me.dgvWaterQuality.Name = "dgvWaterQuality"
         Me.dgvWaterQuality.Size = New System.Drawing.Size(365, 172)
@@ -270,6 +270,13 @@
         Me.colThreshold.Name = "colThreshold"
         Me.colThreshold.Width = 130
         '
+        'Poll_WQCritID
+        '
+        Me.Poll_WQCritID.DataPropertyName = "POLL_WQCRITID"
+        Me.Poll_WQCritID.HeaderText = "Poll_WQCritID"
+        Me.Poll_WQCritID.Name = "Poll_WQCritID"
+        Me.Poll_WQCritID.Visible = False
+        '
         'frmWaterQualityStandard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
@@ -286,12 +293,14 @@
         Me.Controls.Add(Me.MainMenu1)
         Me.Cursor = System.Windows.Forms.Cursors.Default
         Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Location = New System.Drawing.Point(9, 27)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmWaterQualityStandard"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.ShowIcon = False
+        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Water Quality Standards"
         Me.MainMenu1.ResumeLayout(False)
@@ -304,5 +313,6 @@
     Friend WithEvents dgvWaterQuality As System.Windows.Forms.DataGridView
     Friend WithEvents colPollutant As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colThreshold As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Poll_WQCritID As System.Windows.Forms.DataGridViewTextBoxColumn
 #End Region
 End Class
