@@ -75,6 +75,7 @@ Module modUtil
             Dim rsNames As OleDbDataReader
             Dim strSelectStatement As String
 
+
             strSelectStatement = "SELECT NAME FROM " & strName & " ORDER BY NAME ASC"
 
             'Check thrown in to make sure g_ADOconn is something, in v9.1 we started having problems.
@@ -306,6 +307,26 @@ Module modUtil
         Return ""
     End Function
 
+    Public Function AddInputFromGxBrowserText(ByRef txtInput As System.Windows.Forms.TextBox, ByRef strTitle As String, ByRef frm As System.Windows.Forms.Form, ByRef intType As Short) As MapWinGIS.Grid
+        AddInputFromGxBrowserText = Nothing
+        Try
+            Dim dlgOpen As New Windows.Forms.OpenFileDialog
+            Dim g As New MapWinGIS.Grid
+            dlgOpen.Filter = g.CdlgFilter
+            dlgOpen.Title = strTitle
+            If dlgOpen.ShowDialog = DialogResult.OK Then
+                txtInput.Text = dlgOpen.FileName
+                g.Open(dlgOpen.FileName)
+                Return g
+            Else
+                Return Nothing
+            End If
+        Catch ex As Exception
+            MsgBox("The file you have choosen is not a valid GRID dataset.  Please select another.", MsgBoxStyle.Critical, "Invalid Data Type")
+        End Try
+
+    End Function
+
     Public Function FeatureExists(ByRef strFeatureFileName As String) As Boolean
 
         If IO.Path.GetExtension(strFeatureFileName) = "" Then
@@ -386,6 +407,7 @@ Module modUtil
     End Function
 
     Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As MapWinGIS.Grid, ByRef strColor As String) As MapWinGIS.GridColorScheme
+        ReturnRasterStretchColorRampCS = Nothing
         Try
             Dim rTo As Integer
             Dim bTo As Integer
@@ -443,6 +465,36 @@ Module modUtil
             HandleError(True, "ReturnRasterStretchColorRampRender " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
+
+    Public Function CheckSpatialReference(ByRef pRasGeoDataset As MapWinGIS.Grid) As String
+        CheckSpatialReference = ""
+        Try
+            Dim strprj As String = pRasGeoDataset.Header.Projection
+            If strprj <> "" Then
+                Return strprj
+            Else
+                If IO.Path.GetFileName(pRasGeoDataset.Filename) = "sta.adf" Then
+                    If IO.File.Exists(IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + IO.Path.DirectorySeparatorChar + "prj.adf") Then
+                        Dim infile As New IO.StreamReader(IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + IO.Path.DirectorySeparatorChar + "prj.adf")
+                        'TODO: Temporary measure that allows at least units to be recognized
+                        If infile.ReadToEnd.Contains("METERS") Then
+                            Return "units=m"
+                        Else
+                            Return "units=ft"
+                        End If
+                        Return "convert this prj.adf to real projection"
+                    Else
+                        Return ""
+                    End If
+                Else
+                    Return ""
+                End If
+            End If
+        Catch ex As Exception
+            HandleError(True, "CheckSpatialReference " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+        End Try
+    End Function
+
 
     
     Public Function ClipBySelectedPoly(ByRef pAccumRunoffRaster As MapWinGIS.Grid, ByVal g_pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As MapWinGIS.Grid
@@ -766,6 +818,25 @@ Module modUtil
 
 
     End Function
+
+    Public Function ReturnHSVColorString() As String
+        ReturnHSVColorString = ""
+        Try
+            'Returns a comma delimited string of 6 values.  1st 3 a 'To Color' - HIGH, 2nd 3 a 'From Color' - LOW
+            Dim intHue As Short
+
+            'Hue is a value from 1 to 360 so find a random one
+            intHue = Int((360 * Rnd()) + 1)
+
+            'Value will be a constant of 97, 100 in the SV and 5, 100..
+            ReturnHSVColorString = CStr(intHue) & ",97,100," & CStr(intHue) & ",5,100"
+
+        Catch ex As Exception
+            HandleError(True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+        End Try
+    End Function
+
+
 
 
     Public Delegate Function RasterMathCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single

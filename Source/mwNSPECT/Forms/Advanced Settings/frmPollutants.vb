@@ -10,6 +10,7 @@ Friend Class frmPollutants
     Private _boolDescChanged As Boolean 'Boolship for seeing if Description Changed
     Private _boolSaved As Boolean 'Boolship for whether or not things have saved
 
+    Private _coefCmd As OleDbCommand
 
     Private _intCurFrame As Short 'Current Frame visible in SSTab
     Private _intPollRow As Short 'Row Number for grdPolldef
@@ -25,6 +26,13 @@ Friend Class frmPollutants
     Private _strUndoDesc As String 'Text for Description       |
     Private _strLCType As String 'Need for name, we'll store here
 
+    Private _coefs As OleDbDataAdapter
+    Private _dtCoeff As Data.DataTable
+
+    Private _wq As OleDbDataAdapter
+    Private _dtWQ As Data.DataTable
+
+    
 #Region "Events"
     Private Sub frmPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -69,8 +77,8 @@ Friend Class frmPollutants
                     _intPollID = poll.Item("POLLID")
 
                     strSQLCoeff = "SELECT * FROM CoefficientSet WHERE POLLID = " & poll.Item("POLLID") & ""
-                    Dim coefCmd As New OleDbCommand(strSQLCoeff, modUtil.g_DBConn)
-                    Dim coef As OleDbDataReader = coefCmd.ExecuteReader()
+                    _coefCmd = New OleDbCommand(strSQLCoeff, modUtil.g_DBConn)
+                    Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
                     coef.Read()
                     
                     strSQLLCType = "SELECT NAME, LCTYPEID FROM LCTYPE WHERE LCTYPEID = " & coef.Item("LCTypeID") & ""
@@ -79,25 +87,28 @@ Friend Class frmPollutants
                     LC.Read()
                     _strLCType = LC.Item("Name")
                     _intLCTypeID = LC.Item("LCTypeID")
+                    LC.Close()
 
                     'Fill everything based on that
                     cboCoeffSet.Items.Clear()
-                    cboCoeffSet.Items.Add(coef.Item("Name"))
-                    Do While coef.Read()
-                        cboCoeffSet.Items.Add(coef.Item("Name"))
-                    Loop
+                    cboCoeffSet.Items.Add(coef("Name"))
+                    While coef.Read()
+                        cboCoeffSet.Items.Add(coef("Name"))
+                    End While
                     cboCoeffSet.SelectedIndex = 0
-
+                    coef.Close()
 
                     txtLCType.Text = _strLCType
 
                     'Fill the Water Quality Standards Tab
                     strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
                     Dim wqCmd As New OleDbCommand(strSQLWQStd, modUtil.g_DBConn)
-                    Dim wq As New OleDbDataAdapter(wqCmd)
-                    Dim dt As New Data.DataTable
-                    wq.Fill(dt)
-                    dgvWaterQuality.DataSource = dt
+                    _wq = New OleDbDataAdapter(wqCmd)
+                    _dtWQ = New Data.DataTable
+                    _wq.Fill(_dtWQ)
+                    dgvWaterQuality.DataSource = _dtWQ
+                    poll.Close()
+
                 ElseIf intYesNo = MsgBoxResult.No Then
 
                     _boolChanged = False
@@ -110,8 +121,8 @@ Friend Class frmPollutants
                     _intPollID = poll.Item("POLLID")
 
                     strSQLCoeff = "SELECT * FROM CoefficientSet WHERE POLLID = " & poll.Item("POLLID") & ""
-                    Dim coefCmd As New OleDbCommand(strSQLCoeff, modUtil.g_DBConn)
-                    Dim coef As OleDbDataReader = coefCmd.ExecuteReader()
+                    _coefCmd = New OleDbCommand(strSQLCoeff, modUtil.g_DBConn)
+                    Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
                     coef.Read()
 
                     strSQLLCType = "SELECT NAME, LCTYPEID FROM LCTYPE WHERE LCTYPEID = " & coef.Item("LCTypeID") & ""
@@ -120,25 +131,28 @@ Friend Class frmPollutants
                     LC.Read()
                     _strLCType = LC.Item("Name")
                     _intLCTypeID = LC.Item("LCTypeID")
-
+                    LC.Close()
 
                     'Fill everything based on that
                     cboCoeffSet.Items.Clear()
                     cboCoeffSet.Items.Add(coef.Item("Name"))
-                    Do While coef.Read()
+                    While coef.Read()
                         cboCoeffSet.Items.Add(coef.Item("Name"))
-                    Loop
+                    End While
                     cboCoeffSet.SelectedIndex = 0
+                    coef.Close()
 
                     txtLCType.Text = _strLCType
 
                     'Fill the Water Quality Standards Tab
                     strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
                     Dim wqCmd As New OleDbCommand(strSQLWQStd, modUtil.g_DBConn)
-                    Dim wq As New OleDbDataAdapter(wqCmd)
-                    Dim dt As New Data.DataTable
-                    wq.Fill(dt)
-                    dgvWaterQuality.DataSource = dt
+                    _wq = New OleDbDataAdapter(wqCmd)
+                    _dtWQ = New Data.DataTable
+                    _wq.Fill(_dtWQ)
+                    dgvWaterQuality.DataSource = _dtWQ
+                    poll.Close()
+
                 End If
             Else
 
@@ -149,11 +163,11 @@ Friend Class frmPollutants
                 Dim pollCmd As New OleDbCommand(strSQLPollutant, modUtil.g_DBConn)
                 Dim poll As OleDbDataReader = pollCmd.ExecuteReader()
                 poll.Read()
-                _intPollID = poll.item("POLLID")
+                _intPollID = poll.Item("POLLID")
 
                 strSQLCoeff = "SELECT * FROM CoefficientSet WHERE POLLID = " & poll.Item("POLLID") & ""
-                Dim coefCmd As New OleDbCommand(strSQLCoeff, modUtil.g_DBConn)
-                Dim coef As OleDbDataReader = coefCmd.ExecuteReader()
+                _coefCmd = New OleDbCommand(strSQLCoeff, modUtil.g_DBConn)
+                Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
                 coef.Read()
 
                 strSQLLCType = "SELECT NAME, LCTYPEID FROM LCTYPE WHERE LCTYPEID = " & coef.Item("LCTypeID") & ""
@@ -161,28 +175,33 @@ Friend Class frmPollutants
                 Dim LC As OleDbDataReader = LCCmd.ExecuteReader()
                 LC.Read()
                 _strLCType = lc.item("Name")
-                _intLCTypeID = lc.item("LCTypeID")
+                _intLCTypeID = LC.Item("LCTypeID")
+                LC.Close()
 
                 'Fill everything based on that
                 cboCoeffSet.Items.Clear()
                 cboCoeffSet.Items.Add(coef.Item("Name"))
-                Do While coef.Read()
+                While coef.Read()
                     cboCoeffSet.Items.Add(coef.Item("Name"))
-                Loop
+                End While
                 cboCoeffSet.SelectedIndex = 0
+                coef.Close()
 
                 txtLCType.Text = _strLCType
 
                 'Fill the Water Quality Standards Tab
                 strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
                 Dim wqCmd As New OleDbCommand(strSQLWQStd, modUtil.g_DBConn)
-                Dim wq As New OleDbDataAdapter(wqCmd)
-                Dim dt As New Data.DataTable
-                wq.Fill(dt)
-                dgvWaterQuality.DataSource = dt
+                _wq = New OleDbDataAdapter(wqCmd)
+                _dtWQ = New Data.DataTable
+                _wq.Fill(_dtWQ)
+                dgvWaterQuality.DataSource = _dtWQ
+                poll.Close()
 
             End If
 
+            _boolChanged = False
+            CmdSaveEnabled()
         Catch ex As Exception
             HandleError(True, "cboPollName_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
@@ -217,8 +236,7 @@ Friend Class frmPollutants
     Private Sub NoSaveCoeffSetChange()
         Dim strSQLFullCoeff As String
         Dim strSQLCoeffs As String
-        _boolChanged = False
-
+      
         strSQLFullCoeff = "SELECT COEFFICIENTSET.NAME, COEFFICIENTSET.DESCRIPTION, " & "COEFFICIENTSET.COEFFSETID, LCTYPE.NAME as NAME2 " & "FROM COEFFICIENTSET INNER JOIN LCTYPE " & "ON COEFFICIENTSET.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE COEFFICIENTSET.NAME LIKE '" & cboCoeffSet.Text & "'"
         Dim coefCmd As New OleDbCommand(strSQLFullCoeff, modUtil.g_DBConn)
         Dim coef As OleDbDataReader = coefCmd.ExecuteReader()
@@ -227,17 +245,21 @@ Friend Class frmPollutants
         With txtCoeffSetDesc
             .Text = coef.Item("Description") & ""
             .Refresh()
+
         End With
 
         txtLCType.Text = coef.Item("Name2") & ""
 
         strSQLCoeffs = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.Coeff1 As Type1, COEFFICIENT.Coeff2 as Type2, " & "COEFFICIENT.Coeff3 as Type3, COEFFICIENT.Coeff4 as Type4, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & "WHERE COEFFICIENT.COEFFSETID = " & coef.Item("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
         Dim coefsCmd As New OleDbCommand(strSQLCoeffs, modUtil.g_DBConn)
-        Dim coefs As New OleDbDataAdapter(coefsCmd)
-        Dim dt As New Data.DataTable
-        coefs.Fill(dt)
-        dgvCoef.DataSource = dt
+        _coefs = New OleDbDataAdapter(coefsCmd)
+        _dtCoeff = New Data.DataTable
+        _coefs.Fill(_dtCoeff)
+        dgvCoef.DataSource = _dtCoeff
 
+        _boolChanged = False
+        _boolDescChanged = False
+        CmdSaveEnabled()
     End Sub
 
 
@@ -246,7 +268,8 @@ Friend Class frmPollutants
     End Sub
 
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
-
+        _boolDescChanged = True
+        CmdSaveEnabled()
     End Sub
 
 
@@ -298,9 +321,19 @@ Friend Class frmPollutants
     End Sub
 
 
+    Private Sub mnuPollHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPollHelp.Click
+        System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pollutants.htm")
+    End Sub
+
+    Private Sub mnuCoeffHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffHelp.Click
+        System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pol_coeftab.htm")
+    End Sub
+
+
     Private Sub mnuAddPoll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddPoll.Click
         Try
             Dim newPoll As New frmNewPollutants
+            newPoll.Init(Me)
             newPoll.ShowDialog()
         Catch ex As Exception
             HandleError(True, "mnuAddPoll_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
@@ -327,6 +360,7 @@ Friend Class frmPollutants
         Try
             g_boolAddCoeff = True
             Dim addCoeff As New frmAddCoeffSet
+            addCoeff.Init(Me, Nothing)
             addCoeff.ShowDialog()
         Catch ex As Exception
             HandleError(True, "mnuCoeffNewSet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
@@ -338,8 +372,7 @@ Friend Class frmPollutants
         Try
             g_boolCopyCoeff = True
             Dim newCopyCoef As New frmCopyCoeffSet
-            'TODO: Handle initializatin
-            'newCopyCoef.init(rsCoeff)
+            newCopyCoef.Init(_coefCmd, Me, Nothing)
             newCopyCoef.ShowDialog()
         Catch ex As Exception
             HandleError(True, "mnuCoeffCopySet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
@@ -355,21 +388,20 @@ Friend Class frmPollutants
             intAns = MsgBox("Are you sure you want to delete the coefficient set '" & cboCoeffSet.Text & "' associated with pollutant '" & cboPollName.Text & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
 
             'code to handle response
-            'Dim strDeleteCoeffSet As String
             If intAns = MsgBoxResult.Yes Then
 
-                'strDeleteCoeffSet = "DELETE * from COEFFICIENTSET WHERE NAME LIKE '" & cboCoeffSet.Text & "'"
+                Dim strDeleteCoeffSet As String = "DELETE * from COEFFICIENTSET WHERE NAME LIKE '" & cboCoeffSet.Text & "'"
+                Dim cmdDelCoef As New OleDbCommand(strDeleteCoeffSet, g_DBConn)
+                cmdDelCoef.ExecuteNonQuery()
 
-                'modUtil.g_ADOConn.Execute(strDeleteCoeffSet)
+                MsgBox(cboCoeffSet.Text & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
-                'MsgBox(cboCoeffSet.Text & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
+                cboPollName.Items.Clear()
+                cboCoeffSet.Items.Clear()
 
-                'cboPollName.Items.Clear()
-                'cboCoeffSet.Items.Clear()
+                modUtil.InitComboBox(cboPollName, "Pollutant")
 
-                'modUtil.InitComboBox(cboPollName, "Pollutant")
-
-                'Me.Refresh()
+                Me.Refresh()
             End If
 
         Catch ex As Exception
@@ -381,6 +413,7 @@ Friend Class frmPollutants
     Private Sub mnuCoeffImportSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffImportSet.Click
         Try
             Dim newImportCoef As New frmImportCoeffSet
+            newImportCoef.Init(Me)
             newImportCoef.ShowDialog()
         Catch ex As Exception
             HandleError(True, "mnuCoeffImportSet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
@@ -389,217 +422,431 @@ Friend Class frmPollutants
 
     Private Sub mnuCoeffExportSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffExportSet.Click
         Try
-            'Dim intAns As Short
+            Dim dlgSave As New Windows.Forms.SaveFileDialog
 
-            ''browse...get output filename
-            'dlgCMD1Open.FileName = CStr(Nothing)
-            'dlgCMD1Save.FileName = CStr(Nothing)
-            ''UPGRADE_WARNING: CommonDialog variable was not upgraded Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="671167DC-EA81-475D-B690-7A40C7BF4A23"'
-            'With dlgCMD1
-            '    'UPGRADE_WARNING: Filter has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"'
-            '    .Filter = Replace(MSG1, "<name>", "Coefficient Set")
-            '    .Title = Replace(MSG3, "<name>", "Coefficient Set")
-            '    .FilterIndex = 1
-            '    .DefaultExt = ".txt"
-            '    'UPGRADE_WARNING: FileOpenConstants constant FileOpenConstants.cdlOFNHideReadOnly was upgraded to OpenFileDialog.ShowReadOnly which has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="DFCDE711-9694-47D7-9C50-45A99CD8E91E"'
-            '    'UPGRADE_WARNING: MSComDlg.CommonDialog property dlgCMD1.Flags was upgraded to dlgCMD1Open.ShowReadOnly which has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="DFCDE711-9694-47D7-9C50-45A99CD8E91E"'
-            '    'UPGRADE_WARNING: FileOpenConstants constant FileOpenConstants.cdlOFNHideReadOnly was upgraded to OpenFileDialog.ShowReadOnly which has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="DFCDE711-9694-47D7-9C50-45A99CD8E91E"'
-            '    .ShowReadOnly = False
-            '    'UPGRADE_WARNING: MSComDlg.CommonDialog property dlgCMD1.Flags was upgraded to dlgCMD1Save.OverwritePrompt which has a new behavior. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="DFCDE711-9694-47D7-9C50-45A99CD8E91E"'
-            '    .OverwritePrompt = True
-            '    .ShowDialog()
-            'End With
-            'If Len(dlgCMD1Open.FileName) > 0 Then
-            '    'Export Water Quality Standard to file - dlgCMD1.FileName
-            '    ExportCoeffSet((dlgCMD1Open.FileName))
-            'End If
+            'browse...get output filename
+            dlgSave.Filter = Replace(MSG1, "<name>", "Coefficient Set")
+            dlgSave.Title = Replace(MSG3, "<name>", "Coefficient Set")
+            dlgSave.DefaultExt = ".txt"
+            If dlgSave.ShowDialog = Windows.Forms.DialogResult.OK Then
+                ExportCoeffSet(dlgSave.FileName)
+            End If
         Catch ex As Exception
             HandleError(True, "mnuCoeffExportSet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
 
-    Private Sub mnuPollHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPollHelp.Click
-        System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pollutants.htm")
+    Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged, dgvWaterQuality.CellValueChanged
+        _boolChanged = True
+        CmdSaveEnabled()
     End Sub
-
-    Private Sub mnuCoeffHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffHelp.Click
-        System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pol_coeftab.htm")
-    End Sub
-
 #End Region
 
 
 #Region "Helper Functions"
+    Private Sub CmdSaveEnabled()
+        If _boolChanged Or _boolDescChanged Then
+            cmdSave.Enabled = True
+        Else
+            cmdSave.Enabled = False
+        End If
+
+    End Sub
+
 
     Private Function ValidateGridValues() As Boolean
         Try
-            ''Need to validate each grid value before saving.  Essentially we take it a row at a time,
-            ''then rifle through each column of each row.  Case Select tests each each x,y value depending
-            ''on column... 3-6 must be 1-100 range
+            'Need to validate each grid value before saving.  Essentially we take it a row at a time,
+            'then rifle through each column of each row.  Case Select tests each each x,y value depending
+            'on column... 3-6 must be 1-100 range
 
-            ''Returns: True or False
+            'Returns: True or False
 
-            'Dim varActive As Object 'txtActiveCell value
-            'Dim i As Short
-            'Dim j As Short
-            'Dim iQstd As Short
-            'Dim jQstd As Short
+            Dim val As Double
+            Dim i As Short
+            Dim j As Short
+            Dim iQstd As Short
 
-            'For i = 1 To grdPollDef.Rows - 1
+            For i = 0 To dgvCoef.Rows.Count - 1
 
-            '    For j = 3 To 6
+                For j = 2 To 5
+                    val = dgvCoef.Rows(i).Cells(j).Value
 
-            '        'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '        varActive = grdPollDef.get_TextMatrix(i, j)
+                    If InStr(1, CStr(val), ".", CompareMethod.Text) > 0 Then
+                        If (Len(Split(CStr(val), ".")(1)) > 4) Then
+                            ErrorGenerator(Err6, i, j)
+                            Return False
+                        End If
+                    End If
 
-            '        'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '        If InStr(1, CStr(varActive), ".", CompareMethod.Text) > 0 Then
-            '            'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '            If (Len(Split(CStr(varActive), ".")(1)) > 4) Then
-            '                ErrorGenerator(Err6, i, j)
-            '                grdPollDef.col = j
-            '                grdPollDef.row = i
-            '                ValidateGridValues = False
-            '                KeyMoveUpdate()
-            '                Exit Function
-            '            End If
-            '        End If
+                    If Not IsNumeric(val) Or (val < 0) Or (val > 1000) Then
+                        ErrorGenerator(Err6, i, j)
+                        Return False
+                    End If
+                Next j
+            Next i
 
-            '        'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '        If Not IsNumeric(varActive) Or (varActive < 0) Or (varActive > 1000) Then
-            '            ErrorGenerator(Err6, i, j)
-            '            grdPollDef.col = j
-            '            grdPollDef.row = i
-            '            ValidateGridValues = False
-            '            KeyMoveUpdate()
-            '            Exit Function
-            '        End If
+            For iQstd = 0 To dgvWaterQuality.Rows.Count - 1
+                val = dgvWaterQuality.Rows(iQstd).Cells(2).Value
 
+                If Not IsNumeric(val) Or (val < 0) Then
+                    ErrorGenerator(Err5, iQstd, 3)
+                    Return False
+                End If
+            Next iQstd
 
-
-            '    Next j
-
-            'Next i
-
-            'For iQstd = 1 To grdWQStd.Rows - 1
-            '    'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '    varActive = grdWQStd.get_TextMatrix(iQstd, 3)
-
-            '    'UPGRADE_WARNING: Couldn't resolve default property of object varActive. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '    If Not IsNumeric(varActive) Or (varActive < 0) Then
-            '        ErrorGenerator(Err5, iQstd, 3)
-            '        grdWQStd.col = 3
-            '        grdWQStd.row = iQstd
-            '        ValidateGridValues = False
-            '        Exit Function
-            '    End If
-            'Next iQstd
-
-            'ValidateGridValues = True
+            ValidateGridValues = True
 
         Catch ex As Exception
-            'HandleError(False, "ValidateGridValues " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(False, "ValidateGridValues " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Function
 
     Private Sub UpdateValues()
         Try
-            'Dim i As Short
-            'Dim rsPollUpdate As New ADODB.Recordset
-            'Dim strPollUpdate As String
-            'Dim strWQSelect As String
+            Dim strUpdateDescription As Object
+            If _boolDescChanged Then
+                strUpdateDescription = "SELECT Description from CoefficientSet Where Name like '" & cboCoeffSet.Text & "'"
+                Dim cmdDesc As New OleDbCommand(strUpdateDescription, g_DBConn)
+                Dim adDesc As New OleDbDataAdapter(cmdDesc)
+                Dim buildDesc As New OleDbCommandBuilder(adDesc)
+                buildDesc.QuotePrefix = "["
+                buildDesc.QuoteSuffix = "]"
+                Dim dt As New Data.DataTable
+                adDesc.Fill(dt)
 
-            'Dim rsDescrip As New ADODB.Recordset
-            'Dim rsWQstd As New ADODB.Recordset
+                If Len(txtCoeffSetDesc.Text) = 0 Then
+                    dt.Rows(0)("Description") = ""
+                Else
+                    dt.Rows(0)("Description") = txtCoeffSetDesc.Text
+                End If
+                adDesc.Update(dt)
+            End If
 
-            'If ValidateGridValues() Then
-            '    'Update
+            Dim i As Short
+            Dim strPollUpdate As String
+            Dim strWQSelect As String
 
-            '    For i = 1 To grdPollDef.Rows - 1
+            If ValidateGridValues() Then
+                'Update
 
-            '        strPollUpdate = "SELECT * From Coefficient Where CoeffID = " & grdPollDef.get_TextMatrix(i, 7)
-            '        rsPollUpdate.Open(strPollUpdate, g_ADOConn, ADODB.CursorTypeEnum.adOpenDynamic, ADODB.LockTypeEnum.adLockOptimistic)
+                For i = 0 To dgvCoef.Rows.Count - 1
 
-            '        rsPollUpdate.Fields("Coeff1").Value = grdPollDef.get_TextMatrix(i, 3)
-            '        rsPollUpdate.Fields("Coeff2").Value = grdPollDef.get_TextMatrix(i, 4)
-            '        rsPollUpdate.Fields("Coeff3").Value = grdPollDef.get_TextMatrix(i, 5)
-            '        rsPollUpdate.Fields("Coeff4").Value = grdPollDef.get_TextMatrix(i, 6)
+                    strPollUpdate = "SELECT * From Coefficient Where CoeffID = " & dgvCoef.Rows(i).Cells(6).Value.ToString
+                    Dim cmdNewCoef As New OleDbCommand(strPollUpdate, g_DBConn)
+                    Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+                    Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
+                    cbuilder.QuotePrefix = "["
+                    cbuilder.QuoteSuffix = "]"
+                    Dim dt As New Data.DataTable
+                    adaptNewCoeff.Fill(dt)
 
-            '        rsPollUpdate.Update()
-            '        rsPollUpdate.Close()
+                    dt.Rows(0)("Coeff1") = dgvCoef.Rows(i).Cells(2).Value
+                    dt.Rows(0)("Coeff2") = dgvCoef.Rows(i).Cells(3).Value
+                    dt.Rows(0)("Coeff3") = dgvCoef.Rows(i).Cells(4).Value
+                    dt.Rows(0)("Coeff4") = dgvCoef.Rows(i).Cells(5).Value
 
-            '    Next i
+                    adaptNewCoeff.Update(dt)
+                Next i
+            End If
 
-            'End If
 
-            'Dim strUpdateDescription As Object
-            'If boolDescChanged Then
 
-            '    'UPGRADE_WARNING: Couldn't resolve default property of object strUpdateDescription. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-            '    strUpdateDescription = "SELECT Description from CoefficientSet Where Name like '" & cboCoeffSet.Text & "'"
+            For i = 0 To dgvWaterQuality.Rows.Count - 1
+                strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & dgvWaterQuality.Rows(i).Cells(3).Value.ToString
+                Dim cmdNewWQ As New OleDbCommand(strWQSelect, g_DBConn)
+                Dim adaptNewWQ As New OleDbDataAdapter(cmdNewWQ)
+                Dim wqbuilder As New OleDbCommandBuilder(adaptNewWQ)
+                wqbuilder.QuotePrefix = "["
+                wqbuilder.QuoteSuffix = "]"
+                Dim dt As New Data.DataTable
+                adaptNewWQ.Fill(dt)
 
-            '    rsDescrip.Open(strUpdateDescription, g_ADOConn, ADODB.CursorTypeEnum.adOpenDynamic, ADODB.LockTypeEnum.adLockOptimistic)
+                dt.Rows(0)("Threshold") = dgvWaterQuality.Rows(i).Cells(2).Value
 
-            '    If Len(txtCoeffSetDesc.Text) = 0 Then
-            '        rsDescrip.Fields("Description").Value = ""
-            '    Else
-            '        rsDescrip.Fields("Description").Value = txtCoeffSetDesc.Text
-            '    End If
+                adaptNewWQ.Update(dt)
+            Next i
 
-            '    rsDescrip.Update()
-            '    rsDescrip.Close()
-
-            'End If
-
-            'For i = 1 To grdWQStd.Rows - 1
-            '    strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & grdWQStd.get_TextMatrix(i, 4)
-
-            '    rsWQstd.Open(strWQSelect, g_ADOConn, ADODB.CursorTypeEnum.adOpenDynamic, ADODB.LockTypeEnum.adLockOptimistic)
-
-            '    rsWQstd.Fields("Threshold").Value = grdWQStd.get_TextMatrix(i, 3)
-            '    rsWQstd.Update()
-            '    rsWQstd.Close()
-
-            'Next i
-
-            ''UPGRADE_NOTE: Object rsDescrip may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'rsDescrip = Nothing
-            ''UPGRADE_NOTE: Object rsPollUpdate may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'rsPollUpdate = Nothing
-            ''UPGRADE_NOTE: Object rsWQstd may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-            'rsWQstd = Nothing
         Catch ex As Exception
-            'HandleError(False, "UpdateValues " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(False, "UpdateValues " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
 
     Private Sub DeletePollutant(ByRef strName As String)
+        Try
+            Dim strPollDelete As String = "Delete * FROM Pollutant WHERE NAME LIKE '" & strName & "'"
+            Dim cmdPollDel As New OleDbCommand(strPollDelete, g_DBConn)
+            cmdPollDel.ExecuteNonQuery()
 
-        '        'Can ya guess what this one does?
+            MsgBox(strName & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
-        '        On Error GoTo ErrorHandler
+            Me.cboPollName.Items.Clear()
+            modUtil.InitComboBox(Me.cboPollName, "Pollutant")
+            Me.Refresh()
 
-        '        Dim strPollDelete As String
-        '        Dim strPoll2Delete As String
-
-        '        Dim rsPollDelete As ADODB.Recordset
-        '        'Dim rsLCClassDelete As ADODB.Recordset
-
-        '        strPollDelete = "Delete * FROM Pollutant WHERE NAME LIKE '" & strName & "'"
+        Catch ex As Exception
+            HandleError(False, "DeletePollutant " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+        End Try
+    End Sub
 
 
-        '        modUtil.g_ADOConn.Execute(strPollDelete)
+    Public Sub AddCoefficient(ByRef strCoeffName As String, ByRef strLCType As String)
+        Try
+            'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
+            'the name, m_intPollID as the PollID, and m_intLCTYPEID as the LCTypeID.  The last two are
+            'garnered above during a cbo click event.  Once that's done, we'll add a series of blank
+            'coefficients for the landclass type the user chooses...ie CCAP, NotCCAP, whatever
 
-        '        MsgBox(strName & " deleted.", MsgBoxStyle.OKOnly, "Record Deleted")
+            Dim strNewLcType As String 'CmdString for inserting new coefficientset
+            Dim strGetLcType As String
+            Dim strDefault As String '
+            Dim strNewCoeffID As String 'Holder for the CoefficientSetID
+            Dim intCoeffSetID As Short
 
-        '        Me.cboPollName.Items.Clear()
-        '        modUtil.InitComboBox((Me.cboPollName), "Pollutant")
-        '        Me.Refresh()
+            strGetLcType = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCType & "'"
+            Dim cmdLCType As New OleDbCommand(strGetLcType, g_DBConn)
+            Dim datalctype As OleDbDataReader = cmdLCType.ExecuteReader()
+            datalctype.Read()
 
-        '        Exit Sub
-        'ErrorHandler:
-        '        HandleError(False, "DeletePollutant " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+
+            'First need to add the coefficient set to that table
+            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & Replace(CStr(_intPollID), "'", "''") & "," & Replace(datalctype("LCTypeID"), "'", "''") & ")"
+            Dim cmdInsLC As New OleDbCommand(strNewLcType, g_DBConn)
+            cmdInsLC.ExecuteNonQuery()
+
+            'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
+            'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
+            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
+            Dim cmdNewCoefID As New OleDbCommand(strNewCoeffID, g_DBConn)
+            Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
+            dataNewCoeffID.Read()
+            intCoeffSetID = dataNewCoeffID("CoeffSetID")
+            dataNewCoeffID.Close()
+
+
+            strDefault = "SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "' ORDER BY LCCLASS.Value"
+            Dim cmdCopySet As New OleDbCommand(strDefault, g_DBConn)
+            Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
+
+
+            'Now loopy loo to populate values.
+            Dim strNewCoeff1 As String
+            strNewCoeff1 = "SELECT * FROM COEFFICIENT"
+            Dim cmdNewCoef As New OleDbCommand(strNewCoeff1, g_DBConn)
+            Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
+            cbuilder.QuotePrefix = "["
+            cbuilder.QuoteSuffix = "]"
+            Dim dt As New Data.DataTable
+            adaptNewCoeff.Fill(dt)
+
+            While dataCopySet.Read()
+                Dim row As Data.DataRow = dt.NewRow()
+                row("Coeff1") = 0
+                row("Coeff2") = 0
+                row("Coeff3") = 0
+                row("Coeff4") = 0
+                row("CoeffSetID") = intCoeffSetID
+                row("LCClassID") = dataCopySet("LCClassID")
+                dt.Rows.Add(row)
+            End While
+            adaptNewCoeff.Update(dt)
+            dataCopySet.Close()
+
+            cboPollName.SelectedIndex = cboPollName.SelectedIndex
+
+            cboCoeffSet.Items.Add(strCoeffName)
+
+            'Call the function to set everything to newly added Coefficient.
+            cboCoeffSet.SelectedIndex = GetCboIndex(strCoeffName, cboCoeffSet)
+
+            txtLCType.Text = datalctype("Name")
+            datalctype.Close()
+
+        Catch ex As Exception
+            HandleError(True, "AddCoefficient " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+        End Try
+    End Sub
+
+    Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
+        Try
+            'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
+            'the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
+            'from the set being copied
+            Dim strCopySet As String 'The Recordset of existing coefficients being copied
+            Dim strNewLcType As String 'CmdString for inserting new coefficientset               '
+            Dim strNewCoeffID As String 'Holder for the CoefficientSetID
+            Dim intCoeffSetID As Short
+
+            strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
+            Dim cmdCopySet As New OleDbCommand(strCopySet, g_DBConn)
+            Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
+            dataCopySet.Read()
+
+            'INSERT: new Coefficient set taking the PollID and LCType ID from rsCopySet
+            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strNewCoeffName, "'", "''") & "'," & dataCopySet("POLLID") & "," & dataCopySet("LCTypeID") & ")"
+
+            'First need to add the coefficient set to that table
+            Dim cmdInsLCType As New OleDbCommand(strNewLcType, g_DBConn)
+            cmdInsLCType.ExecuteNonQuery()
+
+            'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
+            'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
+            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strNewCoeffName & "'"
+            Dim cmdNewCoefID As New OleDbCommand(strNewCoeffID, g_DBConn)
+            Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
+            dataNewCoeffID.Read()
+            intCoeffSetID = dataNewCoeffID("CoeffSetID")
+            dataNewCoeffID.Close()
+
+            'Now loopy loo to populate values.
+            Dim strNewCoeff1 As String
+            strNewCoeff1 = "SELECT * FROM COEFFICIENT"
+            Dim cmdNewCoef As New OleDbCommand(strNewCoeff1, g_DBConn)
+            Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
+            cbuilder.QuotePrefix = "["
+            cbuilder.QuoteSuffix = "]"
+            Dim dt As New Data.DataTable
+            adaptNewCoeff.Fill(dt)
+
+            'Clear things and set the rows to recordcount + 1, remember 1st row fixed
+            'dgvCoef.Rows.Clear()
+
+            'Actually add the records to the new set
+            Do
+                Dim row As Data.DataRow = dt.NewRow()
+                row("Coeff1") = dataCopySet("Coeff1")
+                row("Coeff2") = dataCopySet("Coeff2")
+                row("Coeff3") = dataCopySet("Coeff3")
+                row("Coeff4") = dataCopySet("Coeff4")
+                row("CoeffSetID") = intCoeffSetID
+                row("LCClassID") = dataCopySet("LCClassID")
+                dt.Rows.Add(row)
+            Loop While dataCopySet.Read()
+            adaptNewCoeff.Update(dt)
+            dataCopySet.Close()
+
+            'Set up everything to look good
+            cboPollName_SelectedIndexChanged(cboPollName, New System.EventArgs())
+            cboCoeffSet.SelectedIndex = GetCboIndex(strNewCoeffName, cboCoeffSet)
+        Catch ex As Exception
+            HandleError(True, "CopyCoefficient " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+        End Try
+    End Sub
+
+    'Exports your current standard and pollutants to text or csv.
+    Private Sub ExportCoeffSet(ByRef strFileName As String)
+        Try
+            Dim out As New IO.StreamWriter(strFileName)
+
+            'Write name of pollutant and threshold
+            For i As Integer = 0 To dgvCoef.Rows.Count - 1
+                out.WriteLine(dgvCoef.Rows(i).Cells(0).Value.ToString & "," & dgvCoef.Rows(i).Cells(2).Value.ToString & "," & dgvCoef.Rows(i).Cells(3).Value.ToString & "," & dgvCoef.Rows(i).Cells(4).Value.ToString & "," & dgvCoef.Rows(i).Cells(5).Value.ToString)
+            Next i
+            out.Close()
+        Catch ex As Exception
+            HandleError(False, "ExportCoeffSet " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+        End Try
+    End Sub
+
+    Public Sub UpdateCoeffSet(ByRef cmdCoeff As OleDbCommand, ByRef strCoeffName As String, ByRef strFileName As String)
+        Try
+            'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
+            'the name, m_intPollID as the PollID, and m_intLCTYPEID as the LCTypeID.  The last two are
+            'garnered above during a cbo click event.  Once that's done, we'll add a series of
+            'coefficients for the landclass based on the incoming textfile...strFileName
+
+            Dim strNewLcType As String 'CmdString for inserting new coefficientset
+            Dim strNewCoeffID As String 'Holder for the CoefficientSetID
+            Dim intCoeffSetID As Short
+            Dim i As Short
+
+            'Textfile related material
+            Dim strLine As String
+            Dim strValue As Short
+            Dim intLine As Short
+
+            Dim dataCoeff As OleDbDataReader = cmdCoeff.ExecuteReader()
+            dataCoeff.Read()
+            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & dataCoeff("LCTypeID") & ")"
+            dataCoeff.Close()
+
+            'First need to add the coefficient set to that table
+            Dim cmdInsCoef As New OleDbCommand(strNewLcType, g_DBConn)
+            cmdInsCoef.ExecuteNonQuery()
+
+            'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
+            'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
+            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
+            Dim cmdNewCoefID As New OleDbCommand(strNewCoeffID, g_DBConn)
+            Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
+            dataNewCoeffID.Read()
+            intCoeffSetID = dataNewCoeffID("CoeffSetID")
+            dataNewCoeffID.Close()
+
+            'Now turn attention to the TextFile...to get the users coefficient values
+            Dim read As New IO.StreamReader(strFileName)
+            intLine = 0
+
+            'Now loopy loo to populate values.
+            Dim strNewCoeff1 As String
+            strNewCoeff1 = "SELECT * FROM COEFFICIENT"
+            Dim cmdNewCoef As New OleDbCommand(strNewCoeff1, g_DBConn)
+            Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
+            cbuilder.QuotePrefix = "["
+            cbuilder.QuoteSuffix = "]"
+            Dim dt As New Data.DataTable
+            adaptNewCoeff.Fill(dt)
+
+            i = 0
+
+            _dtCoeff.Rows.Clear()
+
+            Do While Not read.EndOfStream
+
+                strLine = read.ReadLine
+                'Value exits??
+                strValue = CShort(Split(strLine, ",")(0))
+
+                dataCoeff = cmdCoeff.ExecuteReader()
+                While dataCoeff.Read()
+                    If dataCoeff("Value") = strValue Then
+                        Dim row As Data.DataRow = dt.NewRow()
+                        row("Coeff1") = Split(strLine, ",")(1)
+                        row("Coeff2") = Split(strLine, ",")(2)
+                        row("Coeff3") = Split(strLine, ",")(3)
+                        row("Coeff4") = Split(strLine, ",")(4)
+                        row("CoeffSetID") = intCoeffSetID
+                        row("LCClassID") = dataCoeff("LCClassID")
+                        dt.Rows.Add(row)
+
+                        Dim drow As Data.DataRow = _dtCoeff.NewRow()
+                        drow(0) = strValue
+                        drow(1) = dataCoeff("Name")
+                        drow(2) = Split(strLine, ",")(1)
+                        drow(3) = Split(strLine, ",")(2)
+                        drow(4) = Split(strLine, ",")(3)
+                        drow(5) = Split(strLine, ",")(4)
+                        drow(6) = intCoeffSetID
+                        drow(7) = row("coeffID")
+                    End If
+                End While
+                adaptNewCoeff.Update(dt)
+                dataCoeff.Close()
+            Loop
+
+            cboCoeffSet.Items.Clear()
+            Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
+            While coef.Read()
+                cboCoeffSet.Items.Add(coef("Name"))
+            End While
+            cboCoeffSet.SelectedIndex = modUtil.GetCboIndex(strCoeffName, cboCoeffSet)
+        Catch ex As Exception
+            HandleError(True, "UpdateCoeffSet " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+        End Try
     End Sub
 #End Region
 

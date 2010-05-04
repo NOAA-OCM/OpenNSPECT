@@ -32,9 +32,7 @@
 	Public WithEvents txtCoeffSetDesc As System.Windows.Forms.TextBox
 	Public WithEvents txtCoeffSet As System.Windows.Forms.TextBox
 	Public WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
-	Public WithEvents Label2 As System.Windows.Forms.Label
-    Public WithEvents _SSTab1_TabPage1 As System.Windows.Forms.TabPage
-	Public WithEvents SSTab1 As System.Windows.Forms.TabControl
+    Public WithEvents SSTab1 As System.Windows.Forms.TabControl
 	Public WithEvents cmdSave As System.Windows.Forms.Button
 	Public WithEvents cmdQuit As System.Windows.Forms.Button
 	Public dlgCMD1Open As System.Windows.Forms.OpenFileDialog
@@ -69,17 +67,11 @@
         Me._Label1_1 = New System.Windows.Forms.Label
         Me._Label1_2 = New System.Windows.Forms.Label
         Me._Label1_3 = New System.Windows.Forms.Label
-        Me._Label1_7 = New System.Windows.Forms.Label
         Me._Label1_5 = New System.Windows.Forms.Label
         Me.cboLCType = New System.Windows.Forms.ComboBox
         Me.txtCoeffSetDesc = New System.Windows.Forms.TextBox
         Me.txtCoeffSet = New System.Windows.Forms.TextBox
-        Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage
-        Me.dgvWaterQuality = New System.Windows.Forms.DataGridView
-        Me.ColName = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Description = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Label2 = New System.Windows.Forms.Label
+        Me._Label1_7 = New System.Windows.Forms.Label
         Me.cmdSave = New System.Windows.Forms.Button
         Me.cmdQuit = New System.Windows.Forms.Button
         Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog
@@ -92,8 +84,6 @@
         Me.SSTab1.SuspendLayout()
         Me._SSTab1_TabPage0.SuspendLayout()
         CType(Me.dgvCoef, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me._SSTab1_TabPage1.SuspendLayout()
-        CType(Me.dgvWaterQuality, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'MainMenu1
@@ -144,7 +134,6 @@
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSTab1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
-        Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
         Me.SSTab1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
         Me.SSTab1.Location = New System.Drawing.Point(16, 53)
@@ -173,6 +162,9 @@
         '
         'dgvCoef
         '
+        Me.dgvCoef.AllowUserToAddRows = False
+        Me.dgvCoef.AllowUserToDeleteRows = False
+        Me.dgvCoef.AllowUserToResizeColumns = False
         Me.dgvCoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn6, Me.DataGridViewTextBoxColumn7, Me.DataGridViewTextBoxColumn8})
         Me.dgvCoef.Location = New System.Drawing.Point(15, 108)
@@ -287,19 +279,6 @@
         Me._Label1_3.TabIndex = 12
         Me._Label1_3.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
-        '_Label1_7
-        '
-        Me._Label1_7.BackColor = System.Drawing.Color.Transparent
-        Me._Label1_7.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_7.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_7.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_7.Location = New System.Drawing.Point(257, 35)
-        Me._Label1_7.Name = "_Label1_7"
-        Me._Label1_7.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_7.Size = New System.Drawing.Size(97, 17)
-        Me._Label1_7.TabIndex = 16
-        Me._Label1_7.Text = "Land Cover Type:"
-        '
         '_Label1_5
         '
         Me._Label1_5.BackColor = System.Drawing.Color.Transparent
@@ -355,57 +334,18 @@
         Me.txtCoeffSet.Size = New System.Drawing.Size(134, 20)
         Me.txtCoeffSet.TabIndex = 1
         '
-        '_SSTab1_TabPage1
+        '_Label1_7
         '
-        Me._SSTab1_TabPage1.Controls.Add(Me.dgvWaterQuality)
-        Me._SSTab1_TabPage1.Controls.Add(Me.Label2)
-        Me._SSTab1_TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me._SSTab1_TabPage1.Name = "_SSTab1_TabPage1"
-        Me._SSTab1_TabPage1.Size = New System.Drawing.Size(513, 456)
-        Me._SSTab1_TabPage1.TabIndex = 1
-        Me._SSTab1_TabPage1.Text = "Water Quality Standards"
-        '
-        'dgvWaterQuality
-        '
-        Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColName, Me.Description, Me.Threshold})
-        Me.dgvWaterQuality.Location = New System.Drawing.Point(14, 21)
-        Me.dgvWaterQuality.Name = "dgvWaterQuality"
-        Me.dgvWaterQuality.Size = New System.Drawing.Size(479, 312)
-        Me.dgvWaterQuality.TabIndex = 20
-        '
-        'ColName
-        '
-        Me.ColName.HeaderText = "Name"
-        Me.ColName.Name = "ColName"
-        Me.ColName.ReadOnly = True
-        Me.ColName.Width = 133
-        '
-        'Description
-        '
-        Me.Description.HeaderText = "Description"
-        Me.Description.Name = "Description"
-        Me.Description.ReadOnly = True
-        Me.Description.Width = 205
-        '
-        'Threshold
-        '
-        Me.Threshold.HeaderText = "Threshold"
-        Me.Threshold.Name = "Threshold"
-        Me.Threshold.Width = 95
-        '
-        'Label2
-        '
-        Me.Label2.BackColor = System.Drawing.SystemColors.Control
-        Me.Label2.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Label2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Label2.Location = New System.Drawing.Point(24, 336)
-        Me.Label2.Name = "Label2"
-        Me.Label2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label2.Size = New System.Drawing.Size(145, 17)
-        Me.Label2.TabIndex = 18
-        Me.Label2.Text = "Threshold Units: ug/L"
+        Me._Label1_7.BackColor = System.Drawing.Color.Transparent
+        Me._Label1_7.Cursor = System.Windows.Forms.Cursors.Default
+        Me._Label1_7.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me._Label1_7.ForeColor = System.Drawing.SystemColors.ControlText
+        Me._Label1_7.Location = New System.Drawing.Point(257, 35)
+        Me._Label1_7.Name = "_Label1_7"
+        Me._Label1_7.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me._Label1_7.Size = New System.Drawing.Size(97, 17)
+        Me._Label1_7.TabIndex = 16
+        Me._Label1_7.Text = "Land Cover Type:"
         '
         'cmdSave
         '
@@ -480,8 +420,6 @@
         Me._SSTab1_TabPage0.ResumeLayout(False)
         Me._SSTab1_TabPage0.PerformLayout()
         CType(Me.dgvCoef, System.ComponentModel.ISupportInitialize).EndInit()
-        Me._SSTab1_TabPage1.ResumeLayout(False)
-        CType(Me.dgvWaterQuality, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -495,9 +433,5 @@
     Friend WithEvents DataGridViewTextBoxColumn6 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn7 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn8 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents dgvWaterQuality As System.Windows.Forms.DataGridView
-    Friend WithEvents ColName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Description As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Threshold As System.Windows.Forms.DataGridViewTextBoxColumn
-#End Region 
+#End Region
 End Class

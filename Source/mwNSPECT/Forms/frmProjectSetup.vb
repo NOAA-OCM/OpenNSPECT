@@ -5,7 +5,6 @@ Imports System.Windows.Forms
 
 Friend Class frmProjectSetup
     Inherits System.Windows.Forms.Form
-    Implements MapWinGIS.ICallback
 
 
 #Region "Class Vars"
@@ -110,6 +109,8 @@ Friend Class frmProjectSetup
             Me.Text = "Untitled"
 
             chkSelectedPolys.Enabled = EnableChkWaterShed()
+
+            chkCalcErosion_CheckStateChanged(Me, Nothing)
 
             'Add one blank management row
             dgvManagementScen.Rows.Clear()
@@ -243,6 +244,7 @@ Friend Class frmProjectSetup
                 g_boolNewWShed = True
 
                 Dim newWS As New frmNewWSDelin
+                newWS.Init(Nothing, Me)
                 newWS.ShowDialog()
             End If
 
@@ -436,7 +438,6 @@ Friend Class frmProjectSetup
         End If
     End Sub
 
-    'TODO
     Private Sub AddScenarioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddScenarioToolStripMenuItem.Click
         Try
 
@@ -1713,16 +1714,20 @@ Friend Class frmProjectSetup
             'Select record from current cbo Selection
             strWShed = "SELECT * FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
             Dim WSCmd As OleDbCommand = New OleDbCommand(strWShed, g_DBConn)
-            Dim WSData As OleDbDataReader = WSCmd.ExecuteReader()
-            WSData.Read()
+            Dim adWS As New OleDbDataAdapter(WSCmd)
+            Dim buWS As New OleDbCommandBuilder(adWS)
+            buWS.QuotePrefix = "["
+            buWS.QuoteSuffix = "]"
+            Dim dtWS As New Data.DataTable
+            adWS.Fill(dtWS)
 
             'Check to make sure all datasets exist, if not
             'DEM
-            If Not modUtil.RasterExists(WSData.Item("DEMFileName")) Then
-                MsgBox("Unable to locate DEM dataset: " & WSData.Item("DEMFileName") & ".", MsgBoxStyle.Critical, "Missing Dataset")
+            If Not modUtil.RasterExists(dtWS.Rows(0)("DEMFileName")) Then
+                MsgBox("Unable to locate DEM dataset: " & dtWS.Rows(0)("DEMFileName") & ".", MsgBoxStyle.Critical, "Missing Dataset")
                 strDEM = modUtil.BrowseForFileName("Raster", Me, "Browse for DEM...")
                 If Len(strDEM) > 0 Then
-                    'TODO write demfilename
+                    dtWS.Rows(0)("DEMFileName") = strDEM
                     'rsWShed.Fields("DEMFileName").Value = strDEM
                     booUpdate = True
                 Else
@@ -1730,49 +1735,45 @@ Friend Class frmProjectSetup
                     Exit Function
                 End If
                 'WaterShed Delineation
-            ElseIf Not modUtil.FeatureExists(WSData.Item("wsfilename")) Then
-                MsgBox("Unable to locate Watershed dataset: " & WSData.Item("wsfilename") & ".", MsgBoxStyle.Critical, "Missing Dataset")
+            ElseIf Not modUtil.FeatureExists(dtWS.Rows(0)("wsfilename")) Then
+                MsgBox("Unable to locate Watershed dataset: " & dtWS.Rows(0)("wsfilename") & ".", MsgBoxStyle.Critical, "Missing Dataset")
                 strWShed = modUtil.BrowseForFileName("Feature", Me, "Browse for Watershed Dataset...")
                 If Len(strWShed) > 0 Then
-                    'TODO write wsfilename
-                    'rsWShed.Fields("wsfilename").Value = strWShed
+                    dtWS.Rows(0)("wsfilename") = strWShed
                     booUpdate = True
                 Else
                     ValidateWaterShed = False
                     Exit Function
                 End If
                 'Flow Direction
-            ElseIf Not modUtil.RasterExists(WSData.Item("FlowDirFileName")) Then
-                MsgBox("Unable to locate Flow Direction GRID: " & WSData.Item("FlowDirFileName") & ".", MsgBoxStyle.Critical, "Missing Dataset")
+            ElseIf Not modUtil.RasterExists(dtWS.Rows(0)("FlowDirFileName")) Then
+                MsgBox("Unable to locate Flow Direction GRID: " & dtWS.Rows(0)("FlowDirFileName") & ".", MsgBoxStyle.Critical, "Missing Dataset")
                 strFlowDirFileName = modUtil.BrowseForFileName("Raster", Me, "Browse for Flow Direction GRID...")
                 If Len(strFlowDirFileName) > 0 Then
-                    'TODO write flow dir
-                    'rsWShed.Fields("FlowDirFileName").Value = strFlowDirFileName
+                    dtWS.Rows(0)("FlowDirFileName") = strFlowDirFileName
                     booUpdate = True
                 Else
                     ValidateWaterShed = False
                     Exit Function
                 End If
                 'Flow Accumulation
-            ElseIf Not modUtil.RasterExists(WSData.Item("FlowAccumFileName")) Then
-                MsgBox("Unable to locate Flow Accumulation GRID: " & WSData.Item("FlowAccumFileName") & ".", MsgBoxStyle.Critical, "Missing Dataset")
+            ElseIf Not modUtil.RasterExists(dtWS.Rows(0)("FlowAccumFileName")) Then
+                MsgBox("Unable to locate Flow Accumulation GRID: " & dtWS.Rows(0)("FlowAccumFileName") & ".", MsgBoxStyle.Critical, "Missing Dataset")
                 strFlowAccumFileName = modUtil.BrowseForFileName("Raster", Me, "Browse for Flow Accumulation GRID...")
                 If Len(strFlowAccumFileName) > 0 Then
-                    'TODO Write flow accum
-                    'rsWShed.Fields("FlowAccumFileName").Value = strFlowAccumFileName
+                    dtWS.Rows(0)("FlowAccumFileName") = strFlowAccumFileName
                     booUpdate = True
                 Else
                     ValidateWaterShed = False
                     Exit Function
                 End If
                 'Check for non-hydro correct GRIDS
-            ElseIf WSData.Item("HydroCorrected") = 0 Then
-                If Not modUtil.RasterExists(WSData.Item("FilledDEMFileName")) Then
-                    MsgBox("Unable to locate the Filled DEM: " & WSData.Item("FilledDEMFileName") & ".", MsgBoxStyle.Critical, "Missing Dataset")
+            ElseIf dtWS.Rows(0)("HydroCorrected") = 0 Then
+                If Not modUtil.RasterExists(dtWS.Rows(0)("FilledDEMFileName")) Then
+                    MsgBox("Unable to locate the Filled DEM: " & dtWS.Rows(0)("FilledDEMFileName") & ".", MsgBoxStyle.Critical, "Missing Dataset")
                     strFilledDEMFileName = modUtil.BrowseForFileName("Raster", Me, "Browse for Filled DEM...")
                     If Len(strFilledDEMFileName) > 0 Then
-                        'TODO write filled dem
-                        'rsWShed.Fields("FilledDEMFileName").Value = strFilledDEMFileName
+                        dtWS.Rows(0)("FilledDEMFileName") = strFilledDEMFileName
                         booUpdate = True
                     Else
                         ValidateWaterShed = False
@@ -1782,13 +1783,10 @@ Friend Class frmProjectSetup
             End If
 
             If booUpdate Then
-                'TODO Figure out how to update
-                'rsWShed.Update()
+                adWS.Update(dtWS)
             End If
 
             ValidateWaterShed = True
-
-            WSData.Close()
         Catch ex As Exception
             HandleError(False, "ValidateWaterShed " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
@@ -1843,12 +1841,4 @@ Friend Class frmProjectSetup
     End Sub
 #End Region
 
-
-    Public Sub [Error](ByVal KeyOfSender As String, ByVal ErrorMsg As String) Implements MapWinGIS.ICallback.Error
-        MsgBox(ErrorMsg)
-    End Sub
-
-    Public Sub Progress(ByVal KeyOfSender As String, ByVal Percent As Integer, ByVal Message As String) Implements MapWinGIS.ICallback.Progress
-
-    End Sub
 End Class

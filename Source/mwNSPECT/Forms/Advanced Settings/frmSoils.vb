@@ -19,6 +19,7 @@ Friend Class frmSoils
             txtSoilsGrid.Text = soil.Item("SoilsFileName")
             txtSoilsKGrid.Text = soil.Item("SoilsKFileName")
         End If
+        soil.Close()
     End Sub
 
     Private Sub txtSoilsGrid_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSoilsGrid.TextChanged
@@ -39,44 +40,42 @@ Friend Class frmSoils
 
     Private Sub mnuNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNew.Click
         Dim newsoil As New frmSoilsSetup
+        newsoil.Init(Me)
         newsoil.ShowDialog()
     End Sub
 
     Private Sub mnuDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelete.Click
 
-        'Dim intAns As Object
+        Dim intAns As Object
         Dim strSQLSoilsDel As String
         'Dim cntrl As System.Windows.Forms.Control
 
-        strSQLSoilsDel = "SELECT * FROM SOILS WHERE NAME LIKE '" & cboSoils.Text & "'"
+        strSQLSoilsDel = "DELETE FROM SOILS WHERE NAME LIKE '" & cboSoils.Text & "'"
 
         If Not (cboSoils.Text = "") Then
-            'intAns = MsgBox("Are you sure you want to delete the soils setup '" & VB6.GetItemString(cboSoils, cboSoils.SelectedIndex) & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
-            ''code to handle response
-            'If intAns = MsgBoxResult.Yes Then
+            intAns = MsgBox("Are you sure you want to delete the soils setup '" & cboSoils.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
+            'code to handle response
+            If intAns = MsgBoxResult.Yes Then
 
-            '    'Set up a delete rs and get rid of it
-            '    rsSoilsDelete = New ADODB.Recordset
-            '    rsSoilsDelete.CursorLocation = ADODB.CursorLocationEnum.adUseClient
-            '    rsSoilsDelete.Open(strSQLSoilsDel, modUtil.g_ADOConn, ADODB.CursorTypeEnum.adOpenForwardOnly, ADODB.LockTypeEnum.adLockOptimistic)
+                'Set up a delete rs and get rid of it
+                Dim cmdDel As New OleDbCommand(strSQLSoilsDel, g_DBConn)
+                cmdDel.ExecuteNonQuery()
 
-            '    rsSoilsDelete.Delete(ADODB.AffectEnum.adAffectCurrent)
-            '    rsSoilsDelete.Update()
-            '    MsgBox(VB6.GetItemString(cboSoils, cboSoils.SelectedIndex) & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
+                MsgBox(cboSoils.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
-            '    'Clear everything, clean up form
-            '    cboSoils.Items.Clear()
+                'Clear everything, clean up form
+                cboSoils.Items.Clear()
 
-            '    txtSoilsGrid.Text = ""
-            '    txtSoilsKGrid.Text = ""
+                txtSoilsGrid.Text = ""
+                txtSoilsKGrid.Text = ""
 
-            '    modUtil.InitComboBox(cboSoils, "SOILS")
+                modUtil.InitComboBox(cboSoils, "SOILS")
 
-            '    Me.Refresh()
+                Me.Refresh()
 
-            'ElseIf intAns = MsgBoxResult.No Then
-            '    Exit Sub
-            'End If
+            ElseIf intAns = MsgBoxResult.No Then
+                Exit Sub
+            End If
         Else
             MsgBox("Please select a Soils Setup", MsgBoxStyle.Critical, "No Soils Setup Selected")
         End If

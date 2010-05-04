@@ -173,7 +173,7 @@ Module modMUSLE
 
                 Dim rowidx As Integer = 0
                 Dim dataType As OleDbDataReader
-                For i = 1 To maxVal
+                For i = 0 To maxVal
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         dataType = cmdType.ExecuteReader
 
@@ -421,7 +421,7 @@ Module modMUSLE
 
             Dim rowidx As Integer = 0
             Dim dataCF As OleDbDataReader
-            For i = 1 To maxVal
+            For i = 0 To maxVal
                 If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                     dataCF = cmdCF.ExecuteReader
 

@@ -23,8 +23,7 @@
 	Public WithEvents cmdOK As System.Windows.Forms.Button
 	Public WithEvents txtImpFile As System.Windows.Forms.TextBox
 	Public WithEvents txtCoeffSetName As System.Windows.Forms.TextBox
-	Public dlgCMD1Open As System.Windows.Forms.OpenFileDialog
-	Public WithEvents _Label1_5 As System.Windows.Forms.Label
+    Public WithEvents _Label1_5 As System.Windows.Forms.Label
 	Public WithEvents _Label1_0 As System.Windows.Forms.Label
 	Public WithEvents _Label1_7 As System.Windows.Forms.Label
     'NOTE: The following procedure is required by the Windows Form Designer
@@ -40,7 +39,6 @@
         Me.cmdOK = New System.Windows.Forms.Button
         Me.txtImpFile = New System.Windows.Forms.TextBox
         Me.txtCoeffSetName = New System.Windows.Forms.TextBox
-        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog
         Me._Label1_5 = New System.Windows.Forms.Label
         Me._Label1_0 = New System.Windows.Forms.Label
         Me._Label1_7 = New System.Windows.Forms.Label

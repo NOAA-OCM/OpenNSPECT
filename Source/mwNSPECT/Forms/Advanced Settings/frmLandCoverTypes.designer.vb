@@ -318,6 +318,7 @@
         '
         Me.dgvLCTypes.AllowUserToAddRows = False
         Me.dgvLCTypes.AllowUserToDeleteRows = False
+        Me.dgvLCTypes.AllowUserToResizeColumns = False
         Me.dgvLCTypes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)

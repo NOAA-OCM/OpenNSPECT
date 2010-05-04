@@ -217,8 +217,8 @@ Module modRunoff
 
                 'STEP 4: Create the strings
                 'Loop through and get all values
-                For i = 1 To dblMaxValue
-                    
+                For i = 0 To dblMaxValue
+
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         dataLandClass = cmdLandClass.ExecuteReader
 
