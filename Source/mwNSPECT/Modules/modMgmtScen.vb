@@ -35,7 +35,7 @@ Module modMgmtScen
                 Exit Sub
             End If
 
-            strOutLandCover = modUtil.GetUniqueName("landcover", IO.Path.GetDirectoryName(_pLandCoverRaster.Filename), ".tif")
+            strOutLandCover = modUtil.GetUniqueName("landcover", IO.Path.GetDirectoryName(_pLandCoverRaster.Filename), ".bgd")
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster

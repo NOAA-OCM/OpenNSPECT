@@ -22,6 +22,9 @@ Module modPollutantCalcs
     Private _strColor As String 'Mod level variable holding the string of the pollutant color
     Private _strPollCoeffMetadata As String 'Variable to hold coeffs for use in metadata
 
+    Private _WQValue As Single
+    Private _FlowMax As Single
+
     ' Constant used by the Error handler function - DO NOT REMOVE
     Const c_sModuleFileName As String = "modPollutantCalcs.bas"
     Private _ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
@@ -358,29 +361,25 @@ Module modPollutantCalcs
 
             'LOCAL EFFECTS ONLY...
             'At this point the above grid will satisfy 'local effects only' people so...
-            Dim pClipAccPollRaster As MapWinGIS.Grid
             If g_booLocalEffects Then
 
                 modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, 0)
                 If modProgDialog.g_boolCancel Then
 
-                    strOutConc = modUtil.GetUniqueName("locconc", g_strWorkspace, ".tif")
+                    strOutConc = modUtil.GetUniqueName("locconc", g_strWorkspace, ".bgd")
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
-                        'TODO: get these functions working
-                        'pClipAccPollRaster = modUtil.ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, pEnv)
-                        'pPermMassVolumeRaster = modUtil.ReturnPermanentRaster(pClipAccPollRaster, pEnv.OutWorkspace.PathName, strOutConc)
+                        pPermMassVolumeRaster = modUtil.ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, strOutConc)
                     Else
-                        'TODO get this working
-                        'pPermMassVolumeRaster = modUtil.ReturnPermanentRaster(pMassVolumeRaster, pEnv.OutWorkspace.PathName, strOutConc)
+                        pPermMassVolumeRaster = modUtil.ReturnPermanentRaster(pMassVolumeRaster, strOutConc)
                     End If
 
                     g_dicMetadata.Add(_strPollName & "Local Effects (mg)", _strPollCoeffMetadata)
-                    'TODO: Add to the group map as nonvisible
-                    'pPollRasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermMassVolumeRaster, _strPollName & " Local Effects (mg)")
-                    'pPollRasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pPollRasterLayer, _strColor)
-                    'pPollRasterLayer.Visible = False
-                    'g_pGroupLayer.Add(pPollRasterLayer)
+
+                    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermMassVolumeRaster, _strColor)
+                    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermMassVolumeRaster, cs, _strPollName & " Local Effects (mg)")
+                    lyr.Visible = False
+                    lyr.MoveTo(0, g_pGroupLayer)
 
                     CalcPollutantConcentration = True
 
@@ -395,42 +394,58 @@ Module modPollutantCalcs
             If modProgDialog.g_boolCancel Then
                 'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
 
-                'TODO: Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
-                'With pMapAlgebraOp
-                '    .BindRaster(g_pFlowDirRaster, "flowdir")
-                '    .BindRaster(pMassVolumeRaster, "massvolume")
-                'End With
+                'Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
+                Dim pTauD8Flow As MapWinGIS.Grid = Nothing
 
-                'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
+                Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+                RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
+                pTauD8Flow.Header.NodataValue = -1
 
-                'pAccumPollRaster = pMapAlgebraOp.Execute(strExpression)
+                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
+                pTauD8Flow.Save(strtmp1)
+
+                Dim strtmp2 As String = IO.Path.GetTempFileName + ".bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
+                pMassVolumeRaster.Save(strtmp2)
+
+                Dim strtmpout As String = IO.Path.GetTempFileName + "out.bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
+
+
+                'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
+                MapWinGeoProc.Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Nothing)
+                'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
+
+                Dim tmpGrid As New MapWinGIS.Grid
+                tmpGrid.Open(strtmpout)
+
+                Dim multAccumcalc As New RasterMathCellCalc(AddressOf multAccumCellCalc)
+                RasterMath(tmpGrid, Nothing, Nothing, Nothing, Nothing, pAccumPollRaster, multAccumcalc)
+
+                pTauD8Flow.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
 
                 'END STEP 3: ------------------------------------------------------------------------------
             End If
 
             'STEP 3a: Added 7/26: ADD ACCUMULATED POLLUTANT TO GROUP LAYER-----------------------------------
             modProgDialog.ProgDialog("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, 0)
-            Dim pClipAccPoll2Raster As MapWinGIS.Grid
             If modProgDialog.g_boolCancel Then
-                strAccPoll = modUtil.GetUniqueName("accpoll", g_strWorkspace, ".tif")
+                strAccPoll = modUtil.GetUniqueName("accpoll", g_strWorkspace, ".bgd")
                 'Added 7/23/04 to account for clip by selected polys functionality
                 If g_booSelectedPolys Then
-                    'TODO: Get this working
-                    'pClipAccPoll2Raster = modUtil.ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, pEnv)
-                    'pPermAccPollRaster = modUtil.ReturnPermanentRaster(pClipAccPoll2Raster, pEnv.OutWorkspace.PathName, strAccPoll)
+                    pPermAccPollRaster = modUtil.ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
                 Else
-                    'TODO
-                    'pPermAccPollRaster = modUtil.ReturnPermanentRaster(pAccumPollRaster, pEnv.OutWorkspace.PathName, strAccPoll)
+                    pPermAccPollRaster = modUtil.ReturnPermanentRaster(pAccumPollRaster, strAccPoll)
                 End If
-
 
                 g_dicMetadata.Add("Accumulated " & _strPollName & " (kg)", _strPollCoeffMetadata)
 
-                'TODO: Add raster to group and etc.
-                'pAccPollRasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermAccPollRaster, "Accumulated " & _strPollName & " (kg)")
-                'pAccPollRasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pAccPollRasterLayer, m_strColor)
-                'pAccPollRasterLayer.Visible = False
-                'g_pGroupLayer.Add(pAccPollRasterLayer)
+                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermAccPollRaster, _strColor)
+                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermAccPollRaster, cs, "Accumulated " & _strPollName & " (kg)")
+                lyr.Visible = False
+                lyr.MoveTo(0, g_pGroupLayer)
 
             End If
             'END STEP 3a: ---------------------------------------------------------------------------------
@@ -465,33 +480,26 @@ Module modPollutantCalcs
             If modProgDialog.g_boolCancel Then
                 'STEP 8: FINAL CONCENTRATION -remove all noData values ---------------------------------------
                 Dim totconnonullcalc As New RasterMathCellCalcNulls(AddressOf totconnonullCellCalc)
-                RasterMath(g_pDEMRaster, pTotalPollConcRaster, Nothing, Nothing, Nothing, pTotalPollConc0Raster, Nothing, False, totconnonullcalc)
+                RasterMath(pTotalPollConcRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pTotalPollConc0Raster, Nothing, False, totconnonullcalc)
                 'END STEP 7: --------------------------------------------------------------------------------
             End If
 
-            modProgDialog.ProgDialog("Converting to correct units...", strTitle, 0, 13, 10, 0)
-
-            Dim pClipTotalConcRaster As MapWinGIS.Grid
             If modProgDialog.g_boolCancel Then
                 modProgDialog.ProgDialog("Creating data layer...", strTitle, 0, 13, 11, 0)
 
-                strOutConc = modUtil.GetUniqueName("conc", g_strWorkspace, "tif")
+                strOutConc = modUtil.GetUniqueName("conc", g_strWorkspace, ".bgd")
 
                 If g_booSelectedPolys Then
-                    'TODO: again
-                    'pClipTotalConcRaster = modUtil.ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, pEnv)
-                    'pPermTotalConcRaster = modUtil.ReturnPermanentRaster(pClipTotalConcRaster, pEnv.OutWorkspace.PathName, strOutConc)
+                    pPermTotalConcRaster = modUtil.ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, strOutConc)
                 Else
-                    'TODO: Again
-                    'pPermTotalConcRaster = modUtil.ReturnPermanentRaster(pTotalPollConc0Raster, pEnv.OutWorkspace.PathName, strOutConc)
+                    pPermTotalConcRaster = modUtil.ReturnPermanentRaster(pTotalPollConc0Raster, strOutConc)
                 End If
 
                 g_dicMetadata.Add(_strPollName & " Conc. (mg/L)", _strPollCoeffMetadata)
-                'TODO: Add layer
-                'pPollRasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermTotalConcRaster, m_strPollName & " Conc. (mg/L)")
-                'pPollRasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pPollRasterLayer, m_strColor)
-                'pPollRasterLayer.Visible = False
-                'g_pGroupLayer.Add(pPollRasterLayer)
+                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermTotalConcRaster, _strColor)
+                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermTotalConcRaster, cs, _strPollName & " Conc. (mg/L)")
+                lyr.Visible = False
+                lyr.MoveTo(0, g_pGroupLayer)
             End If
 
             modProgDialog.ProgDialog("Comparing to water quality standard...", strTitle, 0, 13, 13, 0)
@@ -533,6 +541,7 @@ Module modPollutantCalcs
         'Get the zone dataset from the first layer in ArcMap
         Dim pMaxRaster As MapWinGIS.Grid = Nothing
         Dim pConRaster As MapWinGIS.Grid = Nothing
+        Dim pClipWQRaster As MapWinGIS.Grid = Nothing
         Dim pPermWQRaster As MapWinGIS.Grid = Nothing
         Dim pWQRasterLayer As MapWinGIS.Grid = Nothing
         Dim dblConvertValue As Double
@@ -543,49 +552,34 @@ Module modPollutantCalcs
         Try
 
             ' Perform Spatial operation
-            'TODO: Find what this does
+            'TODO: This seems useless on a singleband thing, otherwise, seems random. so skipping it.
             'pMaxRaster = pLocalOp.LocalStatistics(pPollutantRaster, ESRI.ArcGIS.GeoAnalyst.esriGeoAnalysisStatisticsEnum.esriGeoAnalysisStatsMaximum)
 
             strWQVAlue = ReturnWQValue(_strPollName, _strWQName)
 
-            dblConvertValue = (CDbl(strWQVAlue)) / 1000
-
+            _WQValue = (CDbl(strWQVAlue)) / 1000
+            _FlowMax = g_pFlowAccRaster.Maximum
     
-            'TODO: once the above max thing is figured out
-            'With pMapAlgebraOp
-            '    .BindRaster(pMaxRaster, "Max")
-            '    .BindRaster(g_pFlowAccRaster, "flowacc")
-            'End With
-
-            ''This rather ugly expression was set up to check for meets/exceed water quality standards for
-            ''only the streams.  It takes the values of flowaccumulation from watershed delineation fame that
-            ''exceed values of greater than 1%.  Then multiplies the result (all cells representing streams) times
-            ''the water quality grid.
-            'strExpression = "(Con([Max] gt " & CStr(dblConvertValue) & ", 1, 2)) * (con([flowacc] > (" & CStr(modUtil.ReturnRasterMax(g_pFlowAccRaster)) & " * 0.01), 1))"
-            'pConRaster = pMapAlgebraOp.Execute(strExpression)
+            Dim concalc As New RasterMathCellCalc(AddressOf concompCellCalc)
+            RasterMath(pPollutantRaster, g_pFlowAccRaster, Nothing, Nothing, Nothing, pConRaster, concalc)
 
 
-            strOutWQ = modUtil.GetUniqueName("wq", g_strWorkspace, ".tif")
+            strOutWQ = modUtil.GetUniqueName("wq", g_strWorkspace, ".bgd")
 
             'Clip if selectedpolys
-            Dim pClipWQRaster As MapWinGIS.Grid
             If g_booSelectedPolys Then
-                'TODO: again
-                'pClipWQRaster = modUtil.ClipBySelectedPoly(pConRaster, g_pSelectedPolyClip, pEnv)
-                'pPermWQRaster = modUtil.ReturnPermanentRaster(pClipWQRaster, pEnv.OutWorkspace.PathName, strOutWQ)
+                pPermWQRaster = modUtil.ClipBySelectedPoly(pConRaster, g_pSelectedPolyClip, strOutWQ)
             Else
-                'TODO
-                'pPermWQRaster = modUtil.ReturnPermanentRaster(pConRaster, pEnv.OutWorkspace.PathName, strOutWQ)
+                pPermWQRaster = modUtil.ReturnPermanentRaster(pConRaster, strOutWQ)
             End If
 
             strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _strWQName & vbNewLine & vbTab & vbTab & "Standard: " & dblConvertValue & " mg/L"
             g_dicMetadata.Add(_strPollName & " Standard: " & CStr(dblConvertValue) & " mg/L", _strPollCoeffMetadata & strMetadata)
 
-            'TODO: Add raster
-            'pWQRasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermWQRaster, m_strPollName & " Standard: " & CStr(dblConvertValue) & " mg/L")
-            'pWQRasterLayer.Renderer = modUtil.ReturnUniqueRasterRenderer(pWQRasterLayer, m_strWQName)
-            'pWQRasterLayer.Visible = False
-            'g_pGroupLayer.Add(pWQRasterLayer)
+            Dim cs As MapWinGIS.GridColorScheme = modUtil.ReturnUniqueRasterRenderer(pPermWQRaster, _strWQName)
+            Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermWQRaster, cs, _strPollName & " Standard: " & CStr(dblConvertValue) & " mg/L")
+            lyr.Visible = False
+            lyr.MoveTo(0, g_pGroupLayer)
 
             CompareWaterQuality = True
 
@@ -631,7 +625,8 @@ Module modPollutantCalcs
 
 
 #Region "Raster Math"
-    Private Function pollmassCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function pollmassCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        'strexpression = pick([pLandSampleRaster], _picks)"
         For i As Integer = 0 To _picks.Length - 1
             If Input1 = i + 1 Then
                 Return _picks(i)
@@ -639,27 +634,32 @@ Module modPollutantCalcs
         Next
     End Function
 
-    Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[met_runoff] * [pollmass]"
         Return Input1 * Input2
     End Function
 
-    Private Function temp1CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
+        Return Input1 * 0.000001
+    End Function
+
+    Private Function temp1CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[massvolume] + ([accpoll] / 1.0e-6)"
         Return Input1 + (Input2 / 0.000001)
     End Function
 
-    Private Function temp2CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function temp2CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[met_run] + [accrun]"
         Return Input1 + Input2
     End Function
 
-    Private Function totconCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function totconCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[temp1] / [temp2]"
         Return Input1 / Input2
     End Function
 
-    Private Function totconnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single) As Single
+    Private Function totconnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Merge([totalConc], Con([dem] >= 0, 0))"
         If Input1 <> Input1Null Then
             Return Input1
@@ -667,7 +667,30 @@ Module modPollutantCalcs
             If Input2 > 0 Then
                 Return 0
             Else
-                Return Input1
+                Return OutNull
+            End If
+        End If
+    End Function
+
+    Private Function concompCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        'This rather ugly expression was set up to check for meets/exceed water quality standards for
+        'only the streams.  It takes the values of flowaccumulation from watershed delineation fame that
+        'exceed values of greater than 1%.  Then multiplies the result (all cells representing streams) times
+        'the water quality grid.
+        'strExpression = "(Con([Max] gt " & CStr(dblConvertValue) & ", 1, 2)) * (con([flowacc] > (" & CStr(modUtil.ReturnRasterMax(g_pFlowAccRaster)) & " * 0.01), 1))"
+        'strExpression = "(Con([Max] gt _WQValue, 1, 2)) * (con([flowacc] > (_FlowMax * 0.01), 1))"
+        If Input1 > _WQValue Then
+            '(con([flowacc] > (" & CStr(modUtil.ReturnRasterMax(g_pFlowAccRaster)) & " * 0.01), 1))
+            If Input2 > (_FlowMax * 0.01) Then
+                Return 1
+            Else
+                Return OutNull
+            End If
+        Else
+            If Input2 > (_FlowMax * 0.01) Then
+                Return 2
+            Else
+                Return OutNull
             End If
         End If
     End Function

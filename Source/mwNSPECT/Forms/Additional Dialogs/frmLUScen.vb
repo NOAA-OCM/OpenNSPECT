@@ -80,7 +80,7 @@ Friend Class frmLUScen
 
             For Each row As DataGridViewRow In dgvCoef.Rows
                 clsMan.clsPollutant = New clsXMLLUScenPollItem
-                .clsPollutant.intID = row.Index
+                .clsPollutant.intID = row.Index + 1
                 .clsPollutant.strPollName = row.Cells("Pollutant").Value
                 .clsPollutant.intType1 = CDbl(row.Cells("Type1").Value)
                 .clsPollutant.intType2 = CDbl(row.Cells("Type2").Value)

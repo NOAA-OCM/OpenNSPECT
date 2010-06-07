@@ -154,6 +154,15 @@
   <metadata name="TypeDef.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="btnOpenRainfallFactorGrid.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABsAAAAZCAIAAABPfsIJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAKVJREFUSEvtlEkO
+        gCAMRfHmHM+lC++DRQwQ6CwbEwkxRsvr8Eu3lFJYu4B4HvvCHX7ikmra6libgvFtIAKugsp7/6X9cmtd
+        4p2DxWMUs2MMECJYwz2C2KnbxAtIETOuQIcnmmnvQ4hxhrqJLTpxjAxFkOsYY6C2VutbmUcWKy436dyP
+        RWtYDhxJdOM4IiOIuR9fTiDDpFB6+gRRmYveDBlw+sOo5QVdpmrUrhF2SQAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="cmdOpenSDR.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABsAAAAZCAIAAABPfsIJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

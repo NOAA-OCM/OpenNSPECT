@@ -32,8 +32,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 ;Source: "License.rtf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Base Files\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "Base Files\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs uninsneveruninstall
 Source: "Base Files\bin\mwNSPECT.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly
+Source: "Base Files\bin\MapWinGeoProc.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}\..\.."; Flags: ignoreversion overwritereadonly
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

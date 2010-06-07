@@ -122,6 +122,8 @@ Friend Class frmProjectSetup
                 txtOutputWS.Text = g_strWorkspace
             End If
 
+
+            txtProjectName.Focus()
         Catch ex As Exception
             HandleError(True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
@@ -731,22 +733,6 @@ Friend Class frmProjectSetup
             End If
             'END STEP 12: -------------------------------------------------------------------------------------------------------
 
-            'STEP 13: -----------------------------------------------------------------------------------------------------------
-            'TODO: add layer stff
-            'g_pGroupLayer has been created earlier and has been taken on GRIDs since.  Now lets add it
-            'Add the group layer.
-            'With g_pGroupLayer
-            '    .Expanded = True 'Are going to 'expand' it
-            '    .Name = _XMLPrjParams.strProjectName 'The name equals whatever the user entered
-            'End With
-            'm_pMap.AddLayer(g_pGroupLayer)
-            'END STEP 13: -------------------------------------------------------------------------------------------------------
-
-            'STEP 14 save out group layer ---------------------------------------------------------------------------------------
-            'TODO figure alternative for layer
-            'modUtil.ExportLayerToPath(g_pGroupLayer, _XMLPrjParams.strProjectWorkspace & "\" & _XMLPrjParams.strProjectName & ".lyr")
-            'END STEP 14: -------------------------------------------------------------------------------------------------------
-
             'STEP 15: create string describing project parameters ---------------------------------------------------------------
             'TODO metadata stuff
             'strProjectInfo = modUtil.ParseProjectforMetadata(_XMLPrjParams, _strFileName)
@@ -759,17 +745,12 @@ Friend Class frmProjectSetup
             'END STEP 16: -------------------------------------------------------------------------------------------------------
 
             'Cleanup ------------------------------------------------------------------------------------------------------------
-            'TODO
-            'm_App.StatusBar.Message(0) = "Deleting temporary files..."
-
             'Go into workspace and rid it of all rasters
             modUtil.CleanGlobals()
             modUtil.CleanupRasterFolder((_XMLPrjParams.strProjectWorkspace))
-
+            g_MapWin.StatusBar.ProgressBarValue = 0
             System.Windows.Forms.Cursor.Current = Cursors.Default
 
-            'TODO
-            'm_App.StatusBar.Message(0) = "N-SPECT processing complete!"
 
             Me.Close()
 
@@ -1601,7 +1582,7 @@ Friend Class frmProjectSetup
                 For Each row As DataGridViewRow In dgvManagementScen.Rows
                     If Len(row.Cells("ChangeAreaLayer").Value) > 0 Then
                         clsParamsPrj.clsMgmtScenItem = New clsXMLMgmtScenItem
-                        clsParamsPrj.clsMgmtScenItem.intID = row.Index
+                        clsParamsPrj.clsMgmtScenItem.intID = row.Index + 1
                         If row.Cells("ManageApply").FormattedValue Then
                             clsParamsPrj.clsMgmtScenItem.intApply = 1
                         Else
@@ -1625,7 +1606,7 @@ Friend Class frmProjectSetup
                 For Each row As DataGridViewRow In dgvPollutants.Rows
                     'Adding a New Pollutantant Item to the Project file
                     clsParamsPrj.clsPollItem = New clsXMLPollutantItem
-                    clsParamsPrj.clsPollItem.intID = row.Index
+                    clsParamsPrj.clsPollItem.intID = row.Index + 1
                     If row.Cells("PollApply").FormattedValue Then
                         clsParamsPrj.clsPollItem.intApply = 1
                     Else
@@ -1651,7 +1632,7 @@ Friend Class frmProjectSetup
             For Each row As DataGridViewRow In dgvLandUse.Rows
                 If Len(row.Cells("LUScenario").Value) > 0 Then
                     clsParamsPrj.clsLUItem = New clsXMLLandUseItem
-                    clsParamsPrj.clsLUItem.intID = row.Index
+                    clsParamsPrj.clsLUItem.intID = row.Index + 1
                     clsParamsPrj.clsLUItem.intApply = CShort(row.Cells("LUApply").FormattedValue)
                     clsParamsPrj.clsLUItem.strLUScenName = row.Cells("LUScenario").Value
                     clsParamsPrj.clsLUItem.strLUScenXMLFile = row.Cells("LUScenarioXML").Value
@@ -1841,4 +1822,15 @@ Friend Class frmProjectSetup
     End Sub
 #End Region
 
+    Private Sub btnOpenRainfallFactorGrid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenRainfallFactorGrid.Click
+        Dim g As New MapWinGIS.Grid
+        Dim dlgOpen As New Windows.Forms.OpenFileDialog
+        dlgOpen.Title = "Choose Rainfall Factor GRID"
+        dlgOpen.Filter = g.CdlgFilter
+        If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(dlgOpen.FileName)
+            cboRainGrid.Items.Add(lyr.Name)
+            cboRainGrid.SelectedItem = lyr.Name
+        End If
+    End Sub
 End Class

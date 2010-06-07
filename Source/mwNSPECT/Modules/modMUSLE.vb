@@ -57,7 +57,7 @@ Module modMUSLE
         End If
         'END STEP 1: -----------------------------------------------------------------------------------
 
-        If Len(g_DictTempNames.Item(strLandClass)) > 0 Then
+        If g_DictTempNames.Count > 0 AndAlso Len(g_DictTempNames.Item(strLandClass)) > 0 Then
             strTempLCType = g_DictTempNames.Item(strLandClass)
         Else
             strTempLCType = strLandClass
@@ -642,35 +642,52 @@ Module modMUSLE
         'String to hold calculations
         Dim strExpression As String = ""
         Const strTitle As String = "Processing MUSLE Calculation..."
+        Dim strtmp As String
 
 
         Try
-            modProgDialog.ProgDialog("Computing length/distance...", strTitle, 0, 27, 1, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 1: ------------------------------------------------------------------------------------
-                'Create weight grid that represents cell length/distance
-
-                Dim weightcalc As New RasterMathCellCalc(AddressOf weightCellCalc)
-                RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pWeightRaster, weightcalc)
-                'strExpression = "Con([flowdir] eq 2, 1.41421, " & "Con([flowdir] eq 8, 1.41421, " & "Con([flowdir] eq 32, 1.41421, " & "Con([flowdir] eq 128, 1.41421, 1.0))))"
-
-                'END STEP 2: -------------------------------------------------------------------------------
-            End If
-
+            
             modProgDialog.ProgDialog("Calculating Watershed Length...", strTitle, 0, 27, 2, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 2: ------------------------------------------------------------------------------------
                 'Calculate Watershed Length
 
-                'TODO: Find access to the Taudem flowlength function and see if it would work for this
-                'With pMapAlgebraOp
-                '    .BindRaster(g_pFlowDirRaster, "flowdir")
-                '    .BindRaster(pWeightRaster, "weight")
-                'End With
+                Dim pTauD8Flow As MapWinGIS.Grid = Nothing
 
+                Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+                RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
+                pTauD8Flow.Header.NodataValue = -1
+
+                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
+                pTauD8Flow.Save(strtmp1)
+
+                Dim strLongestOut As String = IO.Path.GetTempFileName + "out.bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strLongestOut)
+
+                Dim strTotalOut As String = IO.Path.GetTempFileName + "out.bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strTotalOut)
+
+                Dim strStrahlOut As String = IO.Path.GetTempFileName + "out.bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strStrahlOut)
+
+                'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
+                MapWinGeoProc.Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, Nothing)
                 'strExpression = "flowlength([flowdir], [weight], upstream)"
 
-                'pWSLengthRaster = pMapAlgebraOp.Execute(strExpression)
+                pTauD8Flow.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
+
+                Dim gTemp As New MapWinGIS.Grid
+                gTemp.Open(strTotalOut) 'TODO: May need to use longest here instead of total
+
+                'Because taudem's flowlength is based on cell size, need to divide by cell size to put it back to where it should be.
+                Dim wslengthfixcalc As New RasterMathCellCalc(AddressOf wslengthfixCellCalc)
+                RasterMath(gTemp, Nothing, Nothing, Nothing, Nothing, pWSLengthRaster, wslengthfixcalc)
+                gTemp.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strTotalOut)
+                MapWinGeoProc.DataManagement.DeleteGrid(strLongestOut)
+                MapWinGeoProc.DataManagement.DeleteGrid(strStrahlOut)
 
                 'End STEP 2 ----------------------------------------------------------------------------------
             End If
@@ -690,14 +707,14 @@ Module modMUSLE
             If modProgDialog.g_boolCancel Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
-
-                'TODO: use my slope moving window to calculate slope as percent rise
-                'pMapAlgebraOp.BindRaster(g_pDEMRaster, "dem")
-
+                Dim strtmpslpout As String = IO.Path.GetTempFileName + ".bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmpslpout)
+                MapWinGeoProc.TerrainAnalysis.Slope2(g_pDEMRaster.Filename, 1, strtmpslpout, True, Nothing)
                 'strExpression = "slope([dem], percentrise)"
 
-                'pSlopePRRaster = pMapAlgebraOp.Execute(strExpression)
 
+                pSlopePRRaster = New MapWinGIS.Grid
+                pSlopePRRaster.Open(strtmpslpout)
                 'END STEP 4a ------------------------------------------------------------------------------------
             End If
 
@@ -712,6 +729,7 @@ Module modMUSLE
                 'END STEP 4b: -----------------------------------------------------------------------------------
             End If
 
+           
 
             modProgDialog.ProgDialog("Calculating Lag...", strTitle, 0, 27, 6, 0)
             If modProgDialog.g_boolCancel Then
@@ -744,6 +762,7 @@ Module modMUSLE
 
                 'END STEP 5c: ----------------------------------------------------------------------------------
             End If
+            
 
             modProgDialog.ProgDialog("Pow([modslope], 0.5...", strTitle, 0, 27, 9, 0)
             If modProgDialog.g_boolCancel Then
@@ -754,7 +773,7 @@ Module modMUSLE
 
                 'END STEP 5d: ----------------------------------------------------------------------------------
             End If
-
+           
             modProgDialog.ProgDialog("Lag calculation...", strTitle, 0, 30, 27, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 5e: --------------------------------------------------------------------------------------
@@ -765,7 +784,7 @@ Module modMUSLE
 
                 'STEP 5e: ---------------------------------------------------------------------------------------
             End If
-
+            
 
             modProgDialog.ProgDialog("Calculating time of concentration...", strTitle, 0, 27, 11, 0)
             If modProgDialog.g_boolCancel Then
@@ -795,6 +814,7 @@ Module modMUSLE
 
             End If
 
+
             modProgDialog.ProgDialog("Abstraction Precipitation Ratio...", strTitle, 0, 27, 12, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 7: ---------------------------------------------------------------------------------------
@@ -805,6 +825,7 @@ Module modMUSLE
 
                 'END STEP 7: ----------------------------------------------------------------------------------
             End If
+
 
             modProgDialog.ProgDialog("Calculating the peak unit discharge...", strTitle, 0, 27, 13, 0)
             If modProgDialog.g_boolCancel Then
@@ -825,8 +846,9 @@ Module modMUSLE
 
                 'END STEP 8b: -----------------------------------------------------------------------------------
 
-
             End If
+
+
 
             modProgDialog.ProgDialog("Creating C-Zero GRID...", strTitle, 0, 27, 14, 0)
             If modProgDialog.g_boolCancel Then
@@ -914,7 +936,7 @@ Module modMUSLE
                 'END STEP 12b: -------------------------------------------------------------------------------------
             End If
 
-
+            
             modProgDialog.ProgDialog("Creating Pond Factor GRID...", strTitle, 0, 27, 16, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 13: ------------------------------------------------------------------------------------------
@@ -941,7 +963,6 @@ Module modMUSLE
                 'END STEP 14: ----------------------------------------------------------------------------------------
             End If
 
-
             modProgDialog.ProgDialog("Creating cover factor GRID...", strTitle, 0, 27, 18, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 15: --------------------------------------------------------------------------------------------
@@ -955,6 +976,7 @@ Module modMUSLE
                 'END STEP 15 -----------------------------------------------------------------------------------------
             End If
 
+
             modProgDialog.ProgDialog("Sediment Yield...", strTitle, 0, 27, 19, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 16 c: -------------------------------------------------------------------------------------------
@@ -965,6 +987,8 @@ Module modMUSLE
 
                 'END STEP 16c: ------------------------------------------------------------------------------------------------------
             End If
+
+           
 
 
             modProgDialog.ProgDialog("Sediment Yield...", strTitle, 0, 30, 27, 0)
@@ -987,31 +1011,33 @@ Module modMUSLE
                 'END STEP 17b: ----------------------------------------------------------------------------------------
             End If
 
+            Dim pHISYMGRasterNoNull As MapWinGIS.Grid = Nothing
+            Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
+            RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, hisymgrnonullcalc)
+
             
-            Dim pClipMusleRaster As MapWinGIS.Grid
             If g_booLocalEffects Then
 
                 modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 27, 27, 0)
                 If modProgDialog.g_boolCancel Then
 
-                    strMUSLE = modUtil.GetUniqueName("locmusle", g_strWorkspace, ".tif")
+                    strMUSLE = modUtil.GetUniqueName("locmusle", g_strWorkspace, ".bgd")
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
-                        'TODO
-                        'pClipMusleRaster = modUtil.ClipBySelectedPoly(pHISYMGRaster, g_pSelectedPolyClip, pEnv)
-                        'pPermMUSLERaster = modUtil.ReturnPermanentRaster(pClipMusleRaster, pEnv.OutWorkspace.PathName, strMUSLE)
+                        pPermMUSLERaster = modUtil.ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
+                        'pPermMUSLERaster = modUtil.ClipBySelectedPoly(pHISYMGRaster, g_pSelectedPolyClip, strMUSLE)
                     Else
-                        'pPermMUSLERaster = modUtil.ReturnPermanentRaster(pHISYMGRaster, pEnv.OutWorkspace.PathName, strMUSLE)
+                        pPermMUSLERaster = modUtil.ReturnPermanentRaster(pHISYMGRasterNoNull, strMUSLE)
+                        'pPermMUSLERaster = modUtil.ReturnPermanentRaster(pHISYMGRaster, strMUSLE)
                     End If
 
                     'metadata time
                     g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
 
-                    'TODO
-                    'pMUSLERasterLocLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermMUSLERaster, "MUSLE Local Effects (mg)")
-                    'pMUSLERasterLocLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pMUSLERasterLocLayer, "Brown")
-                    'pMUSLERasterLocLayer.Visible = False
-                    'g_pGroupLayer.Add(pMUSLERasterLocLayer)
+                    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermMUSLERaster, "Brown")
+                    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermMUSLERaster, cs, "MUSLE Local Effects (mg)")
+                    lyr.Visible = False
+                    lyr.MoveTo(0, g_pGroupLayer)
 
                     CalcMUSLE = True
                     modProgDialog.KillDialog()
@@ -1024,47 +1050,50 @@ Module modMUSLE
 
             modProgDialog.ProgDialog("Calculating the accumulated sediment...", strTitle, 0, 27, 23, 0)
             If modProgDialog.g_boolCancel Then
-                'TODO: replace this with taudem flow accum
-                'pTempflowDir3raster = modUtil.ReturnRaster(g_strFlowDirFilename)
-                'pFlowAccumOp1 = New ESRI.ArcGIS.SpatialAnalyst.RasterHydrologyOp
+                Dim pTauD8Flow As MapWinGIS.Grid = Nothing
 
-                'pFlowDirRDS1 = pTempflowDir3raster
-                'pHISYMGRDS = pHISYMGRaster
+                Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+                RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
+                pTauD8Flow.Header.NodataValue = -1
 
-                'pEnv = pFlowAccumOp1
-                'pOutRDS1 = pFlowAccumOp1.FlowAccumulation(pFlowDirRDS1, pHISYMGRDS)
+                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
+                pTauD8Flow.Save(strtmp1)
 
-                'pAccSedHIRaster = pOutRDS1
+                Dim strtmp2 As String = IO.Path.GetTempFileName + ".bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
+                pHISYMGRasterNoNull.Save(strtmp2)
+                'pHISYMGRaster.Save(strtmp2)
 
-            End If
+                Dim strtmpout As String = IO.Path.GetTempFileName + "out.bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
-            modProgDialog.ProgDialog("Calculating Total Sediment Mass...", strTitle, 0, 27, 24, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 20HI: -----------------------------------------------------------------------------------------------
-                'Total Sediment Mass
-                Dim totsedmasscalc As New RasterMathCellCalc(AddressOf totsedmassCellCalc)
-                RasterMath(pHISYMGRaster, pAccSedHIRaster, Nothing, Nothing, Nothing, pTotSedMassHIRaster, totsedmasscalc)
-                'old / 10000000
-                'strExpression = "[sy_mg_HI] + [accsed_HI]"
 
-                'END STEP 20HI: -------------------------------------------------------------------------------------------
+                'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
+                MapWinGeoProc.Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Nothing)
+                'strExpression = "FlowAccumulation([flowdir], [pHISYMGRaster], FLOAT)"
+
+                pTotSedMassHIRaster = New MapWinGIS.Grid
+                pTotSedMassHIRaster.Open(strtmpout)
+
+                pTauD8Flow.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
+                pHISYMGRaster.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
             End If
 
 
             modProgDialog.ProgDialog("Adding Sediment Mass to Group Layer...", strTitle, 0, 27, 25, 0)
-            Dim pClipMusleMassRaster As MapWinGIS.Grid
             If modProgDialog.g_boolCancel Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
-                strMUSLE = modUtil.GetUniqueName("MUSLEmass", g_strWorkspace, ".tif")
+                strMUSLE = modUtil.GetUniqueName("MUSLEmass", g_strWorkspace, ".bgd")
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
-                    'TODO
-                    'pClipMusleMassRaster = modUtil.ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, pEnv)
-                    'pPermTotSedConcHIraster = modUtil.ReturnPermanentRaster(pClipMusleMassRaster, pEnv.OutWorkspace.PathName, strMUSLE)
+                    pPermTotSedConcHIraster = modUtil.ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, strMUSLE)
                 Else
-                    'pPermTotSedConcHIraster = modUtil.ReturnPermanentRaster(pTotSedMassHIRaster, pEnv.OutWorkspace.PathName, strMUSLE)
+                    pPermTotSedConcHIraster = modUtil.ReturnPermanentRaster(pTotSedMassHIRaster, strMUSLE)
                 End If
 
 
@@ -1072,11 +1101,10 @@ Module modMUSLE
                 g_dicMetadata.Add("MUSLE Sediment Mass (kg)", _strMusleMetadata)
 
                 'Now create the MUSLE layer
-                'TODO
-                'pMUSLERasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermTotSedConcHIraster, "MUSLE Sediment Mass (kg)")
-                'pMUSLERasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pMUSLERasterLayer, "Brown")
-                'pMUSLERasterLayer.Visible = False
-                'g_pGroupLayer.Add(pMUSLERasterLayer)
+                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermTotSedConcHIraster, "Brown")
+                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermTotSedConcHIraster, cs, "MUSLE Sediment Mass (kg)")
+                lyr.Visible = False
+                lyr.MoveTo(0, g_pGroupLayer)
 
                 'end STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
 
@@ -1108,7 +1136,7 @@ Module modMUSLE
 
 
 #Region "Raster Math"
-    Private Function weightCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function weightCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con([flowdir] eq 2, 1.41421, " & "Con([flowdir] eq 8, 1.41421, " & "Con([flowdir] eq 32, 1.41421, " & "Con([flowdir] eq 128, 1.41421, 1.0))))"
         'Con(
         '  [flowdir] eq 2, 
@@ -1132,12 +1160,17 @@ Module modMUSLE
 
     End Function
 
-    Private Function wslengthCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function wslengthfixCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        'Because taudem's flowlength is based on cell size, need to divide by cell size to put it back to where it should be.
+        Return Input1 / g_dblCellSize
+    End Function
+
+    Private Function wslengthCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([cell_wslength] * 3.28084)"
         Return Input1 * 3.28084
     End Function
 
-    Private Function slpmodCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function slpmodCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con([slopepr] eq 0, 0.1, [slopepr])"
         If Input1 = 0 Then
             Return 0.1
@@ -1146,37 +1179,45 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function tmp1lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function tmp1lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow([cell_wslngft], 0.8)"
         Return Math.Pow(Input1, 0.8)
     End Function
 
-    Private Function tmp2lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function tmp2lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "(1000 / [scsgrid100]) - 9"
-        Return (1000 / Input1) - 9
+        If Input1 = 0 Then
+            Return OutNull
+        Else
+            Return (1000 / Input1) - 9
+        End If
     End Function
 
-    Private Function tmp3lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function tmp3lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow([temp4], 0.7)"
         Return Math.Pow(Input1, 0.7)
     End Function
 
-    Private Function tmp4lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function tmp4lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow([modslope], 0.5)"
         Return Math.Pow(Input1, 0.5)
     End Function
 
-    Private Function lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([temp3] * [temp5]) / (1900 * [temp6])"
-        Return (Input1 * Input2) / (1900 * Input3)
+        If Input3 = 0 Then
+            Return OutNull
+        Else
+            Return (Input1 * Input2) / (1900 * Input3)
+        End If
     End Function
 
-    Private Function tocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function tocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[lag] / 0.6"
         Return Input1 / 0.6
     End Function
 
-    Private Function toctmpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function toctmpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con([toc] lt 0.1, 0.1, [toc])"
         If Input1 < 0.1 Then
             Return 0.1
@@ -1185,7 +1226,7 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function modtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function modtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con([temp7] gt 10, 10, [temp7])"
         If Input1 > 10 Then
             Return 10
@@ -1194,22 +1235,26 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function abprecipCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function abprecipCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[abstract] / [rain]"
-        Return Input1 / Input2
+        If Input2 = 0 Then
+            Return OutNull
+        Else
+            Return Input1 / Input2
+        End If
     End Function
 
-    Private Function logtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function logtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "log10([modtoc])"
         Return Math.Log10(Input1)
     End Function
 
-    Private Function tmplogtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function tmplogtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow([logtoc], 2)"
         Return Math.Pow(Input1, 2)
     End Function
 
-    Private Function c0CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c0CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.30550," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 2.23537," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 2.18219," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 2.10624," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.00303," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 1.87733," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 1.76312, 1.67889)))))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1253,7 +1298,7 @@ Module modMUSLE
 
     End Function
 
-    Private Function c0CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c0CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.03250," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 1.91978," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 1.83842," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 1.72657, 1.63417))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1281,7 +1326,7 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function c0CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c0CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.55323," & "Con(([ip] gt 0.10 and [ip] lt 0.30), 2.46532," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.41896," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 2.36409," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 2.29238, 2.20282)))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1314,7 +1359,7 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function c0CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c0CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.47317," & "Con(([ip] ge 0.10 and [ip] lt 0.30), 2.39628," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.35477," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 2.30726," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 2.24876, 2.17772)))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1347,7 +1392,7 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function c1CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c1CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), -0.51429," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.50387," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.48488," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.45695," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.40769," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.32274," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.15644, -0.06930)))))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1390,7 +1435,7 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function c1CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c1CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), 2.03250," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 1.91978," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 1.83842," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 1.72657, 1.63417))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1418,7 +1463,7 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function c1CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c1CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), -0.31583," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.28215," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.25543," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.19826, -0.09100))))"
         'Con(
         '  ([ip] le 0.10), 
@@ -1447,7 +1492,7 @@ Module modMUSLE
 
     End Function
 
-    Private Function c1CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c1CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), -0.51848," & "Con(([ip] ge 0.10 and [ip] lt 0.30), -0.51202," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.49735," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.46541," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.41314, -0.36803)))))"
         'Con(
         '  ([ip] le 0.10), 
@@ -1481,7 +1526,7 @@ Module modMUSLE
 
     End Function
 
-    Private Function c2CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c2CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.11750," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.08929," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.06589," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.02835," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 0.01983," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 0.05754," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 0.00453, 0.00000)))))))"
         'Con(
         '  ([ip] le 0.10), 
@@ -1525,7 +1570,7 @@ Module modMUSLE
 
     End Function
 
-    Private Function c2CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c2CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.13748," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.07020," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.02597," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.02633, -0.0))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1553,7 +1598,7 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function c2CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c2CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.16403," & "Con(([ip] gt 0.10 and [ip] lt 0.30), -0.11657," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.08820," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.05621," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.02281, -0.01259)))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1586,7 +1631,7 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function c2CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function c2CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.17083," & "Con(([ip] ge 0.10 and [ip] lt 0.30), -0.13245," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.11985," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.11094," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.11508, -0.09525)))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1619,17 +1664,17 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function logquCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function logquCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[czero] + ([cone] * [logtoc]) + ([ctwo] * [temp8])"
         Return Input1 + (Input2 * Input3) + (Input4 * Input5)
     End Function
 
-    Private Function quCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function quCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow(10, [logqu])"
         Return Math.Pow(10, Input1)
     End Function
 
-    Private Function pondfactCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function pondfactCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         For i As Integer = 0 To _pondpicks.Length - 1
             If Input1 = i + 1 Then
                 Return _pondpicks(i)
@@ -1637,12 +1682,12 @@ Module modMUSLE
         Next
     End Function
 
-    Private Function qpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function qpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[qu] * [cellarea_sqmi] * [runoff_in] * [pondfact]"
         Return Input1 * Input2 * Input3 * Input4
     End Function
 
-    Private Function cfactCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function cfactCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         For i As Integer = 0 To _picks.Length - 1
             If Input1 = i + 1 Then
                 Return _picks(i)
@@ -1650,25 +1695,29 @@ Module modMUSLE
         Next
     End Function
 
-    Private Function hisytmpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function hisytmpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow(([runoff_af] * [qp]), " & _dblMUSLEExp & ")"
         Return Math.Pow((Input1 * Input2), _dblMUSLEExp)
     End Function
 
-    Private Function hisyCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function hisyCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = _dblMUSLEVal & " * ([cfactor] * [kfactor] * [lsfactor] * [temp9])"
         Return _dblMUSLEExp * (Input1 * Input2 * Input3 * Input4)
     End Function
 
-    Private Function hisymgrCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function hisymgrCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[sy] * 907.184740"
         Return Input1 * 907.18474
     End Function
 
-    Private Function totsedmassCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
-        'old / 10000000
-        'strExpression = "[sy_mg_HI] + [accsed_HI]"
-        Return Input1 + Input2
+    Private Function hisymgrnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+        If Input1 <> Input1Null Then
+            Return Input1
+        Else
+            If Input2 >= 0 Then
+                Return 0
+            End If
+        End If
     End Function
 
 
