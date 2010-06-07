@@ -260,7 +260,7 @@ Friend Class frmSoilsSetup
 
             'TODO: Test if this is working
             If modProgDialog.g_boolCancel Then
-                strOutSoils = modUtil.GetUniqueName("soils", IO.Path.GetDirectoryName(strSoilsFileName), ".tif")
+                strOutSoils = modUtil.GetUniqueName("soils", IO.Path.GetDirectoryName(strSoilsFileName), ".bgd")
 
                 Dim cellsize As Double = _pRasterProps.Header.dX
                 MapWinGeoProc.Utils.ShapefileToGrid(strSoilsFileName, strOutSoils, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.ShortDataType, "GROUP", cellsize, Nothing)
@@ -272,7 +272,7 @@ Friend Class frmSoilsSetup
                 If Len(strKFactor) > 0 Then
                     modProgDialog.ProgDialog("Converting Soils K Dataset...", "Processing Soils", 0, 2, 2, 0)
 
-                    strOutKSoils = modUtil.GetUniqueName("soilsk", IO.Path.GetDirectoryName(strSoilsFileName), ".tif")
+                    strOutKSoils = modUtil.GetUniqueName("soilsk", IO.Path.GetDirectoryName(strSoilsFileName), ".bgd")
 
                     MapWinGeoProc.Utils.ShapefileToGrid(strSoilsFileName, strOutKSoils, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.DoubleDataType, strKFactor, cellsize, Nothing)
                 Else

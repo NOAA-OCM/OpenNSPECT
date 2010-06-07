@@ -39,6 +39,8 @@ Module modUtil
     Public g_intCoeffRow As Short 'Coeff Row Number
     Public g_strCoeffCalc As String 'if the Calc option is chosen, hold results in string
 
+    Public g_frmProjectSetup As frmProjectSetup
+
 
     Const c_sModuleFileName As String = "modUtil.vb"
     Private m_ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
@@ -403,6 +405,7 @@ Module modUtil
 
     Public Function ReturnPermanentRaster(ByRef pRaster As MapWinGIS.Grid, ByRef sOutputName As String) As MapWinGIS.Grid
         pRaster.Save(sOutputName)
+        pRaster.Header.Projection = g_MapWin.Project.ProjectProjection
         Return pRaster
     End Function
 
@@ -438,7 +441,24 @@ Module modUtil
                     rTo = 176
                     gTo = 117
                     bTo = 0
+                Case "81,100,100,81,5,100"
+                    rTo = 166
+                    gTo = 255
+                    bTo = 0
+
+                    rFrom = 251
+                    gFrom = 255
+                    bFrom = 242
+                Case "45,97,100,45,5,100"
+                    rFrom = 255
+                    gFrom = 252
+                    bFrom = 242
+
+                    rTo = 255
+                    gTo = 193
+                    bTo = 8
                 Case Else
+                    'TODO: Convert HSV to RGB
                     rFrom = CInt(Split(strColor, ",")(0))
                     gFrom = CInt(Split(strColor, ",")(1))
                     bFrom = CInt(Split(strColor, ",")(2))
@@ -447,6 +467,8 @@ Module modUtil
                     rTo = CInt(Split(strColor, ",")(3))
                     gTo = CInt(Split(strColor, ",")(4))
                     bTo = CInt(Split(strColor, ",")(5))
+
+
             End Select
 
 
@@ -455,16 +477,67 @@ Module modUtil
             Dim csbrk As New MapWinGIS.GridColorBreak
             csbrk.LowValue = pRaster.Minimum
             csbrk.HighValue = pRaster.Maximum
+            csbrk.ColoringType = MapWinGIS.ColoringType.Gradient
             csbrk.LowColor = Convert.ToUInt32(RGB(rFrom, gFrom, bFrom))
             csbrk.HighColor = Convert.ToUInt32(RGB(rTo, gTo, bTo))
             csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
             cs.InsertBreak(csbrk)
-
             Return cs
         Catch ex As Exception
             HandleError(True, "ReturnRasterStretchColorRampRender " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
+
+    Public Function ReturnUniqueRasterRenderer(ByRef pRaster As MapWinGIS.Grid, ByRef strStandardName As String) As Object
+        Try
+            'Create two colors, red, green
+            'pColorRed.RGB = System.Convert.ToUInt32(RGB(214, 71, 0))
+            'pColorGreen.RGB = System.Convert.ToUInt32(RGB(56, 168, 0))
+
+            Dim cs As New MapWinGIS.GridColorScheme
+            Dim csb1 As New MapWinGIS.GridColorBreak
+            Dim csb2 As New MapWinGIS.GridColorBreak
+
+            csb1.Caption = "Exceeds Standard"
+            csb1.ColoringType = MapWinGIS.ColoringType.Gradient
+            csb1.HighValue = 1
+            csb1.LowValue = 1
+            csb1.HighColor = System.Convert.ToUInt32(RGB(214, 71, 0))
+            csb1.LowColor = System.Convert.ToUInt32(RGB(214, 71, 0))
+
+            csb2.Caption = "Below Standard"
+            csb2.ColoringType = MapWinGIS.ColoringType.Gradient
+            csb2.HighValue = 2
+            csb2.LowValue = 2
+            csb2.HighColor = System.Convert.ToUInt32(RGB(56, 168, 0))
+            csb2.LowColor = System.Convert.ToUInt32(RGB(56, 168, 0))
+
+            cs.InsertBreak(csb1)
+            cs.InsertBreak(csb2)
+
+            Return cs
+        Catch ex As Exception
+            MsgBox(Err.Description)
+        End Try
+    End Function
+
+    Public Function ReturnHSVColorString() As String
+        ReturnHSVColorString = ""
+        Try
+            'Returns a comma delimited string of 6 values.  1st 3 a 'To Color' - HIGH, 2nd 3 a 'From Color' - LOW
+            Dim intHue As Short
+
+            'Hue is a value from 1 to 360 so find a random one
+            intHue = Int((360 * Rnd()) + 1)
+
+            'Value will be a constant of 97, 100 in the SV and 5, 100..
+            ReturnHSVColorString = CStr(intHue) & ",97,100," & CStr(intHue) & ",5,100"
+
+        Catch ex As Exception
+            HandleError(True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+        End Try
+    End Function
+
 
     Public Function CheckSpatialReference(ByRef pRasGeoDataset As MapWinGIS.Grid) As String
         CheckSpatialReference = ""
@@ -573,94 +646,83 @@ Module modUtil
 
     Public Sub CleanGlobals()
         Try
-            ''Sub to rid the world of stragling GRIDS, i.e. the ones established for global usse
+            'Sub to rid the world of stragling GRIDS, i.e. the ones established for global usse
 
-            'If Not modMainRun.g_pFeatWorkspace Is Nothing Then
-            '    modMainRun.g_pFeatWorkspace = Nothing
-            'End If
 
-            'If Not modMainRun.g_pRasWorkspace Is Nothing Then
-            '    modMainRun.g_pRasWorkspace = Nothing
-            'End If
+            'Had an 'elegant' solution using an Iarray to hold global rasters, but that didn't seem to do the
+            'job, so we have to manually set each and everyone to nothing
 
-            ''Had an 'elegant' solution using an Iarray to hold global rasters, but that didn't seem to do the
-            ''job, so we have to manually set each and everyone to nothing
+            If Not g_pSCS100Raster Is Nothing Then
+                g_pSCS100Raster.Close()
+            End If
 
-            'If Not g_pSCS100Raster Is Nothing Then
-            '    g_pSCS100Raster = Nothing
-            'End If
+            If Not g_pAbstractRaster Is Nothing Then
+                g_pAbstractRaster.Close()
+            End If
 
-            'If Not g_pAbstractRaster Is Nothing Then
-            '    g_pAbstractRaster = Nothing
-            'End If
+            If Not g_pRunoffRaster Is Nothing Then
+                g_pRunoffRaster.Close()
+            End If
 
-            'If Not g_pRunoffRaster Is Nothing Then
-            '    g_pRunoffRaster = Nothing
-            'End If
+            If Not g_pRunoffInchRaster Is Nothing Then
+                g_pRunoffInchRaster.Close()
+            End If
 
-            'If Not g_pRunoffInchRaster Is Nothing Then
-            '    g_pRunoffInchRaster = Nothing
-            'End If
+            If Not g_pCellAreaSqMiRaster Is Nothing Then
+                g_pCellAreaSqMiRaster.Close()
+            End If
 
-            'If Not g_pCellAreaSqMiRaster Is Nothing Then
-            '    g_pCellAreaSqMiRaster = Nothing
-            'End If
+            If Not g_pRunoffCFRaster Is Nothing Then
+                g_pRunoffCFRaster.Close()
+            End If
 
-            'If Not g_pRunoffCFRaster Is Nothing Then
-            '    g_pRunoffCFRaster = Nothing
-            'End If
+            If Not g_pRunoffAFRaster Is Nothing Then
+                g_pRunoffAFRaster.Close()
+            End If
 
-            'If Not g_pRunoffAFRaster Is Nothing Then
-            '    g_pRunoffAFRaster = Nothing
-            'End If
+            If Not g_pMetRunoffRaster Is Nothing Then
+                g_pMetRunoffRaster.Close()
+            End If
 
-            'If Not g_pMetRunoffRaster Is Nothing Then
-            '    g_pMetRunoffRaster = Nothing
-            'End If
+            If Not g_pRunoffRaster Is Nothing Then
+                g_pRunoffRaster.Close()
+            End If
 
-            'If Not g_pRunoffRaster Is Nothing Then
-            '    g_pRunoffRaster = Nothing
-            'End If
+            If Not g_pDEMRaster Is Nothing Then
+                g_pDEMRaster.Close()
+            End If
 
-            'If Not g_pDEMRaster Is Nothing Then
-            '    g_pDEMRaster = Nothing
-            'End If
+            If Not g_pFlowAccRaster Is Nothing Then
+                g_pFlowAccRaster.Close()
+            End If
 
-            'If Not g_pFlowAccRaster Is Nothing Then
-            '    g_pFlowAccRaster = Nothing
-            'End If
+            If Not g_pFlowDirRaster Is Nothing Then
+                g_pFlowDirRaster.Close()
+            End If
 
-            'If Not g_pFlowDirRaster Is Nothing Then
-            '    g_pFlowDirRaster = Nothing
-            'End If
+            If Not g_pLSRaster Is Nothing Then
+                g_pLSRaster.Close()
+            End If
 
-            'If Not g_pLSRaster Is Nothing Then
-            '    g_pLSRaster = Nothing
-            'End If
+            If Not g_pWaterShedFeatClass Is Nothing Then
+                g_pWaterShedFeatClass.Close()
+            End If
 
-            'If Not g_pWaterShedFeatClass Is Nothing Then
-            '    g_pWaterShedFeatClass = Nothing
-            'End If
+            If Not g_KFactorRaster Is Nothing Then
+                g_KFactorRaster.Close()
+            End If
 
-            'If Not g_KFactorRaster Is Nothing Then
-            '    g_KFactorRaster = Nothing
-            'End If
+            If Not g_pPrecipRaster Is Nothing Then
+                g_pPrecipRaster.Close()
+            End If
 
-            'If Not g_pPrecipRaster Is Nothing Then
-            '    g_pPrecipRaster = Nothing
-            'End If
+            If Not g_LandCoverRaster Is Nothing Then
+                g_LandCoverRaster.Close()
+            End If
 
-            'If Not g_pSoilsRaster Is Nothing Then
-            '    g_pSoilsRaster = Nothing
-            'End If
-
-            'If Not g_LandCoverRaster Is Nothing Then
-            '    g_LandCoverRaster = Nothing
-            'End If
-
-            'If Not g_pSelectedPolyClip Is Nothing Then
-            '    g_pSelectedPolyClip = Nothing
-            'End If
+            If Not g_pSelectedPolyClip Is Nothing Then
+                g_pSelectedPolyClip = Nothing
+            End If
         Catch ex As Exception
             HandleError(True, "CleanGlobals " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
@@ -819,41 +881,27 @@ Module modUtil
 
     End Function
 
-    Public Function ReturnHSVColorString() As String
-        ReturnHSVColorString = ""
-        Try
-            'Returns a comma delimited string of 6 values.  1st 3 a 'To Color' - HIGH, 2nd 3 a 'From Color' - LOW
-            Dim intHue As Short
-
-            'Hue is a value from 1 to 360 so find a random one
-            intHue = Int((360 * Rnd()) + 1)
-
-            'Value will be a constant of 97, 100 in the SV and 5, 100..
-            ReturnHSVColorString = CStr(intHue) & ",97,100," & CStr(intHue) & ",5,100"
-
-        Catch ex As Exception
-            HandleError(True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-        End Try
-    End Function
 
 
 
-
-    Public Delegate Function RasterMathCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
-    Public Delegate Function RasterMathCellCalcNulls(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single) As Single
-
+    Public Delegate Function RasterMathCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Public Delegate Function RasterMathCellCalcNulls(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
     Public Sub RasterMath(ByRef InputGrid1 As MapWinGIS.Grid, ByRef InputGrid2 As MapWinGIS.Grid, ByRef Inputgrid3 As MapWinGIS.Grid, ByRef Inputgrid4 As MapWinGIS.Grid, ByRef Inputgrid5 As MapWinGIS.Grid, ByRef Outputgrid As MapWinGIS.Grid, ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
         Dim head1, head2, head3, head4, head5, headnew As MapWinGIS.GridHeader
         Dim ncol As Integer
         Dim nrow As Integer
-        Dim nodata1, nodata2, nodata3, nodata4, nodata5 As Single
+        Dim nodata1, nodata2, nodata3, nodata4, nodata5, nodataout As Single
         Dim rowvals1(), rowvals2(), rowvals3(), rowvals4(), rowvals5(), rowvalsout() As Single
+
+        nodataout = -9999.0
 
         head1 = InputGrid1.Header
         headnew = New MapWinGIS.GridHeader
         headnew.CopyFrom(head1)
+        headnew.NodataValue = nodataout
         Outputgrid = New MapWinGIS.Grid()
         Outputgrid.CreateNew("", headnew, MapWinGIS.GridDataType.FloatDataType, headnew.NodataValue)
+        Outputgrid.Header.Projection = head1.Projection
         ncol = head1.NumberCols - 1
         nrow = head1.NumberRows - 1
         nodata1 = head1.NodataValue
@@ -879,7 +927,7 @@ Module modUtil
             head5 = Inputgrid5.Header
             nodata5 = head5.NodataValue
         Else
-            nodata4 = nodata1
+            nodata5 = nodata1
         End If
         ReDim rowvals1(ncol)
         ReDim rowvals2(ncol)
@@ -913,17 +961,265 @@ Module modUtil
 
             For col As Integer = 0 To ncol
                 If checkNullFirst Then
-                    If rowvals1(col) <> nodata1 And rowvals2(col) <> nodata2 And rowvals3(col) <> nodata3 And rowvals4(col) <> nodata4 Then
-                        rowvalsout(col) = CellCalc.Invoke(rowvals1(col), rowvals2(col), rowvals3(col), rowvals4(col), rowvals5(col))
+                    If rowvals1(col) = nodata1 OrElse rowvals2(col) = nodata2 OrElse rowvals3(col) = nodata3 OrElse rowvals4(col) = nodata4 OrElse rowvals5(col) = nodata5 Then
+                        rowvalsout(col) = nodataout
                     Else
-                        rowvalsout(col) = nodata1
+                        rowvalsout(col) = CellCalc.Invoke(rowvals1(col), rowvals2(col), rowvals3(col), rowvals4(col), rowvals5(col), nodataout)
                     End If
                 Else
-                    rowvalsout(col) = CellCalcNull.Invoke(rowvals1(col), nodata1, rowvals2(col), nodata2, rowvals3(col), nodata3, rowvals4(col), nodata4, rowvals5(col), nodata5)
+                    rowvalsout(col) = CellCalcNull.Invoke(rowvals1(col), nodata1, rowvals2(col), nodata2, rowvals3(col), nodata3, rowvals4(col), nodata4, rowvals5(col), nodata5, nodataout)
                 End If
             Next
 
             Outputgrid.PutRow(row, rowvalsout(0))
         Next
     End Sub
+
+    Public Delegate Function RasterMathCellCalcWindow(ByRef InputBox1(,) As Single, ByRef InputBox2(,) As Single, ByRef InputBox3(,) As Single, ByRef InputBox4(,) As Single, ByRef InputBox5(,) As Single, ByVal OutNull As Single) As Single
+    Public Delegate Function RasterMathCellCalcWindowNulls(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+    Public Sub RasterMathWindow(ByRef InputGrid1 As MapWinGIS.Grid, ByRef InputGrid2 As MapWinGIS.Grid, ByRef Inputgrid3 As MapWinGIS.Grid, ByRef Inputgrid4 As MapWinGIS.Grid, ByRef Inputgrid5 As MapWinGIS.Grid, ByRef Outputgrid As MapWinGIS.Grid, ByRef CellCalcWindow As RasterMathCellCalcWindow, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcWindowNull As RasterMathCellCalcWindowNulls = Nothing)
+        Dim head1, head2, head3, head4, head5, headnew As MapWinGIS.GridHeader
+        Dim ncol As Integer
+        Dim nrow As Integer
+        Dim nodata1, nodata2, nodata3, nodata4, nodata5, nodataout As Single
+        Dim rowvals1(3)(), rowvals2(3)(), rowvals3(3)(), rowvals4(3)(), rowvals5(3)(), rowvalsout() As Single
+        Dim InputBox1(3, 3), InputBox2(3, 3), InputBox3(3, 3), InputBox4(3, 3), InputBox5(3, 3) As Single
+
+        nodataout = -9999.0
+
+        head1 = InputGrid1.Header
+        headnew = New MapWinGIS.GridHeader
+        headnew.CopyFrom(head1)
+        headnew.NodataValue = nodataout
+        Outputgrid = New MapWinGIS.Grid()
+        Outputgrid.CreateNew("", headnew, MapWinGIS.GridDataType.FloatDataType, headnew.NodataValue)
+        Outputgrid.Header.Projection = head1.Projection
+        ncol = head1.NumberCols - 1
+        nrow = head1.NumberRows - 1
+        nodata1 = head1.NodataValue
+        If Not InputGrid2 Is Nothing Then
+            head2 = InputGrid2.Header
+            nodata2 = head2.NodataValue
+        Else
+            nodata2 = nodata1
+        End If
+        If Not Inputgrid3 Is Nothing Then
+            head3 = Inputgrid3.Header
+            nodata3 = head3.NodataValue
+        Else
+            nodata3 = nodata1
+        End If
+        If Not Inputgrid4 Is Nothing Then
+            head4 = Inputgrid4.Header
+            nodata4 = head4.NodataValue
+        Else
+            nodata4 = nodata1
+        End If
+        If Not Inputgrid5 Is Nothing Then
+            head5 = Inputgrid5.Header
+            nodata5 = head5.NodataValue
+        Else
+            nodata5 = nodata1
+        End If
+        ReDim rowvals1(0)(ncol)
+        ReDim rowvals2(0)(ncol)
+        ReDim rowvals3(0)(ncol)
+        ReDim rowvals4(0)(ncol)
+        ReDim rowvals5(0)(ncol)
+        ReDim rowvals1(1)(ncol)
+        ReDim rowvals2(1)(ncol)
+        ReDim rowvals3(1)(ncol)
+        ReDim rowvals4(1)(ncol)
+        ReDim rowvals5(1)(ncol)
+        ReDim rowvals1(2)(ncol)
+        ReDim rowvals2(2)(ncol)
+        ReDim rowvals3(2)(ncol)
+        ReDim rowvals4(2)(ncol)
+        ReDim rowvals5(2)(ncol)
+        ReDim rowvalsout(ncol)
+
+        For row As Integer = 0 To nrow
+            InputGrid1.GetRow(row, rowvals1(1)(0))
+            If Not InputGrid2 Is Nothing Then
+                InputGrid2.GetRow(row, rowvals2(1)(0))
+            Else
+                InputGrid1.GetRow(row, rowvals2(1)(0))
+            End If
+            If Not Inputgrid3 Is Nothing Then
+                Inputgrid3.GetRow(row, rowvals3(1)(0))
+            Else
+                InputGrid1.GetRow(row, rowvals3(1)(0))
+            End If
+            If Not Inputgrid4 Is Nothing Then
+                Inputgrid4.GetRow(row, rowvals4(1)(0))
+            Else
+                InputGrid1.GetRow(row, rowvals4(1)(0))
+            End If
+            If Not Inputgrid5 Is Nothing Then
+                Inputgrid5.GetRow(row, rowvals5(1)(0))
+            Else
+                InputGrid1.GetRow(row, rowvals5(1)(0))
+            End If
+
+            If row <> 0 Then
+                InputGrid1.GetRow(row - 1, rowvals1(0)(0))
+                If Not InputGrid2 Is Nothing Then
+                    InputGrid2.GetRow(row - 1, rowvals2(0)(0))
+                Else
+                    InputGrid1.GetRow(row - 1, rowvals2(0)(0))
+                End If
+                If Not Inputgrid3 Is Nothing Then
+                    Inputgrid3.GetRow(row - 1, rowvals3(0)(0))
+                Else
+                    InputGrid1.GetRow(row - 1, rowvals3(0)(0))
+                End If
+                If Not Inputgrid4 Is Nothing Then
+                    Inputgrid4.GetRow(row - 1, rowvals4(0)(0))
+                Else
+                    InputGrid1.GetRow(row - 1, rowvals4(0)(0))
+                End If
+                If Not Inputgrid5 Is Nothing Then
+                    Inputgrid5.GetRow(row - 1, rowvals5(0)(0))
+                Else
+                    InputGrid1.GetRow(row - 1, rowvals5(0)(0))
+                End If
+            Else
+                ReDim rowvals1(0)(rowvals1(1).Length)
+                ReDim rowvals2(0)(rowvals1(1).Length)
+                ReDim rowvals3(0)(rowvals1(1).Length)
+                ReDim rowvals4(0)(rowvals1(1).Length)
+                ReDim rowvals5(0)(rowvals1(1).Length)
+            End If
+
+            If row <> nrow Then
+                InputGrid1.GetRow(row + 1, rowvals1(2)(0))
+                If Not InputGrid2 Is Nothing Then
+                    InputGrid2.GetRow(row + 1, rowvals2(2)(0))
+                Else
+                    InputGrid1.GetRow(row + 1, rowvals2(2)(0))
+                End If
+                If Not Inputgrid3 Is Nothing Then
+                    Inputgrid3.GetRow(row + 1, rowvals3(2)(0))
+                Else
+                    InputGrid1.GetRow(row + 1, rowvals3(2)(0))
+                End If
+                If Not Inputgrid4 Is Nothing Then
+                    Inputgrid4.GetRow(row + 1, rowvals4(2)(0))
+                Else
+                    InputGrid1.GetRow(row + 1, rowvals4(2)(0))
+                End If
+                If Not Inputgrid5 Is Nothing Then
+                    Inputgrid5.GetRow(row + 1, rowvals5(2)(0))
+                Else
+                    InputGrid1.GetRow(row + 1, rowvals5(2)(0))
+                End If
+            Else
+                ReDim rowvals1(2)(rowvals1(1).Length)
+                ReDim rowvals2(2)(rowvals1(1).Length)
+                ReDim rowvals3(2)(rowvals1(1).Length)
+                ReDim rowvals4(2)(rowvals1(1).Length)
+                ReDim rowvals5(2)(rowvals1(1).Length)
+            End If
+
+
+            For col As Integer = 1 To ncol - 1
+                If row <> 0 Then
+                    InputBox1(0, 0) = rowvals1(0)(col - 1)
+                    InputBox1(0, 1) = rowvals1(0)(col)
+                    InputBox1(0, 2) = rowvals1(0)(col + 1)
+                    InputBox2(0, 0) = rowvals2(0)(col - 1)
+                    InputBox2(0, 1) = rowvals2(0)(col)
+                    InputBox2(0, 2) = rowvals2(0)(col + 1)
+                    InputBox3(0, 0) = rowvals3(0)(col - 1)
+                    InputBox3(0, 1) = rowvals3(0)(col)
+                    InputBox3(0, 2) = rowvals3(0)(col + 1)
+                    InputBox4(0, 0) = rowvals4(0)(col - 1)
+                    InputBox4(0, 1) = rowvals4(0)(col)
+                    InputBox4(0, 2) = rowvals4(0)(col + 1)
+                    InputBox5(0, 0) = rowvals5(0)(col - 1)
+                    InputBox5(0, 1) = rowvals5(0)(col)
+                    InputBox5(0, 2) = rowvals5(0)(col + 1)
+                Else
+                    InputBox1(0, 0) = nodata1
+                    InputBox1(0, 1) = nodata1
+                    InputBox1(0, 2) = nodata1
+                    InputBox2(0, 0) = nodata2
+                    InputBox2(0, 1) = nodata2
+                    InputBox2(0, 2) = nodata2
+                    InputBox3(0, 0) = nodata3
+                    InputBox3(0, 1) = nodata3
+                    InputBox3(0, 2) = nodata3
+                    InputBox4(0, 0) = nodata4
+                    InputBox4(0, 1) = nodata4
+                    InputBox4(0, 2) = nodata4
+                    InputBox5(0, 0) = nodata5
+                    InputBox5(0, 1) = nodata5
+                    InputBox5(0, 2) = nodata5
+                End If
+
+                InputBox1(1, 0) = rowvals1(1)(col - 1)
+                InputBox1(1, 1) = rowvals1(1)(col)
+                InputBox1(1, 2) = rowvals1(1)(col + 1)
+                InputBox2(1, 0) = rowvals2(1)(col - 1)
+                InputBox2(1, 1) = rowvals2(1)(col)
+                InputBox2(1, 2) = rowvals2(1)(col + 1)
+                InputBox3(1, 0) = rowvals3(1)(col - 1)
+                InputBox3(1, 1) = rowvals3(1)(col)
+                InputBox3(1, 2) = rowvals3(1)(col + 1)
+                InputBox4(1, 0) = rowvals4(1)(col - 1)
+                InputBox4(1, 1) = rowvals4(1)(col)
+                InputBox4(1, 2) = rowvals4(1)(col + 1)
+                InputBox5(1, 0) = rowvals5(1)(col - 1)
+                InputBox5(1, 1) = rowvals5(1)(col)
+                InputBox5(1, 2) = rowvals5(1)(col + 1)
+
+                If row <> 0 Then
+                    InputBox1(2, 0) = rowvals1(2)(col - 1)
+                    InputBox1(2, 1) = rowvals1(2)(col)
+                    InputBox1(2, 2) = rowvals1(2)(col + 1)
+                    InputBox2(2, 0) = rowvals2(2)(col - 1)
+                    InputBox2(2, 1) = rowvals2(2)(col)
+                    InputBox2(2, 2) = rowvals2(2)(col + 1)
+                    InputBox3(2, 0) = rowvals3(2)(col - 1)
+                    InputBox3(2, 1) = rowvals3(2)(col)
+                    InputBox3(2, 2) = rowvals3(2)(col + 1)
+                    InputBox4(2, 0) = rowvals4(2)(col - 1)
+                    InputBox4(2, 1) = rowvals4(2)(col)
+                    InputBox4(2, 2) = rowvals4(2)(col + 1)
+                    InputBox5(2, 0) = rowvals5(2)(col - 1)
+                    InputBox5(2, 1) = rowvals5(2)(col)
+                    InputBox5(2, 2) = rowvals5(2)(col + 1)
+                Else
+                    InputBox1(2, 0) = nodata1
+                    InputBox1(2, 1) = nodata1
+                    InputBox1(2, 2) = nodata1
+                    InputBox2(2, 0) = nodata2
+                    InputBox2(2, 1) = nodata2
+                    InputBox2(2, 2) = nodata2
+                    InputBox3(2, 0) = nodata3
+                    InputBox3(2, 1) = nodata3
+                    InputBox3(2, 2) = nodata3
+                    InputBox4(2, 0) = nodata4
+                    InputBox4(2, 1) = nodata4
+                    InputBox4(2, 2) = nodata4
+                    InputBox5(2, 0) = nodata5
+                    InputBox5(2, 1) = nodata5
+                    InputBox5(2, 2) = nodata5
+                End If
+
+                If checkNullFirst Then
+                    If InputBox1(0, 0) = nodata1 OrElse InputBox1(0, 1) = nodata1 OrElse InputBox1(0, 2) = nodata1 OrElse InputBox2(0, 0) = nodata2 OrElse InputBox2(0, 1) = nodata2 OrElse InputBox2(0, 2) = nodata2 OrElse InputBox3(0, 0) = nodata3 OrElse InputBox3(0, 1) = nodata3 OrElse InputBox3(0, 2) = nodata3 OrElse InputBox4(0, 0) = nodata4 OrElse InputBox4(0, 1) = nodata4 OrElse InputBox4(0, 2) = nodata4 OrElse InputBox5(0, 0) = nodata5 OrElse InputBox5(0, 1) = nodata5 OrElse InputBox5(0, 2) = nodata5 OrElse InputBox1(1, 0) = nodata1 OrElse InputBox1(1, 1) = nodata1 OrElse InputBox1(1, 2) = nodata1 OrElse InputBox2(1, 0) = nodata2 OrElse InputBox2(1, 1) = nodata2 OrElse InputBox2(1, 2) = nodata2 OrElse InputBox3(1, 0) = nodata3 OrElse InputBox3(1, 1) = nodata3 OrElse InputBox3(1, 2) = nodata3 OrElse InputBox4(1, 0) = nodata4 OrElse InputBox4(1, 1) = nodata4 OrElse InputBox4(1, 2) = nodata4 OrElse InputBox5(1, 0) = nodata5 OrElse InputBox5(1, 1) = nodata5 OrElse InputBox5(1, 2) = nodata5 OrElse InputBox1(2, 0) = nodata1 OrElse InputBox1(2, 1) = nodata1 OrElse InputBox1(2, 2) = nodata1 OrElse InputBox2(2, 0) = nodata2 OrElse InputBox2(2, 1) = nodata2 OrElse InputBox2(2, 2) = nodata2 OrElse InputBox3(2, 0) = nodata3 OrElse InputBox3(2, 1) = nodata3 OrElse InputBox3(2, 2) = nodata3 OrElse InputBox4(2, 0) = nodata4 OrElse InputBox4(2, 1) = nodata4 OrElse InputBox4(2, 2) = nodata4 OrElse InputBox5(2, 0) = nodata5 OrElse InputBox5(2, 1) = nodata5 OrElse InputBox5(2, 2) = nodata5 Then
+                        rowvalsout(col) = nodataout
+                    Else
+                        rowvalsout(col) = CellCalcWindow.Invoke(InputBox1, InputBox2, InputBox3, InputBox4, InputBox5, nodataout)
+                    End If
+                Else
+                    rowvalsout(col) = CellCalcWindowNull.Invoke(InputBox1, nodata1, InputBox2, nodata2, InputBox3, nodata3, InputBox4, nodata4, InputBox5, nodata5, nodataout)
+                End If
+            Next
+
+            Outputgrid.PutRow(row, rowvalsout(0))
+        Next
+    End Sub
+
 End Module

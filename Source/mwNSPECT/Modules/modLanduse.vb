@@ -308,7 +308,7 @@ Module modLanduse
 
             Dim booLandScen As Boolean
             Dim pNewLandCoverRaster As New MapWinGIS.Grid
-            strOutLandCover = modUtil.GetUniqueName("landcover", IO.Path.GetDirectoryName(_pLandCoverRaster.Filename), ".tif")
+            strOutLandCover = modUtil.GetUniqueName("landcover", IO.Path.GetDirectoryName(_pLandCoverRaster.Filename), ".bgd")
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
@@ -374,7 +374,7 @@ Module modLanduse
             Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers(sfIndex)
             'TODO: This somehow needs to be modified to take into account that it may not be the current layer selection
             'Dim exportPath As String = modUtil.ExportSelectedFeatures(lyr)
-            'sf.Open(exportPath)
+            'sf.Open(exportPath)        
             sf = modUtil.ReturnFeature(clsLUItemDetails.strLUScenFileName)
         Else
             sf = modUtil.ReturnFeature(clsLUItemDetails.strLUScenFileName)

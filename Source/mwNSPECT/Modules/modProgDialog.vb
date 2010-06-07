@@ -30,6 +30,7 @@ Module modProgDialog
                 g_boolCancel = True
                 'create a CancelTracker
                 g_progdialog = New frmProgressDialog
+                g_frmProjectSetup.AddOwnedForm(g_progdialog)
                 g_progdialog.Show()
             End If
 

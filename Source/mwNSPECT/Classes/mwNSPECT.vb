@@ -300,8 +300,8 @@ Public Class mwNSPECT
 
 #Region "   Itemclicked Items"
     Private Sub ShowAnalysisForm()
-        Dim tmp As New frmProjectSetup
-        tmp.ShowDialog()
+        g_frmProjectSetup = New frmProjectSetup
+        g_frmProjectSetup.ShowDialog()
     End Sub
 
     Private Sub ShowAdvLandForm()

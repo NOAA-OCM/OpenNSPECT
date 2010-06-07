@@ -74,7 +74,7 @@ Module modRusle
 
         'Get the landclasses of type strLandClass
         'Check first for temp name
-        If Len(g_DictTempNames.Item(strLandClass)) > 0 Then
+        If g_DictTempNames.Count > 0 AndAlso Len(g_DictTempNames.Item(strLandClass)) > 0 Then
             strTempLCType = g_DictTempNames.Item(strLandClass)
         Else
             strTempLCType = strLandClass
@@ -438,7 +438,7 @@ Module modRusle
                     RasterMath(g_pLSRaster, g_KFactorRaster, pCFactorRaster, Nothing, Nothing, pSoilLossRaster, soillosscalc)
                     'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]"
                 End If
-
+                pCFactorRaster.Close()
                 'END STEP 2: -------------------------------------------------------------------------------
             End If
 
@@ -447,7 +447,8 @@ Module modRusle
                 'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
                 Dim lossaccalc As New RasterMathCellCalc(AddressOf lossacCellCalc)
                 RasterMath(pSoilLossRaster, Nothing, Nothing, Nothing, Nothing, pSoilLossAcres, lossaccalc)
-
+                'strExpression = "(Pow(" & g_dblCellSize & ", 2) * 0.000247104369) * [soil_loss]"
+                pSoilLossRaster.Close()
                 'END STEP 3: ------------------------------------------------------------------------------
             End If
 
@@ -458,9 +459,8 @@ Module modRusle
                 modProgDialog.ProgDialog("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 0, 13, 5, 0)
                 If modProgDialog.g_boolCancel Then
                     'STEP 4: DAVE'S WACKY CALCULATION OF RELIEF-LENGTH RATIO FOR SEDIMENT DELIVERY RATIO-------
-                    Dim pZSedcalc As New RasterMathCellCalc(AddressOf pZSedCellCalc)
-                    RasterMath(g_NibbleRaster, g_DEMTwoCellRaster, Nothing, Nothing, Nothing, pZSedDelRaster, pZSedcalc)
-
+                    Dim pZSedcalc As New RasterMathCellCalcWindowNulls(AddressOf pZSedCellCalc)
+                    RasterMathWindow(g_NibbleRaster, g_DEMTwoCellRaster, Nothing, Nothing, Nothing, pZSedDelRaster, Nothing, False, pZSedcalc)
                     'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
 
                     'END STEP 4: ------------------------------------------------------------------------------
@@ -471,10 +471,10 @@ Module modRusle
                     'STEP 5: CALCULATE SEDIMENT DELIVERY RATIO ------------------------------------------------
                     Dim areaKMcalc As New RasterMathCellCalc(AddressOf areaKMCellCalc)
                     RasterMath(g_pDEMRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaKMRaster, areaKMcalc)
-                    
+                    'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
+
                     'NOTE: Original equation is cellarea_km = ([cellsize] / 1000).  To get cell_size I do a CON on the DEM.
                     'Notice the float...if you don't do that, screw ville...GRID comes back = 0
-                    'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
 
                     'END STEP 5: -------------------------------------------------------------------------------
                 End If
@@ -552,35 +552,31 @@ Module modRusle
                 Dim SedYieldcalc As New RasterMathCellCalc(AddressOf SedYieldCellCalc)
                 RasterMath(pSDRRaster, pSoilLossAcres, Nothing, Nothing, Nothing, pSedYieldRaster, SedYieldcalc)
                 'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
+                pSoilLossRaster.Close()
                 'END STEP 11: --------------------------------------------------------------------------------
             End If
 
-            Dim pClipLocRusleRaster As MapWinGIS.Grid
             If g_booLocalEffects Then
-
                 modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, 0)
                 If modProgDialog.g_boolCancel Then
 
                     'STEP 12: Local Effects -------------------------------------------------
 
-                    strOutYield = modUtil.GetUniqueName("locrusle", g_strWorkspace, ".tif")
-                    'Added 7/23/04 to account for clip by selected polys functionality
+                    strOutYield = modUtil.GetUniqueName("locrusle", g_strWorkspace, ".bgd")
                     If g_booSelectedPolys Then
-                        'TODO again
-                        'pClipLocRusleRaster = modUtil.ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, pEnv)
-                        'pPermRUSLELocRaster = modUtil.ReturnPermanentRaster(pClipLocRusleRaster, pEnv.OutWorkspace.PathName, strOutYield)
+                        pPermRUSLELocRaster = modUtil.ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
                     Else
-                        'TODO: again
-                        'pPermRUSLELocRaster = modUtil.ReturnPermanentRaster(pSedYieldRaster, pEnv.OutWorkspace.PathName, strOutYield)
+                        pPermRUSLELocRaster = modUtil.ReturnPermanentRaster(pSedYieldRaster, strOutYield)
                     End If
 
                     'Metadata
                     g_dicMetadata.Add("Sediment Local Effects (mg)", _strRusleMetadata)
-                    'TODO
-                    'pRUSLELocRasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermRUSLELocRaster, "Sediment Local Effects (mg)")
-                    'pRUSLELocRasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pRUSLELocRasterLayer, "Brown")
-                    'pRUSLELocRasterLayer.Visible = False
-                    'g_pGroupLayer.Add(pRUSLELocRasterLayer)
+
+                    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermRUSLELocRaster, "Brown")
+                    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermRUSLELocRaster, cs, "Sediment Local Effects (mg)")
+                    lyr.Visible = False
+                    lyr.MoveTo(0, g_pGroupLayer)
+
 
                     CalcRUSLE = True
                     modProgDialog.KillDialog()
@@ -597,55 +593,58 @@ Module modRusle
 
                 'STEP 12: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
 
-                'TODO: Run weighted accumulation from geoproc hydrology
+                Dim pTauD8Flow As MapWinGIS.Grid = Nothing
 
-                'With pMapAlgebraOp
-                '    .BindRaster(g_pFlowDirRaster, "flowdir")
-                '    .BindRaster(pSedYieldRaster, "sedyield")
-                'End With
+                Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+                RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
+                pTauD8Flow.Header.NodataValue = -1
 
+                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
+                pTauD8Flow.Save(strtmp1)
+
+                Dim strtmp2 As String = IO.Path.GetTempFileName + ".bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
+                pSedYieldRaster.Save(strtmp2)
+
+                Dim strtmpout As String = IO.Path.GetTempFileName + "out.bgd"
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
+
+
+                'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
+                MapWinGeoProc.Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Nothing)
                 'strExpression = "flowaccumulation([flowdir], [sedyield], FLOAT)"
 
-                'pAccumSedRaster = pMapAlgebraOp.Execute(strExpression)
+                pTotalAccumSedRaster = New MapWinGIS.Grid
+                pTotalAccumSedRaster.Open(strtmpout)
 
+                pTauD8Flow.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
+                pSedYieldRaster.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 'END STEP 12: --------------------------------------------------------------------------------
-            End If
-
-            modProgDialog.ProgDialog("Calculating Total Accumulated Sediment...", strTitle, 0, 13, 13, 0)
-            If modProgDialog.g_boolCancel Then
-
-                'STEP 13: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
-                Dim totacccalc As New RasterMathCellCalc(AddressOf totaccCellCalc)
-                RasterMath(pAccumSedRaster, pSedYieldRaster, Nothing, Nothing, Nothing, pTotalAccumSedRaster, totacccalc)
-                'strExpression = "[accumsed] + [sedyield]"
-
-                'END STEP 13: --------------------------------------------------------------------------------
             End If
 
 
             modProgDialog.ProgDialog("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, 13, 0)
 
-            Dim pClipRUSLERaster As MapWinGIS.Grid
             If modProgDialog.g_boolCancel Then
-                strOutYield = modUtil.GetUniqueName("RUSLE", g_strWorkspace, ".tif")
+                strOutYield = modUtil.GetUniqueName("RUSLE", g_strWorkspace, ".bgd")
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
-                    'TODO
-                    'pClipRUSLERaster = modUtil.ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, pEnv)
-                    'pPermAccumSedRaster = modUtil.ReturnPermanentRaster(pClipRUSLERaster, pEnv.OutWorkspace.PathName, strOutYield)
+                    pPermAccumSedRaster = modUtil.ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, strOutYield)
                 Else
-                    'pPermAccumSedRaster = modUtil.ReturnPermanentRaster(pTotalAccumSedRaster, pEnv.OutWorkspace.PathName, strOutYield)
+                    pPermAccumSedRaster = modUtil.ReturnPermanentRaster(pTotalAccumSedRaster, strOutYield)
                 End If
 
                 'Metadata
                 g_dicMetadata.Add("Accumulated Sediment (kg)", _strRusleMetadata)
 
-                'TODO
-                'pRUSLERasterLayer = modUtil.ReturnRasterLayer((frmPrj.m_App), pPermAccumSedRaster, "Accumulated Sediment (kg)")
-                'pRUSLERasterLayer.Renderer = modUtil.ReturnRasterStretchColorRampRender(pRUSLERasterLayer, "Brown")
-                'pRUSLERasterLayer.Visible = False
-                'g_pGroupLayer.Add(pRUSLERasterLayer)
+                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermAccumSedRaster, "Brown")
+                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermAccumSedRaster, cs, "Accumulated Sediment (kg)")
+                lyr.Visible = False
+                lyr.MoveTo(0, g_pGroupLayer)
             End If
 
 
@@ -678,7 +677,7 @@ Module modRusle
 
 
 #Region "Raster Math"
-    Private Function factCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function factCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         For i As Integer = 0 To _picks.Length - 1
             If Input1 = i + 1 Then
                 Return _picks(i)
@@ -686,7 +685,7 @@ Module modRusle
         Next
     End Function
 
-    Private Function soillossCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function soillossCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         If Not _booUsingConstantValue Then 'If not using a constant
             'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
             Return Input1 * Input2 * Input3 * Input4
@@ -697,56 +696,112 @@ Module modRusle
 
     End Function
 
-    Private Function lossacCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function lossacCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "(Pow(" & g_dblCellSize & ", 2) * 0.000247104369) * [soil_loss]"
         Return (Math.Pow(g_dblCellSize, 2) * 0.000247104369) * Input1
     End Function
 
-    Private Function pZSedCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function pZSedCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
-        'Con(
-        '  ([fdrnib] ge 0.5 and [fdrnib] lt 1.5), 
-        '  (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001)),
-        '  Con(
-        '    ([fdrnib] ge 1.5 and [fdrnib] lt 3.0), 
-        '    (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142)),
-        '    Con(
-        '      ([fdrnib] ge 3.0 and [fdrnib] lt 6.0), 
-        '      (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001)),
-        '      Con(
-        '        ([fdrnib] ge 6.0 and [fdrnib] lt 12.0), 
-        '        (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142)),
-        '        Con(
-        '          ([fdrnib] ge 12.0 and [fdrnib] lt 24.0), 
-        '          (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001)),
-        '          Con(
-        '            ([fdrnib] ge 24.0 and [fdrnib] lt 48.0), 
-        '            (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142)),
-        '              Con(
-        '                ([fdrnib] ge 48.0 and [fdrnib] lt 96.0), 
-        '                (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001)),
-        '                Con(
-        '                  ([fdrnib] ge 96.0 and [fdrnib] lt 192.0), 
-        '                  (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142)),
-        '                    Con(
-        '                      ([fdrnib] ge 192.0 and [fdrnib] le 255.0), 
-        '                      (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001)),
-        '                      0.1
-        '                    )
-        '                 )
-        '              )
-        '           )
-        '        )
-        '      )
-        '    )
-        '  )
-        ')
-        If Input1 >= 0.5 And Input1 < 1.5 Then
 
+        'TODO: Test if this works.
+        If InputBox1(1, 1) <> Input1Null Then
+            If InputBox2(1, 1) <> Input2Null Then
+                If InputBox1(1, 1) >= 0.5 And InputBox1(1, 1) < 1.5 Then
+                    'Con(
+                    '  ([fdrnib] ge 0.5 and [fdrnib] lt 1.5), 
+                    '  (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001)),
+                    If InputBox2(1, 2) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(1, 2)) / (g_dblCellSize * 0.001)
+                    Else
+                        Return OutNull
+                    End If
+                ElseIf InputBox1(1, 1) >= 1.5 And InputBox1(1, 1) < 3.0 Then
+                    '  Con(
+                    '    ([fdrnib] ge 1.5 and [fdrnib] lt 3.0), 
+                    '    (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142)),
+                    If InputBox2(2, 2) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(2, 2)) / (g_dblCellSize * 0.0014142)
+                    Else
+                        Return OutNull
+                    End If
+                ElseIf InputBox1(1, 1) >= 3.0 And InputBox1(1, 1) < 6.0 Then
+                    '    Con(
+                    '      ([fdrnib] ge 3.0 and [fdrnib] lt 6.0), 
+                    '      (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001)),
+                    If InputBox2(2, 1) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(2, 1)) / (g_dblCellSize * 0.001)
+                    Else
+                        Return OutNull
+                    End If
+                ElseIf InputBox1(1, 1) >= 6.0 And InputBox1(1, 1) < 12.0 Then
+                    '      Con(
+                    '        ([fdrnib] ge 6.0 and [fdrnib] lt 12.0), 
+                    '        (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142)),
+                    If InputBox2(2, 0) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(2, 0)) / (g_dblCellSize * 0.0014142)
+                    Else
+                        Return OutNull
+                    End If
+                ElseIf InputBox1(1, 1) >= 12.0 And InputBox1(1, 1) < 24.0 Then
+                    '        Con(
+                    '          ([fdrnib] ge 12.0 and [fdrnib] lt 24.0), 
+                    '          (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001)),
+                    If InputBox2(1, 0) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(1, 0)) / (g_dblCellSize * 0.001)
+                    Else
+                        Return OutNull
+                    End If
+                ElseIf InputBox1(1, 1) >= 24.0 And InputBox1(1, 1) < 48.0 Then
+                    '          Con(
+                    '            ([fdrnib] ge 24.0 and [fdrnib] lt 48.0), 
+                    '            (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142)),
+                    If InputBox2(0, 0) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(0, 0)) / (g_dblCellSize * 0.0014142)
+                    Else
+                        Return OutNull
+                    End If
+                ElseIf InputBox1(1, 1) >= 48.0 And InputBox1(1, 1) < 96.0 Then
+                    '              Con(
+                    '                ([fdrnib] ge 48.0 and [fdrnib] lt 96.0), 
+                    '                (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001)),
+                    If InputBox2(0, 1) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(0, 1)) / (g_dblCellSize * 0.001)
+                    Else
+                        Return OutNull
+                    End If
+                ElseIf InputBox1(1, 1) >= 96.0 And InputBox1(1, 1) < 192.0 Then
+                    '                Con(
+                    '                  ([fdrnib] ge 96.0 and [fdrnib] lt 192.0), 
+                    '                  (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142)),
+                    If InputBox2(0, 2) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(0, 2)) / (g_dblCellSize * 0.0014142)
+                    Else
+                        Return OutNull
+                    End If
+                ElseIf InputBox1(1, 1) >= 192.0 And InputBox1(1, 1) < 255.0 Then
+                    '                    Con(
+                    '                      ([fdrnib] ge 192.0 and [fdrnib] le 255.0), 
+                    '                      (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001)),
+                    If InputBox2(1, 2) <> Input2Null Then
+                        Return (InputBox2(1, 1) - InputBox2(1, 2)) / (g_dblCellSize * 0.001)
+                    Else
+                        Return OutNull
+                    End If
+                Else
+                    Return 0.1
+                End If
+            Else
+                Return OutNull
+            End If
+        Else
+            Return OutNull
         End If
+
+
     End Function
 
-    Private Function areaKMCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function areaKMCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
         If Input1 >= 0 Then
             Return g_dblCellSize / 1000.0
@@ -755,32 +810,32 @@ Module modRusle
         End If
     End Function
 
-    Private Function pDACellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function pDACellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow([cellarea_km], 2)"
         Return Math.Pow(Input1, 2)
     End Function
 
-    Private Function temp3CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function temp3CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow([da_sed_del], -0.0998)"
         Return Math.Pow(Input1, -0.0998)
     End Function
 
-    Private Function temp4CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function temp4CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow([zl_sed_del], 0.3629)"
         Return Math.Pow(Input1, 0.3629)
     End Function
 
-    Private Function temp5CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function temp5CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Pow([scsgrid100], 5.444)"
         Return Math.Pow(Input1, 5.444)
     End Function
 
-    Private Function temp6CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function temp6CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "1.366 * (Pow(10, -11)) * [temp3] * [temp4] * [temp5]"
         Return 1.366 * Math.Pow(10, -11) * Input1 * Input2 * Input3
     End Function
 
-    Private Function SDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function SDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
         If Input1 > 1 Then
             Return 1
@@ -789,15 +844,11 @@ Module modRusle
         End If
     End Function
 
-    Private Function sedYieldCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function sedYieldCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
         Return Input1 * Input2 * 907.18474
     End Function
 
-    Private Function totaccCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
-        'strExpression = "[accumsed] + [sedyield]"
-        Return Input1 + Input2
-    End Function
     
 #End Region
 

@@ -88,6 +88,7 @@
         Me.Label7 = New System.Windows.Forms.Label
         Me.chkCalcErosion = New System.Windows.Forms.CheckBox
         Me.frameRainFall = New System.Windows.Forms.GroupBox
+        Me.btnOpenRainfallFactorGrid = New System.Windows.Forms.Button
         Me.cboRainGrid = New System.Windows.Forms.ComboBox
         Me.optUseGRID = New System.Windows.Forms.RadioButton
         Me.cboErodFactor = New System.Windows.Forms.ComboBox
@@ -509,7 +510,7 @@
         Me.Frame3.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame3.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Frame3.Size = New System.Drawing.Size(625, 41)
-        Me.Frame3.TabIndex = 37
+        Me.Frame3.TabIndex = 0
         Me.Frame3.TabStop = False
         Me.Frame3.Text = "Project Information "
         '
@@ -554,7 +555,7 @@
         Me.txtProjectName.Name = "txtProjectName"
         Me.txtProjectName.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtProjectName.Size = New System.Drawing.Size(161, 20)
-        Me.txtProjectName.TabIndex = 38
+        Me.txtProjectName.TabIndex = 0
         '
         'Label5
         '
@@ -774,7 +775,7 @@
         Me.dgvPollutants.Name = "dgvPollutants"
         Me.dgvPollutants.ShowEditingIcon = False
         Me.dgvPollutants.Size = New System.Drawing.Size(600, 168)
-        Me.dgvPollutants.TabIndex = 0
+        Me.dgvPollutants.TabIndex = 98
         '
         'PollApply
         '
@@ -908,6 +909,7 @@
         'frameRainFall
         '
         Me.frameRainFall.BackColor = System.Drawing.SystemColors.Control
+        Me.frameRainFall.Controls.Add(Me.btnOpenRainfallFactorGrid)
         Me.frameRainFall.Controls.Add(Me.txtRainValue)
         Me.frameRainFall.Controls.Add(Me.cboRainGrid)
         Me.frameRainFall.Controls.Add(Me.optUseValue)
@@ -922,6 +924,21 @@
         Me.frameRainFall.TabIndex = 22
         Me.frameRainFall.TabStop = False
         Me.frameRainFall.Text = "Rainfall Factor "
+        '
+        'btnOpenRainfallFactorGrid
+        '
+        Me.btnOpenRainfallFactorGrid.BackColor = System.Drawing.SystemColors.Control
+        Me.btnOpenRainfallFactorGrid.Cursor = System.Windows.Forms.Cursors.Default
+        Me.btnOpenRainfallFactorGrid.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnOpenRainfallFactorGrid.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.btnOpenRainfallFactorGrid.Image = CType(resources.GetObject("btnOpenRainfallFactorGrid.Image"), System.Drawing.Image)
+        Me.btnOpenRainfallFactorGrid.Location = New System.Drawing.Point(230, 25)
+        Me.btnOpenRainfallFactorGrid.Name = "btnOpenRainfallFactorGrid"
+        Me.btnOpenRainfallFactorGrid.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.btnOpenRainfallFactorGrid.Size = New System.Drawing.Size(23, 20)
+        Me.btnOpenRainfallFactorGrid.TabIndex = 68
+        Me.btnOpenRainfallFactorGrid.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnOpenRainfallFactorGrid.UseVisualStyleBackColor = False
         '
         'cboRainGrid
         '
@@ -1499,5 +1516,6 @@
     Friend WithEvents cboWQStd As System.Windows.Forms.ComboBox
     Friend WithEvents cboWSDelin As System.Windows.Forms.ComboBox
     Friend WithEvents cboPrecipScen As System.Windows.Forms.ComboBox
+    Private WithEvents btnOpenRainfallFactorGrid As System.Windows.Forms.Button
 #End Region
 End Class
