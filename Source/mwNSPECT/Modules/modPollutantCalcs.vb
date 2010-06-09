@@ -196,7 +196,7 @@ Module modPollutantCalcs
 
                 Dim rowidx As Integer = 0
                 Dim dataType As OleDbDataReader
-                For i = 0 To maxVal
+                For i = 1 To maxVal
 
                     If i = 1 Then
                         If (mwTable.CellValue(FieldIndex, rowidx) = i) Then
@@ -221,7 +221,7 @@ Module modPollutantCalcs
                             End If
                             dataType.Close()
                         Else
-                            strpick = "-9999"
+                            strpick = "0"
                         End If
                     Else
                         If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then

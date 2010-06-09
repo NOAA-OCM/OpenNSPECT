@@ -192,7 +192,7 @@ Module modRusle
 
                 Dim rowidx As Integer = 0
                 Dim dataType As OleDbDataReader
-                For i = 0 To maxVal
+                For i = 1 To maxVal
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         dataType = cmdType.ExecuteReader
 
@@ -222,7 +222,7 @@ Module modRusle
 
                     Else
                         If strpick = "" Then
-                            strpick = "-9999"
+                            strpick = "0"
                         Else
                             strpick = strpick & ", 0"
                         End If
