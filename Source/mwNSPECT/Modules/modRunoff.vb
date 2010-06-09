@@ -215,7 +215,7 @@ Module modRunoff
 
                 'STEP 4: Create the strings
                 'Loop through and get all values
-                For i = 0 To dblMaxValue
+                For i = 1 To dblMaxValue
 
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         dataLandClass = cmdLandClass.ExecuteReader
@@ -252,10 +252,10 @@ Module modRunoff
 
                     Else
                         If strPick(0) = "" Then
-                            strPick(0) = strPick(0) & "-9999"
-                            strPick(1) = strPick(1) & "-9999"
-                            strPick(2) = strPick(2) & "-9999"
-                            strPick(3) = strPick(3) & "-9999"
+                            strPick(0) = strPick(0) & "0"
+                            strPick(1) = strPick(1) & "0"
+                            strPick(2) = strPick(2) & "0"
+                            strPick(3) = strPick(3) & "0"
                         Else
                             strPick(0) = strPick(0) & ", 0"
                             strPick(1) = strPick(1) & ", 0"
@@ -689,8 +689,8 @@ Module modRunoff
         If Input1 <> Input1Null Then
             'TODO: FIGURE OUT WHY THIS WORKS BETTER AS 0 THAN NULL
             If Input1 = 0 Then 'avoid #inf, treat as null is correct, but 0 comes out looking better irritatingly
-                'Return OutNull
-                Return 0
+                Return OutNull
+                'Return 0
             Else
                 If _intPrecipType = 0 Then
                     Return ((1000.0 / Input1) - 10) * _intRainingDays
