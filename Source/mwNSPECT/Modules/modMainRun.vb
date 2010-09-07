@@ -23,11 +23,10 @@ Module modMainRun
 
     Public g_intDistanceUnits As Short 'Global Units 0 = meters, 1 = feet
     Public g_dblCellSize As Double 'Global Cell Size, again taken from DEM
-
+    Public g_intPrecipType As Short 'Precipitation Type; I, IA, II, III
     Public g_booLocalEffects As Boolean 'Did they check local effects?
     Public g_booSelectedPolys As Boolean 'Did they select n polygons for limiting analysis?
-    Public g_intPrecipType As Short 'Precipitation Type; I, IA, II, III
-
+   
     'The Public member datasets, to be used quite a bit
     Public g_pDEMRaster As MapWinGIS.Grid 'DEM Raster
     Public g_pFlowAccRaster As MapWinGIS.Grid 'Flow Accumulation

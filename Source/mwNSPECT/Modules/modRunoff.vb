@@ -15,20 +15,15 @@ Module modRunoff
     Public g_pRunoffRaster As MapWinGIS.Grid 'Runoff for use elsewhere
     Public g_pMetRunoffRaster As MapWinGIS.Grid 'Metric Runoff
     Public g_pSCS100Raster As MapWinGIS.Grid 'SCS GRID for use in RUSLE
-    Public g_pAbstractRaster As MapWinGIS.Grid 'Abstraction Raster used in MUSLE
     Public g_pPrecipRaster As MapWinGIS.Grid 'Precipitation Raster
-    Public g_pCellAreaSqMiRaster As MapWinGIS.Grid 'Square Mile area raster used in MUSLE
-    Public g_pRunoffInchRaster As MapWinGIS.Grid 'Runoff Inches used in MUSLE
-    Public g_pRunoffAFRaster As MapWinGIS.Grid 'Runoff AF used in MUSLE
-    Public g_pRunoffCFRaster As MapWinGIS.Grid 'MUSLE
     Public g_strPrecipFileName As String 'Precipitation File Name
     Public g_strLandCoverParameters As String 'Global string to hold formatted LC params for metadata
 
     Private _strRunoffMetadata As String 'Metatdata string for runoff
-    Private _intPrecipType As Short 'Precip Event Type: 0=Annual; 1=Event
-    Private _intRainingDays As Short '# of Raining Days for Annual Precip
+    Public g_intRainingDays As Short '# of Raining Days for Annual Precip
+    Public g_intRunoffPrecipType As Short  'Precip Event Type: 0=Annual; 1=Event
     ' Variables used by the Error handler function - DO NOT REMOVE
-    Const c_sModuleFileName As String = "modRunoff.bas"
+    Const c_sModuleFileName As String = "modRunoff.vb"
     Private _ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
 
     Private _picks()() As String
@@ -75,8 +70,8 @@ Module modRunoff
             End If
 
             g_strPrecipFileName = dataPrecip("PrecipFileName")
-            _intPrecipType = dataPrecip("Type") 'Set the mod level precip type
-            _intRainingDays = dataPrecip("RainingDays") 'Set the mod level rainingdays
+            g_intRunoffPrecipType = dataPrecip("Type") 'Set the mod level precip type
+            g_intRainingDays = dataPrecip("RainingDays") 'Set the mod level rainingdays
         Else
             strError = strLCFileName
             dataPrecip.Close()
@@ -316,79 +311,25 @@ Module modRunoff
         'strPickStatement: our friend the dynamic pick statemnt
         'pInRainRaster: the precip grid
         'pInLandCoverRaster: landcover grid
-        'The rasters                             'Associated Steps
-
+        'pInSoilsRaster: soils grid
+        
         Try
-            Dim pLandCoverRaster As MapWinGIS.Grid = Nothing  'STEP 1: LandCover Raster
-            Dim pLandSampleRaster As MapWinGIS.Grid = Nothing  'STEP 1: Properly sized landcover
-            Dim pHydSoilsRaster As MapWinGIS.Grid = Nothing  'STEP 2: Soils Raster
-            Dim pPrecipRaster As MapWinGIS.Grid = Nothing  'STEP 3: Create Precip Grid
-            Dim pDailyRainRaster As MapWinGIS.Grid = Nothing  'Rain
             Dim pSCS100Raster As MapWinGIS.Grid = Nothing  'STEP 2: SCS * 100
-            Dim pRetentionRaster As MapWinGIS.Grid = Nothing  'STEP 3: Retention
-            Dim pAbstractRaster As MapWinGIS.Grid = Nothing
-            Dim pRunoffInRaster As MapWinGIS.Grid = Nothing
             Dim pMetRunoffRaster As MapWinGIS.Grid = Nothing
             Dim pMetRunoffNoNullRaster As MapWinGIS.Grid = Nothing  'STEP 6a:  no nulls
             Dim pAccumRunoffRaster As MapWinGIS.Grid = Nothing
-            Dim pAccumRunoffRaster1 As MapWinGIS.Grid = Nothing
-            Dim pCellAreaSMRaster As MapWinGIS.Grid = Nothing
-            Dim pCellAreaSqMileRaster As MapWinGIS.Grid = Nothing  'STEP 5a2: Square miles
-            Dim pCellAreaSIRaster As MapWinGIS.Grid = Nothing
-            Dim pCellAreaAcreRaster As MapWinGIS.Grid = Nothing
-            Dim pCellAreaCIRaster As MapWinGIS.Grid = Nothing
-            Dim pCellAreaCFRaster As MapWinGIS.Grid = Nothing
-            Dim pCellAreaAFRaster As MapWinGIS.Grid = Nothing
             Dim pPermAccumRunoffRaster As MapWinGIS.Grid = Nothing
             Dim pPermAccumLocRunoffRaster As MapWinGIS.Grid = Nothing
 
 
-            'Temp
-            Dim ptemp As MapWinGIS.Grid
-            Dim cst As MapWinGIS.GridColorScheme
-            Dim lyrt As MapWindow.Interfaces.Layer
+        
 
             'String to hold calculations
             Dim strExpression As String = ""
             Dim strOutAccum As String
             Const strTitle As String = "Processing Runoff Calculation..."
 
-           
-            'Assign rasters
-            pHydSoilsRaster = pInSoilsRaster
-            pLandCoverRaster = pInLandCoverRaster
-            pPrecipRaster = pInRainRaster
 
-            modProgDialog.ProgDialog("Checking landcover cell size...", strTitle, 0, 10, 1, 0)
-
-            If modProgDialog.g_boolCancel Then
-                'Step 1: ----------------------------------------------------------------------------
-                'Make sure LandCover is in the same cellsize as the global environment
-
-                If pLandCoverRaster.Header.dX <> g_dblCellSize Then
-                    'TODO: Resample land cover raster to g_dblCellSize
-                    MsgBox("The Landcover raster is not the same cellsize as the other project data, please resample this raster to a cellsize of " + g_dblCellSize.ToString, MsgBoxStyle.Exclamation, "Landcover Cell Size Mismatch")
-                    Exit Function
-                Else
-                    pLandSampleRaster = pLandCoverRaster
-                End If
-            Else
-                Exit Function
-            End If
-
-            modProgDialog.ProgDialog("Creating precipitation raster...", strTitle, 0, 10, 1, 0)
-
-            If modProgDialog.g_boolCancel Then
-                'Step 2a: ----------------------------------------------------------------------------
-                'Make the daily rain raster
-                pDailyRainRaster = pPrecipRaster
-            Else
-                Exit Function
-            End If
-            'END STEP 2a: -------------------------------------------------------------------------
-
-
-            'STEP 2: ------------------------------------------------------------------------------
             modProgDialog.ProgDialog("Calculating maximum potential retention...", strTitle, 0, 10, 3, 0)
 
             If modProgDialog.g_boolCancel Then
@@ -401,138 +342,27 @@ Module modRunoff
                     _picks(i) = strPick(i).Split(",")
                 Next
                 Dim sc100calc As New RasterMathCellCalc(AddressOf SC100CellCalc)
-                RasterMath(pHydSoilsRaster, pLandSampleRaster, Nothing, Nothing, Nothing, pSCS100Raster, sc100calc)
+                RasterMath(pInSoilsRaster, pInLandCoverRaster, Nothing, Nothing, Nothing, pSCS100Raster, sc100calc)
                 g_pSCS100Raster = pSCS100Raster
             Else
                 Exit Function
             End If
 
-            'END STEP 2: ---------------------------------------------------------------------------
-
-            'STEP 2A: ------------------------------------------------------------------------------
-            modProgDialog.ProgDialog("Calculating maximum potential retention...", strTitle, 0, 10, 4, 0)
-
             If modProgDialog.g_boolCancel Then
-                Dim retentioncalc As New RasterMathCellCalcNulls(AddressOf RetentionCellCalc)
-                RasterMath(pSCS100Raster, Nothing, Nothing, Nothing, Nothing, pRetentionRaster, Nothing, False, retentioncalc)
+                modProgDialog.ProgDialog("Calculating runoff...", strTitle, 0, 10, 6, 0)
+                Dim AllRunOffCalc As New RasterMathCellCalcNulls(AddressOf AllRunoffCellCalc)
+                RasterMath(pSCS100Raster, pInRainRaster, g_pDEMRaster, Nothing, Nothing, pMetRunoffRaster, Nothing, False, AllRunOffCalc)
+
+                'STEP 6a: -------------------------------------------------------------------------------------
+                'Eliminate nulls: Added 1/28/07
+                Dim metRunoffNoNullcalc As New RasterMathCellCalcNulls(AddressOf metRunoffNoNullCellCalc)
+                RasterMath(pMetRunoffRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pMetRunoffNoNullRaster, Nothing, False, metRunoffNoNullcalc)
+
+                g_pMetRunoffRaster = pMetRunoffNoNullRaster
+                pMetRunoffRaster.Close()
             Else
                 Exit Function
             End If
-            'END STEP 2A: --------------------------------------------------------------------------
-
-
-            'STEP 3: -------------------------------------------------------------------------------
-            modProgDialog.ProgDialog("Calculating initial abstraction...", strTitle, 0, 10, 5, 0)
-
-            If modProgDialog.g_boolCancel Then
-                'Calculate initial abstraction
-                Dim abstractcalc As New RasterMathCellCalc(AddressOf AbstractCellCalc)
-                RasterMath(pRetentionRaster, Nothing, Nothing, Nothing, Nothing, pAbstractRaster, abstractcalc)
-                g_pAbstractRaster = pAbstractRaster
-            Else
-                Exit Function
-            End If
-            'END STEP 3: ---------------------------------------------------------------------------
-
-            'STEP 4: -------------------------------------------------------------------------------
-            modProgDialog.ProgDialog("Calculating runoff...", strTitle, 0, 10, 6, 0)
-
-            If modProgDialog.g_boolCancel Then
-                'Calculate Runoff
-                Dim runoffcalc As New RasterMathCellCalc(AddressOf RunoffCellCalc)
-                RasterMath(pDailyRainRaster, pAbstractRaster, pRetentionRaster, Nothing, Nothing, pRunoffInRaster, runoffcalc)
-
-                g_pRunoffInchRaster = pRunoffInRaster
-
-                pRetentionRaster.Close()
-            Else
-                Exit Function
-            End If
-            'END STEP 4b: -----------------------------------------------------------------------------
-
-
-
-            modProgDialog.ProgDialog("Calculating maximum potential retention...", strTitle, 0, 10, 7, 0)
-
-            If modProgDialog.g_boolCancel Then
-                'STEP 5a: ---------------------------------------------------------------------------------
-                ''Convert Runoff
-                ''Square Meters
-                Dim cellSMcalc As New RasterMathCellCalc(AddressOf CellSMCellCalc)
-                RasterMath(g_pDEMRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaSMRaster, cellSMcalc)
-                'END STEP 5a ------------------------------------------------------------------------------
-
-
-                'STEP 5a2 sqmiles
-                Dim cellSMicalc As New RasterMathCellCalc(AddressOf CellSMiCellCalc)
-                RasterMath(pCellAreaSMRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaSqMileRaster, cellSMicalc)
-
-                g_pCellAreaSqMiRaster = pCellAreaSqMileRaster
-
-                'END STEP 5a1: -----------------------------------------------------------------------------
-
-                'STEP 5c: ----------------------------------------------------------------------------------
-                'Square Inches
-                Dim cellSIcalc As New RasterMathCellCalc(AddressOf CellSICellCalc)
-                RasterMath(pCellAreaSMRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaSIRaster, cellSIcalc)
-                'END STEP 5c--------------------------------------------------------------------------------
-
-                'STEP 5d: ----------------------------------------------------------------------------------
-                'Acres
-                Dim cellAreaAcrecalc As New RasterMathCellCalc(AddressOf CellAreaAcreCellCalc)
-                RasterMath(pCellAreaSMRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaAcreRaster, cellAreaAcrecalc)
-                pCellAreaSMRaster.Close()
-                'END STEP 5d--------------------------------------------------------------------------------
-
-
-                'STEP 5e: ----------------------------------------------------------------------------------
-                'Cubic Inches
-                Dim cellAreaCIcalc As New RasterMathCellCalc(AddressOf CellAreaCICellCalc)
-                RasterMath(pCellAreaSIRaster, pRunoffInRaster, Nothing, Nothing, Nothing, pCellAreaCIRaster, cellAreaCIcalc)
-                pCellAreaSIRaster.Close()
-                'END STEP 5e -------------------------------------------------------------------------------
-
-
-                'STEP 5f: -----------------------------------------------------------------------------------
-                'Cubic feet
-                Dim cellAreaCFcalc As New RasterMathCellCalc(AddressOf cellAreaCFCellCalc)
-                RasterMath(pCellAreaCIRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaCFRaster, cellAreaCFcalc)
-                g_pRunoffCFRaster = pCellAreaCFRaster
-                'END STEP 5f: --------------------------------------------------------------------------------
-
-
-                'STEP 5g: ------------------------------------------------------------------------------------
-                'Runoff acre-feet
-                Dim cellAreaAFcalc As New RasterMathCellCalc(AddressOf cellAreaAFCellCalc)
-                RasterMath(pCellAreaCFRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaAFRaster, cellAreaAFcalc)
-
-                g_pRunoffAFRaster = pCellAreaAFRaster
-                'END STEP 5f: --------------------------------------------------------------------------------
-            Else
-                Exit Function
-            End If
-
-
-            'STEP 6: -------------------------------------------------------------------------------------
-            modProgDialog.ProgDialog("Converting to correct units...", strTitle, 0, 10, 8, 0)
-
-            If modProgDialog.g_boolCancel Then
-                'Convert cubic inches to liters
-                Dim metRunoffcalc As New RasterMathCellCalc(AddressOf metRunoffCellCalc)
-                RasterMath(pCellAreaCIRaster, Nothing, Nothing, Nothing, Nothing, pMetRunoffRaster, metRunoffcalc)
-                pCellAreaCIRaster.Close()
-            Else
-                Exit Function
-            End If
-            'END STEP 6: ---------------------------------------------------------------------------------
-
-            'STEP 6a: -------------------------------------------------------------------------------------
-            'Eliminate nulls: Added 1/28/07
-            Dim metRunoffNoNullcalc As New RasterMathCellCalcNulls(AddressOf metRunoffNoNullCellCalc)
-            RasterMath(pMetRunoffRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pMetRunoffNoNullRaster, Nothing, False, metRunoffNoNullcalc)
-
-            g_pMetRunoffRaster = pMetRunoffNoNullRaster
-            pMetRunoffRaster.Close()
 
             If g_booLocalEffects Then
                 modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 10, 10, 0)
@@ -584,7 +414,7 @@ Module modRunoff
                 Dim strtmpout As String = IO.Path.GetTempFileName + "out.bgd"
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
-                
+
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
                 MapWinGeoProc.Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Nothing)
                 'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
@@ -650,6 +480,8 @@ Module modRunoff
     End Function
 
 #Region "Raster Math"
+
+
     Private Function SC100CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'pSCS100Raster = 100 * con([pHydSoilsRaster] == 1, pick([pLandSampleRaster], " & strPick(0) & "), con([pHydSoilsRaster] == 2, pick([pLandSampleRaster], " & strPick(1) & "), con([pHydSoilsRaster] == 3, pick([pLandSampleRaster], " & strPick(2) & "), con([pHydSoilsRaster] == 4, pick([pLandSampleRaster], " & strPick(3) & ")))))
 
@@ -680,89 +512,43 @@ Module modRunoff
         End If
     End Function
 
-    Private Function RetentionCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-        'If m_intPrecipType = 0 Then
-        '    pRetentionRaster = "Float((1000. / [pSCS100Raster]) - 10) * " & m_intRainingDays
-        'Else
-        '    pRetentionRaster = "Float((1000. / [pSCS100Raster]) - 10)"
-        'End If
-        If Input1 <> Input1Null Then
-            'TODO: FIGURE OUT WHY THIS WORKS BETTER AS 0 THAN NULL
+    Private Function AllRunoffCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+        Dim tmpVal, RetentionVal, AbstractVal, RunoffInches, AreaSquareMeters As Single
+
+        If Input1 = Input1Null Or Input2 = Input2Null Or Input3 = Input3Null Then
+            Return OutNull
+        Else
             If Input1 = 0 Then 'avoid #inf, treat as null is correct, but 0 comes out looking better irritatingly
                 Return OutNull
-                'Return 0
             Else
-                If _intPrecipType = 0 Then
-                    Return ((1000.0 / Input1) - 10) * _intRainingDays
+                If g_intRunoffPrecipType = 0 Then
+                    RetentionVal = ((1000.0 / Input1) - 10) * g_intRainingDays
                 Else
-                    Return ((1000.0 / Input1) - 10)
+                    RetentionVal = ((1000.0 / Input1) - 10)
                 End If
+
+                AbstractVal = 0.2 * RetentionVal
+
+                tmpVal = Input2 - AbstractVal
+                If tmpVal > 0 Then
+                    RunoffInches = Math.Pow(tmpVal, 2) / (tmpVal + RetentionVal)
+                Else
+                    RunoffInches = 0
+                End If
+
+                If Input3 >= 0 Then
+                    AreaSquareMeters = Math.Pow(g_dblCellSize, 2)
+                Else
+                    AreaSquareMeters = 0
+                End If
+
+
+                Return RunoffInches * (AreaSquareMeters * 10.76 * 144) * 0.016387064
+
+
             End If
-        Else
-            Return Input1Null
         End If
-    End Function
 
-    Private Function AbstractCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "(0.2 * [retention])"
-        Return 0.2 * Input1
-    End Function
-
-    Private Function RunoffCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pRunoffInRaster = "Con([Con(([pDailyRainRaster] - [pAbstractRaster]) > 0, ([pDailyRainRaster] - [pAbstractRaster]), 0.0)] > 0, (Pow([Con(([pDailyRainRaster] - [pAbstractRaster]) > 0, ([pDailyRainRaster] - [pAbstractRaster]), 0.0)], 2) / ([Con(([pDailyRainRaster] - [pAbstractRaster]) > 0, ([pDailyRainRaster] - [pAbstractRaster]), 0.0)] + [pRetentionRaster])), 0)"
-        'tmpVal = [pDailyRainRaster] - [pAbstractRaster]
-        'pRunoffInRaster = "Con([Con(tmpVal > 0, tmpVal, 0.0)] > 0, (Pow([Con(tmpVal > 0, tmpVal, 0.0)], 2) / ([Con(tmpVal > 0, tmpVal, 0.0)] + [pRetentionRaster])), 0)"
-
-        Dim tmpVal As Single = Input1 - Input2
-        If tmpVal > 0 Then
-            Return Math.Pow(tmpVal, 2) / (tmpVal + Input3)
-        Else
-            Return 0
-        End If
-    End Function
-
-    Private Function CellSMCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pCellAreaSMRaster = "Pow(Con([g_pDEMRaster] >= 0, 1, 0) * " & g_dblCellSize & ", 2)"
-        If Input1 >= 0 Then
-            Return Math.Pow(g_dblCellSize, 2)
-        Else
-            Input1 = 0
-        End If
-    End Function
-
-    Private Function CellSMiCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pCellAreaSqMileRaster = "pCellAreaSMRaster * 0.000001 * 0.386102"
-        Return Input1 * 0.000001 * 0.386102
-    End Function
-
-    Private Function CellSICellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pCellAreaSIRaster = "[pCellAreaSMRaster] * 10.76 * 144"
-        Return Input1 * 10.76 * 144
-    End Function
-
-    Private Function CellAreaAcreCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pCellAreaAcreRaster = "[pCellAreaSMRaster] * 0.000247104369"
-        Return Input1 * 0.000247104369
-    End Function
-
-    Private Function cellAreaCICellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pCellAreaCIRaster = "([pCellAreaSIRaster] * [pRunoffInRaster])"
-        Return Input1 * Input2
-    End Function
-
-    Private Function cellAreaCFCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pCellAreaCFRaster = "([pCellAreaCIRaster] * 0.0005787)"
-        Return Input1 * 0.0005787
-    End Function
-
-    Private Function cellAreaAFCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pCellAreaAFRaster = "([pCellAreaCFRaster] * 0.000022957)"
-        Return Input1 * 0.000022957
-    End Function
-
-    Private Function metRunoffCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "[run_ci] * 0.016387064"
-        Return Input1 * 0.016387064
     End Function
 
     Private Function metRunoffNoNullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -777,7 +563,6 @@ Module modRunoff
             End If
         End If
     End Function
-
 
     Public Function tauD8CellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east

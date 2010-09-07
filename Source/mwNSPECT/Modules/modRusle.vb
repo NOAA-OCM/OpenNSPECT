@@ -240,151 +240,10 @@ Module modRusle
         End Try
     End Function
 
-    'OBSOLETE
-    'Private Function ConstructConStatment(ByRef rsCF As ADODB.Recordset, ByRef pLCRaster As ESRI.ArcGIS.Geodatabase.IRaster) As String
-    '    'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
-    '    'and the Land Class Raster.  Returns a string
-
-    '    Dim strCon As String 'Con statement base
-    '    Dim strParens As String 'String of trailing parens
-    '    Dim strCompleteCon As String 'Concatenate of strCon & strParens
-
-    '    Dim pRasterCol As ESRI.ArcGIS.DataSourcesRaster.IRasterBandCollection
-    '    Dim pBand As ESRI.ArcGIS.DataSourcesRaster.IRasterBand
-    '    Dim pTable As ESRI.ArcGIS.Geodatabase.ITable
-    '    Dim TableExist As Boolean
-    '    Dim pCursor As ESRI.ArcGIS.Geodatabase.ICursor
-    '    Dim pRow As ESRI.ArcGIS.Geodatabase.IRow
-    '    Dim FieldIndex As Short
-    '    Dim booValueFound As Boolean
-    '    Dim i As Short
-
-    '    'STEP 1:  get the records from the database -----------------------------------------------
-    '    rsCF.MoveFirst()
-    '    'End Database stuff
-
-    '    'STEP 2: Raster Values ---------------------------------------------------------------------
-    '    'Now Get the RASTER values
-    '    'Get Rasterband from the incoming raster
-    '    pRasterCol = pLCRaster
-    '    pBand = pRasterCol.Item(0)
-
-    '    'Get the raster table
-    '    pBand.HasTable(TableExist)
-    '    If Not TableExist Then Exit Function
-
-    '    pTable = pBand.AttributeTable
-    '    'Get All rows
-    '    pCursor = pTable.Search(Nothing, True)
-    '    'Init pRow
-    '    pRow = pCursor.NextRow
-
-    '    'Get index of Value Field
-    '    FieldIndex = pTable.FindField("Value")
-
-    '    'REMOVED 11/30/2007 in favor of method below.
-    '    'STEP 3: Table values vs. Raster Values Count - if not equal bark --------------------------
-    '    '    If pTable.RowCount(Nothing) <> rsCF.RecordCount Then
-    '    '        MsgBox "Error: The number of records in your Land Class Table do not match your GRID dataset."
-    '    '        Exit Function
-    '    '    End If
-
-
-    '    Do While Not pRow Is Nothing
-    '        booValueFound = False
-    '        rsCF.MoveFirst()
-
-    '        For i = 0 To rsCF.RecordCount - 1
-    '            If pRow.Value(FieldIndex) = rsCF.Fields("Value").Value Then
-
-    '                booValueFound = True
-
-    '                If strCon = "" Then
-    '                    strCon = "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), " & rsCF.Fields("CoverFactor").Value & ", "
-    '                Else
-    '                    strCon = strCon & "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), " & rsCF.Fields("CoverFactor").Value & ", "
-    '                End If
-
-    '                If strParens = "" Then
-    '                    strParens = "-9999)"
-    '                Else
-    '                    strParens = strParens & ")"
-    '                End If
-
-    '                Exit For
-    '            Else
-    '                booValueFound = False
-    '            End If
-    '            rsCF.MoveNext()
-    '        Next i
-
-    '        If booValueFound = False Then
-    '            MsgBox("Error: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
-    '            ConstructConStatment = ""
-    '            Exit Function
-    '        Else
-    '            pRow = pCursor.NextRow
-    '            i = 0
-    '        End If
-
-    '    Loop
-
-    '    'REMOVED 11/30/2007 in favor of method above
-    '    '    'STEP 4: Create the strings
-    '    '    'Loop through and get all values
-    '    '    Do While Not pRow Is Nothing
-    '    '        If pRow.Value(FieldIndex) = rsCF!Value Then
-    '    '            If strCon = "" Then
-    '    '                strCon = "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), " & rsCF!CoverFactor & ", "
-    '    '            Else
-    '    '                strCon = strCon & "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), " & rsCF!CoverFactor & ", "
-    '    '            End If
-    '    '
-    '    '            If strParens = "" Then
-    '    '                strParens = "-9999)"
-    '    '            Else
-    '    '                strParens = strParens & ")"
-    '    '            End If
-    '    '
-    '    '            rsCF.MoveNext
-    '    '            Set pRow = pCursor.NextRow
-    '    '
-    '    '        Else
-    '    '            MsgBox "Values in table LCClass table not equal to values in landclass dataset."
-    '    '            ConstructConStatment = ""
-    '    '            Exit Function
-    '    '        End If
-    '    '    Loop
-
-
-    '    strCompleteCon = strCon & strParens
-    '    Debug.Print(strCompleteCon)
-
-    '    ConstructConStatment = strCompleteCon
-
-    '    'Cleanup:
-    '    'Set pLCRaster = Nothing
-    '    pRasterCol = Nothing
-    '    pBand = Nothing
-    '    pTable = Nothing
-    '    pCursor = Nothing
-    '    pRow = Nothing
-
-    'End Function
-
     Private Function CalcRUSLE(ByRef strConStatement As String) As Boolean
 
-        Dim pLandSampleRaster As MapWinGIS.Grid = Nothing 'LC Cover sampleized
-        Dim pCFactorRaster As MapWinGIS.Grid = Nothing  'C Factor
-        Dim pSoilLossRaster As MapWinGIS.Grid = Nothing  'Soil Loss
         Dim pSoilLossAcres As MapWinGIS.Grid = Nothing  'Soil Loss Acres
         Dim pZSedDelRaster As MapWinGIS.Grid = Nothing  'And I quote, Dave's Whacky Sediment Delivery Ratio
-        Dim pCellAreaKMRaster As MapWinGIS.Grid = Nothing  'Cell Area KM
-        Dim pDASedDelRaster As MapWinGIS.Grid = Nothing  'da_sed_del
-        Dim pTemp3Raster As MapWinGIS.Grid = Nothing  'Temp3
-        Dim pTemp4Raster As MapWinGIS.Grid = Nothing  'Temp4
-        Dim pTemp5Raster As MapWinGIS.Grid = Nothing  'Temp5
-        Dim pTemp6Raster As MapWinGIS.Grid = Nothing  'Temp6
         Dim pSDRRaster As MapWinGIS.Grid = Nothing  'SDR
         Dim pSedYieldRaster As MapWinGIS.Grid = Nothing  'Sediment Yield
         Dim pAccumSedRaster As MapWinGIS.Grid = Nothing  'Accumulated Sed Raster
@@ -399,58 +258,22 @@ Module modRusle
 
 
         Try
-            modProgDialog.ProgDialog("Checking landcover cell size...", strTitle, 0, 13, 1, 0)
-            If modProgDialog.g_boolCancel Then
-                'Step 1a: ----------------------------------------------------------------------------
-                'Make sure LandCover is in the same cellsize as the global environment
-                Dim headlc As MapWinGIS.GridHeader = g_LandCoverRaster.Header
-
-                If headlc.dX <> g_dblCellSize Then
-                    'TODO: resample landcover raster
-                Else
-                    pLandSampleRaster = g_LandCoverRaster
-                End If
-            End If
-
-            modProgDialog.ProgDialog("Calculating Cover Magagement Factor GRID...", strTitle, 0, 13, 2, 0)
-            If modProgDialog.g_boolCancel Then
-
-                'Step 1: CREATE Management cover Factor GRID ---------------------------------------------
-
-                ReDim _picks(strConStatement.Split(",").Length)
-                _picks = strConStatement.Split(",")
-
-                Dim factcalc As New RasterMathCellCalc(AddressOf factCellCalc)
-                RasterMath(pLandSampleRaster, Nothing, Nothing, Nothing, Nothing, pCFactorRaster, factcalc)
-
-                'END STEP 1: ------------------------------------------------------------------------------
-            End If
-
             modProgDialog.ProgDialog("Solving RUSLE Equation...", strTitle, 0, 13, 3, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
-
-                Dim soillosscalc As New RasterMathCellCalc(AddressOf soillossCellCalc)
+                ReDim _picks(strConStatement.Split(",").Length)
+                _picks = strConStatement.Split(",")
+                Dim AllSoilLossCalc As New RasterMathCellCalc(AddressOf AllSoilLossCellCalc)
                 If Not _booUsingConstantValue Then 'If not using a constant
-                    RasterMath(g_pLSRaster, g_KFactorRaster, pCFactorRaster, g_RFactorRaster, Nothing, pSoilLossRaster, soillosscalc)
+                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, g_RFactorRaster, Nothing, pSoilLossAcres, AllSoilLossCalc)
                     'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
                 Else 'if using a constant
-                    RasterMath(g_pLSRaster, g_KFactorRaster, pCFactorRaster, Nothing, Nothing, pSoilLossRaster, soillosscalc)
+                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, Nothing, Nothing, pSoilLossAcres, AllSoilLossCalc)
                     'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]"
                 End If
-                pCFactorRaster.Close()
                 'END STEP 2: -------------------------------------------------------------------------------
             End If
 
-            modProgDialog.ProgDialog("Converting Soil Loss...", strTitle, 0, 13, 4, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
-                Dim lossaccalc As New RasterMathCellCalc(AddressOf lossacCellCalc)
-                RasterMath(pSoilLossRaster, Nothing, Nothing, Nothing, Nothing, pSoilLossAcres, lossaccalc)
-                'strExpression = "(Pow(" & g_dblCellSize & ", 2) * 0.000247104369) * [soil_loss]"
-                pSoilLossRaster.Close()
-                'END STEP 3: ------------------------------------------------------------------------------
-            End If
 
             '***********************************************
             'BEGIN SDR CODE......
@@ -468,75 +291,9 @@ Module modRusle
 
                 modProgDialog.ProgDialog("Calculating Sediment Delivery Ratio...", strTitle, 0, 13, 6, 0)
                 If modProgDialog.g_boolCancel Then
-                    'STEP 5: CALCULATE SEDIMENT DELIVERY RATIO ------------------------------------------------
-                    Dim areaKMcalc As New RasterMathCellCalc(AddressOf areaKMCellCalc)
-                    RasterMath(g_pDEMRaster, Nothing, Nothing, Nothing, Nothing, pCellAreaKMRaster, areaKMcalc)
-                    'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
-
-                    'NOTE: Original equation is cellarea_km = ([cellsize] / 1000).  To get cell_size I do a CON on the DEM.
-                    'Notice the float...if you don't do that, screw ville...GRID comes back = 0
-
-                    'END STEP 5: -------------------------------------------------------------------------------
-                End If
-
-                modProgDialog.ProgDialog("Step 2 Sediment Delivery Ratio...", strTitle, 0, 13, 7, 0)
-                If modProgDialog.g_boolCancel Then
-                    'STEP 6: -----------------------------------------------------------------------------------
-                    Dim pDAcalc As New RasterMathCellCalc(AddressOf pDACellCalc)
-                    RasterMath(pCellAreaKMRaster, Nothing, Nothing, Nothing, Nothing, pDASedDelRaster, pDAcalc)
-                    'strExpression = "Pow([cellarea_km], 2)"
-
-                    'END STEP 6: ------------------------------------------------------------------------------
-                End If
-
-                modProgDialog.ProgDialog("Step 3 Sediment Delivery Ratio...", strTitle, 0, 13, 8, 0)
-                If modProgDialog.g_boolCancel Then
-
-                    'STEP 7: temp3 = Pow([da_sed_del], -0.998) ---------------------------------------------------
-                    Dim temp3calc As New RasterMathCellCalc(AddressOf temp3CellCalc)
-                    RasterMath(pDASedDelRaster, Nothing, Nothing, Nothing, Nothing, pTemp3Raster, temp3calc)
-                    'strExpression = "Pow([da_sed_del], -0.0998)"
-                    'END STEP 7: --------------------------------------------------------------------------------
-                End If
-
-                modProgDialog.ProgDialog("Step 4 Sediment Delivery Ratio...", strTitle, 0, 13, 9, 0)
-                If modProgDialog.g_boolCancel Then
-
-                    'STEP 8: temp4 = Pow([zl_sed_del], -0.0998) ---------------------------------------------------
-                    Dim temp4calc As New RasterMathCellCalc(AddressOf temp4CellCalc)
-                    RasterMath(pZSedDelRaster, Nothing, Nothing, Nothing, Nothing, pTemp4Raster, temp4calc)
-                    'strExpression = "Pow([zl_sed_del], 0.3629)"
-
-                    'END STEP 8: --------------------------------------------------------------------------------
-                End If
-
-                modProgDialog.ProgDialog("Step 5 Sediment Delivery Ratio...", strTitle, 0, 13, 10, 0)
-                If modProgDialog.g_boolCancel Then
-
-                    'STEP 9: temp5 = Pow([scsgrid100], 5.444) ---------------------------------------------------
-                    Dim temp5calc As New RasterMathCellCalc(AddressOf temp5CellCalc)
-                    RasterMath(g_pSCS100Raster, Nothing, Nothing, Nothing, Nothing, pTemp5Raster, temp5calc)
-                    'strExpression = "Pow([scsgrid100], 5.444)"
-                    'END STEP 9: --------------------------------------------------------------------------------
-                End If
-
-                modProgDialog.ProgDialog("Step 6 Sediment Delivery Ratio...", strTitle, 0, 13, 11, 0)
-                If modProgDialog.g_boolCancel Then
-                    'STEP 9: temp6 = 1.366 * [temp2] * [temp3] * [temp4] * [temp5] -------------------------------
-                    Dim temp6calc As New RasterMathCellCalc(AddressOf temp6CellCalc)
-                    RasterMath(pTemp3Raster, pTemp4Raster, pTemp5Raster, Nothing, Nothing, pTemp6Raster, temp6calc)
-                    'strExpression = "1.366 * (Pow(10, -11)) * [temp3] * [temp4] * [temp5]"
-                    'END STEP 9: --------------------------------------------------------------------------------
-                End If
-
-                modProgDialog.ProgDialog("Final Calculation Sediment Delivery Ratio...", strTitle, 0, 13, 12, 0)
-                If modProgDialog.g_boolCancel Then
-
-                    'STEP 10:
-                    Dim SDRcalc As New RasterMathCellCalc(AddressOf SDRCellCalc)
-                    RasterMath(pTemp6Raster, Nothing, Nothing, Nothing, Nothing, pSDRRaster, SDRcalc)
-                    'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
-                    'END STEP 10: --------------------------------------------------------------------------------
+                    Dim AllSDRCalc As New RasterMathCellCalc(AddressOf AllSDRCellCalc)
+                    RasterMath(g_pDEMRaster, pZSedDelRaster, g_pSCS100Raster, Nothing, Nothing, pSDRRaster, AllSDRCalc)
+                    pZSedDelRaster.Close()
                 End If
 
             Else
@@ -551,8 +308,9 @@ Module modRusle
                 'STEP 11: sed_yield = [soil_loss_ac] * [sdr] -------------------------------------------------
                 Dim SedYieldcalc As New RasterMathCellCalc(AddressOf SedYieldCellCalc)
                 RasterMath(pSDRRaster, pSoilLossAcres, Nothing, Nothing, Nothing, pSedYieldRaster, SedYieldcalc)
+                pSDRRaster.Close()
+                pSoilLossAcres.Close()
                 'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
-                pSoilLossRaster.Close()
                 'END STEP 11: --------------------------------------------------------------------------------
             End If
 
@@ -677,34 +435,28 @@ Module modRusle
 
 
 #Region "Raster Math"
-    Private Function factCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function AllSoilLossCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        Dim tmpval As Single
         For i As Integer = 0 To _picks.Length - 1
-            If Input1 = i + 1 Then
-                Return _picks(i)
+            If Input3 = i + 1 Then
+                tmpval = _picks(i)
+                Exit For
             End If
         Next
-    End Function
 
-    Private Function soillossCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         If Not _booUsingConstantValue Then 'If not using a constant
             'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
-            Return Input1 * Input2 * Input3 * Input4
+            Return (Math.Pow(g_dblCellSize, 2) * 0.000247104369) * Input1 * Input2 * tmpval * Input4
         Else 'if using a constant
             'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]"
-            Return _dblRFactorConstant * Input1 * Input2 * Input3
+            Return (Math.Pow(g_dblCellSize, 2) * 0.000247104369) * _dblRFactorConstant * Input1 * Input2 * tmpval
         End If
 
-    End Function
-
-    Private Function lossacCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "(Pow(" & g_dblCellSize & ", 2) * 0.000247104369) * [soil_loss]"
-        Return (Math.Pow(g_dblCellSize, 2) * 0.000247104369) * Input1
     End Function
 
     Private Function pZSedCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
 
-        'TODO: Test if this works.
         If InputBox1(1, 1) <> Input1Null Then
             If InputBox2(1, 1) <> Input2Null Then
                 If InputBox1(1, 1) >= 0.5 And InputBox1(1, 1) < 1.5 Then
@@ -801,46 +553,45 @@ Module modRusle
 
     End Function
 
-    Private Function areaKMCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
-        If Input1 >= 0 Then
-            Return g_dblCellSize / 1000.0
-        Else
-            Return 0
-        End If
-    End Function
-
-    Private Function pDACellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow([cellarea_km], 2)"
-        Return Math.Pow(Input1, 2)
-    End Function
-
-    Private Function temp3CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow([da_sed_del], -0.0998)"
-        Return Math.Pow(Input1, -0.0998)
-    End Function
-
-    Private Function temp4CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow([zl_sed_del], 0.3629)"
-        Return Math.Pow(Input1, 0.3629)
-    End Function
-
-    Private Function temp5CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow([scsgrid100], 5.444)"
-        Return Math.Pow(Input1, 5.444)
-    End Function
-
-    Private Function temp6CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "1.366 * (Pow(10, -11)) * [temp3] * [temp4] * [temp5]"
-        Return 1.366 * Math.Pow(10, -11) * Input1 * Input2 * Input3
-    End Function
-
     Private Function SDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
         If Input1 > 1 Then
             Return 1
         Else
             Return Input1
+        End If
+    End Function
+
+    Private Function AllSDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        Dim kmval, daval, tmp3val, tmp4val, tmp5val, tmp6val As Single
+
+        'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
+        If Input1 >= 0 Then
+            kmval = g_dblCellSize / 1000.0
+        Else
+            kmval = 0
+        End If
+
+        'strExpression = "Pow([cellarea_km], 2)"
+        daval = Math.Pow(kmval, 2)
+
+        'strExpression = "Pow([da_sed_del], -0.0998)"
+        tmp3val = Math.Pow(daval, -0.0998)
+
+        'strExpression = "Pow([zl_sed_del], 0.3629)"
+        tmp4val = Math.Pow(Input2, 0.3629)
+
+        'strExpression = "Pow([scsgrid100], 5.444)"
+        tmp5val = Math.Pow(Input3, 5.444)
+
+        'strExpression = "1.366 * (Pow(10, -11)) * [temp3] * [temp4] * [temp5]"
+        tmp6val = 1.366 * Math.Pow(10, -11) * tmp3val * tmp4val * tmp5val
+
+        'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
+        If tmp6val > 1 Then
+            Return 1
+        Else
+            Return tmp6val
         End If
     End Function
 

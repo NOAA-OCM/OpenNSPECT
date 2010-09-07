@@ -26,7 +26,7 @@ Module modPollutantCalcs
     Private _FlowMax As Single
 
     ' Constant used by the Error handler function - DO NOT REMOVE
-    Const c_sModuleFileName As String = "modPollutantCalcs.bas"
+    Const c_sModuleFileName As String = "modPollutantCalcs.vb"
     Private _ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
 
     Private _picks() As String
@@ -300,20 +300,12 @@ Module modPollutantCalcs
 
     Private Function CalcPollutantConcentration(ByRef strConStatement As String) As Boolean
 
-        Dim pLandSampleRaster As MapWinGIS.Grid = Nothing
-        Dim pPollMassRaster As MapWinGIS.Grid = Nothing
         Dim pMassVolumeRaster As MapWinGIS.Grid = Nothing
         Dim pPermMassVolumeRaster As MapWinGIS.Grid = Nothing
         Dim pAccumPollRaster As MapWinGIS.Grid = Nothing
-        Dim pTemp1PollRaster As MapWinGIS.Grid = Nothing
-        Dim pTemp2PollRaster As MapWinGIS.Grid = Nothing
-        Dim pTotalPollConcRaster As MapWinGIS.Grid = Nothing
         Dim pPermAccPollRaster As MapWinGIS.Grid = Nothing
         Dim pPermTotalConcRaster As MapWinGIS.Grid = Nothing
         Dim pTotalPollConc0Raster As MapWinGIS.Grid = Nothing  'gets rid of no data...replace with 0
-
-        'Dim pPollRasterLayer As ESRI.ArcGIS.Carto.IRasterLayer
-        'Dim pAccPollRasterLayer As ESRI.ArcGIS.Carto.IRasterLayer
 
         'String to hold calculations
         Dim strTitle As String
@@ -322,39 +314,13 @@ Module modPollutantCalcs
         Dim strAccPoll As String
 
         Try
-            modProgDialog.ProgDialog("Checking landcover cell size...", strTitle, 0, 13, 1, 0)
-            If modProgDialog.g_boolCancel Then
-                'Step 1a: ----------------------------------------------------------------------------
-                'Make sure LandCover is in the same cellsize as the global environment
-                Dim lchead As MapWinGIS.GridHeader = g_LandCoverRaster.Header
-
-                If lchead.dX <> g_dblCellSize Then
-                    'TODO: Resample g_LandCoverRaster to correct cellsize
-                Else
-                    pLandSampleRaster = g_LandCoverRaster
-                End If
-            End If
-
-            modProgDialog.ProgDialog("Calculating EMC GRID...", strTitle, 0, 13, 1, 0)
-            If modProgDialog.g_boolCancel Then
-
-                'Step 1: CREATE PHOSPHORUS EMC GRID AT CELL LEVEL -----------------------------------------
-
-                ReDim _picks(strConStatement.Split(",").Length)
-                _picks = strConStatement.Split(",")
-
-                Dim pollmasscalc As New RasterMathCellCalc(AddressOf pollmassCellCalc)
-                RasterMath(pLandSampleRaster, Nothing, Nothing, Nothing, Nothing, pPollMassRaster, pollmasscalc)
-
-                'END STEP 1: ------------------------------------------------------------------------------
-            End If
-
-
             modProgDialog.ProgDialog("Calculating Mass Volume...", strTitle, 0, 13, 2, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 2: MASS OF PHOSPHORUS PRODUCED BY EACH CELL -----------------------------------------
+                ReDim _picks(strConStatement.Split(",").Length)
+                _picks = strConStatement.Split(",")
                 Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
-                RasterMath(g_pMetRunoffRaster, pPollMassRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
+                RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
 
                 'END STEP 2: -------------------------------------------------------------------------------
             End If
@@ -451,38 +417,12 @@ Module modPollutantCalcs
             'END STEP 3a: ---------------------------------------------------------------------------------
 
 
-            modProgDialog.ProgDialog("Deriving total concentration at each cell...", strTitle, 0, 13, 6, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 5: DERIVE TOTAL CONCENTRATION (AT EACH CELL) ----------------------------------------
-                Dim temp1calc As New RasterMathCellCalc(AddressOf temp1CellCalc)
-                RasterMath(pMassVolumeRaster, pAccumPollRaster, Nothing, Nothing, Nothing, pTemp1PollRaster, temp1calc)
-                'END STEP 5: -------------------------------------------------------------------------------
-            End If
-
-            modProgDialog.ProgDialog("Adding metric runoff...", strTitle, 0, 13, 7, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 6: -----------------------------------------------------------------------------------
-                Dim temp2calc As New RasterMathCellCalc(AddressOf temp2CellCalc)
-                RasterMath(g_pMetRunoffRaster, g_pRunoffRaster, Nothing, Nothing, Nothing, pTemp2PollRaster, temp2calc)
-               
-                'END STEP 6: ------------------------------------------------------------------------------
-            End If
-
-            modProgDialog.ProgDialog("Calculating final concentration...", strTitle, 0, 13, 8, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 7: FINAL CONCENTRATION ---------------------------------------------------------------
-                Dim totconcalc As New RasterMathCellCalc(AddressOf totconCellCalc)
-                RasterMath(pTemp1PollRaster, pTemp2PollRaster, Nothing, Nothing, Nothing, pTotalPollConcRaster, totconcalc)
-                'END STEP 7: --------------------------------------------------------------------------------
-            End If
-
             modProgDialog.ProgDialog("Calculating final concentration...", strTitle, 0, 13, 9, 0)
             If modProgDialog.g_boolCancel Then
-                'STEP 8: FINAL CONCENTRATION -remove all noData values ---------------------------------------
-                Dim totconnonullcalc As New RasterMathCellCalcNulls(AddressOf totconnonullCellCalc)
-                RasterMath(pTotalPollConcRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pTotalPollConc0Raster, Nothing, False, totconnonullcalc)
-                'END STEP 7: --------------------------------------------------------------------------------
+                Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
+                RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, pTotalPollConc0Raster, Nothing, False, AllConCalc)
             End If
+
 
             If modProgDialog.g_boolCancel Then
                 modProgDialog.ProgDialog("Creating data layer...", strTitle, 0, 13, 11, 0)
@@ -625,18 +565,18 @@ Module modPollutantCalcs
 
 
 #Region "Raster Math"
-    Private Function pollmassCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        Dim tmpval As Single
         'strexpression = pick([pLandSampleRaster], _picks)"
         For i As Integer = 0 To _picks.Length - 1
             If Input1 = i + 1 Then
-                Return _picks(i)
+                tmpval = _picks(i)
+                Exit For
             End If
         Next
-    End Function
 
-    Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[met_runoff] * [pollmass]"
-        Return Input1 * Input2
+        Return Input2 * tmpval
     End Function
 
     Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -644,33 +584,23 @@ Module modPollutantCalcs
         Return Input1 * 0.000001
     End Function
 
-    Private Function temp1CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "[massvolume] + ([accpoll] / 1.0e-6)"
-        Return Input1 + (Input2 / 0.000001)
-    End Function
-
-    Private Function temp2CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "[met_run] + [accrun]"
-        Return Input1 + Input2
-    End Function
-
-    Private Function totconCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "[temp1] / [temp2]"
-        Return Input1 / Input2
-    End Function
-
-    Private Function totconnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Merge([totalConc], Con([dem] >= 0, 0))"
-        If Input1 <> Input1Null Then
-            Return Input1
-        Else
-            If Input2 > 0 Then
-                Return 0
-            Else
+    Private Function AllConCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+        If Input1 = Input1Null Or Input2 = Input2Null Or Input3 = Input3Null Or Input4 = Input4Null Then
+            If Input5 = Input5Null Then
                 Return OutNull
+            Else
+                If Input5 > 0 Then
+                    Return 0
+                Else
+                    Return OutNull
+                End If
             End If
+        Else
+            Return (Input1 + (Input2 / 0.000001)) / (Input3 + Input4)
         End If
+
     End Function
+
 
     Private Function concompCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'This rather ugly expression was set up to check for meets/exceed water quality standards for

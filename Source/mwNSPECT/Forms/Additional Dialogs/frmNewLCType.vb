@@ -164,7 +164,7 @@ Friend Class frmNewLCType
 
                     Select Case j
 
-                        Case 1
+                        Case 0
                             If Not IsNumeric(val) Then
                                 ErrorGenerator(Err1, i, j)
                             Else
@@ -181,8 +181,14 @@ Friend Class frmNewLCType
                             End If
 
 
-                        Case 2
+                        Case 1
                             If IsNumeric(val) Then
+                                ErrorGenerator(Err1, i, j)
+                                Return False
+                            End If
+
+                        Case 2
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
                                 ErrorGenerator(Err1, i, j)
                                 Return False
                             End If
@@ -206,12 +212,6 @@ Friend Class frmNewLCType
                             End If
 
                         Case 6
-                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                ErrorGenerator(Err1, i, j)
-                                Return False
-                            End If
-
-                        Case 7
                             If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Then
                                 ErrorGenerator(Err3, i, j)
                                 Return False

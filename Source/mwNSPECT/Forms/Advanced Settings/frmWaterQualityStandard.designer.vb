@@ -87,31 +87,31 @@
         'mnuNewWQStd
         '
         Me.mnuNewWQStd.Name = "mnuNewWQStd"
-        Me.mnuNewWQStd.Size = New System.Drawing.Size(152, 22)
+        Me.mnuNewWQStd.Size = New System.Drawing.Size(119, 22)
         Me.mnuNewWQStd.Text = "New..."
         '
         'mnuDelWQStd
         '
         Me.mnuDelWQStd.Name = "mnuDelWQStd"
-        Me.mnuDelWQStd.Size = New System.Drawing.Size(152, 22)
+        Me.mnuDelWQStd.Size = New System.Drawing.Size(119, 22)
         Me.mnuDelWQStd.Text = "Delete..."
         '
         'mnuCopyWQStd
         '
         Me.mnuCopyWQStd.Name = "mnuCopyWQStd"
-        Me.mnuCopyWQStd.Size = New System.Drawing.Size(152, 22)
+        Me.mnuCopyWQStd.Size = New System.Drawing.Size(119, 22)
         Me.mnuCopyWQStd.Text = "Copy..."
         '
         'mnuImpWQStd
         '
         Me.mnuImpWQStd.Name = "mnuImpWQStd"
-        Me.mnuImpWQStd.Size = New System.Drawing.Size(152, 22)
+        Me.mnuImpWQStd.Size = New System.Drawing.Size(119, 22)
         Me.mnuImpWQStd.Text = "Import..."
         '
         'mnuExpWQStd
         '
         Me.mnuExpWQStd.Name = "mnuExpWQStd"
-        Me.mnuExpWQStd.Size = New System.Drawing.Size(152, 22)
+        Me.mnuExpWQStd.Size = New System.Drawing.Size(119, 22)
         Me.mnuExpWQStd.Text = "Export..."
         '
         'mnuEditCell
@@ -261,6 +261,7 @@
         Me.colPollutant.HeaderText = "Pollutant"
         Me.colPollutant.Name = "colPollutant"
         Me.colPollutant.ReadOnly = True
+        Me.colPollutant.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.colPollutant.Width = 185
         '
         'colThreshold
@@ -268,6 +269,7 @@
         Me.colThreshold.DataPropertyName = "Threshold"
         Me.colThreshold.HeaderText = "Threshold"
         Me.colThreshold.Name = "colThreshold"
+        Me.colThreshold.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.colThreshold.Width = 130
         '
         'Poll_WQCritID
@@ -275,6 +277,7 @@
         Me.Poll_WQCritID.DataPropertyName = "POLL_WQCRITID"
         Me.Poll_WQCritID.HeaderText = "Poll_WQCritID"
         Me.Poll_WQCritID.Name = "Poll_WQCritID"
+        Me.Poll_WQCritID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Poll_WQCritID.Visible = False
         '
         'frmWaterQualityStandard

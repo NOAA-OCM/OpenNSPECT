@@ -105,7 +105,7 @@ Public Class mwNSPECT
 #Region "Plug-in Information"
     Public ReadOnly Property Name() As String Implements MapWindow.Interfaces.IPlugin.Name
         Get
-            Return "mwNSPECT"
+            Return "OpenNSPECT"
         End Get
     End Property
 

@@ -70,6 +70,11 @@
         Me._Label1_6 = New System.Windows.Forms.Label
         Me._Label1_7 = New System.Windows.Forms.Label
         Me.dgvLCTypes = New System.Windows.Forms.DataGridView
+        Me.cntxmnuGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.colValue = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.colNameCol = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.colCNA = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -80,11 +85,6 @@
         Me.colWetCheck = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.colLCTYPEID = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.colLCClassID = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.cntxmnuGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainMenu1.SuspendLayout()
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cntxmnuGrid.SuspendLayout()
@@ -331,78 +331,6 @@
         Me.dgvLCTypes.Size = New System.Drawing.Size(604, 444)
         Me.dgvLCTypes.TabIndex = 15
         '
-        'colValue
-        '
-        Me.colValue.DataPropertyName = "Value"
-        Me.colValue.HeaderText = "Value"
-        Me.colValue.Name = "colValue"
-        Me.colValue.Width = 42
-        '
-        'colNameCol
-        '
-        Me.colNameCol.DataPropertyName = "Name"
-        Me.colNameCol.HeaderText = "Name"
-        Me.colNameCol.Name = "colNameCol"
-        Me.colNameCol.Width = 145
-        '
-        'colCNA
-        '
-        Me.colCNA.DataPropertyName = "CN-A"
-        Me.colCNA.HeaderText = "CN-A"
-        Me.colCNA.Name = "colCNA"
-        Me.colCNA.Width = 53
-        '
-        'colCNB
-        '
-        Me.colCNB.DataPropertyName = "CN-B"
-        Me.colCNB.HeaderText = "CN-B"
-        Me.colCNB.Name = "colCNB"
-        Me.colCNB.Width = 53
-        '
-        'colCNC
-        '
-        Me.colCNC.DataPropertyName = "CN-C"
-        Me.colCNC.HeaderText = "CN-C"
-        Me.colCNC.Name = "colCNC"
-        Me.colCNC.Width = 53
-        '
-        'colCND
-        '
-        Me.colCND.DataPropertyName = "CN-D"
-        Me.colCND.HeaderText = "CN-D"
-        Me.colCND.Name = "colCND"
-        Me.colCND.Width = 55
-        '
-        'colCoverFactor
-        '
-        Me.colCoverFactor.DataPropertyName = "CoverFactor"
-        Me.colCoverFactor.HeaderText = "Cover-Factor"
-        Me.colCoverFactor.Name = "colCoverFactor"
-        Me.colCoverFactor.Width = 95
-        '
-        'colWetCheck
-        '
-        Me.colWetCheck.DataPropertyName = "W_WL"
-        Me.colWetCheck.FalseValue = "0"
-        Me.colWetCheck.HeaderText = "Wet"
-        Me.colWetCheck.Name = "colWetCheck"
-        Me.colWetCheck.TrueValue = "1"
-        Me.colWetCheck.Width = 53
-        '
-        'colLCTYPEID
-        '
-        Me.colLCTYPEID.DataPropertyName = "LCTypeID"
-        Me.colLCTYPEID.HeaderText = "LCTYPEID"
-        Me.colLCTYPEID.Name = "colLCTYPEID"
-        Me.colLCTYPEID.Visible = False
-        '
-        'colLCClassID
-        '
-        Me.colLCClassID.DataPropertyName = "LCClassID"
-        Me.colLCClassID.HeaderText = "LCClassID"
-        Me.colLCClassID.Name = "colLCClassID"
-        Me.colLCClassID.Visible = False
-        '
         'cntxmnuGrid
         '
         Me.cntxmnuGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteRowToolStripMenuItem})
@@ -426,6 +354,88 @@
         Me.DeleteRowToolStripMenuItem.Name = "DeleteRowToolStripMenuItem"
         Me.DeleteRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
         Me.DeleteRowToolStripMenuItem.Text = "Delete Row"
+        '
+        'colValue
+        '
+        Me.colValue.DataPropertyName = "Value"
+        Me.colValue.HeaderText = "Value"
+        Me.colValue.Name = "colValue"
+        Me.colValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colValue.Width = 42
+        '
+        'colNameCol
+        '
+        Me.colNameCol.DataPropertyName = "Name"
+        Me.colNameCol.HeaderText = "Name"
+        Me.colNameCol.Name = "colNameCol"
+        Me.colNameCol.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colNameCol.Width = 145
+        '
+        'colCNA
+        '
+        Me.colCNA.DataPropertyName = "CN-A"
+        Me.colCNA.HeaderText = "CN-A"
+        Me.colCNA.Name = "colCNA"
+        Me.colCNA.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colCNA.Width = 53
+        '
+        'colCNB
+        '
+        Me.colCNB.DataPropertyName = "CN-B"
+        Me.colCNB.HeaderText = "CN-B"
+        Me.colCNB.Name = "colCNB"
+        Me.colCNB.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colCNB.Width = 53
+        '
+        'colCNC
+        '
+        Me.colCNC.DataPropertyName = "CN-C"
+        Me.colCNC.HeaderText = "CN-C"
+        Me.colCNC.Name = "colCNC"
+        Me.colCNC.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colCNC.Width = 53
+        '
+        'colCND
+        '
+        Me.colCND.DataPropertyName = "CN-D"
+        Me.colCND.HeaderText = "CN-D"
+        Me.colCND.Name = "colCND"
+        Me.colCND.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colCND.Width = 55
+        '
+        'colCoverFactor
+        '
+        Me.colCoverFactor.DataPropertyName = "CoverFactor"
+        Me.colCoverFactor.HeaderText = "Cover-Factor"
+        Me.colCoverFactor.Name = "colCoverFactor"
+        Me.colCoverFactor.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colCoverFactor.Width = 95
+        '
+        'colWetCheck
+        '
+        Me.colWetCheck.DataPropertyName = "W_WL"
+        Me.colWetCheck.FalseValue = "0"
+        Me.colWetCheck.HeaderText = "Wet"
+        Me.colWetCheck.Name = "colWetCheck"
+        Me.colWetCheck.TrueValue = "1"
+        Me.colWetCheck.Visible = False
+        Me.colWetCheck.Width = 53
+        '
+        'colLCTYPEID
+        '
+        Me.colLCTYPEID.DataPropertyName = "LCTypeID"
+        Me.colLCTYPEID.HeaderText = "LCTYPEID"
+        Me.colLCTYPEID.Name = "colLCTYPEID"
+        Me.colLCTYPEID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colLCTYPEID.Visible = False
+        '
+        'colLCClassID
+        '
+        Me.colLCClassID.DataPropertyName = "LCClassID"
+        Me.colLCClassID.HeaderText = "LCClassID"
+        Me.colLCClassID.Name = "colLCClassID"
+        Me.colLCClassID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.colLCClassID.Visible = False
         '
         'frmLandCoverTypes
         '
@@ -465,6 +475,11 @@
 
     End Sub
     Friend WithEvents dgvLCTypes As System.Windows.Forms.DataGridView
+    Friend WithEvents cntxmnuGrid As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents AddRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents InsertRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents DeleteRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
     Friend WithEvents colValue As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colNameCol As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colCNA As System.Windows.Forms.DataGridViewTextBoxColumn
@@ -475,10 +490,5 @@
     Friend WithEvents colWetCheck As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents colLCTYPEID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colLCClassID As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents cntxmnuGrid As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents AddRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents InsertRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents DeleteRowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
 #End Region
 End Class

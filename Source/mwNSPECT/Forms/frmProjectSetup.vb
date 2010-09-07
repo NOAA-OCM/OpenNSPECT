@@ -559,7 +559,6 @@ Friend Class frmProjectSetup
     End Sub
 
 
-    'TODO
     Private Sub cmdRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRun.Click
         Try
             Dim strWaterShed As String 'Connection string
@@ -569,7 +568,7 @@ Friend Class frmProjectSetup
             Dim booLUItems As Boolean 'Are there Landuse Scenarios???
             Dim dictPollutants As New Generic.Dictionary(Of String, String) 'Dict to hold all pollutants
             Dim i As Integer
-            Dim strProjectInfo As String 'String that will hold contents of prj file for inclusion in metatdata
+            'Dim strProjectInfo As String 'String that will hold contents of prj file for inclusion in metatdata
 
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
 
@@ -671,7 +670,7 @@ Friend Class frmProjectSetup
             Dim dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
             dataPrecip.Read()
             'Added 6/04 to account for different PrecipTypes
-            modMainRun.g_intPrecipType = dataPrecip.Item("PrecipType")
+            g_intPrecipType = dataPrecip.Item("PrecipType")
             dataPrecip.Close()
 
             'If there has been a land use added, then a new LCType has been created, hence we get it from g_strLCTypename
