@@ -444,6 +444,7 @@
         '
         Me.dgvCoef.AllowUserToAddRows = False
         Me.dgvCoef.AllowUserToDeleteRows = False
+        Me.dgvCoef.AllowUserToResizeColumns = False
         Me.dgvCoef.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -459,30 +460,35 @@
         Me.Pollutant.HeaderText = "Pollutant"
         Me.Pollutant.Name = "Pollutant"
         Me.Pollutant.ReadOnly = True
+        Me.Pollutant.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Pollutant.Width = 120
         '
         'Type1
         '
         Me.Type1.HeaderText = "Type 1"
         Me.Type1.Name = "Type1"
+        Me.Type1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Type1.Width = 53
         '
         'Type2
         '
         Me.Type2.HeaderText = "Type 2"
         Me.Type2.Name = "Type2"
+        Me.Type2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Type2.Width = 53
         '
         'Type3
         '
         Me.Type3.HeaderText = "Type 3"
         Me.Type3.Name = "Type3"
+        Me.Type3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Type3.Width = 53
         '
         'Type4
         '
         Me.Type4.HeaderText = "Type 4"
         Me.Type4.Name = "Type4"
+        Me.Type4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Type4.Width = 53
         '
         'frmLUScen

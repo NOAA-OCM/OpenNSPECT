@@ -518,6 +518,7 @@ Module modUtil
             Return cs
         Catch ex As Exception
             MsgBox(Err.Description)
+            Return Nothing
         End Try
     End Function
 
@@ -537,7 +538,6 @@ Module modUtil
             HandleError(True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
-
 
     Public Function CheckSpatialReference(ByRef pRasGeoDataset As MapWinGIS.Grid) As String
         CheckSpatialReference = ""
@@ -568,8 +568,6 @@ Module modUtil
         End Try
     End Function
 
-
-    
     Public Function ClipBySelectedPoly(ByRef pAccumRunoffRaster As MapWinGIS.Grid, ByVal g_pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As MapWinGIS.Grid
         Dim strtmp1 As String = IO.Path.GetTempFileName
         MapWinGeoProc.DataManagement.DeleteGrid(strtmp1 + ".bgd")
@@ -581,8 +579,6 @@ Module modUtil
         out.Open(outputFileName)
         Return out
     End Function
-
-
 
     Public Function BrowseForFileName(ByRef strType As String, ByRef frm As System.Windows.Forms.Form, ByRef strTitle As String) As String
 
@@ -610,7 +606,6 @@ Module modUtil
 
 
     End Function
-
 
     Public Sub CleanupRasterFolder(ByRef strWorkspacePath As String)
         Try
@@ -654,30 +649,6 @@ Module modUtil
 
             If Not g_pSCS100Raster Is Nothing Then
                 g_pSCS100Raster.Close()
-            End If
-
-            If Not g_pAbstractRaster Is Nothing Then
-                g_pAbstractRaster.Close()
-            End If
-
-            If Not g_pRunoffRaster Is Nothing Then
-                g_pRunoffRaster.Close()
-            End If
-
-            If Not g_pRunoffInchRaster Is Nothing Then
-                g_pRunoffInchRaster.Close()
-            End If
-
-            If Not g_pCellAreaSqMiRaster Is Nothing Then
-                g_pCellAreaSqMiRaster.Close()
-            End If
-
-            If Not g_pRunoffCFRaster Is Nothing Then
-                g_pRunoffCFRaster.Close()
-            End If
-
-            If Not g_pRunoffAFRaster Is Nothing Then
-                g_pRunoffAFRaster.Close()
             End If
 
             If Not g_pMetRunoffRaster Is Nothing Then

@@ -166,14 +166,9 @@ Friend Class frmSoilsSetup
             Dim lngNewHydFieldIndex As Integer 'New Group Field index
             Dim strHydValue As String 'Hyd Value to check
             Dim lngValue As Integer 'Count
-            Dim strSoilsRas As String 'Soils Raster Name
-            Dim strSoilsKRas As String 'Soils K raster Name
             Dim strCmd As String 'String to insert new stuff in dbase
             Dim strOutSoils As String 'OutSoils name
             Dim strOutKSoils As String
-
-            Dim pSoilsRaster As MapWinGIS.Grid 'Soils raster ds
-            Dim pSoilsKRaster As MapWinGIS.Grid 'Soils k factor ds
 
             'Get the soils featurclass
             pSoilsFeatClass = modUtil.ReturnFeature(strSoilsFileName)
@@ -276,6 +271,7 @@ Friend Class frmSoilsSetup
 
                     MapWinGeoProc.Utils.ShapefileToGrid(strSoilsFileName, strOutKSoils, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.DoubleDataType, strKFactor, cellsize, Nothing)
                 Else
+                    strOutKSoils = ""
                     modProgDialog.KillDialog()
                 End If
 

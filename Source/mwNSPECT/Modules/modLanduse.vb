@@ -31,7 +31,7 @@ Module modLanduse
     Public g_strLCTypeName As String 'the temp name of Land Cover type, if indeed landuses are applied.
     Public g_DictTempNames As New Generic.Dictionary(Of String, String) 'Array holding the temp names of the LCType, and subsequent Coefficient Set Names
     ' Constant used by the Error handler function - DO NOT REMOVE
-    Const c_sModuleFileName As String = "modLanduse.bas"
+    Const c_sModuleFileName As String = "modLanduse.vb"
     Private m_ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
 
 

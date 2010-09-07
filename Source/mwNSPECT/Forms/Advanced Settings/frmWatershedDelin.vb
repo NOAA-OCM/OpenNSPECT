@@ -36,9 +36,10 @@ Friend Class frmWatershedDelin
     End Sub
 
     Private Sub mnuNewWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewWSDelin.Click
-        Dim newWS As New frmNewWSDelin
-        newWS.Init(Me, Nothing)
-        newWS.ShowDialog()
+        MsgBox("Function temporarily disabled.", MsgBoxStyle.Information, "Function disabled")
+        'Dim newWS As New frmNewWSDelin
+        'newWS.Init(Me, Nothing)
+        'newWS.ShowDialog()
     End Sub
 
     Private Sub mnuNewExist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewExist.Click

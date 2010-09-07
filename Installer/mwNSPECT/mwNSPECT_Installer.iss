@@ -6,8 +6,8 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{DB15D326-3441-4107-8444-35E75A2ABD7F}
-AppName=mwNSPECT
-AppVerName=mwNSPECT
+AppName=OpenNSPECT
+AppVerName=OpenNSPECT
 AppPublisher=NOAA Coastal Services Center
 VersionInfoCompany=NOAA Coastal Services Center
 VersionInfoDescription=NOAA Coastal Services Center
@@ -17,9 +17,9 @@ AppPublisherURL=http://www.csc.noaa.gov/
 AppSupportURL=http://www.csc.noaa.gov/
 AppUpdatesURL=http://www.csc.noaa.gov/
 DefaultDirName=C:\NSPECT
-DefaultGroupName=mwNSPECT
+DefaultGroupName=OpenNSPECT
 EnableDirDoesntExistWarning=no
-OutputBaseFilename=mwNSPECT_Setup
+OutputBaseFilename=OpenNSPECT_Setup
 AllowNoIcons=yes
 DisableProgramGroupPage=yes
 ;LicenseFile=License.rtf
@@ -33,7 +33,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 ;Source: "License.rtf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Base Files\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs uninsneveruninstall
-Source: "Base Files\bin\mwNSPECT.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly
+Source: "Base Files\bin\OpenNSPECT.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly
 Source: "Base Files\bin\MapWinGeoProc.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}\..\.."; Flags: ignoreversion overwritereadonly
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -46,10 +46,10 @@ Name: {app}\metadata; Permissions: everyone-modify
 
 [Registry]
 ;Installation Path
-Root: HKLM; Subkey: "Software\NOAA Coastal Services Center\mwNSPECT"; ValueType: string; ValueName: InstallPath; ValueData: {app}; Flags: uninsdeletekey deletekey deletevalue
+Root: HKLM; Subkey: "Software\NOAA Coastal Services Center\OpenNSPECT"; ValueType: string; ValueName: InstallPath; ValueData: {app}; Flags: uninsdeletekey deletekey deletevalue
 
 [Types]
-Name: Standard_Installation; Description: Standard mwNSPECT installation; Flags: iscustom
+Name: Standard_Installation; Description: Standard OpenNSPECT installation; Flags: iscustom
 
 
 [Run]
@@ -86,7 +86,7 @@ begin
 
     i := i+1;
     Delete(sPluginDest, i, Len-i+1);
-    Insert('plugins\mwNSPECT\', sPluginDest, i);
+    Insert('plugins\OpenNSPECT\', sPluginDest, i);
   end;
   len := Length(sPluginDest);
   Result := len > 0;

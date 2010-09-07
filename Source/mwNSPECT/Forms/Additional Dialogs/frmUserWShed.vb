@@ -231,75 +231,118 @@ Friend Class frmUserWShed
     End Sub
 
     Private Sub Return2BDEM(ByRef strDEMFileName As String, ByRef strFlowDirFileName As String)
-        'TODO: Work out how to do focalmin and nibble raster algs
-        'Dim strExpression As Object
+        Dim pDEMOneCell As MapWinGIS.Grid = Nothing
+        Dim pDEMTwoCell As MapWinGIS.Grid = Nothing
+        Dim pDEMRaster As MapWinGIS.Grid = Nothing
+        Dim pFlowDir As MapWinGIS.Grid = Nothing
+        Dim pFlowDirBV As MapWinGIS.Grid = Nothing
+        Dim pNibble As MapWinGIS.Grid = Nothing
+        Dim pMask As MapWinGIS.Grid = Nothing
+        Dim intCellSize As Short
 
-        'Dim pDEMOneCell As MapWinGIS.Grid = Nothing
-        'Dim pDEMTwoCell As MapWinGIS.Grid = Nothing
-        'Dim pDEMRaster As MapWinGIS.Grid = Nothing
-        'Dim pFlowDir As MapWinGIS.Grid = Nothing
-        'Dim pFlowDirBV As MapWinGIS.Grid = Nothing
-        'Dim pNibble As MapWinGIS.Grid = Nothing
-        'Dim pMask As MapWinGIS.Grid = Nothing
-        'Dim intCellSize As Short
+        'pWorkspace = pRasterWorkspaceFactory.OpenFromFile(modUtil.g_nspectPath & "\wsdelin\" & txtWSDelinName.Text, 0)
 
-        ''pWorkspace = pRasterWorkspaceFactory.OpenFromFile(modUtil.g_nspectPath & "\wsdelin\" & txtWSDelinName.Text, 0)
+        pDEMRaster = modUtil.ReturnRaster(strDEMFileName)
+        pFlowDir = modUtil.ReturnRaster(strFlowDirFileName)
+        intCellSize = pDEMRaster.Header.dX
+        _dem_null = pDEMRaster.Header.NodataValue
 
-        'pDEMRaster = modUtil.ReturnRaster(strDEMFileName)
-        'pFlowDir = modUtil.ReturnRaster(strFlowDirFileName)
-        'intCellSize = pDEMRaster.Header.dX
-        '_dem_null = pDEMRaster.Header.NodataValue
+        'STEP 1: ----------------------------------------------------------------------
+        'Buffer the DEM by one cell
+        Dim demonecalc As New RasterMathCellCalcWindowNulls(AddressOf focalminGrowCellCalc)
+        RasterMathWindow(pDEMRaster, Nothing, Nothing, Nothing, Nothing, pDEMOneCell, Nothing, False, demonecalc)
+        'strExpression = "Con(isnull([aml_fdem]), focalmin([aml_fdem]), [aml_fdem])"
 
-        ''STEP 1: ----------------------------------------------------------------------
-        ''Buffer the DEM by one cell
-        'Dim demonecalc As New RasterMathCellCalc(AddressOf demoneCellCalc)
-        'RasterMath(pDEMRaster, Nothing, Nothing, Nothing, Nothing, pDEMOneCell, demonecalc)
-        ''strExpression = "Con(isnull([aml_fdem]), focalmin([aml_fdem]), [aml_fdem])"
+        'END STEP 1: ------------------------------------------------------------------
 
-        ''END STEP 1: ------------------------------------------------------------------
+        'STEP 2: ----------------------------------------------------------------------
+        'Buffer the DEM buffer by one more cell
+        Dim demtwocalc As New RasterMathCellCalcWindowNulls(AddressOf focalminGrowCellCalc)
+        RasterMathWindow(pDEMOneCell, Nothing, Nothing, Nothing, Nothing, pDEMTwoCell, Nothing, False, demtwocalc)
+        'strExpression = "Con(isnull([dem_b]), focalmin([dem_b]), [dem_b])"
 
-        ''STEP 2: ----------------------------------------------------------------------
-        ''Buffer the DEM buffer by one more cell
-        'Dim demtwocalc As New RasterMathCellCalc(AddressOf demtwoCellCalc)
-        'RasterMath(pDEMOneCell, Nothing, Nothing, Nothing, Nothing, pDEMTwoCell, demtwocalc)
-        ''strExpression = "Con(isnull([dem_b]), focalmin([dem_b]), [dem_b])"
+
+        Dim fdronecalc As New RasterMathCellCalcWindowNulls(AddressOf focalminGrowCellCalc)
+        RasterMathWindow(pFlowDir, Nothing, Nothing, Nothing, Nothing, pFlowDirBV, Nothing, False, demonecalc)
+
+        Dim fdrtwocalc As New RasterMathCellCalcWindowNulls(AddressOf focalminGrowCellCalc)
+        RasterMathWindow(pFlowDirBV, Nothing, Nothing, Nothing, Nothing, pNibble, Nothing, False, demtwocalc)
 
         ''STEP 3: ----------------------------------------------------------------------
-        'Dim maskcalc As New RasterMathCellCalc(AddressOf maskCellCalc)
-        'RasterMath(pDEMTwoCell, Nothing, Nothing, Nothing, Nothing, pMask, maskcalc)
+        'Dim maskcalc As New RasterMathCellCalcNulls(AddressOf maskCellCalc)
+        'RasterMath(pDEMTwoCell, Nothing, Nothing, Nothing, Nothing, pMask, Nothing, False, maskcalc)
         ''strExpression = "con([mask] >= 0, 1, 0)"
 
 
         ''STEP 4: ----------------------------------------------------------------------
-        'Dim flowdvcalc As New RasterMathCellCalc(AddressOf flowdvCellCalc)
-        'RasterMath(pFlowDir, Nothing, Nothing, Nothing, Nothing, pFlowDirBV, flowdvcalc)
+        'Dim flowdvcalc As New RasterMathCellCalcNulls(AddressOf flowdvCellCalc)
+        'RasterMath(pFlowDir, Nothing, Nothing, Nothing, Nothing, pFlowDirBV, Nothing, False, flowdvcalc)
         ''strExpression = "con(isnull([fdr_b]),0,[fdr_b])"
 
         ''Nibble
-        'Dim nibcalc As New RasterMathCellCalc(AddressOf nibCellCalc)
-        'RasterMath(pFlowDirBV, pMask, Nothing, Nothing, Nothing, pNibble, nibcalc)
+        'Dim nibcalc As New RasterMathCellCalcWindowNulls(AddressOf nibCellCalc)
+        'RasterMathWindow(pFlowDirBV, pMask, Nothing, Nothing, Nothing, pNibble, Nothing, False, nibcalc)
         ''strExpression = "nibble([fdr_bv],[waia_reg], dataonly)"
 
-        ''Get nibble's path for use in the database
-        '_strNibbleName = modUtil.MakePerminentGrid(pNibble, (pWorkspace.PathName), "nibble")
+        'Get nibble's path for use in the database
+        _strNibbleName = modUtil.GetUniqueName("nibble", g_strWorkspace, ".bgd")
+        modUtil.ReturnPermanentRaster(pNibble, _strNibbleName)
+        pNibble.Close()
     End Sub
 
 #End Region
 
 #Region "Raster Math"
-    Private Function demoneCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single) As Single
+    Private Function focalminGrowCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(isnull([aml_fdem]), focalmin([aml_fdem]), [aml_fdem])"
-        If Input1 = _dem_null Then
-            'TODO: Redo to allow for neighbor searches
-            'focal min is the minimum value of each cell in the neighborhood
+        'focal min is the minimum non-nodata value of each cell in the neighborhood
+        Dim minval As Single = Single.MaxValue
+        If InputBox1(1, 1) = Input1Null Then
+            For i As Integer = 0 To 2
+                For j As Integer = 0 To 2
+                    If InputBox1(i, j) <> Input1Null Then
+                        If InputBox1(i, j) < minval Then
+                            minval = InputBox1(i, j)
+                        End If
+                    End If
+                Next
+            Next
+
+            If minval = Single.MaxValue Then
+                Return Input1Null
+            Else
+                Return minval
+            End If
+            Return 0
+        Else
+            Return InputBox1(1, 1)
+        End If
+    End Function
+
+    Private Function maskCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+        'strExpression = "con([mask] >= 0, 1, 0)"
+        If Input1 <> Input1Null Then
+            If Input1 >= 0 Then
+                Return 1
+            Else
+                Return 0
+            End If
+        Else
+            Return OutNull
+        End If
+    End Function
+
+    Private Function flowdvCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+        If Input1 = Input1Null Then
             Return 0
         Else
             Return Input1
         End If
     End Function
 
-
-
+    Private Function nibCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+        'TODO: forming a nibble flow dir
+    End Function
 #End Region
 
 

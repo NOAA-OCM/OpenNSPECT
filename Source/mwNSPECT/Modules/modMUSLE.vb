@@ -20,7 +20,7 @@ Module modMUSLE
     Private _strMusleMetadata As String 'MUSLE metadata string
 
     ' Variables used by the Error handler function - DO NOT REMOVE
-    Const c_sModuleFileName As String = "modMUSLE.bas"
+    Const c_sModuleFileName As String = "modMUSLE.vb"
     Private _picks As String()
     Private _pondpicks As String()
 
@@ -115,7 +115,6 @@ Module modMUSLE
         CreateMetadata = strHeader '& vbTab & "C-Factor values: " & vbNewLine & strCFactor
 
     End Function
-
 
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
         'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
@@ -220,151 +219,6 @@ Module modMUSLE
             MsgBox("Error in pick Statement: " & Err.Number & ": " & Err.Description)
         End Try
     End Function
-
-    'OBSOLETE
-    'Private Function ConstructConStatment(ByRef cmdCF As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
-    '    ''Creates the Cover Factor con statement using the name of the the LandCass Recordset, and the Landclass Raster
-    '    ''Returns: String
-    '    ''Looks like: con(([nu_lulc] eq 2), 0.000, con((nu_lulc eq 3), 0.030....
-
-    '    'Dim strCon As String 'Con statement base
-    '    'Dim strParens As String 'String of trailing parens
-    '    'Dim strCompleteCon As String 'Concatenate of strCon & strParens
-
-    '    'Dim pRasterCol As ESRI.ArcGIS.DataSourcesRaster.IRasterBandCollection
-    '    'Dim pBand As ESRI.ArcGIS.DataSourcesRaster.IRasterBand
-    '    'Dim pTable As ESRI.ArcGIS.Geodatabase.ITable
-    '    'Dim TableExist As Boolean
-    '    'Dim pCursor As ESRI.ArcGIS.Geodatabase.ICursor
-    '    'Dim pRow As ESRI.ArcGIS.Geodatabase.IRow
-    '    'Dim FieldIndex As Short
-    '    'Dim booValueFound As Boolean
-    '    'Dim i As Short
-
-    '    ''STEP 1:  get the records from the database -----------------------------------------------
-    '    'rsCF.MoveFirst()
-    '    ''End Database stuff
-
-    '    ''STEP 2: Raster Values ---------------------------------------------------------------------
-    '    ''Now Get the RASTER values
-    '    '' Get Rasterband from the incoming raster
-    '    'pRasterCol = pLCRaster
-    '    'pBand = pRasterCol.Item(0)
-
-    '    ''Get the raster table
-    '    'pBand.HasTable(TableExist)
-    '    'If Not TableExist Then Exit Function
-
-    '    'pTable = pBand.AttributeTable
-    '    ''Get All rows
-    '    'pCursor = pTable.Search(Nothing, True)
-    '    ''Init pRow
-    '    'pRow = pCursor.NextRow
-
-    '    ''Get index of Value Field
-    '    'FieldIndex = pTable.FindField("Value")
-
-    '    ''STEP 3: Table values vs. Raster Values Count - if not equal bark --------------------------
-    '    ''    If pTable.RowCount(Nothing) <> rsCF.RecordCount Then
-    '    ''        MsgBox "Error: The number of records in your Land Class Table do not match your GRID dataset."
-    '    ''        Exit Function
-    '    ''    End If
-
-    '    ''STEP 4: Create the strings
-    '    ''Loop through and get all values
-    '    'Do While Not pRow Is Nothing
-    '    '    booValueFound = False
-    '    '    rsCF.MoveFirst()
-
-    '    '    For i = 0 To rsCF.RecordCount - 1
-    '    '        If pRow.Value(FieldIndex) = rsCF.Fields("Value").Value Then
-
-    '    '            booValueFound = True
-
-    '    '            If strCon = "" Then
-    '    '                strCon = "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), " & rsCF.Fields("CoverFactor").Value & ", "
-    '    '            Else
-    '    '                strCon = strCon & "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), " & rsCF.Fields("CoverFactor").Value & ", "
-    '    '            End If
-
-    '    '            If strParens = "" Then
-    '    '                strParens = "-9999)"
-    '    '            Else
-    '    '                strParens = strParens & ")"
-    '    '            End If
-    '    '            Exit For
-    '    '        Else
-    '    '            booValueFound = False
-    '    '        End If
-    '    '        rsCF.MoveNext()
-    '    '    Next i
-
-    '    '    If booValueFound = False Then
-    '    '        MsgBox("Error in MUSLE ConstructConStatment Function: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
-    '    '        ConstructConStatment = ""
-    '    '        Exit Function
-    '    '    Else
-    '    '        pRow = pCursor.NextRow
-    '    '        i = 0
-    '    '    End If
-
-    '    'Loop
-
-
-    '    ''Remove 11/30/2007 in favor of check above.
-    '    ''    '==========================================================================
-    '    ''    Do While Not pRow Is Nothing
-    '    ''
-    '    ''        booValueFound = False
-    '    ''        rsType.MoveFirst
-    '    ''
-    '    ''        For i = 0 To rsType.RecordCount - 1
-    '    ''            If rsType!Value = pRow.Value Then
-    '    ''
-    '    ''                booValueFound = True
-    '    ''
-    '    ''                If strCon = "" Then
-    '    ''                    strCon = "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), " & rsType!CoeffType & ", "
-    '    ''                Else
-    '    ''                    strCon = strCon & "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), " & rsType!CoeffType & ", "
-    '    ''                End If
-    '    ''
-    '    ''                If strParens = "" Then
-    '    ''                    strParens = "-9999)"
-    '    ''                Else
-    '    ''                    strParens = strParens & ")"
-    '    ''                End If
-    '    ''
-    '    ''                Exit For
-    '    ''            Else
-    '    ''                booValueFound = False
-    '    ''            End If
-    '    ''            rsType.MoveNext
-    '    ''        Next i
-    '    ''
-    '    ''        If booValueFound = False Then
-    '    ''            MsgBox "Values in table LCClass table not equal to values in landclass dataset."
-    '    ''            ConstructConStatment = ""
-    '    ''            Exit Function
-    '    ''        Else
-    '    ''            Set pRow = pCursor.NextRow
-    '    ''            i = 0
-    '    ''        End If
-    '    ''    Loop
-    '    ''==================================================================================
-
-    '    'strCompleteCon = strCon & strParens
-    '    'ConstructConStatment = strCompleteCon
-
-    '    ''Cleanup:
-    '    ''Set pLCRaster = Nothing
-    '    'pRasterCol = Nothing
-    '    'pBand = Nothing
-    '    'pTable = Nothing
-    '    'pCursor = Nothing
-    '    'pRow = Nothing
-
-    'End Function
 
     Private Function ConstructPondPickStatement(ByRef cmdCF As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
         'Creates the Con Statement used in the Pond Factor GRID
@@ -474,129 +328,6 @@ Module modMUSLE
 
     End Function
 
-    'OBSOLETE
-    'Private Function ConstructPondConStatement(ByRef rsCF As ADODB.Recordset, ByRef pLCRaster As ESRI.ArcGIS.Geodatabase.IRaster) As String
-    '    'Creates the Con Statement used in the Pond Factor GRID
-    '    'Returns: String
-    '    'Looks like: con(([nu_lulc] eq 16), 0, con((nu_lulc eq 17), 0...
-
-    '    Dim strCon As String 'Con statement base
-    '    Dim strParens As String 'String of trailing parens
-    '    Dim strCompleteCon As String 'Concatenate of strCon & strParens
-
-    '    Dim pRasterCol As ESRI.ArcGIS.DataSourcesRaster.IRasterBandCollection
-    '    Dim pBand As ESRI.ArcGIS.DataSourcesRaster.IRasterBand
-    '    Dim pTable As ESRI.ArcGIS.Geodatabase.ITable
-    '    Dim TableExist As Boolean
-    '    Dim pCursor As ESRI.ArcGIS.Geodatabase.ICursor
-    '    Dim pRow As ESRI.ArcGIS.Geodatabase.IRow
-    '    Dim FieldIndex As Short
-    '    Dim booValueFound As Boolean
-    '    Dim i As Short
-
-    '    'STEP 1:  get the records from the database -----------------------------------------------
-    '    rsCF.MoveFirst()
-    '    'End Database stuff
-
-    '    'STEP 2: Raster Values ---------------------------------------------------------------------
-    '    'Now Get the RASTER values
-    '    ' Get Rasterband from the incoming raster
-    '    pRasterCol = pLCRaster
-    '    pBand = pRasterCol.Item(0)
-
-    '    'Get the raster table
-    '    pBand.HasTable(TableExist)
-    '    If Not TableExist Then Exit Function
-
-    '    pTable = pBand.AttributeTable
-    '    'Get All rows
-    '    pCursor = pTable.Search(Nothing, True)
-    '    'Init pRow
-    '    pRow = pCursor.NextRow
-
-    '    'Get index of Value Field
-    '    FieldIndex = pTable.FindField("Value")
-
-    '    'REMOVED 11/30/2007
-    '    'STEP 3: Table values vs. Raster Values Count - if not equal bark --------------------------
-    '    '    If pTable.RowCount(Nothing) <> rsCF.RecordCount Then
-    '    '        MsgBox "Error: The number of records in your Land Class Table do not match your GRID dataset."
-    '    '        Exit Function
-    '    '    End If
-    '    '
-    '    'STEP 4: Create the strings
-    '    'Loop through and get all values
-    '    Do While Not pRow Is Nothing
-
-    '        booValueFound = False
-    '        rsCF.MoveFirst()
-
-    '        For i = 0 To rsCF.RecordCount - 1
-    '            If pRow.Value(FieldIndex) = rsCF.Fields("Value").Value Then
-    '                booValueFound = True
-    '                Select Case rsCF.Fields("W_WL").Value
-    '                    Case 0 'Means the current landclass is NOT Water or Wetland, therefore gets a 1
-    '                        If strCon = "" Then
-    '                            strCon = "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), 1, "
-    '                        Else
-    '                            strCon = strCon & "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), 1, "
-    '                        End If
-
-    '                        If strParens = "" Then
-    '                            strParens = "1)"
-    '                        Else
-    '                            strParens = strParens & ")"
-    '                        End If
-
-    '                    Case 1 'Means the current landclass IS Water or Wetland, therefore gets a 0
-    '                        If strCon = "" Then
-    '                            strCon = "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), 0, "
-    '                        Else
-    '                            strCon = strCon & "Con(([nu_lulc] eq " & pRow.Value(FieldIndex) & "), 0, "
-    '                        End If
-
-    '                        If strParens = "" Then
-    '                            strParens = ")"
-    '                        Else
-    '                            strParens = strParens & ")"
-    '                        End If
-
-    '                End Select
-
-    '                'rsCF.MoveNext
-    '                'Set pRow = pCursor.NextRow
-    '                Exit For
-
-    '            Else
-    '                booValueFound = False
-    '            End If
-
-    '            rsCF.MoveNext()
-
-    '        Next i
-
-    '        If booValueFound = False Then
-    '            MsgBox("Error in MUSLEConstructPondConStatement: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
-    '            ConstructPondConStatement = ""
-    '            Exit Function
-    '        Else
-    '            pRow = pCursor.NextRow
-    '            i = 0
-    '        End If
-    '    Loop
-
-    '    strCompleteCon = strCon & strParens
-    '    ConstructPondConStatement = strCompleteCon
-
-    '    'Cleanup:
-    '    'Set pLCRaster = Nothing
-    '    pRasterCol = Nothing
-    '    pBand = Nothing
-    '    pTable = Nothing
-    '    pCursor = Nothing
-    '    pRow = Nothing
-
-    'End Function
 
 
     Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String) As Boolean
@@ -604,36 +335,14 @@ Module modMUSLE
         'strConPondstatement: the con for the pond stuff
         'Calculates the MUSLE erosion model
 
-        Dim pWeightRaster As MapWinGIS.Grid = Nothing 'STEP 1: Weight Raster
         Dim pWSLengthRaster As MapWinGIS.Grid = Nothing  'STEP 2: Watershed length
         Dim pWSLengthUnitsRaster As MapWinGIS.Grid = Nothing  'STEP 3: Units conversion
         Dim pSlopePRRaster As MapWinGIS.Grid = Nothing  'STEP 4: Average Slope
         Dim pSlopeModRaster As MapWinGIS.Grid = Nothing  'STEP 4a: Mod Slope
-        Dim pTemp1LagRaster As MapWinGIS.Grid = Nothing  'STEP 5a: Lag temp1
-        Dim pTemp2LagRaster As MapWinGIS.Grid = Nothing  'STEP 5b: Lag temp2
-        Dim pTemp3LagRaster As MapWinGIS.Grid = Nothing  'STEP 5c: Lag temp3
-        Dim pTemp4LagRaster As MapWinGIS.Grid = Nothing  'STEP 5d: Lag temp4
-        Dim pLagRaster As MapWinGIS.Grid = Nothing  'STEP 5e: Lag
-        Dim pTOCRaster As MapWinGIS.Grid = Nothing  'STEP 6a: TOC
-        Dim pTOCTempRaster As MapWinGIS.Grid = Nothing  'STEP 6b: TOC temp
-        Dim pModTOCRaster As MapWinGIS.Grid = Nothing  'STEP 6c: Mod TOC
-        Dim pAbPrecipRaster As MapWinGIS.Grid = Nothing  'STEP 7: Abstraction-Precip Ratio
-        Dim pLogTOCRaster As MapWinGIS.Grid = Nothing  'STEP 8a: Calc unit peak discharge
-        Dim pTempLogTOCRaster As MapWinGIS.Grid = Nothing  'STEP 8b:
-        Dim pCZeroRaster As MapWinGIS.Grid = Nothing  'STEP 9: CZero
-        Dim pConeRaster As MapWinGIS.Grid = Nothing  'STEP 10: Cone
-        Dim pCTwoRaster As MapWinGIS.Grid = Nothing  'STEP 11: CTwo
-        Dim pLogQuRaster As MapWinGIS.Grid = Nothing  'STEP 12a: Who knows
         Dim pQuRaster As MapWinGIS.Grid = Nothing 'STep 12b: Who Knows(b)
-        Dim pPondFactorRaster As MapWinGIS.Grid = Nothing  'STEP 13: Pond Factor
-        Dim pQPRaster As MapWinGIS.Grid = Nothing  'STEP 14: QP factor
-        Dim pCFactorRaster As MapWinGIS.Grid = Nothing  'STEP 15: Yee old CFactor Raster
         Dim pHISYTempRaster As MapWinGIS.Grid = Nothing  'STEP 16c: HI Specific temp yield
-        Dim pHISYRaster As MapWinGIS.Grid = Nothing  'STEP 16d: HI Specific yield
         Dim pHISYMGRaster As MapWinGIS.Grid = Nothing  'STEP 17b: tons to milligrams, HI Specific
         Dim pPermMUSLERaster As MapWinGIS.Grid = Nothing  'STEP 17c: Local Effects permanent raster
-        Dim pTempflowDir3raster As MapWinGIS.Grid = Nothing  'FlowDir temp raster
-        Dim pAccSedHIRaster As MapWinGIS.Grid = Nothing  'STEP 19HI: acc sediment
         Dim pTotSedMassHIRaster As MapWinGIS.Grid = Nothing  'STEP 20HI: tot sed mass HI
         Dim pPermTotSedConcHIraster As MapWinGIS.Grid = Nothing  'Permanent MUSLE
         Dim strMUSLE As String
@@ -642,9 +351,7 @@ Module modMUSLE
         'String to hold calculations
         Dim strExpression As String = ""
         Const strTitle As String = "Processing MUSLE Calculation..."
-        Dim strtmp As String
-
-
+        
         Try
             
             modProgDialog.ProgDialog("Calculating Watershed Length...", strTitle, 0, 27, 2, 0)
@@ -678,32 +385,32 @@ Module modMUSLE
                 pTauD8Flow.Close()
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
 
-                Dim gTemp As New MapWinGIS.Grid
-                gTemp.Open(strTotalOut) 'TODO: May need to use longest here instead of total
+                pWSLengthRaster = New MapWinGIS.Grid
+                pWSLengthRaster.Open(strLongestOut)
 
-                'Because taudem's flowlength is based on cell size, need to divide by cell size to put it back to where it should be.
-                Dim wslengthfixcalc As New RasterMathCellCalc(AddressOf wslengthfixCellCalc)
-                RasterMath(gTemp, Nothing, Nothing, Nothing, Nothing, pWSLengthRaster, wslengthfixcalc)
-                gTemp.Close()
+                'Dim gTemp As New MapWinGIS.Grid
+                'gTemp.Open(strLongestOut)
+                ''Because taudem's flowlength is based on cell size, need to divide by cell size to put it back to where it should be.
+                'Dim wslengthfixcalc As New RasterMathCellCalc(AddressOf wslengthfixCellCalc)
+                'RasterMath(gTemp, Nothing, Nothing, Nothing, Nothing, pWSLengthRaster, wslengthfixcalc)
+                'gTemp.Close()
                 MapWinGeoProc.DataManagement.DeleteGrid(strTotalOut)
-                MapWinGeoProc.DataManagement.DeleteGrid(strLongestOut)
                 MapWinGeoProc.DataManagement.DeleteGrid(strStrahlOut)
-
                 'End STEP 2 ----------------------------------------------------------------------------------
-            End If
 
-            modProgDialog.ProgDialog("Converting units...", strTitle, 0, 27, 3, 0)
-            If modProgDialog.g_boolCancel Then
                 'STEP 3: --------------------------------------------------------------------------------------
                 'Convert Metric Units
                 Dim wslengthcalc As New RasterMathCellCalc(AddressOf wslengthCellCalc)
                 RasterMath(pWSLengthRaster, Nothing, Nothing, Nothing, Nothing, pWSLengthUnitsRaster, wslengthcalc)
                 'strExpression = "([cell_wslength] * 3.28084)"
 
+                pWSLengthRaster.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strLongestOut)
+
                 'END STEP 3: -----------------------------------------------------------------------------------
             End If
 
-            modProgDialog.ProgDialog("Calculating Average Slope...", strTitle, 0, 27, 4, 0)
+            modProgDialog.ProgDialog("Calculating Mod Slope...", strTitle, 0, 27, 4, 0)
             If modProgDialog.g_boolCancel Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
@@ -712,310 +419,52 @@ Module modMUSLE
                 MapWinGeoProc.TerrainAnalysis.Slope2(g_pDEMRaster.Filename, 1, strtmpslpout, True, Nothing)
                 'strExpression = "slope([dem], percentrise)"
 
-
                 pSlopePRRaster = New MapWinGIS.Grid
                 pSlopePRRaster.Open(strtmpslpout)
-                'END STEP 4a ------------------------------------------------------------------------------------
-            End If
 
-            modProgDialog.ProgDialog("Calculating Mod Slope...", strTitle, 0, 27, 5, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 4b: ---------------------------------------------------------------------------------------
                 'Calculate modslope
                 Dim slpmodcalc As New RasterMathCellCalc(AddressOf slpmodCellCalc)
                 RasterMath(pSlopePRRaster, Nothing, Nothing, Nothing, Nothing, pSlopeModRaster, slpmodcalc)
                 'strExpression = "Con([slopepr] eq 0, 0.1, [slopepr])"
-
-                'END STEP 4b: -----------------------------------------------------------------------------------
-            End If
-
-           
-
-            modProgDialog.ProgDialog("Calculating Lag...", strTitle, 0, 27, 6, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 5a: ---------------------------------------------------------------------------------------
-                'Calculate Lag
-                Dim tmp1lagcalc As New RasterMathCellCalc(AddressOf tmp1lagCellCalc)
-                RasterMath(pWSLengthUnitsRaster, Nothing, Nothing, Nothing, Nothing, pTemp1LagRaster, tmp1lagcalc)
-                'strExpression = "Pow([cell_wslngft], 0.8)"
-
-                'END STEP 5a: ----------------------------------------------------------------------------------
-            End If
-
-            modProgDialog.ProgDialog("Checking SCS GRID...", strTitle, 0, 27, 7, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 5b: ---------------------------------------------------------------------------------------
-                Dim tmp2lagcalc As New RasterMathCellCalc(AddressOf tmp2lagCellCalc)
-                RasterMath(g_pSCS100Raster, Nothing, Nothing, Nothing, Nothing, pTemp2LagRaster, tmp2lagcalc)
-                'strExpression = "(1000 / [scsgrid100]) - 9"
-
-                'END STEP 9b: ----------------------------------------------------------------------------------
-            End If
-
-
-            modProgDialog.ProgDialog("Multiplying GRIDs...", strTitle, 0, 27, 8, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 5c: --------------------------------------------------------------------------------------
-                Dim tmp3lagcalc As New RasterMathCellCalc(AddressOf tmp3lagCellCalc)
-                RasterMath(pTemp2LagRaster, Nothing, Nothing, Nothing, Nothing, pTemp3LagRaster, tmp3lagcalc)
-                'strExpression = "Pow([temp4], 0.7)"
-
-                'END STEP 5c: ----------------------------------------------------------------------------------
-            End If
-            
-
-            modProgDialog.ProgDialog("Pow([modslope], 0.5...", strTitle, 0, 27, 9, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 5d: --------------------------------------------------------------------------------------
-                Dim tmp4lagcalc As New RasterMathCellCalc(AddressOf tmp4lagCellCalc)
-                RasterMath(pSlopeModRaster, Nothing, Nothing, Nothing, Nothing, pTemp4LagRaster, tmp4lagcalc)
-                'strExpression = "Pow([modslope], 0.5)"
-
-                'END STEP 5d: ----------------------------------------------------------------------------------
-            End If
-           
-            modProgDialog.ProgDialog("Lag calculation...", strTitle, 0, 30, 27, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 5e: --------------------------------------------------------------------------------------
-                'Finally, the lag calculation
-                Dim lagcalc As New RasterMathCellCalc(AddressOf lagCellCalc)
-                RasterMath(pTemp1LagRaster, pTemp3LagRaster, pTemp4LagRaster, Nothing, Nothing, pLagRaster, lagcalc)
-                'strExpression = "([temp3] * [temp5]) / (1900 * [temp6])"
-
-                'STEP 5e: ---------------------------------------------------------------------------------------
-            End If
-            
-
-            modProgDialog.ProgDialog("Calculating time of concentration...", strTitle, 0, 27, 11, 0)
-            If modProgDialog.g_boolCancel Then
-
-                'STEP 6a: ---------------------------------------------------------------------------------------
-                'Calculate the time of concentration
-                Dim toccalc As New RasterMathCellCalc(AddressOf tocCellCalc)
-                RasterMath(pLagRaster, Nothing, Nothing, Nothing, Nothing, pTOCRaster, toccalc)
-                'strExpression = "[lag] / 0.6"
-                'END STEP 6a: -----------------------------------------------------------------------------------
-
-
-                'STEP 6b: --------------------------------------------------------------------------------------
-                Dim toctmpcalc As New RasterMathCellCalc(AddressOf toctmpCellCalc)
-                RasterMath(pTOCRaster, Nothing, Nothing, Nothing, Nothing, pTOCTempRaster, toctmpcalc)
-                'strExpression = "Con([toc] lt 0.1, 0.1, [toc])"
-
-                'END STEP 6b: ----------------------------------------------------------------------------------
-
-
-                'STEP 6c: --------------------------------------------------------------------------------------
-                Dim modtoccalc As New RasterMathCellCalc(AddressOf modtocCellCalc)
-                RasterMath(pTOCTempRaster, Nothing, Nothing, Nothing, Nothing, pModTOCRaster, modtoccalc)
-                'strExpression = "Con([temp7] gt 10, 10, [temp7])"
-
-                'END STEP 6c: ----------------------------------------------------------------------------------
-
-            End If
-
-
-            modProgDialog.ProgDialog("Abstraction Precipitation Ratio...", strTitle, 0, 27, 12, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 7: ---------------------------------------------------------------------------------------
-                'Find the Abstraction Precipitation Ratio
-                Dim abprecipcalc As New RasterMathCellCalc(AddressOf abprecipCellCalc)
-                RasterMath(g_pAbstractRaster, g_pPrecipRaster, Nothing, Nothing, Nothing, pAbPrecipRaster, abprecipcalc)
-                'strExpression = "[abstract] / [rain]"
-
-                'END STEP 7: ----------------------------------------------------------------------------------
-            End If
-
-
-            modProgDialog.ProgDialog("Calculating the peak unit discharge...", strTitle, 0, 27, 13, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 8a: ----------------------------------------------------------------------------------------
-                'Calculate the unit peak discharge
-                Dim logtoccalc As New RasterMathCellCalc(AddressOf logtocCellCalc)
-                RasterMath(pModTOCRaster, Nothing, Nothing, Nothing, Nothing, pLogTOCRaster, logtoccalc)
-                'strExpression = "log10([modtoc])"
-
-                'END STEP 8a: -----------------------------------------------------------------------------------
-
-
-                'STEP 8b: ---------------------------------------------------------------------------------------
-                '2nd part of it
-                Dim tmplogtoccalc As New RasterMathCellCalc(AddressOf tmplogtocCellCalc)
-                RasterMath(pLogTOCRaster, Nothing, Nothing, Nothing, Nothing, pTempLogTOCRaster, tmplogtoccalc)
-                'strExpression = "Pow([logtoc], 2)"
-
-                'END STEP 8b: -----------------------------------------------------------------------------------
-
+                pSlopePRRaster.Close()
+                MapWinGeoProc.DataManagement.DeleteGrid(strtmpslpout)
+                'END STEP 4a ------------------------------------------------------------------------------------
             End If
 
 
 
-            modProgDialog.ProgDialog("Creating C-Zero GRID...", strTitle, 0, 27, 14, 0)
+            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 18, 0)
             If modProgDialog.g_boolCancel Then
-                'STEP 9: ----------------------------------------------------------------------------------------
-                'CZERO GRID
-                Dim c0calc As RasterMathCellCalc = Nothing
-                Select Case g_intPrecipType
-                    Case 0
-                        c0calc = New RasterMathCellCalc(AddressOf c0CellCalc0)
-                    Case 1
-                        c0calc = New RasterMathCellCalc(AddressOf c0CellCalc1)
-                    Case 2
-                        c0calc = New RasterMathCellCalc(AddressOf c0CellCalc2)
-                    Case 3
-                        c0calc = New RasterMathCellCalc(AddressOf c0CellCalc3)
-                End Select
-                RasterMath(pAbPrecipRaster, Nothing, Nothing, Nothing, Nothing, pCZeroRaster, c0calc)
-                'Call to clsPrecipType(called clsprecip here init above) to get string based on Precip Type
-                'strExpression = clsPrecip.CZero(g_intPrecipType)
-
-                'END STEP 9: ------------------------------------------------------------------------------------
+                Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
+                RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, pQuRaster, AllMUSLECalc)
             End If
+            'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, ".bgd"))
 
-
-            modProgDialog.ProgDialog("Creating C1 GRID...", strTitle, 0, 27, 15, 0)
+            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 22, 0)
             If modProgDialog.g_boolCancel Then
-                'STEP 10: ---------------------------------------------------------------------------------------
-                'CONE grid
-                Dim c1calc As RasterMathCellCalc = Nothing
-                Select Case g_intPrecipType
-                    Case 0
-                        c1calc = New RasterMathCellCalc(AddressOf c1CellCalc0)
-                    Case 1
-                        c1calc = New RasterMathCellCalc(AddressOf c1CellCalc1)
-                    Case 2
-                        c1calc = New RasterMathCellCalc(AddressOf c1CellCalc2)
-                    Case 3
-                        c1calc = New RasterMathCellCalc(AddressOf c1CellCalc3)
-                End Select
-                RasterMath(pAbPrecipRaster, Nothing, Nothing, Nothing, Nothing, pConeRaster, c1calc)
-                'strExpression = clsPrecip.Cone(g_intPrecipType)
-
-                'END STEP 10 ------------------------------------------------------------------------------------
-            End If
-
-
-            modProgDialog.ProgDialog("Creating C2 GRID...", strTitle, 0, 27, 16, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 11: ---------------------------------------------------------------------------------------
-                'CTwo GRID
-                Dim c2calc As RasterMathCellCalc = Nothing
-                Select Case g_intPrecipType
-                    Case 0
-                        c2calc = New RasterMathCellCalc(AddressOf c2CellCalc0)
-                    Case 1
-                        c2calc = New RasterMathCellCalc(AddressOf c2CellCalc1)
-                    Case 2
-                        c2calc = New RasterMathCellCalc(AddressOf c2CellCalc2)
-                    Case 3
-                        c2calc = New RasterMathCellCalc(AddressOf c2CellCalc3)
-                End Select
-                RasterMath(pAbPrecipRaster, Nothing, Nothing, Nothing, Nothing, pCTwoRaster, c2calc)
-                'strExpression = clsPrecip.CTwo(g_intPrecipType)
-
-                'END STEP 11: ------------------------------------------------------------------------------------
-            End If
-
-
-            modProgDialog.ProgDialog("More math...", strTitle, 0, 27, 17, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 12a: ----------------------------------------------------------------------------------------
-                'Logqu
-                Dim logqucalc As New RasterMathCellCalc(AddressOf logquCellCalc)
-                RasterMath(pCZeroRaster, pConeRaster, pLogTOCRaster, pCTwoRaster, pTempLogTOCRaster, pLogQuRaster, logqucalc)
-                'strExpression = "[czero] + ([cone] * [logtoc]) + ([ctwo] * [temp8])"
-
-                'END STEP 12a: -------------------------------------------------------------------------------------
-
-
-                'STEP 12b: -----------------------------------------------------------------------------------------
-                Dim qucalc As New RasterMathCellCalc(AddressOf quCellCalc)
-                RasterMath(pLogQuRaster, Nothing, Nothing, Nothing, Nothing, pQuRaster, qucalc)
-                'strExpression = "Pow(10, [logqu])"
-
-                'END STEP 12b: -------------------------------------------------------------------------------------
-            End If
-
-            
-            modProgDialog.ProgDialog("Creating Pond Factor GRID...", strTitle, 0, 27, 16, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 13: ------------------------------------------------------------------------------------------
-                'Create pond factor grid
                 ReDim _pondpicks(strConPondStatement.Split(",").Length)
                 _pondpicks = strConPondStatement.Split(",")
-
-                Dim pondfactcalc As New RasterMathCellCalc(AddressOf pondfactCellCalc)
-                RasterMath(g_LandCoverRaster, Nothing, Nothing, Nothing, Nothing, pPondFactorRaster, pondfactcalc)
-                'strExpression = strConPondStatement
-
-                'END STEP 13: ---------------------------------------------------------------------------------------
+                Dim AllMUSLECalc2 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc2)
+                RasterMath(pQuRaster, g_LandCoverRaster, g_pDEMRaster, g_pMetRunoffRaster, Nothing, pHISYTempRaster, AllMUSLECalc2)
+                pQuRaster.Close()
             End If
+            'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, ".bgd"))
 
-
-            modProgDialog.ProgDialog("Calculating peak discharge; cubic feet per second...", strTitle, 0, 27, 17, 0)
+            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 25, 0)
             If modProgDialog.g_boolCancel Then
-                'STEP 14: -------------------------------------------------------------------------------------------
-                'Calculate peak discharge: cubic feet per second
-                Dim qpcalc As New RasterMathCellCalc(AddressOf qpCellCalc)
-                RasterMath(pQuRaster, g_pCellAreaSqMiRaster, g_pRunoffInchRaster, pPondFactorRaster, Nothing, pQPRaster, qpcalc)
-                'strExpression = "[qu] * [cellarea_sqmi] * [runoff_in] * [pondfact]"
-
-                'END STEP 14: ----------------------------------------------------------------------------------------
-            End If
-
-            modProgDialog.ProgDialog("Creating cover factor GRID...", strTitle, 0, 27, 18, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 15: --------------------------------------------------------------------------------------------
-                'Cover Factor GRID
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
-
-                Dim cfactcalc As New RasterMathCellCalc(AddressOf cfactCellCalc)
-                RasterMath(g_LandCoverRaster, Nothing, Nothing, Nothing, Nothing, pCFactorRaster, cfactcalc)
-
-                'END STEP 15 -----------------------------------------------------------------------------------------
+                Dim AllMUSLECalc3 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc3)
+                RasterMath(pHISYTempRaster, g_LandCoverRaster, g_KFactorRaster, g_pLSRaster, Nothing, pHISYMGRaster, AllMUSLECalc3)
+                pHISYTempRaster.Close()
             End If
+            'modUtil.ReturnPermanentRaster(pHISYMGRaster, modUtil.GetUniqueName("hisymg", g_strWorkspace, ".bgd"))
 
-
-            modProgDialog.ProgDialog("Sediment Yield...", strTitle, 0, 27, 19, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 16 c: -------------------------------------------------------------------------------------------
-                'Temp Sediment Yield: Note: MUSLE Exponent inserted to allow for global use, cuz other's will use
-                Dim hisytmpcalc As New RasterMathCellCalc(AddressOf hisytmpCellCalc)
-                RasterMath(g_pRunoffAFRaster, pQPRaster, Nothing, Nothing, Nothing, pHISYTempRaster, hisytmpcalc)
-                'strExpression = "Pow(([runoff_af] * [qp]), " & _dblMUSLEExp & ")"
-
-                'END STEP 16c: ------------------------------------------------------------------------------------------------------
-            End If
-
-           
-
-
-            modProgDialog.ProgDialog("Sediment Yield...", strTitle, 0, 30, 27, 0)
-            If modProgDialog.g_boolCancel Then
-                'STEP 16d: ---------------------------------------------------------------------------------------------
-                'Sediment Yield: Note m_dblMUSLEVal now in for universal
-                Dim hisycalc As New RasterMathCellCalc(AddressOf hisyCellCalc)
-                RasterMath(pCFactorRaster, g_KFactorRaster, g_pLSRaster, pHISYTempRaster, Nothing, pHISYRaster, hisycalc)
-                'strExpression = _dblMUSLEVal & " * ([cfactor] * [kfactor] * [lsfactor] * [temp9])"
-
-                'END STEP 16b: ----------------------------------------------------------------------------------------
-            End If
-
-
-            modProgDialog.ProgDialog("Converting tons to milligrams...", strTitle, 0, 27, 21, 0)
-            If modProgDialog.g_boolCancel Then
-                Dim hisymgrcalc As New RasterMathCellCalc(AddressOf hisymgrCellCalc)
-                RasterMath(pHISYRaster, Nothing, Nothing, Nothing, Nothing, pHISYMGRaster, hisymgrcalc)
-                'strExpression = "[sy] * 907.184740"
-                'END STEP 17b: ----------------------------------------------------------------------------------------
-            End If
 
             Dim pHISYMGRasterNoNull As MapWinGIS.Grid = Nothing
             Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
             RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, hisymgrnonullcalc)
 
-            
             If g_booLocalEffects Then
 
                 modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 27, 27, 0)
@@ -1110,7 +559,7 @@ Module modMUSLE
 
             End If
 
-            
+
             CalcMUSLE = True
 
             modProgDialog.KillDialog()
@@ -1136,34 +585,34 @@ Module modMUSLE
 
 
 #Region "Raster Math"
-    Private Function weightCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Con([flowdir] eq 2, 1.41421, " & "Con([flowdir] eq 8, 1.41421, " & "Con([flowdir] eq 32, 1.41421, " & "Con([flowdir] eq 128, 1.41421, 1.0))))"
-        'Con(
-        '  [flowdir] eq 2, 
-        '  1.41421, 
-        '  Con(
-        '    [flowdir] eq 8
-        '    1.41421
-        '    Con(
-        '      [flowdir] eq 32
-        '      1.41421
-        '      Con(
-        '        [flowdir] eq 128
-        '        1.41421
-        '        1.0))))
-        'TODO: add the taudem equivalents
-        If Input1 = 2 Or Input1 = 8 Or Input1 = 32 Or Input1 = 128 Then
-            Return 1.41421
-        Else
-            Return 1
-        End If
+    'Private Function weightCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "Con([flowdir] eq 2, 1.41421, " & "Con([flowdir] eq 8, 1.41421, " & "Con([flowdir] eq 32, 1.41421, " & "Con([flowdir] eq 128, 1.41421, 1.0))))"
+    '    'Con(
+    '    '  [flowdir] eq 2, 
+    '    '  1.41421, 
+    '    '  Con(
+    '    '    [flowdir] eq 8
+    '    '    1.41421
+    '    '    Con(
+    '    '      [flowdir] eq 32
+    '    '      1.41421
+    '    '      Con(
+    '    '        [flowdir] eq 128
+    '    '        1.41421
+    '    '        1.0))))
+    '    'TODO: add the taudem equivalents
+    '    If Input1 = 2 Or Input1 = 8 Or Input1 = 32 Or Input1 = 128 Then
+    '        Return 1.41421
+    '    Else
+    '        Return 1
+    '    End If
 
-    End Function
+    'End Function
 
-    Private Function wslengthfixCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'Because taudem's flowlength is based on cell size, need to divide by cell size to put it back to where it should be.
-        Return Input1 / g_dblCellSize
-    End Function
+    'Private Function wslengthfixCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'Because taudem's flowlength is based on cell size, need to divide by cell size to put it back to where it should be.
+    '    Return Input1 / g_dblCellSize
+    'End Function
 
     Private Function wslengthCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([cell_wslength] * 3.28084)"
@@ -1179,80 +628,80 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function tmp1lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow([cell_wslngft], 0.8)"
-        Return Math.Pow(Input1, 0.8)
-    End Function
+    'Private Function tmp1lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "Pow([cell_wslngft], 0.8)"
+    '    Return Math.Pow(Input1, 0.8)
+    'End Function
 
-    Private Function tmp2lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "(1000 / [scsgrid100]) - 9"
-        If Input1 = 0 Then
-            Return OutNull
-        Else
-            Return (1000 / Input1) - 9
-        End If
-    End Function
+    'Private Function tmp2lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "(1000 / [scsgrid100]) - 9"
+    '    If Input1 = 0 Then
+    '        Return OutNull
+    '    Else
+    '        Return (1000 / Input1) - 9
+    '    End If
+    'End Function
 
-    Private Function tmp3lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow([temp4], 0.7)"
-        Return Math.Pow(Input1, 0.7)
-    End Function
+    'Private Function tmp3lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "Pow([temp4], 0.7)"
+    '    Return Math.Pow(Input1, 0.7)
+    'End Function
 
-    Private Function tmp4lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow([modslope], 0.5)"
-        Return Math.Pow(Input1, 0.5)
-    End Function
+    'Private Function tmp4lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "Pow([modslope], 0.5)"
+    '    Return Math.Pow(Input1, 0.5)
+    'End Function
 
-    Private Function lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "([temp3] * [temp5]) / (1900 * [temp6])"
-        If Input3 = 0 Then
-            Return OutNull
-        Else
-            Return (Input1 * Input2) / (1900 * Input3)
-        End If
-    End Function
+    'Private Function lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "([temp3] * [temp5]) / (1900 * [temp6])"
+    '    If Input3 = 0 Then
+    '        Return OutNull
+    '    Else
+    '        Return (Input1 * Input2) / (1900 * Input3)
+    '    End If
+    'End Function
 
-    Private Function tocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "[lag] / 0.6"
-        Return Input1 / 0.6
-    End Function
+    'Private Function tocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "[lag] / 0.6"
+    '    Return Input1 / 0.6
+    'End Function
 
-    Private Function toctmpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Con([toc] lt 0.1, 0.1, [toc])"
-        If Input1 < 0.1 Then
-            Return 0.1
-        Else
-            Return Input1
-        End If
-    End Function
+    'Private Function toctmpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "Con([toc] lt 0.1, 0.1, [toc])"
+    '    If Input1 < 0.1 Then
+    '        Return 0.1
+    '    Else
+    '        Return Input1
+    '    End If
+    'End Function
 
-    Private Function modtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Con([temp7] gt 10, 10, [temp7])"
-        If Input1 > 10 Then
-            Return 10
-        Else
-            Return Input1
-        End If
-    End Function
+    'Private Function modtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "Con([temp7] gt 10, 10, [temp7])"
+    '    If Input1 > 10 Then
+    '        Return 10
+    '    Else
+    '        Return Input1
+    '    End If
+    'End Function
 
-    Private Function abprecipCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "[abstract] / [rain]"
-        If Input2 = 0 Then
-            Return OutNull
-        Else
-            Return Input1 / Input2
-        End If
-    End Function
+    'Private Function abprecipCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "[abstract] / [rain]"
+    '    If Input2 = 0 Then
+    '        Return OutNull
+    '    Else
+    '        Return Input1 / Input2
+    '    End If
+    'End Function
 
-    Private Function logtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "log10([modtoc])"
-        Return Math.Log10(Input1)
-    End Function
+    'Private Function logtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "log10([modtoc])"
+    '    Return Math.Log10(Input1)
+    'End Function
 
-    Private Function tmplogtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow([logtoc], 2)"
-        Return Math.Pow(Input1, 2)
-    End Function
+    'Private Function tmplogtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    '    'strExpression = "Pow([logtoc], 2)"
+    '    Return Math.Pow(Input1, 2)
+    'End Function
 
     Private Function c0CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.30550," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 2.23537," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 2.18219," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 2.10624," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.00303," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 1.87733," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 1.76312, 1.67889)))))))"
@@ -1664,53 +1113,176 @@ Module modMUSLE
         End If
     End Function
 
-    Private Function logquCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "[czero] + ([cone] * [logtoc]) + ([ctwo] * [temp8])"
-        Return Input1 + (Input2 * Input3) + (Input4 * Input5)
+
+    'pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster
+    Private Function AllMUSLECellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        Dim tmp1val, tmp2val, tmp3val, tmp4val, lagval, tocval, toctmpval, modtocval, logtocval, _
+             logtoctmpval, RetentionVal, AbstractVal, abprecval, c0calc, c1calc, c2calc, logquval As Single
+
+        'strExpression = "Pow([cell_wslngft], 0.8)"
+        tmp1val = Math.Pow(Input1, 0.8)
+
+        'strExpression = "(1000 / [scsgrid100]) - 9"
+        If Input2 = 0 Then
+            Return OutNull
+        Else
+            tmp2val = (1000 / Input2) - 9
+
+            'strExpression = "Pow([temp4], 0.7)"
+            tmp3val = Math.Pow(tmp2val, 0.7)
+
+            'strExpression = "Pow([modslope], 0.5)"
+            tmp4val = Math.Pow(Input3, 0.5)
+
+            'strExpression = "([temp3] * [temp5]) / (1900 * [temp6])"
+            If tmp4val = 0 Then
+                Return OutNull
+            Else
+                lagval = (tmp1val * tmp3val) / (1900 * tmp4val)
+                'strExpression = "[lag] / 0.6"
+                tocval = lagval / 0.6
+
+                'strExpression = "Con([toc] lt 0.1, 0.1, [toc])"
+                If tocval < 0.1 Then
+                    toctmpval = 0.1
+                Else
+                    toctmpval = tocval
+                End If
+
+                'strExpression = "Con([temp7] gt 10, 10, [temp7])"
+                If toctmpval > 10 Then
+                    modtocval = 10
+                Else
+                    modtocval = toctmpval
+                End If
+
+                'strExpression = "log10([modtoc])"
+                logtocval = Math.Log10(modtocval)
+
+                'strExpression = "Pow([logtoc], 2)"
+                logtoctmpval = Math.Pow(logtocval, 2)
+
+                If Input2 = 0 Then
+                    AbstractVal = OutNull
+                Else
+                    If g_intRunoffPrecipType = 0 Then
+                        RetentionVal = ((1000.0 / Input2) - 10) * g_intRainingDays
+                    Else
+                        RetentionVal = ((1000.0 / Input2) - 10)
+                    End If
+
+                    AbstractVal = 0.2 * RetentionVal
+                End If
+
+
+                'strExpression = "[abstract] / [rain]"
+                If Input4 = 0 Then
+                    Return OutNull
+                Else
+                    abprecval = AbstractVal / Input4
+                    If abprecval = OutNull Then
+                        c0calc = OutNull
+                        c1calc = OutNull
+                        c2calc = OutNull
+                    Else
+                        Select Case g_intPrecipType
+                            Case 0
+                                c0calc = c0CellCalc0(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 1
+                                c0calc = c0CellCalc1(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 2
+                                c0calc = c0CellCalc2(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 3
+                                c0calc = c0CellCalc3(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                        End Select
+
+                        Select Case g_intPrecipType
+                            Case 0
+                                c1calc = c1CellCalc0(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 1
+                                c1calc = c1CellCalc1(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 2
+                                c1calc = c1CellCalc2(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 3
+                                c1calc = c1CellCalc3(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                        End Select
+
+                        Select Case g_intPrecipType
+                            Case 0
+                                c2calc = c2CellCalc0(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 1
+                                c2calc = c2CellCalc1(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 2
+                                c2calc = c2CellCalc2(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                            Case 3
+                                c2calc = c2CellCalc3(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                        End Select
+                    End If
+
+                    'strExpression = "[czero] + ([cone] * [logtoc]) + ([ctwo] * [temp8])"
+                    logquval = c0calc + (c1calc * logtocval) + (c2calc * logtoctmpval)
+
+                    'strExpression = "Pow(10, [logqu])"
+                    Return Math.Pow(10, logquval)
+                End If
+            End If
+        End If
     End Function
 
-    Private Function quCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow(10, [logqu])"
-        Return Math.Pow(10, Input1)
-    End Function
+    'quval   g_LandCoverRaster    g_pDEMRaster  g_pMetRunoffRaster  g_KFactorRaster, g_pLSRaster
+    Private Function AllMUSLECellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        Dim pondval, qpval, sqmival, afval, runoff_inches As Single
 
-    Private Function pondfactCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         For i As Integer = 0 To _pondpicks.Length - 1
-            If Input1 = i + 1 Then
-                Return _pondpicks(i)
+            If Input2 = i + 1 Then
+                pondval = _pondpicks(i)
+                Exit For
             End If
         Next
-    End Function
 
-    Private Function qpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        If Input3 > 0 Then
+            'sq meters to square miles area
+            sqmival = ((g_dblCellSize * g_dblCellSize) * 0.000001 * 0.386102)
+            'cubic meters to cubic inches to inches
+            runoff_inches = (Input4 / 0.016387064) / (g_dblCellSize * g_dblCellSize * 1550.0031)
+        Else
+            sqmival = 0
+            runoff_inches = 0
+        End If
+
+        
         'strExpression = "[qu] * [cellarea_sqmi] * [runoff_in] * [pondfact]"
-        Return Input1 * Input2 * Input3 * Input4
+        qpval = Input1 * sqmival * runoff_inches * pondval
+
+        'cubic meters to cubic inches to cubic feet to acresfeet
+        afval = (Input4 / 0.016387064) * 0.0005787 * 0.000022957
+
+        'strExpression = "Pow(([runoff_af] * [qp]), " & _dblMUSLEExp & ")"
+        Return Math.Pow((afval * qpval), _dblMUSLEExp)
+
     End Function
 
-    Private Function cfactCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    'hisytmpval   g_LandCoverRaster   g_KFactorRaster, g_pLSRaster
+    Private Function AllMUSLECellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        Dim cfactval, hisyval As Single
+
         For i As Integer = 0 To _picks.Length - 1
-            If Input1 = i + 1 Then
-                Return _picks(i)
+            If Input2 = i + 1 Then
+                cfactval = _picks(i)
+                Exit For
             End If
         Next
-    End Function
 
-    Private Function hisytmpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Pow(([runoff_af] * [qp]), " & _dblMUSLEExp & ")"
-        Return Math.Pow((Input1 * Input2), _dblMUSLEExp)
-    End Function
-
-    Private Function hisyCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = _dblMUSLEVal & " * ([cfactor] * [kfactor] * [lsfactor] * [temp9])"
-        Return _dblMUSLEExp * (Input1 * Input2 * Input3 * Input4)
-    End Function
+        hisyval = _dblMUSLEVal * (cfactval * Input3 * Input4 * Input1)
 
-    Private Function hisymgrCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "[sy] * 907.184740"
-        Return Input1 * 907.18474
+        Return hisyval * 907.18474
+
+
     End Function
 
-    Private Function hisymgrnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+    Function hisymgrnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         If Input1 <> Input1Null Then
             Return Input1
         Else
@@ -1719,8 +1291,6 @@ Module modMUSLE
             End If
         End If
     End Function
-
-
 #End Region
 
 End Module

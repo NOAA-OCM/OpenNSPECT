@@ -130,6 +130,7 @@
         '
         Me.dgvWaterQuality.AllowUserToAddRows = False
         Me.dgvWaterQuality.AllowUserToDeleteRows = False
+        Me.dgvWaterQuality.AllowUserToResizeColumns = False
         Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Pollutant, Me.Threshold})
         Me.dgvWaterQuality.Location = New System.Drawing.Point(22, 66)
@@ -142,12 +143,14 @@
         Me.Pollutant.HeaderText = "Pollutant"
         Me.Pollutant.Name = "Pollutant"
         Me.Pollutant.ReadOnly = True
+        Me.Pollutant.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Pollutant.Width = 185
         '
         'Threshold
         '
         Me.Threshold.HeaderText = "Threshold"
         Me.Threshold.Name = "Threshold"
+        Me.Threshold.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Threshold.Width = 130
         '
         'frmAddWQStd
@@ -182,5 +185,5 @@
     Friend WithEvents dgvWaterQuality As System.Windows.Forms.DataGridView
     Friend WithEvents Pollutant As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Threshold As System.Windows.Forms.DataGridViewTextBoxColumn
-#End Region 
+#End Region
 End Class
