@@ -253,42 +253,8 @@ Module modPollutantCalcs
                     End If
                 Next
 
-                'For row As Integer = 0 To mwTable.NumRows - 1
-                '    booValueFound = False
-                '    While dataType.Read()
-                '        If dataType("Value") = mwTable.CellValue(FieldIndex, row) Then
-
-                '            booValueFound = True
-
-                '            If strCon = "" Then
-                '                strCon = "Con(([nu_lulc] eq " & mwTable.CellValue(FieldIndex, row) & "), " & dataType("CoeffType") & ", "
-                '            Else
-                '                strCon = strCon & "Con(([nu_lulc] eq " & mwTable.CellValue(FieldIndex, row) & "), " & dataType("CoeffType") & ", "
-                '            End If
-
-                '            If strParens = "" Then
-                '                strParens = "-9999)"
-                '            Else
-                '                strParens = strParens & ")"
-                '            End If
-
-                '            Exit While
-                '        Else
-                '            booValueFound = False
-                '        End If
-                '    End While
-
-                '    If booValueFound = False Then
-                '        MsgBox("Values in table LCClass table not equal to values in landclass dataset.")
-                '        ConstructPickStatment = ""
-                '        Exit Function
-                '    Else
-                '        i = 0
-                '    End If
-                'Next
-                'dataType.Close()
+                mwTable.Close()
             End If
-
             'strCompleteCon = strCon & strParens
             'ConstructPickStatment = strCompleteCon
             ConstructPickStatment = strpick
