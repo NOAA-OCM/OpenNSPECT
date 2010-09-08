@@ -1,4 +1,5 @@
 Imports System.Data.OleDb
+Imports System.Collections.Generic
 Module modRunoff
     ' *************************************************************************************
     ' *  Perot Systems Government Services
@@ -174,14 +175,14 @@ Module modRunoff
 
                     TableExist = True
                 Else
-                    TableExist = False
+                    TableExist = BuildTable(pLCRaster, tablepath)
                 End If
             Else
                 tablepath = IO.Path.ChangeExtension(lcPath, ".dbf")
                 If IO.File.Exists(tablepath) Then
                     TableExist = True
                 Else
-                    TableExist = False
+                    TableExist = BuildTable(pLCRaster, tablepath)
                 End If
             End If
 
@@ -269,6 +270,76 @@ Module modRunoff
         Catch ex As Exception
             MsgBox(Err.Number & ": " & Err.Description & " " & "ConstructPickStatemnt")
         End Try
+    End Function
+
+    Private Function BuildTable(ByRef pLCRaster As MapWinGIS.Grid, ByVal tablepath As String) As Boolean
+        Dim mwTable As New MapWinGIS.Table
+
+        Dim result As Boolean = mwTable.CreateNew(tablepath)
+        mwTable.StartEditingTable()
+        Dim valfield As New MapWinGIS.Field()
+        valfield.Name = "VALUE"
+        valfield.Type = MapWinGIS.FieldType.INTEGER_FIELD
+        mwTable.EditInsertField(valfield, mwTable.NumFields)
+
+        Dim countfield As New MapWinGIS.Field()
+        countfield.Name = "COUNT"
+        countfield.Type = MapWinGIS.FieldType.INTEGER_FIELD
+        mwTable.EditInsertField(countfield, mwTable.NumFields)
+
+        Dim descfield As New MapWinGIS.Field()
+        descfield.Name = "NAME"
+        descfield.Type = MapWinGIS.FieldType.STRING_FIELD
+        descfield.Width = 100
+        mwTable.EditInsertField(descfield, mwTable.NumFields)
+
+        Dim vallist As New List(Of Integer)
+        Dim countlist As New List(Of Integer)
+
+        Dim head As MapWinGIS.GridHeader = pLCRaster.Header
+        Dim nr As Integer = head.NumberRows - 1
+        Dim nc As Integer = head.NumberCols - 1
+        Dim nodata As Single = head.NodataValue
+        Dim rowvals(nc) As Single
+        Dim itemfound As Boolean
+        For row As Integer = 0 To nr
+            pLCRaster.GetRow(row, rowvals(0))
+            For col As Integer = 0 To nc
+                If rowvals(col) <> nodata Then
+                    itemfound = False
+                    For i As Integer = 0 To vallist.Count - 1
+                        If vallist(i) = rowvals(col) Then
+                            itemfound = True
+                            countlist(i) = countlist(i) + 1
+                            Exit For
+                        ElseIf vallist(i) > rowvals(col) Then
+                            itemfound = True
+                            vallist.Insert(i, rowvals(col))
+                            countlist.Insert(i, 1)
+                            Exit For
+                        End If
+                    Next
+                    If Not itemfound Then
+                        vallist.Add(rowvals(col))
+                        countlist.Add(1)
+                    End If
+                End If
+            Next
+        Next
+        Dim rowidx As Integer
+        For i As Integer = 0 To vallist.Count - 1
+            rowidx = mwTable.NumRows
+            mwTable.EditInsertRow(rowidx)
+            mwTable.EditCellValue(0, rowidx, vallist(i))
+            mwTable.EditCellValue(1, rowidx, countlist(i))
+        Next
+        mwTable.StopEditingTable(True)
+        mwTable.Close()
+        If mwTable.NumRows > 0 Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     Private Function CreateMetadata(ByRef cmdLandClass As OleDbCommand, ByRef strLandClass As String, ByRef booLocal As Boolean) As String

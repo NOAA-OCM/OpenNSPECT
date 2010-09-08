@@ -42,7 +42,7 @@ Module modMainRun
 
     Public g_pSelectedPolyClip As MapWinGIS.Shape
 
-    Public g_pGroupLayer As Integer
+    Public g_pGroupLayer As Integer = -1
 
 
     Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByRef pWShedlayer As MapWindow.Interfaces.Layer = Nothing)

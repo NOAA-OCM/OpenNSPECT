@@ -6,6 +6,8 @@ Module modUtil
     Public g_nspectDocPath As String
     Public g_strWorkspace As String
 
+    Public g_CurrentProjectPath As String
+
     Public g_cb As frmProjectSetup
 
     Public g_strSelectedExportPath As String = ""
@@ -649,46 +651,57 @@ Module modUtil
 
             If Not g_pSCS100Raster Is Nothing Then
                 g_pSCS100Raster.Close()
+                g_pSCS100Raster = Nothing
             End If
 
             If Not g_pMetRunoffRaster Is Nothing Then
                 g_pMetRunoffRaster.Close()
+                g_pMetRunoffRaster = Nothing
             End If
 
             If Not g_pRunoffRaster Is Nothing Then
                 g_pRunoffRaster.Close()
+                g_pRunoffRaster = Nothing
             End If
 
             If Not g_pDEMRaster Is Nothing Then
                 g_pDEMRaster.Close()
+                g_pDEMRaster = Nothing
             End If
 
             If Not g_pFlowAccRaster Is Nothing Then
                 g_pFlowAccRaster.Close()
+                g_pFlowAccRaster = Nothing
             End If
 
             If Not g_pFlowDirRaster Is Nothing Then
                 g_pFlowDirRaster.Close()
+                g_pFlowDirRaster = Nothing
             End If
 
             If Not g_pLSRaster Is Nothing Then
                 g_pLSRaster.Close()
+                g_pLSRaster = Nothing
             End If
 
             If Not g_pWaterShedFeatClass Is Nothing Then
                 g_pWaterShedFeatClass.Close()
+                g_pWaterShedFeatClass = Nothing
             End If
 
             If Not g_KFactorRaster Is Nothing Then
                 g_KFactorRaster.Close()
+                g_KFactorRaster = Nothing
             End If
 
             If Not g_pPrecipRaster Is Nothing Then
                 g_pPrecipRaster.Close()
+                g_pPrecipRaster = Nothing
             End If
 
             If Not g_LandCoverRaster Is Nothing Then
                 g_LandCoverRaster.Close()
+                g_LandCoverRaster = Nothing
             End If
 
             If Not g_pSelectedPolyClip Is Nothing Then

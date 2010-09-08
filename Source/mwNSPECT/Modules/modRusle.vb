@@ -229,6 +229,7 @@ Module modRusle
                     End If
 
                 Next
+                mwTable.Close()
             End If
 
             'strCompleteCon = strCon & strParens

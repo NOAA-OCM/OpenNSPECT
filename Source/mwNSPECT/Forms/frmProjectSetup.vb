@@ -130,6 +130,10 @@ Friend Class frmProjectSetup
     End Sub
 
 
+    Private Sub frmProjectSetup_Shown(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Shown
+        LoadPreviousXMLFile()
+    End Sub
+
     Private Sub txtProjectName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProjectName.TextChanged
         Me.Text = txtProjectName.Text
     End Sub
@@ -402,6 +406,20 @@ Friend Class frmProjectSetup
     End Sub
 
 
+    Private Sub btnOpenRainfallFactorGrid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenRainfallFactorGrid.Click
+        Dim g As New MapWinGIS.Grid
+        Dim dlgOpen As New Windows.Forms.OpenFileDialog
+        dlgOpen.Title = "Choose Rainfall Factor GRID"
+        dlgOpen.Filter = g.CdlgFilter
+        If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
+            Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(dlgOpen.FileName)
+            cboRainGrid.Items.Add(lyr.Name)
+            cboRainGrid.SelectedItem = lyr.Name
+        End If
+    End Sub
+
+
+
     Private Sub dgvPollutants_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvPollutants.DataError
         MsgBox("Please enter a valid value in row " + (e.RowIndex + 1).ToString + " and column " + (e.ColumnIndex + 1).ToString + ".")
     End Sub
@@ -576,6 +594,10 @@ Friend Class frmProjectSetup
             If Not SaveXMLFile() Then
                 System.Windows.Forms.Cursor.Current = Cursors.Default
                 Exit Sub
+            End If
+
+            If g_pGroupLayer <> -1 Then
+                g_MapWin.Layers.Groups.Remove(g_pGroupLayer)
             End If
 
             g_pGroupLayer = g_MapWin.Layers.Groups.Add(_XMLPrjParams.strProjectName)
@@ -769,6 +791,7 @@ Friend Class frmProjectSetup
 
     End Sub
 
+
 #End Region
 
 #Region "Helper Functions"
@@ -832,6 +855,25 @@ Friend Class frmProjectSetup
 
         If Len(dlgXMLOpen.FileName) > 0 Then
             _strFileName = Trim(dlgXMLOpen.FileName)
+            g_CurrentProjectPath = _strFileName
+            _XMLPrjParams.XML = _strFileName
+            FillForm()
+        Else
+            Exit Sub
+        End If
+
+        'Pop this string with the incoming name, if they change, we'll prompt to 'save as'.
+        _strOpenFileName = txtProjectName.Text
+
+
+        'Exit Sub
+        'ErrorHandler:
+        '  HandleError False, "LoadXMLFile " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND
+    End Sub
+
+    Private Sub LoadPreviousXMLFile()
+        If Len(g_CurrentProjectPath) > 0 Then
+            _strFileName = Trim(g_CurrentProjectPath)
             _XMLPrjParams.XML = _strFileName
             FillForm()
         Else
@@ -1821,15 +1863,4 @@ Friend Class frmProjectSetup
     End Sub
 #End Region
 
-    Private Sub btnOpenRainfallFactorGrid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenRainfallFactorGrid.Click
-        Dim g As New MapWinGIS.Grid
-        Dim dlgOpen As New Windows.Forms.OpenFileDialog
-        dlgOpen.Title = "Choose Rainfall Factor GRID"
-        dlgOpen.Filter = g.CdlgFilter
-        If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
-            Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(dlgOpen.FileName)
-            cboRainGrid.Items.Add(lyr.Name)
-            cboRainGrid.SelectedItem = lyr.Name
-        End If
-    End Sub
 End Class

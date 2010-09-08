@@ -75,6 +75,12 @@
         Me.SSTab1 = New System.Windows.Forms.TabControl
         Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage
         Me.dgvPollutants = New System.Windows.Forms.DataGridView
+        Me.PollApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn
+        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.TypeDef = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage
         Me.lblErodFactor = New System.Windows.Forms.Label
         Me.lblKFactor = New System.Windows.Forms.Label
@@ -94,6 +100,9 @@
         Me._SSTab1_TabPage2 = New System.Windows.Forms.TabPage
         Me.Label1 = New System.Windows.Forms.Label
         Me.dgvLandUse = New System.Windows.Forms.DataGridView
+        Me.LUApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.LUScenario = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.LUScenarioXML = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me._SSTab1_TabPage3 = New System.Windows.Forms.TabPage
         Me.lblManageNote = New System.Windows.Forms.Label
         Me.dgvManagementScen = New System.Windows.Forms.DataGridView
@@ -117,15 +126,6 @@
         Me.AppendRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.DeleteCurrentRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.PollApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.TypeDef = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.LUApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.LUScenario = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.LUScenarioXML = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.MainMenu1.SuspendLayout()
         Me.Frame6.SuspendLayout()
         Me.Frame5.SuspendLayout()
@@ -778,6 +778,52 @@
         Me.dgvPollutants.Size = New System.Drawing.Size(600, 168)
         Me.dgvPollutants.TabIndex = 98
         '
+        'PollApply
+        '
+        Me.PollApply.HeaderText = "Apply"
+        Me.PollApply.Name = "PollApply"
+        Me.PollApply.Width = 53
+        '
+        'PollutantName
+        '
+        Me.PollutantName.HeaderText = "Pollutant Name"
+        Me.PollutantName.Name = "PollutantName"
+        Me.PollutantName.ReadOnly = True
+        Me.PollutantName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.PollutantName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.PollutantName.Width = 180
+        '
+        'CoefSet
+        '
+        Me.CoefSet.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.CoefSet.DisplayStyleForCurrentCellOnly = True
+        Me.CoefSet.HeaderText = "Coefficient Set"
+        Me.CoefSet.Name = "CoefSet"
+        Me.CoefSet.Width = 180
+        '
+        'WhichCoeff
+        '
+        Me.WhichCoeff.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.WhichCoeff.DisplayStyleForCurrentCellOnly = True
+        Me.WhichCoeff.HeaderText = "Which Coefficient"
+        Me.WhichCoeff.Items.AddRange(New Object() {"Type 1", "Type 2", "Type 3", "Type 4"})
+        Me.WhichCoeff.Name = "WhichCoeff"
+        Me.WhichCoeff.Width = 120
+        '
+        'Threshold
+        '
+        Me.Threshold.HeaderText = "Threshold"
+        Me.Threshold.Name = "Threshold"
+        Me.Threshold.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.Threshold.Visible = False
+        '
+        'TypeDef
+        '
+        Me.TypeDef.HeaderText = "TypeDef"
+        Me.TypeDef.Name = "TypeDef"
+        Me.TypeDef.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.TypeDef.Visible = False
+        '
         '_SSTab1_TabPage1
         '
         Me._SSTab1_TabPage1.Controls.Add(Me.lblErodFactor)
@@ -1048,6 +1094,27 @@
         Me.dgvLandUse.Size = New System.Drawing.Size(604, 145)
         Me.dgvLandUse.TabIndex = 0
         '
+        'LUApply
+        '
+        Me.LUApply.HeaderText = "Apply"
+        Me.LUApply.Name = "LUApply"
+        Me.LUApply.Width = 53
+        '
+        'LUScenario
+        '
+        Me.LUScenario.HeaderText = "Land Use Scenario"
+        Me.LUScenario.Name = "LUScenario"
+        Me.LUScenario.ReadOnly = True
+        Me.LUScenario.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.LUScenario.Width = 250
+        '
+        'LUScenarioXML
+        '
+        Me.LUScenarioXML.HeaderText = "LUScenarioXML"
+        Me.LUScenarioXML.Name = "LUScenarioXML"
+        Me.LUScenarioXML.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.LUScenarioXML.Visible = False
+        '
         '_SSTab1_TabPage3
         '
         Me._SSTab1_TabPage3.Controls.Add(Me.lblManageNote)
@@ -1290,73 +1357,6 @@
         Me.DeleteCurrentRowToolStripMenuItem.Name = "DeleteCurrentRowToolStripMenuItem"
         Me.DeleteCurrentRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
         Me.DeleteCurrentRowToolStripMenuItem.Text = "Delete Current Row"
-        '
-        'PollApply
-        '
-        Me.PollApply.HeaderText = "Apply"
-        Me.PollApply.Name = "PollApply"
-        Me.PollApply.Width = 53
-        '
-        'PollutantName
-        '
-        Me.PollutantName.HeaderText = "Pollutant Name"
-        Me.PollutantName.Name = "PollutantName"
-        Me.PollutantName.ReadOnly = True
-        Me.PollutantName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.PollutantName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.PollutantName.Width = 180
-        '
-        'CoefSet
-        '
-        Me.CoefSet.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.CoefSet.DisplayStyleForCurrentCellOnly = True
-        Me.CoefSet.HeaderText = "Coefficient Set"
-        Me.CoefSet.Name = "CoefSet"
-        Me.CoefSet.Width = 180
-        '
-        'WhichCoeff
-        '
-        Me.WhichCoeff.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.WhichCoeff.DisplayStyleForCurrentCellOnly = True
-        Me.WhichCoeff.HeaderText = "Which Coefficient"
-        Me.WhichCoeff.Items.AddRange(New Object() {"Type 1", "Type 2", "Type 3", "Type 4"})
-        Me.WhichCoeff.Name = "WhichCoeff"
-        Me.WhichCoeff.Width = 120
-        '
-        'Threshold
-        '
-        Me.Threshold.HeaderText = "Threshold"
-        Me.Threshold.Name = "Threshold"
-        Me.Threshold.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.Threshold.Visible = False
-        '
-        'TypeDef
-        '
-        Me.TypeDef.HeaderText = "TypeDef"
-        Me.TypeDef.Name = "TypeDef"
-        Me.TypeDef.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.TypeDef.Visible = False
-        '
-        'LUApply
-        '
-        Me.LUApply.HeaderText = "Apply"
-        Me.LUApply.Name = "LUApply"
-        Me.LUApply.Width = 53
-        '
-        'LUScenario
-        '
-        Me.LUScenario.HeaderText = "Land Use Scenario"
-        Me.LUScenario.Name = "LUScenario"
-        Me.LUScenario.ReadOnly = True
-        Me.LUScenario.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.LUScenario.Width = 250
-        '
-        'LUScenarioXML
-        '
-        Me.LUScenarioXML.HeaderText = "LUScenarioXML"
-        Me.LUScenarioXML.Name = "LUScenarioXML"
-        Me.LUScenarioXML.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.LUScenarioXML.Visible = False
         '
         'frmProjectSetup
         '
