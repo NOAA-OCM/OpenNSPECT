@@ -1,0 +1,53 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+OpenNSPECT
+</name>
+</assembly>
+<members>
+<member name="P:OpenNSPECT.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:OpenNSPECT.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:OpenNSPECT.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:OpenNSPECT.mwNSPECT.Initialize(MapWindow.Interfaces.IMapWin,System.Int32)">
+	<summary>
+ Event triggered on execution of the plugin
+ </summary>
+	<param name="MapWin"></param>
+	<param name="ParentHandle"></param>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.Terminate">
+	<summary>
+ Event triggered on termination of the plugin
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ItemClicked(System.String,System.Boolean@)">
+	<summary>
+ Triggered when a menu or toolbar item is clicked
+ </summary>
+	<param name="ItemName"></param>
+	<param name="Handled"></param>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.addMenus">
+	<summary>
+ Sub used to add all the menus used by the mwNSPECT plugin
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.addToolbars">
+	<summary>
+ Sub used to add all toolbars and buttons used by the mwNSPECT plugin
+ </summary>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

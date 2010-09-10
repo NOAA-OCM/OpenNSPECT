@@ -597,7 +597,14 @@ Friend Class frmProjectSetup
             End If
 
             If g_pGroupLayer <> -1 Then
-                g_MapWin.Layers.Groups.Remove(g_pGroupLayer)
+                If g_MapWin.Layers.Groups.ItemByHandle(g_pGroupLayer).Text = _XMLPrjParams.strProjectName Then
+                    Dim res As MsgBoxResult = MsgBox("Would you like to overwrite the last results group named " + _XMLPrjParams.strProjectName + "?", MsgBoxStyle.YesNoCancel, "Replace Results?")
+                    If res = MsgBoxResult.Yes Then
+                        g_MapWin.Layers.Groups.Remove(g_pGroupLayer)
+                    ElseIf res = MsgBoxResult.Cancel Then
+                        Exit Sub
+                    End If
+                End If
             End If
 
             g_pGroupLayer = g_MapWin.Layers.Groups.Add(_XMLPrjParams.strProjectName)
