@@ -22,9 +22,11 @@ Partial Class frmProgressDialog
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Me.lblDesc = New System.Windows.Forms.Label
         Me.pbMain = New System.Windows.Forms.ProgressBar
         Me.btnCancel = New System.Windows.Forms.Button
+        Me.tmrEventDriver = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'lblDesc
@@ -57,6 +59,10 @@ Partial Class frmProgressDialog
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
+        'tmrEventDriver
+        '
+        Me.tmrEventDriver.Interval = 2000
+        '
         'frmProgressDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -77,4 +83,5 @@ Partial Class frmProgressDialog
     Friend WithEvents lblDesc As System.Windows.Forms.Label
     Friend WithEvents pbMain As System.Windows.Forms.ProgressBar
     Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents tmrEventDriver As System.Windows.Forms.Timer
 End Class

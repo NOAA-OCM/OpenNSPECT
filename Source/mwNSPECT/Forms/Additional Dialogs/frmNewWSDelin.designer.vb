@@ -49,15 +49,15 @@
         Me.cboDEMUnits = New System.Windows.Forms.ComboBox
         Me.txtDEMFile = New System.Windows.Forms.TextBox
         Me.cboSubWSSize = New System.Windows.Forms.ComboBox
+        Me._Label1_3 = New System.Windows.Forms.Label
+        Me._Label1_2 = New System.Windows.Forms.Label
+        Me._Label1_12 = New System.Windows.Forms.Label
+        Me._Label1_1 = New System.Windows.Forms.Label
         Me.frmAdvanced = New System.Windows.Forms.GroupBox
         Me.cmdOptions = New System.Windows.Forms.Button
         Me.cboStreamLayer = New System.Windows.Forms.ComboBox
         Me.chkStreamAgree = New System.Windows.Forms.CheckBox
         Me._lblStream_0 = New System.Windows.Forms.Label
-        Me._Label1_3 = New System.Windows.Forms.Label
-        Me._Label1_2 = New System.Windows.Forms.Label
-        Me._Label1_12 = New System.Windows.Forms.Label
-        Me._Label1_1 = New System.Windows.Forms.Label
         Me.cmdCreate = New System.Windows.Forms.Button
         Me.cmdQuit = New System.Windows.Forms.Button
         Me.frmMain.SuspendLayout()
@@ -67,10 +67,10 @@
         'frmMain
         '
         Me.frmMain.BackColor = System.Drawing.SystemColors.Control
+        Me.frmMain.Controls.Add(Me.cboDEMUnits)
         Me.frmMain.Controls.Add(Me.chkHydroCorr)
         Me.frmMain.Controls.Add(Me.cmdBrowseDEMFile)
         Me.frmMain.Controls.Add(Me.txtWSDelinName)
-        Me.frmMain.Controls.Add(Me.cboDEMUnits)
         Me.frmMain.Controls.Add(Me.txtDEMFile)
         Me.frmMain.Controls.Add(Me.cboSubWSSize)
         Me.frmMain.Controls.Add(Me._Label1_3)
@@ -94,10 +94,10 @@
         Me.chkHydroCorr.Cursor = System.Windows.Forms.Cursors.Default
         Me.chkHydroCorr.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkHydroCorr.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.chkHydroCorr.Location = New System.Drawing.Point(119, 76)
+        Me.chkHydroCorr.Location = New System.Drawing.Point(119, 73)
         Me.chkHydroCorr.Name = "chkHydroCorr"
         Me.chkHydroCorr.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.chkHydroCorr.Size = New System.Drawing.Size(241, 15)
+        Me.chkHydroCorr.Size = New System.Drawing.Size(241, 24)
         Me.chkHydroCorr.TabIndex = 17
         Me.chkHydroCorr.Text = "DEM is hyrdologically correct (filled)"
         Me.chkHydroCorr.UseVisualStyleBackColor = False
@@ -128,7 +128,7 @@
         Me.txtWSDelinName.MaxLength = 0
         Me.txtWSDelinName.Name = "txtWSDelinName"
         Me.txtWSDelinName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtWSDelinName.Size = New System.Drawing.Size(134, 19)
+        Me.txtWSDelinName.Size = New System.Drawing.Size(134, 20)
         Me.txtWSDelinName.TabIndex = 0
         '
         'cboDEMUnits
@@ -156,7 +156,7 @@
         Me.txtDEMFile.MaxLength = 0
         Me.txtDEMFile.Name = "txtDEMFile"
         Me.txtDEMFile.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtDEMFile.Size = New System.Drawing.Size(271, 19)
+        Me.txtDEMFile.Size = New System.Drawing.Size(271, 20)
         Me.txtDEMFile.TabIndex = 4
         '
         'cboSubWSSize
@@ -172,6 +172,63 @@
         Me.cboSubWSSize.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cboSubWSSize.Size = New System.Drawing.Size(151, 22)
         Me.cboSubWSSize.TabIndex = 3
+        '
+        '_Label1_3
+        '
+        Me._Label1_3.AutoSize = True
+        Me._Label1_3.BackColor = System.Drawing.SystemColors.Control
+        Me._Label1_3.Cursor = System.Windows.Forms.Cursors.Default
+        Me._Label1_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me._Label1_3.ForeColor = System.Drawing.SystemColors.ControlText
+        Me._Label1_3.Location = New System.Drawing.Point(13, 24)
+        Me._Label1_3.Name = "_Label1_3"
+        Me._Label1_3.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me._Label1_3.Size = New System.Drawing.Size(92, 14)
+        Me._Label1_3.TabIndex = 11
+        Me._Label1_3.Text = "Delineation Name:"
+        '
+        '_Label1_2
+        '
+        Me._Label1_2.AutoSize = True
+        Me._Label1_2.BackColor = System.Drawing.SystemColors.Control
+        Me._Label1_2.Cursor = System.Windows.Forms.Cursors.Default
+        Me._Label1_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me._Label1_2.ForeColor = System.Drawing.SystemColors.ControlText
+        Me._Label1_2.Location = New System.Drawing.Point(14, 102)
+        Me._Label1_2.Name = "_Label1_2"
+        Me._Label1_2.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me._Label1_2.Size = New System.Drawing.Size(58, 14)
+        Me._Label1_2.TabIndex = 10
+        Me._Label1_2.Text = "DEM Units:"
+        '
+        '_Label1_12
+        '
+        Me._Label1_12.AutoSize = True
+        Me._Label1_12.BackColor = System.Drawing.SystemColors.Control
+        Me._Label1_12.Cursor = System.Windows.Forms.Cursors.Default
+        Me._Label1_12.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me._Label1_12.ForeColor = System.Drawing.SystemColors.ControlText
+        Me._Label1_12.Location = New System.Drawing.Point(13, 52)
+        Me._Label1_12.Name = "_Label1_12"
+        Me._Label1_12.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me._Label1_12.Size = New System.Drawing.Size(54, 14)
+        Me._Label1_12.TabIndex = 9
+        Me._Label1_12.Text = "DEM Grid:"
+        '
+        '_Label1_1
+        '
+        Me._Label1_1.AutoSize = True
+        Me._Label1_1.BackColor = System.Drawing.SystemColors.Control
+        Me._Label1_1.Cursor = System.Windows.Forms.Cursors.Default
+        Me._Label1_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me._Label1_1.ForeColor = System.Drawing.SystemColors.ControlText
+        Me._Label1_1.Location = New System.Drawing.Point(14, 132)
+        Me._Label1_1.Name = "_Label1_1"
+        Me._Label1_1.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me._Label1_1.Size = New System.Drawing.Size(106, 14)
+        Me._Label1_1.TabIndex = 8
+        Me._Label1_1.Text = "Subwatershed Size:"
+        Me._Label1_1.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'frmAdvanced
         '
@@ -251,63 +308,6 @@
         Me._lblStream_0.Size = New System.Drawing.Size(75, 14)
         Me._lblStream_0.TabIndex = 15
         Me._lblStream_0.Text = "Stream Layer:"
-        '
-        '_Label1_3
-        '
-        Me._Label1_3.AutoSize = True
-        Me._Label1_3.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_3.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_3.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_3.Location = New System.Drawing.Point(17, 24)
-        Me._Label1_3.Name = "_Label1_3"
-        Me._Label1_3.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_3.Size = New System.Drawing.Size(92, 14)
-        Me._Label1_3.TabIndex = 11
-        Me._Label1_3.Text = "Delineation Name:"
-        '
-        '_Label1_2
-        '
-        Me._Label1_2.AutoSize = True
-        Me._Label1_2.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_2.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_2.Location = New System.Drawing.Point(18, 102)
-        Me._Label1_2.Name = "_Label1_2"
-        Me._Label1_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_2.Size = New System.Drawing.Size(58, 14)
-        Me._Label1_2.TabIndex = 10
-        Me._Label1_2.Text = "DEM Units:"
-        '
-        '_Label1_12
-        '
-        Me._Label1_12.AutoSize = True
-        Me._Label1_12.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_12.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_12.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_12.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_12.Location = New System.Drawing.Point(17, 52)
-        Me._Label1_12.Name = "_Label1_12"
-        Me._Label1_12.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_12.Size = New System.Drawing.Size(54, 14)
-        Me._Label1_12.TabIndex = 9
-        Me._Label1_12.Text = "DEM Grid:"
-        '
-        '_Label1_1
-        '
-        Me._Label1_1.AutoSize = True
-        Me._Label1_1.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_1.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_1.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_1.Location = New System.Drawing.Point(18, 129)
-        Me._Label1_1.Name = "_Label1_1"
-        Me._Label1_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_1.Size = New System.Drawing.Size(106, 14)
-        Me._Label1_1.TabIndex = 8
-        Me._Label1_1.Text = "Subwatershed Size:"
-        Me._Label1_1.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'cmdCreate
         '

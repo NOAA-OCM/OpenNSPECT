@@ -1,3 +1,21 @@
+'********************************************************************************************************
+'File Name: modMUSLE.vb
+'Description: Functions handling the MUSLE portion of the model
+'********************************************************************************************************
+'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
+'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
+'http://www.mozilla.org/MPL/ 
+'Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF 
+'ANY KIND, either express or implied. See the License for the specificlanguage governing rights and 
+'limitations under the License. 
+'
+'Note: This code was converted from the vb6 NSPECT ArcGIS extension and so bears many of the old comments
+'in the files where it was possible to leave them.
+'
+'Contributor(s): (Open source contributors should list themselves and their modifications here). 
+'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
+'               Added licensing and comments to code
+
 Imports System.Data.OleDb
 
 Module modMUSLE
@@ -356,7 +374,7 @@ Module modMUSLE
         
         Try
             
-            modProgDialog.ProgDialog("Calculating Watershed Length...", strTitle, 0, 27, 2, 0)
+            modProgDialog.ProgDialog("Calculating Watershed Length...", strTitle, 0, 27, 2, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 2: ------------------------------------------------------------------------------------
                 'Calculate Watershed Length
@@ -412,7 +430,7 @@ Module modMUSLE
                 'END STEP 3: -----------------------------------------------------------------------------------
             End If
 
-            modProgDialog.ProgDialog("Calculating Mod Slope...", strTitle, 0, 27, 4, 0)
+            modProgDialog.ProgDialog("Calculating Mod Slope...", strTitle, 0, 27, 4, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
@@ -435,14 +453,14 @@ Module modMUSLE
 
 
 
-            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 18, 0)
+            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 18, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
                 RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, pQuRaster, AllMUSLECalc)
             End If
             'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, ".bgd"))
 
-            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 22, 0)
+            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 22, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 ReDim _pondpicks(strConPondStatement.Split(",").Length)
                 _pondpicks = strConPondStatement.Split(",")
@@ -452,7 +470,7 @@ Module modMUSLE
             End If
             'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, ".bgd"))
 
-            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 25, 0)
+            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 25, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
@@ -469,7 +487,7 @@ Module modMUSLE
 
             If g_booLocalEffects Then
 
-                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 27, 27, 0)
+                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 27, 27, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
 
                     strMUSLE = modUtil.GetUniqueName("locmusle", g_strWorkspace, ".bgd")
@@ -499,7 +517,7 @@ Module modMUSLE
             End If
 
 
-            modProgDialog.ProgDialog("Calculating the accumulated sediment...", strTitle, 0, 27, 23, 0)
+            modProgDialog.ProgDialog("Calculating the accumulated sediment...", strTitle, 0, 27, 23, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 Dim pTauD8Flow As MapWinGIS.Grid = Nothing
 
@@ -534,7 +552,7 @@ Module modMUSLE
             End If
 
 
-            modProgDialog.ProgDialog("Adding Sediment Mass to Group Layer...", strTitle, 0, 27, 25, 0)
+            modProgDialog.ProgDialog("Adding Sediment Mass to Group Layer...", strTitle, 0, 27, 25, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster

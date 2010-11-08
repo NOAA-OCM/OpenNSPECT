@@ -1,3 +1,21 @@
+'********************************************************************************************************
+'File Name: frmUserWshed.vb
+'Description: Form for handling user defined watershed delins
+'********************************************************************************************************
+'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
+'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
+'http://www.mozilla.org/MPL/ 
+'Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF 
+'ANY KIND, either express or implied. See the License for the specificlanguage governing rights and 
+'limitations under the License. 
+'
+'Note: This code was converted from the vb6 NSPECT ArcGIS extension and so bears many of the old comments
+'in the files where it was possible to leave them.
+'
+'Contributor(s): (Open source contributors should list themselves and their modifications here). 
+'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
+'               Added licensing and comments to code
+
 Imports System.Data.OleDb
 Friend Class frmUserWShed
 	Inherits System.Windows.Forms.Form
@@ -65,18 +83,20 @@ Friend Class frmUserWShed
 
         Dim strCmdInsert As String
         
+        modProgDialog.ProgDialog("Validating input...", "Adding New Delineation...", 0, 3, 1, Me)
         If Not ValidateDataFormInput() Then
             Exit Sub
         End If
 
-        modProgDialog.ProgDialog("Validating input...", "Adding New Delineation...", 0, 3, 1, 0)
 
-        Try
-            modProgDialog.ProgDialog("Creating 2 Cell Buffer and Nibble GRIDs...", "Adding New Delineation...", 0, 3, 2, 0)
+        Try    
+            'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
+            'modProgDialog.ProgDialog("Creating 2 Cell Buffer and Nibble GRIDs...", "Adding New Delineation...", 0, 3, 2, 0)
+            'Return2BDEM(txtDEMFile.Text, txtFlowDir.Text)
+            _strDEM2BFileName = txtDEMFile.Text
+            _strNibbleName = txtFlowDir.Text
 
-            Return2BDEM((txtDEMFile.Text), (txtFlowDir.Text))
-
-            modProgDialog.ProgDialog("Updating Database...", "Adding New Delineation...", 0, 3, 2, 0)
+            modProgDialog.ProgDialog("Updating Database...", "Adding New Delineation...", 0, 3, 2, Me)
 
             strCmdInsert = "INSERT INTO WSDelineation " & "(Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName," & "FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName) " & " VALUES (" & "'" & CStr(txtWSDelinName.Text) & "', " & "'" & CStr(txtDEMFile.Text) & "', " & "'" & cboDEMUnits.SelectedIndex & "', " & "'" & txtFlowDir.Text & "', " & "'" & txtFlowAcc.Text & "', " & "'" & txtDEMFile.Text & "', " & "'" & "0" & "', " & "'" & "" & "', " & "'" & "0" & "', " & "'" & txtWaterSheds.Text & "', " & "'" & txtLS.Text & "', " & "'" & _strNibbleName & "', " & "'" & _strDEM2BFileName & "')"
 

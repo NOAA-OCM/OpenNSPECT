@@ -1,3 +1,18 @@
+'********************************************************************************************************
+'File Name: frmProjectSetup.vb
+'Description: Main  input and model activation form
+'********************************************************************************************************
+'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
+'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
+'http://www.mozilla.org/MPL/ 
+'Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF 
+'ANY KIND, either express or implied. See the License for the specificlanguage governing rights and 
+'limitations under the License. 
+'
+'Contributor(s): (Open source contributors should list themselves and their modifications here). 
+'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
+'               Added licensing and comments to code
+
 Imports System.Data
 Imports System.Data.OleDb
 Imports System.Drawing
@@ -78,7 +93,6 @@ Friend Class frmProjectSetup
             cboWQStd.Items.Insert(cboWQStd.Items.Count, "New water quality standard...")
 
             cboLCLayer.Items.Clear()
-            cboRainGrid.Items.Clear()
             cboSelectPoly.Items.Clear()
             arrAreaList.Clear()
             Dim currLyr As MapWindow.Interfaces.Layer
@@ -86,7 +100,6 @@ Friend Class frmProjectSetup
                 currLyr = g_MapWin.Layers(i)
                 If currLyr.LayerType = MapWindow.Interfaces.eLayerType.Grid Then
                     cboLCLayer.Items.Add(currLyr.Name)
-                    cboRainGrid.Items.Add(currLyr.Name)
                 ElseIf currLyr.LayerType = MapWindow.Interfaces.eLayerType.PolygonShapefile Then
                     cboSelectPoly.Items.Add(currLyr.Name)
                     arrAreaList.Add(currLyr.Name)
@@ -352,7 +365,7 @@ Friend Class frmProjectSetup
     Private Sub optUseGRID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optUseGRID.CheckedChanged
         If sender.Checked Then
             Try
-                cboRainGrid.Enabled = optUseGRID.Checked
+                txtbxRainGrid.Enabled = optUseGRID.Checked
                 txtRainValue.Enabled = optUseValue.Checked
             Catch ex As Exception
                 HandleError(True, "optUseGRID_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
@@ -364,7 +377,7 @@ Friend Class frmProjectSetup
         If sender.Checked Then
             Try
                 txtRainValue.Enabled = optUseValue.Checked
-                cboRainGrid.Enabled = optUseGRID.Checked
+                txtbxRainGrid.Enabled = optUseGRID.Checked
             Catch ex As Exception
                 HandleError(True, "optUseValue_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
             End Try
@@ -412,9 +425,7 @@ Friend Class frmProjectSetup
         dlgOpen.Title = "Choose Rainfall Factor GRID"
         dlgOpen.Filter = g.CdlgFilter
         If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
-            Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(dlgOpen.FileName)
-            cboRainGrid.Items.Add(lyr.Name)
-            cboRainGrid.SelectedItem = lyr.Name
+            txtbxRainGrid.Text = dlgOpen.FileName
         End If
     End Sub
 
@@ -825,7 +836,6 @@ Friend Class frmProjectSetup
             chkLocalEffects.CheckState = System.Windows.Forms.CheckState.Unchecked
 
             'Erosion
-            cboRainGrid.Items.Clear()
             optUseGRID.Checked = True
             chkCalcErosion.CheckState = System.Windows.Forms.CheckState.Unchecked
             txtRainValue.Text = ""
@@ -1083,21 +1093,46 @@ Friend Class frmProjectSetup
             Dim WSCmd As New OleDbCommand(strCurrWShed, modUtil.g_DBConn)
             Dim wsData As OleDbDataReader = WSCmd.ExecuteReader
             wsData.Read()
-            Dim strBasin As String = wsData.Item("wsfilename")
-            If IO.Path.GetExtension(strBasin) <> ".shp" Then
-                strBasin = strBasin + ".shp"
-            End If
+            Dim strBasin As String = ""
+            If wsData.HasRows() Then
+                strbasin = wsData.Item("wsfilename")
+                If IO.Path.GetExtension(strBasin) <> ".shp" Then
+                    strBasin = strBasin + ".shp"
+                End If
+                If Not modUtil.LayerInMapByFileName(strBasin) Then
+                    If modUtil.AddFeatureLayerToMapFromFileName(strBasin, wsData.Item("Name") & " " & "Drainage Basins") Then
+                        lngCurrWshedPolyIndex = modUtil.GetLayerIndex(wsData.Item("Name") & " " & "Drainage Basins")
 
-            If Not modUtil.LayerInMapByFileName(strBasin) Then
-                If modUtil.AddFeatureLayerToMapFromFileName(strBasin, wsData.Item("Name") & " " & "Drainage Basins") Then
-                    lngCurrWshedPolyIndex = modUtil.GetLayerIndex(wsData.Item("Name") & " " & "Drainage Basins")
+                        cboSelectPoly.Items.Add(wsData.Item("Name") & " " & "Drainage Basins")
+                        arrAreaList.Add(wsData.Item("Name") & " " & "Drainage Basins")
+                    Else
+                        MsgBox("Could not find watershed layer: " & wsData.Item("wsfilename") & " .  Please add the watershed layer to the map.", MsgBoxStyle.Critical, "File Not Found")
+                    End If
+                End If
+            Else
+                _XMLPrjParams.strWaterShedDelin = cboWSDelin.Text
+                strCurrWShed = "Select * from WSDelineation where Name Like '" & _XMLPrjParams.strWaterShedDelin & "'"
+                WSCmd = New OleDbCommand(strCurrWShed, modUtil.g_DBConn)
+                wsData = WSCmd.ExecuteReader
+                wsData.Read()
+                If wsData.HasRows() Then
+                    strBasin = wsData.Item("wsfilename")
+                    If IO.Path.GetExtension(strBasin) <> ".shp" Then
+                        strBasin = strBasin + ".shp"
+                    End If
+                    If Not modUtil.LayerInMapByFileName(strBasin) Then
+                        If modUtil.AddFeatureLayerToMapFromFileName(strBasin, wsData.Item("Name") & " " & "Drainage Basins") Then
+                            lngCurrWshedPolyIndex = modUtil.GetLayerIndex(wsData.Item("Name") & " " & "Drainage Basins")
 
-                    cboSelectPoly.Items.Add(wsData.Item("Name") & " " & "Drainage Basins")
-                    arrAreaList.Add(wsData.Item("Name") & " " & "Drainage Basins")
-                Else
-                    MsgBox("Could not find watershed layer: " & wsData.Item("wsfilename") & " .  Please add the watershed layer to the map.", MsgBoxStyle.Critical, "File Not Found")
+                            cboSelectPoly.Items.Add(wsData.Item("Name") & " " & "Drainage Basins")
+                            arrAreaList.Add(wsData.Item("Name") & " " & "Drainage Basins")
+                        Else
+                            MsgBox("Could not find watershed layer: " & wsData.Item("wsfilename") & " .  Please add the watershed layer to the map.", MsgBoxStyle.Critical, "File Not Found")
+                        End If
+                    End If
                 End If
             End If
+
             wsData.Close()
 
             'Step7: Water Quality
@@ -1157,30 +1192,22 @@ Friend Class frmProjectSetup
             'Either they use the GRID
             optUseGRID.Checked = _XMLPrjParams.intRainGridBool
             If optUseGRID.Checked Then
-                If modUtil.LayerInMap(_XMLPrjParams.strRainGridName) Then
-                    cboRainGrid.SelectedIndex = modUtil.GetCboIndex(_XMLPrjParams.strRainGridName, cboRainGrid)
-                Else
-                    If modUtil.AddRasterLayerToMapFromFileName(_XMLPrjParams.strRainGridFileName) Then
-                        With cboRainGrid
-                            .Items.Add(_XMLPrjParams.strRainGridName)
-                            .Refresh()
-                            .SelectedIndex = modUtil.GetCboIndex(_XMLPrjParams.strRainGridName, cboRainGrid)
-                        End With
-                    Else
-                        intYesNo = MsgBox("Could not find Rainfall GRID: " & _XMLPrjParams.strRainGridName & ".  Would you like " & "to browse for it?", MsgBoxStyle.YesNo, "Cannot Locate Dataset")
-                        If intYesNo = MsgBoxResult.Yes Then
-                            _XMLPrjParams.strRainGridFileName = modUtil.AddInputFromGxBrowser("Raster")
-                            If modUtil.AddRasterLayerToMapFromFileName(_XMLPrjParams.strRainGridFileName) Then
-                                With cboRainGrid
-                                    .Items.Add(_XMLPrjParams.strRainGridName)
-                                    .Refresh()
-                                    .SelectedIndex = modUtil.GetCboIndex(_XMLPrjParams.strRainGridName, cboRainGrid)
-                                End With
-                            End If
-                        Else
-                            Exit Sub
+                If Not System.IO.File.Exists(_XMLPrjParams.strRainGridFileName) And Not System.IO.File.Exists(_XMLPrjParams.strRainGridFileName + "\sta.adf") Then
+                    intYesNo = MsgBox("Could not find Rainfall GRID: " & _XMLPrjParams.strRainGridFileName & ".  Would you like " & "to browse for it?", MsgBoxStyle.YesNo, "Cannot Locate Dataset")
+                    If intYesNo = MsgBoxResult.Yes Then
+                        Dim g As New MapWinGIS.Grid
+                        Dim dlgOpen As New Windows.Forms.OpenFileDialog
+                        dlgOpen.Title = "Choose Rainfall Factor GRID"
+                        dlgOpen.Filter = g.CdlgFilter
+                        If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
+                            txtbxRainGrid.Text = dlgOpen.FileName
+                            _XMLPrjParams.strRainGridFileName = dlgOpen.FileName
                         End If
+                    Else
+                        Exit Sub
                     End If
+                Else
+                    txtbxRainGrid.Text = _XMLPrjParams.strRainGridFileName
                 End If
             End If
 
@@ -1564,11 +1591,11 @@ Friend Class frmProjectSetup
 
                     If optUseGRID.Checked Then
 
-                        If Len(cboRainGrid.Text) > 0 And (InStr(1, cboRainGrid.Text, cboLCLayer.Text, 1) = 0) Then
+                        If Len(txtbxRainGrid.Text) > 0 And (InStr(1, txtbxRainGrid.Text, cboLCLayer.Text, 1) = 0) Then
                             clsParamsPrj.intRainGridBool = 1
                             clsParamsPrj.intRainConstBool = 0
-                            clsParamsPrj.strRainGridName = cboRainGrid.Text
-                            clsParamsPrj.strRainGridFileName = modUtil.GetLayerFilename(cboRainGrid.Text)
+                            clsParamsPrj.strRainGridName = txtbxRainGrid.Text
+                            clsParamsPrj.strRainGridFileName = txtbxRainGrid.Text
                         Else
                             MsgBox("Please choose a rainfall Grid.", MsgBoxStyle.Information, "Select Rainfall GRID")
                             SSTab1.SelectedIndex = 1

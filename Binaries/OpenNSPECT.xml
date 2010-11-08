@@ -48,6 +48,46 @@ OpenNSPECT
  Sub used to add all toolbars and buttons used by the mwNSPECT plugin
  </summary>
 	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowAnalysisForm">
+	<summary>
+ Shows the main Analysis form
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowAdvLandForm">
+	<summary>
+ Shows the Land Cover form
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowAdvPollutantsForm">
+	<summary>
+ Shows the Pollutant form
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowAdvWQForm">
+	<summary>
+ Shows the Water Quality form
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowAdvPrecipForm">
+	<summary>
+ Shows the Precipitation form
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowAdvWSDelinForm">
+	<summary>
+ Shows the Watershed Delin form
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowAdvSoilsForm">
+	<summary>
+ Shows the Soils form
+ </summary>
+	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowHelpIntro">
+	<summary>
+ Shows the Help form
+ </summary>
+	<remarks></remarks>
 </member>
 </members>
 </doc>

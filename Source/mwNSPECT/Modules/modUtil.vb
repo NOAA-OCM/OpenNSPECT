@@ -1,4 +1,22 @@
-﻿Imports System.Data.OleDb
+﻿'********************************************************************************************************
+'File Name: modUtil.vb
+'Description: Many global utility functions used throughout the plugin
+'********************************************************************************************************
+'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
+'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
+'http://www.mozilla.org/MPL/ 
+'Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF 
+'ANY KIND, either express or implied. See the License for the specificlanguage governing rights and 
+'limitations under the License. 
+'
+'Note: This code was converted from the vb6 NSPECT ArcGIS extension and so bears many of the old comments
+'in the files where it was possible to leave them.
+'
+'Contributor(s): (Open source contributors should list themselves and their modifications here). 
+'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
+'               Added licensing and comments to code
+
+Imports System.Data.OleDb
 Imports System.Windows.Forms
 
 Module modUtil
@@ -41,7 +59,7 @@ Module modUtil
     Public g_intCoeffRow As Short 'Coeff Row Number
     Public g_strCoeffCalc As String 'if the Calc option is chosen, hold results in string
 
-    Public g_frmProjectSetup As frmProjectSetup
+    Public g_frmProjectSetup As Windows.Forms.Form
 
 
     Const c_sModuleFileName As String = "modUtil.vb"
@@ -263,16 +281,24 @@ Module modUtil
     Public Function AddFeatureLayerToMapFromFileName(ByRef strName As String, Optional ByRef strLyrName As String = "") As Boolean
         Try
             If IO.Path.GetExtension(strName) <> "" Then
-                If strLyrName <> "" Then
-                    g_MapWin.Layers.Add(strName, strLyrName)
+                If IO.File.Exists(strName) Then
+                    If strLyrName <> "" Then
+                        g_MapWin.Layers.Add(strName, strLyrName)
+                    Else
+                        g_MapWin.Layers.Add(strName)
+                    End If
                 Else
-                    g_MapWin.Layers.Add(strName)
+                    Return False
                 End If
             Else
-                If strLyrName <> "" Then
-                    g_MapWin.Layers.Add(strName + ".shp", strLyrName)
+                If IO.File.Exists(strName + ".shp") Then
+                    If strLyrName <> "" Then
+                        g_MapWin.Layers.Add(strName + ".shp", strLyrName)
+                    Else
+                        g_MapWin.Layers.Add(strName + ".shp")
+                    End If
                 Else
-                    g_MapWin.Layers.Add(strName + ".shp")
+                    Return False
                 End If
             End If
             Return True
