@@ -1,6 +1,6 @@
 '********************************************************************************************************
 'File Name: mwNSPECT.vb
-'Description: This screen is used to specify parameters for adding a new field.
+'Description: This class initializes and controls the plugin behavior on the MW menu
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
 'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
@@ -162,7 +162,6 @@ Public Class mwNSPECT
 
         Dim nspectPath As String
 
-
         ' Detects and sets the path to N-SPECT's application folder (installation directory)
         'nspectPath = My.Application.Info.DirectoryPath
         nspectPath = "C:\NSPECT\"
@@ -178,6 +177,7 @@ Public Class mwNSPECT
 
         modUtil.g_nspectDocPath = nspectPath
 
+        'Initialize the database connection
         modUtil.DBConnection()
 
     End Sub
@@ -299,42 +299,74 @@ Public Class mwNSPECT
 #End Region
 
 #Region "   Itemclicked Items"
+    ''' <summary>
+    ''' Shows the main Analysis form
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowAnalysisForm()
         g_frmProjectSetup = New frmProjectSetup
         g_frmProjectSetup.ShowDialog()
     End Sub
 
+    ''' <summary>
+    ''' Shows the Land Cover form
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowAdvLandForm()
         Dim tmp As New frmLandCoverTypes
         tmp.ShowDialog()
     End Sub
 
+    ''' <summary>
+    ''' Shows the Pollutant form
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowAdvPollutantsForm()
         Dim tmp As New frmPollutants
         tmp.ShowDialog()
 
     End Sub
 
+    ''' <summary>
+    ''' Shows the Water Quality form
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowAdvWQForm()
         Dim tmp As New frmWaterQualityStandard
         tmp.ShowDialog()
     End Sub
 
+    ''' <summary>
+    ''' Shows the Precipitation form
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowAdvPrecipForm()
         Dim tmp As New frmPrecipitation
         tmp.ShowDialog()
     End Sub
 
+    ''' <summary>
+    ''' Shows the Watershed Delin form
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowAdvWSDelinForm()
         Dim tmp As New frmWatershedDelin
         tmp.ShowDialog()
     End Sub
 
+    ''' <summary>
+    ''' Shows the Soils form
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowAdvSoilsForm()
         Dim tmp As New frmSoils
         tmp.ShowDialog()
     End Sub
 
+    ''' <summary>
+    ''' Shows the Help form
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowHelpIntro()
         System.Windows.Forms.Help.ShowHelp(Nothing, modUtil.g_nspectPath & "\Help\nspect.chm", "Introduction.htm")
     End Sub

@@ -1,3 +1,21 @@
+'********************************************************************************************************
+'File Name: frmSoilsSetup.vb
+'Description: Form for hadling Soils setup
+'********************************************************************************************************
+'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
+'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
+'http://www.mozilla.org/MPL/ 
+'Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF 
+'ANY KIND, either express or implied. See the License for the specificlanguage governing rights and 
+'limitations under the License. 
+'
+'Note: This code was converted from the vb6 NSPECT ArcGIS extension and so bears many of the old comments
+'in the files where it was possible to leave them.
+'
+'Contributor(s): (Open source contributors should list themselves and their modifications here). 
+'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
+'               Added licensing and comments to code
+
 Imports System.Data.OleDb
 Friend Class frmSoilsSetup
     Inherits System.Windows.Forms.Form
@@ -62,7 +80,7 @@ Friend Class frmSoilsSetup
 
         'Check data, if OK create soils grids
         If ValidateData() Then
-            If CreateSoilsGrid((txtSoilsDS.Text), (cboSoilFields.Text), cboSoilFieldsK.Text) Then
+            If CreateSoilsGrid(txtSoilsDS.Text, cboSoilFields.Text, cboSoilFieldsK.Text) Then
                 If _frmSoil.Visible Then
                     _frmSoil.cboSoils.Items.Clear()
                     modUtil.InitComboBox(_frmSoil.cboSoils, "Soils")
@@ -164,6 +182,7 @@ Friend Class frmSoilsSetup
             Dim pSoilsFeatClass As MapWinGIS.Shapefile 'Soils Featureclass
             Dim lngHydFieldIndex As Integer 'HydGroup Field Index
             Dim lngNewHydFieldIndex As Integer 'New Group Field index
+            Dim lngKFieldIndex As Integer 'K factor Field index
             Dim strHydValue As String 'Hyd Value to check
             Dim lngValue As Integer 'Count
             Dim strCmd As String 'String to insert new stuff in dbase
@@ -174,6 +193,13 @@ Friend Class frmSoilsSetup
             pSoilsFeatClass = modUtil.ReturnFeature(strSoilsFileName)
 
             'Check for fields
+            lngKFieldIndex = -1
+            For i As Integer = 0 To pSoilsFeatClass.NumFields - 1
+                If pSoilsFeatClass.Field(i).Name = strKFactor Then
+                    lngKFieldIndex = i
+                    Exit For
+                End If
+            Next
             lngHydFieldIndex = -1
             For i As Integer = 0 To pSoilsFeatClass.NumFields - 1
                 If pSoilsFeatClass.Field(i).Name = strHydFieldName Then
@@ -205,7 +231,7 @@ Friend Class frmSoilsSetup
             pSoilsFeatClass.StartEditingTable()
             'Now calc the Values
             For i As Integer = 0 To pSoilsFeatClass.NumShapes - 1
-                modProgDialog.ProgDialog("Calculating soils values...", "Processing Soils", 0, pSoilsFeatClass.NumShapes, lngValue, 0)
+                modProgDialog.ProgDialog("Calculating soils values...", "Processing Soils", 0, pSoilsFeatClass.NumShapes, lngValue, Me)
                 'Find the current value
                 If modProgDialog.g_boolCancel Then
                     strHydValue = pSoilsFeatClass.CellValue(lngHydFieldIndex, i)
@@ -253,28 +279,65 @@ Friend Class frmSoilsSetup
             'Now do the conversion: Convert soils layer to GRID using new
             'Group field as the value
 
-            'TODO: Test if this is working
             If modProgDialog.g_boolCancel Then
+                modProgDialog.ProgDialog("Converting Soils Dataset...", "Processing Soils", 0, 2, 2, Me)
+
                 strOutSoils = modUtil.GetUniqueName("soils", IO.Path.GetDirectoryName(strSoilsFileName), ".bgd")
 
-                Dim cellsize As Double = _pRasterProps.Header.dX
-                MapWinGeoProc.Utils.ShapefileToGrid(strSoilsFileName, strOutSoils, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.ShortDataType, "GROUP", cellsize, Nothing)
+                'Hand convert the soils shapefile to grids by creating new grids based on header of dem
+                Dim dem As New MapWinGIS.Grid
+                dem.Open(txtDEMFile.Text)
+                Dim head As New MapWinGIS.GridHeader
+                Dim headK As New MapWinGIS.GridHeader
+                head.CopyFrom(dem.Header)
+                headK.CopyFrom(dem.Header)
+                dem.Close()
 
-                'STEP 3:
-                'Now do the conversion: Convert soils layer to GRID using
-                'k factor field as the value
-                'If they are doing a K factor then repeat the process, this time using 'k' field
+                Dim soilsshp As New MapWinGIS.Shapefile
+                soilsshp.Open(strSoilsFileName)
+                soilsshp.BeginPointInShapefile()
+
+                Dim outSoils As New MapWinGIS.Grid
+                Dim outSoilsK As New MapWinGIS.Grid
+
+                outSoils.CreateNew(strOutSoils, head, MapWinGIS.GridDataType.DoubleDataType, head.NodataValue)
+
                 If Len(strKFactor) > 0 Then
-                    modProgDialog.ProgDialog("Converting Soils K Dataset...", "Processing Soils", 0, 2, 2, 0)
-
                     strOutKSoils = modUtil.GetUniqueName("soilsk", IO.Path.GetDirectoryName(strSoilsFileName), ".bgd")
-
-                    MapWinGeoProc.Utils.ShapefileToGrid(strSoilsFileName, strOutKSoils, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.DoubleDataType, strKFactor, cellsize, Nothing)
+                    outSoilsK.CreateNew(strOutKSoils, headK, MapWinGIS.GridDataType.DoubleDataType, head.NodataValue)
                 Else
                     strOutKSoils = ""
-                    modProgDialog.KillDialog()
                 End If
 
+                'Then cycle over each cell, testing the cell to proj for intersection with the shapefile. very cheesy, but should work
+                Dim x, y As Double
+                Dim idx As Integer
+                Dim nc As Integer = head.NumberCols - 1
+                Dim nr As Integer = head.NumberRows - 1
+                For row As Integer = 0 To nr
+                    modProgDialog.ProgDialog("Converting Soils Dataset...", "Processing Soils", 1, nr, row, Me)
+                    For col As Integer = 0 To nc
+                        outSoils.CellToProj(col, row, x, y)
+                        idx = soilsshp.PointInShapefile(x, y)
+                        If idx <> -1 Then
+                            outSoils.Value(col, row) = soilsshp.CellValue(lngNewHydFieldIndex, idx)
+                            If strOutKSoils <> "" Then
+                                outSoilsK.Value(col, row) = soilsshp.CellValue(lngKFieldIndex, idx)
+                            End If
+                        End If
+                    Next
+                Next
+
+                'After, save the grids and close them.
+                outSoils.Save()
+                outSoils.Close()
+                If strOutKSoils <> "" Then
+                    outSoilsK.Save()
+                    outSoilsK.Close()
+                End If
+
+                soilsshp.EndPointInShapefile()
+                soilsshp.Close()
                 'STEP 4:
                 'Now enter all into database
                 strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & CDbl(txtMUSLEExp.Text) & ")"

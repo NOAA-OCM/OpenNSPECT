@@ -1,3 +1,21 @@
+'********************************************************************************************************
+'File Name: modRusle.vb
+'Description: Functions handling the RUSLE portion of the model
+'********************************************************************************************************
+'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
+'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
+'http://www.mozilla.org/MPL/ 
+'Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF 
+'ANY KIND, either express or implied. See the License for the specificlanguage governing rights and 
+'limitations under the License. 
+'
+'Note: This code was converted from the vb6 NSPECT ArcGIS extension and so bears many of the old comments
+'in the files where it was possible to leave them.
+'
+'Contributor(s): (Open source contributors should list themselves and their modifications here). 
+'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
+'               Added licensing and comments to code
+
 Imports System.Data.OleDb
 Module modRusle
     ' *************************************************************************************
@@ -259,7 +277,7 @@ Module modRusle
 
 
         Try
-            modProgDialog.ProgDialog("Solving RUSLE Equation...", strTitle, 0, 13, 3, 0)
+            modProgDialog.ProgDialog("Solving RUSLE Equation...", strTitle, 0, 13, 3, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
                 ReDim _picks(strConStatement.Split(",").Length)
@@ -280,17 +298,19 @@ Module modRusle
             'BEGIN SDR CODE......
             '***********************************************
             If Len(Trim(_strSDRFileName)) = 0 Then
-                modProgDialog.ProgDialog("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 0, 13, 5, 0)
+                modProgDialog.ProgDialog("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 0, 13, 5, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
                     'STEP 4: DAVE'S WACKY CALCULATION OF RELIEF-LENGTH RATIO FOR SEDIMENT DELIVERY RATIO-------
                     Dim pZSedcalc As New RasterMathCellCalcWindowNulls(AddressOf pZSedCellCalc)
-                    RasterMathWindow(g_NibbleRaster, g_DEMTwoCellRaster, Nothing, Nothing, Nothing, pZSedDelRaster, Nothing, False, pZSedcalc)
+                    'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
+                    'RasterMathWindow(g_NibbleRaster, g_DEMTwoCellRaster, Nothing, Nothing, Nothing, pZSedDelRaster, Nothing, False, pZSedcalc)
+                    RasterMathWindow(g_pFlowDirRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pZSedDelRaster, Nothing, False, pZSedcalc)
                     'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
 
                     'END STEP 4: ------------------------------------------------------------------------------
                 End If
 
-                modProgDialog.ProgDialog("Calculating Sediment Delivery Ratio...", strTitle, 0, 13, 6, 0)
+                modProgDialog.ProgDialog("Calculating Sediment Delivery Ratio...", strTitle, 0, 13, 6, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
                     Dim AllSDRCalc As New RasterMathCellCalc(AddressOf AllSDRCellCalc)
                     RasterMath(g_pDEMRaster, pZSedDelRaster, g_pSCS100Raster, Nothing, Nothing, pSDRRaster, AllSDRCalc)
@@ -304,7 +324,7 @@ Module modRusle
             'END SDR CALC
             '********************************************************************
 
-            modProgDialog.ProgDialog("Applying Sediment Delivery Ratio...", strTitle, 0, 13, 13, 0)
+            modProgDialog.ProgDialog("Applying Sediment Delivery Ratio...", strTitle, 0, 13, 13, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 11: sed_yield = [soil_loss_ac] * [sdr] -------------------------------------------------
                 Dim SedYieldcalc As New RasterMathCellCalc(AddressOf SedYieldCellCalc)
@@ -316,7 +336,7 @@ Module modRusle
             End If
 
             If g_booLocalEffects Then
-                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, 0)
+                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
 
                     'STEP 12: Local Effects -------------------------------------------------
@@ -347,7 +367,7 @@ Module modRusle
             End If
 
 
-            modProgDialog.ProgDialog("Calculating Accumulated Sediment...", strTitle, 0, 13, 13, 0)
+            modProgDialog.ProgDialog("Calculating Accumulated Sediment...", strTitle, 0, 13, 13, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
 
                 'STEP 12: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
@@ -385,7 +405,7 @@ Module modRusle
             End If
 
 
-            modProgDialog.ProgDialog("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, 13, 0)
+            modProgDialog.ProgDialog("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, 13, g_frmProjectSetup)
 
             If modProgDialog.g_boolCancel Then
                 strOutYield = modUtil.GetUniqueName("RUSLE", g_strWorkspace, ".bgd")

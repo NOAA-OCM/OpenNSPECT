@@ -31,6 +31,7 @@
         Me.optUseValue = New System.Windows.Forms.RadioButton
         Me.txtOutputFile = New System.Windows.Forms.TextBox
         Me._Label1_12 = New System.Windows.Forms.Label
+        Me.txtbxRainGrid = New System.Windows.Forms.TextBox
         Me.MainMenu1 = New System.Windows.Forms.MenuStrip
         Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuNew = New System.Windows.Forms.ToolStripMenuItem
@@ -89,7 +90,6 @@
         Me.chkCalcErosion = New System.Windows.Forms.CheckBox
         Me.frameRainFall = New System.Windows.Forms.GroupBox
         Me.btnOpenRainfallFactorGrid = New System.Windows.Forms.Button
-        Me.cboRainGrid = New System.Windows.Forms.ComboBox
         Me.optUseGRID = New System.Windows.Forms.RadioButton
         Me.cboErodFactor = New System.Windows.Forms.ComboBox
         Me.cboSoilAttribute = New System.Windows.Forms.ComboBox
@@ -253,6 +253,21 @@
         Me._Label1_12.TabIndex = 20
         Me._Label1_12.Text = "Output Shapefile:"
         Me.ToolTip1.SetToolTip(Me._Label1_12, "Functionality to be finalized in Alpha2")
+        '
+        'txtbxRainGrid
+        '
+        Me.txtbxRainGrid.AcceptsReturn = True
+        Me.txtbxRainGrid.BackColor = System.Drawing.SystemColors.Window
+        Me.txtbxRainGrid.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.txtbxRainGrid.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtbxRainGrid.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.txtbxRainGrid.Location = New System.Drawing.Point(102, 24)
+        Me.txtbxRainGrid.MaxLength = 0
+        Me.txtbxRainGrid.Name = "txtbxRainGrid"
+        Me.txtbxRainGrid.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.txtbxRainGrid.Size = New System.Drawing.Size(122, 20)
+        Me.txtbxRainGrid.TabIndex = 69
+        Me.ToolTip1.SetToolTip(Me.txtbxRainGrid, "Functionality to be implemented in Alpha2")
         '
         'MainMenu1
         '
@@ -912,9 +927,9 @@
         'frameRainFall
         '
         Me.frameRainFall.BackColor = System.Drawing.SystemColors.Control
+        Me.frameRainFall.Controls.Add(Me.txtbxRainGrid)
         Me.frameRainFall.Controls.Add(Me.btnOpenRainfallFactorGrid)
         Me.frameRainFall.Controls.Add(Me.txtRainValue)
-        Me.frameRainFall.Controls.Add(Me.cboRainGrid)
         Me.frameRainFall.Controls.Add(Me.optUseValue)
         Me.frameRainFall.Controls.Add(Me.optUseGRID)
         Me.frameRainFall.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -942,19 +957,6 @@
         Me.btnOpenRainfallFactorGrid.TabIndex = 68
         Me.btnOpenRainfallFactorGrid.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnOpenRainfallFactorGrid.UseVisualStyleBackColor = False
-        '
-        'cboRainGrid
-        '
-        Me.cboRainGrid.BackColor = System.Drawing.SystemColors.Window
-        Me.cboRainGrid.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboRainGrid.Enabled = False
-        Me.cboRainGrid.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboRainGrid.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboRainGrid.Location = New System.Drawing.Point(101, 24)
-        Me.cboRainGrid.Name = "cboRainGrid"
-        Me.cboRainGrid.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboRainGrid.Size = New System.Drawing.Size(122, 22)
-        Me.cboRainGrid.TabIndex = 25
         '
         'optUseGRID
         '
@@ -1477,7 +1479,6 @@
     Private WithEvents Label7 As System.Windows.Forms.Label
     Private WithEvents chkCalcErosion As System.Windows.Forms.CheckBox
     Private WithEvents txtRainValue As System.Windows.Forms.TextBox
-    Private WithEvents cboRainGrid As System.Windows.Forms.ComboBox
     Private WithEvents optUseValue As System.Windows.Forms.RadioButton
     Private WithEvents optUseGRID As System.Windows.Forms.RadioButton
     Private WithEvents frameRainFall As System.Windows.Forms.GroupBox
@@ -1524,5 +1525,6 @@
     Friend WithEvents LUApply As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents LUScenario As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LUScenarioXML As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents txtbxRainGrid As System.Windows.Forms.TextBox
 #End Region
 End Class

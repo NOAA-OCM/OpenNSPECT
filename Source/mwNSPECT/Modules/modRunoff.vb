@@ -1,3 +1,21 @@
+'********************************************************************************************************
+'File Name: modRunoff
+'Description: Functions handling the runoff portion of the model
+'********************************************************************************************************
+'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
+'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
+'http://www.mozilla.org/MPL/ 
+'Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF 
+'ANY KIND, either express or implied. See the License for the specificlanguage governing rights and 
+'limitations under the License. 
+'
+'Note: This code was converted from the vb6 NSPECT ArcGIS extension and so bears many of the old comments
+'in the files where it was possible to leave them.
+'
+'Contributor(s): (Open source contributors should list themselves and their modifications here). 
+'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
+'               Added licensing and comments to code
+
 Imports System.Data.OleDb
 Imports System.Collections.Generic
 Module modRunoff
@@ -401,7 +419,7 @@ Module modRunoff
             Const strTitle As String = "Processing Runoff Calculation..."
 
 
-            modProgDialog.ProgDialog("Calculating maximum potential retention...", strTitle, 0, 10, 3, 0)
+            modProgDialog.ProgDialog("Calculating maximum potential retention...", strTitle, 0, 10, 3, g_frmProjectSetup)
 
             If modProgDialog.g_boolCancel Then
                 'Calculate maxiumum potential retention
@@ -420,7 +438,7 @@ Module modRunoff
             End If
 
             If modProgDialog.g_boolCancel Then
-                modProgDialog.ProgDialog("Calculating runoff...", strTitle, 0, 10, 6, 0)
+                modProgDialog.ProgDialog("Calculating runoff...", strTitle, 0, 10, 6, g_frmProjectSetup)
                 Dim AllRunOffCalc As New RasterMathCellCalcNulls(AddressOf AllRunoffCellCalc)
                 RasterMath(pSCS100Raster, pInRainRaster, g_pDEMRaster, Nothing, Nothing, pMetRunoffRaster, Nothing, False, AllRunOffCalc)
 
@@ -436,7 +454,7 @@ Module modRunoff
             End If
 
             If g_booLocalEffects Then
-                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 10, 10, 0)
+                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 10, 10, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
 
                     'STEP 12: Local Effects -------------------------------------------------
@@ -463,7 +481,7 @@ Module modRunoff
 
 
 
-            modProgDialog.ProgDialog("Creating flow accumulation...", strTitle, 0, 10, 9, 0)
+            modProgDialog.ProgDialog("Creating flow accumulation...", strTitle, 0, 10, 9, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 7: ------------------------------------------------------------------------------------
                 'Derive Accumulated Runoff
@@ -503,7 +521,7 @@ Module modRunoff
 
 
             'Add this then map as our runoff grid
-            modProgDialog.ProgDialog("Creating Runoff Layer...", strTitle, 0, 10, 10, 0)
+            modProgDialog.ProgDialog("Creating Runoff Layer...", strTitle, 0, 10, 10, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'Get a unique name for accumulation GRID
                 strOutAccum = modUtil.GetUniqueName("runoff", g_strWorkspace, ".bgd")

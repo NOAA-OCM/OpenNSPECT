@@ -91,7 +91,7 @@
       <HintPath>..\..\..\MapWindow4Dev\Bin\Interop.TKTAUDEMLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MapWinGeoProc, Version=4.8.1.28499, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MapWinGeoProc, Version=4.8.2.26353, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\MapWindow4Dev\Bin\MapWinGeoProc.dll</HintPath>
       <Private>False</Private>
@@ -181,12 +181,6 @@
       <DependentUpon>frmImportWQStd.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\Additional Dialogs\frmImportWQStd.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmPrjCalc.designer.vb">
-      <DependentUpon>frmPrjCalc.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmPrjCalc.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Additional Dialogs\frmProgressDialog.Designer.vb">
@@ -323,9 +317,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\frmImportWQStd.resX">
       <DependentUpon>frmImportWQStd.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmPrjCalc.resX">
-      <DependentUpon>frmPrjCalc.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\frmProgressDialog.resx">
       <DependentUpon>frmProgressDialog.vb</DependentUpon>

@@ -1,3 +1,21 @@
+'********************************************************************************************************
+'File Name: modPollutantCalcs.vb
+'Description: Functions handling the Pollutant calculations for the model
+'********************************************************************************************************
+'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
+'you may not use this file except in compliance with the License. You may obtain a copy of the License at 
+'http://www.mozilla.org/MPL/ 
+'Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF 
+'ANY KIND, either express or implied. See the License for the specificlanguage governing rights and 
+'limitations under the License. 
+'
+'Note: This code was converted from the vb6 NSPECT ArcGIS extension and so bears many of the old comments
+'in the files where it was possible to leave them.
+'
+'Contributor(s): (Open source contributors should list themselves and their modifications here). 
+'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
+'               Added licensing and comments to code
+
 Imports System.Data.OleDb
 Module modPollutantCalcs
     ' *************************************************************************************
@@ -280,7 +298,7 @@ Module modPollutantCalcs
         Dim strAccPoll As String
 
         Try
-            modProgDialog.ProgDialog("Calculating Mass Volume...", strTitle, 0, 13, 2, 0)
+            modProgDialog.ProgDialog("Calculating Mass Volume...", strTitle, 0, 13, 2, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 2: MASS OF PHOSPHORUS PRODUCED BY EACH CELL -----------------------------------------
                 ReDim _picks(strConStatement.Split(",").Length)
@@ -295,7 +313,7 @@ Module modPollutantCalcs
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
 
-                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, 0)
+                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
 
                     strOutConc = modUtil.GetUniqueName("locconc", g_strWorkspace, ".bgd")
@@ -322,7 +340,7 @@ Module modPollutantCalcs
 
             End If
 
-            modProgDialog.ProgDialog("Deriving accumulated pollutant...", strTitle, 0, 13, 3, 0)
+            modProgDialog.ProgDialog("Deriving accumulated pollutant...", strTitle, 0, 13, 3, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
 
@@ -362,7 +380,7 @@ Module modPollutantCalcs
             End If
 
             'STEP 3a: Added 7/26: ADD ACCUMULATED POLLUTANT TO GROUP LAYER-----------------------------------
-            modProgDialog.ProgDialog("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, 0)
+            modProgDialog.ProgDialog("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 strAccPoll = modUtil.GetUniqueName("accpoll", g_strWorkspace, ".bgd")
                 'Added 7/23/04 to account for clip by selected polys functionality
@@ -383,7 +401,7 @@ Module modPollutantCalcs
             'END STEP 3a: ---------------------------------------------------------------------------------
 
 
-            modProgDialog.ProgDialog("Calculating final concentration...", strTitle, 0, 13, 9, 0)
+            modProgDialog.ProgDialog("Calculating final concentration...", strTitle, 0, 13, 9, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
                 RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, pTotalPollConc0Raster, Nothing, False, AllConCalc)
@@ -391,7 +409,7 @@ Module modPollutantCalcs
 
 
             If modProgDialog.g_boolCancel Then
-                modProgDialog.ProgDialog("Creating data layer...", strTitle, 0, 13, 11, 0)
+                modProgDialog.ProgDialog("Creating data layer...", strTitle, 0, 13, 11, g_frmProjectSetup)
 
                 strOutConc = modUtil.GetUniqueName("conc", g_strWorkspace, ".bgd")
 
@@ -408,7 +426,7 @@ Module modPollutantCalcs
                 lyr.MoveTo(0, g_pGroupLayer)
             End If
 
-            modProgDialog.ProgDialog("Comparing to water quality standard...", strTitle, 0, 13, 13, 0)
+            modProgDialog.ProgDialog("Comparing to water quality standard...", strTitle, 0, 13, 13, g_frmProjectSetup)
 
             If modProgDialog.g_boolCancel Then
                 If Not CompareWaterQuality(g_pWaterShedFeatClass, pPermTotalConcRaster) Then

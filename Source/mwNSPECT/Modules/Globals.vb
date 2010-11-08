@@ -1,6 +1,6 @@
 '********************************************************************************************************
 'File Name: Globals.vb
-'Description: This screen is used to specify parameters for adding a new field.
+'Description: global module used to store any needed global strings or mapwindow objects
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
 'you may not use this file except in compliance with the License. You may obtain a copy of the License at 

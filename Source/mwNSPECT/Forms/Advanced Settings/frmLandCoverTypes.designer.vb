@@ -418,7 +418,6 @@
         Me.colWetCheck.HeaderText = "Wet"
         Me.colWetCheck.Name = "colWetCheck"
         Me.colWetCheck.TrueValue = "1"
-        Me.colWetCheck.Visible = False
         Me.colWetCheck.Width = 53
         '
         'colLCTYPEID
