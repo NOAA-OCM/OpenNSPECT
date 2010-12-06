@@ -282,7 +282,7 @@ Friend Class frmSoilsSetup
             If modProgDialog.g_boolCancel Then
                 modProgDialog.ProgDialog("Converting Soils Dataset...", "Processing Soils", 0, 2, 2, Me)
 
-                strOutSoils = modUtil.GetUniqueName("soils", IO.Path.GetDirectoryName(strSoilsFileName), ".bgd")
+                strOutSoils = modUtil.GetUniqueName("soils", IO.Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
 
                 'Hand convert the soils shapefile to grids by creating new grids based on header of dem
                 Dim dem As New MapWinGIS.Grid
@@ -303,7 +303,7 @@ Friend Class frmSoilsSetup
                 outSoils.CreateNew(strOutSoils, head, MapWinGIS.GridDataType.DoubleDataType, head.NodataValue)
 
                 If Len(strKFactor) > 0 Then
-                    strOutKSoils = modUtil.GetUniqueName("soilsk", IO.Path.GetDirectoryName(strSoilsFileName), ".bgd")
+                    strOutKSoils = modUtil.GetUniqueName("soilsk", IO.Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
                     outSoilsK.CreateNew(strOutKSoils, headK, MapWinGIS.GridDataType.DoubleDataType, head.NodataValue)
                 Else
                     strOutKSoils = ""

@@ -316,7 +316,7 @@ Module modPollutantCalcs
                 modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
 
-                    strOutConc = modUtil.GetUniqueName("locconc", g_strWorkspace, ".bgd")
+                    strOutConc = modUtil.GetUniqueName("locconc", g_strWorkspace, g_FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
                         pPermMassVolumeRaster = modUtil.ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, strOutConc)
@@ -351,15 +351,15 @@ Module modPollutantCalcs
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp2 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 pMassVolumeRaster.Save(strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName + "out.bgd"
+                Dim strtmpout As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
 
@@ -382,7 +382,7 @@ Module modPollutantCalcs
             'STEP 3a: Added 7/26: ADD ACCUMULATED POLLUTANT TO GROUP LAYER-----------------------------------
             modProgDialog.ProgDialog("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
-                strAccPoll = modUtil.GetUniqueName("accpoll", g_strWorkspace, ".bgd")
+                strAccPoll = modUtil.GetUniqueName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
                 'Added 7/23/04 to account for clip by selected polys functionality
                 If g_booSelectedPolys Then
                     pPermAccPollRaster = modUtil.ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
@@ -411,7 +411,7 @@ Module modPollutantCalcs
             If modProgDialog.g_boolCancel Then
                 modProgDialog.ProgDialog("Creating data layer...", strTitle, 0, 13, 11, g_frmProjectSetup)
 
-                strOutConc = modUtil.GetUniqueName("conc", g_strWorkspace, ".bgd")
+                strOutConc = modUtil.GetUniqueName("conc", g_strWorkspace, g_FinalOutputGridExt)
 
                 If g_booSelectedPolys Then
                     pPermTotalConcRaster = modUtil.ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, strOutConc)
@@ -429,7 +429,7 @@ Module modPollutantCalcs
             modProgDialog.ProgDialog("Comparing to water quality standard...", strTitle, 0, 13, 13, g_frmProjectSetup)
 
             If modProgDialog.g_boolCancel Then
-                If Not CompareWaterQuality(g_pWaterShedFeatClass, pPermTotalConcRaster) Then
+                If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster) Then
                     CalcPollutantConcentration = False
                     Exit Function
                 End If
@@ -488,7 +488,7 @@ Module modPollutantCalcs
             RasterMath(pPollutantRaster, g_pFlowAccRaster, Nothing, Nothing, Nothing, pConRaster, concalc)
 
 
-            strOutWQ = modUtil.GetUniqueName("wq", g_strWorkspace, ".bgd")
+            strOutWQ = modUtil.GetUniqueName("wq", g_strWorkspace, g_FinalOutputGridExt)
 
             'Clip if selectedpolys
             If g_booSelectedPolys Then

@@ -34,23 +34,24 @@ Friend Class frmUserWShed
         Dim pDEMRasterDataset As MapWinGIS.Grid
 
         pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM GRID", Me, 0)
-
-        'Get the spatial reference
-        Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
-        If strProj = "" Then
-            MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
-            Exit Sub
-        Else
-            If strProj.ToLower.Contains("units=m") Then
-                cboDEMUnits.SelectedIndex = 0
+        If Not pDEMRasterDataset Is Nothing Then
+            'Get the spatial reference
+            Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
+            If strProj = "" Then
+                MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                Exit Sub
             Else
-                cboDEMUnits.SelectedIndex = 1
+                If strProj.ToLower.Contains("units=m") Then
+                    cboDEMUnits.SelectedIndex = 0
+                Else
+                    cboDEMUnits.SelectedIndex = 1
+                End If
+
+                cboDEMUnits.Refresh()
+
             End If
 
-            cboDEMUnits.Refresh()
-
-        End If
-
+        End If        
     End Sub
 
     Private Sub cmdBrowseFlowAcc_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseFlowAcc.Click
@@ -85,6 +86,7 @@ Friend Class frmUserWShed
         
         modProgDialog.ProgDialog("Validating input...", "Adding New Delineation...", 0, 3, 1, Me)
         If Not ValidateDataFormInput() Then
+            modProgDialog.KillDialog()
             Exit Sub
         End If
 
@@ -193,11 +195,52 @@ Friend Class frmUserWShed
             ValidateDataFormInput = False
             Exit Function
         Else
-            If Not (modUtil.RasterExists((txtFlowDir.Text))) Then
+            If Not (modUtil.RasterExists(txtFlowDir.Text)) Then
                 MsgBox("The Flow Direction file selected does not appear to be valid.", MsgBoxStyle.Information, "Invalid Dataset")
                 txtFlowDir.Focus()
                 ValidateDataFormInput = False
                 Exit Function
+            Else
+                Dim tmpFlow As New MapWinGIS.Grid
+                tmpFlow.Open(txtFlowDir.Text)
+                'Really crude check for if an ESRI flow direction grid or TAUDEM. Fails if ESRI grid only has 1, 2, 4, and 8 flows, so leave option for using it. Most with only 1-8 will be non-esri flows though.
+                If tmpFlow.Maximum > 8 Then
+                    tmpFlow.Close()
+                Else
+                    Dim tmpres As Windows.Forms.DialogResult = MsgBox("The Flow Direction file selected does not seem to be an ESRI format flow direction grid. If this file is in TAUDEM format, click Yes to convert it to ESRI format. If you believe this file is ESRI format already, click No to override this error. Otherwise, click cancel to abort the process.", MsgBoxStyle.YesNoCancel, "Flow Direction File Error")
+                    If tmpres = Windows.Forms.DialogResult.Yes Then
+                        Dim flowpath As String
+                        If IO.Path.GetFileName(txtFlowDir.Text) = "sta.adf" Then
+                            flowpath = IO.Path.GetDirectoryName(txtFlowDir.Text) + "_esri" + g_OutputGridExt
+                        Else
+                            flowpath = IO.Path.GetDirectoryName(txtFlowDir.Text) + IO.Path.DirectorySeparatorChar + IO.Path.GetFileNameWithoutExtension(txtFlowDir.Text) + "_esri" + g_OutputGridExt
+                        End If
+                        Dim pESRID8Flow As New MapWinGIS.Grid
+                        Dim tmphead As New MapWinGIS.GridHeader
+                        tmphead.CopyFrom(tmpFlow.Header)
+                        pESRID8Flow.CreateNew(flowpath, tmphead, MapWinGIS.GridDataType.FloatDataType, -1)
+                        Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls(AddressOf tauD8ToESRICellCalc)
+                        RasterMath(tmpFlow, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, tauD8ToESRIcalc)
+                        pESRID8Flow.Header.NodataValue = -1
+                        pESRID8Flow.Save(flowpath)
+                        pESRID8Flow.Close()
+                        txtFlowDir.Text = flowpath
+                        tmpFlow.Close()
+                        If Not (modUtil.RasterExists(txtFlowDir.Text)) Then
+                            MsgBox("The created Flow Direction file does not appear to be valid. Aborting the process.", MsgBoxStyle.Information, "Invalid Dataset")
+                            txtFlowDir.Focus()
+                            ValidateDataFormInput = False
+                            Exit Function
+                        End If
+                    ElseIf tmpres = Windows.Forms.DialogResult.No Then
+                        tmpFlow.Close()
+                    Else
+                        tmpFlow.Close()
+                        txtFlowDir.Focus()
+                        ValidateDataFormInput = False
+                        Exit Function
+                    End If
+                End If
             End If
         End If
 
@@ -241,13 +284,13 @@ Friend Class frmUserWShed
         Dim pDEMRasterDataset As MapWinGIS.Grid
 
         pDEMRasterDataset = AddInputFromGxBrowserText(txtBox, strTitle, Me, 0)
-
-        'Get the spatial reference
-        If CheckSpatialReference(pDEMRasterDataset) Is Nothing Then
-            MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
-            Exit Sub
+        If Not pDEMRasterDataset Is Nothing Then
+            'Get the spatial reference
+            If CheckSpatialReference(pDEMRasterDataset) Is Nothing Then
+                MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                Exit Sub
+            End If
         End If
-
     End Sub
 
     Private Sub Return2BDEM(ByRef strDEMFileName As String, ByRef strFlowDirFileName As String)
@@ -305,7 +348,7 @@ Friend Class frmUserWShed
         ''strExpression = "nibble([fdr_bv],[waia_reg], dataonly)"
 
         'Get nibble's path for use in the database
-        _strNibbleName = modUtil.GetUniqueName("nibble", g_strWorkspace, ".bgd")
+        _strNibbleName = modUtil.GetUniqueName("nibble", g_strWorkspace, g_OutputGridExt)
         modUtil.ReturnPermanentRaster(pNibble, _strNibbleName)
         pNibble.Close()
     End Sub

@@ -108,10 +108,10 @@ Module modMainRun
 
         If g_booSelectedPolys Then
             pMaskGeoDataset = ReturnAnalysisMask(pWShedlayer, strWS)
-            'TODO Zoom to extents of mask
+            g_MapWin.View.Extents = pMaskGeoDataset.Extents
         Else
             pMaskGeoDataset = Nothing
-            'TODO zoom to full boundary
+            g_MapWin.View.ZoomToMaxExtents()
         End If
 
         'STEP 3: With the Rasterdataset set, get its properties
@@ -172,19 +172,23 @@ Module modMainRun
         g_pSelectedPolyClip = ReturnSelectGeometry(g_strSelectedExportPath)
         Dim sfSelected As MapWinGIS.Shapefile = modUtil.ReturnFeature(g_strSelectedExportPath)
 
-        'Make a call to get the BasinPoly featureclass using the name sent over
-        Dim basinSF As MapWinGIS.Shapefile = modUtil.ReturnFeature(strBasinFeatClass)
+        'ARA 12/5/2010 Since this is purely used for zoom, intersecting with the basins is kind of pointless and ExportShapesWithPolygons isn't working anyways, so just returning the extents of the selection area.
+        Return sfSelected
 
-        'Get unique name for output
-        Dim strOutPath As String = modUtil.GetUniqueName("selshed", g_strWorkspace, ".shp")
-        Dim sfOut As New MapWinGIS.Shapefile
 
-        'Intersect watersheds by selection shapefile
-        If MapWinGeoProc.Selection.ExportShapesWithPolygons(basinSF, sfSelected, sfOut) Then
-            sfOut.SaveAs(strOutPath)
-        End If
+        ''Make a call to get the BasinPoly featureclass using the name sent over
+        'Dim basinSF As MapWinGIS.Shapefile = modUtil.ReturnFeature(strBasinFeatClass)
 
-        Return sfOut
+        ''Get unique name for output
+        'Dim strOutPath As String = modUtil.GetUniqueName("selshed", g_strWorkspace, ".shp")
+        'Dim sfOut As New MapWinGIS.Shapefile
+
+        ''Intersect watersheds by selection shapefile
+        'If MapWinGeoProc.Selection.ExportShapesWithPolygons(basinSF, sfSelected, sfOut) Then
+        '    sfOut.SaveAs(strOutPath)
+        'End If
+
+        'Return sfOut
     End Function
 
     Public Function CheckMultiPartPolygon(ByVal pPolygon As MapWinGIS.Shape) As Boolean
@@ -202,7 +206,7 @@ Module modMainRun
         Dim sfSelected As MapWinGIS.Shapefile = modUtil.ReturnFeature(strInputSF)
         If Not sfSelected Is Nothing Then
             Dim unionShape As MapWinGIS.Shape = sfSelected.Shape(0)
-            For i As Integer = 0 To sfSelected.NumShapes
+            For i As Integer = 1 To sfSelected.NumShapes - 1
                 unionShape = MapWinGeoProc.SpatialOperations.Union(unionShape, sfSelected.Shape(i))
             Next
             sfSelected.Close()

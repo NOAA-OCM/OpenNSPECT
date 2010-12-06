@@ -62,6 +62,12 @@ Module modUtil
     Public g_frmProjectSetup As Windows.Forms.Form
 
 
+
+    Public g_OutputGridExt As String = ".bgd"
+    Public g_FinalOutputGridExt As String = ".tif"
+    Public g_TAUDEMGridExt As String = ".bgd"
+
+
     Const c_sModuleFileName As String = "modUtil.vb"
     Private m_ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
 
@@ -226,6 +232,7 @@ Module modUtil
     End Function
 
     Public Function GetLayerIndex(ByRef strLayerName As String) As Integer
+        GetLayerIndex = -1
         Try
             For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
                 Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(lngLyrIndex)
@@ -238,7 +245,6 @@ Module modUtil
         Catch ex As Exception
             HandleError(True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
-        GetLayerIndex = -1
     End Function
 
     Public Function GetLayerFilename(ByRef strLayerName As String) As String
@@ -432,9 +438,13 @@ Module modUtil
     End Function
 
     Public Function ReturnPermanentRaster(ByRef pRaster As MapWinGIS.Grid, ByRef sOutputName As String) As MapWinGIS.Grid
+        pRaster.Save()
         pRaster.Save(sOutputName)
         pRaster.Header.Projection = g_MapWin.Project.ProjectProjection
-        Return pRaster
+
+        Dim tmpraster As New MapWinGIS.Grid
+        tmpraster.Open(sOutputName)
+        Return tmpraster
     End Function
 
     Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As MapWinGIS.Grid, ByRef strColor As String) As MapWinGIS.GridColorScheme
@@ -570,26 +580,30 @@ Module modUtil
     Public Function CheckSpatialReference(ByRef pRasGeoDataset As MapWinGIS.Grid) As String
         CheckSpatialReference = ""
         Try
-            Dim strprj As String = pRasGeoDataset.Header.Projection
-            If strprj <> "" Then
-                Return strprj
-            Else
-                If IO.Path.GetFileName(pRasGeoDataset.Filename) = "sta.adf" Then
-                    If IO.File.Exists(IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + IO.Path.DirectorySeparatorChar + "prj.adf") Then
-                        Dim infile As New IO.StreamReader(IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + IO.Path.DirectorySeparatorChar + "prj.adf")
-                        'TODO: Temporary measure that allows at least units to be recognized
-                        If infile.ReadToEnd.Contains("METERS") Then
-                            Return "units=m"
+            If Not pRasGeoDataset Is Nothing Then
+                Dim strprj As String = pRasGeoDataset.Header.Projection
+                If strprj <> "" Then
+                    Return strprj
+                Else
+                    If IO.Path.GetFileName(pRasGeoDataset.Filename) = "sta.adf" Then
+                        If IO.File.Exists(IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + IO.Path.DirectorySeparatorChar + "prj.adf") Then
+                            Dim infile As New IO.StreamReader(IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + IO.Path.DirectorySeparatorChar + "prj.adf")
+                            'TODO: Temporary measure that allows at least units to be recognized
+                            If infile.ReadToEnd.Contains("METERS") Then
+                                Return "units=m"
+                            Else
+                                Return "units=ft"
+                            End If
+                            Return "convert this prj.adf to real projection"
                         Else
-                            Return "units=ft"
+                            Return ""
                         End If
-                        Return "convert this prj.adf to real projection"
                     Else
                         Return ""
                     End If
-                Else
-                    Return ""
                 End If
+            Else
+                Return ""
             End If
         Catch ex As Exception
             HandleError(True, "CheckSpatialReference " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
@@ -597,9 +611,11 @@ Module modUtil
     End Function
 
     Public Function ClipBySelectedPoly(ByRef pAccumRunoffRaster As MapWinGIS.Grid, ByVal g_pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As MapWinGIS.Grid
-        Dim strtmp1 As String = IO.Path.GetTempFileName
-        MapWinGeoProc.DataManagement.DeleteGrid(strtmp1 + ".bgd")
-        pAccumRunoffRaster.Save(+".bgd")
+        Dim strtmp1 As String = IO.Path.GetTempFileName + g_OutputGridExt
+        MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
+        pAccumRunoffRaster.Save()
+        pAccumRunoffRaster.Save(strtmp1)
+        pAccumRunoffRaster.Header.Projection = g_MapWin.Project.ProjectProjection
 
         MapWinGeoProc.SpatialOperations.ClipGridWithPolygon(strtmp1, g_pSelectedPolyClip, outputFileName)
 
@@ -855,6 +871,7 @@ Module modUtil
                 'Create the new shapefile
                 newShapefile = New MapWinGIS.Shapefile
                 newShapefile.CreateNew(sFileName, ShapefileType)
+                newShapefile.Projection = g_MapWin.Project.ProjectProjection
 
                 'The new shapefile has no fields at this point
                 For iFieldCnt = 0 To myShapeFile.NumFields - 1
@@ -902,7 +919,7 @@ Module modUtil
         Dim nrow As Integer
         Dim nodata1, nodata2, nodata3, nodata4, nodata5, nodataout As Single
         Dim rowvals1(), rowvals2(), rowvals3(), rowvals4(), rowvals5(), rowvalsout() As Single
-
+        Dim tmppath As String = IO.Path.GetTempFileName + g_OutputGridExt
         nodataout = -9999.0
 
         head1 = InputGrid1.Header
@@ -910,7 +927,7 @@ Module modUtil
         headnew.CopyFrom(head1)
         headnew.NodataValue = nodataout
         Outputgrid = New MapWinGIS.Grid()
-        Outputgrid.CreateNew("", headnew, MapWinGIS.GridDataType.FloatDataType, headnew.NodataValue)
+        Outputgrid.CreateNew(tmppath, headnew, MapWinGIS.GridDataType.FloatDataType, headnew.NodataValue)
         Outputgrid.Header.Projection = head1.Projection
         ncol = head1.NumberCols - 1
         nrow = head1.NumberRows - 1
@@ -994,6 +1011,7 @@ Module modUtil
         Dim nodata1, nodata2, nodata3, nodata4, nodata5, nodataout As Single
         Dim rowvals1(3)(), rowvals2(3)(), rowvals3(3)(), rowvals4(3)(), rowvals5(3)(), rowvalsout() As Single
         Dim InputBox1(3, 3), InputBox2(3, 3), InputBox3(3, 3), InputBox4(3, 3), InputBox5(3, 3) As Single
+        Dim tmppath As String = IO.Path.GetTempFileName + g_OutputGridExt
 
         nodataout = -9999.0
 
@@ -1002,7 +1020,7 @@ Module modUtil
         headnew.CopyFrom(head1)
         headnew.NodataValue = nodataout
         Outputgrid = New MapWinGIS.Grid()
-        Outputgrid.CreateNew("", headnew, MapWinGIS.GridDataType.FloatDataType, headnew.NodataValue)
+        Outputgrid.CreateNew(tmppath, headnew, MapWinGIS.GridDataType.FloatDataType, headnew.NodataValue)
         Outputgrid.Header.Projection = head1.Projection
         ncol = head1.NumberCols - 1
         nrow = head1.NumberRows - 1

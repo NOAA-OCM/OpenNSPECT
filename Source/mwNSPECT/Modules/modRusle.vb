@@ -341,7 +341,7 @@ Module modRusle
 
                     'STEP 12: Local Effects -------------------------------------------------
 
-                    strOutYield = modUtil.GetUniqueName("locrusle", g_strWorkspace, ".bgd")
+                    strOutYield = modUtil.GetUniqueName("locrusle", g_strWorkspace, g_FinalOutputGridExt)
                     If g_booSelectedPolys Then
                         pPermRUSLELocRaster = modUtil.ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
                     Else
@@ -378,15 +378,15 @@ Module modRusle
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp2 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 pSedYieldRaster.Save(strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName + "out.bgd"
+                Dim strtmpout As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
 
@@ -408,7 +408,7 @@ Module modRusle
             modProgDialog.ProgDialog("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, 13, g_frmProjectSetup)
 
             If modProgDialog.g_boolCancel Then
-                strOutYield = modUtil.GetUniqueName("RUSLE", g_strWorkspace, ".bgd")
+                strOutYield = modUtil.GetUniqueName("RUSLE", g_strWorkspace, g_FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
