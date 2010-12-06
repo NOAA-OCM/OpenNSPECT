@@ -276,6 +276,7 @@ Friend Class frmProjectSetup
         Try
             If cboWQStd.Text = "New water quality standard..." Then
                 Dim fNewWQ As New frmAddWQStd
+                fNewWQ.Init(Nothing, Me)
                 fNewWQ.ShowDialog()
             Else
                 PopulatePollutants()

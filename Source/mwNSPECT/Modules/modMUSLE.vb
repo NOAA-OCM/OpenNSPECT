@@ -385,17 +385,17 @@ Module modMUSLE
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strLongestOut As String = IO.Path.GetTempFileName + "out.bgd"
+                Dim strLongestOut As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strLongestOut)
 
-                Dim strTotalOut As String = IO.Path.GetTempFileName + "out.bgd"
+                Dim strTotalOut As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strTotalOut)
 
-                Dim strStrahlOut As String = IO.Path.GetTempFileName + "out.bgd"
+                Dim strStrahlOut As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strStrahlOut)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
@@ -434,7 +434,7 @@ Module modMUSLE
             If modProgDialog.g_boolCancel Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
-                Dim strtmpslpout As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmpslpout As String = IO.Path.GetTempFileName + g_OutputGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpslpout)
                 MapWinGeoProc.TerrainAnalysis.Slope2(g_pDEMRaster.Filename, 1, strtmpslpout, True, Nothing)
                 'strExpression = "slope([dem], percentrise)"
@@ -458,7 +458,7 @@ Module modMUSLE
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
                 RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, pQuRaster, AllMUSLECalc)
             End If
-            'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, ".bgd"))
+            'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, g_OutputGridExt))
 
             modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 22, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
@@ -468,7 +468,7 @@ Module modMUSLE
                 RasterMath(pQuRaster, g_LandCoverRaster, g_pDEMRaster, g_pMetRunoffRaster, Nothing, pHISYTempRaster, AllMUSLECalc2)
                 pQuRaster.Close()
             End If
-            'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, ".bgd"))
+            'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, g_OutputGridExt))
 
             modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 25, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
@@ -478,7 +478,7 @@ Module modMUSLE
                 RasterMath(pHISYTempRaster, g_LandCoverRaster, g_KFactorRaster, g_pLSRaster, Nothing, pHISYMGRaster, AllMUSLECalc3)
                 pHISYTempRaster.Close()
             End If
-            'modUtil.ReturnPermanentRaster(pHISYMGRaster, modUtil.GetUniqueName("hisymg", g_strWorkspace, ".bgd"))
+            'modUtil.ReturnPermanentRaster(pHISYMGRaster, modUtil.GetUniqueName("hisymg", g_strWorkspace, g_OutputGridExt))
 
 
             Dim pHISYMGRasterNoNull As MapWinGIS.Grid = Nothing
@@ -490,7 +490,7 @@ Module modMUSLE
                 modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 27, 27, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
 
-                    strMUSLE = modUtil.GetUniqueName("locmusle", g_strWorkspace, ".bgd")
+                    strMUSLE = modUtil.GetUniqueName("locmusle", g_strWorkspace, g_FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
                         pPermMUSLERaster = modUtil.ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
@@ -525,16 +525,16 @@ Module modMUSLE
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp2 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 pHISYMGRasterNoNull.Save(strtmp2)
                 'pHISYMGRaster.Save(strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName + "out.bgd"
+                Dim strtmpout As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
 
@@ -556,7 +556,7 @@ Module modMUSLE
             If modProgDialog.g_boolCancel Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
-                strMUSLE = modUtil.GetUniqueName("MUSLEmass", g_strWorkspace, ".bgd")
+                strMUSLE = modUtil.GetUniqueName("MUSLEmass", g_strWorkspace, g_FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then

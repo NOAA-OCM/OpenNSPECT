@@ -458,7 +458,7 @@ Module modRunoff
                 If modProgDialog.g_boolCancel Then
 
                     'STEP 12: Local Effects -------------------------------------------------
-                    strOutAccum = modUtil.GetUniqueName("locaccum", g_strWorkspace, ".bgd")
+                    strOutAccum = modUtil.GetUniqueName("locaccum", g_strWorkspace, g_FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
                         pPermAccumLocRunoffRaster = modUtil.ClipBySelectedPoly(g_pMetRunoffRaster, g_pSelectedPolyClip, strOutAccum)
@@ -492,15 +492,15 @@ Module modRunoff
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName + ".bgd"
+                Dim strtmp2 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 g_pMetRunoffRaster.Save(strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName + "out.bgd"
+                Dim strtmpout As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
 
@@ -524,7 +524,7 @@ Module modRunoff
             modProgDialog.ProgDialog("Creating Runoff Layer...", strTitle, 0, 10, 10, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'Get a unique name for accumulation GRID
-                strOutAccum = modUtil.GetUniqueName("runoff", g_strWorkspace, ".bgd")
+                strOutAccum = modUtil.GetUniqueName("runoff", g_strWorkspace, g_FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
@@ -541,7 +541,7 @@ Module modRunoff
                 g_dicMetadata.Add("Accumulated Runoff (L)", _strRunoffMetadata)
 
                 'Global Runoff
-                g_pRunoffRaster = pPermAccumRunoffRaster
+                g_pRunoffRaster = pAccumRunoffRaster
             Else
                 Exit Function
             End If
@@ -671,6 +671,31 @@ Module modRunoff
             Return 3
         ElseIf Input1 = 128 Then
             Return 2
+        ElseIf Input1 = Input1Null Then
+            Return -1
+        Else
+            Return -1
+        End If
+    End Function
+
+    Public Function tauD8ToESRICellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+        'ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
+        If Input1 = 1 Then
+            Return 1
+        ElseIf Input1 = 8 Then
+            Return 2
+        ElseIf Input1 = 7 Then
+            Return 4
+        ElseIf Input1 = 6 Then
+            Return 8
+        ElseIf Input1 = 5 Then
+            Return 16
+        ElseIf Input1 = 4 Then
+            Return 32
+        ElseIf Input1 = 3 Then
+            Return 64
+        ElseIf Input1 = 2 Then
+            Return 128
         ElseIf Input1 = Input1Null Then
             Return -1
         Else

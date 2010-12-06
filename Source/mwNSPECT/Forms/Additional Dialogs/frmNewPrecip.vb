@@ -133,6 +133,9 @@ Friend Class frmNewPrecip
                 Exit Sub
             End If
         Else
+            If Not _frmPrj Is Nothing Then
+                _frmPrj.cboPrecipScen.SelectedIndex = 0
+            End If
             Me.Close()
         End If
     End Sub

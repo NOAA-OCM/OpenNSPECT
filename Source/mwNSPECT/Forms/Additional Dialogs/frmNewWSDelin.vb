@@ -84,33 +84,34 @@ Friend Class frmNewWSDelin
         Dim pDEMRasterDataset As MapWinGIS.Grid
 
         pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM GRID", Me, 0)
-
-        'Get the spatial reference
-        Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
-        If strProj = "" Then
-            MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
-            Exit Sub
-        Else
-            If strProj.ToLower.Contains("units=m") Then
-                cboDEMUnits.SelectedIndex = 0
+        If Not pDEMRasterDataset Is Nothing Then
+            'Get the spatial reference
+            Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
+            If strProj = "" Then
+                MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                Exit Sub
             Else
-                cboDEMUnits.SelectedIndex = 1
+                If strProj.ToLower.Contains("units=m") Then
+                    cboDEMUnits.SelectedIndex = 0
+                Else
+                    cboDEMUnits.SelectedIndex = 1
+                End If
+
+                cboDEMUnits.Refresh()
+
             End If
 
-            cboDEMUnits.Refresh()
+            _InputDEMPath = pDEMRasterDataset.Filename
+            txtDEMFile.Text = _InputDEMPath
 
+            pDEMRasterDataset.Close()
+
+            CheckEnabled()
+
+            ''Get the name
+            '_strDemArray = Split(pDEMRasterDataset.CompleteName, "\")
+            '_strDemName = m_strDemArray(UBound(m_strDemArray))
         End If
-
-        _InputDEMPath = pDEMRasterDataset.Filename
-        txtDEMFile.Text = _InputDEMPath
-
-        pDEMRasterDataset.Close()
-
-        CheckEnabled()
-
-        ''Get the name
-        '_strDemArray = Split(pDEMRasterDataset.CompleteName, "\")
-        '_strDemName = m_strDemArray(UBound(m_strDemArray))
     End Sub
 
     Private Sub chkHydroCorr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkHydroCorr.CheckedChanged
@@ -153,12 +154,10 @@ Friend Class frmNewWSDelin
             intvbYesNo = MsgBox("Are you sure you want to exit?  Your changes will not be saved.", MsgBoxStyle.YesNo, "Exit")
 
             If intvbYesNo = MsgBoxResult.Yes Then
-                If _booProject Then
-                    _frmPrj.cboWSDelin.SelectedIndex = 0
-                    Me.Close()
-                Else
-                    Me.Close()
+                If Not _frmPrj Is Nothing Then
+                    _frmPrj.cboPrecipScen.SelectedIndex = 0
                 End If
+                Me.Close()
             Else
                 Exit Sub
             End If
@@ -339,7 +338,7 @@ Friend Class frmNewWSDelin
                 'Call to ProgDialog to use throughout process: keep user informed.
 
                 If modProgDialog.g_boolCancel Then
-                    _strFilledDEMFileName = OutPath + "demfill.bgd"
+                    _strFilledDEMFileName = OutPath + "demfill" + g_OutputGridExt
                     MapWinGeoProc.Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
                     pFillRaster.Open(_strFilledDEMFileName)
                 Else
@@ -351,19 +350,30 @@ Friend Class frmNewWSDelin
             'STEP 2: Flow Direction
             modProgDialog.ProgDialog("Computing Flow Direction...", strProgTitle, 0, 10, 2, Me)
 
-            _strDirFileName = OutPath + "flowdir.bgd"
-            Dim strSlpFileName As String = OutPath + "slope.bgd"
+            Dim mwDirFileName As String = OutPath + "mwflowdir" + g_OutputGridExt
+            _strDirFileName = OutPath + "flowdir" + g_OutputGridExt
+            Dim strSlpFileName As String = OutPath + "slope" + g_OutputGridExt
             If modProgDialog.g_boolCancel Then
-                ret = MapWinGeoProc.Hydrology.D8(pFillRaster.Filename, _strDirFileName, strSlpFileName, Nothing)
+                ret = MapWinGeoProc.Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Nothing)
                 If ret <> 0 Then Return False
-                pFlowDirRaster.Open(_strDirFileName)
+                pFlowDirRaster.Open(mwDirFileName)
+
+                Dim pESRID8Flow As New MapWinGIS.Grid
+                Dim tmphead As New MapWinGIS.GridHeader
+                tmphead.CopyFrom(pFlowDirRaster.Header)
+                pESRID8Flow.CreateNew(_strDirFileName, tmphead, MapWinGIS.GridDataType.FloatDataType, -1)
+                Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls(AddressOf tauD8ToESRICellCalc)
+                RasterMath(pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, tauD8ToESRIcalc)
+                pESRID8Flow.Header.NodataValue = -1
+                pESRID8Flow.Save(_strDirFileName)
+                pESRID8Flow.Close()
             Else
                 Return False
             End If
 
             'STEP 3: Flow Accumulation
             modProgDialog.ProgDialog("Computing Flow Accumulation...", strProgTitle, 0, 10, 3, Me)
-            _strAccumFileName = OutPath + "flowacc.bgd"
+            _strAccumFileName = OutPath + "flowacc" + g_OutputGridExt
             If modProgDialog.g_boolCancel Then
                 ret = MapWinGeoProc.Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Nothing)
                 If ret <> 0 Then Return False
@@ -390,14 +400,14 @@ Friend Class frmNewWSDelin
             End Select
 
 
-            strahlordout = OutPath + "strahlord.bgd"
-            longestupslopeout = OutPath + "longestupslope.bgd"
-            totalupslopeout = OutPath + "totalupslope.bgd"
-            streamgridout = OutPath + "streamgrid.bgd"
-            streamordout = OutPath + "streamord.bgd"
+            strahlordout = OutPath + "strahlord" + g_OutputGridExt
+            longestupslopeout = OutPath + "longestupslope" + g_OutputGridExt
+            totalupslopeout = OutPath + "totalupslope" + g_OutputGridExt
+            streamgridout = OutPath + "streamgrid" + g_OutputGridExt
+            streamordout = OutPath + "streamord" + g_OutputGridExt
             treedatout = OutPath + "tree.dat"
             coorddatout = OutPath + "coord.dat"
-            strWSGridOut = OutPath + "wsgrid.bgd"
+            strWSGridOut = OutPath + "wsgrid" + g_OutputGridExt
             strWSSFOut = OutPath + "ws.shp"
             
             '        'Step 5: Using Hydrology Op to create stream network
@@ -440,7 +450,7 @@ Friend Class frmNewWSDelin
 
             'With all of that done, now go get the name of the LS Grid while actually computing said LS Grid
             '_strLSFileName = CalcLengthSlope(pFillRaster, pFlowDirRaster, pAccumRaster, pEnv, "0", pWorkspace)
-            _strLSFileName = OutPath + "lsgrid.bgd"
+            _strLSFileName = OutPath + "lsgrid" + g_OutputGridExt
             Dim g As New MapWinGIS.Grid
             g.Open(longestupslopeout)
             g.Save(_strLSFileName)
@@ -491,12 +501,12 @@ Friend Class frmNewWSDelin
 
 
             '#2 init the rasterconverter and create the poly
-            'Dim outMaskPath As String = IO.Path.GetTempFileName() + ".bgd"
+            'Dim outMaskPath As String = IO.Path.GetTempFileName() + g_OutputGridExt
             'pMaskCalcRaster.Save(outMaskPath)
             'Dim outShapePath As String = IO.Path.GetTempFileName() + ".shp"
 
 
-            'Dim outMaskPath2 As String = IO.Path.GetTempFileName() + ".bgd"
+            'Dim outMaskPath2 As String = IO.Path.GetTempFileName() + g_OutputGridExt
             'Dim g As New MapWinGIS.Grid
             'Dim ghead As New MapWinGIS.GridHeader
             'ghead.CopyFrom(pMaskCalcRaster.Header)
@@ -512,7 +522,7 @@ Friend Class frmNewWSDelin
             'Next
             'pMaskCalcRaster.Close()
             'g.Save(outMaskPath)
-            'Dim outdirPath As String = IO.Path.GetTempFileName() + "dir.bgd"
+            'Dim outdirPath As String = IO.Path.GetTempFileName() + "dir" + g_OutputGridExt
             'g.Save(outdirPath)
             'pMaskCalcRaster.Open(outMaskPath)
 
@@ -1098,6 +1108,7 @@ Friend Class frmNewWSDelin
             Return OutNull
         End If
     End Function
+
 
 #End Region
 
