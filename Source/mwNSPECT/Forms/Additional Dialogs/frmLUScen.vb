@@ -25,9 +25,12 @@ Friend Class frmLUScen
     Private _strWQStd As String
     Private _frmPrj As frmProjectSetup
     Private _stopClose As Boolean
+    Private _SelectLyrPath As String
+    Private _SelectedShapes As Collections.Generic.List(Of Integer)
 
 #Region "Events"
     Private Sub frmLUScen_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        g_luscen = Me
         cboLULayer.Items.Clear()
         For i As Integer = 0 To g_MapWin.Layers.NumLayers - 1
             If g_MapWin.Layers(i).LayerType = MapWindow.Interfaces.eLayerType.PolygonShapefile Then
@@ -71,6 +74,15 @@ Friend Class frmLUScen
         End If
     End Sub
 
+    Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
+        Dim selectfrm As New frmSelectShape
+        selectfrm.Initialize()
+    End Sub
+
+    Private Sub cboLULayer_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles cboLULayer.MouseClick
+        _SelectLyrPath = ""
+        _SelectedShapes.Clear()
+    End Sub
 #End Region
 
 #Region "Helper Subs"
@@ -89,6 +101,7 @@ Friend Class frmLUScen
             .strLUScenLyrName = Trim(cboLULayer.Text)
             .strLUScenFileName = modUtil.GetLayerFilename(.strLUScenLyrName)
             .intLUScenSelectedPoly = chkSelectedPolys.CheckState
+            .intLUScenSelectedPolyList = _SelectedShapes
             .intSCSCurveA = CDbl(_txtLUCN_0.Text)
             .intSCSCurveB = CDbl(_txtLUCN_1.Text)
             .intSCSCurveC = CDbl(_txtLUCN_2.Text)
@@ -142,8 +155,8 @@ Friend Class frmLUScen
 
         'Check selected polygons
         If chkSelectedPolys.CheckState = 1 Then
-            If g_MapWin.View.SelectedShapes.NumSelected = 0 Then
-                MsgBox("You have chosen to use selected polygons from " & cboLULayer.Text & ", but the current map contains no selected features." & vbNewLine & "Please select features or N-SPECT will use the entire extent of " & cboLULayer.Text & " to apply this landuse scenario.", MsgBoxStyle.Information, "No Selected Features Found")
+            If _SelectLyrPath = "" Or _SelectedShapes.Count = 0 Then
+                MsgBox("You have chosen to use selected polygons from " & cboLULayer.Text & ", but there are no selected features." & vbNewLine & "Please select features or N-SPECT will use the entire extent of " & cboLULayer.Text & " to apply this landuse scenario.", MsgBoxStyle.Information, "No Selected Features Found")
                 ValidateData = False
             End If
         End If
@@ -218,6 +231,10 @@ Friend Class frmLUScen
 
         chkSelectedPolys.CheckState = _clsManScen.intLUScenSelectedPoly
 
+        _SelectLyrPath = modUtil.GetLayerFilename(_clsManScen.strLUScenLyrName)
+        _SelectedShapes = _clsManScen.intLUScenSelectedPolyList
+        lblSelected.Text = _SelectedShapes.Count.ToString + " selected"
+
         _txtLUCN_0.Text = CStr(_clsManScen.intSCSCurveA)
         _txtLUCN_1.Text = CStr(_clsManScen.intSCSCurveB)
         _txtLUCN_2.Text = CStr(_clsManScen.intSCSCurveC)
@@ -275,6 +292,26 @@ Friend Class frmLUScen
             MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
         End If
 
+    End Sub
+
+    Public Sub SetSelectedShape()
+        If g_MapWin.Layers.CurrentLayer <> -1 And g_MapWin.View.SelectedShapes.NumSelected > 0 Then
+            chkSelectedPolys.Checked = True
+            cboLULayer.Items.Clear()
+            For i As Integer = 0 To g_MapWin.Layers.NumLayers - 1
+                If g_MapWin.Layers(i).LayerType = MapWindow.Interfaces.eLayerType.PolygonShapefile Then
+                    cboLULayer.Items.Add(g_MapWin.Layers(i).Name)
+                End If
+            Next
+            cboLULayer.SelectedIndex = modUtil.GetCboIndex(g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).Name, cboLULayer)
+
+            _SelectLyrPath = g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).FileName
+            _SelectedShapes = New Collections.Generic.List(Of Integer)
+            For i As Integer = 0 To g_MapWin.View.SelectedShapes.NumSelected - 1
+                _SelectedShapes.Add(g_MapWin.View.SelectedShapes(i).ShapeIndex)
+            Next
+            lblSelected.Text = g_MapWin.View.SelectedShapes.NumSelected.ToString + " selected"
+        End If
     End Sub
 #End Region
 

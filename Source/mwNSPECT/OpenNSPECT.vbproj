@@ -132,6 +132,8 @@
     <Compile Include="Classes\clsXMLPollutantItem.vb" />
     <Compile Include="Classes\clsXMLPollutantItems.vb" />
     <Compile Include="Classes\clsXMLPrjFile.vb" />
+    <Compile Include="Classes\clsXMLOutputItem.vb" />
+    <Compile Include="Classes\clsXMLOutputItems.vb" />
     <Compile Include="Classes\mwNSPECT.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -235,6 +237,18 @@
       <DependentUpon>frmPrecipitation.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\Advanced Settings\frmPrecipitation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCompareOutputs.Designer.vb">
+      <DependentUpon>frmCompareOutputs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmCompareOutputs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSelectShape.Designer.vb">
+      <DependentUpon>frmSelectShape.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSelectShape.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmProjectSetup.designer.vb">
@@ -344,6 +358,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Advanced Settings\frmPrecipitation.resX">
       <DependentUpon>frmPrecipitation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmCompareOutputs.resx">
+      <DependentUpon>frmCompareOutputs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSelectShape.resx">
+      <DependentUpon>frmSelectShape.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmProjectSetup.resX">
       <DependentUpon>frmProjectSetup.vb</DependentUpon>

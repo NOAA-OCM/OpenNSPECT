@@ -63,7 +63,7 @@ Module modMainRun
     Public g_pGroupLayer As Integer = -1
 
 
-    Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByRef pWShedlayer As MapWindow.Interfaces.Layer = Nothing)
+    Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", Optional ByRef SelectedShapes As Collections.Generic.List(Of Integer) = Nothing)
         'GOAL:  Set the analysis environment based on the properties of the DEM, and establish
         'the other contributing datasets: Watersheds, flow direction, flow accumulation, length/slope
         'Incoming Parameters:
@@ -107,7 +107,7 @@ Module modMainRun
         g_pWaterShedFeatClass = modUtil.ReturnFeature(strWS)
 
         If g_booSelectedPolys Then
-            pMaskGeoDataset = ReturnAnalysisMask(pWShedlayer, strWS)
+            pMaskGeoDataset = ReturnAnalysisMask(SelectedPath, SelectedShapes, strWS)
             g_MapWin.View.Extents = pMaskGeoDataset.Extents
         Else
             pMaskGeoDataset = Nothing
@@ -160,7 +160,7 @@ Module modMainRun
     End Sub
 
 
-    Private Function ReturnAnalysisMask(ByRef pLayer As MapWindow.Interfaces.Layer, ByRef strBasinFeatClass As String) As MapWinGIS.Shapefile
+    Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As Collections.Generic.List(Of Integer), ByRef strBasinFeatClass As String) As MapWinGIS.Shapefile
         'Incoming
         'pLayer: Layer user has chosen as being the one from which the selected polys will come
         'pMap: current map
@@ -168,7 +168,7 @@ Module modMainRun
         'strBasinFeatClass: string file location of BasinPoly.shp
         ReturnAnalysisMask = Nothing
 
-        g_strSelectedExportPath = modUtil.ExportSelectedFeatures()
+        g_strSelectedExportPath = modUtil.ExportSelectedFeatures(SelectedPath, SelectedShapes)
         g_pSelectedPolyClip = ReturnSelectGeometry(g_strSelectedExportPath)
         Dim sfSelected As MapWinGIS.Shapefile = modUtil.ReturnFeature(g_strSelectedExportPath)
 
@@ -200,7 +200,7 @@ Module modMainRun
     End Function
 
 
-    Private Function ReturnSelectGeometry(ByVal strInputSF As String) As MapWinGIS.Shape
+    Public Function ReturnSelectGeometry(ByVal strInputSF As String) As MapWinGIS.Shape
         ReturnSelectGeometry = Nothing
 
         Dim sfSelected As MapWinGIS.Shapefile = modUtil.ReturnFeature(strInputSF)

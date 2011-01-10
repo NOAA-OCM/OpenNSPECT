@@ -57,6 +57,7 @@ Friend Class clsXMLPrjFile
     Private Const NODE_SelectedPolys As String = "SelectedPolygons"
     Private Const NODE_SelectedPolyLyrName As String = "SelectedPolyLyrName"
     Private Const NODE_SelectedPolyFileName As String = "SelectedPolyFileName"
+    Private Const NODE_SelectedPolyList As String = "SelectedPolyList"
     Private Const NODE_LocalEffects As String = "LocalEffects"
     Private Const NODE_CalcErosion As String = "CalcErosion"
     '****************** Added 12/03/07 **************************
@@ -85,15 +86,14 @@ Friend Class clsXMLPrjFile
     Public intSelectedPolys As Short
     Public strSelectedPolyFileName As String
     Public strSelectedPolyLyrName As String
+    Public intSelectedPolyList As New Collections.Generic.List(Of Integer)
     Public intLocalEffects As Short
 
     'Class holders for DataGrid goodies
     Public clsMgmtScenHolder As clsXMLMgmtScenItems 'A collection of management scenarios
-    Public clsMgmtScenItem As clsXMLMgmtScenItem 'A single Managment Scenario
     Public clsPollItems As clsXMLPollutantItems 'A collection of pollutants from pollutants tab
-    Public clsPollItem As clsXMLPollutantItem 'A Single pollutant
     Public clsLUItems As clsXMLLandUseItems 'A collection of land uses
-    Public clsLUItem As clsXMLLandUseItem 'A single land use
+    Public clsOutputItems As clsXMLOutputItems 'A collection of outputs
 
     Public intCalcErosion As Short
     Public intUseOwnSDR As Short
@@ -189,6 +189,12 @@ Friend Class clsXMLPrjFile
         NodeAppendChildElement(dom, node, NODE_WaterQuality, strWaterQuality)
         NodeAppendChildElement(dom, node, NODE_SelectedPolys, intSelectedPolys)
         NodeAppendChildElement(dom, node, NODE_SelectedPolyFileName, strSelectedPolyFileName)
+        Dim strlist As String = ""
+        If intSelectedPolyList.Count > 0 Then strlist = intSelectedPolyList(0).ToString
+        For i As Integer = 1 To intSelectedPolyList.Count - 1
+            strlist = strlist + "," + intSelectedPolyList(i).ToString
+        Next
+        NodeAppendChildElement(dom, node, NODE_SelectedPolyList, strlist)
         NodeAppendChildElement(dom, node, NODE_SelectedPolyLyrName, strSelectedPolyLyrName)
         NodeAppendChildElement(dom, node, NODE_LocalEffects, intLocalEffects)
         NodeAppendChildElement(dom, node, NODE_CalcErosion, intCalcErosion)
@@ -215,6 +221,10 @@ Friend Class clsXMLPrjFile
         'Format
         node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
         clsLUItems.CreateNode(node)
+
+        'Format
+        node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+        clsOutputItems.CreateNode(node)
 
         'Format
         node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
@@ -245,6 +255,13 @@ Friend Class clsXMLPrjFile
         strWaterQuality = GetNodeText(node, NODE_WaterQuality)
         intSelectedPolys = CShort(GetNodeText(node, NODE_SelectedPolys))
         strSelectedPolyFileName = GetNodeText(node, NODE_SelectedPolyFileName)
+        Dim tmpstr As String() = GetNodeText(node, NODE_SelectedPolyList).Split(",")
+        intSelectedPolyList.Clear()
+        For i As Integer = 0 To tmpstr.Length - 1
+            If tmpstr(i) <> "" Then
+                intSelectedPolyList.Add(CShort(tmpstr(i)))
+            End If
+        Next
         intLocalEffects = CShort(GetNodeText(node, NODE_LocalEffects))
         intCalcErosion = CShort(GetNodeText(node, NODE_CalcErosion))
         intUseOwnSDR = CShort(GetNodeText(node, NODE_UseOWNSDR, "integer"))
@@ -258,18 +275,16 @@ Friend Class clsXMLPrjFile
         clsMgmtScenHolder.LoadNode(node.SelectSingleNode(clsMgmtScenHolder.NodeName))
         clsPollItems.LoadNode(node.SelectSingleNode(clsPollItems.NodeName))
         clsLUItems.LoadNode(node.SelectSingleNode(clsLUItems.NodeName))
-
+        clsOutputItems.LoadNode(node.SelectSingleNode(clsOutputItems.NodeName))
     End Sub
 
 
     Public Sub New()
 
         clsMgmtScenHolder = New clsXMLMgmtScenItems 'A collection of management scenarios
-        clsMgmtScenItem = New clsXMLMgmtScenItem 'A single managment scenario
         clsPollItems = New clsXMLPollutantItems 'A collection of Pollutants
-        clsPollItem = New clsXMLPollutantItem 'A single Pollutant
         clsLUItems = New clsXMLLandUseItems 'A collection of landuses
-        clsLUItem = New clsXMLLandUseItem 'A Single LAnduse
+        clsOutputItems = New clsXMLOutputItems 'A collection of outputs
     End Sub
 
 

@@ -24,6 +24,7 @@ Module Globals
 #Region "Menu Globals"
     Public g_mnuNSPECTMain As String = "mnunspectMainMenu"
     Public g_mnuNSPECTAnalysis As String = "mnunspectAnalysis"
+    Public g_mnuNSPECTCompare As String = "mnunspectCompare"
     Public g_mnuNSPECTAdvSettings As String = "mnunspectAdvancedSettings"
     Public g_mnuNSPECTAdvLand As String = "mnunspectLandCover"
     Public g_mnuNSPECTAdvPolutants As String = "mnunspectPollutants"

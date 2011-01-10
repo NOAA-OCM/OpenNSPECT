@@ -53,8 +53,6 @@
         Me.cboPrecipScen = New System.Windows.Forms.ComboBox
         Me._Label1_7 = New System.Windows.Forms.Label
         Me.frm_raintype = New System.Windows.Forms.GroupBox
-        Me.cboSelectPoly = New System.Windows.Forms.ComboBox
-        Me.lblLayer = New System.Windows.Forms.Label
         Me.Frame3 = New System.Windows.Forms.GroupBox
         Me.cmdOpenWS = New System.Windows.Forms.Button
         Me.txtOutputWS = New System.Windows.Forms.TextBox
@@ -126,6 +124,8 @@
         Me.AppendRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.DeleteCurrentRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.lblSelected = New System.Windows.Forms.Label
+        Me.btnSelect = New System.Windows.Forms.Button
         Me.MainMenu1.SuspendLayout()
         Me.Frame6.SuspendLayout()
         Me.Frame5.SuspendLayout()
@@ -468,10 +468,10 @@
         'frm_raintype
         '
         Me.frm_raintype.BackColor = System.Drawing.SystemColors.Control
-        Me.frm_raintype.Controls.Add(Me.cboSelectPoly)
+        Me.frm_raintype.Controls.Add(Me.lblSelected)
+        Me.frm_raintype.Controls.Add(Me.btnSelect)
         Me.frm_raintype.Controls.Add(Me.chkSelectedPolys)
         Me.frm_raintype.Controls.Add(Me.chkLocalEffects)
-        Me.frm_raintype.Controls.Add(Me.lblLayer)
         Me.frm_raintype.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.frm_raintype.ForeColor = System.Drawing.SystemColors.ControlText
         Me.frm_raintype.Location = New System.Drawing.Point(461, 73)
@@ -482,33 +482,6 @@
         Me.frm_raintype.TabIndex = 50
         Me.frm_raintype.TabStop = False
         Me.frm_raintype.Text = "Miscellaneous "
-        '
-        'cboSelectPoly
-        '
-        Me.cboSelectPoly.BackColor = System.Drawing.SystemColors.Window
-        Me.cboSelectPoly.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboSelectPoly.Enabled = False
-        Me.cboSelectPoly.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboSelectPoly.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboSelectPoly.Location = New System.Drawing.Point(45, 53)
-        Me.cboSelectPoly.Name = "cboSelectPoly"
-        Me.cboSelectPoly.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboSelectPoly.Size = New System.Drawing.Size(112, 22)
-        Me.cboSelectPoly.TabIndex = 62
-        '
-        'lblLayer
-        '
-        Me.lblLayer.BackColor = System.Drawing.SystemColors.Control
-        Me.lblLayer.Cursor = System.Windows.Forms.Cursors.Default
-        Me.lblLayer.Enabled = False
-        Me.lblLayer.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLayer.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.lblLayer.Location = New System.Drawing.Point(6, 56)
-        Me.lblLayer.Name = "lblLayer"
-        Me.lblLayer.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.lblLayer.Size = New System.Drawing.Size(44, 15)
-        Me.lblLayer.TabIndex = 63
-        Me.lblLayer.Text = "Layer: "
         '
         'Frame3
         '
@@ -1360,6 +1333,31 @@
         Me.DeleteCurrentRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
         Me.DeleteCurrentRowToolStripMenuItem.Text = "Delete Current Row"
         '
+        'lblSelected
+        '
+        Me.lblSelected.Location = New System.Drawing.Point(75, 54)
+        Me.lblSelected.Name = "lblSelected"
+        Me.lblSelected.Size = New System.Drawing.Size(84, 23)
+        Me.lblSelected.TabIndex = 68
+        Me.lblSelected.Text = "0 selected"
+        '
+        'btnSelect
+        '
+        Me.btnSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnSelect.BackColor = System.Drawing.SystemColors.Control
+        Me.btnSelect.CausesValidation = False
+        Me.btnSelect.Cursor = System.Windows.Forms.Cursors.Default
+        Me.btnSelect.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSelect.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.btnSelect.Location = New System.Drawing.Point(7, 48)
+        Me.btnSelect.Name = "btnSelect"
+        Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.btnSelect.Size = New System.Drawing.Size(56, 25)
+        Me.btnSelect.TabIndex = 67
+        Me.btnSelect.TabStop = False
+        Me.btnSelect.Text = "Select"
+        Me.btnSelect.UseVisualStyleBackColor = False
+        '
         'frmProjectSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
@@ -1452,10 +1450,8 @@
     Private WithEvents _Label1_6 As System.Windows.Forms.Label
     Private WithEvents _Label1_3 As System.Windows.Forms.Label
     Private WithEvents _Label1_7 As System.Windows.Forms.Label
-    Private WithEvents cboSelectPoly As System.Windows.Forms.ComboBox
     Private WithEvents chkSelectedPolys As System.Windows.Forms.CheckBox
     Private WithEvents chkLocalEffects As System.Windows.Forms.CheckBox
-    Private WithEvents lblLayer As System.Windows.Forms.Label
     Private WithEvents cmdOpenWS As System.Windows.Forms.Button
     Private WithEvents txtOutputWS As System.Windows.Forms.TextBox
     Private WithEvents txtProjectName As System.Windows.Forms.TextBox
@@ -1526,5 +1522,7 @@
     Friend WithEvents LUScenario As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LUScenarioXML As System.Windows.Forms.DataGridViewTextBoxColumn
     Private WithEvents txtbxRainGrid As System.Windows.Forms.TextBox
+    Friend WithEvents lblSelected As System.Windows.Forms.Label
+    Private WithEvents btnSelect As System.Windows.Forms.Button
 #End Region
 End Class

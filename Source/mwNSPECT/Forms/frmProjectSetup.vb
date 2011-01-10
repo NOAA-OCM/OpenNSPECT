@@ -54,6 +54,9 @@ Friend Class frmProjectSetup
 
     Private arrAreaList As New System.Collections.ArrayList
     Private arrClassList As New System.Collections.ArrayList
+
+    Private _SelectLyrPath As String
+    Private _SelectedShapes As Collections.Generic.List(Of Integer)
 #End Region
 
 #Region "Events"
@@ -93,7 +96,6 @@ Friend Class frmProjectSetup
             cboWQStd.Items.Insert(cboWQStd.Items.Count, "New water quality standard...")
 
             cboLCLayer.Items.Clear()
-            cboSelectPoly.Items.Clear()
             arrAreaList.Clear()
             Dim currLyr As MapWindow.Interfaces.Layer
             For i As Integer = 0 To g_MapWin.Layers.NumLayers - 1
@@ -101,7 +103,6 @@ Friend Class frmProjectSetup
                 If currLyr.LayerType = MapWindow.Interfaces.eLayerType.Grid Then
                     cboLCLayer.Items.Add(currLyr.Name)
                 ElseIf currLyr.LayerType = MapWindow.Interfaces.eLayerType.PolygonShapefile Then
-                    cboSelectPoly.Items.Add(currLyr.Name)
                     arrAreaList.Add(currLyr.Name)
                 End If
             Next
@@ -121,7 +122,6 @@ Friend Class frmProjectSetup
 
             Me.Text = "Untitled"
 
-            chkSelectedPolys.Enabled = EnableChkWaterShed()
 
             chkCalcErosion_CheckStateChanged(Me, Nothing)
 
@@ -206,16 +206,6 @@ Friend Class frmProjectSetup
         Catch ex As Exception
             HandleError(True, "cboSoilsLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
-    End Sub
-
-    Private Sub chkSelectedPolys_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSelectedPolys.CheckedChanged
-        If chkSelectedPolys.CheckState = 1 Then
-            cboSelectPoly.Enabled = True
-            lblLayer.Enabled = True
-        Else
-            cboSelectPoly.Enabled = False
-            lblLayer.Enabled = False
-        End If
     End Sub
 
     Private Sub cboPrecipScen_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipScen.SelectedIndexChanged
@@ -565,6 +555,10 @@ Friend Class frmProjectSetup
         End With
     End Sub
 
+    Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
+        Dim selectfrm As New frmSelectShape
+        selectfrm.Initialize()
+    End Sub
 
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
@@ -593,7 +587,6 @@ Friend Class frmProjectSetup
         Try
             Dim strWaterShed As String 'Connection string
             Dim strPrecip As String 'Connection String
-            Dim lngWShedLayerIndex As Integer 'Watershed layer index
 
             Dim booLUItems As Boolean 'Are there Landuse Scenarios???
             Dim dictPollutants As New Generic.Dictionary(Of String, String) 'Dict to hold all pollutants
@@ -639,11 +632,8 @@ Friend Class frmProjectSetup
 
             'STEP 3: Find out if user is making use of only the selected Sheds -----------------------------------------------
             'Selected Sheds only
-            Dim lyrSelectedPolyLayer As MapWindow.Interfaces.Layer = Nothing
             If _XMLPrjParams.intSelectedPolys = 1 Then
                 g_booSelectedPolys = True
-                lngWShedLayerIndex = modUtil.GetLayerIndex(cboSelectPoly.Text)
-                lyrSelectedPolyLayer = g_MapWin.Layers(lngWShedLayerIndex)
             Else
                 g_booSelectedPolys = False
             End If
@@ -689,7 +679,7 @@ Friend Class frmProjectSetup
             'STEP 8: ---------------------------------------------------------------------------------------------------------
             'Set the Analysis Environment and globals for output workspace
 
-            modMainRun.SetGlobalEnvironment(cmdWS, lyrSelectedPolyLayer)
+            modMainRun.SetGlobalEnvironment(cmdWS, _SelectLyrPath, _SelectedShapes)
 
             'END STEP 8: -----------------------------------------------------------------------------------------------------
 
@@ -722,7 +712,7 @@ Friend Class frmProjectSetup
                 strLCType = _XMLPrjParams.strLCGridType
             End If
 
-            If Not modRunoff.CreateRunoffGrid(_XMLPrjParams.strLCGridFileName, strLCType, cmdPrecip, _XMLPrjParams.strSoilsHydFileName) Then
+            If Not modRunoff.CreateRunoffGrid(_XMLPrjParams.strLCGridFileName, strLCType, cmdPrecip, _XMLPrjParams.strSoilsHydFileName, _XMLPrjParams.clsOutputItems) Then
                 Exit Sub
             End If
             'END STEP 9: -----------------------------------------------------------------------------------------------------
@@ -732,7 +722,8 @@ Friend Class frmProjectSetup
             For i = 0 To _XMLPrjParams.clsPollItems.Count - 1
                 If _XMLPrjParams.clsPollItems.Item(i).intApply = 1 Then
                     'If user is NOT ignoring the pollutant then send the whole item over along with LCType
-                    If Not modPollutantCalcs.PollutantConcentrationSetup(_XMLPrjParams.clsPollItems.Item(i), _XMLPrjParams.strLCGridType, _XMLPrjParams.strWaterQuality) Then
+                    Dim pollitem As clsXMLPollutantItem = _XMLPrjParams.clsPollItems.Item(i)
+                    If Not modPollutantCalcs.PollutantConcentrationSetup(pollitem, _XMLPrjParams.strLCGridType, _XMLPrjParams.strWaterQuality, _XMLPrjParams.clsOutputItems) Then
                         Exit Sub
                     End If
                 End If
@@ -746,16 +737,16 @@ Friend Class frmProjectSetup
             If _XMLPrjParams.intCalcErosion = 1 Then
                 If _booAnnualPrecip Then 'If Annual (0) then TRUE, ergo RUSLE
                     If _XMLPrjParams.intRainGridBool Then
-                        If Not modRusle.RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XMLPrjParams.strRainGridFileName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strSDRGridFileName, _XMLPrjParams.strLCGridType) Then
+                        If Not modRusle.RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XMLPrjParams.strRainGridFileName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strSDRGridFileName, _XMLPrjParams.strLCGridType, _XMLPrjParams.clsOutputItems) Then
                             Exit Sub
                         End If
                     ElseIf _XMLPrjParams.intRainConstBool Then
-                        If Not modRusle.RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XMLPrjParams.strRainGridFileName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strSDRGridFileName, _XMLPrjParams.strLCGridType, _XMLPrjParams.dblRainConstValue) Then
+                        If Not modRusle.RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XMLPrjParams.strRainGridFileName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strSDRGridFileName, _XMLPrjParams.strLCGridType, _XMLPrjParams.clsOutputItems, _XMLPrjParams.dblRainConstValue) Then
                             Exit Sub
                         End If
                     End If
                 Else 'If event (1) then False, ergo MUSLE
-                    If Not modMUSLE.MUSLESetup(_XMLPrjParams.strSoilsDefName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strLCGridType) Then
+                    If Not modMUSLE.MUSLESetup(_XMLPrjParams.strSoilsDefName, _XMLPrjParams.strSoilsKFileName, _XMLPrjParams.strLCGridType, _XMLPrjParams.clsOutputItems) Then
                         Exit Sub
                     End If
                 End If
@@ -787,10 +778,12 @@ Friend Class frmProjectSetup
             'Cleanup ------------------------------------------------------------------------------------------------------------
             'Go into workspace and rid it of all rasters
             modUtil.CleanGlobals()
-            modUtil.CleanupRasterFolder((_XMLPrjParams.strProjectWorkspace))
+            modUtil.CleanupRasterFolder(_XMLPrjParams.strProjectWorkspace)
             g_MapWin.StatusBar.ProgressBarValue = 0
             System.Windows.Forms.Cursor.Current = Cursors.Default
 
+            'Save xml to ensure outputs are saved
+            _XMLPrjParams.SaveFile(_strFileName)
 
             Me.Close()
 
@@ -810,10 +803,21 @@ Friend Class frmProjectSetup
 
     End Sub
 
-
 #End Region
 
 #Region "Helper Functions"
+    Public Sub SetSelectedShape()
+        If g_MapWin.Layers.CurrentLayer <> -1 And g_MapWin.View.SelectedShapes.NumSelected > 0 Then
+            chkSelectedPolys.Checked = True
+            _SelectLyrPath = g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).FileName
+            _SelectedShapes = New Collections.Generic.List(Of Integer)
+            For i As Integer = 0 To g_MapWin.View.SelectedShapes.NumSelected - 1
+                _SelectedShapes.Add(g_MapWin.View.SelectedShapes(i).ShapeIndex)
+            Next
+            lblSelected.Text = g_MapWin.View.SelectedShapes.NumSelected.ToString + " selected"
+        End If
+    End Sub
+
     Private Sub ClearForm()
         Try
             'Gotta clean up before new, clean form
@@ -906,29 +910,6 @@ Friend Class frmProjectSetup
         'ErrorHandler:
         '  HandleError False, "LoadXMLFile " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND
     End Sub
-
-    Private Function EnableChkWaterShed() As Boolean
-
-        Dim strWShed As String
-
-        Try
-            strWShed = "SELECT WSFILENAME FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
-            Dim wsCmd As New OleDbCommand(strWShed, modUtil.g_DBConn)
-            Dim ws As OleDbDataReader = wsCmd.ExecuteReader()
-            ws.Read()
-
-            _strWShed = modUtil.SplitFileName(ws.Item("wsfilename"))
-
-            If g_MapWin.View.SelectedShapes.NumSelected > 0 Then
-                EnableChkWaterShed = True
-            Else
-                EnableChkWaterShed = False
-            End If
-            ws.Close()
-        Catch ex As Exception
-            EnableChkWaterShed = False
-        End Try
-    End Function
 
     Private Sub FillCboLCCLass()
         Try
@@ -1096,7 +1077,7 @@ Friend Class frmProjectSetup
             wsData.Read()
             Dim strBasin As String = ""
             If wsData.HasRows() Then
-                strbasin = wsData.Item("wsfilename")
+                strBasin = wsData.Item("wsfilename")
                 If IO.Path.GetExtension(strBasin) <> ".shp" Then
                     strBasin = strBasin + ".shp"
                 End If
@@ -1104,7 +1085,6 @@ Friend Class frmProjectSetup
                     If modUtil.AddFeatureLayerToMapFromFileName(strBasin, wsData.Item("Name") & " " & "Drainage Basins") Then
                         lngCurrWshedPolyIndex = modUtil.GetLayerIndex(wsData.Item("Name") & " " & "Drainage Basins")
 
-                        cboSelectPoly.Items.Add(wsData.Item("Name") & " " & "Drainage Basins")
                         arrAreaList.Add(wsData.Item("Name") & " " & "Drainage Basins")
                     Else
                         MsgBox("Could not find watershed layer: " & wsData.Item("wsfilename") & " .  Please add the watershed layer to the map.", MsgBoxStyle.Critical, "File Not Found")
@@ -1125,7 +1105,6 @@ Friend Class frmProjectSetup
                         If modUtil.AddFeatureLayerToMapFromFileName(strBasin, wsData.Item("Name") & " " & "Drainage Basins") Then
                             lngCurrWshedPolyIndex = modUtil.GetLayerIndex(wsData.Item("Name") & " " & "Drainage Basins")
 
-                            cboSelectPoly.Items.Add(wsData.Item("Name") & " " & "Drainage Basins")
                             arrAreaList.Add(wsData.Item("Name") & " " & "Drainage Basins")
                         Else
                             MsgBox("Could not find watershed layer: " & wsData.Item("wsfilename") & " .  Please add the watershed layer to the map.", MsgBoxStyle.Critical, "File Not Found")
@@ -1149,16 +1128,14 @@ Friend Class frmProjectSetup
                 If IO.Path.GetExtension(strSelected) <> ".shp" Then
                     strSelected = strSelected + ".shp"
                 End If
+                _SelectLyrPath = strSelected
+                _SelectedShapes = _XMLPrjParams.intSelectedPolyList
+                lblSelected.Text = _SelectedShapes.Count.ToString + " selected"
 
-                If modUtil.LayerInMapByFileName(strSelected) Then
-                    cboSelectPoly.SelectedIndex = modUtil.GetCboIndex(strSelected, cboSelectPoly)
-                Else
+                If Not modUtil.LayerInMapByFileName(strSelected) Then
                     'Not there then add it
                     If modUtil.AddFeatureLayerToMapFromFileName(strSelected, _XMLPrjParams.strSelectedPolyLyrName) Then
-                        cboSelectPoly.Items.Add(_XMLPrjParams.strSelectedPolyLyrName)
                         arrAreaList.Add(_XMLPrjParams.strSelectedPolyLyrName)
-
-                        cboSelectPoly.SelectedIndex = modUtil.GetCboIndex(_XMLPrjParams.strSelectedPolyLyrName, cboSelectPoly)
                     Else
                         'Can't find it, then send em searching
                         intYesNo = MsgBox("Could not find the Selected Polygons file used to limit extent: " & strSelected & ".  Would you like to browse for it? ", MsgBoxStyle.YesNo, "Cannot Locate Dataset")
@@ -1168,10 +1145,8 @@ Friend Class frmProjectSetup
                             'if they actually find something, throw it in the map
                             If Len(_XMLPrjParams.strSelectedPolyFileName) > 0 Then
                                 If modUtil.AddFeatureLayerToMapFromFileName(_XMLPrjParams.strSelectedPolyFileName) Then
-                                    cboSelectPoly.Items.Add(modUtil.SplitFileName(_XMLPrjParams.strSelectedPolyFileName))
                                     arrAreaList.Add(modUtil.SplitFileName(_XMLPrjParams.strSelectedPolyFileName))
 
-                                    cboSelectPoly.SelectedIndex = modUtil.GetCboIndex(modUtil.SplitFileName(_XMLPrjParams.strSelectedPolyFileName), cboSelectPoly)
                                 End If
                             End If
                         Else
@@ -1290,7 +1265,6 @@ Friend Class frmProjectSetup
                             .Rows(idx).Cells("ChangeToClass").Value = _XMLPrjParams.clsMgmtScenHolder.Item(i).strChangeToClass
                         Else
                             If modUtil.AddFeatureLayerToMapFromFileName(_XMLPrjParams.clsMgmtScenHolder.Item(i).strAreaFileName) Then
-                                cboSelectPoly.Items.Add(_XMLPrjParams.clsMgmtScenHolder.Item(i).strAreaName)
                                 arrAreaList.Add(_XMLPrjParams.clsMgmtScenHolder.Item(i).strAreaName)
 
                                 PopulateManagement(idx)
@@ -1302,7 +1276,6 @@ Friend Class frmProjectSetup
                                 If intYesNo = MsgBoxResult.Yes Then
                                     _XMLPrjParams.clsMgmtScenHolder.Item(i).strAreaFileName = modUtil.AddInputFromGxBrowser("Feature")
                                     If modUtil.AddFeatureLayerToMapFromFileName(_XMLPrjParams.clsMgmtScenHolder.Item(i).strAreaFileName) Then
-                                        cboSelectPoly.Items.Add(_XMLPrjParams.clsMgmtScenHolder.Item(i).strAreaName)
                                         arrAreaList.Add(_XMLPrjParams.clsMgmtScenHolder.Item(i).strAreaName)
 
                                         PopulateManagement(idx)
@@ -1436,8 +1409,8 @@ Friend Class frmProjectSetup
 
             'First check Selected Watersheds
             If chkSelectedPolys.Enabled = True And chkSelectedPolys.CheckState = 1 Then
-                If Len(cboSelectPoly.Text) > 0 Then
-                    If g_MapWin.View.SelectedShapes.NumSelected > 0 Then
+                If Len(_SelectLyrPath) > 0 Then
+                    If _SelectedShapes.Count > 0 Then
                         ValidateData = True
                     End If
                 Else
@@ -1564,10 +1537,16 @@ Friend Class frmProjectSetup
             clsParamsPrj.intLocalEffects = chkLocalEffects.CheckState
 
             'Theoreretically, user could open file that had selected sheds.
-            If chkSelectedPolys.Enabled = True Then
+            If chkSelectedPolys.Checked = True Then
                 clsParamsPrj.intSelectedPolys = chkSelectedPolys.CheckState
-                clsParamsPrj.strSelectedPolyFileName = modUtil.GetLayerFilename(cboSelectPoly.Text)
-                clsParamsPrj.strSelectedPolyLyrName = cboSelectPoly.Text
+                clsParamsPrj.strSelectedPolyFileName = _SelectLyrPath
+                Dim tmpidx As Integer = modUtil.GetLayerIndexByFilename(_SelectLyrPath)
+                If tmpidx <> -1 Then
+                    clsParamsPrj.strSelectedPolyLyrName = g_MapWin.Layers(tmpidx).Name
+                Else
+                    clsParamsPrj.strSelectedPolyLyrName = ""
+                End If
+                clsParamsPrj.intSelectedPolyList = _SelectedShapes
             Else
                 clsParamsPrj.intSelectedPolys = 0
             End If
@@ -1655,19 +1634,20 @@ Friend Class frmProjectSetup
             SSTab1.SelectedIndex = 3
             'Managment Scenarios
             If ValidateMgmtScenario() Then
+                Dim mgmtitem As clsXMLMgmtScenItem
                 For Each row As DataGridViewRow In dgvManagementScen.Rows
                     If Len(row.Cells("ChangeAreaLayer").Value) > 0 Then
-                        clsParamsPrj.clsMgmtScenItem = New clsXMLMgmtScenItem
-                        clsParamsPrj.clsMgmtScenItem.intID = row.Index + 1
+                        mgmtitem = New clsXMLMgmtScenItem
+                        mgmtitem.intID = row.Index + 1
                         If row.Cells("ManageApply").FormattedValue Then
-                            clsParamsPrj.clsMgmtScenItem.intApply = 1
+                            mgmtitem.intApply = 1
                         Else
-                            clsParamsPrj.clsMgmtScenItem.intApply = 0
+                            mgmtitem.intApply = 0
                         End If
-                        clsParamsPrj.clsMgmtScenItem.strAreaName = row.Cells("ChangeAreaLayer").Value
-                        clsParamsPrj.clsMgmtScenItem.strAreaFileName = modUtil.GetLayerFilename(row.Cells("ChangeAreaLayer").Value)
-                        clsParamsPrj.clsMgmtScenItem.strChangeToClass = row.Cells("ChangeToClass").Value
-                        clsParamsPrj.clsMgmtScenHolder.Add(clsParamsPrj.clsMgmtScenItem)
+                        mgmtitem.strAreaName = row.Cells("ChangeAreaLayer").Value
+                        mgmtitem.strAreaFileName = modUtil.GetLayerFilename(row.Cells("ChangeAreaLayer").Value)
+                        mgmtitem.strChangeToClass = row.Cells("ChangeToClass").Value
+                        clsParamsPrj.clsMgmtScenHolder.Add(mgmtitem)
                     End If
                 Next
             Else
@@ -1679,23 +1659,24 @@ Friend Class frmProjectSetup
             SSTab1.SelectedIndex = 0
             'Pollutants
             If ValidatePollutants() Then
+                Dim pollitem As clsXMLPollutantItem
                 For Each row As DataGridViewRow In dgvPollutants.Rows
                     'Adding a New Pollutantant Item to the Project file
-                    clsParamsPrj.clsPollItem = New clsXMLPollutantItem
-                    clsParamsPrj.clsPollItem.intID = row.Index + 1
+                    pollitem = New clsXMLPollutantItem
+                    pollitem.intID = row.Index + 1
                     If row.Cells("PollApply").FormattedValue Then
-                        clsParamsPrj.clsPollItem.intApply = 1
+                        pollitem.intApply = 1
                     Else
-                        clsParamsPrj.clsPollItem.intApply = 0
+                        pollitem.intApply = 0
                     End If
-                    clsParamsPrj.clsPollItem.strPollName = row.Cells("PollutantName").Value
-                    clsParamsPrj.clsPollItem.strCoeffSet = row.Cells("CoefSet").Value
-                    clsParamsPrj.clsPollItem.strCoeff = row.Cells("WhichCoeff").Value
-                    clsParamsPrj.clsPollItem.intThreshold = CShort(row.Cells("Threshold").Value)
+                    pollitem.strPollName = row.Cells("PollutantName").Value
+                    pollitem.strCoeffSet = row.Cells("CoefSet").Value
+                    pollitem.strCoeff = row.Cells("WhichCoeff").Value
+                    pollitem.intThreshold = CShort(row.Cells("Threshold").Value)
                     If row.Cells("TypeDef").Value <> "" Then
-                        clsParamsPrj.clsPollItem.strTypeDefXMLFile = row.Cells("TypeDef").Value
+                        pollitem.strTypeDefXMLFile = row.Cells("TypeDef").Value
                     End If
-                    clsParamsPrj.clsPollItems.Add(clsParamsPrj.clsPollItem)
+                    clsParamsPrj.clsPollItems.Add(pollitem)
                 Next
             Else
                 ValidateData = False
@@ -1706,13 +1687,14 @@ Friend Class frmProjectSetup
             SSTab1.SelectedIndex = 2
             'Land Uses
             For Each row As DataGridViewRow In dgvLandUse.Rows
+                Dim luitem As clsXMLLandUseItem
                 If Len(row.Cells("LUScenario").Value) > 0 Then
-                    clsParamsPrj.clsLUItem = New clsXMLLandUseItem
-                    clsParamsPrj.clsLUItem.intID = row.Index + 1
-                    clsParamsPrj.clsLUItem.intApply = CShort(row.Cells("LUApply").FormattedValue)
-                    clsParamsPrj.clsLUItem.strLUScenName = row.Cells("LUScenario").Value
-                    clsParamsPrj.clsLUItem.strLUScenXMLFile = row.Cells("LUScenarioXML").Value
-                    clsParamsPrj.clsLUItems.Add(clsParamsPrj.clsLUItem)
+                    luitem = New clsXMLLandUseItem
+                    luitem.intID = row.Index + 1
+                    luitem.intApply = CShort(row.Cells("LUApply").FormattedValue)
+                    luitem.strLUScenName = row.Cells("LUScenario").Value
+                    luitem.strLUScenXMLFile = row.Cells("LUScenarioXML").Value
+                    clsParamsPrj.clsLUItems.Add(luitem)
                 End If
             Next
             'If it gets to here, all is well
@@ -1898,4 +1880,5 @@ Friend Class frmProjectSetup
     End Sub
 #End Region
 
+   
 End Class

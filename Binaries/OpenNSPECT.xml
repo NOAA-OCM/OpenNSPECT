@@ -53,6 +53,11 @@ OpenNSPECT
  Shows the main Analysis form
  </summary>
 	<remarks></remarks>
+</member><member name="M:OpenNSPECT.mwNSPECT.ShowCompareOutputsForm">
+	<summary>
+ Shows the outputs comparison form
+ </summary>
+	<remarks></remarks>
 </member><member name="M:OpenNSPECT.mwNSPECT.ShowAdvLandForm">
 	<summary>
  Shows the Land Cover form

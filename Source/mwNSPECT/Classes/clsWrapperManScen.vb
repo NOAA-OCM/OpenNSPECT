@@ -45,6 +45,7 @@ Public Class clsXMLLUScen
     Private Const NODE_ManScenLyrName As String = "LUScenLyrName"
     Private Const NODE_ManScenFileName As String = "LUScenFileName"
     Private Const NODE_ManScenSelectedPoly As String = "LUScenSelectedPoly"
+    Private Const NODE_ManScenSelectedPolyList As String = "LUScenSelectedPolyList"
     Private Const NODE_SCSCurveA As String = "SCSCurveA"
     Private Const NODE_SCSCurveB As String = "SCSCurveB"
     Private Const NODE_SCSCurveC As String = "SCSCurveC"
@@ -57,6 +58,7 @@ Public Class clsXMLLUScen
     Public strLUScenLyrName As String
     Public strLUScenFileName As String
     Public intLUScenSelectedPoly As Short
+    Public intLUScenSelectedPolyList As New Collections.Generic.List(Of Integer)
     Public intSCSCurveA As Double
     Public intSCSCurveB As Double
     Public intSCSCurveC As Double
@@ -101,6 +103,12 @@ Public Class clsXMLLUScen
         NodeAppendChildElement(dom, node, NODE_ManScenLyrName, strLUScenLyrName)
         NodeAppendChildElement(dom, node, NODE_ManScenFileName, strLUScenFileName)
         NodeAppendChildElement(dom, node, NODE_ManScenSelectedPoly, intLUScenSelectedPoly)
+        Dim strlist As String = ""
+        If intLUScenSelectedPolyList.Count > 0 Then strlist = intLUScenSelectedPolyList(0).ToString
+        For i As Integer = 1 To intLUScenSelectedPolyList.Count - 1
+            strlist = strlist + "," + intLUScenSelectedPolyList(i).ToString
+        Next
+        NodeAppendChildElement(dom, node, NODE_ManScenSelectedPolyList, strlist)
         NodeAppendChildElement(dom, node, NODE_SCSCurveA, intSCSCurveA)
         NodeAppendChildElement(dom, node, NODE_SCSCurveB, intSCSCurveB)
         NodeAppendChildElement(dom, node, NODE_SCSCurveC, intSCSCurveC)
@@ -125,6 +133,13 @@ Public Class clsXMLLUScen
         strLUScenLyrName = GetNodeText(node, NODE_ManScenLyrName)
         strLUScenFileName = GetNodeText(node, NODE_ManScenFileName)
         intLUScenSelectedPoly = CShort(GetNodeText(node, NODE_ManScenSelectedPoly))
+        Dim tmpstr As String() = GetNodeText(node, NODE_ManScenSelectedPolyList).Split(",")
+        intLUScenSelectedPolyList.Clear()
+        For i As Integer = 0 To tmpstr.Length - 1
+            If tmpstr(i) <> "" Then
+                intLUScenSelectedPolyList.Add(CShort(tmpstr(i)))
+            End If
+        Next
         intSCSCurveA = CDbl(GetNodeText(node, NODE_SCSCurveA))
         intSCSCurveB = CDbl(GetNodeText(node, NODE_SCSCurveB))
         intSCSCurveC = CDbl(GetNodeText(node, NODE_SCSCurveC))

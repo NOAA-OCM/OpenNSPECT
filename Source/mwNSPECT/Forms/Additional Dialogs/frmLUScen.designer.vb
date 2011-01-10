@@ -32,7 +32,6 @@
 	Public WithEvents _txtLUCN_2 As System.Windows.Forms.TextBox
 	Public WithEvents _txtLUCN_1 As System.Windows.Forms.TextBox
 	Public WithEvents _txtLUCN_0 As System.Windows.Forms.TextBox
-	Public WithEvents cboLULayer As System.Windows.Forms.ComboBox
     Public WithEvents _Label1_5 As System.Windows.Forms.Label
 	Public WithEvents _Label1_3 As System.Windows.Forms.Label
 	Public WithEvents _Label1_2 As System.Windows.Forms.Label
@@ -65,7 +64,6 @@
         Me._txtLUCN_2 = New System.Windows.Forms.TextBox
         Me._txtLUCN_1 = New System.Windows.Forms.TextBox
         Me._txtLUCN_0 = New System.Windows.Forms.TextBox
-        Me.cboLULayer = New System.Windows.Forms.ComboBox
         Me._Label1_5 = New System.Windows.Forms.Label
         Me._Label1_3 = New System.Windows.Forms.Label
         Me._Label1_2 = New System.Windows.Forms.Label
@@ -83,6 +81,9 @@
         Me.Type2 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Type3 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Type4 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.cboLULayer = New System.Windows.Forms.ComboBox
+        Me.lblSelected = New System.Windows.Forms.Label
+        Me.btnSelect = New System.Windows.Forms.Button
         Me.MainMenu1.SuspendLayout()
         CType(Me.dgvCoef, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -127,10 +128,10 @@
         Me.chkSelectedPolys.Cursor = System.Windows.Forms.Cursors.Default
         Me.chkSelectedPolys.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkSelectedPolys.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.chkSelectedPolys.Location = New System.Drawing.Point(137, 86)
+        Me.chkSelectedPolys.Location = New System.Drawing.Point(59, 89)
         Me.chkSelectedPolys.Name = "chkSelectedPolys"
         Me.chkSelectedPolys.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.chkSelectedPolys.Size = New System.Drawing.Size(231, 16)
+        Me.chkSelectedPolys.Size = New System.Drawing.Size(162, 25)
         Me.chkSelectedPolys.TabIndex = 24
         Me.chkSelectedPolys.Text = "Use Selected Polygons Only"
         Me.chkSelectedPolys.UseVisualStyleBackColor = False
@@ -141,7 +142,7 @@
         Me.chkWatWetlands.Cursor = System.Windows.Forms.Cursors.Default
         Me.chkWatWetlands.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkWatWetlands.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.chkWatWetlands.Location = New System.Drawing.Point(231, 161)
+        Me.chkWatWetlands.Location = New System.Drawing.Point(231, 176)
         Me.chkWatWetlands.Name = "chkWatWetlands"
         Me.chkWatWetlands.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.chkWatWetlands.Size = New System.Drawing.Size(109, 19)
@@ -171,7 +172,7 @@
         Me.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCancel.Location = New System.Drawing.Point(312, 458)
+        Me.cmdCancel.Location = New System.Drawing.Point(312, 445)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
@@ -188,7 +189,7 @@
         Me.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdOK.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOK.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOK.Location = New System.Drawing.Point(240, 458)
+        Me.cmdOK.Location = New System.Drawing.Point(240, 445)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdOK.Size = New System.Drawing.Size(65, 25)
@@ -204,7 +205,7 @@
         Me._txtLUCN_4.Cursor = System.Windows.Forms.Cursors.IBeam
         Me._txtLUCN_4.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._txtLUCN_4.ForeColor = System.Drawing.SystemColors.WindowText
-        Me._txtLUCN_4.Location = New System.Drawing.Point(99, 162)
+        Me._txtLUCN_4.Location = New System.Drawing.Point(99, 177)
         Me._txtLUCN_4.MaxLength = 30
         Me._txtLUCN_4.Name = "_txtLUCN_4"
         Me._txtLUCN_4.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -219,7 +220,7 @@
         Me._txtLUCN_3.Cursor = System.Windows.Forms.Cursors.IBeam
         Me._txtLUCN_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._txtLUCN_3.ForeColor = System.Drawing.SystemColors.WindowText
-        Me._txtLUCN_3.Location = New System.Drawing.Point(316, 127)
+        Me._txtLUCN_3.Location = New System.Drawing.Point(316, 142)
         Me._txtLUCN_3.MaxLength = 30
         Me._txtLUCN_3.Name = "_txtLUCN_3"
         Me._txtLUCN_3.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -234,7 +235,7 @@
         Me._txtLUCN_2.Cursor = System.Windows.Forms.Cursors.IBeam
         Me._txtLUCN_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._txtLUCN_2.ForeColor = System.Drawing.SystemColors.WindowText
-        Me._txtLUCN_2.Location = New System.Drawing.Point(256, 127)
+        Me._txtLUCN_2.Location = New System.Drawing.Point(256, 142)
         Me._txtLUCN_2.MaxLength = 30
         Me._txtLUCN_2.Name = "_txtLUCN_2"
         Me._txtLUCN_2.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -249,7 +250,7 @@
         Me._txtLUCN_1.Cursor = System.Windows.Forms.Cursors.IBeam
         Me._txtLUCN_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._txtLUCN_1.ForeColor = System.Drawing.SystemColors.WindowText
-        Me._txtLUCN_1.Location = New System.Drawing.Point(197, 127)
+        Me._txtLUCN_1.Location = New System.Drawing.Point(197, 142)
         Me._txtLUCN_1.MaxLength = 30
         Me._txtLUCN_1.Name = "_txtLUCN_1"
         Me._txtLUCN_1.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -264,26 +265,13 @@
         Me._txtLUCN_0.Cursor = System.Windows.Forms.Cursors.IBeam
         Me._txtLUCN_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._txtLUCN_0.ForeColor = System.Drawing.SystemColors.WindowText
-        Me._txtLUCN_0.Location = New System.Drawing.Point(137, 127)
+        Me._txtLUCN_0.Location = New System.Drawing.Point(137, 142)
         Me._txtLUCN_0.MaxLength = 30
         Me._txtLUCN_0.Name = "_txtLUCN_0"
         Me._txtLUCN_0.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._txtLUCN_0.Size = New System.Drawing.Size(60, 20)
         Me._txtLUCN_0.TabIndex = 2
         Me._txtLUCN_0.Text = "0"
-        '
-        'cboLULayer
-        '
-        Me.cboLULayer.BackColor = System.Drawing.SystemColors.Window
-        Me.cboLULayer.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboLULayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboLULayer.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboLULayer.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboLULayer.Location = New System.Drawing.Point(136, 59)
-        Me.cboLULayer.Name = "cboLULayer"
-        Me.cboLULayer.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboLULayer.Size = New System.Drawing.Size(237, 22)
-        Me.cboLULayer.TabIndex = 1
         '
         '_Label1_5
         '
@@ -292,7 +280,7 @@
         Me._Label1_5.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_5.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_5.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_5.Location = New System.Drawing.Point(316, 111)
+        Me._Label1_5.Location = New System.Drawing.Point(316, 126)
         Me._Label1_5.Name = "_Label1_5"
         Me._Label1_5.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_5.Size = New System.Drawing.Size(60, 17)
@@ -307,7 +295,7 @@
         Me._Label1_3.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_3.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_3.Location = New System.Drawing.Point(257, 111)
+        Me._Label1_3.Location = New System.Drawing.Point(257, 126)
         Me._Label1_3.Name = "_Label1_3"
         Me._Label1_3.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_3.Size = New System.Drawing.Size(60, 17)
@@ -322,7 +310,7 @@
         Me._Label1_2.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_2.Location = New System.Drawing.Point(197, 111)
+        Me._Label1_2.Location = New System.Drawing.Point(197, 126)
         Me._Label1_2.Name = "_Label1_2"
         Me._Label1_2.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_2.Size = New System.Drawing.Size(60, 17)
@@ -349,7 +337,7 @@
         Me._Label1_15.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_15.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_15.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_15.Location = New System.Drawing.Point(24, 164)
+        Me._Label1_15.Location = New System.Drawing.Point(24, 179)
         Me._Label1_15.Name = "_Label1_15"
         Me._Label1_15.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_15.Size = New System.Drawing.Size(76, 19)
@@ -363,7 +351,7 @@
         Me._Label1_4.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_4.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_4.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_4.Location = New System.Drawing.Point(137, 111)
+        Me._Label1_4.Location = New System.Drawing.Point(137, 126)
         Me._Label1_4.Name = "_Label1_4"
         Me._Label1_4.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_4.Size = New System.Drawing.Size(60, 17)
@@ -377,7 +365,7 @@
         Me._Label1_1.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_1.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_1.Location = New System.Drawing.Point(22, 111)
+        Me._Label1_1.Location = New System.Drawing.Point(22, 126)
         Me._Label1_1.Name = "_Label1_1"
         Me._Label1_1.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_1.Size = New System.Drawing.Size(104, 17)
@@ -391,7 +379,7 @@
         Me._Label1_16.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_16.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_16.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_16.Location = New System.Drawing.Point(38, 194)
+        Me._Label1_16.Location = New System.Drawing.Point(38, 209)
         Me._Label1_16.Name = "_Label1_16"
         Me._Label1_16.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_16.Size = New System.Drawing.Size(133, 17)
@@ -405,7 +393,7 @@
         Me._Label1_17.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_17.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_17.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_17.Location = New System.Drawing.Point(171, 194)
+        Me._Label1_17.Location = New System.Drawing.Point(171, 209)
         Me._Label1_17.Name = "_Label1_17"
         Me._Label1_17.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_17.Size = New System.Drawing.Size(217, 17)
@@ -420,7 +408,7 @@
         Me._Label1_18.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_18.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_18.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_18.Location = New System.Drawing.Point(11, 194)
+        Me._Label1_18.Location = New System.Drawing.Point(11, 209)
         Me._Label1_18.Name = "_Label1_18"
         Me._Label1_18.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_18.Size = New System.Drawing.Size(27, 17)
@@ -450,9 +438,9 @@
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvCoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Pollutant, Me.Type1, Me.Type2, Me.Type3, Me.Type4})
-        Me.dgvCoef.Location = New System.Drawing.Point(11, 214)
+        Me.dgvCoef.Location = New System.Drawing.Point(11, 229)
         Me.dgvCoef.Name = "dgvCoef"
-        Me.dgvCoef.Size = New System.Drawing.Size(377, 236)
+        Me.dgvCoef.Size = New System.Drawing.Size(377, 208)
         Me.dgvCoef.TabIndex = 26
         '
         'Pollutant
@@ -491,12 +479,52 @@
         Me.Type4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Type4.Width = 53
         '
+        'cboLULayer
+        '
+        Me.cboLULayer.BackColor = System.Drawing.SystemColors.Window
+        Me.cboLULayer.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cboLULayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboLULayer.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboLULayer.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.cboLULayer.Location = New System.Drawing.Point(136, 59)
+        Me.cboLULayer.Name = "cboLULayer"
+        Me.cboLULayer.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.cboLULayer.Size = New System.Drawing.Size(237, 22)
+        Me.cboLULayer.TabIndex = 1
+        '
+        'lblSelected
+        '
+        Me.lblSelected.Location = New System.Drawing.Point(304, 93)
+        Me.lblSelected.Name = "lblSelected"
+        Me.lblSelected.Size = New System.Drawing.Size(100, 23)
+        Me.lblSelected.TabIndex = 68
+        Me.lblSelected.Text = "0 selected"
+        '
+        'btnSelect
+        '
+        Me.btnSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnSelect.BackColor = System.Drawing.SystemColors.Control
+        Me.btnSelect.CausesValidation = False
+        Me.btnSelect.Cursor = System.Windows.Forms.Cursors.Default
+        Me.btnSelect.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSelect.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.btnSelect.Location = New System.Drawing.Point(226, 87)
+        Me.btnSelect.Name = "btnSelect"
+        Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.btnSelect.Size = New System.Drawing.Size(72, 25)
+        Me.btnSelect.TabIndex = 67
+        Me.btnSelect.TabStop = False
+        Me.btnSelect.Text = "Select"
+        Me.btnSelect.UseVisualStyleBackColor = False
+        '
         'frmLUScen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(410, 494)
+        Me.ClientSize = New System.Drawing.Size(410, 481)
+        Me.Controls.Add(Me.lblSelected)
+        Me.Controls.Add(Me.btnSelect)
         Me.Controls.Add(Me.dgvCoef)
         Me.Controls.Add(Me.chkSelectedPolys)
         Me.Controls.Add(Me.chkWatWetlands)
@@ -545,5 +573,8 @@
     Friend WithEvents Type2 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Type3 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Type4 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Public WithEvents cboLULayer As System.Windows.Forms.ComboBox
+    Friend WithEvents lblSelected As System.Windows.Forms.Label
+    Private WithEvents btnSelect As System.Windows.Forms.Button
 #End Region
 End Class
