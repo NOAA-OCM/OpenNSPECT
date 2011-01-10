@@ -43,7 +43,7 @@ Module modMUSLE
     Private _pondpicks As String()
 
 
-    Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, ByRef strLandClass As String) As Boolean
+    Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, ByRef strLandClass As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strSoilsDefName: Name of the Soils Definition being used
         'strKFactorFileName: K Factor FileName
@@ -97,7 +97,7 @@ Module modMUSLE
         _strPondConStatement = ConstructPondPickStatement(cmdCovfact, g_LandCoverRaster)
 
         'Calc rusle using the con
-        If CalcMUSLE(_strCFactorConStatement, _strPondConStatement) Then
+        If CalcMUSLE(_strCFactorConStatement, _strPondConStatement, OutputItems) Then
             MUSLESetup = True
         Else
             MUSLESetup = False
@@ -350,7 +350,7 @@ Module modMUSLE
 
 
 
-    Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String) As Boolean
+    Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'Incoming strings: strConStatment: the monster con statement
         'strConPondstatement: the con for the pond stuff
         'Calculates the MUSLE erosion model
@@ -371,9 +371,9 @@ Module modMUSLE
         'String to hold calculations
         Dim strExpression As String = ""
         Const strTitle As String = "Processing MUSLE Calculation..."
-        
+
         Try
-            
+
             modProgDialog.ProgDialog("Calculating Watershed Length...", strTitle, 0, 27, 2, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 2: ------------------------------------------------------------------------------------
@@ -385,17 +385,29 @@ Module modMUSLE
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp1 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp1)
+                strtmp1 = strtmp1 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp1)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strLongestOut As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
+                Dim strLongestOut As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strLongestOut)
+                strLongestOut = strLongestOut + "out" + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strLongestOut)
                 MapWinGeoProc.DataManagement.DeleteGrid(strLongestOut)
 
-                Dim strTotalOut As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
+                Dim strTotalOut As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strTotalOut)
+                strTotalOut = strTotalOut + "out" + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strTotalOut)
                 MapWinGeoProc.DataManagement.DeleteGrid(strTotalOut)
 
-                Dim strStrahlOut As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
+                Dim strStrahlOut As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strStrahlOut)
+                strStrahlOut = strStrahlOut + "out" + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strStrahlOut)
                 MapWinGeoProc.DataManagement.DeleteGrid(strStrahlOut)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
@@ -434,7 +446,10 @@ Module modMUSLE
             If modProgDialog.g_boolCancel Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
-                Dim strtmpslpout As String = IO.Path.GetTempFileName + g_OutputGridExt
+                Dim strtmpslpout As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmpslpout)
+                strtmpslpout = strtmpslpout + g_OutputGridExt
+                g_TempFilesToDel.Add(strtmpslpout)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpslpout)
                 MapWinGeoProc.TerrainAnalysis.Slope2(g_pDEMRaster.Filename, 1, strtmpslpout, True, Nothing)
                 'strExpression = "slope([dem], percentrise)"
@@ -503,10 +518,7 @@ Module modMUSLE
                     'metadata time
                     g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
 
-                    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermMUSLERaster, "Brown")
-                    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermMUSLERaster, cs, "MUSLE Local Effects (mg)")
-                    lyr.Visible = False
-                    lyr.MoveTo(0, g_pGroupLayer)
+                    AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
 
                     CalcMUSLE = True
                     modProgDialog.KillDialog()
@@ -525,16 +537,25 @@ Module modMUSLE
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp1 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp1)
+                strtmp1 = strtmp1 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp1)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp2 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp2)
+                strtmp2 = strtmp2 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp2)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 pHISYMGRasterNoNull.Save(strtmp2)
                 'pHISYMGRaster.Save(strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
+                Dim strtmpout As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmpout)
+                strtmpout = strtmpout + "out" + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmpout)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
 
@@ -569,13 +590,7 @@ Module modMUSLE
                 'Metadata:
                 g_dicMetadata.Add("MUSLE Sediment Mass (kg)", _strMusleMetadata)
 
-                'Now create the MUSLE layer
-                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermTotSedConcHIraster, "Brown")
-                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermTotSedConcHIraster, cs, "MUSLE Sediment Mass (kg)")
-                lyr.Visible = False
-                lyr.MoveTo(0, g_pGroupLayer)
-
-                'end STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
+                AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (kg)", "MUSLE Accum", -1, OutputItems)
 
             End If
 

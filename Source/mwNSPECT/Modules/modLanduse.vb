@@ -325,7 +325,7 @@ Module modLanduse
 
             Dim booLandScen As Boolean
             Dim pNewLandCoverRaster As New MapWinGIS.Grid
-            strOutLandCover = modUtil.GetUniqueName("landcover", IO.Path.GetDirectoryName(_pLandCoverRaster.Filename), g_OutputGridExt)
+            strOutLandCover = modUtil.GetUniqueName("landcover", g_strWorkspace, g_OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
@@ -387,35 +387,42 @@ Module modLanduse
         'Get the featureclass, check for selected features
         Dim sf As New MapWinGIS.Shapefile
         Dim sfIndex As Long = modUtil.GetLayerIndex(clsLUItemDetails.strLUScenLyrName)
+        Dim shape As MapWinGIS.Shape
         If clsLUItemDetails.intLUScenSelectedPoly = 1 And g_MapWin.View.SelectedShapes.NumSelected > 0 And sfIndex <> -1 Then
             Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers(sfIndex)
-            'TODO: This somehow needs to be modified to take into account that it may not be the current layer selection
-            'Dim exportPath As String = modUtil.ExportSelectedFeatures(lyr)
-            'sf.Open(exportPath)        
-            sf = modUtil.ReturnFeature(clsLUItemDetails.strLUScenFileName)
+            Dim exportPath As String = modUtil.ExportSelectedFeatures(clsLUItemDetails.strLUScenFileName, clsLUItemDetails.intLUScenSelectedPolyList)
+            shape = ReturnSelectGeometry(exportPath)
+            sf = modUtil.ReturnFeature(exportPath)
         Else
             sf = modUtil.ReturnFeature(clsLUItemDetails.strLUScenFileName)
+            shape = sf.Shape(0)
         End If
 
+        Dim u As New MapWinGIS.Utils
+        Dim pnt As New MapWinGIS.Point
 
         'classify the output grid cells under the area polygon to the correct value
         'Get minimum extents of the area file
         Dim sfExt As MapWinGIS.Extents = sf.Extents
         Dim startRow, startCol, endRow, endCol As Integer
-        outputGrid.ProjToCell(sfExt.xMin, sfExt.yMin, startCol, startRow)
-        outputGrid.ProjToCell(sfExt.xMax, sfExt.yMax, endCol, endRow)
+        outputGrid.ProjToCell(sfExt.xMin, sfExt.yMax, startCol, startRow)
+        outputGrid.ProjToCell(sfExt.xMax, sfExt.yMin, endCol, endRow)
 
         Dim x, y As Double
+        sf.BeginPointInShapefile()
         'cycle and test cell center, then set the appropriate when found
         For row As Integer = startRow To endRow
             For col As Integer = startCol To endCol
                 outputGrid.CellToProj(col, row, x, y)
+                'If u.PointInPolygon(shape, pnt) Then
                 If sf.PointInShapefile(x, y) <> -1 Then
                     outputGrid.Value(col, row) = LCValue
                 End If
             Next
         Next
+        sf.EndPointInShapefile()
         sf.Close()
+        outputGrid.Save()
     End Sub
 
     Public Sub Cleanup(ByRef dictNames As Generic.Dictionary(Of String, String), ByRef clsPollItems As clsXMLPollutantItems, ByRef strLCTypeName As String)

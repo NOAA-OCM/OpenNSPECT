@@ -38,7 +38,7 @@ Module modRusle
     Private _strSDRFileName As String 'If user provides own SDR GRid, store path here
     Private _picks As String()
 
-    Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
+    Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, ByRef OutputItems As clsXMLOutputItems, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strNibbleFileName: FileName of the nibble GRID
         'strDEMTwoCellFileName: FileName of the two cell buffered DEM
@@ -116,7 +116,7 @@ Module modRusle
         _strRusleMetadata = CreateMetadata(g_booLocalEffects)
 
         'Calc rusle using the con
-        If CalcRUSLE(strConStatement) Then
+        If CalcRUSLE(strConStatement, OutputItems) Then
             RUSLESetup = True
         Else
             RUSLESetup = False
@@ -259,7 +259,7 @@ Module modRusle
         End Try
     End Function
 
-    Private Function CalcRUSLE(ByRef strConStatement As String) As Boolean
+    Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
 
         Dim pSoilLossAcres As MapWinGIS.Grid = Nothing  'Soil Loss Acres
         Dim pZSedDelRaster As MapWinGIS.Grid = Nothing  'And I quote, Dave's Whacky Sediment Delivery Ratio
@@ -327,7 +327,7 @@ Module modRusle
             modProgDialog.ProgDialog("Applying Sediment Delivery Ratio...", strTitle, 0, 13, 13, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 11: sed_yield = [soil_loss_ac] * [sdr] -------------------------------------------------
-                Dim SedYieldcalc As New RasterMathCellCalc(AddressOf SedYieldCellCalc)
+                Dim SedYieldcalc As New RasterMathCellCalc(AddressOf sedYieldCellCalc)
                 RasterMath(pSDRRaster, pSoilLossAcres, Nothing, Nothing, Nothing, pSedYieldRaster, SedYieldcalc)
                 pSDRRaster.Close()
                 pSoilLossAcres.Close()
@@ -351,11 +351,7 @@ Module modRusle
                     'Metadata
                     g_dicMetadata.Add("Sediment Local Effects (mg)", _strRusleMetadata)
 
-                    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermRUSLELocRaster, "Brown")
-                    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermRUSLELocRaster, cs, "Sediment Local Effects (mg)")
-                    lyr.Visible = False
-                    lyr.MoveTo(0, g_pGroupLayer)
-
+                    AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
 
                     CalcRUSLE = True
                     modProgDialog.KillDialog()
@@ -378,15 +374,24 @@ Module modRusle
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp1 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp1)
+                strtmp1 = strtmp1 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp1)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp2 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp2)
+                strtmp2 = strtmp2 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp2)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 pSedYieldRaster.Save(strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
+                Dim strtmpout As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmpout)
+                strtmpout = strtmpout + "out" + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmpout)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
 
@@ -420,10 +425,8 @@ Module modRusle
                 'Metadata
                 g_dicMetadata.Add("Accumulated Sediment (kg)", _strRusleMetadata)
 
-                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermAccumSedRaster, "Brown")
-                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermAccumSedRaster, cs, "Accumulated Sediment (kg)")
-                lyr.Visible = False
-                lyr.MoveTo(0, g_pGroupLayer)
+
+                AddOutputGridLayer(pPermAccumSedRaster, "Brown", True, "Accumulated Sediment (kg)", "RUSLE Accum", -1, OutputItems)
             End If
 
 

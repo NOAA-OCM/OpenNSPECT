@@ -47,7 +47,7 @@ Module modRunoff
 
     Private _picks()() As String
 
-    Public Function CreateRunoffGrid(ByRef strLCFileName As String, ByRef strLCCLassType As String, ByRef cmdPrecip As OleDbCommand, ByRef strSoilsFileName As String) As Boolean
+    Public Function CreateRunoffGrid(ByRef strLCFileName As String, ByRef strLCCLassType As String, ByRef cmdPrecip As OleDbCommand, ByRef strSoilsFileName As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'This sub serves as a link between frmPrj and the actual calculation of Runoff
         'It establishes the Rasters being used
 
@@ -120,7 +120,7 @@ Module modRunoff
         End If
 
         'Call the Runoff Calculation using the string and rasters
-        If RunoffCalculation(strPick, g_pPrecipRaster, pLandCoverRaster, pSoilsRaster) Then
+        If RunoffCalculation(strPick, g_pPrecipRaster, pLandCoverRaster, pSoilsRaster, OutputItems) Then
             CreateRunoffGrid = True
         Else
             CreateRunoffGrid = False
@@ -396,12 +396,12 @@ Module modRunoff
         End Try
     End Function
 
-    Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As MapWinGIS.Grid, ByRef pInLandCoverRaster As MapWinGIS.Grid, ByRef pInSoilsRaster As MapWinGIS.Grid) As Boolean
+    Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As MapWinGIS.Grid, ByRef pInLandCoverRaster As MapWinGIS.Grid, ByRef pInSoilsRaster As MapWinGIS.Grid, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'strPickStatement: our friend the dynamic pick statemnt
         'pInRainRaster: the precip grid
         'pInLandCoverRaster: landcover grid
         'pInSoilsRaster: soils grid
-        
+
         Try
             Dim pSCS100Raster As MapWinGIS.Grid = Nothing  'STEP 2: SCS * 100
             Dim pMetRunoffRaster As MapWinGIS.Grid = Nothing
@@ -411,7 +411,7 @@ Module modRunoff
             Dim pPermAccumLocRunoffRaster As MapWinGIS.Grid = Nothing
 
 
-        
+
 
             'String to hold calculations
             Dim strExpression As String = ""
@@ -468,10 +468,7 @@ Module modRunoff
 
                     g_dicMetadata.Add("Runoff Local Effects (L)", _strRunoffMetadata)
 
-                    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermAccumLocRunoffRaster, "Blue")
-                    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermAccumLocRunoffRaster, cs, "Runoff Local Effects (L)")
-                    lyr.Visible = False
-                    lyr.MoveTo(0, g_pGroupLayer)
+                    AddOutputGridLayer(pPermAccumLocRunoffRaster, "Blue", True, "Runoff Local Effects (L)", "Runoff Local", -1, OutputItems)
 
                     RunoffCalculation = True
                     modProgDialog.KillDialog()
@@ -492,15 +489,24 @@ Module modRunoff
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp1 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp1)
+                strtmp1 = strtmp1 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp1)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp2 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp2)
+                strtmp2 = strtmp2 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp2)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 g_pMetRunoffRaster.Save(strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
+                Dim strtmpout As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmpout)
+                strtmpout = strtmpout + "out" + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmpout)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
 
@@ -533,10 +539,7 @@ Module modRunoff
                     pPermAccumRunoffRaster = modUtil.ReturnPermanentRaster(pAccumRunoffRaster, strOutAccum)
                 End If
 
-                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermAccumRunoffRaster, "Blue")
-                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermAccumRunoffRaster, cs, "Accumulated Runoff (L)")
-                lyr.Visible = False
-                lyr.MoveTo(0, g_pGroupLayer)
+                AddOutputGridLayer(pPermAccumRunoffRaster, "Blue", True, "Accumulated Runoff (L)", "Runoff Accum", -1, OutputItems)
 
                 g_dicMetadata.Add("Accumulated Runoff (L)", _strRunoffMetadata)
 

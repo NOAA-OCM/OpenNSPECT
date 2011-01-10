@@ -49,7 +49,7 @@ Module modPollutantCalcs
 
     Private _picks() As String
 
-    Public Function PollutantConcentrationSetup(ByRef clsPollutant As clsXMLPollutantItem, ByRef strLandClass As String, ByRef strWQName As String) As Boolean
+    Public Function PollutantConcentrationSetup(ByRef clsPollutant As clsXMLPollutantItem, ByRef strLandClass As String, ByRef strWQName As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'Sub takes incoming parameters (in the form of a pollutant item) from the project file
         'and then parses them out
         Try
@@ -113,7 +113,7 @@ Module modPollutantCalcs
             _strColor = CStr(datapollcolor("Color"))
             datapollcolor.Close()
 
-            If CalcPollutantConcentration(strConStatement) Then
+            If CalcPollutantConcentration(strConStatement, OutputItems) Then
                 PollutantConcentrationSetup = True
             Else
                 PollutantConcentrationSetup = False
@@ -282,7 +282,7 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    Private Function CalcPollutantConcentration(ByRef strConStatement As String) As Boolean
+    Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
 
         Dim pMassVolumeRaster As MapWinGIS.Grid = Nothing
         Dim pPermMassVolumeRaster As MapWinGIS.Grid = Nothing
@@ -326,10 +326,7 @@ Module modPollutantCalcs
 
                     g_dicMetadata.Add(_strPollName & "Local Effects (mg)", _strPollCoeffMetadata)
 
-                    Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermMassVolumeRaster, _strColor)
-                    Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermMassVolumeRaster, cs, _strPollName & " Local Effects (mg)")
-                    lyr.Visible = False
-                    lyr.MoveTo(0, g_pGroupLayer)
+                    AddOutputGridLayer(pPermMassVolumeRaster, _strColor, True, _strPollName & " Local Effects (mg)", "Pollutant " & _strPollName & " Local", -1, OutputItems)
 
                     CalcPollutantConcentration = True
 
@@ -351,15 +348,24 @@ Module modPollutantCalcs
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp1 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp1)
+                strtmp1 = strtmp1 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp1)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName + g_TAUDEMGridExt
+                Dim strtmp2 As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp2)
+                strtmp2 = strtmp2 + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp2)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
                 pMassVolumeRaster.Save(strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName + "out" + g_TAUDEMGridExt
+                Dim strtmpout As String = IO.Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmpout)
+                strtmpout = strtmpout + "out" + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmpout)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
 
@@ -392,11 +398,7 @@ Module modPollutantCalcs
 
                 g_dicMetadata.Add("Accumulated " & _strPollName & " (kg)", _strPollCoeffMetadata)
 
-                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermAccPollRaster, _strColor)
-                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermAccPollRaster, cs, "Accumulated " & _strPollName & " (kg)")
-                lyr.Visible = False
-                lyr.MoveTo(0, g_pGroupLayer)
-
+                AddOutputGridLayer(pPermAccPollRaster, _strColor, True, "Accumulated " & _strPollName & " (kg)", "Pollutant " & _strPollName & " Accum", -1, OutputItems)
             End If
             'END STEP 3a: ---------------------------------------------------------------------------------
 
@@ -420,16 +422,15 @@ Module modPollutantCalcs
                 End If
 
                 g_dicMetadata.Add(_strPollName & " Conc. (mg/L)", _strPollCoeffMetadata)
-                Dim cs As MapWinGIS.GridColorScheme = ReturnRasterStretchColorRampCS(pPermTotalConcRaster, _strColor)
-                Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermTotalConcRaster, cs, _strPollName & " Conc. (mg/L)")
-                lyr.Visible = False
-                lyr.MoveTo(0, g_pGroupLayer)
+
+
+                AddOutputGridLayer(pPermTotalConcRaster, _strColor, True, _strPollName & " Conc. (mg/L)", "Pollutant " & _strPollName & " Conc", -1, OutputItems)
             End If
 
             modProgDialog.ProgDialog("Comparing to water quality standard...", strTitle, 0, 13, 13, g_frmProjectSetup)
 
             If modProgDialog.g_boolCancel Then
-                If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster) Then
+                If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster, OutputItems) Then
                     CalcPollutantConcentration = False
                     Exit Function
                 End If
@@ -459,7 +460,7 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    Private Function CompareWaterQuality(ByRef pWSFeatureClass As MapWinGIS.Shapefile, ByRef pPollutantRaster As MapWinGIS.Grid) As Boolean
+    Private Function CompareWaterQuality(ByRef pWSFeatureClass As MapWinGIS.Shapefile, ByRef pPollutantRaster As MapWinGIS.Grid, ByRef OutputItems As clsXMLOutputItems) As Boolean
         Dim strWQVAlue As Object
 
         'Get the zone dataset from the first layer in ArcMap
@@ -483,7 +484,7 @@ Module modPollutantCalcs
 
             _WQValue = (CDbl(strWQVAlue)) / 1000
             _FlowMax = g_pFlowAccRaster.Maximum
-    
+
             Dim concalc As New RasterMathCellCalc(AddressOf concompCellCalc)
             RasterMath(pPollutantRaster, g_pFlowAccRaster, Nothing, Nothing, Nothing, pConRaster, concalc)
 
@@ -500,10 +501,7 @@ Module modPollutantCalcs
             strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _strWQName & vbNewLine & vbTab & vbTab & "Standard: " & dblConvertValue & " mg/L"
             g_dicMetadata.Add(_strPollName & " Standard: " & CStr(dblConvertValue) & " mg/L", _strPollCoeffMetadata & strMetadata)
 
-            Dim cs As MapWinGIS.GridColorScheme = modUtil.ReturnUniqueRasterRenderer(pPermWQRaster, _strWQName)
-            Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(pPermWQRaster, cs, _strPollName & " Standard: " & CStr(dblConvertValue) & " mg/L")
-            lyr.Visible = False
-            lyr.MoveTo(0, g_pGroupLayer)
+            AddOutputGridLayer(pPermWQRaster, _strWQName, False, _strPollName & " Standard: " & CStr(dblConvertValue) & " mg/L", "Pollutant " & _strPollName & " WQ", -1, OutputItems)
 
             CompareWaterQuality = True
 

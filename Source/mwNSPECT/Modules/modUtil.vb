@@ -27,8 +27,18 @@ Module modUtil
     Public g_CurrentProjectPath As String
 
     Public g_cb As frmProjectSetup
+    Public g_comp As frmCompareOutputs
+    Public g_luscen As frmLUScen
 
     Public g_strSelectedExportPath As String = ""
+
+    'Intermediate and output extensions
+    Public g_OutputGridExt As String = ".bgd"
+    Public g_FinalOutputGridExt As String = ".tif"
+    Public g_TAUDEMGridExt As String = ".bgd"
+
+    Public g_TempFilesToDel As New Collections.Generic.List(Of String)
+
 
     'Database Variables
     Public g_DBConn As OleDbConnection 'Connection
@@ -63,10 +73,7 @@ Module modUtil
 
 
 
-    Public g_OutputGridExt As String = ".bgd"
-    Public g_FinalOutputGridExt As String = ".tif"
-    Public g_TAUDEMGridExt As String = ".bgd"
-
+    
 
     Const c_sModuleFileName As String = "modUtil.vb"
     Private m_ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
@@ -203,7 +210,7 @@ Module modUtil
 
 
             For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(lngLyrIndex)
+                Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
                 If pLayer.Name = strName Then
                     LayerInMap = True
                     Exit Function
@@ -220,7 +227,7 @@ Module modUtil
     Public Function LayerInMapByFileName(ByRef strName As String) As Boolean
 
         For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-            Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(lngLyrIndex)
+            Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
 
             If Trim(LCase(pLayer.FileName)) <> Trim(LCase(strName)) Then
                 LayerInMapByFileName = False
@@ -235,10 +242,26 @@ Module modUtil
         GetLayerIndex = -1
         Try
             For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(lngLyrIndex)
+                Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
 
                 If Trim(LCase(pLayer.Name)) = Trim(LCase(strLayerName)) Then
                     GetLayerIndex = lngLyrIndex
+                    Exit For
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+        End Try
+    End Function
+
+    Public Function GetLayerIndexByFilename(ByRef strLayerFileName As String) As Integer
+        GetLayerIndexByFilename = -1
+        Try
+            For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
+                Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
+
+                If Trim(LCase(pLayer.FileName)) = Trim(LCase(strLayerFileName)) Then
+                    GetLayerIndexByFilename = lngLyrIndex
                     Exit For
                 End If
             Next
@@ -251,7 +274,7 @@ Module modUtil
         GetLayerFilename = ""
         Try
             For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(lngLyrIndex)
+                Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
 
                 If Trim(LCase(pLayer.Name)) = Trim(LCase(strLayerName)) Then
                     GetLayerFilename = pLayer.FileName
@@ -450,6 +473,235 @@ Module modUtil
     Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As MapWinGIS.Grid, ByRef strColor As String) As MapWinGIS.GridColorScheme
         ReturnRasterStretchColorRampCS = Nothing
         Try
+            Dim rTo, bTo, gTo, rFrom, bFrom, gFrom, rTo2, bTo2, gTo2, rFrom2, bFrom2, gFrom2 As Integer
+
+            Select Case strColor
+                Case "Blue"
+                    ' 242, 245, 255
+                    rFrom = 242
+                    gFrom = 245
+                    bFrom = 255
+
+                    '149, 173, 255
+                    rTo = 91
+                    gTo = 129
+                    bTo = 255
+
+                    '60, 103, 255
+                    rFrom2 = 60
+                    gFrom2 = 103
+                    bFrom2 = 255
+
+                    '18, 73, 255
+                    rTo2 = 18
+                    gTo2 = 73
+                    bTo2 = 255
+                Case "Brown"
+                    '255, 242, 217
+                    rFrom = 255
+                    gFrom = 242
+                    bFrom = 217
+
+                    '255, 202, 102
+                    rTo = 255
+                    gTo = 202
+                    bTo = 102
+
+                    '255, 174, 23
+                    rFrom2 = 255
+                    gFrom2 = 174
+                    bFrom2 = 23
+
+                    '255, 193, 8
+                    rTo2 = 255
+                    gTo2 = 193
+                    bTo2 = 8
+                Case "81,100,100,81,5,100"
+                    rFrom = 251
+                    gFrom = 255
+                    bFrom = 242
+
+                    rTo = 187
+                    gTo = 255
+                    bTo = 100
+
+                    rFrom2 = 187
+                    gFrom2 = 255
+                    bFrom2 = 60
+
+                    rTo2 = 166
+                    gTo2 = 255
+                    bTo2 = 0
+                Case "45,97,100,45,5,100"
+                    rFrom = 255
+                    gFrom = 242
+                    bFrom = 217
+
+                    '255, 202, 102
+                    rTo = 255
+                    gTo = 221
+                    bTo = 157
+
+                    '255, 174, 23
+                    rFrom2 = 255
+                    gFrom2 = 193
+                    bFrom2 = 79
+
+                    rTo2 = 255
+                    gTo2 = 193
+                    bTo2 = 8
+                Case "273,97,100,273,5,100"
+                    '144, 8, 255  
+                    '249, 242, 255
+                    rFrom = 249
+                    gFrom = 242
+                    bFrom = 255
+
+                    rTo = 206
+                    gTo = 147
+                    bTo = 255
+
+                    rFrom2 = 174
+                    gFrom2 = 74
+                    bFrom2 = 255
+
+                    rTo2 = 144
+                    gTo2 = 8
+                    bTo2 = 255
+                Case "198,97,100,198,5,100"
+                    '242, 252, 255
+                    '8, 181, 255
+                    rFrom = 242
+                    gFrom = 252
+                    bFrom = 255
+
+                    rTo = 149
+                    gTo = 223
+                    bTo = 255
+
+                    rFrom2 = 85
+                    gFrom2 = 204
+                    bFrom2 = 255
+
+                    rTo2 = 8
+                    gTo2 = 181
+                    bTo2 = 255
+                Case "356,97,100,356,5,100"
+                    '255, 242, 243
+                    '255, 8, 24
+                    rFrom = 255
+                    gFrom = 242
+                    bFrom = 243
+
+                    rTo = 255
+                    gTo = 140
+                    bTo = 149
+
+                    rFrom2 = 255
+                    gFrom2 = 74
+                    bFrom2 = 88
+
+                    rTo2 = 255
+                    gTo2 = 8
+                    bTo2 = 24
+                Case Else
+                    'TODO: Convert HSV to RGB
+                    rFrom = CInt(Split(strColor, ",")(0))
+                    gFrom = CInt(Split(strColor, ",")(1))
+                    bFrom = CInt(Split(strColor, ",")(2))
+
+                    rTo = CInt(Split(strColor, ",")(3))
+                    gTo = CInt(Split(strColor, ",")(4))
+                    bTo = CInt(Split(strColor, ",")(5))
+
+                    rFrom2 = CInt(Split(strColor, ",")(0))
+                    gFrom2 = CInt(Split(strColor, ",")(1))
+                    bFrom2 = CInt(Split(strColor, ",")(2))
+
+                    rTo2 = CInt(Split(strColor, ",")(3))
+                    gTo2 = CInt(Split(strColor, ",")(4))
+                    bTo2 = CInt(Split(strColor, ",")(5))
+            End Select
+
+            Dim total As Double = 0.0
+            Dim sqrtotal As Double = 0.0
+            Dim stdDev As Double
+            Dim count As Integer = 0
+            Dim nc, nr As Integer
+            Dim nodata As Double
+            nc = pRaster.Header.NumberCols - 1
+            nr = pRaster.Header.NumberRows - 1
+            nodata = pRaster.Header.NodataValue
+            Dim rowvals() As Single
+            ReDim rowvals(nc)
+            For row As Integer = 0 To nr
+                pRaster.GetRow(row, rowvals(0))
+                For col As Integer = 0 To nc
+                    If rowvals(col) <> nodata And rowvals(col) < Double.MaxValue And rowvals(col) > Double.MinValue Then
+                        total = total + rowvals(col)
+                        sqrtotal = sqrtotal + (rowvals(col) * rowvals(col))
+                        count = count + 1
+                    End If
+                Next
+            Next
+            stdDev = Math.Sqrt((sqrtotal / count) - (total / count) * (total / count))
+
+            Dim stdMult As Integer = 2
+
+            'Dim percVal As Double = (stdDev * stdMult) / pRaster.Maximum
+            'Dim rstep As Double = (stdMult) * (rTo - rFrom) * percVal
+            'Dim gstep As Double = (stdMult) * (gTo - gFrom) * percVal
+            'Dim bstep As Double = (stdMult) * (bTo - bFrom) * percVal
+
+            Dim cs As New MapWinGIS.GridColorScheme
+            Dim csbrk As New MapWinGIS.GridColorBreak
+            csbrk.LowValue = pRaster.Minimum
+            csbrk.HighValue = pRaster.Minimum + stdMult * stdDev
+            csbrk.ColoringType = MapWinGIS.ColoringType.Gradient
+            csbrk.LowColor = Convert.ToUInt32(RGB(CInt(rFrom), CInt(gFrom), CInt(bFrom)))
+            csbrk.HighColor = Convert.ToUInt32(RGB(CInt(rTo), CInt(gTo), CInt(bTo)))
+            csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
+            cs.InsertBreak(csbrk)
+            csbrk = New MapWinGIS.GridColorBreak
+            csbrk.LowValue = pRaster.Minimum + stdMult * stdDev
+            csbrk.HighValue = pRaster.Maximum - stdMult * stdDev
+            csbrk.ColoringType = MapWinGIS.ColoringType.Gradient
+            csbrk.LowColor = Convert.ToUInt32(RGB(CInt(rTo), CInt(gTo), CInt(bTo)))
+            csbrk.HighColor = Convert.ToUInt32(RGB(CInt(rFrom2), CInt(gFrom2), CInt(bFrom2)))
+            csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
+            cs.InsertBreak(csbrk)
+            csbrk = New MapWinGIS.GridColorBreak
+            csbrk.LowValue = pRaster.Maximum - stdMult * stdDev
+            csbrk.HighValue = pRaster.Maximum
+            csbrk.ColoringType = MapWinGIS.ColoringType.Gradient
+            csbrk.LowColor = Convert.ToUInt32(RGB(CInt(rFrom2), CInt(gFrom2), CInt(bFrom2)))
+            csbrk.HighColor = Convert.ToUInt32(RGB(CInt(rTo2), CInt(gTo2), CInt(bTo2)))
+            csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
+            cs.InsertBreak(csbrk)
+            Return cs
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            'HandleError(True, "ReturnRasterStretchColorRampRender " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+        End Try
+    End Function
+
+    Public Function ReturnContinuousRampColorCS(ByRef grd As MapWinGIS.Grid, ByRef strColor As String) As MapWinGIS.GridColorScheme
+        'Based on the Mapwindow Grid Coloring Scheme Editor MakeContinuousRamp function
+        Dim arr(), val As Object, i, j As Integer
+        Dim ht As New Hashtable
+        Dim brk As MapWinGIS.GridColorBreak
+        Dim gradientModel As MapWinGIS.GradientModel
+        Dim coloringType As MapWinGIS.ColoringType
+        Dim coloringscheme As New MapWinGIS.GridColorScheme
+
+        'Dim gradient As String = "Linear"
+        'Dim gradient As String = "Exponential"
+        Dim gradient As String = "Logarithmic"
+        Dim numBreaks As Integer = 5
+
+        Try
+            If grd Is Nothing Then Return Nothing
+
             Dim rTo As Integer
             Dim bTo As Integer
             Dim gTo As Integer
@@ -505,26 +757,179 @@ Module modUtil
                     rTo = CInt(Split(strColor, ",")(3))
                     gTo = CInt(Split(strColor, ",")(4))
                     bTo = CInt(Split(strColor, ",")(5))
-
-
             End Select
 
+            For i = 0 To grd.Header.NumberRows - 1
+                For j = 0 To grd.Header.NumberCols - 1
+                    val = grd.Value(j, i)
+                    If ht.ContainsKey(val) = False Then
+                        ht.Add(val, val)
+                    End If
+                Next
+            Next
+
+            ReDim arr(ht.Count - 1)
+            ht.Values().CopyTo(arr, 0)
+            Array.Sort(arr)
+
+            While coloringscheme.NumBreaks > 0
+                coloringscheme.DeleteBreak(0)
+            End While
+
+            Select Case gradient
+                Case "Linear"
+                    gradientModel = MapWinGIS.GradientModel.Linear
+                Case "Exponential"
+                    gradientModel = MapWinGIS.GradientModel.Exponential
+                Case "Logorithmic"
+                    gradientModel = MapWinGIS.GradientModel.Logorithmic
+            End Select
+
+            coloringType = MapWinGIS.ColoringType.Gradient
 
 
-            Dim cs As New MapWinGIS.GridColorScheme
-            Dim csbrk As New MapWinGIS.GridColorBreak
-            csbrk.LowValue = pRaster.Minimum
-            csbrk.HighValue = pRaster.Maximum
-            csbrk.ColoringType = MapWinGIS.ColoringType.Gradient
-            csbrk.LowColor = Convert.ToUInt32(RGB(rFrom, gFrom, bFrom))
-            csbrk.HighColor = Convert.ToUInt32(RGB(rTo, gTo, bTo))
-            csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
-            cs.InsertBreak(csbrk)
-            Return cs
+            '' No Data break
+            'brk = New MapWinGIS.GridColorBreak()
+            'brk.Caption = "No Data"
+            'brk.LowValue = grd.Header.NodataValue
+            'brk.HighValue = brk.LowValue
+            'brk.LowColor = MapWinUtility.Colors.ColorToUInteger(Color.Black)
+            'brk.HighColor = brk.LowColor
+            'brk.GradientModel = gradientModel
+            'brk.ColoringType = coloringType
+            'm_ColoringScheme.InsertBreak(brk)
+
+            Dim sR, sG, sB As Integer
+            Dim eR, eG, eB As Integer
+            Dim r, g, b As Double
+            Dim rStep, gStep, bStep As Double
+            Dim startVal As Integer
+
+            sR = rFrom
+            sG = gFrom
+            sB = bFrom
+            eR = rTo
+            eG = gTo
+            eB = bTo
+
+            r = sR
+            g = sG
+            b = sB
+
+            If ht.Keys.Count <= numBreaks Then
+                Dim brkArr() As Object
+                ReDim brkArr(ht.Keys.Count - 1)
+                ht.Keys.CopyTo(brkArr, 0)
+                Array.Sort(brkArr)
+
+                rStep = (eR - sR) / brkArr.Length
+                gStep = (eG - sG) / brkArr.Length
+                bStep = (eB - sB) / brkArr.Length
+
+                'This must be double.parse(convert.tostring) for handling of sbyte values - cdm 11/13/2005
+                startVal = CInt(IIf(Double.Parse(Convert.ToString(grd.Header.NodataValue)) = Double.Parse(Convert.ToString(brkArr(0))), 1, 0))
+                'startVal = CInt(IIf(CDbl(grd.Header.NodataValue) = CDbl(brkArr(0)), 1, 0))
+                For i = startVal To brkArr.Length - 1
+                    brk = New MapWinGIS.GridColorBreak
+                    If IsNumeric(brkArr(i)) Then
+                        brk.Caption = Double.Parse(Convert.ToString((brkArr(i)))).ToString()
+                        'brk.Caption = CDbl(brkArr(i)).ToString(m_NumberFormat & m_Precision)
+                        'tPrecision = CInt(Math.Floor(m_Precision - Math.Log10(CDbl(arr(i)))))
+                        'If tPrecision < 0 Then tPrecision = 0
+                        'brk.Caption = CStr(Math.Round(CDbl(brkArr(i)), tPrecision))
+                    End If
+                    brk.LowValue = Double.Parse(Convert.ToString(brkArr(i)))
+                    brk.HighValue = brk.LowValue
+                    brk.LowColor = System.Convert.ToUInt32(RGB(CInt(r), CInt(g), CInt(b)))
+                    r += rStep
+                    g += gStep
+                    b += bStep
+                    brk.HighColor = System.Convert.ToUInt32(RGB(CInt(r), CInt(g), CInt(b)))
+                    brk.ColoringType = coloringType
+                    brk.GradientModel = gradientModel
+                    coloringscheme.InsertBreak(brk)
+                Next
+            Else
+                rStep = (eR - sR) / numBreaks
+                gStep = (eG - sG) / numBreaks
+                bStep = (eB - sB) / numBreaks
+
+                Dim min As Double, max As Double, range As Double
+                startVal = CInt(IIf(Double.Parse(Convert.ToString(grd.Header.NodataValue)) = Double.Parse(Convert.ToString(arr(0))), 1, 0))
+
+                min = Double.Parse(Convert.ToString(arr(startVal)))
+                max = Double.Parse(Convert.ToString(arr(arr.Length() - 1)))
+                range = max - min
+
+                Dim prev As Double = min
+                Dim t As Double = range / numBreaks
+
+                For i = 1 To numBreaks - 1
+                    brk = New MapWinGIS.GridColorBreak
+                    brk.LowValue = prev
+                    brk.HighValue = prev + t
+                    brk.LowColor = System.Convert.ToUInt32(RGB(CInt(r), CInt(g), CInt(b)))
+                    r += rStep
+                    g += gStep
+                    b += bStep
+                    brk.HighColor = System.Convert.ToUInt32(RGB(CInt(r), CInt(g), CInt(b)))
+                    If brk.HighValue = brk.LowValue Then
+                        If brk.LowValue = min Then
+                            brk.Caption = CStr(min)
+                        Else
+                            brk.Caption = brk.LowValue.ToString()
+                            'tPrecision = CInt(Math.Floor(m_Precision - Math.Log10(CDbl(brk.LowValue))))
+                            'If tPrecision < 0 Then tPrecision = 0
+                            'brk.Caption = CStr(Math.Round(CDbl(brk.LowValue), tPrecision))
+                        End If
+                    Else
+                        If brk.LowValue = min Then
+                            brk.Caption = CStr(min)
+                        Else
+                            brk.Caption = brk.LowValue.ToString()
+                            'tPrecision = CInt(Math.Floor(m_Precision - Math.Log10(CDbl(brk.LowValue))))
+                            'If tPrecision < 0 Then tPrecision = 0
+                            'brk.Caption = CStr(Math.Round(CDbl(brk.LowValue), tPrecision))
+                        End If
+                        brk.Caption &= " - "
+                        brk.Caption = brk.HighValue.ToString()
+                        'tPrecision = CInt(Math.Floor(m_Precision - Math.Log10(CDbl(brk.HighValue))))
+                        'If tPrecision < 0 Then tPrecision = 0
+                        'brk.Caption &= Math.Round(CDbl(brk.HighValue), tPrecision)
+                    End If
+                    brk.ColoringType = coloringType
+                    brk.GradientModel = gradientModel
+                    coloringscheme.InsertBreak(brk)
+                    prev = brk.HighValue
+                Next
+                ' now do the last break
+                brk = New MapWinGIS.GridColorBreak
+                brk.LowValue = prev
+                brk.HighValue = max
+                brk.LowColor = System.Convert.ToUInt32(RGB(CInt(r), CInt(g), CInt(b)))
+                r = eR
+                g = eG
+                b = eB
+                brk.HighColor = System.Convert.ToUInt32(RGB(CInt(r), CInt(g), CInt(b)))
+                If brk.HighValue = brk.LowValue Then
+                    brk.Caption = CStr(brk.LowValue)
+                Else
+                    brk.Caption = brk.LowValue.ToString()
+                    'tPrecision = CInt(Math.Floor(m_Precision - Math.Log10(CDbl(brk.LowValue))))
+                    'If tPrecision < 0 Then tPrecision = 0
+                    'brk.Caption = Math.Round(CDbl(brk.LowValue), tPrecision) & " - " & brk.HighValue
+                End If
+                brk.ColoringType = coloringType
+                brk.GradientModel = gradientModel
+                coloringscheme.InsertBreak(brk)
+            End If
+            Return coloringscheme
         Catch ex As Exception
-            HandleError(True, "ReturnRasterStretchColorRampRender " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(True, "MakeContinuousRamp " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            Return Nothing
         End Try
     End Function
+
 
     Public Function ReturnUniqueRasterRenderer(ByRef pRaster As MapWinGIS.Grid, ByRef strStandardName As String) As Object
         Try
@@ -610,14 +1015,17 @@ Module modUtil
         End Try
     End Function
 
-    Public Function ClipBySelectedPoly(ByRef pAccumRunoffRaster As MapWinGIS.Grid, ByVal g_pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As MapWinGIS.Grid
-        Dim strtmp1 As String = IO.Path.GetTempFileName + g_OutputGridExt
+    Public Function ClipBySelectedPoly(ByRef pGridToClip As MapWinGIS.Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As MapWinGIS.Grid
+        Dim strtmp1 As String = IO.Path.GetTempFileName
+        g_TempFilesToDel.Add(strtmp1)
+        strtmp1 = strtmp1 + g_OutputGridExt
+        g_TempFilesToDel.Add(strtmp1)
         MapWinGeoProc.DataManagement.DeleteGrid(strtmp1)
-        pAccumRunoffRaster.Save()
-        pAccumRunoffRaster.Save(strtmp1)
-        pAccumRunoffRaster.Header.Projection = g_MapWin.Project.ProjectProjection
+        pGridToClip.Save()
+        pGridToClip.Save(strtmp1)
+        pGridToClip.Header.Projection = g_MapWin.Project.ProjectProjection
 
-        MapWinGeoProc.SpatialOperations.ClipGridWithPolygon(strtmp1, g_pSelectedPolyClip, outputFileName)
+        MapWinGeoProc.SpatialOperations.ClipGridWithPolygon(strtmp1, pSelectedPolyClip, outputFileName)
 
         Dim out As New MapWinGIS.Grid
         out.Open(outputFileName)
@@ -749,6 +1157,18 @@ Module modUtil
             If Not g_pSelectedPolyClip Is Nothing Then
                 g_pSelectedPolyClip = Nothing
             End If
+
+            For i As Integer = 0 To g_TempFilesToDel.Count - 1
+                If IO.File.Exists(g_TempFilesToDel(i)) Then
+                    MapWinGeoProc.DataManagement.DeleteGrid(g_TempFilesToDel(i))
+                    If IO.File.Exists(g_TempFilesToDel(i)) Then
+                        MapWinGeoProc.DataManagement.DeleteShapefile(g_TempFilesToDel(i))
+                        If IO.File.Exists(g_TempFilesToDel(i)) Then
+                            IO.File.Delete(g_TempFilesToDel(i))
+                        End If
+                    End If
+                End If
+            Next
         Catch ex As Exception
             HandleError(True, "CleanGlobals " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
@@ -834,10 +1254,9 @@ Module modUtil
         End If
     End Function
 
-    Public Function ExportSelectedFeatures() As String
+    Public Function ExportSelectedFeatures(ByVal SelectLyrPath As String, ByRef SelectedShapes As Collections.Generic.List(Of Integer)) As String
         ' Modified from http://www.mapwindow.org/wiki/index.php/MapWinGIS:SampleCode-VB_Net:ExportSelectedShapes
         Dim Result As Boolean
-        Dim SelectedShape As MapWindow.Interfaces.SelectedShape
         Dim cdlSave As New SaveFileDialog
         Dim sFileName, sLayerType As String
         Dim iFileCnt As Integer = 1
@@ -847,65 +1266,91 @@ Module modUtil
         Dim iShapeHandle, iFieldCnt As Integer
 
         ExportSelectedFeatures = Nothing
-        If g_strSelectedExportPath <> "" Then
-            Return g_strSelectedExportPath
-        Else
-            'First check to see if any features have been selected
-            If g_MapWin.View.SelectedShapes.NumSelected <= 0 Then Exit Function
+        'First check to see if any features have been selected
+        If SelectedShapes.Count <= 0 Then Exit Function
 
-            Try
-                myShapeFile = g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).GetObject()
+        Try
+            myShapeFile = New MapWinGIS.Shapefile
+            myShapeFile.Open(SelectLyrPath)
 
-                'Determine if shape is polygon, line, or point
-                sLayerType = Strings.LCase(g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).LayerType.ToString)
-                If InStr(sLayerType, "line", CompareMethod.Text) > 0 Then
-                    ShapefileType = MapWinGIS.ShpfileType.SHP_POLYLINE
-                ElseIf InStr(sLayerType, "polygon", CompareMethod.Text) > 0 Then
-                    ShapefileType = MapWinGIS.ShpfileType.SHP_POLYGON
-                ElseIf InStr(sLayerType, "point", CompareMethod.Text) > 0 Then
-                    ShapefileType = MapWinGIS.ShpfileType.SHP_POINT
-                End If
+            'Determine if shape is polygon, line, or point
+            sLayerType = Strings.LCase(g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).LayerType.ToString)
+            If InStr(sLayerType, "line", CompareMethod.Text) > 0 Then
+                ShapefileType = MapWinGIS.ShpfileType.SHP_POLYLINE
+            ElseIf InStr(sLayerType, "polygon", CompareMethod.Text) > 0 Then
+                ShapefileType = MapWinGIS.ShpfileType.SHP_POLYGON
+            ElseIf InStr(sLayerType, "point", CompareMethod.Text) > 0 Then
+                ShapefileType = MapWinGIS.ShpfileType.SHP_POINT
+            End If
 
-                sFileName = modUtil.GetUniqueName("selpoly", g_strWorkspace, ".shp")
+            sFileName = modUtil.GetUniqueName("selpoly", g_strWorkspace, ".shp")
 
-                'Create the new shapefile
-                newShapefile = New MapWinGIS.Shapefile
-                newShapefile.CreateNew(sFileName, ShapefileType)
-                newShapefile.Projection = g_MapWin.Project.ProjectProjection
+            'Create the new shapefile
+            newShapefile = New MapWinGIS.Shapefile
+            newShapefile.CreateNew(sFileName, ShapefileType)
+            newShapefile.Projection = g_MapWin.Project.ProjectProjection
 
-                'The new shapefile has no fields at this point
+            'The new shapefile has no fields at this point
+            For iFieldCnt = 0 To myShapeFile.NumFields - 1
+                newShapefile.EditInsertField(myShapeFile.Field(iFieldCnt), iFieldCnt)
+            Next iFieldCnt
+
+            'Start an edit session in the shapefile
+            newShapefile.StartEditingShapes(True, Nothing)
+
+            'Iterate through each of the selected feature
+            For i As Integer = 0 To SelectedShapes.Count - 1
+                'Set to the selected shape
+                myShape = myShapeFile.Shape(SelectedShapes(i))
+
+                'insert the selected shape
+                iShapeHandle = newShapefile.NumShapes
+                Result = newShapefile.EditInsertShape(myShape, iShapeHandle)
+
+                'Populate the aspatial data
                 For iFieldCnt = 0 To myShapeFile.NumFields - 1
-                    newShapefile.EditInsertField(myShapeFile.Field(iFieldCnt), iFieldCnt)
+                    newShapefile.EditCellValue(iFieldCnt, iShapeHandle, myShapeFile.CellValue(iFieldCnt, SelectedShapes(i)))
                 Next iFieldCnt
+            Next i
 
-                'Start an edit session in the shapefile
-                newShapefile.StartEditingShapes(True, Nothing)
+            newShapefile.StopEditingShapes()
+            newShapefile.Close()
+            myShapeFile.Close()
+            Return sFileName
+        Catch ex As Exception
+            MsgBox("Error in exporting selected features.", MsgBoxStyle.Exclamation, "Exporting Selected Error")
+        End Try
 
-                'Iterate through each of the selected feature
-                For i As Integer = 0 To g_MapWin.View.SelectedShapes.NumSelected - 1
-                    'Set to the selected shape
-                    SelectedShape = g_MapWin.View.SelectedShapes(i)
-                    myShape = myShapeFile.Shape(SelectedShape.ShapeIndex)
 
-                    'insert the selected shape
-                    iShapeHandle = newShapefile.NumShapes
-                    Result = newShapefile.EditInsertShape(myShape, iShapeHandle)
+    End Function
 
-                    'Populate the aspatial data
-                    For iFieldCnt = 0 To myShapeFile.NumFields - 1
-                        newShapefile.EditCellValue(iFieldCnt, iShapeHandle, myShapeFile.CellValue(iFieldCnt, SelectedShape.ShapeIndex))
-                    Next iFieldCnt
-                Next i
 
-                newShapefile.StopEditingShapes()
-                newShapefile.Close()
-                Return sFileName
-            Catch ex As Exception
-                MsgBox("Error in exporting selected features.", MsgBoxStyle.Exclamation, "Exporting Selected Error")
-            End Try
+
+    Public Function AddOutputGridLayer(ByRef outRast As MapWinGIS.Grid, ByVal ColorString As String, ByVal UseStretch As Boolean, ByVal LayerName As String, ByVal OutputType As String, ByVal OutputGroup As Integer, ByRef OutputItems As clsXMLOutputItems) As Boolean
+        Dim cs As MapWinGIS.GridColorScheme
+        If UseStretch = True Then
+            cs = ReturnRasterStretchColorRampCS(outRast, ColorString)
+            'Dim cs As MapWinGIS.GridColorScheme = ReturnContinuousRampColorCS(pPermAccumLocRunoffRaster, "Blue")
+        Else
+            cs = modUtil.ReturnUniqueRasterRenderer(outRast, ColorString)
         End If
 
-
+        Dim lyr As MapWindow.Interfaces.Layer = g_MapWin.Layers.Add(outRast, cs, LayerName)
+        lyr.Visible = False
+        If OutputGroup <> -1 Then
+            lyr.MoveTo(0, OutputGroup)
+        Else
+            lyr.MoveTo(0, g_pGroupLayer)
+        End If
+        If Not OutputItems Is Nothing Then
+            Dim OutItem As New clsXMLOutputItem
+            OutItem.strPath = outRast.Filename
+            OutItem.strName = LayerName
+            OutItem.strType = OutputType
+            OutItem.strColor = ColorString
+            OutItem.booUseStretch = UseStretch
+            OutputItems.Add(OutItem)
+        End If
     End Function
 
 
@@ -919,7 +1364,10 @@ Module modUtil
         Dim nrow As Integer
         Dim nodata1, nodata2, nodata3, nodata4, nodata5, nodataout As Single
         Dim rowvals1(), rowvals2(), rowvals3(), rowvals4(), rowvals5(), rowvalsout() As Single
-        Dim tmppath As String = IO.Path.GetTempFileName + g_OutputGridExt
+        Dim tmppath As String = IO.Path.GetTempFileName
+        g_TempFilesToDel.Add(tmppath)
+        tmppath = tmppath + g_OutputGridExt
+        g_TempFilesToDel.Add(tmppath)
         nodataout = -9999.0
 
         head1 = InputGrid1.Header
@@ -1011,7 +1459,10 @@ Module modUtil
         Dim nodata1, nodata2, nodata3, nodata4, nodata5, nodataout As Single
         Dim rowvals1(3)(), rowvals2(3)(), rowvals3(3)(), rowvals4(3)(), rowvals5(3)(), rowvalsout() As Single
         Dim InputBox1(3, 3), InputBox2(3, 3), InputBox3(3, 3), InputBox4(3, 3), InputBox5(3, 3) As Single
-        Dim tmppath As String = IO.Path.GetTempFileName + g_OutputGridExt
+        Dim tmppath As String = IO.Path.GetTempFileName
+        g_TempFilesToDel.Add(tmppath)
+        tmppath = tmppath + g_OutputGridExt
+        g_TempFilesToDel.Add(tmppath)
 
         nodataout = -9999.0
 

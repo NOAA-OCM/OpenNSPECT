@@ -221,6 +221,8 @@ Public Class mwNSPECT
         Select Case ItemName
             Case g_mnuNSPECTAnalysis
                 ShowAnalysisForm()
+            Case g_mnuNSPECTCompare
+                ShowCompareOUtputsForm()
             Case g_mnuNSPECTAdvLand
                 ShowAdvLandForm()
             Case g_mnuNSPECTAdvPolutants
@@ -255,6 +257,10 @@ Public Class mwNSPECT
             _addedMenus.Push(g_mnuNSPECTMain)
             .AddMenu(g_mnuNSPECTAnalysis, g_mnuNSPECTMain, nil, "Run Analysis")
             _addedMenus.Push(g_mnuNSPECTAnalysis)
+            .AddMenu("mnunspectsep0", g_mnuNSPECTMain, nil, "-")
+            _addedMenus.Push("mnunspectsep0")
+            .AddMenu(g_mnuNSPECTCompare, g_mnuNSPECTMain, nil, "Compare Outputs")
+            _addedMenus.Push(g_mnuNSPECTCompare)
             .AddMenu("mnunspectsep1", g_mnuNSPECTMain, nil, "-")
             _addedMenus.Push("mnunspectsep1")
             .AddMenu(g_mnuNSPECTAdvSettings, g_mnuNSPECTMain, nil, "Advanced Settings")
@@ -309,6 +315,15 @@ Public Class mwNSPECT
     End Sub
 
     ''' <summary>
+    ''' Shows the outputs comparison form
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub ShowCompareOutputsForm()
+        Dim tmp As New frmCompareOutputs
+        tmp.ShowDialog()
+    End Sub
+
+    ''' <summary>
     ''' Shows the Land Cover form
     ''' </summary>
     ''' <remarks></remarks>
@@ -324,7 +339,6 @@ Public Class mwNSPECT
     Private Sub ShowAdvPollutantsForm()
         Dim tmp As New frmPollutants
         tmp.ShowDialog()
-
     End Sub
 
     ''' <summary>

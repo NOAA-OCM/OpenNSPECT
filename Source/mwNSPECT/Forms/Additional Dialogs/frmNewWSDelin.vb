@@ -447,10 +447,51 @@ Friend Class frmNewWSDelin
                 Return False
             End If
 
+            'Save final output tif versions (since Taudem needed bgds before this)
+            Dim proj As String = pOutputFeatClass.Projection
+            Dim tmpfile As String
+            tmpfile = _strFilledDEMFileName
+            _strFilledDEMFileName = OutPath + "demfill" + g_FinalOutputGridExt
+            pFillRaster.Close()
+            pFillRaster = New MapWinGIS.Grid
+            pFillRaster.Open(tmpfile)
+            pFillRaster.Header.Projection = proj
+            pFillRaster.Save(_strFilledDEMFileName)
+            pFillRaster.Close()
+            IO.File.Delete(tmpfile)
+
+            tmpfile = strSlpFileName
+            strSlpFileName = OutPath + "slope" + g_FinalOutputGridExt
+            Dim pslope As New MapWinGIS.Grid
+            pslope.Open(tmpfile)
+            pslope.Header.Projection = proj
+            pslope.Save(strSlpFileName)
+            pslope.Close()
+            IO.File.Delete(tmpfile)
+
+            tmpfile = _strDirFileName
+            _strDirFileName = OutPath + "flowdir" + g_FinalOutputGridExt
+            pFlowDirRaster.Close()
+            pFlowDirRaster = New MapWinGIS.Grid
+            pFlowDirRaster.Open(tmpfile)
+            pFlowDirRaster.Header.Projection = proj
+            pFlowDirRaster.Save(_strDirFileName)
+            pFlowDirRaster.Close()
+            IO.File.Delete(tmpfile)
+
+            tmpfile = _strAccumFileName
+            _strAccumFileName = OutPath + "flowacc" + g_FinalOutputGridExt
+            pAccumRaster.Close()
+            pAccumRaster = New MapWinGIS.Grid
+            pAccumRaster.Open(tmpfile)
+            pAccumRaster.Header.Projection = proj
+            pAccumRaster.Save(_strAccumFileName)
+            pAccumRaster.Close()
+            IO.File.Delete(tmpfile)
 
             'With all of that done, now go get the name of the LS Grid while actually computing said LS Grid
             '_strLSFileName = CalcLengthSlope(pFillRaster, pFlowDirRaster, pAccumRaster, pEnv, "0", pWorkspace)
-            _strLSFileName = OutPath + "lsgrid" + g_OutputGridExt
+            _strLSFileName = OutPath + "lsgrid" + g_FinalOutputGridExt
             Dim g As New MapWinGIS.Grid
             g.Open(longestupslopeout)
             g.Save(_strLSFileName)

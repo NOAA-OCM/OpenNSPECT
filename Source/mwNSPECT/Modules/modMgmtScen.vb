@@ -53,7 +53,7 @@ Module modMgmtScen
                 Exit Sub
             End If
 
-            strOutLandCover = modUtil.GetUniqueName("landcover", IO.Path.GetDirectoryName(_pLandCoverRaster.Filename), g_OutputGridExt)
+            strOutLandCover = modUtil.GetUniqueName("landcover", g_strWorkspace, g_OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
@@ -68,7 +68,8 @@ Module modMgmtScen
                     If clsMgmtScens.Item(i).intApply = 1 Then
                         modProgDialog.ProgDialog("Adding new landclass...", "Creating Management Scenario", 0, CInt(clsMgmtScens.Count), CInt(i), g_frmProjectSetup)
                         If modProgDialog.g_boolCancel Then
-                            ReclassRaster(clsMgmtScens.Item(i), _strLCClass, pNewLandCoverRaster)
+                            Dim mgmtitem As clsXMLMgmtScenItem = clsMgmtScens.Item(i)
+                            ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
                             booLandScen = True
                         Else
                             pNewLandCoverRaster.Close()
@@ -113,22 +114,32 @@ Module modMgmtScen
         Dim sf As New MapWinGIS.Shapefile
         sf = modUtil.ReturnFeature(clsMgmtScen.strAreaFileName)
 
+
         'Get minimum extents of the area file
         Dim sfExt As MapWinGIS.Extents = sf.Extents
         Dim startRow, startCol, endRow, endCol As Integer
-        outputGrid.ProjToCell(sfExt.xMin, sfExt.yMin, startCol, startRow)
-        outputGrid.ProjToCell(sfExt.xMax, sfExt.yMax, endCol, endRow)
+        outputGrid.ProjToCell(sfExt.xMin, sfExt.yMax, startCol, startRow)
+        outputGrid.ProjToCell(sfExt.xMax, sfExt.yMin, endCol, endRow)
+
+        Dim u As New MapWinGIS.Utils
 
         Dim x, y As Double
+        Dim pnt As New MapWinGIS.Point
+        sf.BeginPointInShapefile()
         'cycle and test cell center, then set the appropriate when found
         For row As Integer = startRow To endRow
             For col As Integer = startCol To endCol
                 outputGrid.CellToProj(col, row, x, y)
+                pnt.x = x
+                pnt.y = y
+                'If u.PointInPolygon(sf.Shape(0), pnt) Then
                 If sf.PointInShapefile(x, y) <> -1 Then
                     outputGrid.Value(col, row) = LCValue
                 End If
             Next
         Next
+        sf.EndPointInShapefile()
         sf.Close()
+        outputGrid.Save()
     End Sub
 End Module
