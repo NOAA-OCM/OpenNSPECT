@@ -1,4 +1,5 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartAction>Program</StartAction>
     <StartProgram>D:\dev\MapWindow4Dev\Bin\MapWindow.exe</StartProgram>
@@ -19,5 +20,9 @@
     </ErrorReportUrlHistory>
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev %28Debug%29|AnyCPU'">
+    <StartProgram>C:\Program Files\MapWindow\MapWindow.exe</StartProgram>
+    <StartAction>Program</StartAction>
   </PropertyGroup>
 </Project>

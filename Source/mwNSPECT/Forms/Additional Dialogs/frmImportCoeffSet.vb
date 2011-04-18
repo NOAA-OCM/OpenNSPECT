@@ -80,6 +80,8 @@ Friend Class frmImportCoeffSet
             Dim j As Short
             Dim dataLCType As OleDbDataReader
 
+            ValidateCoeffTextFile = False
+
             'Gameplan is to find number of records(landclasses) in the chosen LCType. Then
             'compare that to the number of lines in the text file, and the [Value] field to
             'make sure both jive.  If not, bark at them...ruff, ruff
@@ -110,11 +112,8 @@ Friend Class frmImportCoeffSet
 
                     If j = 0 Then
                         MsgBox("There is a value in your text file that does not exist in the Land Class Type: '" & strLCTypeName & "' Please check your text file in line: " & intLine + 1, MsgBoxStyle.OkOnly, "Data Import Error")
-
-                        ValidateCoeffTextFile = False
                     ElseIf j > 1 Then
                         MsgBox("There are records in your text file that contain the same value.  Please check line " & intLine, MsgBoxStyle.Critical, "Multiple values found")
-                        ValidateCoeffTextFile = False
                     ElseIf j = 1 Then
                         ValidateCoeffTextFile = True
                     End If
@@ -136,7 +135,6 @@ Friend Class frmImportCoeffSet
                     ValidateCoeffTextFile = True
                 Else
                     MsgBox("The number of records in your import file do not match the number of records in the " & "Landclass '" & strLCTypeName & "'.  Your file should contain " & iRows & " records.", MsgBoxStyle.Critical, "Error Importing File")
-                    ValidateCoeffTextFile = False
                 End If
             Else
                 MsgBox("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, "File Not Found")
