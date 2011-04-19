@@ -270,6 +270,12 @@
     <Compile Include="Forms\frmCompareOutputs.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmErrorDialog.Designer.vb">
+      <DependentUpon>frmErrorDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmErrorDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmSelectShape.Designer.vb">
       <DependentUpon>frmSelectShape.vb</DependentUpon>
     </Compile>
@@ -386,6 +392,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmCompareOutputs.resx">
       <DependentUpon>frmCompareOutputs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmErrorDialog.resx">
+      <DependentUpon>frmErrorDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSelectShape.resx">
       <DependentUpon>frmSelectShape.vb</DependentUpon>

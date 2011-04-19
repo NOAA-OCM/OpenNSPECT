@@ -74,7 +74,7 @@ Public Class frmErrorDialog
     ''' <remarks></remarks>
     Private Sub frmErrorDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            txtError.Text = "Open N-SPECT (" + System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString() + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
+            txtError.Text = "Open N-SPECT (" + System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString() ' + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
             txtError.SelectionStart = txtError.Text.Length
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)

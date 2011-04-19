@@ -36,7 +36,7 @@ Module ErrorHandling
         MsgBox("An error has occured in the application.   Record the call stack sequence" & vbCrLf & "and the description of the error." & vbCrLf & vbCrLf & "Error Call Stack Sequence " & vbCrLf & vbTab & sProcedureName & vbCrLf & sErrDescription, MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Unexpected Program Error")
     End Sub
 
-    Public Sub HandleError(ByVal bTopProcedure As Boolean, ByVal sProcedureName As String, ByVal lErrNumber As Integer, ByVal sErrSource As String, ByVal sErrDescription As String, Optional ByVal version As Integer = 1, Optional ByVal parentHWND As Integer = 0, Optional ByVal reserved1 As Object = 0, Optional ByVal reserved2 As Object = 0, Optional ByVal reserved3 As Object = 0)
+    Public Sub HandleError2010(ByVal bTopProcedure As Boolean, ByVal sProcedureName As String, ByVal lErrNumber As Integer, ByVal sErrSource As String, ByVal sErrDescription As String, Optional ByVal version As Integer = 1, Optional ByVal parentHWND As Integer = 0, Optional ByVal reserved1 As Object = 0, Optional ByVal reserved2 As Object = 0, Optional ByVal reserved3 As Object = 0)
         ' Generic Error handling Function - This function should be called with
         ' the following Arguments
         '
