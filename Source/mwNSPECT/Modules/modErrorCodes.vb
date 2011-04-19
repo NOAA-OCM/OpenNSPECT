@@ -84,8 +84,7 @@ Module modErrorCodes
             Dim errorBox As New frmErrorDialog(e)
             errorBox.ShowDialog()
         Catch ex As Exception
-            Dim errorBox As New frmErrorDialog(e)
-            errorBox.ShowDialog()
+            ' // couldn't show the dialog.
         End Try
     End Sub
 End Module
