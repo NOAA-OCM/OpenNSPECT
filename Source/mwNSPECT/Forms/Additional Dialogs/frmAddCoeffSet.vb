@@ -21,49 +21,99 @@ Friend Class frmAddCoeffSet
 
     Private _frmPoll As frmPollutants
     Private _frmNewPoll As frmNewPollutants
+    Const c_sModuleFileName As String = "frmAddCoeff.vb"
+
 
 
 #Region "Events"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmAddCoeffSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        modUtil.InitComboBox(cboLCType, "LCTYPE")
+        Try
+            modUtil.InitComboBox(cboLCType, "LCTYPE")
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtCoeffSetName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetName.TextChanged
-        If Len(txtCoeffSetName.Text) > 0 Then
-            cmdOK.Enabled = True
-        Else
-            cmdOK.Enabled = False
-        End If
-    End Sub
-
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Me.Close()
-    End Sub
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
-
-        If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) Then
-            'uses code in frmPollutants to do the work
-            If g_boolAddCoeff Then
-                _frmPoll.AddCoefficient(txtCoeffSetName.Text, cboLCType.SelectedItem)
+        Try
+            If Len(txtCoeffSetName.Text) > 0 Then
+                cmdOK.Enabled = True
             Else
-                _frmNewPoll.AddCoefficient(txtCoeffSetName.Text, cboLCType.SelectedItem)
+                cmdOK.Enabled = False
             End If
-            Me.Close()
-        Else
-            MsgBox(Err2, MsgBoxStyle.Critical, "Coefficient set name already in use.  Please enter new name")
-            Exit Sub
-        End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
+    End Sub
 
-        Me.Close()
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
+        Try
+            Me.Close()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
+        Try
+            If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) Then
+                'uses code in frmPollutants to do the work
+                If g_boolAddCoeff Then
+                    _frmPoll.AddCoefficient(txtCoeffSetName.Text, cboLCType.SelectedItem)
+                Else
+                    _frmNewPoll.AddCoefficient(txtCoeffSetName.Text, cboLCType.SelectedItem)
+                End If
+                Me.Close()
+            Else
+                MsgBox(Err2, MsgBoxStyle.Critical, "Coefficient set name already in use.  Please enter new name")
+                Exit Sub
+            End If
+
+            Me.Close()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 #End Region
 
 #Region "Helper Functions"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="frmPoll"></param>
+    ''' <param name="frmNewPoll"></param>
+    ''' <remarks></remarks>
     Public Sub Init(ByRef frmPoll As frmPollutants, ByRef frmNewPoll As frmNewPollutants)
-        _frmPoll = frmPoll
-        _frmNewPoll = frmNewPoll
+        Try
+            _frmPoll = frmPoll
+            _frmNewPoll = frmNewPoll
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
 #End Region

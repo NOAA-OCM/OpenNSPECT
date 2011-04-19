@@ -60,7 +60,12 @@ Friend Class frmProjectSetup
 #End Region
 
 #Region "Events"
-
+    ''' <summary>
+    ''' Load form that initializes globals and various form elements
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmProjectSetup_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             g_cb = Me
@@ -138,27 +143,42 @@ Friend Class frmProjectSetup
 
             txtProjectName.Focus()
         Catch ex As Exception
-            HandleError(True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
-
+    ''' <summary>
+    ''' Loads the previous XML settings file when reshown
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmProjectSetup_Shown(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Shown
         LoadPreviousXMLFile()
     End Sub
 
+    ''' <summary>
+    ''' Changes the form title with the project name
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtProjectName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProjectName.TextChanged
         Me.Text = txtProjectName.Text
     End Sub
 
-    Private Sub txtOutputWS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtOutputWS.TextChanged
-
-    End Sub
-
+    ''' <summary>
+    ''' Button press opening a working directory
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdOpenWS_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOpenWS.Click
         Try
+            'Starts by default in the workspace subdirectory of whatever the NSPECT default path is
             Dim initFolder As String = modUtil.g_nspectDocPath & "\workspace"
 
+            'Makes sure the workspace exists
             If Not System.IO.Directory.Exists(initFolder) Then
                 MkDir(initFolder)
             End If
@@ -171,29 +191,47 @@ Friend Class frmProjectSetup
                 g_strWorkspace = txtOutputWS.Text
             End If
         Catch ex As Exception
-            HandleError(True, "cmdOpenWS_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "cmdOpenWS_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Changes the LC units if LC layer changes
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboLCLayer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboLCLayer.SelectedIndexChanged
         Try
             cboLCUnits.SelectedIndex = modUtil.GetRasterDistanceUnits(cboLCLayer.Text)
         Catch ex As Exception
-            HandleError(True, "cboLCLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "cboLCLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Fills the LC combo whena type is selected
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboLCType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboLCType.SelectedIndexChanged
         Try
             FillCboLCCLass()
         Catch ex As Exception
-            HandleError(True, "cboLCType_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "cboLCType_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' When Soils layer changes, it sets the appropriate soils filenames from the DB
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboSoilsLayer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboSoilsLayer.SelectedIndexChanged
         Try
-
+            'Execute a selection query
             Dim strSelect As String = "SELECT * FROM Soils WHERE NAME LIKE '" & cboSoilsLayer.Text & "'"
             Dim soilCmd As New OleDbCommand(strSelect, modUtil.g_DBConn)
             Dim soilData As OleDbDataReader = soilCmd.ExecuteReader()
@@ -204,10 +242,16 @@ Friend Class frmProjectSetup
 
             soilData.Close()
         Catch ex As Exception
-            HandleError(True, "cboSoilsLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "cboSoilsLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Controlls what happens when the precipitation scenario is changed
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboPrecipScen_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipScen.SelectedIndexChanged
         Try
             'Have to change Erosion tab based on Annual/Event driven rain event
@@ -242,10 +286,16 @@ Friend Class frmProjectSetup
                 eventData.Close()
             End If
         Catch ex As Exception
-            HandleError(True, "cboPrecipScen_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "cboPrecipScen_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Controls what happens when the WS delin combo is changed
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboWSDelin_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboWSDelin.SelectedIndexChanged
         Try
             If cboWSDelin.Text = "New watershed delineation..." Then
@@ -258,10 +308,16 @@ Friend Class frmProjectSetup
             End If
 
         Catch ex As Exception
-            HandleError(True, "cboWSDelin_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "cboWSDelin_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Controls what happens when the WQ Std combo is changed
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboWQStd_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboWQStd.SelectedIndexChanged
         Try
             If cboWQStd.Text = "New water quality standard..." Then
@@ -272,20 +328,26 @@ Friend Class frmProjectSetup
                 PopulatePollutants()
             End If
         Catch ex As Exception
-            HandleError(True, "cboWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "cboWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
-
+    ''' <summary>
+    ''' New project menu click
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNew.Click
         Try
             Dim intvbYesNo As Short
 
             intvbYesNo = MsgBox("Do you want to save changes you made to " & Me.Text & "?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
-
+            'Make sure they save current before it's lost forever if they want to
             If intvbYesNo = MsgBoxResult.Yes Then
                 If SaveXMLFile() Then
                     ClearForm()
+                    'Calling the load directly just reinitializes everything after it's been cleared out.
                     frmProjectSetup_Load(Me, New System.EventArgs())
                 Else
                     Exit Sub
@@ -298,31 +360,55 @@ Friend Class frmProjectSetup
             End If
 
         Catch ex As Exception
-            HandleError(True, "mnuNew_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "mnuNew_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Opens a new xml setting file
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuOpen.Click
         LoadXMLFile()
     End Sub
 
+    ''' <summary>
+    ''' Saves the current XML settings file
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
         Try
             SaveXMLFile()
         Catch ex As Exception
-            HandleError(True, "mnuSave_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "mnuSave_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Save new xml file as a new file
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuSaveAs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSaveAs.Click
         Try
             _booExists = False
             SaveXMLFile()
         Catch ex As Exception
-            HandleError(True, "mnuSaveAs_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "mnuSaveAs_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Exit the form
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExit.Click
         Try
             Dim intvbYesNo As Short
@@ -340,41 +426,70 @@ Friend Class frmProjectSetup
             End If
 
         Catch ex As Exception
-            HandleError(True, "mnuExit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "mnuExit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Call up the generic help window
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuGeneralHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGeneralHelp.Click
         System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "project_setup.htm")
     End Sub
 
-
+    ''' <summary>
+    ''' Stop keypresses in the LC layer combo
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboLCLayer_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboWSDelin.KeyDown, cboWQStd.KeyDown, cboPrecipScen.KeyDown, cboLCUnits.KeyDown, cboLCType.KeyDown, cboLCLayer.KeyDown
         e.SuppressKeyPress = True
     End Sub
 
+    ''' <summary>
+    ''' Handles showing the appropriate elements when the use grid checkbox is used
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub optUseGRID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optUseGRID.CheckedChanged
         If sender.Checked Then
             Try
                 txtbxRainGrid.Enabled = optUseGRID.Checked
                 txtRainValue.Enabled = optUseValue.Checked
             Catch ex As Exception
-                HandleError(True, "optUseGRID_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+                HandleError(c_sModuleFileName, ex)     'True, "optUseGRID_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
             End Try
         End If
     End Sub
 
+    ''' <summary>
+    ''' Handles showing the appropriate elements when the use value checkbox is used
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub optUseValue_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optUseValue.CheckedChanged
         If sender.Checked Then
             Try
                 txtRainValue.Enabled = optUseValue.Checked
                 txtbxRainGrid.Enabled = optUseGRID.Checked
             Catch ex As Exception
-                HandleError(True, "optUseValue_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+                HandleError(c_sModuleFileName, ex)     'True, "optUseValue_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
             End Try
         End If
     End Sub
 
+    ''' <summary>
+    ''' Handles showing the appropriate elements when the SDR checkbox is used
+    ''' </summary>
+    ''' <param name="eventSender"></param>
+    ''' <param name="eventArgs"></param>
+    ''' <remarks></remarks>
     Private Sub chkSDR_CheckStateChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkSDR.CheckStateChanged
         If chkSDR.CheckState = 1 Then
             txtSDRGRID.Enabled = True
@@ -385,6 +500,12 @@ Friend Class frmProjectSetup
         End If
     End Sub
 
+    ''' <summary>
+    ''' Button to open SDR grid
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdOpenSDR_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOpenSDR.Click
         Dim g As New MapWinGIS.Grid
         Dim dlgOpen As New Windows.Forms.OpenFileDialog
@@ -395,6 +516,12 @@ Friend Class frmProjectSetup
         End If
     End Sub
 
+    ''' <summary>
+    ''' Handles showing the appropriate elements when the calculate erosion checkbox is used
+    ''' </summary>
+    ''' <param name="eventSender"></param>
+    ''' <param name="eventArgs"></param>
+    ''' <remarks></remarks>
     Private Sub chkCalcErosion_CheckStateChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkCalcErosion.CheckStateChanged
         Try
             frameRainFall.Enabled = chkCalcErosion.CheckState
@@ -405,11 +532,16 @@ Friend Class frmProjectSetup
             lblKFactor.Visible = chkCalcErosion.CheckState
             Label7.Visible = chkCalcErosion.CheckState
         Catch ex As Exception
-            HandleError(True, "chkCalcErosion_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "chkCalcErosion_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
-
+    ''' <summary>
+    ''' Button used to open a rainfall grid
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnOpenRainfallFactorGrid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenRainfallFactorGrid.Click
         Dim g As New MapWinGIS.Grid
         Dim dlgOpen As New Windows.Forms.OpenFileDialog
@@ -421,24 +553,49 @@ Friend Class frmProjectSetup
     End Sub
 
 
-
+    ''' <summary>
+    ''' Handles errors if a value is typed into the table that doesn't match constraints
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvPollutants_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvPollutants.DataError
         MsgBox("Please enter a valid value in row " + (e.RowIndex + 1).ToString + " and column " + (e.ColumnIndex + 1).ToString + ".")
     End Sub
 
+    ''' <summary>
+    ''' Handles errors if a value is typed into the table that doesn't match constraints
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvLandUse_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvLandUse.DataError
         MsgBox("Please enter a valid value in row " + (e.RowIndex + 1).ToString + " and column " + (e.ColumnIndex + 1).ToString + ".")
     End Sub
 
+    ''' <summary>
+    ''' Handles errors if a value is typed into the table that doesn't match constraints
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvManagementScen_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvManagementScen.DataError
         MsgBox("Please enter a valid value in row " + (e.RowIndex + 1).ToString + " and column " + (e.ColumnIndex + 1).ToString + ".")
     End Sub
 
-
+    ''' <summary>
+    ''' Controls what happens when the land use table is right-clicked
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvLandUse_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvLandUse.MouseClick
+        'limit to right click
         If e.Button = Windows.Forms.MouseButtons.Right Then
+            'show the context menu
             cnxtmnuLandUse.Show(dgvLandUse, New Drawing.Point(e.X, e.Y))
             If Not dgvLandUse.CurrentRow Is Nothing Then
+                'Enable or disable the edit scenario menu items, though they aren't currently used
                 If dgvLandUse.CurrentRow.Cells("LUApply").FormattedValue Or dgvLandUse.CurrentRow.Cells("LUScenario").Value <> "" Then
                     EditScenarioToolStripMenuItem.Enabled = True
                 Else
@@ -454,12 +611,24 @@ Friend Class frmProjectSetup
         End If
     End Sub
 
+    ''' <summary>
+    ''' Handle right click of the Management Scenarios table
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvManagementScen_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvManagementScen.MouseClick
         If e.Button = Windows.Forms.MouseButtons.Right Then
             cnxtmnuManagement.Show(dgvManagementScen, New Drawing.Point(e.X, e.Y))
         End If
     End Sub
 
+    ''' <summary>
+    ''' Used to add a scenario to the table
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub AddScenarioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddScenarioToolStripMenuItem.Click
         Try
 
@@ -469,20 +638,28 @@ Friend Class frmProjectSetup
 
             g_strLUScenFileName = ""
 
+            'Generate the scenario form
             Dim newscen As New frmLUScen
             With newscen
                 .init(cboWQStd.Text, Me)
                 .Text = "Add Land Use Scenario"
+                'If they cancel, then remove the added
                 If .ShowDialog() = Windows.Forms.DialogResult.Cancel Then
                     dgvLandUse.Rows.RemoveAt(g_intManScenRow)
                 End If
             End With
 
         Catch ex As Exception
-            HandleError(False, "MnuLUAdd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "MnuLUAdd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Handles editing a scenario in the table
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub EditScenarioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditScenarioToolStripMenuItem.Click
         Try
             If Not dgvLandUse.CurrentRow Is Nothing Then
@@ -498,11 +675,17 @@ Friend Class frmProjectSetup
             End If
 
         Catch ex As Exception
-            HandleError(False, "MnuLUEdit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "MnuLUEdit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
 
     End Sub
 
+    ''' <summary>
+    ''' Handles removing a scenario from the table
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub DeleteScenarioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteScenarioToolStripMenuItem.Click
         Try
             With dgvLandUse
@@ -517,17 +700,28 @@ Friend Class frmProjectSetup
                 End If
             End With
         Catch ex As Exception
-            HandleError(True, "mnuLUDelete_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "mnuLUDelete_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
 
     End Sub
 
-
+    ''' <summary>
+    ''' Handles appending a row to the management table
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub AppendRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AppendRowToolStripMenuItem.Click
         Dim idx As Integer = dgvManagementScen.Rows.Add()
         PopulateManagement(idx)
     End Sub
 
+    ''' <summary>
+    ''' Handles inserting a row into the management table
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertRowToolStripMenuItem.Click
         If Not dgvManagementScen.CurrentRow Is Nothing Then
             Dim idx As Integer = dgvManagementScen.CurrentRow.Index
@@ -536,6 +730,12 @@ Friend Class frmProjectSetup
         End If
     End Sub
 
+    ''' <summary>
+    ''' Handles deleting the currently selected row in the management table
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub DeleteCurrentRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteCurrentRowToolStripMenuItem.Click
         With dgvManagementScen
             If Not .CurrentRow Is Nothing Then
@@ -555,17 +755,30 @@ Friend Class frmProjectSetup
         End With
     End Sub
 
+    ''' <summary>
+    ''' Handles opening the shape selection form
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
         Dim selectfrm As New frmSelectShape
         selectfrm.Initialize()
     End Sub
 
+    ''' <summary>
+    ''' Handles the close button click
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Dim intvbYesNo As Short
 
             intvbYesNo = MsgBox("Do you want to save changes you made to " & Me.Text & "?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
 
+            'Make sure to let them save before it's lost if they choose to
             If intvbYesNo = MsgBoxResult.Yes Then
                 If SaveXMLFile() Then
                     Me.Close()
@@ -578,11 +791,16 @@ Friend Class frmProjectSetup
 
 
         Catch ex As Exception
-            HandleError(True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
-
+    ''' <summary>
+    ''' The workhorse of NSPECT. Automates the entire process of the nspect processing
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRun.Click
         Try
             Dim strWaterShed As String 'Connection string
@@ -601,6 +819,7 @@ Friend Class frmProjectSetup
                 Exit Sub
             End If
 
+            'Handles whether to overwrite existing groups of the same name or to generate a new group for outputs
             If g_pGroupLayer <> -1 Then
                 If g_MapWin.Layers.Groups.ItemByHandle(g_pGroupLayer).Text = _XMLPrjParams.strProjectName Then
                     Dim res As MsgBoxResult = MsgBox("Would you like to overwrite the last results group named " + _XMLPrjParams.strProjectName + "?", MsgBoxStyle.YesNoCancel, "Replace Results?")
@@ -788,16 +1007,10 @@ Friend Class frmProjectSetup
             Me.Close()
 
             Exit Sub
-
-            'TODO: determine how to handle canceling
-            'UserCancel:
-            '            modProgDialog.KillDialog()
-            '            System.Windows.Forms.Cursor.Current = Cursors.Default
-            '            MsgBox("Processing has been stopped.", MsgBoxStyle.Information, "Analysis Stopped")
-
-
         Catch ex As Exception
-            HandleError(True, "cmdRun_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)
+        Finally
+            modProgDialog.KillDialog()
             System.Windows.Forms.Cursor.Current = Cursors.Default
         End Try
 
@@ -806,7 +1019,12 @@ Friend Class frmProjectSetup
 #End Region
 
 #Region "Helper Functions"
+    ''' <summary>
+    ''' Used by the selection form to set the selected shape
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub SetSelectedShape()
+        'Uses the current layer and cycles the select shapes, populating a list of shape index values
         If g_MapWin.Layers.CurrentLayer <> -1 And g_MapWin.View.SelectedShapes.NumSelected > 0 Then
             chkSelectedPolys.Checked = True
             _SelectLyrPath = g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).FileName
@@ -818,6 +1036,10 @@ Friend Class frmProjectSetup
         End If
     End Sub
 
+    ''' <summary>
+    ''' Sets the form to a default state
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ClearForm()
         Try
             'Gotta clean up before new, clean form
@@ -855,62 +1077,76 @@ Friend Class frmProjectSetup
 
             frmProjectSetup_Load(Nothing, Nothing)
         Catch ex As Exception
-            HandleError(False, "ClearForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "ClearForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Prompts for an XML project file to load
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub LoadXMLFile()
+        Try
 
-        'browse...get output filename
-        Dim strFolder As String = modUtil.g_nspectDocPath & "\projects"
-        If Not IO.Directory.Exists(strFolder) Then
-            MkDir(strFolder)
-        End If
-        Dim dlgXMLOpen As New Windows.Forms.OpenFileDialog
-        With dlgXMLOpen
-            .Filter = MSG8
-            .InitialDirectory = strFolder
-            .Title = "Open N-SPECT Project File"
-            .FilterIndex = 1
-            .ShowDialog()
-        End With
+            'browse...get output filename
+            Dim strFolder As String = modUtil.g_nspectDocPath & "\projects"
+            If Not IO.Directory.Exists(strFolder) Then
+                MkDir(strFolder)
+            End If
+            Dim dlgXMLOpen As New Windows.Forms.OpenFileDialog
+            With dlgXMLOpen
+                .Filter = MSG8
+                .InitialDirectory = strFolder
+                .Title = "Open N-SPECT Project File"
+                .FilterIndex = 1
+                .ShowDialog()
+            End With
 
-        If Len(dlgXMLOpen.FileName) > 0 Then
-            _strFileName = Trim(dlgXMLOpen.FileName)
-            g_CurrentProjectPath = _strFileName
-            _XMLPrjParams.XML = _strFileName
-            FillForm()
-        Else
-            Exit Sub
-        End If
+            If Len(dlgXMLOpen.FileName) > 0 Then
+                _strFileName = Trim(dlgXMLOpen.FileName)
+                g_CurrentProjectPath = _strFileName
+                'XML Class autopopulates when passed a file
+                _XMLPrjParams.XML = _strFileName
+                'Populate from the local XML params
+                FillForm()
+            Else
+                Exit Sub
+            End If
 
-        'Pop this string with the incoming name, if they change, we'll prompt to 'save as'.
-        _strOpenFileName = txtProjectName.Text
+            'Pop this string with the incoming name, if they change, we'll prompt to 'save as'.
+            _strOpenFileName = txtProjectName.Text
 
-
-        'Exit Sub
-        'ErrorHandler:
-        '  HandleError False, "LoadXMLFile " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' Loads the previously set XML file and populates the form from it
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub LoadPreviousXMLFile()
-        If Len(g_CurrentProjectPath) > 0 Then
-            _strFileName = Trim(g_CurrentProjectPath)
-            _XMLPrjParams.XML = _strFileName
-            FillForm()
-        Else
-            Exit Sub
-        End If
+        Try
+            If Len(g_CurrentProjectPath) > 0 Then
+                _strFileName = Trim(g_CurrentProjectPath)
+                _XMLPrjParams.XML = _strFileName
+                FillForm()
+            Else
+                Exit Sub
+            End If
 
-        'Pop this string with the incoming name, if they change, we'll prompt to 'save as'.
-        _strOpenFileName = txtProjectName.Text
+            'Pop this string with the incoming name, if they change, we'll prompt to 'save as'.
+            _strOpenFileName = txtProjectName.Text
 
-
-        'Exit Sub
-        'ErrorHandler:
-        '  HandleError False, "LoadXMLFile " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' Fill the LC class combo from the DB
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub FillCboLCCLass()
         Try
             Dim strLCChanges As String
@@ -929,10 +1165,14 @@ Friend Class frmProjectSetup
             lcChanges.Close()
 
         Catch ex As Exception
-            HandleError(False, "FillCboLCCLass " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "FillCboLCCLass " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Populates the pollutants table
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub PopulatePollutants()
         Try
             Dim strSQLWQStd As String
@@ -975,36 +1215,58 @@ Friend Class frmProjectSetup
             End If
 
         Catch ex As Exception
-            HandleError(False, "PopPollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "PopPollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Populate the coefficients table
+    ''' </summary>
+    ''' <param name="strPollutantName"></param>
+    ''' <param name="rowidx"></param>
+    ''' <remarks></remarks>
     Private Sub PopulateCoefType(ByVal strPollutantName As String, ByVal rowidx As Integer)
-        Dim strSelectCoeff As String = "SELECT POLLUTANT.POLLID, POLLUTANT.NAME, COEFFICIENTSET.NAME AS NAME2 FROM POLLUTANT INNER JOIN COEFFICIENTSET " & "ON POLLUTANT.POLLID = COEFFICIENTSET.POLLID Where POLLUTANT.NAME LIKE '" & strPollutantName & "'"
-        Dim coefCmd As New OleDbCommand(strSelectCoeff, modUtil.g_DBConn)
-        Dim coefData As OleDbDataReader = coefCmd.ExecuteReader()
-        Dim cell As DataGridViewComboBoxCell = dgvPollutants.Rows(rowidx).Cells("CoefSet")
-        While coefData.Read
-            cell.Items.Add(coefData.Item("Name2"))
-        End While
-        coefData.Close()
+        Try
+            Dim strSelectCoeff As String = "SELECT POLLUTANT.POLLID, POLLUTANT.NAME, COEFFICIENTSET.NAME AS NAME2 FROM POLLUTANT INNER JOIN COEFFICIENTSET " & "ON POLLUTANT.POLLID = COEFFICIENTSET.POLLID Where POLLUTANT.NAME LIKE '" & strPollutantName & "'"
+            Dim coefCmd As New OleDbCommand(strSelectCoeff, modUtil.g_DBConn)
+            Dim coefData As OleDbDataReader = coefCmd.ExecuteReader()
+            Dim cell As DataGridViewComboBoxCell = dgvPollutants.Rows(rowidx).Cells("CoefSet")
+            While coefData.Read
+                cell.Items.Add(coefData.Item("Name2"))
+            End While
+            coefData.Close()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' Populate the Management table
+    ''' </summary>
+    ''' <param name="rowidx"></param>
+    ''' <remarks></remarks>
     Private Sub PopulateManagement(ByVal rowidx As Integer)
+        Try
+            Dim areacell As DataGridViewComboBoxCell = dgvManagementScen.Rows(rowidx).Cells("ChangeAreaLayer")
+            areacell.Items.Clear()
+            For i As Integer = 0 To arrAreaList.Count - 1
+                areacell.Items.Add(arrAreaList(i))
+            Next
 
-        Dim areacell As DataGridViewComboBoxCell = dgvManagementScen.Rows(rowidx).Cells("ChangeAreaLayer")
-        areacell.Items.Clear()
-        For i As Integer = 0 To arrAreaList.Count - 1
-            areacell.Items.Add(arrAreaList(i))
-        Next
-
-        Dim classcell As DataGridViewComboBoxCell = dgvManagementScen.Rows(rowidx).Cells("ChangeToClass")
-        classcell.Items.Clear()
-        For i As Integer = 0 To arrClassList.Count - 1
-            classcell.Items.Add(arrClassList(i))
-        Next
+            Dim classcell As DataGridViewComboBoxCell = dgvManagementScen.Rows(rowidx).Cells("ChangeToClass")
+            classcell.Items.Clear()
+            For i As Integer = 0 To arrClassList.Count - 1
+                classcell.Items.Add(arrClassList(i))
+            Next
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' Populates the form from the currently loaded xml project
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub FillForm()
         Try
             Dim i As Integer
@@ -1303,11 +1565,15 @@ Friend Class frmProjectSetup
             System.Windows.Forms.Cursor.Current = Cursors.Default
 
         Catch ex As Exception
-            HandleError(False, "FillForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "FillForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
-
+    ''' <summary>
+    ''' Validates the present form settings and saves them to an XML file
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function SaveXMLFile() As Boolean
         Try
             Dim strFolder As String
@@ -1391,13 +1657,19 @@ Friend Class frmProjectSetup
                 SaveXMLFile = False
                 Exit Function
             Else
-                MsgBox(Err.Number & " " & Err.Description)
+                HandleError(c_sModuleFileName, ex)
+
                 SaveXMLFile = False
             End If
         End Try
 
     End Function
 
+    ''' <summary>
+    ''' Validates the form data
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidateData() As Boolean
         'Time to rifle through the form ensuring kosher data across the board.
         Try
@@ -1703,12 +1975,17 @@ Friend Class frmProjectSetup
             _XMLPrjParams = clsParamsPrj
 
         Catch ex As Exception
-            HandleError(False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         Finally
             SSTab1.SelectedIndex = 0
         End Try
     End Function
 
+    ''' <summary>
+    ''' Validate the pollutant table values
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidatePollutants() As Boolean
         'Function to validate pollutants
         Try
@@ -1732,10 +2009,15 @@ Friend Class frmProjectSetup
                 End If
             Next
         Catch ex As Exception
-            HandleError(False, "ValidatePollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "ValidatePollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
+    ''' <summary>
+    ''' Validate the Watershed data
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidateWaterShed() As Boolean
         Try
 
@@ -1827,10 +2109,15 @@ Friend Class frmProjectSetup
 
             ValidateWaterShed = True
         Catch ex As Exception
-            HandleError(False, "ValidateWaterShed " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "ValidateWaterShed " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
+    ''' <summary>
+    ''' Validate the management scenario table
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidateMgmtScenario() As Boolean
         Try
             For Each row As DataGridViewRow In dgvManagementScen.Rows
@@ -1855,28 +2142,57 @@ Friend Class frmProjectSetup
             ValidateMgmtScenario = True
 
         Catch ex As Exception
-            HandleError(False, "ValidateMgmtScenario " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(c_sModuleFileName, ex)     'False, "ValidateMgmtScenario " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
+    ''' <summary>
+    ''' used to set the Land use row values
+    ''' </summary>
+    ''' <param name="row"></param>
+    ''' <param name="name"></param>
+    ''' <param name="strXML"></param>
+    ''' <remarks></remarks>
     Public Sub SetLURow(ByVal row As Integer, ByVal name As String, ByVal strXML As String)
-        dgvLandUse.Rows(row).Cells("LUApply").Value = True
-        dgvLandUse.Rows(row).Cells("LUScenario").Value = name
-        dgvLandUse.Rows(row).Cells("LUScenarioXML").Value = strXML
+        Try
+            dgvLandUse.Rows(row).Cells("LUApply").Value = True
+            dgvLandUse.Rows(row).Cells("LUScenario").Value = name
+            dgvLandUse.Rows(row).Cells("LUScenarioXML").Value = strXML
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' updates the preciptiation combo after changes from outside forms
+    ''' </summary>
+    ''' <param name="strPrecName"></param>
+    ''' <remarks></remarks>
     Public Sub UpdatePrecip(ByVal strPrecName As String)
-        cboPrecipScen.Items.Clear()
-        modUtil.InitComboBox(cboPrecipScen, "PrecipScenario")
-        cboPrecipScen.Items.Insert(cboPrecipScen.Items.Count, "New precipitation scenario...")
-        cboPrecipScen.SelectedIndex = modUtil.GetCboIndex(strPrecName, cboPrecipScen)
+        Try
+            cboPrecipScen.Items.Clear()
+            modUtil.InitComboBox(cboPrecipScen, "PrecipScenario")
+            cboPrecipScen.Items.Insert(cboPrecipScen.Items.Count, "New precipitation scenario...")
+            cboPrecipScen.SelectedIndex = modUtil.GetCboIndex(strPrecName, cboPrecipScen)
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' Updates the WQ combo after changes from outside forms
+    ''' </summary>
+    ''' <param name="strWQName"></param>
+    ''' <remarks></remarks>
     Public Sub UpdateWQ(ByVal strWQName As String)
-        cboWQStd.Items.Clear()
-        modUtil.InitComboBox(cboWQStd, "WQCRITERIA")
-        cboWQStd.Items.Insert(cboWQStd.Items.Count, "Define a new water quality standard...")
-        cboWQStd.SelectedIndex = modUtil.GetCboIndex(strWQName, cboWQStd)
+        Try
+            cboWQStd.Items.Clear()
+            modUtil.InitComboBox(cboWQStd, "WQCRITERIA")
+            cboWQStd.Items.Insert(cboWQStd.Items.Count, "Define a new water quality standard...")
+            cboWQStd.SelectedIndex = modUtil.GetCboIndex(strWQName, cboWQStd)
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 #End Region
 

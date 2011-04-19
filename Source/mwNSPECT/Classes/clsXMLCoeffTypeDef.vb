@@ -40,6 +40,9 @@ Public Class clsXMLCoeffTypeDef
 
 
     'Following are the names of the NODES
+
+    Const c_sModuleFileName As String = "clsXMLCoeffTypeDef.vb"
+
     Private Const NODE_NAME As String = "TypeDefFile"
     Private Const NODE_TDLyrName As String = "TDLyrName" 'Layer Name
     Private Const NODE_TDLyrFileName As String = "TDLyrFileName" 'Layer FileName
@@ -60,6 +63,12 @@ Public Class clsXMLCoeffTypeDef
     Public strTDDef3 As String
     Public strTDDef4 As String
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -69,71 +78,95 @@ Public Class clsXMLCoeffTypeDef
         End Get
     End Property
 
-
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strXML"></param>
+    ''' <remarks></remarks>
     Public Sub SaveFile(ByRef strXML As String)
+        Try
+            Dim dom As New XmlDocument
+            dom.LoadXml(strXML)
 
-        Dim dom As New XmlDocument
-        dom.LoadXml(strXML)
+            'TODO
+            'frmPrj.grdCoeffs.set_TextMatrix(g_intCoeffRow, 6, strXML)
 
-        'TODO
-        'frmPrj.grdCoeffs.set_TextMatrix(g_intCoeffRow, 6, strXML)
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Parent"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
-        'Return an XML DOM node that represents this class's properties. If a
-        'parent DOM node is passed in, then the returned node is also added as a
-        'child node of the parent.
+        Try
+            'Return an XML DOM node that represents this class's properties. If a
+            'parent DOM node is passed in, then the returned node is also added as a
+            'child node of the parent.
 
-        Dim node As XmlNode
-        Dim dom As XmlDocument
+            Dim node As XmlNode
+            Dim dom As XmlDocument
 
-        'If no parent was passed in, then create a DOM and document element.
-        If Parent Is Nothing Then
-            dom = New XmlDocument
-            dom.LoadXml("<" & NODE_NAME & "/>")
-            node = dom.DocumentElement
-            'Otherwise use passed-in parent.
-        Else
-            dom = Parent.OwnerDocument
-            node = dom.CreateElement(NODE_NAME)
-            Parent.AppendChild(node)
-        End If
+            'If no parent was passed in, then create a DOM and document element.
+            If Parent Is Nothing Then
+                dom = New XmlDocument
+                dom.LoadXml("<" & NODE_NAME & "/>")
+                node = dom.DocumentElement
+                'Otherwise use passed-in parent.
+            Else
+                dom = Parent.OwnerDocument
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
+            End If
 
-        '*********************************************************************
-        NodeAppendChildElement(dom, node, NODE_TDLyrName, strTDLyrName)
-        NodeAppendChildElement(dom, node, NODE_TDLyrFileName, strTDLyrFileName)
-        NodeAppendChildElement(dom, node, NODE_TDAttribute, strTDAttribute)
-        NodeAppendChildElement(dom, node, NODE_TDType, intTDType)
-        NodeAppendChildElement(dom, node, NODE_TDDef1, strTDDef1)
-        NodeAppendChildElement(dom, node, NODE_TDDef2, strTDDef2)
-        NodeAppendChildElement(dom, node, NODE_TDDef3, strTDDef3)
-        NodeAppendChildElement(dom, node, NODE_TDDef4, strTDDef4)
+            '*********************************************************************
+            NodeAppendChildElement(dom, node, NODE_TDLyrName, strTDLyrName)
+            NodeAppendChildElement(dom, node, NODE_TDLyrFileName, strTDLyrFileName)
+            NodeAppendChildElement(dom, node, NODE_TDAttribute, strTDAttribute)
+            NodeAppendChildElement(dom, node, NODE_TDType, intTDType)
+            NodeAppendChildElement(dom, node, NODE_TDDef1, strTDDef1)
+            NodeAppendChildElement(dom, node, NODE_TDDef2, strTDDef2)
+            NodeAppendChildElement(dom, node, NODE_TDDef3, strTDDef3)
+            NodeAppendChildElement(dom, node, NODE_TDDef4, strTDDef4)
 
-        'Return the created node
+            'Return the created node
 
-        CreateNode = node
+            CreateNode = node
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+            CreateNode = Nothing
+        End Try
     End Function
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="node"></param>
+    ''' <remarks></remarks>
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
-        'Set this class's properties based on the data found in the
-        'given node.
-        'Ensure that a valid node was passed in.
-        If node Is Nothing Then Exit Sub
+        Try
+            'Set this class's properties based on the data found in the
+            'given node.
+            'Ensure that a valid node was passed in.
+            If node Is Nothing Then Exit Sub
 
-        strTDLyrName = GetNodeText(node, NODE_TDLyrName)
-        strTDLyrFileName = GetNodeText(node, NODE_TDLyrFileName)
-        strTDAttribute = GetNodeText(node, NODE_TDAttribute)
-        intTDType = CShort(GetNodeText(node, NODE_TDType))
-        strTDDef1 = GetNodeText(node, NODE_TDDef1)
-        strTDDef2 = GetNodeText(node, NODE_TDDef2)
-        strTDDef3 = GetNodeText(node, NODE_TDDef3)
-        strTDDef4 = GetNodeText(node, NODE_TDDef4)
+            strTDLyrName = GetNodeText(node, NODE_TDLyrName)
+            strTDLyrFileName = GetNodeText(node, NODE_TDLyrFileName)
+            strTDAttribute = GetNodeText(node, NODE_TDAttribute)
+            intTDType = CShort(GetNodeText(node, NODE_TDType))
+            strTDDef1 = GetNodeText(node, NODE_TDDef1)
+            strTDDef2 = GetNodeText(node, NODE_TDDef2)
+            strTDDef3 = GetNodeText(node, NODE_TDDef3)
+            strTDDef4 = GetNodeText(node, NODE_TDDef4)
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
 End Class

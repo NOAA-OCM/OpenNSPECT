@@ -21,18 +21,22 @@ Imports System.Data.OleDb
 Friend Class frmAddWQStd
     Inherits System.Windows.Forms.Form
 
+    Const c_sModuleFileName As String = "frmAddWQStd.vb"
+
     Private _frmWQStd As frmWaterQualityStandard
     Private _frmPrj As frmProjectSetup
     Private _Change As Boolean
 
-    Const c_sModuleFileName As String = "frmAddWQStd.frm"
-
 
 #Region "Events"
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmAddWQStd_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-
             'Populate cbo with pollutant names
             _Change = False
 
@@ -49,33 +53,55 @@ Friend Class frmAddWQStd
             datPoll.Close()
             cmdSave.Enabled = False
         Catch ex As Exception
-            HandleError(True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtWQStdName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWQStdName.TextChanged
-        txtWQStdName.Text = Replace(txtWQStdName.Text, "'", "")
+        Try
+            txtWQStdName.Text = Replace(txtWQStdName.Text, "'", "")
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-    Private Sub txtWQStdDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWQStdDesc.TextChanged
-
-    End Sub
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Dim intvbYesNo As Short = MsgBox("Are you sure you want to exit?  All changes not saved will be lost.", MsgBoxStyle.YesNo, "Exit?")
+        Try
+            Dim intvbYesNo As Short = MsgBox("Are you sure you want to exit?  All changes not saved will be lost.", MsgBoxStyle.YesNo, "Exit?")
 
-        If intvbYesNo = MsgBoxResult.Yes Then
-            If Not _frmPrj Is Nothing Then
-                _frmPrj.cboWQStd.SelectedIndex = 0
+            If intvbYesNo = MsgBoxResult.Yes Then
+                If Not _frmPrj Is Nothing Then
+                    _frmPrj.cboWQStd.SelectedIndex = 0
+                End If
+
+                Me.Close()
+            Else
+                Exit Sub
             End If
 
-            Me.Close()
-        Else
-            Exit Sub
-        End If
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             Dim strName As String
@@ -94,7 +120,7 @@ Friend Class frmAddWQStd
                 'Name Check
                 If modUtil.UniqueName("WQCRITERIA", (txtWQStdName.Text)) Then
                     'Value check
-                    If CheckThreshValues Then
+                    If CheckThreshValues() Then
                         strCmd = "INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('" & Replace(txtWQStdName.Text, "'", "''") & "', '" & Replace(strDescript, "'", "''") & "')"
                         Dim cmdInsert As New OleDbCommand(strCmd, g_DBConn)
                         cmdInsert.ExecuteNonQuery()
@@ -128,22 +154,47 @@ Friend Class frmAddWQStd
             Me.Close()
 
         Catch ex As Exception
-            HandleError(True, "cmdSave_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
-        cmdSave.Enabled = True
+        Try
+            cmdSave.Enabled = True
+
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 #End Region
 
 #Region "Helper Functions"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="frmWQStd"></param>
+    ''' <param name="frmPrj"></param>
+    ''' <remarks></remarks>
     Public Sub Init(ByRef frmWQStd As frmWaterQualityStandard, ByRef frmPrj As frmProjectSetup)
-        _frmWQStd = frmWQStd
-        _frmPrj = frmPrj
+        Try
+            _frmWQStd = frmWQStd
+            _frmPrj = frmPrj
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function CheckThreshValues() As Boolean
         Try
             For Each row As DataGridViewRow In dgvWaterQuality.Rows
@@ -155,10 +206,17 @@ Friend Class frmAddWQStd
                 End If
             Next
         Catch ex As Exception
-            HandleError(False, "CheckThreshValues " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strName"></param>
+    ''' <param name="strPoll"></param>
+    ''' <param name="intThresh"></param>
+    ''' <remarks></remarks>
     Private Sub PollutantAdd(ByRef strName As String, ByRef strPoll As String, ByRef intThresh As String)
         Try
             Dim strPollAdd As String
@@ -189,7 +247,7 @@ Friend Class frmAddWQStd
             datPollDetails.Close()
 
         Catch ex As Exception
-            HandleError(False, "PollutantAdd " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 #End Region

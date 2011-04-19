@@ -1,5 +1,5 @@
-'********************************************************************************************************
-'File Name: frmSelectShape.vb
+﻿'********************************************************************************************************
+'File Name: frmErrorDialog.vb
 'Description: Main  input and model activation form
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -12,23 +12,41 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-Public Class frmSelectShape
-    Private stopclose As Boolean
-    Const c_sModuleFileName As String = "frmSelectShape.vb"
+
+Public Class frmErrorDialog
+    Private m_exception As Exception
+    Friend WithEvents lblErr As System.Windows.Forms.Label
+    Friend WithEvents txtComments As System.Windows.Forms.TextBox
+    Friend WithEvents btnCopy As System.Windows.Forms.Button
+    Const c_sModuleFileName As String = "frmErrorDialog.vb"
 
     ''' <summary>
     ''' 
     ''' </summary>
+    ''' <param name="ex"></param>
     ''' <remarks></remarks>
-    Public Sub Initialize()
+    Public Sub New(ByVal ex As System.Exception)
+        MyBase.New()
         Try
-            Me.Show()
 
-            g_MapWin.View.CursorMode = MapWinGIS.tkCursorMode.cmSelection
+            'This call is required by the Windows Form Designer.
+            InitializeComponent()
 
-            If Not g_cb Is Nothing Then g_cb.Visible = False
-            If Not g_comp Is Nothing Then g_comp.Visible = False
-            If Not g_luscen Is Nothing Then g_luscen.Visible = False
+            m_exception = ex
+        Catch ext As Exception
+            HandleError(c_sModuleFileName, ext)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub cmdCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCopy.Click
+        Try
+            Windows.Forms.Clipboard.SetText(txtError.Text)
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -40,23 +58,7 @@ Public Class frmSelectShape
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub frmSelectShapes_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        If Not g_cb Is Nothing Then g_cb.SetSelectedShape()
-        If Not g_comp Is Nothing Then g_comp.SetSelectedShape()
-        If Not g_luscen Is Nothing Then g_luscen.SetSelectedShape()
-        Me.Hide()
-        If Not g_cb Is Nothing Then g_cb.Visible = True
-        If Not g_comp Is Nothing Then g_comp.Visible = True
-        If Not g_luscen Is Nothing Then g_luscen.Visible = True
-    End Sub
-
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub btnDone_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDone.Click
+    Private Sub cmdClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdClose.Click
         Try
             Me.Close()
         Catch ex As Exception
@@ -67,12 +69,13 @@ Public Class frmSelectShape
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="disable"></param>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Public Sub disableDone(ByVal disable As Boolean)
+    Private Sub frmErrorDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            stopclose = disable
-            btnDone.Enabled = Not disable
+            txtError.Text = "Open N-SPECT (" + System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString() + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
+            txtError.SelectionStart = txtError.Text.Length
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -84,14 +87,11 @@ Public Class frmSelectShape
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub frmSelectShape_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub txtError_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtError.KeyDown
         Try
-            If stopclose Then
-                e.Cancel = True
-            End If
+            e.SuppressKeyPress = True
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
 End Class

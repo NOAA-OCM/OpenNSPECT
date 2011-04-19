@@ -48,105 +48,179 @@ Friend Class frmNewWSDelin
 
 
 #Region "Events"
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmNewWSDelin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Init bool variables
-        g_boolAgree = False
-        g_boolHydCorr = False
-        g_boolParams = False
+        Try
+            'Init bool variables
+            g_boolAgree = False
+            g_boolHydCorr = False
+            g_boolParams = False
 
-        Dim i As Short
+            Dim i As Short
 
-        For i = 0 To UBound(boolChange)
-            boolChange(i) = False
-        Next i
+            For i = 0 To UBound(boolChange)
+                boolChange(i) = False
+            Next i
 
-        cboStreamLayer.Items.Clear()
-        For i = 0 To g_MapWin.Layers.NumLayers - 1
-            If g_MapWin.Layers(g_MapWin.Layers.GetHandle(i)).LayerType = MapWindow.Interfaces.eLayerType.LineShapefile Then
-                cboStreamLayer.Items.Add(g_MapWin.Layers(g_MapWin.Layers.GetHandle(i)).Name)
-            End If
-        Next
+            cboStreamLayer.Items.Clear()
+            For i = 0 To g_MapWin.Layers.NumLayers - 1
+                If g_MapWin.Layers(g_MapWin.Layers.GetHandle(i)).LayerType = MapWindow.Interfaces.eLayerType.LineShapefile Then
+                    cboStreamLayer.Items.Add(g_MapWin.Layers(g_MapWin.Layers.GetHandle(i)).Name)
+                End If
+            Next
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtWSDelinName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWSDelinName.TextChanged
-        boolChange(0) = True
-        CheckEnabled()
+        Try
+            boolChange(0) = True
+            CheckEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtDEMFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDEMFile.TextChanged
-        boolChange(1) = True
-        CheckEnabled()
+        Try
+            boolChange(1) = True
+            CheckEnabled()
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdBrowseDEMFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseDEMFile.Click
-        Dim pDEMRasterDataset As MapWinGIS.Grid
+        Try
+            Dim pDEMRasterDataset As MapWinGIS.Grid
 
-        pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM GRID", Me, 0)
-        If Not pDEMRasterDataset Is Nothing Then
-            'Get the spatial reference
-            Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
-            If strProj = "" Then
-                MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
-                Exit Sub
-            Else
-                If strProj.ToLower.Contains("units=m") Then
-                    cboDEMUnits.SelectedIndex = 0
+            pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM GRID", Me, 0)
+            If Not pDEMRasterDataset Is Nothing Then
+                'Get the spatial reference
+                Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
+                If strProj = "" Then
+                    MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                    Exit Sub
                 Else
-                    cboDEMUnits.SelectedIndex = 1
+                    If strProj.ToLower.Contains("units=m") Then
+                        cboDEMUnits.SelectedIndex = 0
+                    Else
+                        cboDEMUnits.SelectedIndex = 1
+                    End If
+
+                    cboDEMUnits.Refresh()
+
                 End If
 
-                cboDEMUnits.Refresh()
+                _InputDEMPath = pDEMRasterDataset.Filename
+                txtDEMFile.Text = _InputDEMPath
 
+                pDEMRasterDataset.Close()
+
+                CheckEnabled()
+
+                ''Get the name
+                '_strDemArray = Split(pDEMRasterDataset.CompleteName, "\")
+                '_strDemName = m_strDemArray(UBound(m_strDemArray))
             End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
+    End Sub
 
-            _InputDEMPath = pDEMRasterDataset.Filename
-            txtDEMFile.Text = _InputDEMPath
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub chkHydroCorr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkHydroCorr.CheckedChanged
+        Try
+            Select Case chkHydroCorr.CheckState
+                Case Windows.Forms.CheckState.Checked
+                    chkStreamAgree.Enabled = True
+                    cboStreamLayer.Enabled = True
+                    cmdOptions.Enabled = True
+                    g_boolHydCorr = True
 
-            pDEMRasterDataset.Close()
+                Case Windows.Forms.CheckState.Unchecked
+
+                    chkStreamAgree.Enabled = False
+                    cboStreamLayer.Enabled = False
+                    cmdOptions.Enabled = False
+                    g_boolHydCorr = False
+
+            End Select
 
             CheckEnabled()
 
-            ''Get the name
-            '_strDemArray = Split(pDEMRasterDataset.CompleteName, "\")
-            '_strDemName = m_strDemArray(UBound(m_strDemArray))
-        End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-    Private Sub chkHydroCorr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkHydroCorr.CheckedChanged
-        Select Case chkHydroCorr.CheckState
-            Case Windows.Forms.CheckState.Checked
-                chkStreamAgree.Enabled = True
-                cboStreamLayer.Enabled = True
-                cmdOptions.Enabled = True
-                g_boolHydCorr = True
-
-            Case Windows.Forms.CheckState.Unchecked
-
-                chkStreamAgree.Enabled = False
-                cboStreamLayer.Enabled = False
-                cmdOptions.Enabled = False
-                g_boolHydCorr = False
-
-        End Select
-
-        CheckEnabled()
-
-    End Sub
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboDEMUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboDEMUnits.SelectedIndexChanged
-        boolChange(2) = True
-        CheckEnabled()
+        Try
+            boolChange(2) = True
+            CheckEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboSubWSSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboSubWSSize.SelectedIndexChanged
-        boolChange(3) = True
-        CheckEnabled()
-        _intSize = cboSubWSSize.SelectedIndex
+        Try
+            boolChange(3) = True
+            CheckEnabled()
+            _intSize = cboSubWSSize.SelectedIndex
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Dim intvbYesNo As Short
@@ -166,11 +240,17 @@ Friend Class frmNewWSDelin
 
 
         Catch ex As Exception
-            HandleError(True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCreate.Click
         Try
             If _InputDEMPath = "" Then
@@ -260,7 +340,10 @@ Friend Class frmNewWSDelin
         _frmPrj = frmPrj
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub CheckEnabled()
         Try
 
@@ -285,10 +368,17 @@ Friend Class frmNewWSDelin
             End If
 
         Catch ex As Exception
-            HandleError(True, "CheckEnabled " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="pSurfaceDatasetIn"></param>
+    ''' <param name="OutPath"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function DelineateWatershed(ByRef pSurfaceDatasetIn As MapWinGIS.Grid, ByVal OutPath As String) As Boolean
         'Declare the raster objects
         Dim pFlowDirRaster As New MapWinGIS.Grid 'Flow Direction
@@ -409,7 +499,7 @@ Friend Class frmNewWSDelin
             coorddatout = OutPath + "coord.dat"
             strWSGridOut = OutPath + "wsgrid" + g_OutputGridExt
             strWSSFOut = OutPath + "ws.shp"
-            
+
             '        'Step 5: Using Hydrology Op to create stream network
             _strStreamLayer = OutPath + "stream.shp"
             modProgDialog.ProgDialog("Creating Stream Network...", strProgTitle, 0, 10, 4, Me)
@@ -506,7 +596,7 @@ Friend Class frmNewWSDelin
                 modProgDialog.g_boolCancel = False
                 DelineateWatershed = False
             Else
-                HandleError(False, "DelineateWatershed " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+                HandleError(c_sModuleFileName, ex)
                 DelineateWatershed = False
             End If
         Finally
@@ -529,7 +619,14 @@ Friend Class frmNewWSDelin
             MapWinGeoProc.DataManagement.DeleteShapefile(strWSSFOut)
         End Try
     End Function
-
+   
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="pFeatureClass"></param>
+    ''' <param name="pDEMRaster"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function RemoveSmallPolys(ByRef pFeatureClass As MapWinGIS.Shapefile, ByRef pDEMRaster As MapWinGIS.Grid) As MapWinGIS.Shapefile
         Dim pMaskCalcRaster As New MapWinGIS.Grid
         Dim rastersf As New MapWinGIS.Shapefile
@@ -614,7 +711,7 @@ Friend Class frmNewWSDelin
             'outputSf.StopEditingTable()
             'Return outputSf
         Catch ex As Exception
-            HandleError(False, "RemoveSmallPolys " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, 0)
+            HandleError(c_sModuleFileName, ex)
             Return Nothing
         Finally
             pMaskCalcRaster.Close()
@@ -1142,12 +1239,27 @@ Friend Class frmNewWSDelin
 #End Region
 
 #Region "Raster Calc"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Input1"></param>
+    ''' <param name="Input2"></param>
+    ''' <param name="Input3"></param>
+    ''' <param name="Input4"></param>
+    ''' <param name="Input5"></param>
+    ''' <param name="OutNull"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function maskCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        If Input1 > 0 Then
-            Return 1
-        Else
-            Return OutNull
-        End If
+        Try
+            If Input1 > 0 Then
+                Return 1
+            Else
+                Return OutNull
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Function
 
 

@@ -21,6 +21,8 @@ Imports System.Xml
 Public Class clsXMLOutputItem
     Inherits clsXMLBase
 
+    Const c_sModuleFileName As String = "clsXMLOutputItem.vb"
+
     Private Const NODE_NAME As String = "OutputFile"
     Private Const ELEMENT_OutputPath As String = "OutputPath"
     Private Const ELEMENT_OutputName As String = "OutputName"
@@ -43,57 +45,74 @@ Public Class clsXMLOutputItem
         End Get
     End Property
 
-
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Parent"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+        Try
+            'Return an XML DOM node that represents this class's properties. If a
+            'parent DOM node is passed in, then the returned node is also added as a
+            'child node of the parent.
 
-        'Return an XML DOM node that represents this class's properties. If a
-        'parent DOM node is passed in, then the returned node is also added as a
-        'child node of the parent.
+            Dim node As XmlNode
+            Dim dom As XmlDocument
 
-        Dim node As XmlNode
-        Dim dom As XmlDocument
+            'If no parent was passed in, then create a DOM and document element.
+            If Parent Is Nothing Then
+                dom = New XmlDocument
+                dom.LoadXml("<" & NODE_NAME & "/>")
+                node = dom.DocumentElement
+                'Otherwise use passed-in parent.
+            Else
+                dom = Parent.OwnerDocument
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
+            End If
 
-        'If no parent was passed in, then create a DOM and document element.
-        If Parent Is Nothing Then
-            dom = New XmlDocument
-            dom.LoadXml("<" & NODE_NAME & "/>")
-            node = dom.DocumentElement
-            'Otherwise use passed-in parent.
-        Else
-            dom = Parent.OwnerDocument
-            node = dom.CreateElement(NODE_NAME)
-            Parent.AppendChild(node)
-        End If
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            NodeAppendChildElement(dom, node, ELEMENT_OutputPath, strPath)
+            NodeAppendChildElement(dom, node, ELEMENT_OutputName, strName)
+            NodeAppendChildElement(dom, node, ELEMENT_OutputType, strType)
+            NodeAppendChildElement(dom, node, ELEMENT_OutputColor, strColor)
+            NodeAppendChildElement(dom, node, ELEMENT_OutputUseStretch, booUseStretch)
 
-        node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-        NodeAppendChildElement(dom, node, ELEMENT_OutputPath, strPath)
-        NodeAppendChildElement(dom, node, ELEMENT_OutputName, strName)
-        NodeAppendChildElement(dom, node, ELEMENT_OutputType, strType)
-        NodeAppendChildElement(dom, node, ELEMENT_OutputColor, strColor)
-        NodeAppendChildElement(dom, node, ELEMENT_OutputUseStretch, booUseStretch)
+            'Return the created node
+            CreateNode = node
 
-        'Return the created node
-        CreateNode = node
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+            CreateNode = Nothing
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="node"></param>
+    ''' <remarks></remarks>
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
-        'Set this class's properties based on the data found in the
-        'given node.
+        Try
+            'Set this class's properties based on the data found in the
+            'given node.
 
-        'Ensure that a valid node was passed in.
-        If node Is Nothing Then Exit Sub
+            'Ensure that a valid node was passed in.
+            If node Is Nothing Then Exit Sub
 
-        strPath = GetNodeText(node, ELEMENT_OutputPath)
-        strName = GetNodeText(node, ELEMENT_OutputName)
-        strType = GetNodeText(node, ELEMENT_OutputType)
-        strColor = GetNodeText(node, ELEMENT_OutputColor)
-        If GetNodeText(node, ELEMENT_OutputUseStretch) <> "" Then
-            booUseStretch = CType(GetNodeText(node, ELEMENT_OutputUseStretch), Boolean)
-        Else
-            booUseStretch = False
-        End If
+            strPath = GetNodeText(node, ELEMENT_OutputPath)
+            strName = GetNodeText(node, ELEMENT_OutputName)
+            strType = GetNodeText(node, ELEMENT_OutputType)
+            strColor = GetNodeText(node, ELEMENT_OutputColor)
+            If GetNodeText(node, ELEMENT_OutputUseStretch) <> "" Then
+                booUseStretch = CType(GetNodeText(node, ELEMENT_OutputUseStretch), Boolean)
+            Else
+                booUseStretch = False
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
 End Class

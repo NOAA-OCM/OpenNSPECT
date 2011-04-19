@@ -26,54 +26,125 @@ Friend Class frmNewLCType
     Const c_sModuleFileName As String = "frmNewLCType.vb"
 
 #Region "Events"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmNewLCType_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        dgvLCTypes.Rows.Add()
-        With dgvLCTypes.Rows(0)
-            .Cells(0).Value = "0"
-            .Cells(1).Value = "Landclass1"
-            .Cells(2).Value = "0"
-            .Cells(3).Value = "0"
-            .Cells(4).Value = "0"
-            .Cells(5).Value = "0"
-            .Cells(6).Value = "0"
-            .Cells(7).Value = "0"
-        End With
+        Try
+            dgvLCTypes.Rows.Add()
+            With dgvLCTypes.Rows(0)
+                .Cells(0).Value = "0"
+                .Cells(1).Value = "Landclass1"
+                .Cells(2).Value = "0"
+                .Cells(3).Value = "0"
+                .Cells(4).Value = "0"
+                .Cells(5).Value = "0"
+                .Cells(6).Value = "0"
+                .Cells(7).Value = "0"
+            End With
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvLCTypes_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvLCTypes.MouseClick
-        If e.Button = Windows.Forms.MouseButtons.Right Then
-            cntxmnuGrid.Show(dgvLCTypes, New Drawing.Point(e.X, e.Y))
-        End If
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Right Then
+                cntxmnuGrid.Show(dgvLCTypes, New Drawing.Point(e.X, e.Y))
+            End If
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub AddRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddRowToolStripMenuItem.Click
-        AddRow()
+        Try
+            AddRow()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertRowToolStripMenuItem.Click
-        InsertRow()
+        Try
+            InsertRow()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteRowToolStripMenuItem.Click
-        DeleteRow()
+        Try
+            DeleteRow()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvLCTypes_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvLCTypes.DataError
-        MsgBox("Please enter a valid number.")
+        Try
+            MsgBox("Please enter a valid number.")
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
         Catch ex As Exception
-            HandleError(True, "cmdCancel_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
-
             Dim strName As String
             Dim strDescript As String
             Dim strCmd As String 'INSERT function
@@ -112,35 +183,32 @@ Friend Class frmNewLCType
 
 
         Catch ex As Exception
-            HandleError(True, "cmdOK_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 #End Region
 
 #Region "Helper Functions'"
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="frmLC"></param>
+    ''' <remarks></remarks>
     Public Sub Init(ByRef frmLC As frmLandCoverTypes)
-        _frmLC = frmLC
+        Try
+            _frmLC = frmLC
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub AddRow()
-        Dim idx As Integer = dgvLCTypes.Rows.Add()
-        With dgvLCTypes.Rows(idx)
-            .Cells(0).Value = "0"
-            .Cells(1).Value = "Landclass" + (dgvLCTypes.Rows.Count).ToString
-            .Cells(2).Value = "0"
-            .Cells(3).Value = "0"
-            .Cells(4).Value = "0"
-            .Cells(5).Value = "0"
-            .Cells(6).Value = "0"
-            .Cells(7).Value = "0"
-        End With
-    End Sub
-
-    Private Sub InsertRow()
-        If Not dgvLCTypes.CurrentRow Is Nothing Then
-            Dim idx As Integer = dgvLCTypes.CurrentRow.Index
-            dgvLCTypes.Rows.Insert(idx, 1)
+        Try
+            Dim idx As Integer = dgvLCTypes.Rows.Add()
             With dgvLCTypes.Rows(idx)
                 .Cells(0).Value = "0"
                 .Cells(1).Value = "Landclass" + (dgvLCTypes.Rows.Count).ToString
@@ -151,15 +219,55 @@ Friend Class frmNewLCType
                 .Cells(6).Value = "0"
                 .Cells(7).Value = "0"
             End With
-        End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub InsertRow()
+        Try
+            If Not dgvLCTypes.CurrentRow Is Nothing Then
+                Dim idx As Integer = dgvLCTypes.CurrentRow.Index
+                dgvLCTypes.Rows.Insert(idx, 1)
+                With dgvLCTypes.Rows(idx)
+                    .Cells(0).Value = "0"
+                    .Cells(1).Value = "Landclass" + (dgvLCTypes.Rows.Count).ToString
+                    .Cells(2).Value = "0"
+                    .Cells(3).Value = "0"
+                    .Cells(4).Value = "0"
+                    .Cells(5).Value = "0"
+                    .Cells(6).Value = "0"
+                    .Cells(7).Value = "0"
+                End With
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub DeleteRow()
-        If Not dgvLCTypes.CurrentRow Is Nothing Then
-            dgvLCTypes.Rows.Remove(dgvLCTypes.CurrentRow)
-        End If
+        Try
+            If Not dgvLCTypes.CurrentRow Is Nothing Then
+                dgvLCTypes.Rows.Remove(dgvLCTypes.CurrentRow)
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidateGridValues() As Boolean
         Try
             'Need to validate each grid value before saving.  Essentially we take it a row at a time,
@@ -241,12 +349,16 @@ Friend Class frmNewLCType
             ValidateGridValues = True
 
         Catch ex As Exception
-            HandleError(False, "ValidateGridValues " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Function
 
-
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strName"></param>
+    ''' <param name="row"></param>
+    ''' <remarks></remarks>
     Private Sub AddLCClass(ByRef strName As String, ByRef row As DataGridViewRow)
         Try
             'Called from cmdOK_Click, this uses a passed array to insert new landclasses

@@ -75,10 +75,21 @@ Public Class clsXMLMgmtScenItems
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
         GetEnumerator = m_colItems.GetEnumerator
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Parent"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         'Return an XML DOM node that represents this class's properties. If a
         'parent DOM node is passed in, then the returned node is also added as a
@@ -114,6 +125,11 @@ Public Class clsXMLMgmtScenItems
 
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="node"></param>
+    ''' <remarks></remarks>
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         'Set this class's properties based on the data found in the
         'given node.
@@ -137,16 +153,28 @@ Public Class clsXMLMgmtScenItems
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub New()
         m_colItems = New Collections.ArrayList
     End Sub
 
-
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="MgmtScen"></param>
+    ''' <remarks></remarks>
     Public Sub Add(ByVal MgmtScen As clsXMLMgmtScenItem)
         m_colItems.Add(MgmtScen)
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Index"></param>
+    ''' <remarks></remarks>
     Public Sub Remove(ByVal Index As Integer)
         'Remove an order item.
 

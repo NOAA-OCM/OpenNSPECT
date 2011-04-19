@@ -52,6 +52,12 @@ Friend Class frmPollutants
 
     
 #Region "Events"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             _boolChanged = False
@@ -64,10 +70,16 @@ Friend Class frmPollutants
             _boolChanged = False
             _boolSaved = False
         Catch ex As Exception
-            HandleError(True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboPollName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPollName.SelectedIndexChanged
 
         Dim strSQLPollutant As String
@@ -98,7 +110,7 @@ Friend Class frmPollutants
                     _coefCmd = New OleDbCommand(strSQLCoeff, modUtil.g_DBConn)
                     Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
                     coef.Read()
-                    
+
                     strSQLLCType = "SELECT NAME, LCTYPEID FROM LCTYPE WHERE LCTYPEID = " & coef.Item("LCTypeID") & ""
                     Dim LCCmd As New OleDbCommand(strSQLLCType, modUtil.g_DBConn)
                     Dim LC As OleDbDataReader = LCCmd.ExecuteReader()
@@ -192,7 +204,7 @@ Friend Class frmPollutants
                 Dim LCCmd As New OleDbCommand(strSQLLCType, modUtil.g_DBConn)
                 Dim LC As OleDbDataReader = LCCmd.ExecuteReader()
                 LC.Read()
-                _strLCType = lc.item("Name")
+                _strLCType = LC.Item("Name")
                 _intLCTypeID = LC.Item("LCTypeID")
                 LC.Close()
 
@@ -221,10 +233,16 @@ Friend Class frmPollutants
             _boolChanged = False
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(True, "cboPollName_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboCoeffSet_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboCoeffSet.SelectedIndexChanged
         Try
 
@@ -247,50 +265,78 @@ Friend Class frmPollutants
             End If
 
         Catch ex As Exception
-            HandleError(True, "cboCoeffSet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub NoSaveCoeffSetChange()
-        Dim strSQLFullCoeff As String
-        Dim strSQLCoeffs As String
-      
-        strSQLFullCoeff = "SELECT COEFFICIENTSET.NAME, COEFFICIENTSET.DESCRIPTION, " & "COEFFICIENTSET.COEFFSETID, LCTYPE.NAME as NAME2 " & "FROM COEFFICIENTSET INNER JOIN LCTYPE " & "ON COEFFICIENTSET.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE COEFFICIENTSET.NAME LIKE '" & cboCoeffSet.Text & "'"
-        Dim coefCmd As New OleDbCommand(strSQLFullCoeff, modUtil.g_DBConn)
-        Dim coef As OleDbDataReader = coefCmd.ExecuteReader()
-        coef.Read()
+        Try
+            Dim strSQLFullCoeff As String
+            Dim strSQLCoeffs As String
 
-        With txtCoeffSetDesc
-            .Text = coef.Item("Description") & ""
-            .Refresh()
+            strSQLFullCoeff = "SELECT COEFFICIENTSET.NAME, COEFFICIENTSET.DESCRIPTION, " & "COEFFICIENTSET.COEFFSETID, LCTYPE.NAME as NAME2 " & "FROM COEFFICIENTSET INNER JOIN LCTYPE " & "ON COEFFICIENTSET.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE COEFFICIENTSET.NAME LIKE '" & cboCoeffSet.Text & "'"
+            Dim coefCmd As New OleDbCommand(strSQLFullCoeff, modUtil.g_DBConn)
+            Dim coef As OleDbDataReader = coefCmd.ExecuteReader()
+            coef.Read()
 
-        End With
+            With txtCoeffSetDesc
+                .Text = coef.Item("Description") & ""
+                .Refresh()
 
-        txtLCType.Text = coef.Item("Name2") & ""
+            End With
 
-        strSQLCoeffs = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.Coeff1 As Type1, COEFFICIENT.Coeff2 as Type2, " & "COEFFICIENT.Coeff3 as Type3, COEFFICIENT.Coeff4 as Type4, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & "WHERE COEFFICIENT.COEFFSETID = " & coef.Item("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
-        Dim coefsCmd As New OleDbCommand(strSQLCoeffs, modUtil.g_DBConn)
-        _coefs = New OleDbDataAdapter(coefsCmd)
-        _dtCoeff = New Data.DataTable
-        _coefs.Fill(_dtCoeff)
-        dgvCoef.DataSource = _dtCoeff
+            txtLCType.Text = coef.Item("Name2") & ""
 
-        _boolChanged = False
-        _boolDescChanged = False
-        CmdSaveEnabled()
+            strSQLCoeffs = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.Coeff1 As Type1, COEFFICIENT.Coeff2 as Type2, " & "COEFFICIENT.Coeff3 as Type3, COEFFICIENT.Coeff4 as Type4, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & "WHERE COEFFICIENT.COEFFSETID = " & coef.Item("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
+            Dim coefsCmd As New OleDbCommand(strSQLCoeffs, modUtil.g_DBConn)
+            _coefs = New OleDbDataAdapter(coefsCmd)
+            _dtCoeff = New Data.DataTable
+            _coefs.Fill(_dtCoeff)
+            dgvCoef.DataSource = _dtCoeff
+
+            _boolChanged = False
+            _boolDescChanged = False
+            CmdSaveEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtLCType_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtLCType.TextChanged
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
-        _boolDescChanged = True
-        CmdSaveEnabled()
+        Try
+            _boolDescChanged = True
+            CmdSaveEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
 
@@ -319,10 +365,16 @@ Friend Class frmPollutants
                 Me.Close()
             End If
         Catch ex As Exception
-            HandleError(True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             If ValidateGridValues() Then
@@ -334,30 +386,60 @@ Friend Class frmPollutants
 
             End If
         Catch ex As Exception
-            HandleError(True, "cmdSave_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuPollHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPollHelp.Click
-        System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pollutants.htm")
+        Try
+            System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pollutants.htm")
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuCoeffHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffHelp.Click
-        System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pol_coeftab.htm")
+        Try
+            System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pol_coeftab.htm")
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuAddPoll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddPoll.Click
         Try
             Dim newPoll As New frmNewPollutants
             newPoll.Init(Me)
             newPoll.ShowDialog()
         Catch ex As Exception
-            HandleError(True, "mnuAddPoll_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuDeletePoll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDeletePoll.Click
         Try
             Dim intAns As Short
@@ -370,10 +452,16 @@ Friend Class frmPollutants
                 Exit Sub
             End If
         Catch ex As Exception
-            HandleError(True, "mnuDeletePoll_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuCoeffNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffNewSet.Click
         Try
             g_boolAddCoeff = True
@@ -381,11 +469,17 @@ Friend Class frmPollutants
             addCoeff.Init(Me, Nothing)
             addCoeff.ShowDialog()
         Catch ex As Exception
-            HandleError(True, "mnuCoeffNewSet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuCoeffCopySet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffCopySet.Click
         Try
             g_boolCopyCoeff = True
@@ -393,10 +487,16 @@ Friend Class frmPollutants
             newCopyCoef.Init(_coefCmd, Me, Nothing)
             newCopyCoef.ShowDialog()
         Catch ex As Exception
-            HandleError(True, "mnuCoeffCopySet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuCoeffDeleteSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffDeleteSet.Click
 
         'Using straight command text to rid ourselves of the dreaded coefficient sets
@@ -428,16 +528,28 @@ Friend Class frmPollutants
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuCoeffImportSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffImportSet.Click
         Try
             Dim newImportCoef As New frmImportCoeffSet
             newImportCoef.Init(Me)
             newImportCoef.ShowDialog()
         Catch ex As Exception
-            HandleError(True, "mnuCoeffImportSet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuCoeffExportSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffExportSet.Click
         Try
             Dim dlgSave As New Windows.Forms.SaveFileDialog
@@ -450,14 +562,24 @@ Friend Class frmPollutants
                 ExportCoeffSet(dlgSave.FileName)
             End If
         Catch ex As Exception
-            HandleError(True, "mnuCoeffExportSet_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged, dgvWaterQuality.CellValueChanged
-        _boolChanged = True
-        CmdSaveEnabled()
+        Try
+            _boolChanged = True
+            CmdSaveEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 #End Region
 
@@ -472,7 +594,11 @@ Friend Class frmPollutants
 
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidateGridValues() As Boolean
         Try
             'Need to validate each grid value before saving.  Essentially we take it a row at a time,
@@ -517,10 +643,14 @@ Friend Class frmPollutants
             ValidateGridValues = True
 
         Catch ex As Exception
-            HandleError(False, "ValidateGridValues " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub UpdateValues()
         Try
             Dim strUpdateDescription As Object
@@ -587,10 +717,15 @@ Friend Class frmPollutants
             Next i
 
         Catch ex As Exception
-            HandleError(False, "UpdateValues " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strName"></param>
+    ''' <remarks></remarks>
     Private Sub DeletePollutant(ByRef strName As String)
         Try
             Dim strPollDelete As String = "Delete * FROM Pollutant WHERE NAME LIKE '" & strName & "'"
@@ -604,11 +739,16 @@ Friend Class frmPollutants
             Me.Refresh()
 
         Catch ex As Exception
-            HandleError(False, "DeletePollutant " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strCoeffName"></param>
+    ''' <param name="strLCType"></param>
+    ''' <remarks></remarks>
     Public Sub AddCoefficient(ByRef strCoeffName As String, ByRef strLCType As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
@@ -683,10 +823,16 @@ Friend Class frmPollutants
             datalctype.Close()
 
         Catch ex As Exception
-            HandleError(True, "AddCoefficient " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strNewCoeffName"></param>
+    ''' <param name="strCoeffSet"></param>
+    ''' <remarks></remarks>
     Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
@@ -750,11 +896,16 @@ Friend Class frmPollutants
             cboPollName_SelectedIndexChanged(cboPollName, New System.EventArgs())
             cboCoeffSet.SelectedIndex = GetCboIndex(strNewCoeffName, cboCoeffSet)
         Catch ex As Exception
-            HandleError(True, "CopyCoefficient " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
     'Exports your current standard and pollutants to text or csv.
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strFileName"></param>
+    ''' <remarks></remarks>
     Private Sub ExportCoeffSet(ByRef strFileName As String)
         Try
             Dim out As New IO.StreamWriter(strFileName)
@@ -765,10 +916,17 @@ Friend Class frmPollutants
             Next i
             out.Close()
         Catch ex As Exception
-            HandleError(False, "ExportCoeffSet " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="cmdCoeff"></param>
+    ''' <param name="strCoeffName"></param>
+    ''' <param name="strFileName"></param>
+    ''' <remarks></remarks>
     Public Sub UpdateCoeffSet(ByRef cmdCoeff As OleDbCommand, ByRef strCoeffName As String, ByRef strFileName As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
@@ -863,7 +1021,7 @@ Friend Class frmPollutants
             End While
             cboCoeffSet.SelectedIndex = modUtil.GetCboIndex(strCoeffName, cboCoeffSet)
         Catch ex As Exception
-            HandleError(True, "UpdateCoeffSet " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 #End Region

@@ -28,74 +28,171 @@ Public Class mwNSPECT
 
 #Region "Unused Plug-in Interface Elements"
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Handle"></param>
+    ''' <param name="Location"></param>
+    ''' <param name="Handled"></param>
+    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub LegendDoubleClick(ByVal Handle As Integer, ByVal Location As MapWindow.Interfaces.ClickLocation, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.LegendDoubleClick
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Handle"></param>
+    ''' <param name="Button"></param>
+    ''' <param name="Location"></param>
+    ''' <param name="Handled"></param>
+    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub LegendMouseDown(ByVal Handle As Integer, ByVal Button As Integer, ByVal Location As MapWindow.Interfaces.ClickLocation, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.LegendMouseDown
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Handle"></param>
+    ''' <param name="Button"></param>
+    ''' <param name="Location"></param>
+    ''' <param name="Handled"></param>
+    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub LegendMouseUp(ByVal Handle As Integer, ByVal Button As Integer, ByVal Location As MapWindow.Interfaces.ClickLocation, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.LegendMouseUp
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Bounds"></param>
+    ''' <param name="Handled"></param>
+    ''' <remarks></remarks>
     Public Sub MapDragFinished(ByVal Bounds As System.Drawing.Rectangle, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapDragFinished
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Button"></param>
+    ''' <param name="Shift"></param>
+    ''' <param name="x"></param>
+    ''' <param name="y"></param>
+    ''' <param name="Handled"></param>
+    ''' <remarks></remarks>
     Public Sub MapMouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapMouseUp
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="msg"></param>
+    ''' <param name="Handled"></param>
+    ''' <remarks></remarks>
     Public Sub Message(ByVal msg As String, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.Message
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="ProjectFile"></param>
+    ''' <param name="SettingsString"></param>
+    ''' <remarks></remarks>
     Public Sub ProjectSaving(ByVal ProjectFile As String, ByRef SettingsString As String) Implements MapWindow.Interfaces.IPlugin.ProjectSaving
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Handle"></param>
+    ''' <param name="SelectInfo"></param>
+    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub ShapesSelected(ByVal Handle As Integer, ByVal SelectInfo As MapWindow.Interfaces.SelectInfo) Implements MapWindow.Interfaces.IPlugin.ShapesSelected
 
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Handle"></param>
+    ''' <remarks></remarks>
     Public Sub LayerSelected(ByVal Handle As Integer) Implements MapWindow.Interfaces.IPlugin.LayerSelected
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="ProjectFile"></param>
+    ''' <param name="SettingsString"></param>
+    ''' <remarks></remarks>
     Public Sub ProjectLoading(ByVal ProjectFile As String, ByVal SettingsString As String) Implements MapWindow.Interfaces.IPlugin.ProjectLoading
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Button"></param>
+    ''' <param name="Shift"></param>
+    ''' <param name="x"></param>
+    ''' <param name="y"></param>
+    ''' <param name="Handled"></param>
+    ''' <remarks></remarks>
     Public Sub MapMouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapMouseDown
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="ScreenX"></param>
+    ''' <param name="ScreenY"></param>
+    ''' <param name="Handled"></param>
+    ''' <remarks></remarks>
     Public Sub MapMouseMove(ByVal ScreenX As Integer, ByVal ScreenY As Integer, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapMouseMove
 
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Handle"></param>
+    ''' <remarks></remarks>
     Public Sub LayerRemoved(ByVal Handle As Integer) Implements MapWindow.Interfaces.IPlugin.LayerRemoved
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Layers"></param>
+    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub LayersAdded(ByVal Layers() As MapWindow.Interfaces.Layer) Implements MapWindow.Interfaces.IPlugin.LayersAdded
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub LayersCleared() Implements MapWindow.Interfaces.IPlugin.LayersCleared
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub MapExtentsChanged() Implements MapWindow.Interfaces.IPlugin.MapExtentsChanged
 
 
@@ -103,36 +200,72 @@ Public Class mwNSPECT
 #End Region
 
 #Region "Plug-in Information"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property Name() As String Implements MapWindow.Interfaces.IPlugin.Name
         Get
             Return "OpenNSPECT"
         End Get
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property Description() As String Implements MapWindow.Interfaces.IPlugin.Description
         Get
             Return "This plugin implements the Nonpoint-Source Pollution and Erosion Comparison Tool.  Primary developer: Allen Anselmo"
         End Get
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property Author() As String Implements MapWindow.Interfaces.IPlugin.Author
         Get
             Return "MapWindow Development Team"
         End Get
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property Version() As String Implements MapWindow.Interfaces.IPlugin.Version
         Get
             Return System.Diagnostics.FileVersionInfo.GetVersionInfo(Me.GetType.Assembly.Location).FileVersion
         End Get
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property BuildDate() As String Implements MapWindow.Interfaces.IPlugin.BuildDate
         Get
             Return System.IO.File.GetLastWriteTime(Me.GetType.Assembly.Location)
         End Get
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property SerialNumber() As String Implements MapWindow.Interfaces.IPlugin.SerialNumber
         Get
             Return "O+CW7YC/96VDT+A"

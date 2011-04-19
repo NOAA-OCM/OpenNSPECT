@@ -38,6 +38,7 @@ Public Class clsXMLPollutantItems
     ' *
     ' *************************************************************************************
 
+    Const c_sModuleFileName As String = "clsXMLPollutantItems.vb"
 
     Private Const NODE_NAME As String = "Pollutants"
 
@@ -73,88 +74,141 @@ Public Class clsXMLPollutantItems
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
-        GetEnumerator = m_colItems.GetEnumerator
+        Try
+            GetEnumerator = m_colItems.GetEnumerator
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+            GetEnumerator = Nothing
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Parent"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
-        'Return an XML DOM node that represents this class's properties. If a
-        'parent DOM node is passed in, then the returned node is also added as a
-        'child node of the parent.
+        Try
+            'Return an XML DOM node that represents this class's properties. If a
+            'parent DOM node is passed in, then the returned node is also added as a
+            'child node of the parent.
 
-        Dim node As XmlNode
-        Dim dom As XmlDocument
+            Dim node As XmlNode
+            Dim dom As XmlDocument
 
-        'If no parent was passed in, then create a DOM and document element.
-        If Parent Is Nothing Then
-            dom = New XmlDocument
-            dom.LoadXml("<" & NODE_NAME & "/>")
-            node = dom.DocumentElement
-            'Otherwise use passed-in parent.
-        Else
-            dom = Parent.OwnerDocument
-            node = dom.CreateElement(NODE_NAME)
-            Parent.AppendChild(node)
-        End If
+            'If no parent was passed in, then create a DOM and document element.
+            If Parent Is Nothing Then
+                dom = New XmlDocument
+                dom.LoadXml("<" & NODE_NAME & "/>")
+                node = dom.DocumentElement
+                'Otherwise use passed-in parent.
+            Else
+                dom = Parent.OwnerDocument
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
+            End If
 
-        Dim clsMgmtScen As clsXMLPollutantItem
+            Dim clsMgmtScen As clsXMLPollutantItem
 
-        For Each clsMgmtScen In m_colItems
+            For Each clsMgmtScen In m_colItems
+                node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+                clsMgmtScen.CreateNode(node)
+            Next clsMgmtScen
+
             node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-            clsMgmtScen.CreateNode(node)
-        Next clsMgmtScen
 
-        node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            clsMgmtScen = Nothing
 
-        clsMgmtScen = Nothing
+            'Return the created node
+            CreateNode = node
 
-        'Return the created node
-        CreateNode = node
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+            CreateNode = Nothing
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="node"></param>
+    ''' <remarks></remarks>
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
-        'Set this class's properties based on the data found in the
-        'given node.
+        Try
+            'Set this class's properties based on the data found in the
+            'given node.
 
-        'Ensure that a valid node was passed in.
-        If node Is Nothing Then Exit Sub
+            'Ensure that a valid node was passed in.
+            If node Is Nothing Then Exit Sub
 
-        Dim clsMgmtScen As clsXMLPollutantItem
-        Dim nodes As XmlNodeList
-        Dim MgmtNode As XmlNode
+            Dim clsMgmtScen As clsXMLPollutantItem
+            Dim nodes As XmlNodeList
+            Dim MgmtNode As XmlNode
 
-        clsMgmtScen = New clsXMLPollutantItem
-        m_colItems = New Collections.ArrayList
-
-        nodes = node.SelectNodes(clsMgmtScen.NodeName)
-        For Each MgmtNode In nodes
             clsMgmtScen = New clsXMLPollutantItem
-            clsMgmtScen.LoadNode(MgmtNode)
-            m_colItems.Add(clsMgmtScen)
-        Next MgmtNode
+            m_colItems = New Collections.ArrayList
 
+            nodes = node.SelectNodes(clsMgmtScen.NodeName)
+            For Each MgmtNode In nodes
+                clsMgmtScen = New clsXMLPollutantItem
+                clsMgmtScen.LoadNode(MgmtNode)
+                m_colItems.Add(clsMgmtScen)
+            Next MgmtNode
+
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub New()
-        m_colItems = New Collections.ArrayList
+        Try
+            m_colItems = New Collections.ArrayList
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
-    
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="MgmtScen"></param>
+    ''' <remarks></remarks>
     Public Sub Add(ByVal MgmtScen As clsXMLPollutantItem)
         'Add a mgmt scen item.
+        Try
 
-        m_colItems.Add(MgmtScen)
+            m_colItems.Add(MgmtScen)
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Index"></param>
+    ''' <remarks></remarks>
     Public Sub Remove(ByVal Index As Integer)
         'Remove an order item.
+        Try
 
-        m_colItems.Remove(Index)
+            m_colItems.Remove(Index)
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
     'End of code to support repeating <OrderItem> elements.
