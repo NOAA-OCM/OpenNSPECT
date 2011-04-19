@@ -5,7 +5,7 @@
     <StartProgram>D:\dev\MapWindow4Dev\Bin\MapWindow.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup>
-    <ProjectView>ShowAllFiles</ProjectView>
+    <ProjectView>ProjectFiles</ProjectView>
     <PublishUrlHistory>
     </PublishUrlHistory>
     <InstallUrlHistory>

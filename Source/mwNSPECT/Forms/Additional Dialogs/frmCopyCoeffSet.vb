@@ -22,43 +22,75 @@ Friend Class frmCopyCoeffSet
 
     Private _frmPoll As frmPollutants
     Private _frmNewPoll As frmNewPollutants
+    Const c_sModuleFileName As String = "frmCopyCoeff.vb"
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="cmdCoeffSet"></param>
+    ''' <param name="frmPoll"></param>
+    ''' <param name="frmNewPoll"></param>
+    ''' <remarks></remarks>
     Public Sub Init(ByRef cmdCoeffSet As OleDbCommand, ByRef frmPoll As frmPollutants, ByRef frmNewPoll As frmNewPollutants)
-        'The form is passed a recordest containing the names of all coefficient sets, allows for
-        'easier populating
+        Try
+            'The form is passed a recordest containing the names of all coefficient sets, allows for
+            'easier populating
 
-        If Not cmdCoeffSet Is Nothing Then
-            Dim dataCoeff As OleDbDataReader = cmdCoeffSet.ExecuteReader()
-            While dataCoeff.Read()
-                cboCoeffSet.Items.Add(dataCoeff("Name"))
-            End While
-            dataCoeff.Close()
-        End If
-
-        _frmPoll = frmPoll
-        _frmNewPoll = frmNewPoll
-    End Sub
-
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Me.Close()
-    End Sub
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
-        If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) And Trim(txtCoeffSetName.Text) <> "" Then
-            If g_boolCopyCoeff Then
-                _frmPoll.CopyCoefficient(txtCoeffSetName.Text, cboCoeffSet.Text)
-            Else
-                _frmNewPoll.CopyCoefficient(txtCoeffSetName.Text, cboCoeffSet.Text)
+            If Not cmdCoeffSet Is Nothing Then
+                Dim dataCoeff As OleDbDataReader = cmdCoeffSet.ExecuteReader()
+                While dataCoeff.Read()
+                    cboCoeffSet.Items.Add(dataCoeff("Name"))
+                End While
+                dataCoeff.Close()
             End If
-            Me.Close()
-        Else
-            MsgBox("The name you have choosen for coefficient set is already in use.  Please pick another.", MsgBoxStyle.Critical, "Name In Use")
-            With txtCoeffSetName
-                .SelectionStart = 0
-                .SelectionLength = Len(txtCoeffSetName.Text)
-                .Focus()
-            End With
 
-        End If
+            _frmPoll = frmPoll
+            _frmNewPoll = frmNewPoll
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
+        Try
+            Me.Close()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
+        Try
+            If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) And Trim(txtCoeffSetName.Text) <> "" Then
+                If g_boolCopyCoeff Then
+                    _frmPoll.CopyCoefficient(txtCoeffSetName.Text, cboCoeffSet.Text)
+                Else
+                    _frmNewPoll.CopyCoefficient(txtCoeffSetName.Text, cboCoeffSet.Text)
+                End If
+                Me.Close()
+            Else
+                MsgBox("The name you have choosen for coefficient set is already in use.  Please pick another.", MsgBoxStyle.Critical, "Name In Use")
+                With txtCoeffSetName
+                    .SelectionStart = 0
+                    .SelectionLength = Len(txtCoeffSetName.Text)
+                    .Focus()
+                End With
+
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 End Class

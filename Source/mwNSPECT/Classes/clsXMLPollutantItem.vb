@@ -38,6 +38,7 @@ Public Class clsXMLPollutantItem
     ' *
     ' *************************************************************************************
 
+    Const c_sModuleFileName As String = "clsXMLPollutantItem.vb"
 
     Private Const NODE_NAME As String = "Pollutant"
     Private Const ATTRIBUTE_ID As String = "ID"
@@ -65,56 +66,75 @@ Public Class clsXMLPollutantItem
         End Get
     End Property
 
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Parent"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
-        'Return an XML DOM node that represents this class's properties. If a
-        'parent DOM node is passed in, then the returned node is also added as a
-        'child node of the parent.
+        Try
+            'Return an XML DOM node that represents this class's properties. If a
+            'parent DOM node is passed in, then the returned node is also added as a
+            'child node of the parent.
 
-        Dim node As XmlNode
-        Dim dom As XmlDocument
+            Dim node As XmlNode
+            Dim dom As XmlDocument
 
-        'If no parent was passed in, then create a DOM and document element.
-        If Parent Is Nothing Then
-            dom = New XmlDocument
-            dom.LoadXml("<" & NODE_NAME & "/>")
-            node = dom.DocumentElement
-            'Otherwise use passed-in parent.
-        Else
-            dom = Parent.OwnerDocument
-            node = dom.CreateElement(NODE_NAME)
-            Parent.AppendChild(node)
-        End If
+            'If no parent was passed in, then create a DOM and document element.
+            If Parent Is Nothing Then
+                dom = New XmlDocument
+                dom.LoadXml("<" & NODE_NAME & "/>")
+                node = dom.DocumentElement
+                'Otherwise use passed-in parent.
+            Else
+                dom = Parent.OwnerDocument
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
+            End If
 
-        node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-        NodeAppendAttribute(dom, node, ATTRIBUTE_ID, intID)
-        NodeAppendChildElement(dom, node, ELEMENT_Apply, intApply)
-        NodeAppendChildElement(dom, node, ELEMENT_PollName, strPollName)
-        NodeAppendChildElement(dom, node, ELEMENT_CoeffSet, strCoeffSet)
-        NodeAppendChildElement(dom, node, ELEMENT_Coeff, strCoeff)
-        NodeAppendChildElement(dom, node, ELEMENT_Threshold, intThreshold)
-        NodeAppendChildElement(dom, node, ELEMENT_TypeDefXMLFile, strTypeDefXMLFile)
-        node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            NodeAppendAttribute(dom, node, ATTRIBUTE_ID, intID)
+            NodeAppendChildElement(dom, node, ELEMENT_Apply, intApply)
+            NodeAppendChildElement(dom, node, ELEMENT_PollName, strPollName)
+            NodeAppendChildElement(dom, node, ELEMENT_CoeffSet, strCoeffSet)
+            NodeAppendChildElement(dom, node, ELEMENT_Coeff, strCoeff)
+            NodeAppendChildElement(dom, node, ELEMENT_Threshold, intThreshold)
+            NodeAppendChildElement(dom, node, ELEMENT_TypeDefXMLFile, strTypeDefXMLFile)
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
 
-        'Return the created node
-        CreateNode = node
+            'Return the created node
+            CreateNode = node
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+            CreateNode = Nothing
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="node"></param>
+    ''' <remarks></remarks>
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
-        'Set this class's properties based on the data found in the
-        'given node.
+        Try
+            'Set this class's properties based on the data found in the
+            'given node.
 
-        'Ensure that a valid node was passed in.
-        If node Is Nothing Then Exit Sub
+            'Ensure that a valid node was passed in.
+            If node Is Nothing Then Exit Sub
 
-        intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_ID))
-        intApply = CShort(GetNodeText(node, ELEMENT_Apply))
-        strPollName = GetNodeText(node, ELEMENT_PollName)
-        strCoeffSet = GetNodeText(node, ELEMENT_CoeffSet)
-        strCoeff = GetNodeText(node, ELEMENT_Coeff)
-        intThreshold = CShort(GetNodeText(node, ELEMENT_Threshold))
-        strTypeDefXMLFile = GetNodeText(node, ELEMENT_TypeDefXMLFile)
+            intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_ID))
+            intApply = CShort(GetNodeText(node, ELEMENT_Apply))
+            strPollName = GetNodeText(node, ELEMENT_PollName)
+            strCoeffSet = GetNodeText(node, ELEMENT_CoeffSet)
+            strCoeff = GetNodeText(node, ELEMENT_Coeff)
+            intThreshold = CShort(GetNodeText(node, ELEMENT_Threshold))
+            strTypeDefXMLFile = GetNodeText(node, ELEMENT_TypeDefXMLFile)
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 End Class

@@ -38,6 +38,7 @@ Public Class clsXMLLUScenPollItem
     ' *
     ' *************************************************************************************
 
+    Const c_sModuleFileName As String = "clsWrapperPoll.vb"
 
     Private Const NODE_NAME As String = "LUScenPollutant"
     Private Const ATTRIBUTE_PollID As String = "ID"
@@ -54,60 +55,87 @@ Public Class clsXMLLUScenPollItem
     Public intType3 As Double
     Public intType4 As Double
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
             NodeName = NODE_NAME
 
         End Get
+
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Parent"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
-        'Return an XML DOM node that represents this class's properties. If a
-        'parent DOM node is passed in, then the returned node is also added as a
-        'child node of the parent.
+        Try
+            'Return an XML DOM node that represents this class's properties. If a
+            'parent DOM node is passed in, then the returned node is also added as a
+            'child node of the parent.
 
-        Dim node As XmlNode
-        Dim dom As XmlDocument
+            Dim node As XmlNode
+            Dim dom As XmlDocument
 
-        'If no parent was passed in, then create a DOM and document element.
-        If Parent Is Nothing Then
-            dom = New XmlDocument
-            dom.LoadXml("<" & NODE_NAME & "/>")
-            node = dom.DocumentElement
-            'Otherwise use passed-in parent.
-        Else
-            dom = Parent.OwnerDocument
-            node = dom.CreateElement(NODE_NAME)
-            Parent.AppendChild(node)
-        End If
+            'If no parent was passed in, then create a DOM and document element.
+            If Parent Is Nothing Then
+                dom = New XmlDocument
+                dom.LoadXml("<" & NODE_NAME & "/>")
+                node = dom.DocumentElement
+                'Otherwise use passed-in parent.
+            Else
+                dom = Parent.OwnerDocument
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
+            End If
 
-        NodeAppendAttribute(dom, node, ATTRIBUTE_PollID, intID)
-        NodeAppendChildElement(dom, node, ELEMENT_Name, strPollName)
-        NodeAppendChildElement(dom, node, ELEMENT_Type1, intType1)
-        NodeAppendChildElement(dom, node, ELEMENT_Type2, intType2)
-        NodeAppendChildElement(dom, node, ELEMENT_Type3, intType3)
-        NodeAppendChildElement(dom, node, ELEMENT_Type4, intType4)
+            NodeAppendAttribute(dom, node, ATTRIBUTE_PollID, intID)
+            NodeAppendChildElement(dom, node, ELEMENT_Name, strPollName)
+            NodeAppendChildElement(dom, node, ELEMENT_Type1, intType1)
+            NodeAppendChildElement(dom, node, ELEMENT_Type2, intType2)
+            NodeAppendChildElement(dom, node, ELEMENT_Type3, intType3)
+            NodeAppendChildElement(dom, node, ELEMENT_Type4, intType4)
 
-        'Return the created node
-        CreateNode = node
+            'Return the created node
+            CreateNode = node
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+            CreateNode = Nothing
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="node"></param>
+    ''' <remarks></remarks>
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
-        'Set this class's properties based on the data found in the
-        'given node.
+        Try
+            'Set this class's properties based on the data found in the
+            'given node.
 
-        'Ensure that a valid node was passed in.
-        If node Is Nothing Then Exit Sub
+            'Ensure that a valid node was passed in.
+            If node Is Nothing Then Exit Sub
 
-        intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_PollID))
-        strPollName = GetNodeText(node, ELEMENT_Name)
-        intType1 = CDbl(GetNodeText(node, ELEMENT_Type1))
-        intType2 = CDbl(GetNodeText(node, ELEMENT_Type2))
-        intType3 = CDbl(GetNodeText(node, ELEMENT_Type3))
-        intType4 = CDbl(GetNodeText(node, ELEMENT_Type4))
+            intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_PollID))
+            strPollName = GetNodeText(node, ELEMENT_Name)
+            intType1 = CDbl(GetNodeText(node, ELEMENT_Type1))
+            intType2 = CDbl(GetNodeText(node, ELEMENT_Type2))
+            intType3 = CDbl(GetNodeText(node, ELEMENT_Type3))
+            intType4 = CDbl(GetNodeText(node, ELEMENT_Type4))
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
 End Class

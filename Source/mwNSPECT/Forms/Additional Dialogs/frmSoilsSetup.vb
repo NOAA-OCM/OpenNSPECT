@@ -20,158 +20,231 @@ Imports System.Data.OleDb
 Friend Class frmSoilsSetup
     Inherits System.Windows.Forms.Form
 
+    Const c_sModuleFileName As String = "frmSoilsSetup.vb"
+
     Private _frmSoil As frmSoils
     Private _pRasterProps As MapWinGIS.Grid
    
 #Region "Events"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdDEMBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDEMBrowse.Click
-        'Browse for DEM
-        Dim pDEMRasterDataset As MapWinGIS.Grid
-        pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM Dataset", Me, 0)
+        Try
+            'Browse for DEM
+            Dim pDEMRasterDataset As MapWinGIS.Grid
+            pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM Dataset", Me, 0)
 
-        If Not pDEMRasterDataset Is Nothing Then
-            _pRasterProps = pDEMRasterDataset
-        Else
-            MsgBox("The Raster Dataset you have chosen is invalid.", MsgBoxStyle.Critical, "DEM Error")
-            Exit Sub
-        End If
+            If Not pDEMRasterDataset Is Nothing Then
+                _pRasterProps = pDEMRasterDataset
+            Else
+                MsgBox("The Raster Dataset you have chosen is invalid.", MsgBoxStyle.Critical, "DEM Error")
+                Exit Sub
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
-        'browse...get output filename
-        Dim dlgOpen As New Windows.Forms.OpenFileDialog
+        Try
+            'browse...get output filename
+            Dim dlgOpen As New Windows.Forms.OpenFileDialog
 
-        dlgOpen.Filter = MSG6
-        dlgOpen.Title = "Open Soils Dataset"
+            dlgOpen.Filter = MSG6
+            dlgOpen.Title = "Open Soils Dataset"
 
-        If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
-            txtSoilsDS.Text = Trim(dlgOpen.FileName)
-            PopulateCbo()
-        End If
+            If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
+                txtSoilsDS.Text = Trim(dlgOpen.FileName)
+                PopulateCbo()
+            End If
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
+        Try
+            Dim intvbYesNo As Short
 
-        Dim intvbYesNo As Short
+            intvbYesNo = MsgBox("Do you want to save changes you made to soils setup?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
 
-        intvbYesNo = MsgBox("Do you want to save changes you made to soils setup?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
-
-        If intvbYesNo = MsgBoxResult.Yes Then
-            SaveSoils()
-        ElseIf intvbYesNo = MsgBoxResult.No Then
-            Me.Close()
-        ElseIf intvbYesNo = MsgBoxResult.Cancel Then
-            Exit Sub
-        End If
+            If intvbYesNo = MsgBoxResult.Yes Then
+                SaveSoils()
+            ElseIf intvbYesNo = MsgBoxResult.No Then
+                Me.Close()
+            ElseIf intvbYesNo = MsgBoxResult.Cancel Then
+                Exit Sub
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
-        SaveSoils()
+        Try
+            SaveSoils()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 #End Region
 
 #Region "Helper"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="frmSoil"></param>
+    ''' <remarks></remarks>
     Public Sub Init(ByRef frmSoil As frmSoils)
-        _frmSoil = frmSoil
+        Try
+            _frmSoil = frmSoil
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub SaveSoils()
-
-        'Check data, if OK create soils grids
-        If ValidateData() Then
-            If CreateSoilsGrid(txtSoilsDS.Text, cboSoilFields.Text, cboSoilFieldsK.Text) Then
-                If _frmSoil.Visible Then
-                    _frmSoil.cboSoils.Items.Clear()
-                    modUtil.InitComboBox(_frmSoil.cboSoils, "Soils")
-                    _frmSoil.cboSoils.SelectedIndex = modUtil.GetCboIndex(txtSoilsName.Text, _frmSoil.cboSoils)
-                    Me.Close()
+        Try
+            'Check data, if OK create soils grids
+            If ValidateData() Then
+                If CreateSoilsGrid(txtSoilsDS.Text, cboSoilFields.Text, cboSoilFieldsK.Text) Then
+                    If _frmSoil.Visible Then
+                        _frmSoil.cboSoils.Items.Clear()
+                        modUtil.InitComboBox(_frmSoil.cboSoils, "Soils")
+                        _frmSoil.cboSoils.SelectedIndex = modUtil.GetCboIndex(txtSoilsName.Text, _frmSoil.cboSoils)
+                        Me.Close()
+                    End If
+                Else
+                    Exit Sub
                 End If
             Else
                 Exit Sub
             End If
-        Else
-            Exit Sub
-        End If
 
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidateData() As Boolean
-
-        If Len(txtSoilsName.Text) > 0 Then
-            If modUtil.UniqueName("Soils", (txtSoilsName.Text)) Then
-                ValidateData = True
+        Try
+            If Len(txtSoilsName.Text) > 0 Then
+                If modUtil.UniqueName("Soils", (txtSoilsName.Text)) Then
+                    ValidateData = True
+                Else
+                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
+                    ValidateData = False
+                    txtSoilsName.Focus()
+                    Exit Function
+                End If
             Else
-                MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
+                MsgBox("Please enter a name.", MsgBoxStyle.Critical, "Soils Name Missing")
                 ValidateData = False
                 txtSoilsName.Focus()
                 Exit Function
+
             End If
-        Else
-            MsgBox("Please enter a name.", MsgBoxStyle.Critical, "Soils Name Missing")
-            ValidateData = False
-            txtSoilsName.Focus()
-            Exit Function
 
-        End If
-
-        If Len(txtSoilsDS.Text) = 0 Then
-            MsgBox("Please select a soils dataset.", MsgBoxStyle.Critical, "Soils Dataset Missing")
-            txtSoilsDS.Focus()
-            ValidateData = False
-            Exit Function
-        Else
-            ValidateData = True
-        End If
-
-        If Len(cboSoilFields.Text) = 0 Then
-            MsgBox("Please select a soils attribute.", MsgBoxStyle.Critical, "Choose Soils Attribute")
-            cboSoilFields.Focus()
-            ValidateData = False
-            Exit Function
-        Else
-            ValidateData = True
-        End If
-
-        If Len(cboSoilFieldsK.Text) = 0 Then
-            MsgBox("Please select a k-factor soils attribute.", MsgBoxStyle.Critical, "Choose K-Factor Attribute")
-            cboSoilFieldsK.Focus()
-            ValidateData = False
-            Exit Function
-        Else
-            ValidateData = True
-        End If
-
-        If Len(txtMUSLEVal.Text) > 0 Then
-            If IsNumeric(CDbl(txtMUSLEVal.Text)) Then
-                ValidateData = True
+            If Len(txtSoilsDS.Text) = 0 Then
+                MsgBox("Please select a soils dataset.", MsgBoxStyle.Critical, "Soils Dataset Missing")
+                txtSoilsDS.Focus()
+                ValidateData = False
+                Exit Function
             Else
-                MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, "Numeric Values Only")
+                ValidateData = True
+            End If
+
+            If Len(cboSoilFields.Text) = 0 Then
+                MsgBox("Please select a soils attribute.", MsgBoxStyle.Critical, "Choose Soils Attribute")
+                cboSoilFields.Focus()
+                ValidateData = False
+                Exit Function
+            Else
+                ValidateData = True
+            End If
+
+            If Len(cboSoilFieldsK.Text) = 0 Then
+                MsgBox("Please select a k-factor soils attribute.", MsgBoxStyle.Critical, "Choose K-Factor Attribute")
+                cboSoilFieldsK.Focus()
+                ValidateData = False
+                Exit Function
+            Else
+                ValidateData = True
+            End If
+
+            If Len(txtMUSLEVal.Text) > 0 Then
+                If IsNumeric(CDbl(txtMUSLEVal.Text)) Then
+                    ValidateData = True
+                Else
+                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, "Numeric Values Only")
+                    ValidateData = False
+                End If
+            Else
+                MsgBox("Please enter a value for the MUSLE equation.", MsgBoxStyle.Critical, "Missing Value")
+                txtMUSLEVal.Focus()
                 ValidateData = False
             End If
-        Else
-            MsgBox("Please enter a value for the MUSLE equation.", MsgBoxStyle.Critical, "Missing Value")
-            txtMUSLEVal.Focus()
-            ValidateData = False
-        End If
 
-        If Len(txtMUSLEExp.Text) > 0 Then
-            If IsNumeric(CDbl(txtMUSLEExp.Text)) Then
-                ValidateData = True
+            If Len(txtMUSLEExp.Text) > 0 Then
+                If IsNumeric(CDbl(txtMUSLEExp.Text)) Then
+                    ValidateData = True
+                Else
+                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, "Numeric Values Only")
+                    ValidateData = False
+                End If
             Else
-                MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, "Numeric Values Only")
+                MsgBox("Please enter a value for the MUSLE equation.", MsgBoxStyle.Critical, "Missing Value")
+                txtMUSLEExp.Focus()
                 ValidateData = False
             End If
-        Else
-            MsgBox("Please enter a value for the MUSLE equation.", MsgBoxStyle.Critical, "Missing Value")
-            txtMUSLEExp.Focus()
-            ValidateData = False
-        End If
 
 
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strSoilsFileName"></param>
+    ''' <param name="strHydFieldName"></param>
+    ''' <param name="strKFactor"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function CreateSoilsGrid(ByRef strSoilsFileName As String, ByRef strHydFieldName As String, Optional ByRef strKFactor As String = "") As Boolean
         'Incoming:
         'strSoilsFileName: string of soils file name path
@@ -352,29 +425,37 @@ Friend Class frmSoilsSetup
 
             CreateSoilsGrid = True
         Catch ex As Exception
-            MsgBox(Err.Number & ": " & Err.Description)
+            HandleError(c_sModuleFileName, ex)
+            'MsgBox(Err.Number & ": " & Err.Description)
             CreateSoilsGrid = False
         End Try
     End Function
 
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub PopulateCbo()
+        Try
+            'Populate cboSoilFields & cboSoilFieldsK with the fields in the selected Soils layer
+            Dim i As Short
+            Dim pFeatureClass As MapWinGIS.Shapefile
 
-        'Populate cboSoilFields & cboSoilFieldsK with the fields in the selected Soils layer
-        Dim i As Short
-        Dim pFeatureClass As MapWinGIS.Shapefile
+            cboSoilFields.Items.Clear()
+            cboSoilFieldsK.Items.Clear()
 
-        cboSoilFields.Items.Clear()
-        cboSoilFieldsK.Items.Clear()
+            pFeatureClass = modUtil.ReturnFeature(txtSoilsDS.Text)
 
-        pFeatureClass = modUtil.ReturnFeature(txtSoilsDS.Text)
+            'Pop both cbos with field names
+            For i = 0 To pFeatureClass.NumFields - 1
+                cboSoilFields.Items.Add(pFeatureClass.Field(i).Name)
+                cboSoilFieldsK.Items.Add(pFeatureClass.Field(i).Name)
+            Next i
 
-        'Pop both cbos with field names
-        For i = 0 To pFeatureClass.NumFields - 1
-            cboSoilFields.Items.Add(pFeatureClass.Field(i).Name)
-            cboSoilFieldsK.Items.Add(pFeatureClass.Field(i).Name)
-        Next i
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 #End Region
 

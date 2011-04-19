@@ -22,6 +22,7 @@ Public Class clsXMLOutputItems
     Inherits clsXMLBase
     Implements System.Collections.IEnumerable
 
+    Const c_sModuleFileName As String = "clsXMLOutputItems.vb"
 
     'The NODE_NAME constant contains the name of the XML element that
     'is being wrapped.
@@ -56,73 +57,111 @@ Public Class clsXMLOutputItems
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
-        GetEnumerator = m_colItems.GetEnumerator
+        Try
+            GetEnumerator = m_colItems.GetEnumerator
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+            GetEnumerator = Nothing
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Parent"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
-        'Return an XML DOM node that represents this class's properties. If a
-        'parent DOM node is passed in, then the returned node is also added as a
-        'child node of the parent.
+        Try
+            'Return an XML DOM node that represents this class's properties. If a
+            'parent DOM node is passed in, then the returned node is also added as a
+            'child node of the parent.
 
-        Dim node As XmlNode
-        Dim dom As XmlDocument
+            Dim node As XmlNode
+            Dim dom As XmlDocument
 
-        'If no parent was passed in, then create a DOM and document element.
-        If Parent Is Nothing Then
-            dom = New XmlDocument
-            dom.LoadXml("<" & NODE_NAME & "/>")
-            node = dom.DocumentElement
-            'Otherwise use passed-in parent.
-        Else
-            dom = Parent.OwnerDocument
-            node = dom.CreateElement(NODE_NAME)
-            Parent.AppendChild(node)
-        End If
+            'If no parent was passed in, then create a DOM and document element.
+            If Parent Is Nothing Then
+                dom = New XmlDocument
+                dom.LoadXml("<" & NODE_NAME & "/>")
+                node = dom.DocumentElement
+                'Otherwise use passed-in parent.
+            Else
+                dom = Parent.OwnerDocument
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
+            End If
 
-        'Save the repeating <OrderItem> elements.
+            'Save the repeating <OrderItem> elements.
 
-        Dim clsOutput As clsXMLOutputItem
+            Dim clsOutput As clsXMLOutputItem
 
-        For Each clsOutput In m_colItems
+            For Each clsOutput In m_colItems
+                node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+                clsOutput.CreateNode(node)
+            Next clsOutput
+
             node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-            clsOutput.CreateNode(node)
-        Next clsOutput
 
-        node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            clsOutput = Nothing
 
-        clsOutput = Nothing
+            CreateNode = node
 
-        CreateNode = node
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+            CreateNode = Nothing
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="node"></param>
+    ''' <remarks></remarks>
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
-        'Set this class's properties based on the data found in the
-        'given node.
+        Try
+            'Set this class's properties based on the data found in the
+            'given node.
 
 
-        'Ensure that a valid node was passed in.
-        If node Is Nothing Then Exit Sub
+            'Ensure that a valid node was passed in.
+            If node Is Nothing Then Exit Sub
 
-        Dim clsOutput As clsXMLOutputItem
-        Dim nodes As XmlNodeList
-        Dim outNode As XmlNode
+            Dim clsOutput As clsXMLOutputItem
+            Dim nodes As XmlNodeList
+            Dim outNode As XmlNode
 
-        clsOutput = New clsXMLOutputItem
-        m_colItems = New Collections.ArrayList
-
-        nodes = node.SelectNodes(clsOutput.NodeName)
-        For Each outNode In nodes
             clsOutput = New clsXMLOutputItem
-            clsOutput.LoadNode(outNode)
-            m_colItems.Add(clsOutput)
-        Next outNode
+            m_colItems = New Collections.ArrayList
 
+            nodes = node.SelectNodes(clsOutput.NodeName)
+            For Each outNode In nodes
+                clsOutput = New clsXMLOutputItem
+                clsOutput.LoadNode(outNode)
+                m_colItems.Add(clsOutput)
+            Next outNode
+
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub New()
-        m_colItems = New Collections.ArrayList
+        Try
+            m_colItems = New Collections.ArrayList
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
     'Add an order item.

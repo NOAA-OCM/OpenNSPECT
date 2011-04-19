@@ -17,6 +17,15 @@
 '               Added licensing and comments to code
 
 Public Class frmProgressDialog
+    Const c_sModuleFileName As String = "frmProgressDialog.vb"
+
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property Title() As String
         Get
             Return Me.Text
@@ -26,6 +35,12 @@ Public Class frmProgressDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property Description() As String
         Get
             Return lblDesc.Text
@@ -35,6 +50,12 @@ Public Class frmProgressDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property MinRange() As Integer
         Get
             Return pbMain.Minimum
@@ -44,6 +65,12 @@ Public Class frmProgressDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property MaxRange() As Integer
         Get
             Return pbMain.Maximum
@@ -53,6 +80,12 @@ Public Class frmProgressDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property Progress() As Integer
         Get
             Return pbMain.Value
@@ -62,6 +95,12 @@ Public Class frmProgressDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property CancelEnabled() As Boolean
         Get
             Return btnCancel.Enabled
@@ -71,7 +110,18 @@ Public Class frmProgressDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Private _timerEnabled As Boolean
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property TimerEnabled() As Boolean
         Get
             Return _timerEnabled
@@ -86,11 +136,31 @@ Public Class frmProgressDialog
         End Set
     End Property
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        g_boolCancel = False
+        Try
+            g_boolCancel = False
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub tmrEventDriver_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrEventDriver.Tick
-        Windows.Forms.Application.DoEvents()
+        Try
+            Windows.Forms.Application.DoEvents()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 End Class

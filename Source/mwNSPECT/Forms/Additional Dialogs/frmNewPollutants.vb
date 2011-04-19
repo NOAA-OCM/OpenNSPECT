@@ -27,180 +27,319 @@ Friend Class frmNewPollutants
     Private _intLCTypeID As Short 'Land Class (CCAP) ID - needed to add new coefficient sets
 
     Private _frmPoll As frmPollutants
-    
+    Const c_sModuleFileName As String = "frmNewPollutants.vb"
+
+
 #Region "Events"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmNewPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        modUtil.InitComboBox(cboLCType, "LCType")
+        Try
+            modUtil.InitComboBox(cboLCType, "LCType")
 
-        _boolLoaded = True
-        _boolChanged = False
+            _boolLoaded = True
+            _boolChanged = False
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cboLCType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboLCType.SelectedIndexChanged
-        Dim strLCClasses As String
+        Try
+            Dim strLCClasses As String
 
-        strLCClasses = "SELECT LCTYPE.LCTYPEID, LCCLASS.VALUE, LCCLASS.NAME, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON " & "LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '" & cboLCType.Text & "'" & " ORDER BY LCCLASS.VALUE"
-        Dim cmdLC As New OleDbCommand(strLCClasses, g_DBConn)
-        Dim dataLC As OleDbDataReader = cmdLC.ExecuteReader()
+            strLCClasses = "SELECT LCTYPE.LCTYPEID, LCCLASS.VALUE, LCCLASS.NAME, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON " & "LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '" & cboLCType.Text & "'" & " ORDER BY LCCLASS.VALUE"
+            Dim cmdLC As New OleDbCommand(strLCClasses, g_DBConn)
+            Dim dataLC As OleDbDataReader = cmdLC.ExecuteReader()
 
-        dgvCoef.Rows.Clear()
+            dgvCoef.Rows.Clear()
 
-        'Actually add the records to the new set
-        Dim rowNum As Integer
-        While dataLC.Read()
-            rowNum = dgvCoef.Rows.Add()
-            dgvCoef.Rows(rowNum).Cells(0).Value = dataLC("Value")
-            dgvCoef.Rows(rowNum).Cells(1).Value = dataLC("Name")
-            dgvCoef.Rows(rowNum).Cells(2).Value = 0
-            dgvCoef.Rows(rowNum).Cells(3).Value = 0
-            dgvCoef.Rows(rowNum).Cells(4).Value = 0
-            dgvCoef.Rows(rowNum).Cells(5).Value = 0
-            dgvCoef.Rows(rowNum).Cells(6).Value = 0
-            dgvCoef.Rows(rowNum).Cells(7).Value = dataLC("LCClassID")
-        End While
+            'Actually add the records to the new set
+            Dim rowNum As Integer
+            While dataLC.Read()
+                rowNum = dgvCoef.Rows.Add()
+                dgvCoef.Rows(rowNum).Cells(0).Value = dataLC("Value")
+                dgvCoef.Rows(rowNum).Cells(1).Value = dataLC("Name")
+                dgvCoef.Rows(rowNum).Cells(2).Value = 0
+                dgvCoef.Rows(rowNum).Cells(3).Value = 0
+                dgvCoef.Rows(rowNum).Cells(4).Value = 0
+                dgvCoef.Rows(rowNum).Cells(5).Value = 0
+                dgvCoef.Rows(rowNum).Cells(6).Value = 0
+                dgvCoef.Rows(rowNum).Cells(7).Value = dataLC("LCClassID")
+            End While
 
-        dataLC.Close()
+            dataLC.Close()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuCoeffNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffNewSet.Click
-        g_boolAddCoeff = False
-        Dim addCoeff As New frmAddCoeffSet
-        addCoeff.Init(Nothing, Me)
-        addCoeff.ShowDialog()
+        Try
+            g_boolAddCoeff = False
+            Dim addCoeff As New frmAddCoeffSet
+            addCoeff.Init(Nothing, Me)
+            addCoeff.ShowDialog()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub mnuCoeffCopySet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffCopySet.Click
-        g_boolCopyCoeff = False
-        Dim newCopyCoef As New frmCopyCoeffSet
-        newCopyCoef.Init(Nothing, Nothing, Me)
-        newCopyCoef.ShowDialog()
+        Try
+            g_boolCopyCoeff = False
+            Dim newCopyCoef As New frmCopyCoeffSet
+            newCopyCoef.Init(Nothing, Nothing, Me)
+            newCopyCoef.ShowDialog()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged
-        _boolChanged = True
-        CmdSaveEnabled()
+        Try
+            _boolChanged = True
+            CmdSaveEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtPollutant_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPollutant.TextChanged
-        _boolChanged = True
-        CmdSaveEnabled()
+        Try
+            _boolChanged = True
+            CmdSaveEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtCoeffSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSet.TextChanged
-        _boolChanged = True
-        CmdSaveEnabled()
+        Try
+            _boolChanged = True
+            CmdSaveEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
-        _boolChanged = True
-        CmdSaveEnabled()
+        Try
+            _boolChanged = True
+            CmdSaveEnabled()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Me.Close()
+        Try
+            Me.Close()
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
-
-        If CheckForm() Then
-            If UpdateValues() Then
-                MsgBox(txtPollutant.Text & " successfully added.  Please enter value for associated water quality standards.", MsgBoxStyle.Information, "Pollutant Successfully Added")
-                Me.Close()
-                _frmPoll.SSTab1.SelectedIndex = 1
+        Try
+            If CheckForm() Then
+                If UpdateValues() Then
+                    MsgBox(txtPollutant.Text & " successfully added.  Please enter value for associated water quality standards.", MsgBoxStyle.Information, "Pollutant Successfully Added")
+                    Me.Close()
+                    _frmPoll.SSTab1.SelectedIndex = 1
+                End If
             End If
-        End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 #End Region
 
 #Region "Helpers"
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="frmPoll"></param>
+    ''' <remarks></remarks>
     Public Sub Init(ByRef frmPoll As frmPollutants)
-        _frmPoll = frmPoll
+        Try
+            _frmPoll = frmPoll
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub CmdSaveEnabled()
-        If _boolChanged Then
-            cmdSave.Enabled = True
-        Else
-            cmdSave.Enabled = False
-        End If
+        Try
+            If _boolChanged Then
+                cmdSave.Enabled = True
+            Else
+                cmdSave.Enabled = False
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function CheckForm() As Boolean
+        Try
+            If Trim(txtPollutant.Text) = "" Then
+                MsgBox("Please enter a name for the new pollutant", MsgBoxStyle.Critical, "Enter Name")
+                CheckForm = False
+                txtPollutant.Focus()
+                txtPollutant.SelectionLength = Len(txtPollutant.Text)
+                Exit Function
+            ElseIf modUtil.UniqueName("Pollutant", txtPollutant.Text) Then
+                CheckForm = True
+            Else
+                MsgBox(Err4, MsgBoxStyle.Critical, "Name In Use")
+                CheckForm = False
+                txtPollutant.Focus()
+                txtPollutant.SelectionLength = Len(txtPollutant.Text)
+                Exit Function
+            End If
 
-        If Trim(txtPollutant.Text) = "" Then
-            MsgBox("Please enter a name for the new pollutant", MsgBoxStyle.Critical, "Enter Name")
-            CheckForm = False
-            txtPollutant.Focus()
-            txtPollutant.SelectionLength = Len(txtPollutant.Text)
-            Exit Function
-        ElseIf modUtil.UniqueName("Pollutant", txtPollutant.Text) Then
-            CheckForm = True
-        Else
-            MsgBox(Err4, MsgBoxStyle.Critical, "Name In Use")
-            CheckForm = False
-            txtPollutant.Focus()
-            txtPollutant.SelectionLength = Len(txtPollutant.Text)
-            Exit Function
-        End If
+            If Len(Trim(txtCoeffSet.Text)) = 0 Then
+                MsgBox("Please enter a name for the new pollutant", MsgBoxStyle.Critical, "Enter Name")
+                CheckForm = False
+                txtPollutant.Focus()
+                txtPollutant.SelectionLength = Len(txtPollutant.Text)
+                Exit Function
+            ElseIf modUtil.UniqueName("Coefficientset", (txtCoeffSet.Text)) Then
+                CheckForm = True
+            Else
+                MsgBox(Err4, MsgBoxStyle.Critical, "Name In Use")
+                CheckForm = False
+                txtCoeffSet.Focus()
+                txtCoeffSet.SelectionLength = Len(txtPollutant.Text)
+                Exit Function
+            End If
 
-        If Len(Trim(txtCoeffSet.Text)) = 0 Then
-            MsgBox("Please enter a name for the new pollutant", MsgBoxStyle.Critical, "Enter Name")
-            CheckForm = False
-            txtPollutant.Focus()
-            txtPollutant.SelectionLength = Len(txtPollutant.Text)
-            Exit Function
-        ElseIf modUtil.UniqueName("Coefficientset", (txtCoeffSet.Text)) Then
-            CheckForm = True
-        Else
-            MsgBox(Err4, MsgBoxStyle.Critical, "Name In Use")
-            CheckForm = False
-            txtCoeffSet.Focus()
-            txtCoeffSet.SelectionLength = Len(txtPollutant.Text)
-            Exit Function
-        End If
+            'Now if all is there and good, go on and check the grid values
+            If ValidateGridValues() Then
+                CheckForm = True
+            Else
+                CheckForm = False
+            End If
 
-        'Now if all is there and good, go on and check the grid values
-        If ValidateGridValues Then
-            CheckForm = True
-        Else
-            CheckForm = False
-        End If
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidateGridValues() As Boolean
+        Try
+            'Need to validate each grid value before saving.  Essentially we take it a row at a time,
+            'then rifle through each column of each row.  Case Select tests each each x,y value depending
+            'on column... 3-6 must be 1-100 range
 
-        'Need to validate each grid value before saving.  Essentially we take it a row at a time,
-        'then rifle through each column of each row.  Case Select tests each each x,y value depending
-        'on column... 3-6 must be 1-100 range
+            'Returns: True or False
 
-        'Returns: True or False
+            Dim val As Double
 
-        Dim val As Double
-        
-        For i As Integer = 0 To dgvCoef.Rows.Count - 1
-            For j As Integer = 2 To 5
+            For i As Integer = 0 To dgvCoef.Rows.Count - 1
+                For j As Integer = 2 To 5
 
-                val = dgvCoef.Rows(i).Cells(j).Value
+                    val = dgvCoef.Rows(i).Cells(j).Value
 
-                If InStr(1, val.ToString, ".", CompareMethod.Text) > 0 Then
-                    If (Len(Split(val.ToString, ".")(1)) > 4) Then
+                    If InStr(1, val.ToString, ".", CompareMethod.Text) > 0 Then
+                        If (Len(Split(val.ToString, ".")(1)) > 4) Then
+                            ErrorGenerator(Err6, i, j)
+                            Return False
+                        End If
+                    End If
+
+                    If Not IsNumeric(val) Or (val < 0) Or (val > 1000) Then
                         ErrorGenerator(Err6, i, j)
                         Return False
                     End If
-                End If
+                Next j
+            Next i
 
-                If Not IsNumeric(val) Or (val < 0) Or (val > 1000) Then
-                    ErrorGenerator(Err6, i, j)
-                    Return False
-                End If
-            Next j
-        Next i
+            ValidateGridValues = True
 
-        ValidateGridValues = True
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function UpdateValues() As Boolean
 
         Dim strInsertPollutant As String 'Insert String for new poll
@@ -274,128 +413,147 @@ Friend Class frmNewPollutants
 
             UpdateValues = True
         Catch ex As Exception
+            'ALFREDO
             MsgBox("An error occurred while creating new pollutant." & vbNewLine & Err.Number & ": " & Err.Description, MsgBoxStyle.Critical, "Error")
+            HandleError(c_sModuleFileName, ex)
         End Try
     End Function
 
-
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strNewCoeffName"></param>
+    ''' <param name="strCoeffSet"></param>
+    ''' <remarks></remarks>
     Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
+        Try
+            'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
+            'the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
+            'from the set being copied
+            Dim strCopySet As String 'The Recordset of existing coefficients being copied
+            Dim strLandClass As String 'Select for Landclass
+            Dim i As Short = 0
 
-        'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
-        'the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
-        'from the set being copied
-        Dim strCopySet As String 'The Recordset of existing coefficients being copied
-        Dim strLandClass As String 'Select for Landclass
-        Dim i As Short = 0
+            strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
+            Dim cmdCopySet As New OleDbCommand(strCopySet, g_DBConn)
+            Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
 
-        strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
-        Dim cmdCopySet As New OleDbCommand(strCopySet, g_DBConn)
-        Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
+            'Step 1: Enter name
+            txtCoeffSet.Text = strNewCoeffName
 
-        'Step 1: Enter name
-        txtCoeffSet.Text = strNewCoeffName
+            'Clear things and set the rows to recordcount + 1, remember 1st row fixed
+            dgvCoef.Rows.Clear()
 
-        'Clear things and set the rows to recordcount + 1, remember 1st row fixed
-        dgvCoef.Rows.Clear()
+            'Actually add the records to the new set
+            While dataCopySet.Read()
+                strLandClass = "SELECT * FROM LCCLASS WHERE LCCLASSID = " & dataCopySet("LCClassID")
+                'Let's try one more ADO method, why not, righ?
+                Dim cmdLC As New OleDbCommand(strLandClass, g_DBConn)
+                Dim dataLC As OleDbDataReader = cmdLC.ExecuteReader
+                dataLC.Read()
 
-        'Actually add the records to the new set
-        While dataCopySet.Read()
-            strLandClass = "SELECT * FROM LCCLASS WHERE LCCLASSID = " & dataCopySet("LCClassID")
-            'Let's try one more ADO method, why not, righ?
-            Dim cmdLC As New OleDbCommand(strLandClass, g_DBConn)
-            Dim dataLC As OleDbDataReader = cmdLC.ExecuteReader
-            dataLC.Read()
+                'Add the necessary components
+                dgvCoef.Rows(i).Cells(0).Value = dataLC("Value")
+                dgvCoef.Rows(i).Cells(1).Value = dataLC("Value")
+                dgvCoef.Rows(i).Cells(2).Value = dataCopySet("Value")
+                dgvCoef.Rows(i).Cells(3).Value = dataCopySet("Value")
+                dgvCoef.Rows(i).Cells(4).Value = dataCopySet("Value")
+                dgvCoef.Rows(i).Cells(5).Value = dataCopySet("Value")
 
-            'Add the necessary components
-            dgvCoef.Rows(i).Cells(0).Value = dataLC("Value")
-            dgvCoef.Rows(i).Cells(1).Value = dataLC("Value")
-            dgvCoef.Rows(i).Cells(2).Value = dataCopySet("Value")
-            dgvCoef.Rows(i).Cells(3).Value = dataCopySet("Value")
-            dgvCoef.Rows(i).Cells(4).Value = dataCopySet("Value")
-            dgvCoef.Rows(i).Cells(5).Value = dataCopySet("Value")
+                dataLC.Close()
+                i = i + 1
+            End While
 
-            dataLC.Close()
-            i = i + 1
-        End While
-
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strCoeffName"></param>
+    ''' <param name="strLCType"></param>
+    ''' <remarks></remarks>
     Public Sub AddCoefficient(ByRef strCoeffName As String, ByRef strLCType As String)
-        'TODO: verify this is even possible without the _intPollID and _intLCTypeID
+        Try
+            'TODO: verify this is even possible without the _intPollID and _intLCTypeID
 
-        'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
-        'the name, m_intPollID as the PollID, and m_intLCTYPEID as the LCTypeID.  The last two are
-        'garnered above during a cbo click event.  Once that's done, we'll add a series of blank
-        'coefficients for the landclass type the user chooses...ie CCAP, NotCCAP, whatever
+            'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
+            'the name, m_intPollID as the PollID, and m_intLCTYPEID as the LCTypeID.  The last two are
+            'garnered above during a cbo click event.  Once that's done, we'll add a series of blank
+            'coefficients for the landclass type the user chooses...ie CCAP, NotCCAP, whatever
 
-        Dim strNewLcType As String 'CmdString for inserting new coefficientset
-        Dim strDefault As String '
-        Dim strNewCoeffID As String 'Holder for the CoefficientSetID
-        Dim intCoeffSetID As Short
-        Dim i As Short = 0
-
-
-        'First need to add the coefficient set to that table
-        strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & _intLCTypeID & ")"
-        Dim cmdInsLC As New OleDbCommand(strNewLcType, g_DBConn)
-        cmdInsLC.ExecuteNonQuery()
-
-        'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
-        'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
-        strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
-        Dim cmdNewCoefID As New OleDbCommand(strNewCoeffID, g_DBConn)
-        Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
-        dataNewCoeffID.Read()
-        intCoeffSetID = dataNewCoeffID("CoeffSetID")
-
-        strDefault = "SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "'"
-        Dim cmdCopySet As New OleDbCommand(strDefault, g_DBConn)
-        Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
-
-        'Clear things and set the rows to recordcount + 1, remember 1st row fixed
-        dgvCoef.Rows.Clear()
-
-        'Now loopy loo to populate values.
-        Dim strNewCoeff1 As String
-        strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-        Dim cmdNewCoef As New OleDbCommand(strNewCoeff1, g_DBConn)
-        Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
-        Dim dt As New Data.DataTable
-        adaptNewCoeff.Fill(dt)
-
-        While dataCopySet.Read()
-            Dim row As Data.DataRow = dt.NewRow()
-            row("Coeff1") = 0
-            row("Coeff2") = 0
-            row("Coeff3") = 0
-            row("Coeff4") = 0
-            row("CoeffSetID") = dataNewCoeffID("CoeffSetID")
-            row("LCClassID") = dataCopySet("LCClassID")
-            dt.Rows.Add(row)
+            Dim strNewLcType As String 'CmdString for inserting new coefficientset
+            Dim strDefault As String '
+            Dim strNewCoeffID As String 'Holder for the CoefficientSetID
+            Dim intCoeffSetID As Short
+            Dim i As Short = 0
 
 
-            dgvCoef.Rows(i).Cells(0).Value = dataCopySet("valValue")
-            dgvCoef.Rows(i).Cells(1).Value = dataCopySet("valName")
-            dgvCoef.Rows(i).Cells(2).Value = "0"
-            dgvCoef.Rows(i).Cells(3).Value = "0"
-            dgvCoef.Rows(i).Cells(4).Value = "0"
-            dgvCoef.Rows(i).Cells(5).Value = "0"
-            dgvCoef.Rows(i).Cells(6).Value = dataNewCoeffID("CoeffSetID")
-            dgvCoef.Rows(i).Cells(7).Value = row("coeffID")
+            'First need to add the coefficient set to that table
+            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & _intLCTypeID & ")"
+            Dim cmdInsLC As New OleDbCommand(strNewLcType, g_DBConn)
+            cmdInsLC.ExecuteNonQuery()
 
-            i = i + 1
-        End While
+            'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
+            'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
+            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
+            Dim cmdNewCoefID As New OleDbCommand(strNewCoeffID, g_DBConn)
+            Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
+            dataNewCoeffID.Read()
+            intCoeffSetID = dataNewCoeffID("CoeffSetID")
 
-        dataCopySet.Close()
-        dataNewCoeffID.Close()
-        
+            strDefault = "SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "'"
+            Dim cmdCopySet As New OleDbCommand(strDefault, g_DBConn)
+            Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
 
-        Me.Close()
+            'Clear things and set the rows to recordcount + 1, remember 1st row fixed
+            dgvCoef.Rows.Clear()
 
+            'Now loopy loo to populate values.
+            Dim strNewCoeff1 As String
+            strNewCoeff1 = "SELECT * FROM COEFFICIENT"
+            Dim cmdNewCoef As New OleDbCommand(strNewCoeff1, g_DBConn)
+            Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+            Dim dt As New Data.DataTable
+            adaptNewCoeff.Fill(dt)
+
+            While dataCopySet.Read()
+                Dim row As Data.DataRow = dt.NewRow()
+                row("Coeff1") = 0
+                row("Coeff2") = 0
+                row("Coeff3") = 0
+                row("Coeff4") = 0
+                row("CoeffSetID") = dataNewCoeffID("CoeffSetID")
+                row("LCClassID") = dataCopySet("LCClassID")
+                dt.Rows.Add(row)
+
+
+                dgvCoef.Rows(i).Cells(0).Value = dataCopySet("valValue")
+                dgvCoef.Rows(i).Cells(1).Value = dataCopySet("valName")
+                dgvCoef.Rows(i).Cells(2).Value = "0"
+                dgvCoef.Rows(i).Cells(3).Value = "0"
+                dgvCoef.Rows(i).Cells(4).Value = "0"
+                dgvCoef.Rows(i).Cells(5).Value = "0"
+                dgvCoef.Rows(i).Cells(6).Value = dataNewCoeffID("CoeffSetID")
+                dgvCoef.Rows(i).Cells(7).Value = row("coeffID")
+
+                i = i + 1
+            End While
+
+            dataCopySet.Close()
+            dataNewCoeffID.Close()
+
+
+            Me.Close()
+
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
     End Sub
 
 #End Region
 
-    
+
 End Class

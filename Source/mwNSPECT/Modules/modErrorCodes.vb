@@ -16,6 +16,8 @@
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
 
+Imports System.Diagnostics
+
 Module modErrorCodes
     ' *************************************************************************************
     ' *  Perot Systems Government Services
@@ -52,9 +54,38 @@ Module modErrorCodes
     Public Const MSG7 As String = ""
     Public Const MSG8 As String = "XML File(*.xml)|*.xml"
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Error_Renamed"></param>
+    ''' <param name="i"></param>
+    ''' <param name="j"></param>
+    ''' <remarks></remarks>
     Public Sub ErrorGenerator(ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
 
         MsgBox(Error_Renamed & "Row: " & (i + 1) & ", Column: " & (j + 1), MsgBoxStyle.Critical, "Warning")
 
+    End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="OriginName"></param>
+    ''' <param name="OriginalException"></param>
+    ''' <remarks></remarks>
+    Public Sub HandleError(ByVal OriginName As String, ByRef OriginalException As Exception)
+        'get call stack
+        Dim stackTrace As New StackTrace()
+
+        'Generate exception with custom output string from origin, calling method, and original exception
+        Dim e As New Exception(vbNewLine + vbNewLine + "Unexpected " + OriginName + " " + stackTrace.GetFrame(1).GetMethod().Name + " error occured" + vbNewLine + vbNewLine + OriginalException.ToString())
+
+        Try
+            Dim errorBox As New frmErrorDialog(e)
+            errorBox.ShowDialog()
+        Catch ex As Exception
+            Dim errorBox As New frmErrorDialog(e)
+            errorBox.ShowDialog()
+        End Try
     End Sub
 End Module

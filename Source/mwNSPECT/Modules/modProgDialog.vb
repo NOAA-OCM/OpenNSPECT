@@ -34,6 +34,16 @@ Module modProgDialog
     Public g_progdialog As frmProgressDialog
     Public g_boolCancel As Boolean
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strMessage"></param>
+    ''' <param name="strTitle"></param>
+    ''' <param name="lngMin"></param>
+    ''' <param name="lngMax"></param>
+    ''' <param name="lngValue"></param>
+    ''' <param name="Owner"></param>
+    ''' <remarks></remarks>
     Public Sub ProgDialog(ByRef strMessage As String, ByRef strTitle As String, ByRef lngMin As Integer, ByRef lngMax As Integer, ByRef lngValue As Integer, ByRef Owner As Windows.Forms.Form)
         'strMessage:  what's it doing
         'strTitle: Title of Dialog
@@ -75,6 +85,10 @@ Module modProgDialog
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub KillDialog()
         'Sub to kill all
         If Not g_progdialog Is Nothing Then
