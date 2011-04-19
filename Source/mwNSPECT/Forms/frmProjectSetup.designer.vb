@@ -21,111 +21,111 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmProjectSetup))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.chkSelectedPolys = New System.Windows.Forms.CheckBox
-        Me.chkLocalEffects = New System.Windows.Forms.CheckBox
-        Me.cboLCLayer = New System.Windows.Forms.ComboBox
-        Me.txtRainValue = New System.Windows.Forms.TextBox
-        Me.optUseValue = New System.Windows.Forms.RadioButton
-        Me.txtOutputFile = New System.Windows.Forms.TextBox
-        Me._Label1_12 = New System.Windows.Forms.Label
-        Me.txtbxRainGrid = New System.Windows.Forms.TextBox
-        Me.MainMenu1 = New System.Windows.Forms.MenuStrip
-        Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuNew = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuOpen = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuSpace = New System.Windows.Forms.ToolStripSeparator
-        Me.mnuSave = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuSaveAs = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuSpace1 = New System.Windows.Forms.ToolStripSeparator
-        Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuBigHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuGeneralHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.Frame6 = New System.Windows.Forms.GroupBox
-        Me.cboWQStd = New System.Windows.Forms.ComboBox
-        Me._Label1_6 = New System.Windows.Forms.Label
-        Me.Frame5 = New System.Windows.Forms.GroupBox
-        Me.cboWSDelin = New System.Windows.Forms.ComboBox
-        Me._Label1_3 = New System.Windows.Forms.Label
-        Me.Frame4 = New System.Windows.Forms.GroupBox
-        Me.cboPrecipScen = New System.Windows.Forms.ComboBox
-        Me._Label1_7 = New System.Windows.Forms.Label
-        Me.frm_raintype = New System.Windows.Forms.GroupBox
-        Me.Frame3 = New System.Windows.Forms.GroupBox
-        Me.cmdOpenWS = New System.Windows.Forms.Button
-        Me.txtOutputWS = New System.Windows.Forms.TextBox
-        Me.txtProjectName = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.Frame1 = New System.Windows.Forms.GroupBox
-        Me.cboSoilsLayer = New System.Windows.Forms.ComboBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.lblSoilsHyd = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.fraLC = New System.Windows.Forms.GroupBox
-        Me.cboLCUnits = New System.Windows.Forms.ComboBox
-        Me.cboLCType = New System.Windows.Forms.ComboBox
-        Me._Label1_5 = New System.Windows.Forms.Label
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me._Label1_2 = New System.Windows.Forms.Label
+        Me.chkSelectedPolys = New System.Windows.Forms.CheckBox()
+        Me.chkLocalEffects = New System.Windows.Forms.CheckBox()
+        Me.cboLCLayer = New System.Windows.Forms.ComboBox()
+        Me.txtRainValue = New System.Windows.Forms.TextBox()
+        Me.optUseValue = New System.Windows.Forms.RadioButton()
+        Me.txtOutputFile = New System.Windows.Forms.TextBox()
+        Me._Label1_12 = New System.Windows.Forms.Label()
+        Me.txtbxRainGrid = New System.Windows.Forms.TextBox()
+        Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNew = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuOpen = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuSpace = New System.Windows.Forms.ToolStripSeparator()
+        Me.mnuSave = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuSaveAs = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuSpace1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuBigHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuGeneralHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Frame6 = New System.Windows.Forms.GroupBox()
+        Me.cboWQStd = New System.Windows.Forms.ComboBox()
+        Me._Label1_6 = New System.Windows.Forms.Label()
+        Me.Frame5 = New System.Windows.Forms.GroupBox()
+        Me.cboWSDelin = New System.Windows.Forms.ComboBox()
+        Me._Label1_3 = New System.Windows.Forms.Label()
+        Me.Frame4 = New System.Windows.Forms.GroupBox()
+        Me.cboPrecipScen = New System.Windows.Forms.ComboBox()
+        Me._Label1_7 = New System.Windows.Forms.Label()
+        Me.frm_raintype = New System.Windows.Forms.GroupBox()
+        Me.lblSelected = New System.Windows.Forms.Label()
+        Me.btnSelect = New System.Windows.Forms.Button()
+        Me.Frame3 = New System.Windows.Forms.GroupBox()
+        Me.cmdOpenWS = New System.Windows.Forms.Button()
+        Me.txtOutputWS = New System.Windows.Forms.TextBox()
+        Me.txtProjectName = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.cboSoilsLayer = New System.Windows.Forms.ComboBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.lblSoilsHyd = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.fraLC = New System.Windows.Forms.GroupBox()
+        Me.cboLCUnits = New System.Windows.Forms.ComboBox()
+        Me.cboLCType = New System.Windows.Forms.ComboBox()
+        Me._Label1_5 = New System.Windows.Forms.Label()
+        Me._Label1_0 = New System.Windows.Forms.Label()
+        Me._Label1_2 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.SSTab1 = New System.Windows.Forms.TabControl
-        Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage
-        Me.dgvPollutants = New System.Windows.Forms.DataGridView
-        Me.PollApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.TypeDef = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage
-        Me.lblErodFactor = New System.Windows.Forms.Label
-        Me.lblKFactor = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.chkCalcErosion = New System.Windows.Forms.CheckBox
-        Me.frameRainFall = New System.Windows.Forms.GroupBox
-        Me.btnOpenRainfallFactorGrid = New System.Windows.Forms.Button
-        Me.optUseGRID = New System.Windows.Forms.RadioButton
-        Me.cboErodFactor = New System.Windows.Forms.ComboBox
-        Me.cboSoilAttribute = New System.Windows.Forms.ComboBox
-        Me.frmSDR = New System.Windows.Forms.GroupBox
-        Me.cmdOpenSDR = New System.Windows.Forms.Button
-        Me.txtSDRGRID = New System.Windows.Forms.TextBox
-        Me.chkSDR = New System.Windows.Forms.CheckBox
-        Me._SSTab1_TabPage2 = New System.Windows.Forms.TabPage
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.dgvLandUse = New System.Windows.Forms.DataGridView
-        Me.LUApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.LUScenario = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.LUScenarioXML = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me._SSTab1_TabPage3 = New System.Windows.Forms.TabPage
-        Me.lblManageNote = New System.Windows.Forms.Label
-        Me.dgvManagementScen = New System.Windows.Forms.DataGridView
-        Me.ManageApply = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.ChangeAreaLayer = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.ChangeToClass = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.cmdRun = New System.Windows.Forms.Button
-        Me.cmdQuit = New System.Windows.Forms.Button
-        Me._chkIgnore_0 = New System.Windows.Forms.CheckBox
-        Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox
-        Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox
-        Me.Frame2 = New System.Windows.Forms.GroupBox
-        Me.txtThemeName = New System.Windows.Forms.TextBox
-        Me.cmdOutputBrowse = New System.Windows.Forms.Button
-        Me._Label1_11 = New System.Windows.Forms.Label
+        Me.SSTab1 = New System.Windows.Forms.TabControl()
+        Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage()
+        Me.dgvPollutants = New System.Windows.Forms.DataGridView()
+        Me.PollApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.TypeDef = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage()
+        Me.lblErodFactor = New System.Windows.Forms.Label()
+        Me.lblKFactor = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.chkCalcErosion = New System.Windows.Forms.CheckBox()
+        Me.frameRainFall = New System.Windows.Forms.GroupBox()
+        Me.btnOpenRainfallFactorGrid = New System.Windows.Forms.Button()
+        Me.optUseGRID = New System.Windows.Forms.RadioButton()
+        Me.cboErodFactor = New System.Windows.Forms.ComboBox()
+        Me.cboSoilAttribute = New System.Windows.Forms.ComboBox()
+        Me.frmSDR = New System.Windows.Forms.GroupBox()
+        Me.cmdOpenSDR = New System.Windows.Forms.Button()
+        Me.txtSDRGRID = New System.Windows.Forms.TextBox()
+        Me.chkSDR = New System.Windows.Forms.CheckBox()
+        Me._SSTab1_TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.dgvLandUse = New System.Windows.Forms.DataGridView()
+        Me.LUApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.LUScenario = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.LUScenarioXML = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me._SSTab1_TabPage3 = New System.Windows.Forms.TabPage()
+        Me.lblManageNote = New System.Windows.Forms.Label()
+        Me.dgvManagementScen = New System.Windows.Forms.DataGridView()
+        Me.ManageApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.ChangeAreaLayer = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.ChangeToClass = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.cmdRun = New System.Windows.Forms.Button()
+        Me.cmdQuit = New System.Windows.Forms.Button()
+        Me._chkIgnore_0 = New System.Windows.Forms.CheckBox()
+        Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox()
+        Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox()
+        Me.Frame2 = New System.Windows.Forms.GroupBox()
+        Me.txtThemeName = New System.Windows.Forms.TextBox()
+        Me.cmdOutputBrowse = New System.Windows.Forms.Button()
+        Me._Label1_11 = New System.Windows.Forms.Label()
         Me.cnxtmnuLandUse = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AddScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.EditScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.DeleteScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AddScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.cnxtmnuManagement = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AppendRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.DeleteCurrentRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.lblSelected = New System.Windows.Forms.Label
-        Me.btnSelect = New System.Windows.Forms.Button
+        Me.AppendRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteCurrentRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MainMenu1.SuspendLayout()
         Me.Frame6.SuspendLayout()
         Me.Frame5.SuspendLayout()
@@ -483,6 +483,31 @@
         Me.frm_raintype.TabStop = False
         Me.frm_raintype.Text = "Miscellaneous "
         '
+        'lblSelected
+        '
+        Me.lblSelected.Location = New System.Drawing.Point(75, 54)
+        Me.lblSelected.Name = "lblSelected"
+        Me.lblSelected.Size = New System.Drawing.Size(84, 23)
+        Me.lblSelected.TabIndex = 68
+        Me.lblSelected.Text = "0 selected"
+        '
+        'btnSelect
+        '
+        Me.btnSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnSelect.BackColor = System.Drawing.SystemColors.Control
+        Me.btnSelect.CausesValidation = False
+        Me.btnSelect.Cursor = System.Windows.Forms.Cursors.Default
+        Me.btnSelect.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSelect.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.btnSelect.Location = New System.Drawing.Point(7, 48)
+        Me.btnSelect.Name = "btnSelect"
+        Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.btnSelect.Size = New System.Drawing.Size(56, 25)
+        Me.btnSelect.TabIndex = 67
+        Me.btnSelect.TabStop = False
+        Me.btnSelect.Text = "Select"
+        Me.btnSelect.UseVisualStyleBackColor = False
+        '
         'Frame3
         '
         Me.Frame3.BackColor = System.Drawing.SystemColors.Control
@@ -730,7 +755,6 @@
         '
         'SSTab1
         '
-        Me.SSTab1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage2)
@@ -1051,7 +1075,7 @@
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(3, 154)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(344, 14)
+        Me.Label1.Size = New System.Drawing.Size(343, 14)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Note: Right-click the table to Add, Edit, and Delete Land Use Scenarios"
         '
@@ -1105,7 +1129,7 @@
         Me.lblManageNote.AutoSize = True
         Me.lblManageNote.Location = New System.Drawing.Point(9, 154)
         Me.lblManageNote.Name = "lblManageNote"
-        Me.lblManageNote.Size = New System.Drawing.Size(303, 14)
+        Me.lblManageNote.Size = New System.Drawing.Size(302, 14)
         Me.lblManageNote.TabIndex = 1
         Me.lblManageNote.Text = "Note: Right-click the table to Append, Insert, and Delete Rows"
         '
@@ -1332,31 +1356,6 @@
         Me.DeleteCurrentRowToolStripMenuItem.Name = "DeleteCurrentRowToolStripMenuItem"
         Me.DeleteCurrentRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
         Me.DeleteCurrentRowToolStripMenuItem.Text = "Delete Current Row"
-        '
-        'lblSelected
-        '
-        Me.lblSelected.Location = New System.Drawing.Point(75, 54)
-        Me.lblSelected.Name = "lblSelected"
-        Me.lblSelected.Size = New System.Drawing.Size(84, 23)
-        Me.lblSelected.TabIndex = 68
-        Me.lblSelected.Text = "0 selected"
-        '
-        'btnSelect
-        '
-        Me.btnSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSelect.BackColor = System.Drawing.SystemColors.Control
-        Me.btnSelect.CausesValidation = False
-        Me.btnSelect.Cursor = System.Windows.Forms.Cursors.Default
-        Me.btnSelect.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSelect.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnSelect.Location = New System.Drawing.Point(7, 48)
-        Me.btnSelect.Name = "btnSelect"
-        Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnSelect.Size = New System.Drawing.Size(56, 25)
-        Me.btnSelect.TabIndex = 67
-        Me.btnSelect.TabStop = False
-        Me.btnSelect.Text = "Select"
-        Me.btnSelect.UseVisualStyleBackColor = False
         '
         'frmProjectSetup
         '
