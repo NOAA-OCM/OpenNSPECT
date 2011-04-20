@@ -36,35 +36,26 @@ Friend Class frmSoils
 
     Private Sub cboSoils_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboSoils.SelectedIndexChanged
         Try
-            Dim strSQLSoils As String = "SELECT * FROM SOILS WHERE NAME LIKE '" & cboSoils.Text & "'"
-            Dim soilCmd As New OleDbCommand(strSQLSoils, modUtil.g_DBConn)
-            Dim soil As OleDbDataReader = soilCmd.ExecuteReader()
-            If soil.HasRows Then
-                soil.Read()
-                'Populate the controls...
-                txtSoilsGrid.Text = soil.Item("SoilsFileName")
-                txtSoilsKGrid.Text = soil.Item("SoilsKFileName")
-            End If
-            soil.Close()
+            Dim strSQLSoils As String = String.Format("SELECT * FROM SOILS WHERE NAME LIKE '{0}'", cboSoils.Text)
+            Using soilCmd As New OleDbCommand(strSQLSoils, modUtil.g_DBConn)
+                Dim soil As OleDbDataReader = soilCmd.ExecuteReader()
+                If soil.HasRows Then
+                    soil.Read()
+                    'Populate the controls...
+                    txtSoilsGrid.Text = soil.Item("SoilsFileName")
+                    txtSoilsKGrid.Text = soil.Item("SoilsKFileName")
+                End If
+                soil.Close()
+            End Using
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
 
-    Private Sub txtSoilsGrid_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSoilsGrid.TextChanged
-
-    End Sub
-
-
-    Private Sub txtSoilsKGrid_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSoilsKGrid.TextChanged
-
-    End Sub
-
-
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -73,7 +64,7 @@ Friend Class frmSoils
 
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try

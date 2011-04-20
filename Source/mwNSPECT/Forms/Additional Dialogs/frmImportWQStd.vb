@@ -28,15 +28,13 @@ Friend Class frmImportWQStd
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
         Try
             'browse...get output filename
-            Dim dlgOpen As New Windows.Forms.OpenFileDialog
-            dlgOpen.Filter = MSG1
-            dlgOpen.Title = MSG2
-
-            If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
-                txtImpFile.Text = Trim(dlgOpen.FileName)
-                _strFileName = txtImpFile.Text
-                cmdOK.Enabled = True
-            End If
+            Using dlgOpen As New Windows.Forms.OpenFileDialog() With {.Filter = MSG1, .Title = MSG2}
+                If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    txtImpFile.Text = Trim(dlgOpen.FileName)
+                    _strFileName = txtImpFile.Text
+                    cmdOK.Enabled = True
+                End If
+            End Using
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -46,7 +44,7 @@ Friend Class frmImportWQStd
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -116,7 +114,7 @@ Friend Class frmImportWQStd
             _frmWQ.cboWQStdName.Items.Clear()
             modUtil.InitComboBox(_frmWQ.cboWQStdName, "WQCRITERIA")
             _frmWQ.cboWQStdName.SelectedIndex = modUtil.GetCboIndex((txtStdName.Text), _frmWQ.cboWQStdName)
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try

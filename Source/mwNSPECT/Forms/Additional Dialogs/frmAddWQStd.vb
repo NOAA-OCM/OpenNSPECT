@@ -37,16 +37,17 @@ Friend Class frmAddWQStd
             _Change = False
 
             Dim strPollutant As String = "SELECT NAME FROM POLLUTANT ORDER BY NAME ASC"
-            Dim pollCmd As New OleDbCommand(strPollutant, g_DBConn)
-            Dim datPoll As OleDbDataReader = pollCmd.ExecuteReader
+            Using pollCmd As New OleDbCommand(strPollutant, g_DBConn)
+                Dim datPoll As OleDbDataReader = pollCmd.ExecuteReader
+                Dim idx As Integer
 
-            Dim idx As Integer
-            dgvWaterQuality.Rows.Clear()
-            Do While datPoll.Read()
-                idx = dgvWaterQuality.Rows.Add()
-                dgvWaterQuality.Rows(idx).Cells("Pollutant").Value = datPoll.Item("Name")
-            Loop
-            datPoll.Close()
+                dgvWaterQuality.Rows.Clear()
+                Do While datPoll.Read()
+                    idx = dgvWaterQuality.Rows.Add()
+                    dgvWaterQuality.Rows(idx).Cells("Pollutant").Value = datPoll.Item("Name")
+                Loop
+                datPoll.Close()
+            End Using
             cmdSave.Enabled = False
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -72,7 +73,7 @@ Friend Class frmAddWQStd
                     _frmPrj.cboWQStd.SelectedIndex = 0
                 End If
 
-                Me.Close()
+                Close()
             Else
                 Exit Sub
             End If
@@ -132,7 +133,7 @@ Friend Class frmAddWQStd
                 _frmPrj.UpdateWQ(txtWQStdName.Text)
             End If
 
-            Me.Close()
+            Close()
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)

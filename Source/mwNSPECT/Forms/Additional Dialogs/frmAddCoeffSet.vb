@@ -51,7 +51,8 @@ Friend Class frmAddCoeffSet
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
-            Me.Close()
+            Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -67,13 +68,13 @@ Friend Class frmAddCoeffSet
                 Else
                     _frmNewPoll.AddCoefficient(txtCoeffSetName.Text, cboLCType.SelectedItem)
                 End If
-                Me.Close()
+                Close()
             Else
                 MsgBox(Err2, MsgBoxStyle.Critical, "Coefficient set name already in use.  Please enter new name")
                 Exit Sub
             End If
 
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try

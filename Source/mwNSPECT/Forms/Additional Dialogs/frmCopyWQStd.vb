@@ -36,7 +36,7 @@ Friend Class frmCopyWQStd
 
     Private Sub cmdCancel_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCancel.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -90,7 +90,7 @@ Friend Class frmCopyWQStd
             datanewstd.Close()
 
             _frmWQStd.UpdateWQ(Trim(txtStdName.Text))
-            Me.Close()
+            Close()
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)

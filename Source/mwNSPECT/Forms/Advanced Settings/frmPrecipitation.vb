@@ -214,7 +214,7 @@ Friend Class frmPrecipitation
                 _boolChange = False
 
                 MsgBox(cboScenName.Text & " saved successfully.", MsgBoxStyle.OkOnly, "Record Saved")
-                Me.Close()
+                Close()
             Else
                 Exit Sub
 
@@ -233,12 +233,12 @@ Friend Class frmPrecipitation
                 intSave = MsgBox("You have made changes to this record, are you sure you want to quit?", MsgBoxStyle.YesNo, "Quit?")
 
                 If intSave = MsgBoxResult.Yes Then
-                    Me.Close()
+                    Close()
                 ElseIf intSave = MsgBoxResult.No Then
                     Exit Sub
                 End If
             Else
-                Me.Close()
+                Close()
             End If
 
         Catch ex As Exception

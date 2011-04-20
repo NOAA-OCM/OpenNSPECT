@@ -103,7 +103,7 @@ Friend Class frmUserWShed
 
     Private Sub cmdQuit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdQuit.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -147,9 +147,9 @@ Friend Class frmUserWShed
                 _frmPrj.cboWSDelin.Items.Clear()
                 modUtil.InitComboBox((_frmPrj.cboWSDelin), "WSDelineation")
                 _frmPrj.cboWSDelin.SelectedIndex = modUtil.GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWSDelin))
-                Me.Close()
+                Close()
             Else
-                Me.Close()
+                Close()
                 _frmWS.Close()
             End If
 
@@ -470,8 +470,6 @@ Friend Class frmUserWShed
     End Function
 
 
-    Private Function nibCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-    End Function
 #End Region
 
 

@@ -192,7 +192,7 @@ Friend Class frmNewWSDelin
                 If Not _frmPrj Is Nothing Then
                     _frmPrj.cboPrecipScen.SelectedIndex = 0
                 End If
-                Me.Close()
+                Close()
             Else
                 Exit Sub
             End If
@@ -271,9 +271,9 @@ Friend Class frmNewWSDelin
                     _frmPrj.cboWSDelin.Items.Clear()
                     modUtil.InitComboBox((_frmPrj.cboWSDelin), "WSDelineation")
                     _frmPrj.cboWSDelin.SelectedIndex = modUtil.GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWSDelin))
-                    Me.Close()
+                    Close()
                 Else
-                    Me.Close()
+                    Close()
                     _frmWS.Close()
                 End If
             Else

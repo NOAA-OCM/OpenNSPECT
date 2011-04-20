@@ -36,13 +36,14 @@ Friend Class frmImportCoeffSet
 
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
         Try
-            Dim dlgOpen As New Windows.Forms.OpenFileDialog
-            'browse...get output filename
-            dlgOpen.Filter = MSG1
-            dlgOpen.Title = MSG2
-            If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
-                txtImpFile.Text = Trim(dlgOpen.FileName)
-            End If
+            Using dlgOpen As New Windows.Forms.OpenFileDialog()
+                'browse...get output filename
+                    dlgOpen.Filter = MSG1
+                    dlgOpen.Title = MSG2
+                    If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
+                        txtImpFile.Text = Trim(dlgOpen.FileName)
+                    End If
+            End Using
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -51,7 +52,7 @@ Friend Class frmImportCoeffSet
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -68,7 +69,7 @@ Friend Class frmImportCoeffSet
                 MsgBox("The name you have chosen is in use, please enter a different name.", MsgBoxStyle.Critical, "Name Detected")
                 txtCoeffSetName.Focus()
             End If
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -104,56 +105,57 @@ Friend Class frmImportCoeffSet
             'compare that to the number of lines in the text file, and the [Value] field to
             'make sure both jive.  If not, bark at them...ruff, ruff
 
-            strLCTypeNum = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.LCCLASSID FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strLCTypeName & "'"
+            strLCTypeNum = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", strLCTypeName)
             Dim cmdLCType As New OleDbCommand(strLCTypeNum, g_DBConn)
             If IO.File.Exists(strFileName) Then
-                Dim read As New IO.StreamReader(strFileName)
+                Using read As New IO.StreamReader(strFileName)
 
-                intLine = 0
+                    intLine = 0
 
-                'CHECK 1: loop through the text file, compare value to [Value], make sure exists
-                Do While Not read.EndOfStream
+                    'CHECK 1: loop through the text file, compare value to [Value], make sure exists
+                    Do While Not read.EndOfStream
 
-                    strLine = read.ReadLine
-                    'Value exits??
-                    strValue = Split(strLine, ",")(0)
+                        strLine = read.ReadLine
+                        'Value exits??
+                        strValue = Split(strLine, ",")(0)
 
-                    j = 0
+                        j = 0
+
+                        dataLCType = cmdLCType.ExecuteReader()
+                        While dataLCType.Read()
+                            If dataLCType("Value") = strValue Then
+                                j = j + 1
+                            End If
+                        End While
+                        dataLCType.Close()
+
+                        If j = 0 Then
+                            MsgBox("There is a value in your text file that does not exist in the Land Class Type: '" & strLCTypeName & "' Please check your text file in line: " & intLine + 1, MsgBoxStyle.OkOnly, "Data Import Error")
+                        ElseIf j > 1 Then
+                            MsgBox("There are records in your text file that contain the same value.  Please check line " & intLine, MsgBoxStyle.Critical, "Multiple values found")
+                        ElseIf j = 1 Then
+                            ValidateCoeffTextFile = True
+                        End If
+                        intLine = intLine + 1
+                        Debug.WriteLine(intLine)
+
+                    Loop
 
                     dataLCType = cmdLCType.ExecuteReader()
+                    Dim iRows As Integer = 0
                     While dataLCType.Read()
-                        If dataLCType("Value") = strValue Then
-                            j = j + 1
-                        End If
+                        iRows = iRows + 1
                     End While
                     dataLCType.Close()
 
-                    If j = 0 Then
-                        MsgBox("There is a value in your text file that does not exist in the Land Class Type: '" & strLCTypeName & "' Please check your text file in line: " & intLine + 1, MsgBoxStyle.OkOnly, "Data Import Error")
-                    ElseIf j > 1 Then
-                        MsgBox("There are records in your text file that contain the same value.  Please check line " & intLine, MsgBoxStyle.Critical, "Multiple values found")
-                    ElseIf j = 1 Then
+                    'Final check, make sure same number of records in text file vs the
+                    If iRows = intLine Then
                         ValidateCoeffTextFile = True
+                    Else
+                        MsgBox(String.Format("The number of records in your import file do not match the number of records in the Landclass '{0}'.  Your file should contain {1} records.", strLCTypeName, iRows), MsgBoxStyle.Critical, "Error Importing File")
                     End If
+                End Using
 
-                    intLine = intLine + 1
-                    Debug.Print(intLine)
-
-                Loop
-
-                dataLCType = cmdLCType.ExecuteReader()
-                Dim iRows As Integer = 0
-                While dataLCType.Read()
-                    iRows = iRows + 1
-                End While
-                dataLCType.Close()
-
-                'Final check, make sure same number of records in text file vs the
-                If iRows = intLine Then
-                    ValidateCoeffTextFile = True
-                Else
-                    MsgBox("The number of records in your import file do not match the number of records in the " & "Landclass '" & strLCTypeName & "'.  Your file should contain " & iRows & " records.", MsgBoxStyle.Critical, "Error Importing File")
-                End If
             Else
                 MsgBox("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, "File Not Found")
                 'Cleanup

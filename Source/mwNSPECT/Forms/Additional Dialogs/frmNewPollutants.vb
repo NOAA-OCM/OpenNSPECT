@@ -20,8 +20,8 @@ Imports System.Data.OleDb
 Friend Class frmNewPollutants
     Inherits System.Windows.Forms.Form
 
-    Private _boolLoaded As Boolean = False
-    Private _boolChanged As Boolean = False
+    Private _boolLoaded As Boolean
+    Private _boolChanged As Boolean
 
     Private _intPollID As Short 'There's a need to have the PollID so we'll store it here
     Private _intLCTypeID As Short 'Land Class (CCAP) ID - needed to add new coefficient sets
@@ -142,7 +142,7 @@ Friend Class frmNewPollutants
 
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -154,7 +154,7 @@ Friend Class frmNewPollutants
             If CheckForm() Then
                 If UpdateValues() Then
                     MsgBox(txtPollutant.Text & " successfully added.  Please enter value for associated water quality standards.", MsgBoxStyle.Information, "Pollutant Successfully Added")
-                    Me.Close()
+                    Close()
                     _frmPoll.SSTab1.SelectedIndex = 1
                 End If
             End If
@@ -253,13 +253,13 @@ Friend Class frmNewPollutants
 
                     If InStr(1, val.ToString, ".", CompareMethod.Text) > 0 Then
                         If (Len(Split(val.ToString, ".")(1)) > 4) Then
-                            ErrorGenerator(Err6, i, j)
+                            DisplayError(Err6, i, j)
                             Return False
                         End If
                     End If
 
                     If Not IsNumeric(val) Or (val < 0) Or (val > 1000) Then
-                        ErrorGenerator(Err6, i, j)
+                        DisplayError(Err6, i, j)
                         Return False
                     End If
                 Next j
@@ -469,7 +469,7 @@ Friend Class frmNewPollutants
             dataNewCoeffID.Close()
 
 
-            Me.Close()
+            Close()
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)

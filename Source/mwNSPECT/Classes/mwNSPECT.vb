@@ -290,7 +290,7 @@ Public Class mwNSPECT
         g_StatusBar = g_MapWin.StatusBar.AddPanel("", 2, 10, Windows.Forms.StatusBarPanelAutoSize.Spring)
 
         addMenus()
-        addToolbars()
+        ' addToolbars()
 
 
         Dim nspectPath As String

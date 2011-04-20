@@ -97,7 +97,7 @@ Friend Class frmNewLCType
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -135,7 +135,7 @@ Friend Class frmNewLCType
 
                 MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Data Saved")
 
-                Me.Close()
+                Close()
                 _frmLC.UpdateCombo(strName)
             Else
                 Exit Sub
@@ -236,14 +236,14 @@ Friend Class frmNewLCType
 
                         Case 0
                             If Not IsNumeric(val) Then
-                                ErrorGenerator(Err1, i, j)
+                                DisplayError(Err1, i, j)
                             Else
                                 For k = 0 To dgvLCTypes.Rows.Count - 1
 
                                     val2 = dgvLCTypes.Rows(k).Cells(0).Value
                                     If k <> i Then 'Don't want to compare value to itself
                                         If val2 = dgvLCTypes.Rows(i).Cells(0).Value Then
-                                            ErrorGenerator(Err2, i, j)
+                                            DisplayError(Err2, i, j)
                                             Return False
                                         End If
                                     End If
@@ -253,37 +253,37 @@ Friend Class frmNewLCType
 
                         Case 1
                             If IsNumeric(val) Then
-                                ErrorGenerator(Err1, i, j)
+                                DisplayError(Err1, i, j)
                                 Return False
                             End If
 
                         Case 2
                             If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                ErrorGenerator(Err1, i, j)
+                                DisplayError(Err1, i, j)
                                 Return False
                             End If
 
                         Case 3
                             If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                ErrorGenerator(Err1, i, j)
+                                DisplayError(Err1, i, j)
                                 Return False
                             End If
 
                         Case 4
                             If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                ErrorGenerator(Err1, i, j)
+                                DisplayError(Err1, i, j)
                                 Return False
                             End If
 
                         Case 5
                             If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                ErrorGenerator(Err1, i, j)
+                                DisplayError(Err1, i, j)
                                 Return False
                             End If
 
                         Case 6
                             If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Then
-                                ErrorGenerator(Err3, i, j)
+                                DisplayError(Err3, i, j)
                                 Return False
                             End If
                     End Select

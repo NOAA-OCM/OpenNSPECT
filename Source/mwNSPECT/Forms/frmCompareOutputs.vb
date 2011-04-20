@@ -60,7 +60,7 @@ Public Class frmCompareOutputs
 
     Private Sub mnuitmExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuitmExit.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -69,7 +69,7 @@ Public Class frmCompareOutputs
 
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -401,7 +401,7 @@ Public Class frmCompareOutputs
                             End If
                         Next
                     Next
-                    Me.Close()
+                    Close()
                 Else
                     MsgBox("The two datasets selected cannot be compared due to misaligned grids.", MsgBoxStyle.Exclamation, "Compare Error")
                 End If

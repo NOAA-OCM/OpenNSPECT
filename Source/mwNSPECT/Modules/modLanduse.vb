@@ -37,7 +37,6 @@ Module modLanduse
     ' **************************************************************************************************
 
     Private _intLCTypeID As Short
-    Private _intLCClassID As Short
     Private _intCoeffSetID As Short
     Private _strLCFileName As String
 
@@ -49,7 +48,7 @@ Module modLanduse
     Public g_DictTempNames As New Generic.Dictionary(Of String, String) 'Array holding the temp names of the LCType, and subsequent Coefficient Set Names
     ' Constant used by the Error handler function - DO NOT REMOVE
     Const c_sModuleFileName As String = "modLanduse.vb"
-    Private m_ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
+
 
 
     Public Sub Begin(ByRef strLCClassName As String, ByRef clsLUScenItems As clsXMLLandUseItems, ByRef dictPollutants As Generic.Dictionary(Of String, String), ByRef strLCFileName As String, ByRef strWorkspace As String)
@@ -439,22 +438,23 @@ Module modLanduse
             Dim strLCClassDelete As String
 
             strLCTypeDelete = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCDeleteName & "'"
-            Dim cmdDeleteList As New OleDbCommand(strLCTypeDelete, g_DBConn)
-            Dim dataDeleteList As OleDbDataReader = cmdDeleteList.ExecuteReader()
-            dataDeleteList.Read()
-            strLCClassDelete = "Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID")
-            dataDeleteList.Close()
-            Dim cmdDelete As New OleDbCommand(strLCClassDelete, g_DBConn)
-            cmdDelete.ExecuteNonQuery()
+            Using cmdDeleteList As New OleDbCommand(strLCTypeDelete, g_DBConn)
+                Dim dataDeleteList As OleDbDataReader = cmdDeleteList.ExecuteReader()
+                dataDeleteList.Read()
+                strLCClassDelete = "Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID")
+                dataDeleteList.Close()
+                Dim cmdDelete As New OleDbCommand(strLCClassDelete, g_DBConn)
+                cmdDelete.ExecuteNonQuery()
 
-            For i = 0 To clsPollItems.Count - 1
-                strCoeffDeleteName = dictNames.Item(clsPollItems.Item(i).strCoeffSet)
-                If Len(strCoeffDeleteName) > 0 Then
-                    strDeleteCoeffSet = "DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '" & strCoeffDeleteName & "'"
-                    cmdDelete = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
-                    cmdDelete.ExecuteNonQuery()
-                End If
-            Next i
+                For i = 0 To clsPollItems.Count - 1
+                    strCoeffDeleteName = dictNames.Item(clsPollItems.Item(i).strCoeffSet)
+                    If Len(strCoeffDeleteName) > 0 Then
+                        strDeleteCoeffSet = "DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '" & strCoeffDeleteName & "'"
+                        cmdDelete = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
+                        cmdDelete.ExecuteNonQuery()
+                    End If
+                Next
+            End Using
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)     'True, "Cleanup " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
