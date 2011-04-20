@@ -96,7 +96,7 @@ Friend Class frmSoils
                 If intAns = MsgBoxResult.Yes Then
 
                     'Set up a delete rs and get rid of it
-                    Dim cmdDel As New OleDbCommand(strSQLSoilsDel, g_DBConn)
+                    Dim cmdDel As New DataHelper(strSQLSoilsDel)
                     cmdDel.ExecuteNonQuery()
 
                     MsgBox(cboSoils.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")

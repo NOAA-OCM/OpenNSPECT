@@ -37,7 +37,7 @@ Friend Class frmAddWQStd
             _Change = False
 
             Dim strPollutant As String = "SELECT NAME FROM POLLUTANT ORDER BY NAME ASC"
-            Using pollCmd As New OleDbCommand(strPollutant, g_DBConn)
+            Using pollCmd As New DataHelper(strPollutant)
                 Dim datPoll As OleDbDataReader = pollCmd.ExecuteReader
                 Dim idx As Integer
 
@@ -104,8 +104,9 @@ Friend Class frmAddWQStd
                     'Value check
                     If CheckThreshValues() Then
                         strCmd = "INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('" & Replace(txtWQStdName.Text, "'", "''") & "', '" & Replace(strDescript, "'", "''") & "')"
-                        Dim cmdInsert As New OleDbCommand(strCmd, g_DBConn)
-                        cmdInsert.ExecuteNonQuery()
+                        Using cmdInsert As New DataHelper(strCmd)
+                            cmdInsert.ExecuteNonQuery()
+                        End Using
                     Else
                         MsgBox("Threshold values must be numeric.", MsgBoxStyle.Critical, "Check Threshold Value")
                         Exit Sub
@@ -188,26 +189,25 @@ Friend Class frmAddWQStd
 
             'Get the WQCriteria values using the name
             strPollAdd = "SELECT * FROM WQCriteria WHERE NAME = " & "'" & strName & "'"
-            Dim cmdPollAdd As New OleDbCommand(strPollAdd, g_DBConn)
-            Dim datPollAdd As OleDbDataReader = cmdPollAdd.ExecuteReader()
-            datPollAdd.Read()
+            Using cmdPollAdd As New DataHelper(strPollAdd)
+                Dim datPollAdd As OleDbDataReader = cmdPollAdd.ExecuteReader()
+                datPollAdd.Read()
 
-            'Get the pollutant particulars
-            strPollDetails = "SELECT * FROM POLLUTANT WHERE NAME =" & "'" & strPoll & "'"
-            Dim cmdPollDetails As New OleDbCommand(strPollDetails, g_DBConn)
-            Dim datPollDetails As OleDbDataReader = cmdPollDetails.ExecuteReader()
-            datPollDetails.Read()
-
-            If Trim(intThresh) = "" Then
-                strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID) VALUES ('" & datPollDetails.Item("POLLID") & "', '" & datPollAdd.Item("WQCRITID") & "')"
-            Else
-                strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('" & datPollDetails.Item("POLLID") & "', '" & datPollAdd.Item("WQCRITID") & "'," & intThresh & ")"
-            End If
-            Dim cmdInsert As New OleDbCommand(strCmdInsert, g_DBConn)
-            cmdInsert.ExecuteNonQuery()
-
-            datPollAdd.Close()
-            datPollDetails.Close()
+                'Get the pollutant particulars
+                strPollDetails = "SELECT * FROM POLLUTANT WHERE NAME =" & "'" & strPoll & "'"
+                Using cmdPollDetails As New DataHelper(strPollDetails)
+                    Dim datPollDetails As OleDbDataReader = cmdPollDetails.ExecuteReader()
+                    datPollDetails.Read()
+                    If Trim(intThresh) = "" Then
+                        strCmdInsert = String.Format("INSERT INTO POLL_WQCRITERIA (PollID,WQCritID) VALUES ('{0}', '{1}')", datPollDetails.Item("POLLID"), datPollAdd.Item("WQCRITID"))
+                    Else
+                        strCmdInsert = String.Format("INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('{0}', '{1}', {2})", datPollDetails.Item("POLLID"), datPollAdd.Item("WQCRITID"), intThresh)
+                    End If
+                    Using cmdInsert As New DataHelper(strCmdInsert)
+                        cmdInsert.ExecuteNonQuery()
+                    End Using
+                End Using
+            End Using
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)

@@ -38,7 +38,7 @@ Friend Class frmImportCoeffSet
         Try
             Using dlgOpen As New Windows.Forms.OpenFileDialog()
                 'browse...get output filename
-                    dlgOpen.Filter = MSG1
+                dlgOpen.Filter = MSG1TextFile
                     dlgOpen.Title = MSG2
                     If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
                         txtImpFile.Text = Trim(dlgOpen.FileName)
@@ -106,7 +106,7 @@ Friend Class frmImportCoeffSet
             'make sure both jive.  If not, bark at them...ruff, ruff
 
             strLCTypeNum = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", strLCTypeName)
-            Dim cmdLCType As New OleDbCommand(strLCTypeNum, g_DBConn)
+            Dim cmdLCType As New DataHelper(strLCTypeNum)
             If IO.File.Exists(strFileName) Then
                 Using read As New IO.StreamReader(strFileName)
 
@@ -162,7 +162,7 @@ Friend Class frmImportCoeffSet
             End If
 
             If ValidateCoeffTextFile Then
-                _cmdCoeff = cmdLCType
+                _cmdCoeff = cmdLCType.GetCommand()
             End If
 
         Catch ex As Exception

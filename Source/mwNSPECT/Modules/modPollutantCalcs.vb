@@ -94,21 +94,22 @@ Module modPollutantCalcs
 
             If Len(strField) > 0 Then
                 strPoll = "SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '" & strTempCoeffSet & "'"
-                Dim cmdPoll As New OleDbCommand(strPoll, g_DBConn)
+                Dim cmdPoll As New DataHelper(strPoll)
                 Dim dataPoll As OleDbDataReader = cmdPoll.ExecuteReader()
                 dataPoll.Read()
                 strType = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT." & strField & " As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & "WHERE COEFFICIENT.COEFFSETID = " & dataPoll("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
                 dataPoll.Close()
-                Dim cmdType As New OleDbCommand(strType, g_DBConn)
+                Dim cmdType As New DataHelper(strType)
 
-                strConStatement = ConstructPickStatment(cmdType, g_LandCoverRaster)
-                _strPollCoeffMetadata = ConstructMetaData(cmdType, (clsPollutant.strCoeff), g_booLocalEffects)
+                Dim command As OleDbCommand = cmdType.GetCommand()
+                strConStatement = ConstructPickStatment(command, g_LandCoverRaster)
+                _strPollCoeffMetadata = ConstructMetaData(command, (clsPollutant.strCoeff), g_booLocalEffects)
 
             End If
 
             'Find out the color of the pollutant
             strPollColor = "Select Color from Pollutant where NAME LIKE '" & _strPollName & "'"
-            Dim cmdPollColor As New OleDbCommand(strPollColor, g_DBConn)
+            Dim cmdPollColor As New DataHelper(strPollColor)
             Dim datapollcolor As OleDbDataReader = cmdPollColor.ExecuteReader()
             datapollcolor.Read()
             _strColor = CStr(datapollcolor("Color"))
@@ -534,13 +535,13 @@ Module modPollutantCalcs
         Try
 
             strPoll = "Select * from Pollutant where name like '" & strPollName & "'"
-            Dim cmdpoll As New OleDbCommand(strPoll, g_DBConn)
+            Dim cmdpoll As New DataHelper(strPoll)
             Dim datapoll As OleDbDataReader = cmdpoll.ExecuteReader
             datapoll.Read()
             strWQStd = "SELECT * FROM WQCRITERIA INNER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "WHERE WQCRITERIA.NAME Like '" & strWQstdName & "' AND POLL_WQCRITERIA.POLLID = " & datapoll("POLLID")
             datapoll.Close()
 
-            Dim cmdWQ As New OleDbCommand(strWQStd, g_DBConn)
+            Dim cmdWQ As New DataHelper(strWQStd)
             Dim datawq As OleDbDataReader = cmdWQ.ExecuteReader()
             datawq.Read()
             ReturnWQValue = CStr(datawq("Threshold"))

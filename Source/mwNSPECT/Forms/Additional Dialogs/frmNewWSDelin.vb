@@ -259,7 +259,7 @@ Friend Class frmNewWSDelin
                 Dim strCmdInsert As String = "INSERT INTO WSDelineation " & "(Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName," & "FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName) " & " VALUES (" & "'" & CStr(txtWSDelinName.Text) & "', " & "'" & CStr(_InputDEMPath) & "', " & "'" & cboDEMUnits.SelectedIndex & "', " & "'" & _strDirFileName & "', " & "'" & _strAccumFileName & "', " & "'" & _strFilledDEMFileName & "', " & "'" & chkHydroCorr.CheckState & "', " & "'" & _strStreamLayer & "', " & "'" & cboSubWSSize.SelectedIndex & "', " & "'" & _strWShedFileName & "', " & "'" & _strLSFileName & "', " & "'" & _strNibbleName & "', " & "'" & _strDEM2BName & "')"
 
                 'Execute the statement.
-                Dim insCmd As New OleDbCommand(strCmdInsert, g_DBConn)
+                Dim insCmd As New DataHelper(strCmdInsert)
                 insCmd.ExecuteNonQuery()
 
                 'Confirm

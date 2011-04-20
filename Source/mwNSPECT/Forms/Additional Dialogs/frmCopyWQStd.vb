@@ -54,40 +54,39 @@ Friend Class frmCopyWQStd
             Dim strCmd2 As String
 
             'Get the WQ stand info
-            strStandard = "SELECT * FROM WQCriteria WHERE NAME LIKE '" & cboStdName.Text & "'"
-            Dim cmdstd As New OleDbCommand(strStandard, g_DBConn)
-            Dim datastd As OleDbDataReader = cmdstd.ExecuteReader()
-            datastd.Read()
-
-            'Get the related pollutant/thresholds
-            strPollStandard = "SELECT * FROM POLL_WQCRITERIA WHERE WQCRITID =" & datastd("WQCRITID").ToString
-            Dim cmdPoll As New OleDbCommand(strPollStandard, g_DBConn)
-            Dim datapoll As OleDbDataReader = cmdPoll.ExecuteReader()
-
-            strCmd = "INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('" & Replace(Trim(txtStdName.Text), "'", "''") & "', '" & datastd("Description") & "')"
-
-            If modUtil.UniqueName("WQCRITERIA", Trim(txtStdName.Text)) Then
-                Dim cmdIns As New OleDbCommand(strCmd, g_DBConn)
-                cmdIns.ExecuteNonQuery()
-            Else
-                MsgBox(Err4, MsgBoxStyle.Critical, "Enter Unique Name")
-                Exit Sub
-            End If
-            Dim cmdNewStandard As New OleDbCommand("Select * from WQCRITERIA WHERE NAME LIKE '" & Trim(txtStdName.Text) & "'", g_DBConn)
-            Dim datanewstd As OleDbDataReader = cmdNewStandard.ExecuteReader()
-            datanewstd.Read()
-
-            Dim i As Short
-            i = 0
-
-            While datapoll.Read()
-                strCmd2 = "INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES (" & datapoll("POLLID") & ", " & datanewstd("WQCRITID") & "," & datapoll("Threshold") & ")"
-                Dim cmdIns2 As New OleDbCommand(strCmd2, g_DBConn)
-                cmdIns2.ExecuteNonQuery()
-            End While
-            datastd.Close()
-            datapoll.Close()
-            datanewstd.Close()
+            strStandard = String.Format("SELECT * FROM WQCriteria WHERE NAME LIKE '{0}'", cboStdName.Text)
+            Using cmdstd As New DataHelper(strStandard)
+                Using datastd As OleDbDataReader = cmdstd.ExecuteReader()
+                    datastd.Read()
+                    'Get the related pollutant/thresholds
+                    strPollStandard = "SELECT * FROM POLL_WQCRITERIA WHERE WQCRITID =" & datastd("WQCRITID").ToString
+                    Using datahelper As New DataHelper(strPollStandard)
+                        Using datapoll = datahelper.ExecuteReader()
+                            strCmd = String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(Trim(txtStdName.Text), "'", "''"), datastd("Description"))
+                            If modUtil.UniqueName("WQCRITERIA", Trim(txtStdName.Text)) Then
+                                Using cmdIns As New DataHelper(strCmd)
+                                    cmdIns.ExecuteNonQuery()
+                                End Using
+                            Else
+                                MsgBox(Err4, MsgBoxStyle.Critical, "Enter Unique Name")
+                                Exit Sub
+                            End If
+                            Using cmdNewStandard As New DataHelper(String.Format("Select * from WQCRITERIA WHERE NAME LIKE '{0}'", Trim(txtStdName.Text)))
+                                Using datanewstd As OleDbDataReader = cmdNewStandard.ExecuteReader()
+                                    datanewstd.Read()
+                                    While datapoll.Read()
+                                        strCmd2 = String.Format("INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES ({0}, {1}, {2})", datapoll("POLLID"), datanewstd("WQCRITID"), datapoll("Threshold"))
+                                        Using cmdIns2 As New DataHelper(strCmd2)
+                                            cmdIns2.ExecuteNonQuery()
+                                        End Using
+                                    End While
+                                    datastd.Close()
+                                End Using
+                            End Using
+                        End Using
+                    End Using
+                End Using
+            End Using
 
             _frmWQStd.UpdateWQ(Trim(txtStdName.Text))
             Close()

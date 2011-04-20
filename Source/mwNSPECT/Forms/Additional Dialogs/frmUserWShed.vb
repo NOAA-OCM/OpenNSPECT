@@ -133,7 +133,7 @@ Friend Class frmUserWShed
             strCmdInsert = "INSERT INTO WSDelineation " & "(Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName," & "FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName) " & " VALUES (" & "'" & CStr(txtWSDelinName.Text) & "', " & "'" & CStr(txtDEMFile.Text) & "', " & "'" & cboDEMUnits.SelectedIndex & "', " & "'" & txtFlowDir.Text & "', " & "'" & txtFlowAcc.Text & "', " & "'" & txtDEMFile.Text & "', " & "'" & "0" & "', " & "'" & "" & "', " & "'" & "0" & "', " & "'" & txtWaterSheds.Text & "', " & "'" & txtLS.Text & "', " & "'" & _strNibbleName & "', " & "'" & _strDEM2BFileName & "')"
 
             'Execute the statement.
-            Dim cmdIns As New OleDbCommand(strCmdInsert, g_DBConn)
+            Dim cmdIns As New DataHelper(strCmdInsert)
             cmdIns.ExecuteNonQuery()
             System.Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
 

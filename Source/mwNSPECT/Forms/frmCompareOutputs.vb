@@ -204,7 +204,7 @@ Public Class frmCompareOutputs
             End If
             Dim dlgXMLOpen As New Windows.Forms.OpenFileDialog
             With dlgXMLOpen
-                .Filter = MSG8
+                .Filter = MSG8XMLFile
                 .InitialDirectory = strFolder
                 .Title = "Open N-SPECT Project File"
                 .FilterIndex = 1

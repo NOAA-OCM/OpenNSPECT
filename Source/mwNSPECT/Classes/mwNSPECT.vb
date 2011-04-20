@@ -451,63 +451,70 @@ Public Class mwNSPECT
     ''' Shows the outputs comparison form
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub ShowCompareOutputsForm()
-        Dim tmp As New frmCompareOutputs
-        tmp.ShowDialog()
+    Private Shared Sub ShowCompareOutputsForm()
+        Using tmp As New frmCompareOutputs()
+            tmp.ShowDialog()
+        End Using
     End Sub
 
     ''' <summary>
     ''' Shows the Land Cover form
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub ShowAdvLandForm()
-        Dim tmp As New frmLandCoverTypes
-        tmp.ShowDialog()
+    Private Shared Sub ShowAdvLandForm()
+        Using tmp As New frmLandCoverTypes()
+            tmp.ShowDialog()
+        End Using
     End Sub
 
     ''' <summary>
     ''' Shows the Pollutant form
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub ShowAdvPollutantsForm()
-        Dim tmp As New frmPollutants
-        tmp.ShowDialog()
+    Private Shared Sub ShowAdvPollutantsForm()
+        Using tmp As New frmPollutants()
+            tmp.ShowDialog()
+        End Using
     End Sub
 
     ''' <summary>
     ''' Shows the Water Quality form
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub ShowAdvWQForm()
-        Dim tmp As New frmWaterQualityStandard
-        tmp.ShowDialog()
+    Private Shared Sub ShowAdvWQForm()
+        Using tmp As New frmWaterQualityStandard()
+            tmp.ShowDialog()
+        End Using
     End Sub
 
     ''' <summary>
     ''' Shows the Precipitation form
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub ShowAdvPrecipForm()
-        Dim tmp As New frmPrecipitation
-        tmp.ShowDialog()
+    Private Shared Sub ShowAdvPrecipForm()
+        Using tmp As New frmPrecipitation()
+            tmp.ShowDialog()
+        End Using
     End Sub
 
     ''' <summary>
     ''' Shows the Watershed Delin form
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub ShowAdvWSDelinForm()
-        Dim tmp As New frmWatershedDelin
-        tmp.ShowDialog()
+    Private Shared Sub ShowAdvWSDelinForm()
+        Using tmp As New frmWatershedDelin()
+            tmp.ShowDialog()
+        End Using
     End Sub
 
     ''' <summary>
     ''' Shows the Soils form
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub ShowAdvSoilsForm()
-        Dim tmp As New frmSoils
-        tmp.ShowDialog()
+    Private Shared Sub ShowAdvSoilsForm()
+        Using tmp As New frmSoils()
+            tmp.ShowDialog()
+        End Using
     End Sub
 
     ''' <summary>

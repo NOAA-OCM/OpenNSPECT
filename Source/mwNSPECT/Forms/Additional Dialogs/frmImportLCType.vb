@@ -53,15 +53,15 @@ Friend Class frmImportLCType
 
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
         Try
-            Dim dlgopen As New Windows.Forms.OpenFileDialog
-            dlgopen.Filter = Replace(MSG1, "<name>", "Land Cover Type")
-            dlgopen.Title = Replace(MSG2, "<name>", "Land Cover Type")
-
-            If dlgopen.ShowDialog = Windows.Forms.DialogResult.OK Then
-                txtImpFile.Text = dlgopen.FileName
-                _strFileName = dlgopen.FileName
-                _booFile = True
-            End If
+            Using dlgopen As New Windows.Forms.OpenFileDialog() With {
+                .Filter = Replace(MSG1TextFile, "<name>", "Land Cover Type"),
+                .Title = Replace(MSG2, "<name>", "Land Cover Type")}
+                If dlgopen.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    txtImpFile.Text = dlgopen.FileName
+                    _strFileName = dlgopen.FileName
+                    _booFile = True
+                End If
+            End Using
 
             If _booFile And _booName Then
                 cmdOK.Enabled = True
@@ -103,7 +103,7 @@ Friend Class frmImportLCType
                             'Name Check, if cool perform
                             If modUtil.UniqueName("LCTYPE", txtLCType.Text) Then
                                 Dim strCmd As String = "INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('" & Replace(txtLCType.Text, "'", "''") & "', '" & Replace(strDesc, "'", "''") & "')"
-                                Dim cmdIns As New OleDbCommand(strCmd, g_DBConn)
+                                Dim cmdIns As New DataHelper(strCmd)
                                 cmdIns.ExecuteNonQuery()
                             Else
                                 MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
@@ -152,13 +152,13 @@ Friend Class frmImportLCType
 
             'Get the WQCriteria values using the name
             strLCTypeAdd = "SELECT * FROM LCTYPE WHERE NAME = " & "'" & strName & "'"
-            Dim cmdType As New OleDbCommand(strLCTypeAdd, g_DBConn)
+            Dim cmdType As New DataHelper(strLCTypeAdd)
             Dim dataType As OleDbDataReader = cmdType.ExecuteReader()
             dataType.Read()
             strCmdInsert = "INSERT INTO LCCLASS([Value],[Name],[LCTYPEID],[CN-A],[CN-B],[CN-C],[CN-D],[CoverFactor],[W_WL]) VALUES(" & Replace(CStr(strParams(0)), "'", "''") & ",'" & Replace(CStr(strParams(1)), "'", "''") & "'," & Replace(CStr(dataType("LCTypeID")), "'", "''") & "," & Replace(CStr(strParams(2)), "'", "''") & "," & Replace(CStr(strParams(3)), "'", "''") & "," & Replace(CStr(strParams(4)), "'", "''") & "," & Replace(CStr(strParams(5)), "'", "''") & "," & Replace(CStr(strParams(6)), "'", "''") & "," & Replace(CStr(strParams(7)), "'", "''") & ")"
             dataType.Close()
 
-            Dim cmdIns As New OleDbCommand(strCmdInsert, g_DBConn)
+            Dim cmdIns As New DataHelper(strCmdInsert)
             cmdIns.ExecuteNonQuery()
         Catch ex As Exception
             MsgBox("There was a problem updating the database.  Insure that your values meet the correct " & "value ranges for each field.", MsgBoxStyle.Critical, "Invalid Values Found")
@@ -189,7 +189,7 @@ Friend Class frmImportLCType
     Private Sub RollBackImport(ByRef strName As String)
         Try
             Dim strSQLDel As String = "DELETE FROM LCTYPE where NAME LIKE '" & strName & "'"
-            Dim cmdDel As New OleDbCommand(strSQLDel, g_DBConn)
+            Dim cmdDel As New DataHelper(strSQLDel)
             cmdDel.ExecuteNonQuery()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)

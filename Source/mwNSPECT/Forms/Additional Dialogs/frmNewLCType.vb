@@ -119,7 +119,7 @@ Friend Class frmNewLCType
 
                 If modUtil.UniqueName("LCTYPE", strName) And (Trim(strName) <> "") Then
                     strCmd = "INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('" & Replace(strName, "'", "''") & "', '" & Replace(strDescript, "'", "''") & "')"
-                    Dim cmdStr As New OleDbCommand(strCmd, g_DBConn)
+                    Dim cmdStr As New DataHelper(strCmd)
                     cmdStr.ExecuteNonQuery()
                 Else
                     MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
@@ -307,12 +307,12 @@ Friend Class frmNewLCType
 
             'Get the WQCriteria values using the name
             strLCTypeAdd = "SELECT * FROM LCTYPE WHERE NAME = " & "'" & strName & "'"
-            Dim lctypeaddCmd As New OleDbCommand(strLCTypeAdd, g_DBConn)
+            Dim lctypeaddCmd As New DataHelper(strLCTypeAdd)
             Dim datLCType As OleDbDataReader = lctypeaddCmd.ExecuteReader()
             datLCType.Read()
 
             strCmdInsert = "INSERT INTO LCCLASS([Value],[Name],[LCTYPEID],[CN-A],[CN-B],[CN-C],[CN-D],[CoverFactor],[W_WL]) VALUES(" & CStr(row.Cells(0).Value) & ",'" & CStr(row.Cells(1).Value) & "'," & CStr(datLCType("LCTypeID")) & "," & CStr(row.Cells(2).Value) & "," & CStr(row.Cells(3).Value) & "," & CStr(row.Cells(4).Value) & "," & CStr(row.Cells(5).Value) & "," & CStr(row.Cells(6).Value) & "," & CStr(row.Cells(7).Value) & ")"
-            Dim insertCmd As New OleDbCommand(strCmdInsert, g_DBConn)
+            Dim insertCmd As New DataHelper(strCmdInsert)
             insertCmd.ExecuteNonQuery()
 
             datLCType.Close()

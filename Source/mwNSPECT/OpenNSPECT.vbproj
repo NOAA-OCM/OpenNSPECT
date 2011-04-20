@@ -112,6 +112,9 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.MapWinGIS">
       <HintPath>..\libs\Interop.MapWinGIS.dll</HintPath>
@@ -158,6 +161,7 @@
     <Compile Include="Classes\clsXMLPrjFile.vb" />
     <Compile Include="Classes\clsXMLOutputItem.vb" />
     <Compile Include="Classes\clsXMLOutputItems.vb" />
+    <Compile Include="Classes\DataHelper.vb" />
     <Compile Include="Classes\mwNSPECT.vb">
       <SubType>Code</SubType>
     </Compile>

@@ -317,14 +317,14 @@ Friend Class frmLUScen
 
             'Selection based on combo box
             strSQLWQStd = "SELECT * FROM WQCRITERIA WHERE NAME LIKE '" & _strWQStd & "'"
-            Dim cmdWQStdCboClick As New OleDbCommand(strSQLWQStd, g_DBConn)
+            Dim cmdWQStdCboClick As New DataHelper(strSQLWQStd)
             Dim dataWQStd As OleDbDataReader = cmdWQStdCboClick.ExecuteReader()
             dataWQStd.Read()
 
             If dataWQStd.HasRows Then
 
                 strSQLWQStdPoll = "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD " & "FROM POLL_WQCRITERIA INNER JOIN POLLUTANT " & "ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = " & dataWQStd.Item("WQCRITID")
-                Dim cmdSQLWQStdPoll As New OleDbCommand(strSQLWQStdPoll, g_DBConn)
+                Dim cmdSQLWQStdPoll As New DataHelper(strSQLWQStdPoll)
                 Dim dataWQStdPoll As OleDbDataReader = cmdSQLWQStdPoll.ExecuteReader()
 
                 dgvCoef.Rows.Clear()

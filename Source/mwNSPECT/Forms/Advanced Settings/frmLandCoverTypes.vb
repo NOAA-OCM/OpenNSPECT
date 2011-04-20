@@ -243,7 +243,7 @@ Friend Class frmLandCoverTypes
 
                 'Selection based on combo box
                 Dim strCCAP As String = "SELECT * From LCCLASSDEFAULTS"
-                Dim cmdCCAP As New OleDbCommand(strCCAP, g_DBConn)
+                Dim cmdCCAP As New DataHelper(strCCAP)
                 Dim datCCAP As OleDbDataReader = cmdCCAP.ExecuteReader()
 
                 Dim idx As Integer = 0
@@ -287,27 +287,24 @@ Friend Class frmLandCoverTypes
             intAns = MsgBox("Are you sure you want to delete the land cover type '" & cmbxLCType.Text & "' and all associated Coefficient Sets?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
 
             Dim strLCTypeDelete As String
-            Dim strLCClassDelete As String
-
             If intAns = MsgBoxResult.Yes Then
                 strLCTypeDelete = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & cmbxLCType.Text & "'"
-                Dim cmdLCType As New OleDbCommand(strLCTypeDelete, g_DBConn)
+                Dim cmdLCType As New DataHelper(strLCTypeDelete)
                 Dim datLC As OleDbDataReader = cmdLCType.ExecuteReader()
                 datLC.Read()
 
-                strLCClassDelete = "Delete * FROM LCCLASS WHERE LCTYPEID =" & datLC("LCTypeID")
 
                 datLC.Close()
                 If Not (cmbxLCType.Text = "") Then
 
                     'code to handle response
 
-                    Dim cmdDel As New OleDbCommand(strLCClassDelete, g_DBConn)
+                    Dim cmdDel As New DataHelper("Delete * FROM LCCLASS WHERE LCTYPEID =" & datLC("LCTypeID"))
                     cmdDel.ExecuteNonQuery()
 
                     strLCTypeDelete = "Delete * FROM LCTYPE WHERE NAME LIKE '" & cmbxLCType.Text & "'"
-                    cmdDel = New OleDbCommand(strLCTypeDelete, g_DBConn)
-                    cmdDel.ExecuteNonQuery()
+                    Dim cmdDel2 = New OleDbCommand(strLCTypeDelete, g_DBConn)
+                    cmdDel2.ExecuteNonQuery()
 
                     MsgBox(cmbxLCType.Text & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
@@ -343,7 +340,7 @@ Friend Class frmLandCoverTypes
     Private Sub mnuExpLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExpLCType.Click
         Try
             Dim dlgsave As New SaveFileDialog
-            dlgsave.Filter = Replace(MSG1, "<name>", "Land Cover Type")
+            dlgsave.Filter = Replace(MSG1TextFile, "<name>", "Land Cover Type")
             dlgsave.Title = Replace(MSG3, "<name>", "Land Cover Type")
             dlgsave.DefaultExt = ".txt"
 

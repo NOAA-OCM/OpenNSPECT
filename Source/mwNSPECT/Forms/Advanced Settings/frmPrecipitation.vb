@@ -49,21 +49,22 @@ Friend Class frmPrecipitation
             Dim strSQLPrecip As String
             strSQLPrecip = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
 
-            Dim precipCmd As New OleDbCommand(strSQLPrecip, modUtil.g_DBConn)
-            Dim precip As OleDbDataReader = precipCmd.ExecuteReader()
-            precip.Read()
-            'Populate the controls...
-            txtDesc.Text = precip.Item("Description")
-            txtPrecipFile.Text = precip.Item("PrecipFileName")
-
-            cboGridUnits.SelectedIndex = CShort(precip.Item("PrecipGridUnits"))
-            cboPrecipUnits.SelectedIndex = CShort(precip.Item("PrecipUnits"))
-            cboTimePeriod.SelectedIndex = precip.Item("Type")
-            cboPrecipType.SelectedIndex = precip.Item("PrecipType")
-
-            If precip.Item("Type") = 0 Then
-                txtRainingDays.Text = precip.Item("RainingDays")
-            End If
+            Using precipCmd As New OleDbCommand(strSQLPrecip, modUtil.g_DBConn)
+                Using precip As OleDbDataReader = precipCmd.ExecuteReader()
+                    precip.Read()
+                    'Populate the controls...
+                    txtDesc.Text = precip.Item("Description")
+                    txtPrecipFile.Text = precip.Item("PrecipFileName")
+                    'select defaults
+                    cboGridUnits.SelectedIndex = CShort(precip.Item("PrecipGridUnits"))
+                    cboPrecipUnits.SelectedIndex = CShort(precip.Item("PrecipUnits"))
+                    cboTimePeriod.SelectedIndex = precip.Item("Type")
+                    cboPrecipType.SelectedIndex = precip.Item("PrecipType")
+                    If precip.Item("Type") = 0 Then
+                        txtRainingDays.Text = precip.Item("RainingDays")
+                    End If
+                End Using
+            End Using
 
             cmdSave.Enabled = False
         Catch ex As Exception
@@ -271,7 +272,7 @@ Friend Class frmPrecipitation
                 'code to handle response
                 If intAns = MsgBoxResult.Yes Then
                     'Set up a delete rs and get rid of it
-                    Dim cmdDel As New OleDbCommand(strSQLPrecipDel, g_DBConn)
+                    Dim cmdDel As New DataHelper(strSQLPrecipDel)
                     cmdDel.ExecuteNonQuery()
 
                     MsgBox(cboScenName.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")

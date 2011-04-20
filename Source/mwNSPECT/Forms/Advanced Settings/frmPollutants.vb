@@ -432,7 +432,7 @@ Friend Class frmPollutants
             If intAns = MsgBoxResult.Yes Then
 
                 Dim strDeleteCoeffSet As String = "DELETE * from COEFFICIENTSET WHERE NAME LIKE '" & cboCoeffSet.Text & "'"
-                Dim cmdDelCoef As New OleDbCommand(strDeleteCoeffSet, g_DBConn)
+                Dim cmdDelCoef As New DataHelper(strDeleteCoeffSet)
                 cmdDelCoef.ExecuteNonQuery()
 
                 MsgBox(cboCoeffSet.Text & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
@@ -468,7 +468,7 @@ Friend Class frmPollutants
             Dim dlgSave As New Windows.Forms.SaveFileDialog
 
             'browse...get output filename
-            dlgSave.Filter = Replace(MSG1, "<name>", "Coefficient Set")
+            dlgSave.Filter = Replace(MSG1TextFile, "<name>", "Coefficient Set")
             dlgSave.Title = Replace(MSG3, "<name>", "Coefficient Set")
             dlgSave.DefaultExt = ".txt"
             If dlgSave.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -557,8 +557,8 @@ Friend Class frmPollutants
             Dim strUpdateDescription As Object
             If _boolDescChanged Then
                 strUpdateDescription = "SELECT Description from CoefficientSet Where Name like '" & cboCoeffSet.Text & "'"
-                Dim cmdDesc As New OleDbCommand(strUpdateDescription, g_DBConn)
-                Dim adDesc As New OleDbDataAdapter(cmdDesc)
+                Dim cmdDesc As New DataHelper(strUpdateDescription)
+                Dim adDesc = cmdDesc.GetAdapter()
                 Dim buildDesc As New OleDbCommandBuilder(adDesc)
                 buildDesc.QuotePrefix = "["
                 buildDesc.QuoteSuffix = "]"
@@ -583,8 +583,8 @@ Friend Class frmPollutants
                 For i = 0 To dgvCoef.Rows.Count - 1
 
                     strPollUpdate = "SELECT * From Coefficient Where CoeffID = " & dgvCoef.Rows(i).Cells(6).Value.ToString
-                    Dim cmdNewCoef As New OleDbCommand(strPollUpdate, g_DBConn)
-                    Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+                    Dim cmdNewCoef As New DataHelper(strPollUpdate)
+                    Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
                     Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
                     cbuilder.QuotePrefix = "["
                     cbuilder.QuoteSuffix = "]"
@@ -603,8 +603,8 @@ Friend Class frmPollutants
 
             For i = 0 To dgvWaterQuality.Rows.Count - 1
                 strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & dgvWaterQuality.Rows(i).Cells(3).Value.ToString
-                Dim cmdNewWQ As New OleDbCommand(strWQSelect, g_DBConn)
-                Dim adaptNewWQ As New OleDbDataAdapter(cmdNewWQ)
+                Dim cmdNewWQ As New DataHelper(strWQSelect)
+                Dim adaptNewWQ = cmdNewWQ.GetAdapter()
                 Dim wqbuilder As New OleDbCommandBuilder(adaptNewWQ)
                 wqbuilder.QuotePrefix = "["
                 wqbuilder.QuoteSuffix = "]"
@@ -625,7 +625,7 @@ Friend Class frmPollutants
     Private Sub DeletePollutant(ByRef strName As String)
         Try
             Dim strPollDelete As String = "Delete * FROM Pollutant WHERE NAME LIKE '" & strName & "'"
-            Dim cmdPollDel As New OleDbCommand(strPollDelete, g_DBConn)
+            Dim cmdPollDel As New DataHelper(strPollDelete)
             cmdPollDel.ExecuteNonQuery()
 
             MsgBox(strName & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
@@ -654,20 +654,20 @@ Friend Class frmPollutants
             Dim intCoeffSetID As Short
 
             strGetLcType = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCType & "'"
-            Dim cmdLCType As New OleDbCommand(strGetLcType, g_DBConn)
+            Dim cmdLCType As New DataHelper(strGetLcType)
             Dim datalctype As OleDbDataReader = cmdLCType.ExecuteReader()
             datalctype.Read()
 
 
             'First need to add the coefficient set to that table
             strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & Replace(CStr(_intPollID), "'", "''") & "," & Replace(datalctype("LCTypeID"), "'", "''") & ")"
-            Dim cmdInsLC As New OleDbCommand(strNewLcType, g_DBConn)
+            Dim cmdInsLC As New DataHelper(strNewLcType)
             cmdInsLC.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
             'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
             strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
-            Dim cmdNewCoefID As New OleDbCommand(strNewCoeffID, g_DBConn)
+            Dim cmdNewCoefID As New DataHelper(strNewCoeffID)
             Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
             dataNewCoeffID.Read()
             intCoeffSetID = dataNewCoeffID("CoeffSetID")
@@ -675,15 +675,15 @@ Friend Class frmPollutants
 
 
             strDefault = "SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "' ORDER BY LCCLASS.Value"
-            Dim cmdCopySet As New OleDbCommand(strDefault, g_DBConn)
+            Dim cmdCopySet As New DataHelper(strDefault)
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
 
 
             'Now loopy loo to populate values.
             Dim strNewCoeff1 As String
             strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim cmdNewCoef As New OleDbCommand(strNewCoeff1, g_DBConn)
-            Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+            Dim cmdNewCoef As New DataHelper(strNewCoeff1)
+            Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
             Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
             cbuilder.QuotePrefix = "["
             cbuilder.QuoteSuffix = "]"
@@ -730,7 +730,7 @@ Friend Class frmPollutants
             Dim intCoeffSetID As Short
 
             strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
-            Dim cmdCopySet As New OleDbCommand(strCopySet, g_DBConn)
+            Dim cmdCopySet As New DataHelper(strCopySet)
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
             dataCopySet.Read()
 
@@ -738,13 +738,13 @@ Friend Class frmPollutants
             strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strNewCoeffName, "'", "''") & "'," & dataCopySet("POLLID") & "," & dataCopySet("LCTypeID") & ")"
 
             'First need to add the coefficient set to that table
-            Dim cmdInsLCType As New OleDbCommand(strNewLcType, g_DBConn)
+            Dim cmdInsLCType As New DataHelper(strNewLcType)
             cmdInsLCType.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
             'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
             strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strNewCoeffName & "'"
-            Dim cmdNewCoefID As New OleDbCommand(strNewCoeffID, g_DBConn)
+            Dim cmdNewCoefID As New DataHelper(strNewCoeffID)
             Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
             dataNewCoeffID.Read()
             intCoeffSetID = dataNewCoeffID("CoeffSetID")
@@ -753,8 +753,8 @@ Friend Class frmPollutants
             'Now loopy loo to populate values.
             Dim strNewCoeff1 As String
             strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim cmdNewCoef As New OleDbCommand(strNewCoeff1, g_DBConn)
-            Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+            Dim cmdNewCoef As New DataHelper(strNewCoeff1)
+            Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
             Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
             cbuilder.QuotePrefix = "["
             cbuilder.QuoteSuffix = "]"
@@ -827,13 +827,13 @@ Friend Class frmPollutants
             dataCoeff.Close()
 
             'First need to add the coefficient set to that table
-            Dim cmdInsCoef As New OleDbCommand(strNewLcType, g_DBConn)
+            Dim cmdInsCoef As New DataHelper(strNewLcType)
             cmdInsCoef.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
             'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
             strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
-            Dim cmdNewCoefID As New OleDbCommand(strNewCoeffID, g_DBConn)
+            Dim cmdNewCoefID As New DataHelper(strNewCoeffID)
             Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
             dataNewCoeffID.Read()
             intCoeffSetID = dataNewCoeffID("CoeffSetID")
@@ -846,8 +846,8 @@ Friend Class frmPollutants
             'Now loopy loo to populate values.
             Dim strNewCoeff1 As String
             strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim cmdNewCoef As New OleDbCommand(strNewCoeff1, g_DBConn)
-            Dim adaptNewCoeff As New OleDbDataAdapter(cmdNewCoef)
+            Dim cmdNewCoef As New DataHelper(strNewCoeff1)
+            Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
             Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
             cbuilder.QuotePrefix = "["
             cbuilder.QuoteSuffix = "]"

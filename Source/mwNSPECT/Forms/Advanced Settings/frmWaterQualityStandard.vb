@@ -141,10 +141,10 @@ Friend Class frmWaterQualityStandard
             Dim strWQStdDelete As String
 
             strWQStdDelete = "DELETE FROM WQCriteria WHERE NAME LIKE '" & cboWQStdName.Text & "'"
-            Dim cmdWQ As New OleDbCommand(strWQStdDelete, g_DBConn)
+            Dim cmdWQ As New DataHelper(strWQStdDelete)
 
             'strWQStdDelete = "SELECT * FROM WQCriteria WHERE NAME LIKE '" & cboWQStdName.Text & "'"
-            'Dim cmdWQ As New OleDbCommand(strWQStdDelete, g_DBConn)
+            'Dim cmdWQ As New DataHelper(strWQStdDelete)
             'Dim wqSel As OleDbDataReader = cmdWQ.ExecuteReader()
             'wqSel.Read()
             'Doesn't seem to be used anymore
@@ -203,7 +203,7 @@ Friend Class frmWaterQualityStandard
     Private Sub mnuExpWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExpWQStd.Click
         Try
             Dim dlgSave As New Windows.Forms.SaveFileDialog
-            dlgSave.Filter = Replace(MSG1, "<name>", "Water Quality Standard")
+            dlgSave.Filter = Replace(MSG1TextFile, "<name>", "Water Quality Standard")
             dlgSave.Title = Replace(MSG3, "<name>", "Water Quality Standard")
             dlgSave.DefaultExt = ".txt"
 
@@ -250,8 +250,8 @@ Friend Class frmWaterQualityStandard
 
             'Selection based on combo box, update Description
             strSQLWQStd = "SELECT * FROM WQCRITERIA WHERE NAME LIKE '" & cboWQStdName.Text & "'"
-            Dim cmdWQ As New OleDbCommand(strSQLWQStd, g_DBConn)
-            Dim adWQ As New OleDbDataAdapter(cmdWQ)
+            Dim cmdWQ As New DataHelper(strSQLWQStd)
+            Dim adWQ = cmdWQ.GetAdapter()
             Dim buWQ As New OleDbCommandBuilder(adWQ)
             buWQ.QuotePrefix = "["
             buWQ.QuoteSuffix = "]"
@@ -263,8 +263,8 @@ Friend Class frmWaterQualityStandard
             'Now update Threshold values
             For i = 0 To dgvWaterQuality.Rows.Count - 1
                 strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & dgvWaterQuality.Rows(i).Cells(2).Value.ToString
-                Dim cmdWQSel As New OleDbCommand(strWQSelect, g_DBConn)
-                Dim adWQSel As New OleDbDataAdapter(cmdWQSel)
+                Dim cmdWQSel As New DataHelper(strWQSelect)
+                Dim adWQSel = cmdWQSel.GetAdapter()
                 Dim buWQSel As New OleDbCommandBuilder(adWQSel)
                 buWQSel.QuotePrefix = "["
                 buWQSel.QuoteSuffix = "]"

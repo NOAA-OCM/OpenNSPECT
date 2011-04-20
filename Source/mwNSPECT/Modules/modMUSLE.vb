@@ -59,7 +59,7 @@ Module modMUSLE
 
         'STEP 1: Get the MUSLE Values
         strSoilsDef = "SELECT * FROM SOILS WHERE NAME LIKE '" & strSoilsDefName & "'"
-        Dim cmdsoils As New OleDbCommand(strSoilsDef, g_DBConn)
+        Dim cmdsoils As New DataHelper(strSoilsDef)
         Dim datasoils As OleDbDataReader = cmdsoils.ExecuteReader
         datasoils.Read()
 
@@ -83,7 +83,7 @@ Module modMUSLE
 
         'Get the landclasses of type strLandClass
         strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
-        Dim cmdCovfact As New OleDbCommand(strCovFactor, g_DBConn)
+        Dim cmdCovfact As New DataHelper(strCovFactor)
 
         _strMusleMetadata = CreateMetadata(g_booLocalEffects) ', rsCoverFactor)
 
@@ -93,8 +93,9 @@ Module modMUSLE
         End If
 
         'Get the con statement for the cover factor calculation
-        _strCFactorConStatement = ConstructPickStatment(cmdCovfact, g_LandCoverRaster)
-        _strPondConStatement = ConstructPondPickStatement(cmdCovfact, g_LandCoverRaster)
+        Dim command As OleDbCommand = cmdCovfact.GetCommand()
+        _strCFactorConStatement = ConstructPickStatment(command, g_LandCoverRaster)
+        _strPondConStatement = ConstructPondPickStatement(command, g_LandCoverRaster)
 
         'Calc rusle using the con
         If CalcMUSLE(_strCFactorConStatement, _strPondConStatement, OutputItems) Then

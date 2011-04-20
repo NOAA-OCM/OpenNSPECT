@@ -45,14 +45,14 @@ Module modErrorCodes
     Public Const strDefaultTitle As String = "Restore Defaults Settings?"
 
     'Constants for File Dialogs
-    Public Const MSG1 As String = "<name> Text File(*.txt;*.csv)|*.txt;*.csv"
+    Public Const MSG1TextFile As String = "<name> Text File(*.txt;*.csv)|*.txt;*.csv"
     Public Const MSG2 As String = "<name> File to Import"
     Public Const MSG3 As String = "Export <name> into Filename"
-    Public Const MSG4 As String = "Analysis File (*.prj)"
+    Public Const MSG4AnalysisFile As String = "Analysis File (*.prj)"
     Public Const MSG5 As String = "Open Analysis File"
-    Public Const MSG6 As String = "ESRI Shapefile (*.shp)|*.shp"
+    Public Const MSG6ShapeFile As String = "ESRI Shapefile (*.shp)|*.shp"
     Public Const MSG7 As String = ""
-    Public Const MSG8 As String = "XML File(*.xml)|*.xml"
+    Public Const MSG8XMLFile As String = "XML File(*.xml)|*.xml"
 
 
     Public Sub DisplayError(ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)

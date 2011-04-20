@@ -81,14 +81,14 @@ Module modLanduse
 
             'STEP 1: Get the current LCTYPE
             strCurrentLCType = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCClassName & "'"
-            Dim cmdCurrentLCType As New OleDbCommand(strCurrentLCType, g_DBConn)
+            Dim cmdCurrentLCType As New DataHelper(strCurrentLCType)
             Dim dataCurrentLCType As OleDbDataReader = cmdCurrentLCType.ExecuteReader
             dataCurrentLCType.Read()
 
-
+            'MK - I'm not sure this works like they thought it did.
             'STEP 2: Get the current LCCLASSES of the current LCTYPE
             strCurrentLCClass = "SELECT * FROM LCCLASS WHERE" & " LCTYPEID = " & dataCurrentLCType("LCTypeID") & " ORDER BY LCCLass.Value"
-            Dim cmdCurrentLCClass As New OleDbCommand(strCurrentLCClass, g_DBConn)
+            Dim cmdCurrentLCClass As New DataHelper(strCurrentLCClass)
 
             'STEP 3: Now INSERT a copy of current LCTYPE
             'First, get a temp name... like CCAPLUTemp1, CCAPLUTemp2 etc
@@ -99,19 +99,19 @@ Module modLanduse
             g_DictTempNames.Add(strLCClassName, strTempLCTypeName)
 
             'STEP 4: INSERT the copy of the LCTYPE in
-            Dim cmdInsertCopy As New OleDbCommand(strInsertTempLCType, g_DBConn)
+            Dim cmdInsertCopy As New DataHelper(strInsertTempLCType)
             cmdInsertCopy.ExecuteNonQuery()
 
             'STEP 5: Get it back now so you can use its ID for inserting the landclasses
             strrsInsertLCType = "SELECT LCTYPEID FROM LCTYPE " & "WHERE LCTYPE.NAME LIKE '" & strTempLCTypeName & "'"
-            Dim cmdInsertType As New OleDbCommand(strrsInsertLCType, g_DBConn)
+            Dim cmdInsertType As New DataHelper(strrsInsertLCType)
             Dim dataInsertType As OleDbDataReader = cmdInsertType.ExecuteReader()
             dataInsertType.Read()
             _intLCTypeID = dataInsertType("LCTypeID")
             dataInsertType.Close()
 
             'STEP 6: Now clone the current landclasses into a new recordset
-            Dim cmdCloneLCClass As OleDbCommand = cmdCurrentLCClass.Clone()
+            Dim cmdCloneLCClass As OleDbCommand = cmdCurrentLCClass.CloneCommand()
 
             'Prepare the landclass table to accept the copies of landclass
             strrsPermLandClass = "SELECT * FROM LCCLASS"
@@ -174,7 +174,7 @@ Module modLanduse
 
                 'Gather the newly added LCClassIds in an array for use later
                 strNewLandClass = "SELECT LCCLASSID FROM LCCLASS WHERE NAME LIKE '" & clsLUScen.strLUScenName & "'"
-                Dim cmdNewLC As New OleDbCommand(strNewLandClass, g_DBConn)
+                Dim cmdNewLC As New DataHelper(strNewLandClass)
                 Dim dataNewLC As OleDbDataReader = cmdNewLC.ExecuteReader()
                 dataNewLC.Read()
                 intLCClassIDs(i - 1) = dataNewLC("LCClassID")
@@ -246,7 +246,7 @@ Module modLanduse
             Dim strNewCoeffID As String 'Holder for the CoefficientSetID
 
             strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
-            Dim cmdCopySet As New OleDbCommand(strCopySet, g_DBConn)
+            Dim cmdCopySet As New DataHelper(strCopySet)
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader
             dataCopySet.Read()
 
@@ -256,12 +256,12 @@ Module modLanduse
             dataCopySet.Close()
 
             'First need to add the coefficient set to that table
-            Dim cmdNewLCType As New OleDbCommand(strNewLcType, g_DBConn)
+            Dim cmdNewLCType As New DataHelper(strNewLcType)
             cmdNewLCType.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set
             strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strNewCoeffName & "'"
-            Dim cmdNewCoeffId As New OleDbCommand(strNewCoeffID, g_DBConn)
+            Dim cmdNewCoeffId As New DataHelper(strNewCoeffID)
             Dim datanewCoeffId As OleDbDataReader = cmdNewCoeffId.ExecuteReader()
             datanewCoeffId.Read()
             _intCoeffSetID = datanewCoeffId("CoeffSetID")
@@ -438,20 +438,20 @@ Module modLanduse
             Dim strLCClassDelete As String
 
             strLCTypeDelete = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCDeleteName & "'"
-            Using cmdDeleteList As New OleDbCommand(strLCTypeDelete, g_DBConn)
+            Using cmdDeleteList As New DataHelper(strLCTypeDelete)
                 Dim dataDeleteList As OleDbDataReader = cmdDeleteList.ExecuteReader()
                 dataDeleteList.Read()
                 strLCClassDelete = "Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID")
                 dataDeleteList.Close()
-                Dim cmdDelete As New OleDbCommand(strLCClassDelete, g_DBConn)
+                Dim cmdDelete As New DataHelper(strLCClassDelete)
                 cmdDelete.ExecuteNonQuery()
 
                 For i = 0 To clsPollItems.Count - 1
                     strCoeffDeleteName = dictNames.Item(clsPollItems.Item(i).strCoeffSet)
                     If Len(strCoeffDeleteName) > 0 Then
                         strDeleteCoeffSet = "DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '" & strCoeffDeleteName & "'"
-                        cmdDelete = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
-                        cmdDelete.ExecuteNonQuery()
+                        Dim cmdDelete2 = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
+                        cmdDelete2.ExecuteNonQuery()
                     End If
                 Next
             End Using
