@@ -27,17 +27,17 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.txtWQStdDesc = New System.Windows.Forms.TextBox
-        Me.cmdCancel = New System.Windows.Forms.Button
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.txtWQStdName = New System.Windows.Forms.TextBox
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me._Label1_7 = New System.Windows.Forms.Label
-        Me.dgvWaterQuality = New System.Windows.Forms.DataGridView
-        Me.Pollutant = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.txtWQStdDesc = New System.Windows.Forms.TextBox()
+        Me.cmdCancel = New System.Windows.Forms.Button()
+        Me.cmdSave = New System.Windows.Forms.Button()
+        Me.txtWQStdName = New System.Windows.Forms.TextBox()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me._Label1_7 = New System.Windows.Forms.Label()
+        Me.dgvWaterQuality = New System.Windows.Forms.DataGridView()
+        Me.Pollutant = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.dgvWaterQuality, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -52,7 +52,7 @@
         Me.txtWQStdDesc.MaxLength = 100
         Me.txtWQStdDesc.Name = "txtWQStdDesc"
         Me.txtWQStdDesc.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtWQStdDesc.Size = New System.Drawing.Size(286, 20)
+        Me.txtWQStdDesc.Size = New System.Drawing.Size(450, 20)
         Me.txtWQStdDesc.TabIndex = 1
         '
         'cmdCancel
@@ -62,7 +62,7 @@
         Me.cmdCancel.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCancel.Location = New System.Drawing.Point(310, 261)
+        Me.cmdCancel.Location = New System.Drawing.Point(488, 336)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
@@ -78,7 +78,7 @@
         Me.cmdSave.Enabled = False
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(242, 261)
+        Me.cmdSave.Location = New System.Drawing.Point(420, 336)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdSave.Size = New System.Drawing.Size(65, 25)
@@ -97,7 +97,7 @@
         Me.txtWQStdName.MaxLength = 0
         Me.txtWQStdName.Name = "txtWQStdName"
         Me.txtWQStdName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtWQStdName.Size = New System.Drawing.Size(134, 20)
+        Me.txtWQStdName.Size = New System.Drawing.Size(450, 20)
         Me.txtWQStdName.TabIndex = 0
         '
         '_Label1_1
@@ -135,7 +135,7 @@
         Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Pollutant, Me.Threshold})
         Me.dgvWaterQuality.Location = New System.Drawing.Point(22, 66)
         Me.dgvWaterQuality.Name = "dgvWaterQuality"
-        Me.dgvWaterQuality.Size = New System.Drawing.Size(367, 189)
+        Me.dgvWaterQuality.Size = New System.Drawing.Size(531, 253)
         Me.dgvWaterQuality.TabIndex = 10
         '
         'Pollutant
@@ -158,7 +158,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(416, 297)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.dgvWaterQuality)
         Me.Controls.Add(Me.txtWQStdDesc)
         Me.Controls.Add(Me.cmdCancel)

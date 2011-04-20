@@ -47,43 +47,43 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.MainMenu1 = New System.Windows.Forms.MenuStrip
-        Me.mnuPopLU = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuAppendP = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuInsertP = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuDeleteP = New System.Windows.Forms.ToolStripMenuItem
-        Me.chkSelectedPolys = New System.Windows.Forms.CheckBox
-        Me.chkWatWetlands = New System.Windows.Forms.CheckBox
-        Me.txtLUName = New System.Windows.Forms.TextBox
-        Me.cmdCancel = New System.Windows.Forms.Button
-        Me.cmdOK = New System.Windows.Forms.Button
-        Me._txtLUCN_4 = New System.Windows.Forms.TextBox
-        Me._txtLUCN_3 = New System.Windows.Forms.TextBox
-        Me._txtLUCN_2 = New System.Windows.Forms.TextBox
-        Me._txtLUCN_1 = New System.Windows.Forms.TextBox
-        Me._txtLUCN_0 = New System.Windows.Forms.TextBox
-        Me._Label1_5 = New System.Windows.Forms.Label
-        Me._Label1_3 = New System.Windows.Forms.Label
-        Me._Label1_2 = New System.Windows.Forms.Label
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me._Label1_15 = New System.Windows.Forms.Label
-        Me._Label1_4 = New System.Windows.Forms.Label
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me._Label1_16 = New System.Windows.Forms.Label
-        Me._Label1_17 = New System.Windows.Forms.Label
-        Me._Label1_18 = New System.Windows.Forms.Label
-        Me._Label1_19 = New System.Windows.Forms.Label
-        Me.dgvCoef = New System.Windows.Forms.DataGridView
-        Me.Pollutant = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Type1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Type2 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Type3 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Type4 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.cboLULayer = New System.Windows.Forms.ComboBox
-        Me.lblSelected = New System.Windows.Forms.Label
-        Me.btnSelect = New System.Windows.Forms.Button
+        Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuPopLU = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAppendP = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuInsertP = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDeleteP = New System.Windows.Forms.ToolStripMenuItem()
+        Me.chkSelectedPolys = New System.Windows.Forms.CheckBox()
+        Me.chkWatWetlands = New System.Windows.Forms.CheckBox()
+        Me.txtLUName = New System.Windows.Forms.TextBox()
+        Me.cmdCancel = New System.Windows.Forms.Button()
+        Me.cmdOK = New System.Windows.Forms.Button()
+        Me._txtLUCN_4 = New System.Windows.Forms.TextBox()
+        Me._txtLUCN_3 = New System.Windows.Forms.TextBox()
+        Me._txtLUCN_2 = New System.Windows.Forms.TextBox()
+        Me._txtLUCN_1 = New System.Windows.Forms.TextBox()
+        Me._txtLUCN_0 = New System.Windows.Forms.TextBox()
+        Me._Label1_5 = New System.Windows.Forms.Label()
+        Me._Label1_3 = New System.Windows.Forms.Label()
+        Me._Label1_2 = New System.Windows.Forms.Label()
+        Me._Label1_0 = New System.Windows.Forms.Label()
+        Me._Label1_15 = New System.Windows.Forms.Label()
+        Me._Label1_4 = New System.Windows.Forms.Label()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me._Label1_16 = New System.Windows.Forms.Label()
+        Me._Label1_17 = New System.Windows.Forms.Label()
+        Me._Label1_18 = New System.Windows.Forms.Label()
+        Me._Label1_19 = New System.Windows.Forms.Label()
+        Me.dgvCoef = New System.Windows.Forms.DataGridView()
+        Me.Pollutant = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Type1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Type2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Type3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Type4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.cboLULayer = New System.Windows.Forms.ComboBox()
+        Me.lblSelected = New System.Windows.Forms.Label()
+        Me.btnSelect = New System.Windows.Forms.Button()
         Me.MainMenu1.SuspendLayout()
         CType(Me.dgvCoef, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -434,8 +434,8 @@
         Me.dgvCoef.AllowUserToDeleteRows = False
         Me.dgvCoef.AllowUserToResizeColumns = False
         Me.dgvCoef.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvCoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Pollutant, Me.Type1, Me.Type2, Me.Type3, Me.Type4})
         Me.dgvCoef.Location = New System.Drawing.Point(11, 229)

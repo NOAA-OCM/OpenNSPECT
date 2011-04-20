@@ -45,41 +45,41 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.MainMenu1 = New System.Windows.Forms.MenuStrip
-        Me.mnuCoeff = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuCoeffNewSet = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuCoeffCopySet = New System.Windows.Forms.ToolStripMenuItem
-        Me.txtPollutant = New System.Windows.Forms.TextBox
-        Me.SSTab1 = New System.Windows.Forms.TabControl
-        Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage
-        Me.dgvCoef = New System.Windows.Forms.DataGridView
-        Me._Label1_6 = New System.Windows.Forms.Label
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me._Label1_2 = New System.Windows.Forms.Label
-        Me._Label1_3 = New System.Windows.Forms.Label
-        Me._Label1_5 = New System.Windows.Forms.Label
-        Me.cboLCType = New System.Windows.Forms.ComboBox
-        Me.txtCoeffSetDesc = New System.Windows.Forms.TextBox
-        Me.txtCoeffSet = New System.Windows.Forms.TextBox
-        Me._Label1_7 = New System.Windows.Forms.Label
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.cmdQuit = New System.Windows.Forms.Button
-        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog
-        Me.dlgCMD1Save = New System.Windows.Forms.SaveFileDialog
-        Me.dlgCMD1Font = New System.Windows.Forms.FontDialog
-        Me.dlgCMD1Color = New System.Windows.Forms.ColorDialog
-        Me.dlgCMD1Print = New System.Windows.Forms.PrintDialog
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn8 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuCoeff = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCoeffNewSet = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCoeffCopySet = New System.Windows.Forms.ToolStripMenuItem()
+        Me.txtPollutant = New System.Windows.Forms.TextBox()
+        Me.SSTab1 = New System.Windows.Forms.TabControl()
+        Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage()
+        Me.dgvCoef = New System.Windows.Forms.DataGridView()
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me._Label1_6 = New System.Windows.Forms.Label()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me._Label1_2 = New System.Windows.Forms.Label()
+        Me._Label1_3 = New System.Windows.Forms.Label()
+        Me._Label1_5 = New System.Windows.Forms.Label()
+        Me.cboLCType = New System.Windows.Forms.ComboBox()
+        Me.txtCoeffSetDesc = New System.Windows.Forms.TextBox()
+        Me.txtCoeffSet = New System.Windows.Forms.TextBox()
+        Me._Label1_7 = New System.Windows.Forms.Label()
+        Me.cmdSave = New System.Windows.Forms.Button()
+        Me.cmdQuit = New System.Windows.Forms.Button()
+        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog()
+        Me.dlgCMD1Save = New System.Windows.Forms.SaveFileDialog()
+        Me.dlgCMD1Font = New System.Windows.Forms.FontDialog()
+        Me.dlgCMD1Color = New System.Windows.Forms.ColorDialog()
+        Me.dlgCMD1Print = New System.Windows.Forms.PrintDialog()
+        Me._Label1_0 = New System.Windows.Forms.Label()
         Me.MainMenu1.SuspendLayout()
         Me.SSTab1.SuspendLayout()
         Me._SSTab1_TabPage0.SuspendLayout()
@@ -91,7 +91,7 @@
         Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuCoeff})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
-        Me.MainMenu1.Size = New System.Drawing.Size(561, 24)
+        Me.MainMenu1.Size = New System.Drawing.Size(594, 24)
         Me.MainMenu1.TabIndex = 15
         '
         'mnuCoeff
@@ -130,16 +130,15 @@
         'SSTab1
         '
         Me.SSTab1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SSTab1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
         Me.SSTab1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
         Me.SSTab1.Location = New System.Drawing.Point(16, 53)
         Me.SSTab1.Name = "SSTab1"
         Me.SSTab1.SelectedIndex = 1
-        Me.SSTab1.Size = New System.Drawing.Size(521, 482)
+        Me.SSTab1.Size = New System.Drawing.Size(554, 482)
         Me.SSTab1.TabIndex = 8
         '
         '_SSTab1_TabPage0
@@ -156,7 +155,7 @@
         Me._SSTab1_TabPage0.Controls.Add(Me._Label1_7)
         Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
-        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(513, 456)
+        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(546, 456)
         Me._SSTab1_TabPage0.TabIndex = 0
         Me._SSTab1_TabPage0.Text = "Coefficients"
         '
@@ -171,6 +170,64 @@
         Me.dgvCoef.Name = "dgvCoef"
         Me.dgvCoef.Size = New System.Drawing.Size(489, 345)
         Me.dgvCoef.TabIndex = 21
+        '
+        'DataGridViewTextBoxColumn1
+        '
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Value"
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        Me.DataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn1.Width = 53
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        Me.DataGridViewTextBoxColumn2.HeaderText = "Name"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn2.Width = 165
+        '
+        'DataGridViewTextBoxColumn3
+        '
+        Me.DataGridViewTextBoxColumn3.HeaderText = "Type 1"
+        Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
+        Me.DataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn3.Width = 53
+        '
+        'DataGridViewTextBoxColumn4
+        '
+        Me.DataGridViewTextBoxColumn4.HeaderText = "Type 2"
+        Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
+        Me.DataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn4.Width = 53
+        '
+        'DataGridViewTextBoxColumn5
+        '
+        Me.DataGridViewTextBoxColumn5.HeaderText = "Type 3"
+        Me.DataGridViewTextBoxColumn5.Name = "DataGridViewTextBoxColumn5"
+        Me.DataGridViewTextBoxColumn5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn5.Width = 53
+        '
+        'DataGridViewTextBoxColumn6
+        '
+        Me.DataGridViewTextBoxColumn6.HeaderText = "Type 4"
+        Me.DataGridViewTextBoxColumn6.Name = "DataGridViewTextBoxColumn6"
+        Me.DataGridViewTextBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn6.Width = 53
+        '
+        'DataGridViewTextBoxColumn7
+        '
+        Me.DataGridViewTextBoxColumn7.HeaderText = "SetID"
+        Me.DataGridViewTextBoxColumn7.Name = "DataGridViewTextBoxColumn7"
+        Me.DataGridViewTextBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn7.Visible = False
+        '
+        'DataGridViewTextBoxColumn8
+        '
+        Me.DataGridViewTextBoxColumn8.HeaderText = "LCClassID"
+        Me.DataGridViewTextBoxColumn8.Name = "DataGridViewTextBoxColumn8"
+        Me.DataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.DataGridViewTextBoxColumn8.Visible = False
         '
         '_Label1_6
         '
@@ -305,7 +362,7 @@
         Me.cmdSave.Enabled = False
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(378, 553)
+        Me.cmdSave.Location = New System.Drawing.Point(411, 553)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdSave.Size = New System.Drawing.Size(65, 25)
@@ -320,7 +377,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(448, 553)
+        Me.cmdQuit.Location = New System.Drawing.Point(501, 553)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -341,70 +398,12 @@
         Me._Label1_0.TabIndex = 5
         Me._Label1_0.Text = "Pollutant Name:"
         '
-        'DataGridViewTextBoxColumn1
-        '
-        Me.DataGridViewTextBoxColumn1.HeaderText = "Value"
-        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
-        Me.DataGridViewTextBoxColumn1.ReadOnly = True
-        Me.DataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn1.Width = 53
-        '
-        'DataGridViewTextBoxColumn2
-        '
-        Me.DataGridViewTextBoxColumn2.HeaderText = "Name"
-        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
-        Me.DataGridViewTextBoxColumn2.ReadOnly = True
-        Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn2.Width = 165
-        '
-        'DataGridViewTextBoxColumn3
-        '
-        Me.DataGridViewTextBoxColumn3.HeaderText = "Type 1"
-        Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
-        Me.DataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn3.Width = 53
-        '
-        'DataGridViewTextBoxColumn4
-        '
-        Me.DataGridViewTextBoxColumn4.HeaderText = "Type 2"
-        Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
-        Me.DataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn4.Width = 53
-        '
-        'DataGridViewTextBoxColumn5
-        '
-        Me.DataGridViewTextBoxColumn5.HeaderText = "Type 3"
-        Me.DataGridViewTextBoxColumn5.Name = "DataGridViewTextBoxColumn5"
-        Me.DataGridViewTextBoxColumn5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn5.Width = 53
-        '
-        'DataGridViewTextBoxColumn6
-        '
-        Me.DataGridViewTextBoxColumn6.HeaderText = "Type 4"
-        Me.DataGridViewTextBoxColumn6.Name = "DataGridViewTextBoxColumn6"
-        Me.DataGridViewTextBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn6.Width = 53
-        '
-        'DataGridViewTextBoxColumn7
-        '
-        Me.DataGridViewTextBoxColumn7.HeaderText = "SetID"
-        Me.DataGridViewTextBoxColumn7.Name = "DataGridViewTextBoxColumn7"
-        Me.DataGridViewTextBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn7.Visible = False
-        '
-        'DataGridViewTextBoxColumn8
-        '
-        Me.DataGridViewTextBoxColumn8.HeaderText = "LCClassID"
-        Me.DataGridViewTextBoxColumn8.Name = "DataGridViewTextBoxColumn8"
-        Me.DataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.DataGridViewTextBoxColumn8.Visible = False
-        '
         'frmNewPollutants
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(561, 590)
+        Me.ClientSize = New System.Drawing.Size(594, 590)
         Me.Controls.Add(Me.txtPollutant)
         Me.Controls.Add(Me.SSTab1)
         Me.Controls.Add(Me.cmdSave)

@@ -36,23 +36,23 @@
 	'It can be modified using the Windows Form Designer.
 	'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.MainMenu1 = New System.Windows.Forms.MenuStrip
-        Me.mnuOptions = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuNew = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuDelete = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuSoilsHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.Frame1 = New System.Windows.Forms.GroupBox
-        Me.txtSoilsKGrid = New System.Windows.Forms.TextBox
-        Me.txtSoilsGrid = New System.Windows.Forms.TextBox
-        Me.cboSoils = New System.Windows.Forms.ComboBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.cmdQuit = New System.Windows.Forms.Button
+        Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuOptions = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNew = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDelete = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuSoilsHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.txtSoilsKGrid = New System.Windows.Forms.TextBox()
+        Me.txtSoilsGrid = New System.Windows.Forms.TextBox()
+        Me.cboSoils = New System.Windows.Forms.ComboBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cmdSave = New System.Windows.Forms.Button()
+        Me.cmdQuit = New System.Windows.Forms.Button()
         Me.MainMenu1.SuspendLayout()
         Me.Frame1.SuspendLayout()
         Me.SuspendLayout()
@@ -62,7 +62,7 @@
         Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuOptions, Me.mnuHelp})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
-        Me.MainMenu1.Size = New System.Drawing.Size(312, 24)
+        Me.MainMenu1.Size = New System.Drawing.Size(594, 24)
         Me.MainMenu1.TabIndex = 3
         '
         'mnuOptions
@@ -75,13 +75,13 @@
         'mnuNew
         '
         Me.mnuNew.Name = "mnuNew"
-        Me.mnuNew.Size = New System.Drawing.Size(152, 22)
+        Me.mnuNew.Size = New System.Drawing.Size(116, 22)
         Me.mnuNew.Text = "New..."
         '
         'mnuDelete
         '
         Me.mnuDelete.Name = "mnuDelete"
-        Me.mnuDelete.Size = New System.Drawing.Size(152, 22)
+        Me.mnuDelete.Size = New System.Drawing.Size(116, 22)
         Me.mnuDelete.Text = "Delete..."
         '
         'mnuHelp
@@ -113,7 +113,7 @@
         Me.Frame1.Name = "Frame1"
         Me.Frame1.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame1.Size = New System.Drawing.Size(285, 118)
+        Me.Frame1.Size = New System.Drawing.Size(569, 304)
         Me.Frame1.TabIndex = 2
         Me.Frame1.TabStop = False
         Me.Frame1.Text = "Soils Configuration  "
@@ -129,7 +129,7 @@
         Me.txtSoilsKGrid.MaxLength = 0
         Me.txtSoilsKGrid.Name = "txtSoilsKGrid"
         Me.txtSoilsKGrid.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtSoilsKGrid.Size = New System.Drawing.Size(194, 20)
+        Me.txtSoilsKGrid.Size = New System.Drawing.Size(423, 20)
         Me.txtSoilsKGrid.TabIndex = 5
         '
         'txtSoilsGrid
@@ -143,7 +143,7 @@
         Me.txtSoilsGrid.MaxLength = 0
         Me.txtSoilsGrid.Name = "txtSoilsGrid"
         Me.txtSoilsGrid.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtSoilsGrid.Size = New System.Drawing.Size(192, 20)
+        Me.txtSoilsGrid.Size = New System.Drawing.Size(421, 20)
         Me.txtSoilsGrid.TabIndex = 4
         '
         'cboSoils
@@ -155,7 +155,7 @@
         Me.cboSoils.Location = New System.Drawing.Point(76, 21)
         Me.cboSoils.Name = "cboSoils"
         Me.cboSoils.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboSoils.Size = New System.Drawing.Size(143, 22)
+        Me.cboSoils.Size = New System.Drawing.Size(372, 22)
         Me.cboSoils.TabIndex = 3
         '
         'Label5
@@ -203,7 +203,7 @@
         Me.cmdSave.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(153, 152)
+        Me.cmdSave.Location = New System.Drawing.Point(446, 335)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdSave.Size = New System.Drawing.Size(65, 25)
@@ -217,7 +217,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(224, 152)
+        Me.cmdQuit.Location = New System.Drawing.Point(517, 335)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -230,7 +230,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(312, 184)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.cmdSave)
         Me.Controls.Add(Me.cmdQuit)

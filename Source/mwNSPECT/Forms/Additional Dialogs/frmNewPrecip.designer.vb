@@ -41,29 +41,29 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNewPrecip))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Frame1 = New System.Windows.Forms.GroupBox
-        Me.txtRainingDays = New System.Windows.Forms.TextBox
-        Me.cboTimePeriod = New System.Windows.Forms.ComboBox
-        Me.cboPrecipType = New System.Windows.Forms.ComboBox
-        Me.txtPrecipName = New System.Windows.Forms.TextBox
-        Me.txtDesc = New System.Windows.Forms.TextBox
-        Me.txtPrecipFile = New System.Windows.Forms.TextBox
-        Me.cmdBrowseFile = New System.Windows.Forms.Button
-        Me.cboPrecipUnits = New System.Windows.Forms.ComboBox
-        Me.cboGridUnits = New System.Windows.Forms.ComboBox
-        Me.lblRainingDays = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me._Label1_7 = New System.Windows.Forms.Label
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me._Label1_2 = New System.Windows.Forms.Label
-        Me._Label1_6 = New System.Windows.Forms.Label
-        Me.cmdCancel = New System.Windows.Forms.Button
-        Me.cmdOK = New System.Windows.Forms.Button
+        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.txtRainingDays = New System.Windows.Forms.TextBox()
+        Me.cboTimePeriod = New System.Windows.Forms.ComboBox()
+        Me.cboPrecipType = New System.Windows.Forms.ComboBox()
+        Me.txtPrecipName = New System.Windows.Forms.TextBox()
+        Me.txtDesc = New System.Windows.Forms.TextBox()
+        Me.txtPrecipFile = New System.Windows.Forms.TextBox()
+        Me.cmdBrowseFile = New System.Windows.Forms.Button()
+        Me.cboPrecipUnits = New System.Windows.Forms.ComboBox()
+        Me.cboGridUnits = New System.Windows.Forms.ComboBox()
+        Me.lblRainingDays = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me._Label1_7 = New System.Windows.Forms.Label()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me._Label1_0 = New System.Windows.Forms.Label()
+        Me._Label1_2 = New System.Windows.Forms.Label()
+        Me._Label1_6 = New System.Windows.Forms.Label()
+        Me.cmdCancel = New System.Windows.Forms.Button()
+        Me.cmdOK = New System.Windows.Forms.Button()
         Me.Frame1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -344,7 +344,7 @@
         Me.cmdCancel.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCancel.Location = New System.Drawing.Point(396, 257)
+        Me.cmdCancel.Location = New System.Drawing.Point(513, 339)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
@@ -359,7 +359,7 @@
         Me.cmdOK.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdOK.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOK.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOK.Location = New System.Drawing.Point(326, 257)
+        Me.cmdOK.Location = New System.Drawing.Point(443, 339)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdOK.Size = New System.Drawing.Size(65, 25)
@@ -372,7 +372,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(477, 290)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.cmdCancel)
         Me.Controls.Add(Me.cmdOK)

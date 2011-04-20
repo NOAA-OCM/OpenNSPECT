@@ -44,47 +44,47 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Me.MainMenu1 = New System.Windows.Forms.MenuStrip
-        Me.mnuLCTypes = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuNewLCType = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuDelLCType = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuImpLCType = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuExpLCType = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuEdit = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuAppend = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuInsertRow = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuDeleteRow = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuLCHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog
-        Me.dlgCMD1Save = New System.Windows.Forms.SaveFileDialog
-        Me.btnRestoreDefaults = New System.Windows.Forms.Button
-        Me.btnCancel = New System.Windows.Forms.Button
-        Me.btnSave = New System.Windows.Forms.Button
-        Me.txtLCTypeDesc = New System.Windows.Forms.TextBox
-        Me.cmbxLCType = New System.Windows.Forms.ComboBox
-        Me._Label2_2 = New System.Windows.Forms.Label
-        Me._Label2_1 = New System.Windows.Forms.Label
-        Me._Label2_0 = New System.Windows.Forms.Label
-        Me._Label1_6 = New System.Windows.Forms.Label
-        Me._Label1_7 = New System.Windows.Forms.Label
-        Me.dgvLCTypes = New System.Windows.Forms.DataGridView
+        Me.components = New System.ComponentModel.Container()
+        Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuLCTypes = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewLCType = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDelLCType = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuImpLCType = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuExpLCType = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuEdit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAppend = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuInsertRow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDeleteRow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuLCHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog()
+        Me.dlgCMD1Save = New System.Windows.Forms.SaveFileDialog()
+        Me.btnRestoreDefaults = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnSave = New System.Windows.Forms.Button()
+        Me.txtLCTypeDesc = New System.Windows.Forms.TextBox()
+        Me.cmbxLCType = New System.Windows.Forms.ComboBox()
+        Me._Label2_2 = New System.Windows.Forms.Label()
+        Me._Label2_1 = New System.Windows.Forms.Label()
+        Me._Label2_0 = New System.Windows.Forms.Label()
+        Me._Label1_6 = New System.Windows.Forms.Label()
+        Me._Label1_7 = New System.Windows.Forms.Label()
+        Me.dgvLCTypes = New System.Windows.Forms.DataGridView()
+        Me.colValue = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colNameCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colCNA = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colCNB = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colCNC = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colCND = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colCoverFactor = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colWetCheck = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.colLCTYPEID = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colLCClassID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.cntxmnuGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.colValue = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colNameCol = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colCNA = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colCNB = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colCNC = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colCND = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colCoverFactor = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colWetCheck = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.colLCTYPEID = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colLCClassID = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.MainMenu1.SuspendLayout()
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cntxmnuGrid.SuspendLayout()
@@ -95,7 +95,7 @@
         Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLCTypes, Me.mnuEdit, Me.mnuHelp})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
-        Me.MainMenu1.Size = New System.Drawing.Size(618, 24)
+        Me.MainMenu1.Size = New System.Drawing.Size(610, 24)
         Me.MainMenu1.TabIndex = 14
         '
         'mnuLCTypes
@@ -176,7 +176,7 @@
         Me.btnRestoreDefaults.Enabled = False
         Me.btnRestoreDefaults.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRestoreDefaults.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnRestoreDefaults.Location = New System.Drawing.Point(25, 551)
+        Me.btnRestoreDefaults.Location = New System.Drawing.Point(19, 535)
         Me.btnRestoreDefaults.Name = "btnRestoreDefaults"
         Me.btnRestoreDefaults.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.btnRestoreDefaults.Size = New System.Drawing.Size(103, 25)
@@ -191,7 +191,7 @@
         Me.btnCancel.Cursor = System.Windows.Forms.Cursors.Default
         Me.btnCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnCancel.Location = New System.Drawing.Point(512, 550)
+        Me.btnCancel.Location = New System.Drawing.Point(533, 535)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.btnCancel.Size = New System.Drawing.Size(65, 25)
@@ -207,7 +207,7 @@
         Me.btnSave.Enabled = False
         Me.btnSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnSave.Location = New System.Drawing.Point(441, 550)
+        Me.btnSave.Location = New System.Drawing.Point(438, 535)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.btnSave.Size = New System.Drawing.Size(65, 25)
@@ -226,7 +226,7 @@
         Me.txtLCTypeDesc.MaxLength = 0
         Me.txtLCTypeDesc.Name = "txtLCTypeDesc"
         Me.txtLCTypeDesc.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtLCTypeDesc.Size = New System.Drawing.Size(362, 20)
+        Me.txtLCTypeDesc.Size = New System.Drawing.Size(482, 20)
         Me.txtLCTypeDesc.TabIndex = 2
         '
         'cmbxLCType
@@ -320,40 +320,16 @@
         Me.dgvLCTypes.AllowUserToDeleteRows = False
         Me.dgvLCTypes.AllowUserToResizeColumns = False
         Me.dgvLCTypes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvLCTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLCTypes.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colValue, Me.colNameCol, Me.colCNA, Me.colCNB, Me.colCNC, Me.colCND, Me.colCoverFactor, Me.colWetCheck, Me.colLCTYPEID, Me.colLCClassID})
         Me.dgvLCTypes.Location = New System.Drawing.Point(7, 100)
         Me.dgvLCTypes.MultiSelect = False
         Me.dgvLCTypes.Name = "dgvLCTypes"
         Me.dgvLCTypes.ShowCellToolTips = False
-        Me.dgvLCTypes.Size = New System.Drawing.Size(604, 444)
+        Me.dgvLCTypes.Size = New System.Drawing.Size(596, 426)
         Me.dgvLCTypes.TabIndex = 15
-        '
-        'cntxmnuGrid
-        '
-        Me.cntxmnuGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteRowToolStripMenuItem})
-        Me.cntxmnuGrid.Name = "ContextMenuStrip1"
-        Me.cntxmnuGrid.Size = New System.Drawing.Size(134, 70)
-        '
-        'AddRowToolStripMenuItem
-        '
-        Me.AddRowToolStripMenuItem.Name = "AddRowToolStripMenuItem"
-        Me.AddRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
-        Me.AddRowToolStripMenuItem.Text = "Add Row"
-        '
-        'InsertRowToolStripMenuItem
-        '
-        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
-        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
-        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
-        '
-        'DeleteRowToolStripMenuItem
-        '
-        Me.DeleteRowToolStripMenuItem.Name = "DeleteRowToolStripMenuItem"
-        Me.DeleteRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
-        Me.DeleteRowToolStripMenuItem.Text = "Delete Row"
         '
         'colValue
         '
@@ -436,15 +412,39 @@
         Me.colLCClassID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.colLCClassID.Visible = False
         '
+        'cntxmnuGrid
+        '
+        Me.cntxmnuGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteRowToolStripMenuItem})
+        Me.cntxmnuGrid.Name = "ContextMenuStrip1"
+        Me.cntxmnuGrid.Size = New System.Drawing.Size(134, 70)
+        '
+        'AddRowToolStripMenuItem
+        '
+        Me.AddRowToolStripMenuItem.Name = "AddRowToolStripMenuItem"
+        Me.AddRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.AddRowToolStripMenuItem.Text = "Add Row"
+        '
+        'InsertRowToolStripMenuItem
+        '
+        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
+        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
+        '
+        'DeleteRowToolStripMenuItem
+        '
+        Me.DeleteRowToolStripMenuItem.Name = "DeleteRowToolStripMenuItem"
+        Me.DeleteRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.DeleteRowToolStripMenuItem.Text = "Delete Row"
+        '
         'frmLandCoverTypes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(618, 590)
+        Me.ClientSize = New System.Drawing.Size(610, 572)
         Me.Controls.Add(Me.dgvLCTypes)
-        Me.Controls.Add(Me.btnRestoreDefaults)
         Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnRestoreDefaults)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.txtLCTypeDesc)
         Me.Controls.Add(Me.cmbxLCType)

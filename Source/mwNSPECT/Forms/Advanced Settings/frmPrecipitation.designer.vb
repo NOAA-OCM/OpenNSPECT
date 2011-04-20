@@ -48,35 +48,35 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmPrecipitation))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.MainMenu1 = New System.Windows.Forms.MenuStrip
-        Me.mnuPrecipOpts = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuNewPrecip = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuDelPrecip = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuPrecipHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.Frame1 = New System.Windows.Forms.GroupBox
-        Me.cboScenName = New System.Windows.Forms.ComboBox
-        Me.txtRainingDays = New System.Windows.Forms.TextBox
-        Me.cboTimePeriod = New System.Windows.Forms.ComboBox
-        Me.cboPrecipType = New System.Windows.Forms.ComboBox
-        Me.cmdBrowseFile = New System.Windows.Forms.Button
-        Me.txtDesc = New System.Windows.Forms.TextBox
-        Me.txtPrecipFile = New System.Windows.Forms.TextBox
-        Me.cboGridUnits = New System.Windows.Forms.ComboBox
-        Me.cboPrecipUnits = New System.Windows.Forms.ComboBox
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me.lblRainingDays = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me._Label1_2 = New System.Windows.Forms.Label
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me._Label1_6 = New System.Windows.Forms.Label
-        Me._Label1_7 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.cmdQuit = New System.Windows.Forms.Button
+        Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuPrecipOpts = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewPrecip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDelPrecip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuPrecipHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.cboScenName = New System.Windows.Forms.ComboBox()
+        Me.txtRainingDays = New System.Windows.Forms.TextBox()
+        Me.cboTimePeriod = New System.Windows.Forms.ComboBox()
+        Me.cboPrecipType = New System.Windows.Forms.ComboBox()
+        Me.cmdBrowseFile = New System.Windows.Forms.Button()
+        Me.txtDesc = New System.Windows.Forms.TextBox()
+        Me.txtPrecipFile = New System.Windows.Forms.TextBox()
+        Me.cboGridUnits = New System.Windows.Forms.ComboBox()
+        Me.cboPrecipUnits = New System.Windows.Forms.ComboBox()
+        Me._Label1_0 = New System.Windows.Forms.Label()
+        Me.lblRainingDays = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me._Label1_2 = New System.Windows.Forms.Label()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me._Label1_6 = New System.Windows.Forms.Label()
+        Me._Label1_7 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.cmdSave = New System.Windows.Forms.Button()
+        Me.cmdQuit = New System.Windows.Forms.Button()
         Me.MainMenu1.SuspendLayout()
         Me.Frame1.SuspendLayout()
         Me.SuspendLayout()
@@ -86,7 +86,7 @@
         Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuPrecipOpts, Me.mnuHelp})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
-        Me.MainMenu1.Size = New System.Drawing.Size(477, 24)
+        Me.MainMenu1.Size = New System.Drawing.Size(594, 24)
         Me.MainMenu1.TabIndex = 8
         '
         'mnuPrecipOpts
@@ -99,13 +99,13 @@
         'mnuNewPrecip
         '
         Me.mnuNewPrecip.Name = "mnuNewPrecip"
-        Me.mnuNewPrecip.Size = New System.Drawing.Size(116, 22)
+        Me.mnuNewPrecip.Size = New System.Drawing.Size(152, 22)
         Me.mnuNewPrecip.Text = "New..."
         '
         'mnuDelPrecip
         '
         Me.mnuDelPrecip.Name = "mnuDelPrecip"
-        Me.mnuDelPrecip.Size = New System.Drawing.Size(116, 22)
+        Me.mnuDelPrecip.Size = New System.Drawing.Size(152, 22)
         Me.mnuDelPrecip.Text = "Delete..."
         '
         'mnuHelp
@@ -148,7 +148,7 @@
         Me.Frame1.Name = "Frame1"
         Me.Frame1.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame1.Size = New System.Drawing.Size(455, 236)
+        Me.Frame1.Size = New System.Drawing.Size(555, 291)
         Me.Frame1.TabIndex = 6
         Me.Frame1.TabStop = False
         Me.Frame1.Text = "Choose a precipitation scenario to view or edit  "
@@ -394,7 +394,7 @@
         Me.cmdSave.Enabled = False
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(314, 269)
+        Me.cmdSave.Location = New System.Drawing.Point(431, 339)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdSave.Size = New System.Drawing.Size(65, 25)
@@ -409,7 +409,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(385, 269)
+        Me.cmdQuit.Location = New System.Drawing.Point(502, 339)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -422,7 +422,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(477, 302)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.cmdSave)
         Me.Controls.Add(Me.cmdQuit)
