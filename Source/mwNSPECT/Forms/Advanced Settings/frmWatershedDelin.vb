@@ -38,24 +38,25 @@ Friend Class frmWatershedDelin
         Try
             'String and recordset
             Dim strSQLDelin As String = "SELECT * FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
-            Dim delinCmd As New OleDbCommand(strSQLDelin, modUtil.g_DBConn)
-            Dim delin As OleDbDataReader = delinCmd.ExecuteReader()
-
-            'Check for records
-            If delin.HasRows Then
-                delin.Read()
-                'Populate the controls...
-                txtDEMFile.Text = delin.Item("DEMFileName")
-                cboDEMUnits.SelectedIndex = delin.Item("DEMGridUnits")
-                txtStream.Text = delin.Item("StreamFileName") & ""
-                chkHydroCorr.CheckState = delin.Item("HydroCorrected")
-                cboWSSize.SelectedIndex = delin.Item("SubWSSize")
-                txtWSFile.Text = delin.Item("wsfilename") & ""
-                txtFlowAccumGrid.Text = delin.Item("FlowAccumFileName") & ""
-                txtLSGrid.Text = delin.Item("LSFileName") & ""
-            Else
-                MsgBox("Warning: There are no watershed delineation scenarios remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
-            End If
+            Using delinCmd As New OleDbCommand(strSQLDelin, modUtil.g_DBConn)
+                Using delin As OleDbDataReader = delinCmd.ExecuteReader()
+                    'Check for records
+                    If delin.HasRows Then
+                        delin.Read()
+                        'Populate the controls...
+                        txtDEMFile.Text = delin.Item("DEMFileName")
+                        cboDEMUnits.SelectedIndex = delin.Item("DEMGridUnits")
+                        txtStream.Text = delin.Item("StreamFileName") & ""
+                        chkHydroCorr.CheckState = delin.Item("HydroCorrected")
+                        cboWSSize.SelectedIndex = delin.Item("SubWSSize")
+                        txtWSFile.Text = delin.Item("wsfilename") & ""
+                        txtFlowAccumGrid.Text = delin.Item("FlowAccumFileName") & ""
+                        txtLSGrid.Text = delin.Item("LSFileName") & ""
+                    Else
+                        MsgBox("Warning: There are no watershed delineation scenarios remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
+                    End If
+                End Using
+            End Using
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -107,7 +108,7 @@ Friend Class frmWatershedDelin
                 If intAns = MsgBoxResult.Yes Then
 
                     'Set up a delete rs and get rid of it
-                    Dim cmdDel As New OleDbCommand(strSQLWSDel, g_DBConn)
+                    Dim cmdDel As New DataHelper(strSQLWSDel)
                     cmdDel.ExecuteNonQuery()
 
                     strFolder = modUtil.g_nspectPath & "\wsdelin\" & cboWSDelin.Text

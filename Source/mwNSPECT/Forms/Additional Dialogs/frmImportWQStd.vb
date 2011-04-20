@@ -28,7 +28,7 @@ Friend Class frmImportWQStd
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
         Try
             'browse...get output filename
-            Using dlgOpen As New Windows.Forms.OpenFileDialog() With {.Filter = MSG1, .Title = MSG2}
+            Using dlgOpen As New Windows.Forms.OpenFileDialog() With {.Filter = MSG1TextFile, .Title = MSG2}
                 If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
                     txtImpFile.Text = Trim(dlgOpen.FileName)
                     _strFileName = txtImpFile.Text
@@ -88,7 +88,7 @@ Friend Class frmImportWQStd
                         strCmd = "INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('" & Replace(txtStdName.Text, "'", "''") & "', '" & Replace(strDescript, "'", "''") & "')"
                         'Name Check
                         If modUtil.UniqueName("WQCRITERIA", (txtStdName.Text)) Then
-                            Dim cmdIns As New OleDbCommand(strCmd, g_DBConn)
+                            Dim cmdIns As New DataHelper(strCmd)
                             cmdIns.ExecuteNonQuery()
                         Else
                             MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
@@ -140,18 +140,18 @@ Friend Class frmImportWQStd
 
             'Get the WQCriteria values using the name
             strPollAdd = "SELECT * FROM WQCriteria WHERE NAME = " & "'" & strName & "'"
-            Dim cmdPollAdd As New OleDbCommand(strPollAdd, g_DBConn)
+            Dim cmdPollAdd As New DataHelper(strPollAdd)
             Dim datapolladd As OleDbDataReader = cmdPollAdd.ExecuteReader
             datapolladd.Read()
 
             'Get the pollutant particulars
             strPollDetails = "SELECT * FROM POLLUTANT WHERE NAME =" & "'" & strPoll & "'"
-            Dim cmdPollDet As New OleDbCommand(strPollDetails, g_DBConn)
+            Dim cmdPollDet As New DataHelper(strPollDetails)
             Dim datapolldet As OleDbDataReader = cmdPollDet.ExecuteReader
             datapolldet.Read()
 
             strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('" & datapolldet("POLLID") & "', '" & datapolladd("WQCRITID") & "'," & strThresh & ")"
-            Dim cmdIns As New OleDbCommand(strCmdInsert, g_DBConn)
+            Dim cmdIns As New DataHelper(strCmdInsert)
             cmdIns.ExecuteNonQuery()
 
             datapolladd.Close()

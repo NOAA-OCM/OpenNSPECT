@@ -891,14 +891,14 @@ Friend Class frmProjectSetup
             'Obtain Watershed values
 
             strWaterShed = "Select * from WSDelineation Where Name like '" & _XMLPrjParams.strWaterShedDelin & "'"
-            Dim cmdWS As New OleDbCommand(strWaterShed, g_DBConn)
+            Dim cmdWS As New DataHelper(strWaterShed)
 
             'END STEP 7: -----------------------------------------------------------------------------------------------------
 
             'STEP 8: ---------------------------------------------------------------------------------------------------------
             'Set the Analysis Environment and globals for output workspace
 
-            modMainRun.SetGlobalEnvironment(cmdWS, _SelectLyrPath, _SelectedShapes)
+            modMainRun.SetGlobalEnvironment(cmdWS.GetCommand(), _SelectLyrPath, _SelectedShapes)
 
             'END STEP 8: -----------------------------------------------------------------------------------------------------
 
@@ -916,7 +916,7 @@ Friend Class frmProjectSetup
             'Create the runoff GRID
             'Get the precip scenario stuff
             strPrecip = "Select * from PrecipScenario where name like '" & _XMLPrjParams.strPrecipScenario & "'"
-            Dim cmdPrecip As New OleDbCommand(strPrecip, g_DBConn)
+            Dim cmdPrecip As New DataHelper(strPrecip)
             Dim dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
             dataPrecip.Read()
             'Added 6/04 to account for different PrecipTypes
@@ -931,7 +931,7 @@ Friend Class frmProjectSetup
                 strLCType = _XMLPrjParams.strLCGridType
             End If
 
-            If Not modRunoff.CreateRunoffGrid(_XMLPrjParams.strLCGridFileName, strLCType, cmdPrecip, _XMLPrjParams.strSoilsHydFileName, _XMLPrjParams.clsOutputItems) Then
+            If Not modRunoff.CreateRunoffGrid(_XMLPrjParams.strLCGridFileName, strLCType, cmdPrecip.GetCommand(), _XMLPrjParams.strSoilsHydFileName, _XMLPrjParams.clsOutputItems) Then
                 Exit Sub
             End If
             'END STEP 9: -----------------------------------------------------------------------------------------------------
@@ -1095,7 +1095,7 @@ Friend Class frmProjectSetup
             End If
             Dim dlgXMLOpen As New Windows.Forms.OpenFileDialog
             With dlgXMLOpen
-                .Filter = MSG8
+                .Filter = MSG8XMLFile
                 .InitialDirectory = strFolder
                 .Title = "Open N-SPECT Project File"
                 .FilterIndex = 1
@@ -1594,7 +1594,7 @@ Friend Class frmProjectSetup
             'If it does not already exist, open Save As... dialog
             If Not _booExists Then
                 With dlgXML
-                    .Filter = MSG8
+                    .Filter = MSG8XMLFile
                     .Title = "Save Project File As..."
                     .InitialDirectory = strFolder
                     .FileName = txtProjectName.Text
@@ -1619,7 +1619,7 @@ Friend Class frmProjectSetup
 
                     If intvbYesNo = MsgBoxResult.Yes Then
                         With dlgXML
-                            .Filter = MSG8
+                            .Filter = MSG8XMLFile
                             .Title = "Save Project File As..."
                             .InitialDirectory = strFolder
                             .FilterIndex = 1

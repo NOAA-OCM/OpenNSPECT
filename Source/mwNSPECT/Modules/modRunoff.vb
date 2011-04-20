@@ -174,10 +174,10 @@ Module modRunoff
             'STEP 1:  get the records from the database -----------------------------------------------
             strRS = "SELECT LCCLASS.LCClassID, Value, LCCLASS.Name as Name2, LCCLASS.LCTypeID, [CN-A], [CN-B], [CN-C], [CN-D], CoverFactor, W_WL FROM LCCLASS " & "LEFT OUTER JOIN LCTYPE ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "Where LCTYPE.NAME = '" & strLandClass & "' ORDER BY LCCLASS.VALUE"
 
-            Dim cmdLandClass As New OleDbCommand(strRS, g_DBConn)
+            Dim cmdLandClass As New DataHelper(strRS)
 
             'while here, make metadata
-            _strRunoffMetadata = CreateMetadata(cmdLandClass, strLandClass, g_booLocalEffects)
+            _strRunoffMetadata = CreateMetadata(cmdLandClass.GetCommand(), strLandClass, g_booLocalEffects)
             'End Database stuff
 
             'STEP 2: Raster Values ---------------------------------------------------------------------
@@ -226,7 +226,7 @@ Module modRunoff
 
 
                 'STEP 3: Table values vs. Raster Values Count - if not equal bark -------------------------
-                Dim dataLandClass As OleDbDataReader
+                Dim dataLandClass = cmdLandClass.ExecuteReader()
 
                 Dim rowidx As Integer = 0
 
@@ -235,8 +235,7 @@ Module modRunoff
                 For i = 1 To dblMaxValue
 
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
-                        dataLandClass = cmdLandClass.ExecuteReader
-
+                        'MK a new reader was created each time this loop ran, but I couldn't see why as it was passed the same query.
                         booValueFound = False
                         While dataLandClass.Read()
                             If mwTable.CellValue(FieldIndex, rowidx) = dataLandClass("Value") Then
@@ -265,7 +264,6 @@ Module modRunoff
                             mwTable.Close()
                             Exit Function
                         End If
-                        dataLandClass.Close()
 
                     Else
                         If strPick(0) = "" Then
@@ -282,6 +280,7 @@ Module modRunoff
                     End If
 
                 Next i
+                dataLandClass.Close()
 
                 ConstructPickStatment = strPick
 

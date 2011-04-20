@@ -100,7 +100,7 @@ Module modRusle
         End If
 
         strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
-        Dim cmdCov As New OleDbCommand(strCovFactor, g_DBConn)
+        Dim cmdCov As New DataHelper(strCovFactor)
 
         If Len(strError) > 0 Then
             MsgBox(strError)
@@ -108,7 +108,7 @@ Module modRusle
         End If
 
         'Get the con statement for the cover factor calculation
-        strConStatement = ConstructPickStatment(cmdCov, g_LandCoverRaster)
+        strConStatement = ConstructPickStatment(cmdCov.GetCommand(), g_LandCoverRaster)
 
         'Are they using SDR
         _strSDRFileName = Trim(strSDRFileName)

@@ -1202,7 +1202,7 @@ Module modUtil
             Dim strCmdText As String
 
             strCmdText = "SELECT * FROM " & strTableName & " WHERE NAME LIKE '" & strName & "'"
-            Dim cmdName As New OleDbCommand(strCmdText, g_DBConn)
+            Dim cmdName As New DataHelper(strCmdText)
             Dim datName As OleDbDataReader = cmdName.ExecuteReader()
             If datName.HasRows Then
                 UniqueName = False
@@ -1225,7 +1225,7 @@ Module modUtil
             Dim sCurrNum As String
             Dim strCurrNameRecord As String
             strCmdText = "SELECT * FROM " & strTableName '& " WHERE NAME LIKE '" & strName & "'"
-            Dim cmd As New OleDbCommand(strCmdText, g_DBConn)
+            Dim cmd As New DataHelper(strCmdText)
             Dim data As OleDbDataReader = cmd.ExecuteReader
             sCurrNum = "0"
 

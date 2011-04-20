@@ -166,7 +166,7 @@ Friend Class frmNewPrecip
                 If modUtil.UniqueName("PrecipScenario", txtPrecipName.Text) Then
                     'Execute the statement.
 
-                    Dim cmdInsert As New OleDbCommand(strCmdInsert, g_DBConn)
+                    Dim cmdInsert As New DataHelper(strCmdInsert)
                     cmdInsert.ExecuteNonQuery()
 
                     'Confirm

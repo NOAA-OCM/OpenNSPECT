@@ -49,15 +49,12 @@ Friend Class frmSoilsSetup
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
         Try
             'browse...get output filename
-            Dim dlgOpen As New Windows.Forms.OpenFileDialog
-
-            dlgOpen.Filter = MSG6
-            dlgOpen.Title = "Open Soils Dataset"
-
-            If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
-                txtSoilsDS.Text = Trim(dlgOpen.FileName)
-                PopulateCbo()
-            End If
+            Using dlgOpen As New Windows.Forms.OpenFileDialog() With {.Filter = MSG6ShapeFile, .Title = "Open Soils Dataset"}
+                If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    txtSoilsDS.Text = Trim(dlgOpen.FileName)
+                    PopulateCbo()
+                End If
+            End Using
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -378,7 +375,7 @@ Friend Class frmSoilsSetup
                 'STEP 4:
                 'Now enter all into database
                 strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & CDbl(txtMUSLEExp.Text) & ")"
-                Dim cmdIns As New OleDbCommand(strCmd, g_DBConn)
+                Dim cmdIns As New DataHelper(strCmd)
                 cmdIns.ExecuteNonQuery()
 
                 modProgDialog.KillDialog()
