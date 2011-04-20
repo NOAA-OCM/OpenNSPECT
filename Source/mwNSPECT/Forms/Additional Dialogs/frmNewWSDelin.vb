@@ -444,7 +444,7 @@ Friend Class frmNewWSDelin
             _strDirFileName = OutPath + "flowdir" + g_OutputGridExt
             Dim strSlpFileName As String = OutPath + "slope" + g_OutputGridExt
             If modProgDialog.g_boolCancel Then
-                ret = MapWinGeoProc.Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Nothing)
+                ret = MapWinGeoProc.Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Environment.ProcessorCount, Nothing)
                 If ret <> 0 Then Return False
                 pFlowDirRaster.Open(mwDirFileName)
 
@@ -465,7 +465,7 @@ Friend Class frmNewWSDelin
             modProgDialog.ProgDialog("Computing Flow Accumulation...", strProgTitle, 0, 10, 3, Me)
             _strAccumFileName = OutPath + "flowacc" + g_OutputGridExt
             If modProgDialog.g_boolCancel Then
-                ret = MapWinGeoProc.Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Nothing)
+                ret = MapWinGeoProc.Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Environment.ProcessorCount, Nothing)
                 If ret <> 0 Then Return False
                 pAccumRaster.Open(_strAccumFileName)
             Else
@@ -504,21 +504,43 @@ Friend Class frmNewWSDelin
             _strStreamLayer = OutPath + "stream.shp"
             modProgDialog.ProgDialog("Creating Stream Network...", strProgTitle, 0, 10, 4, Me)
             If modProgDialog.g_boolCancel Then
-                ret = MapWinGeoProc.Hydrology.DelinStreamGrids(pSurfaceDatasetIn.Filename, pFillRaster.Filename, pFlowDirRaster.Filename, strSlpFileName, pAccumRaster.Filename, "", strahlordout, longestupslopeout, totalupslopeout, streamgridout, streamordout, treedatout, coorddatout, dblSubShedSize, False, False, Nothing)
+                ret = MapWinGeoProc.Hydrology.DelinStreamGrids(
+       pSurfaceDatasetIn.Filename, _
+             pFillRaster.Filename, _
+             pFlowDirRaster.Filename, _
+             strSlpFileName, _
+             pAccumRaster.Filename, _
+             "", _
+             strahlordout, _
+             longestupslopeout, _
+             totalupslopeout, _
+             streamgridout, _
+             streamordout, _
+             treedatout, _
+             coorddatout, _
+              _strStreamLayer, _
+             strWSGridOut, _
+             dblSubShedSize, _
+             False, _
+             False, _
+             2, _
+             Nothing)
                 If ret <> 0 Then Return False
             Else
                 Return False
             End If
 
-            '        'Step 6: Do WaterShed Op
-            _strWShedFileName = OutPath + "basinpoly.shp"
-            modProgDialog.ProgDialog("Creating Watershed GRID...", strProgTitle, 0, 10, 5, Me)
-            If modProgDialog.g_boolCancel Then
-                ret = MapWinGeoProc.Hydrology.DelinStreamsAndSubBasins(pFlowDirRaster.Filename, treedatout, coorddatout, _strStreamLayer, strWSGridOut, Nothing)
-                If ret <> 0 Then Return False
-            Else
-                Return False
-            End If
+            'The 14th and 15th parameters of DelinStreamGrids are the 4th and 5th parameters of the old function DelinStreamsAndSubBasins, and you do need them.
+            '        'Step 6: Do WaterShed Op got moved into above step.
+            '_strWShedFileName = OutPath + "basinpoly.shp"
+            'modProgDialog.ProgDialog("Creating Watershed GRID...", strProgTitle, 0, 10, 5, Me)
+            'If modProgDialog.g_boolCancel Then
+
+            '    'HACK ret = MapWinGeoProc.Hydrology.DelinStreamsAndSubBasins(pFlowDirRaster.Filename, treedatout, coorddatout, _strStreamLayer, strWSGridOut, Nothing)
+            '    If ret <> 0 Then Return False
+            'Else
+            '    Return False
+            'End If
 
             modProgDialog.ProgDialog("Creating Watershed Shape...", strProgTitle, 0, 10, 7, Me)
             If modProgDialog.g_boolCancel Then

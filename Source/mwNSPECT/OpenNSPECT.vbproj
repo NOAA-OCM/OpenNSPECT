@@ -31,7 +31,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -97,13 +97,13 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\..\..\Program Files\MapWindow\Plugins\nSpect\</OutputPath>
+    <OutputPath>..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\nSpect\</OutputPath>
     <BaseAddress>285212672</BaseAddress>
     <DocumentationFile>OpenNSPECT.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
     <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisLogFile>..\..\..\MapWindow4Dev\Bin\Plugins\NSPECT\OpenNSPECT.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
@@ -113,18 +113,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.MapWinGIS">
-      <HintPath>..\..\..\..\Program Files\MapWindow\Interop.MapWinGIS.dll</HintPath>
+      <HintPath>..\libs\Interop.MapWinGIS.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.TKTAUDEMLib">
-      <HintPath>..\..\..\..\Users\Matthew\Desktop\Interop.TKTAUDEMLib.dll</HintPath>
+      <HintPath>..\libs\Interop.TKTAUDEMLib.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="MapWinGeoProc">
-      <HintPath>..\..\..\..\Program Files\MapWindow\MapWinGeoProc.dll</HintPath>
+      <HintPath>..\libs\MapWinGeoProc.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MapWinInterfaces">
-      <HintPath>..\..\..\..\Program Files\MapWindow\MapWinInterfaces.dll</HintPath>
+      <HintPath>..\libs\MapWinInterfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -468,6 +470,9 @@
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
