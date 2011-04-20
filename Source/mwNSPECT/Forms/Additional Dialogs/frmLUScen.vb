@@ -23,7 +23,7 @@ Friend Class frmLUScen
     Private _strUndoText As String
     Private _clsManScen As clsXMLLUScen
     Private _strWQStd As String
-    Private _frmPrj As frmProjectSetup
+    Private _frmPrj As MainForm
     Private _stopClose As Boolean
     Private _SelectLyrPath As String
     Private _SelectedShapes As Collections.Generic.List(Of Integer)
@@ -120,7 +120,7 @@ Friend Class frmLUScen
 #Region "Helper Subs"
 
 
-    Public Sub init(ByVal strWQStd As String, ByRef frmProj As frmProjectSetup)
+    Public Sub init(ByVal strWQStd As String, ByRef frmProj As MainForm)
         Try
             _frmPrj = frmProj
             _strWQStd = strWQStd

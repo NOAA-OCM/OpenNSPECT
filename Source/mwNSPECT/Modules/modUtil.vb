@@ -26,7 +26,7 @@ Module modUtil
 
     Public g_CurrentProjectPath As String
 
-    Public g_cb As frmProjectSetup
+    Public g_cb As MainForm
     Public g_comp As frmCompareOutputs
     Public g_luscen As frmLUScen
 
@@ -83,7 +83,7 @@ Module modUtil
         Try
             If Not g_boolConnected Then
                 'TODO: check for location of file and prompt if not found
-                g_strConn = "Provider=Microsoft.Jet.OLEDB.4.0;" & "Data Source=" & g_nspectPath & "\nspect.mdb"
+                g_strConn = String.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0}\nspect.mdb", g_nspectPath)
 
                 g_DBConn = New OleDbConnection(g_strConn)
 

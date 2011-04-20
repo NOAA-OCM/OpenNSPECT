@@ -23,7 +23,7 @@ Friend Class frmUserWShed
     Const c_sModuleFileName As String = "frmUserWShed.vb"
 
     Private _frmWS As frmWatershedDelin
-    Private _frmPrj As frmProjectSetup
+    Private _frmPrj As MainForm
     Private _strDEM2BFileName As String
     Private _strNibbleName As String
     Private _dem_null As Double
@@ -166,7 +166,7 @@ Friend Class frmUserWShed
 #Region "Helper"
 
 
-    Public Sub Init(ByRef frmWS As frmWatershedDelin, ByRef frmPrj As frmProjectSetup)
+    Public Sub Init(ByRef frmWS As frmWatershedDelin, ByRef frmPrj As MainForm)
         Try
             _frmWS = frmWS
             _frmPrj = frmPrj

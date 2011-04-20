@@ -24,7 +24,7 @@ Friend Class frmAddWQStd
     Const c_sModuleFileName As String = "frmAddWQStd.vb"
 
     Private _frmWQStd As frmWaterQualityStandard
-    Private _frmPrj As frmProjectSetup
+    Private _frmPrj As MainForm
     Private _Change As Boolean
 
 
@@ -155,7 +155,7 @@ Friend Class frmAddWQStd
 #Region "Helper Functions"
 
 
-    Public Sub Init(ByRef frmWQStd As frmWaterQualityStandard, ByRef frmPrj As frmProjectSetup)
+    Public Sub Init(ByRef frmWQStd As frmWaterQualityStandard, ByRef frmPrj As MainForm)
         Try
             _frmWQStd = frmWQStd
             _frmPrj = frmPrj
