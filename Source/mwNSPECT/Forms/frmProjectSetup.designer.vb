@@ -764,7 +764,7 @@
         Me.SSTab1.Location = New System.Drawing.Point(16, 256)
         Me.SSTab1.Name = "SSTab1"
         Me.SSTab1.SelectedIndex = 3
-        Me.SSTab1.Size = New System.Drawing.Size(618, 203)
+        Me.SSTab1.Size = New System.Drawing.Size(618, 209)
         Me.SSTab1.TabIndex = 12
         '
         '_SSTab1_TabPage0
@@ -772,7 +772,7 @@
         Me._SSTab1_TabPage0.Controls.Add(Me.dgvPollutants)
         Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
-        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(610, 177)
+        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(610, 183)
         Me._SSTab1_TabPage0.TabIndex = 0
         Me._SSTab1_TabPage0.Text = "Pollutants"
         '
@@ -849,7 +849,7 @@
         Me._SSTab1_TabPage1.Controls.Add(Me.frmSDR)
         Me._SSTab1_TabPage1.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage1.Name = "_SSTab1_TabPage1"
-        Me._SSTab1_TabPage1.Size = New System.Drawing.Size(610, 177)
+        Me._SSTab1_TabPage1.Size = New System.Drawing.Size(610, 183)
         Me._SSTab1_TabPage1.TabIndex = 1
         Me._SSTab1_TabPage1.Text = "Erosion"
         '
@@ -873,7 +873,7 @@
         Me.lblKFactor.Cursor = System.Windows.Forms.Cursors.Default
         Me.lblKFactor.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblKFactor.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.lblKFactor.Location = New System.Drawing.Point(105, 61)
+        Me.lblKFactor.Location = New System.Drawing.Point(104, 37)
         Me.lblKFactor.Name = "lblKFactor"
         Me.lblKFactor.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.lblKFactor.Size = New System.Drawing.Size(254, 21)
@@ -886,7 +886,7 @@
         Me.Label3.Cursor = System.Windows.Forms.Cursors.Default
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Label3.Location = New System.Drawing.Point(16, 176)
+        Me.Label3.Location = New System.Drawing.Point(15, 152)
         Me.Label3.Name = "Label3"
         Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Label3.Size = New System.Drawing.Size(180, 18)
@@ -900,7 +900,7 @@
         Me.Label7.Cursor = System.Windows.Forms.Cursors.Default
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Label7.Location = New System.Drawing.Point(16, 61)
+        Me.Label7.Location = New System.Drawing.Point(15, 37)
         Me.Label7.Name = "Label7"
         Me.Label7.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Label7.Size = New System.Drawing.Size(84, 21)
@@ -913,7 +913,7 @@
         Me.chkCalcErosion.Cursor = System.Windows.Forms.Cursors.Default
         Me.chkCalcErosion.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkCalcErosion.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.chkCalcErosion.Location = New System.Drawing.Point(14, 37)
+        Me.chkCalcErosion.Location = New System.Drawing.Point(13, 13)
         Me.chkCalcErosion.Name = "chkCalcErosion"
         Me.chkCalcErosion.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.chkCalcErosion.Size = New System.Drawing.Size(331, 19)
@@ -931,7 +931,7 @@
         Me.frameRainFall.Controls.Add(Me.optUseGRID)
         Me.frameRainFall.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.frameRainFall.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.frameRainFall.Location = New System.Drawing.Point(13, 86)
+        Me.frameRainFall.Location = New System.Drawing.Point(12, 62)
         Me.frameRainFall.Name = "frameRainFall"
         Me.frameRainFall.Padding = New System.Windows.Forms.Padding(0)
         Me.frameRainFall.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -978,7 +978,7 @@
         Me.cboErodFactor.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboErodFactor.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboErodFactor.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboErodFactor.Location = New System.Drawing.Point(304, 176)
+        Me.cboErodFactor.Location = New System.Drawing.Point(344, 152)
         Me.cboErodFactor.Name = "cboErodFactor"
         Me.cboErodFactor.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cboErodFactor.Size = New System.Drawing.Size(136, 22)
@@ -991,7 +991,7 @@
         Me.cboSoilAttribute.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboSoilAttribute.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboSoilAttribute.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboSoilAttribute.Location = New System.Drawing.Point(168, 176)
+        Me.cboSoilAttribute.Location = New System.Drawing.Point(197, 151)
         Me.cboSoilAttribute.Name = "cboSoilAttribute"
         Me.cboSoilAttribute.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cboSoilAttribute.Size = New System.Drawing.Size(141, 22)
@@ -1006,7 +1006,7 @@
         Me.frmSDR.Controls.Add(Me.chkSDR)
         Me.frmSDR.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.frmSDR.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.frmSDR.Location = New System.Drawing.Point(296, 88)
+        Me.frmSDR.Location = New System.Drawing.Point(295, 64)
         Me.frmSDR.Name = "frmSDR"
         Me.frmSDR.Padding = New System.Windows.Forms.Padding(0)
         Me.frmSDR.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -1066,7 +1066,7 @@
         Me._SSTab1_TabPage2.Controls.Add(Me.dgvLandUse)
         Me._SSTab1_TabPage2.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage2.Name = "_SSTab1_TabPage2"
-        Me._SSTab1_TabPage2.Size = New System.Drawing.Size(610, 177)
+        Me._SSTab1_TabPage2.Size = New System.Drawing.Size(610, 183)
         Me._SSTab1_TabPage2.TabIndex = 2
         Me._SSTab1_TabPage2.Text = "Land Uses"
         '
@@ -1120,7 +1120,7 @@
         Me._SSTab1_TabPage3.Controls.Add(Me.dgvManagementScen)
         Me._SSTab1_TabPage3.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage3.Name = "_SSTab1_TabPage3"
-        Me._SSTab1_TabPage3.Size = New System.Drawing.Size(610, 177)
+        Me._SSTab1_TabPage3.Size = New System.Drawing.Size(610, 183)
         Me._SSTab1_TabPage3.TabIndex = 3
         Me._SSTab1_TabPage3.Text = "Management Scenarios"
         '

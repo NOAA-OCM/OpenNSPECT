@@ -445,7 +445,7 @@ Module modMUSLE
                 MapWinGeoProc.DataManagement.DeleteGrid(strStrahlOut)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                MapWinGeoProc.Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, Nothing)
+                MapWinGeoProc.Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, Environment.ProcessorCount, Nothing)
                 'strExpression = "flowlength([flowdir], [weight], upstream)"
 
                 pTauD8Flow.Close()
@@ -594,7 +594,7 @@ Module modMUSLE
 
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                MapWinGeoProc.Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Nothing)
+                MapWinGeoProc.Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
                 'strExpression = "FlowAccumulation([flowdir], [pHISYMGRaster], FLOAT)"
 
                 pTotSedMassHIRaster = New MapWinGIS.Grid

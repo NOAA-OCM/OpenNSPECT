@@ -22,10 +22,10 @@ Partial Class frmErrorDialog
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.cmdCopy = New System.Windows.Forms.Button
-        Me.cmdClose = New System.Windows.Forms.Button
-        Me.txtError = New System.Windows.Forms.TextBox
-        Me.lblText = New System.Windows.Forms.Label
+        Me.cmdCopy = New System.Windows.Forms.Button()
+        Me.cmdClose = New System.Windows.Forms.Button()
+        Me.txtError = New System.Windows.Forms.TextBox()
+        Me.lblText = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'cmdCopy
@@ -36,7 +36,7 @@ Partial Class frmErrorDialog
         Me.cmdCopy.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCopy.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCopy.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCopy.Location = New System.Drawing.Point(288, 285)
+        Me.cmdCopy.Location = New System.Drawing.Point(288, 336)
         Me.cmdCopy.Name = "cmdCopy"
         Me.cmdCopy.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCopy.Size = New System.Drawing.Size(72, 25)
@@ -52,7 +52,7 @@ Partial Class frmErrorDialog
         Me.cmdClose.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdClose.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdClose.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdClose.Location = New System.Drawing.Point(366, 285)
+        Me.cmdClose.Location = New System.Drawing.Point(366, 336)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdClose.Size = New System.Drawing.Size(72, 25)
@@ -64,13 +64,13 @@ Partial Class frmErrorDialog
         'txtError
         '
         Me.txtError.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtError.Location = New System.Drawing.Point(12, 26)
         Me.txtError.Multiline = True
         Me.txtError.Name = "txtError"
         Me.txtError.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtError.Size = New System.Drawing.Size(426, 253)
+        Me.txtError.Size = New System.Drawing.Size(426, 304)
         Me.txtError.TabIndex = 7
         '
         'lblText
@@ -85,7 +85,7 @@ Partial Class frmErrorDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(450, 315)
+        Me.ClientSize = New System.Drawing.Size(450, 366)
         Me.Controls.Add(Me.txtError)
         Me.Controls.Add(Me.cmdCopy)
         Me.Controls.Add(Me.cmdClose)
