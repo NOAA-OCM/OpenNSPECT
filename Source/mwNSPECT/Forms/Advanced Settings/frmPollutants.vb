@@ -50,12 +50,8 @@ Friend Class frmPollutants
     Private _wq As OleDbDataAdapter
     Private _dtWQ As Data.DataTable
 
-    
+
 #Region "Events"
-
-
-
-
 
 
     Private Sub frmPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -73,11 +69,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboPollName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPollName.SelectedIndexChanged
@@ -238,11 +229,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub cboCoeffSet_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboCoeffSet.SelectedIndexChanged
         Try
 
@@ -268,9 +254,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Private Sub NoSaveCoeffSetChange()
@@ -307,19 +290,9 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub txtLCType_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtLCType.TextChanged
 
     End Sub
-
-
-
-
-
 
 
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
@@ -330,11 +303,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
@@ -370,11 +338,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             If ValidateGridValues() Then
@@ -391,11 +354,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuPollHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPollHelp.Click
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pollutants.htm")
@@ -403,11 +361,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuCoeffHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffHelp.Click
@@ -419,11 +372,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuAddPoll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddPoll.Click
         Try
             Dim newPoll As New frmNewPollutants
@@ -433,11 +381,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuDeletePoll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDeletePoll.Click
@@ -457,11 +400,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuCoeffNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffNewSet.Click
         Try
             g_boolAddCoeff = True
@@ -475,11 +413,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuCoeffCopySet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffCopySet.Click
         Try
             g_boolCopyCoeff = True
@@ -490,11 +423,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuCoeffDeleteSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffDeleteSet.Click
@@ -529,11 +457,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuCoeffImportSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffImportSet.Click
         Try
             Dim newImportCoef As New frmImportCoeffSet
@@ -543,11 +466,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuCoeffExportSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffExportSet.Click
@@ -566,11 +484,6 @@ Friend Class frmPollutants
         End Try
 
     End Sub
-
-
-
-
-
 
 
     Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged, dgvWaterQuality.CellValueChanged
@@ -593,10 +506,6 @@ Friend Class frmPollutants
         End If
 
     End Sub
-
-
-
-
 
 
     Private Function ValidateGridValues() As Boolean
@@ -648,9 +557,6 @@ Friend Class frmPollutants
     End Function
 
 
-
-
-
     Private Sub UpdateValues()
         Try
             Dim strUpdateDescription As Object
@@ -700,7 +606,6 @@ Friend Class frmPollutants
             End If
 
 
-
             For i = 0 To dgvWaterQuality.Rows.Count - 1
                 strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & dgvWaterQuality.Rows(i).Cells(3).Value.ToString
                 Dim cmdNewWQ As New OleDbCommand(strWQSelect, g_DBConn)
@@ -722,10 +627,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
     Private Sub DeletePollutant(ByRef strName As String)
         Try
             Dim strPollDelete As String = "Delete * FROM Pollutant WHERE NAME LIKE '" & strName & "'"
@@ -742,11 +643,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Public Sub AddCoefficient(ByRef strCoeffName As String, ByRef strLCType As String)
@@ -828,11 +724,6 @@ Friend Class frmPollutants
     End Sub
 
 
-
-
-
-
-
     Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
@@ -903,9 +794,6 @@ Friend Class frmPollutants
     'Exports your current standard and pollutants to text or csv.
 
 
-
-
-
     Private Sub ExportCoeffSet(ByRef strFileName As String)
         Try
             Dim out As New IO.StreamWriter(strFileName)
@@ -919,12 +807,6 @@ Friend Class frmPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
-
 
 
     Public Sub UpdateCoeffSet(ByRef cmdCoeff As OleDbCommand, ByRef strCoeffName As String, ByRef strFileName As String)

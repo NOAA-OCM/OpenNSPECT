@@ -31,18 +31,9 @@ Friend Class frmNewPrecip
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmNewPrecip_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
     End Sub
-
-
-
-
-
 
 
     Private Sub txtPrecipName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipName.TextChanged
@@ -54,19 +45,9 @@ Friend Class frmNewPrecip
     End Sub
 
 
-
-
-
-
-
     Private Sub txtDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDesc.TextChanged
 
     End Sub
-
-
-
-
-
 
 
     Private Sub txtDesc_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txtDesc.Validating
@@ -82,19 +63,9 @@ Friend Class frmNewPrecip
     End Sub
 
 
-
-
-
-
-
     Private Sub txtPrecipFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipFile.TextChanged
 
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
@@ -141,29 +112,14 @@ Friend Class frmNewPrecip
     End Sub
 
 
-
-
-
-
-
     Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGridUnits.SelectedIndexChanged
 
     End Sub
 
 
-
-
-
-
-
     Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipUnits.SelectedIndexChanged
 
     End Sub
-
-
-
-
-
 
 
     Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimePeriod.SelectedIndexChanged
@@ -181,29 +137,14 @@ Friend Class frmNewPrecip
     End Sub
 
 
-
-
-
-
-
     Private Sub txtRainingDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRainingDays.TextChanged
 
     End Sub
 
 
-
-
-
-
-
     Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipType.SelectedIndexChanged
 
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
@@ -232,11 +173,6 @@ Friend Class frmNewPrecip
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
@@ -272,7 +208,6 @@ Friend Class frmNewPrecip
                     MsgBox(txtPrecipName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
 
 
-
                     If Not _frmPrj Is Nothing Then
                         _frmPrj.UpdatePrecip(txtPrecipName.Text)
                         Me.Close()
@@ -301,10 +236,6 @@ Friend Class frmNewPrecip
 #Region "Helper Functions"
 
 
-
-
-
-
     Public Sub Init(ByRef frmPrj As frmProjectSetup, ByRef frmPrec As frmPrecipitation)
         Try
             _frmPrj = frmPrj
@@ -313,10 +244,6 @@ Friend Class frmNewPrecip
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Function CheckParams() As Boolean

@@ -27,10 +27,6 @@ Friend Class frmImportLCType
     Const c_sModuleFileName As String = "frmImportLCType.vb"
 
 
-
-
-
-
     Public Sub Init(ByRef parent As frmLandCoverTypes)
         Try
             _parent = parent
@@ -38,11 +34,6 @@ Friend Class frmImportLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub txtLCType_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtLCType.TextChanged
@@ -58,11 +49,6 @@ Friend Class frmImportLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
@@ -86,11 +72,6 @@ Friend Class frmImportLCType
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -98,11 +79,6 @@ Friend Class frmImportLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
@@ -168,11 +144,6 @@ Friend Class frmImportLCType
     End Sub
 
 
-
-
-
-
-
     Private Sub AddLCClass(ByRef strName As String, ByRef strParams() As String)
         Try
             Dim strLCTypeAdd As String
@@ -195,11 +166,6 @@ Friend Class frmImportLCType
     End Sub
 
 
-
-
-
-
-
     Private Function CheckGridValuesLCType(ByRef aryValue() As String) As Boolean
         Try
             For i As Integer = 0 To aryValue.Length - 1
@@ -218,10 +184,6 @@ Friend Class frmImportLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Function
-
-
-
-
 
 
     Private Sub RollBackImport(ByRef strName As String)

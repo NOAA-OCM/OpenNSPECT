@@ -18,7 +18,7 @@
 
 Imports System.Data.OleDb
 Friend Class frmUserWShed
-	Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 
     Const c_sModuleFileName As String = "frmUserWShed.vb"
 
@@ -29,10 +29,6 @@ Friend Class frmUserWShed
     Private _dem_null As Double
 
 #Region "Events"
-
-
-
-
 
 
     Private Sub cmdBrowseDEMFile_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseDEMFile.Click
@@ -66,11 +62,6 @@ Friend Class frmUserWShed
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdBrowseFlowAcc_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseFlowAcc.Click
         Try
             ReturnGRIDPath(txtFlowAcc, "Select Flow Accumulation GRID")
@@ -79,11 +70,6 @@ Friend Class frmUserWShed
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdBrowseFlowDir_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseFlowDir.Click
@@ -96,11 +82,6 @@ Friend Class frmUserWShed
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdBrowseLS_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseLS.Click
         Try
             ReturnGRIDPath(txtLS, "Select Length-Slope GRID")
@@ -109,11 +90,6 @@ Friend Class frmUserWShed
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdBrowseWS_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseWS.Click
@@ -125,11 +101,6 @@ Friend Class frmUserWShed
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdQuit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -137,11 +108,6 @@ Friend Class frmUserWShed
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdCreate_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCreate.Click
@@ -200,10 +166,6 @@ Friend Class frmUserWShed
 #Region "Helper"
 
 
-
-
-
-
     Public Sub Init(ByRef frmWS As frmWatershedDelin, ByRef frmPrj As frmProjectSetup)
         Try
             _frmWS = frmWS
@@ -212,10 +174,6 @@ Friend Class frmUserWShed
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Function ValidateDataFormInput() As Boolean
@@ -363,11 +321,6 @@ Friend Class frmUserWShed
     End Function
 
 
-
-
-
-
-
     Private Sub ReturnGRIDPath(ByRef txtBox As System.Windows.Forms.TextBox, ByRef strTitle As String)
         Try
             Dim pDEMRasterDataset As MapWinGIS.Grid
@@ -384,11 +337,6 @@ Friend Class frmUserWShed
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub Return2BDEM(ByRef strDEMFileName As String, ByRef strFlowDirFileName As String)
@@ -460,20 +408,6 @@ Friend Class frmUserWShed
 #Region "Raster Math"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     Private Function focalminGrowCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         Try
             'strExpression = "Con(isnull([aml_fdem]), focalmin([aml_fdem]), [aml_fdem])"
@@ -505,21 +439,6 @@ Friend Class frmUserWShed
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     Private Function maskCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         Try
             'strExpression = "con([mask] >= 0, 1, 0)"
@@ -538,21 +457,6 @@ Friend Class frmUserWShed
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     Private Function flowdvCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         Try
             If Input1 = Input1Null Then
@@ -564,21 +468,6 @@ Friend Class frmUserWShed
             HandleError(c_sModuleFileName, ex)
         End Try
     End Function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function nibCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single

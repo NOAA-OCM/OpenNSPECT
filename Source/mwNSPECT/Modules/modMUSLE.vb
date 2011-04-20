@@ -43,14 +43,6 @@ Module modMUSLE
     Private _pondpicks As String()
 
 
-
-
-
-
-
-
-
-
     Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, ByRef strLandClass As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strSoilsDefName: Name of the Soils Definition being used
@@ -114,11 +106,6 @@ Module modMUSLE
     End Function
 
 
-
-
-
-
-
     Private Function CreateMetadata(ByRef booLocal As Boolean) As String
 
         Dim strHeader As String
@@ -147,12 +134,6 @@ Module modMUSLE
         CreateMetadata = strHeader '& vbTab & "C-Factor values: " & vbNewLine & strCFactor
 
     End Function
-
-
-
-
-
-
 
 
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
@@ -259,12 +240,6 @@ Module modMUSLE
             MsgBox("Error in pick Statement: " & Err.Number & ": " & Err.Description)
         End Try
     End Function
-
-
-
-
-
-
 
 
     Private Function ConstructPondPickStatement(ByRef cmdCF As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
@@ -375,13 +350,6 @@ Module modMUSLE
         ConstructPondPickStatement = strpick
 
     End Function
-
-
-
-
-
-
-
 
 
     Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
@@ -499,7 +467,6 @@ Module modMUSLE
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpslpout)
                 'END STEP 4a ------------------------------------------------------------------------------------
             End If
-
 
 
             modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 18, g_frmProjectSetup)
@@ -652,7 +619,6 @@ Module modMUSLE
     End Function
 
 
-
 #Region "Raster Math"
     'Private Function weightCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
     '    'strExpression = "Con([flowdir] eq 2, 1.41421, " & "Con([flowdir] eq 8, 1.41421, " & "Con([flowdir] eq 32, 1.41421, " & "Con([flowdir] eq 128, 1.41421, 1.0))))"
@@ -684,30 +650,10 @@ Module modMUSLE
     'End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function wslengthCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([cell_wslength] * 3.28084)"
         Return Input1 * 3.28084
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function slpmodCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -795,16 +741,6 @@ Module modMUSLE
     'End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function c0CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.30550," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 2.23537," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 2.18219," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 2.10624," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.00303," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 1.87733," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 1.76312, 1.67889)))))))"
         'Con(
@@ -850,16 +786,6 @@ Module modMUSLE
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function c0CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.03250," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 1.91978," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 1.83842," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 1.72657, 1.63417))))"
         'Con(
@@ -887,16 +813,6 @@ Module modMUSLE
             Return 1.63417
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function c0CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -933,16 +849,6 @@ Module modMUSLE
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function c0CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.47317," & "Con(([ip] ge 0.10 and [ip] lt 0.30), 2.39628," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.35477," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 2.30726," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 2.24876, 2.17772)))))"
         'Con(
@@ -975,16 +881,6 @@ Module modMUSLE
             Return 2.17772
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function c1CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -1031,16 +927,6 @@ Module modMUSLE
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function c1CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), 2.03250," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 1.91978," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 1.83842," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 1.72657, 1.63417))))"
         'Con(
@@ -1068,16 +954,6 @@ Module modMUSLE
             Return 1.63417
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function c1CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -1108,16 +984,6 @@ Module modMUSLE
         End If
 
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function c1CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -1153,16 +1019,6 @@ Module modMUSLE
         End If
 
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function c2CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -1210,16 +1066,6 @@ Module modMUSLE
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function c2CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.13748," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.07020," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.02597," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.02633, -0.0))))"
         'Con(
@@ -1247,16 +1093,6 @@ Module modMUSLE
             Return 0
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function c2CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -1291,16 +1127,6 @@ Module modMUSLE
             Return -0.01259
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function c2CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -1338,15 +1164,6 @@ Module modMUSLE
 
 
     'pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster
-
-
-
-
-
-
-
-
-
 
 
     Private Function AllMUSLECellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -1466,15 +1283,6 @@ Module modMUSLE
     'quval   g_LandCoverRaster    g_pDEMRaster  g_pMetRunoffRaster  g_KFactorRaster, g_pLSRaster
 
 
-
-
-
-
-
-
-
-
-
     Private Function AllMUSLECellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim pondval, qpval, sqmival, afval, runoff_inches As Single
 
@@ -1508,15 +1316,6 @@ Module modMUSLE
     End Function
 
     'hisytmpval   g_LandCoverRaster   g_KFactorRaster, g_pLSRaster
-
-
-
-
-
-
-
-
-
 
 
     Private Function AllMUSLECellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single

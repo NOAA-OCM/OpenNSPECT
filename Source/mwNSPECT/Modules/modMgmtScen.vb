@@ -34,13 +34,6 @@ Module modMgmtScen
     Public g_booLCChange As Boolean
 
 
-
-
-
-
-
-
-
     Public Sub MgmtScenSetup(ByRef clsMgmtScens As clsXMLMgmtScenItems, ByRef strLCClass As String, ByRef strLCFileName As String, ByRef strWorkspace As String)
         'Main Sub for setting everything up
         'clsMgmtScens: XML wrapper for the management scenarios created by the user
@@ -102,12 +95,6 @@ Module modMgmtScen
         End Try
 
     End Sub
-
-
-
-
-
-
 
 
     Public Sub ReclassRaster(ByRef clsMgmtScen As clsXMLMgmtScenItem, ByVal strLCClass As String, ByRef outputGrid As MapWinGIS.Grid)

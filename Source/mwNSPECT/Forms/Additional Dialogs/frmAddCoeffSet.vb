@@ -24,12 +24,7 @@ Friend Class frmAddCoeffSet
     Const c_sModuleFileName As String = "frmAddCoeff.vb"
 
 
-
 #Region "Events"
-
-
-
-
 
 
     Private Sub frmAddCoeffSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -39,11 +34,6 @@ Friend Class frmAddCoeffSet
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub txtCoeffSetName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetName.TextChanged
@@ -59,11 +49,6 @@ Friend Class frmAddCoeffSet
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -71,11 +56,6 @@ Friend Class frmAddCoeffSet
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
@@ -101,10 +81,6 @@ Friend Class frmAddCoeffSet
 #End Region
 
 #Region "Helper Functions"
-
-
-
-
 
 
     Public Sub Init(ByRef frmPoll As frmPollutants, ByRef frmNewPoll As frmNewPollutants)

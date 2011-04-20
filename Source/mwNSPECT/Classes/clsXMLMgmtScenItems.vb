@@ -54,8 +54,6 @@ Public Class clsXMLMgmtScenItems
     End Property
 
 
-
-
     Public ReadOnly Property Count() As Integer
         Get
             'Return the count of order items.
@@ -76,18 +74,9 @@ Public Class clsXMLMgmtScenItems
     End Property
 
 
-
-
-
-
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
         GetEnumerator = m_colItems.GetEnumerator
     End Function
-
-
-
-
-
 
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
@@ -126,10 +115,6 @@ Public Class clsXMLMgmtScenItems
     End Function
 
 
-
-
-
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         'Set this class's properties based on the data found in the
         'given node.
@@ -154,25 +139,14 @@ Public Class clsXMLMgmtScenItems
     End Sub
 
 
-
-
-
     Public Sub New()
         m_colItems = New Collections.ArrayList
     End Sub
 
 
-
-
-
-
     Public Sub Add(ByVal MgmtScen As clsXMLMgmtScenItem)
         m_colItems.Add(MgmtScen)
     End Sub
-
-
-
-
 
 
     Public Sub Remove(ByVal Index As Integer)

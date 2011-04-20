@@ -64,11 +64,6 @@ Public Class clsXMLCoeffTypeDef
     Public strTDDef4 As String
 
 
-
-
-
-
-
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -77,10 +72,6 @@ Public Class clsXMLCoeffTypeDef
 
         End Get
     End Property
-
-
-
-
 
 
     Public Sub SaveFile(ByRef strXML As String)
@@ -95,11 +86,6 @@ Public Class clsXMLCoeffTypeDef
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
@@ -142,10 +128,6 @@ Public Class clsXMLCoeffTypeDef
             CreateNode = Nothing
         End Try
     End Function
-
-
-
-
 
 
     Public Overrides Sub LoadNode(ByRef node As XmlNode)

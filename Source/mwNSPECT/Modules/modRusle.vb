@@ -39,18 +39,6 @@ Module modRusle
     Private _picks As String()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, ByRef OutputItems As clsXMLOutputItems, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strNibbleFileName: FileName of the nibble GRID
@@ -139,11 +127,6 @@ Module modRusle
     End Function
 
 
-
-
-
-
-
     Private Function CreateMetadata(ByRef booLocal As Boolean) As String
 
         Dim strHeader As String
@@ -172,12 +155,6 @@ Module modRusle
         CreateMetadata = strHeader '& vbTab & "C-Factor values: " & vbNewLine & strCFactor
 
     End Function
-
-
-
-
-
-
 
 
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
@@ -284,12 +261,6 @@ Module modRusle
             MsgBox("Error in pick Statement: " & Err.Number & ": " & Err.Description)
         End Try
     End Function
-
-
-
-
-
-
 
 
     Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
@@ -494,16 +465,6 @@ Module modRusle
 #Region "Raster Math"
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function AllSoilLossCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim tmpval As Single
         For i As Integer = 0 To _picks.Length - 1
@@ -522,21 +483,6 @@ Module modRusle
         End If
 
     End Function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function pZSedCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -639,16 +585,6 @@ Module modRusle
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function SDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
         If Input1 > 1 Then
@@ -657,16 +593,6 @@ Module modRusle
             Return Input1
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function AllSDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -703,16 +629,6 @@ Module modRusle
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function sedYieldCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
         Return Input1 * Input2 * 907.18474
@@ -720,7 +636,6 @@ Module modRusle
 
 
 #End Region
-
 
 
 End Module

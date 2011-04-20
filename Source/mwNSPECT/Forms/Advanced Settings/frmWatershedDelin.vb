@@ -25,10 +25,6 @@ Friend Class frmWatershedDelin
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmWatershedDelin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             modUtil.InitComboBox(cboWSDelin, "WSDELINEATION")
@@ -36,11 +32,6 @@ Friend Class frmWatershedDelin
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboWSDelin_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboWSDelin.SelectedIndexChanged
@@ -71,11 +62,6 @@ Friend Class frmWatershedDelin
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -83,11 +69,6 @@ Friend Class frmWatershedDelin
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuNewWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewWSDelin.Click
@@ -101,11 +82,6 @@ Friend Class frmWatershedDelin
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuNewExist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewExist.Click
         Try
             Dim newWS As New frmUserWShed
@@ -115,11 +91,6 @@ Friend Class frmWatershedDelin
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuDelWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelWSDelin.Click
@@ -169,11 +140,6 @@ Friend Class frmWatershedDelin
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuWSDelin.Click

@@ -52,8 +52,6 @@ Module modLanduse
     Private m_ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
 
 
-
-
     Public Sub Begin(ByRef strLCClassName As String, ByRef clsLUScenItems As clsXMLLandUseItems, ByRef dictPollutants As Generic.Dictionary(Of String, String), ByRef strLCFileName As String, ByRef strWorkspace As String)
         'strLCClassName: str of current land cover class
         'clsLUScenItems: XML class that holds the params of the user's Land Use Scenario
@@ -309,7 +307,6 @@ Module modLanduse
         'strLCFileName: path to which the landcover grid exists
         Try
             Dim strOutLandCover As String
-
 
 
             '    'Make sure the landcoverraster exists..it better if they get to this point, ED!

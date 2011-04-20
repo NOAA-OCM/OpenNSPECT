@@ -33,10 +33,6 @@ Friend Class frmLUScen
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmLUScen_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             g_luscen = Me
@@ -66,11 +62,6 @@ Friend Class frmLUScen
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -78,11 +69,6 @@ Friend Class frmLUScen
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub frmLUScen_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
@@ -95,11 +81,6 @@ Friend Class frmLUScen
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
@@ -116,11 +97,6 @@ Friend Class frmLUScen
     End Sub
 
 
-
-
-
-
-
     Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
         Try
             Dim selectfrm As New frmSelectShape
@@ -129,11 +105,6 @@ Friend Class frmLUScen
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboLULayer_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles cboLULayer.MouseClick
@@ -149,10 +120,6 @@ Friend Class frmLUScen
 #Region "Helper Subs"
 
 
-
-
-
-
     Public Sub init(ByVal strWQStd As String, ByRef frmProj As frmProjectSetup)
         Try
             _frmPrj = frmProj
@@ -161,10 +128,6 @@ Friend Class frmLUScen
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Function CreateXMLFile() As String
@@ -206,10 +169,6 @@ Friend Class frmLUScen
             CreateXMLFile = Nothing
         End Try
     End Function
-
-
-
-
 
 
     Private Function ValidateData() As Boolean
@@ -303,9 +262,6 @@ Friend Class frmLUScen
     End Function
 
 
-
-
-
     Private Sub PopulateForm()
         Try
             Dim strScenName As String
@@ -353,9 +309,6 @@ Friend Class frmLUScen
     End Sub
 
 
-
-
-
     Private Sub FillGrid()
         Try
             Dim strSQLWQStd As String
@@ -395,9 +348,6 @@ Friend Class frmLUScen
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Public Sub SetSelectedShape()

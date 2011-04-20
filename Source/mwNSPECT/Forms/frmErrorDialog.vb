@@ -21,10 +21,6 @@ Public Class frmErrorDialog
     Const c_sModuleFileName As String = "frmErrorDialog.vb"
 
 
-
-
-
-
     Public Sub New(ByVal ex As System.Exception)
         MyBase.New()
         Try
@@ -39,11 +35,6 @@ Public Class frmErrorDialog
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCopy.Click
         Try
             Windows.Forms.Clipboard.SetText(txtError.Text)
@@ -51,11 +42,6 @@ Public Class frmErrorDialog
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdClose.Click
@@ -67,11 +53,6 @@ Public Class frmErrorDialog
     End Sub
 
 
-
-
-
-
-
     Private Sub frmErrorDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             txtError.Text = "Open N-SPECT (" + System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString() ' + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
@@ -80,11 +61,6 @@ Public Class frmErrorDialog
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub txtError_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtError.KeyDown

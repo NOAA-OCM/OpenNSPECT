@@ -28,10 +28,6 @@ Friend Class frmWaterQualityStandard
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmWaterQualityStandard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             _bolChange = False
@@ -40,11 +36,6 @@ Friend Class frmWaterQualityStandard
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboWQStdName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboWQStdName.SelectedIndexChanged
@@ -96,11 +87,6 @@ Friend Class frmWaterQualityStandard
     End Sub
 
 
-
-
-
-
-
     Private Sub txtWQStdDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWQStdDesc.TextChanged
         Try
             _bolChange = True
@@ -111,11 +97,6 @@ Friend Class frmWaterQualityStandard
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -123,11 +104,6 @@ Friend Class frmWaterQualityStandard
             HandleError(c_sModuleFileName, ex)     'True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
@@ -143,11 +119,6 @@ Friend Class frmWaterQualityStandard
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuNewWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewWQStd.Click
         Try
             Dim addwq As New frmAddWQStd
@@ -158,11 +129,6 @@ Friend Class frmWaterQualityStandard
         End Try
 
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuDelWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelWQStd.Click
@@ -210,11 +176,6 @@ Friend Class frmWaterQualityStandard
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuCopyWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopyWQStd.Click
         Try
             Dim copywq As New frmCopyWQStd
@@ -227,11 +188,6 @@ Friend Class frmWaterQualityStandard
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuImpWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuImpWQStd.Click
         Try
             Dim impwq As New frmImportWQStd()
@@ -242,11 +198,6 @@ Friend Class frmWaterQualityStandard
         End Try
 
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuExpWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExpWQStd.Click
@@ -269,11 +220,6 @@ Friend Class frmWaterQualityStandard
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuWQHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuWQHelp.Click
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "wq_stnds.htm")
@@ -281,11 +227,6 @@ Friend Class frmWaterQualityStandard
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
@@ -299,8 +240,6 @@ Friend Class frmWaterQualityStandard
 #End Region
 
 #Region "Helper Functions"
-
-
 
 
     Private Sub UpdateData()
@@ -342,10 +281,6 @@ Friend Class frmWaterQualityStandard
     End Sub
 
 
-
-
-
-
     Private Function ValidateData() As Boolean
         Try
             Dim i As Short
@@ -370,10 +305,6 @@ Friend Class frmWaterQualityStandard
     End Function
 
 
-
-
-
-
     Public Sub UpdateWQ(ByVal strWQName As String)
         Try
             cboWQStdName.Items.Clear()
@@ -385,9 +316,6 @@ Friend Class frmWaterQualityStandard
     End Sub
 
     'Exports your current standard and pollutants to text or csv.
-
-
-
 
 
     Private Sub ExportStandard(ByRef strFileName As String)
@@ -409,9 +337,6 @@ Friend Class frmWaterQualityStandard
             HandleError(c_sModuleFileName, ex)     'False, "ExportStandard " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
-
-
-
 
 
     Private Sub OKEnable()

@@ -48,15 +48,6 @@ Module modRunoff
     Private _picks()() As String
 
 
-
-
-
-
-
-
-
-
-
     Public Function CreateRunoffGrid(ByRef strLCFileName As String, ByRef strLCCLassType As String, ByRef cmdPrecip As OleDbCommand, ByRef strSoilsFileName As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'This sub serves as a link between frmPrj and the actual calculation of Runoff
         'It establishes the Rasters being used
@@ -142,11 +133,6 @@ Module modRunoff
     End Function
 
 
-
-
-
-
-
     Private Function ConvertRainGridCMToInches(ByRef pInRaster As MapWinGIS.Grid) As MapWinGIS.Grid
 
         Dim head As MapWinGIS.GridHeader = pInRaster.Header
@@ -169,12 +155,6 @@ Module modRunoff
 
         Return pInRaster
     End Function
-
-
-
-
-
-
 
 
     Private Function ConstructPickStatment(ByRef strLandClass As String, ByRef pLCRaster As MapWinGIS.Grid) As String()
@@ -314,12 +294,6 @@ Module modRunoff
     End Function
 
 
-
-
-
-
-
-
     Private Function BuildTable(ByRef pLCRaster As MapWinGIS.Grid, ByVal tablepath As String) As Boolean
         Dim mwTable As New MapWinGIS.Table
 
@@ -391,13 +365,6 @@ Module modRunoff
     End Function
 
 
-
-
-
-
-
-
-
     Private Function CreateMetadata(ByRef cmdLandClass As OleDbCommand, ByRef strLandClass As String, ByRef booLocal As Boolean) As String
         CreateMetadata = ""
         Try
@@ -435,15 +402,6 @@ Module modRunoff
     End Function
 
 
-
-
-
-
-
-
-
-
-
     Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As MapWinGIS.Grid, ByRef pInLandCoverRaster As MapWinGIS.Grid, ByRef pInSoilsRaster As MapWinGIS.Grid, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'strPickStatement: our friend the dynamic pick statemnt
         'pInRainRaster: the precip grid
@@ -457,8 +415,6 @@ Module modRunoff
             Dim pAccumRunoffRaster As MapWinGIS.Grid = Nothing
             Dim pPermAccumRunoffRaster As MapWinGIS.Grid = Nothing
             Dim pPermAccumLocRunoffRaster As MapWinGIS.Grid = Nothing
-
-
 
 
             'String to hold calculations
@@ -523,7 +479,6 @@ Module modRunoff
                     Exit Function
                 End If
             End If
-
 
 
             modProgDialog.ProgDialog("Creating flow accumulation...", strTitle, 0, 10, 9, g_frmProjectSetup)
@@ -622,16 +577,6 @@ Module modRunoff
 #Region "Raster Math"
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function SC100CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'pSCS100Raster = 100 * con([pHydSoilsRaster] == 1, pick([pLandSampleRaster], " & strPick(0) & "), con([pHydSoilsRaster] == 2, pick([pLandSampleRaster], " & strPick(1) & "), con([pHydSoilsRaster] == 3, pick([pLandSampleRaster], " & strPick(2) & "), con([pHydSoilsRaster] == 4, pick([pLandSampleRaster], " & strPick(3) & ")))))
 
@@ -661,21 +606,6 @@ Module modRunoff
             Next
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function AllRunoffCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -718,21 +648,6 @@ Module modRunoff
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     Private Function metRunoffNoNullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(IsNull([runoffgrid]),0,[runoffgrid])"
         If Input1 <> Input1Null Then
@@ -745,21 +660,6 @@ Module modRunoff
             End If
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Public Function tauD8CellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -786,21 +686,6 @@ Module modRunoff
             Return -1
         End If
     End Function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Public Function tauD8ToESRICellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single

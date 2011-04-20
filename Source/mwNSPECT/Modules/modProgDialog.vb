@@ -35,15 +35,6 @@ Module modProgDialog
     Public g_boolCancel As Boolean
 
 
-
-
-
-
-
-
-
-
-
     Public Sub ProgDialog(ByRef strMessage As String, ByRef strTitle As String, ByRef lngMin As Integer, ByRef lngMax As Integer, ByRef lngValue As Integer, ByRef Owner As Windows.Forms.Form)
         'strMessage:  what's it doing
         'strTitle: Title of Dialog
@@ -84,9 +75,6 @@ Module modProgDialog
         End Try
 
     End Sub
-
-
-
 
 
     Public Sub KillDialog()

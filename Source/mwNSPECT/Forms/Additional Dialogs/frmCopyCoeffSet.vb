@@ -25,12 +25,6 @@ Friend Class frmCopyCoeffSet
     Const c_sModuleFileName As String = "frmCopyCoeff.vb"
 
 
-
-
-
-
-
-
     Public Sub Init(ByRef cmdCoeffSet As OleDbCommand, ByRef frmPoll As frmPollutants, ByRef frmNewPoll As frmNewPollutants)
         Try
             'The form is passed a recordest containing the names of all coefficient sets, allows for
@@ -52,11 +46,6 @@ Friend Class frmCopyCoeffSet
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -64,11 +53,6 @@ Friend Class frmCopyCoeffSet
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
