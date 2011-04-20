@@ -63,12 +63,12 @@ Public Class clsXMLCoeffTypeDef
     Public strTDDef3 As String
     Public strTDDef4 As String
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -78,11 +78,11 @@ Public Class clsXMLCoeffTypeDef
         End Get
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strXML"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub SaveFile(ByRef strXML As String)
         Try
             Dim dom As New XmlDocument
@@ -96,12 +96,12 @@ Public Class clsXMLCoeffTypeDef
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Parent"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
@@ -143,11 +143,11 @@ Public Class clsXMLCoeffTypeDef
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="node"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the

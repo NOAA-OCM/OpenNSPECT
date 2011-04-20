@@ -26,12 +26,12 @@ Friend Class frmNewLCType
     Const c_sModuleFileName As String = "frmNewLCType.vb"
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmNewLCType_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             dgvLCTypes.Rows.Add()
@@ -50,12 +50,12 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub dgvLCTypes_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvLCTypes.MouseClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Right Then
@@ -67,12 +67,12 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub AddRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddRowToolStripMenuItem.Click
         Try
             AddRow()
@@ -81,12 +81,12 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertRowToolStripMenuItem.Click
         Try
             InsertRow()
@@ -95,12 +95,12 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteRowToolStripMenuItem.Click
         Try
             DeleteRow()
@@ -109,12 +109,12 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub dgvLCTypes_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvLCTypes.DataError
         Try
             MsgBox("Please enter a valid number.")
@@ -123,12 +123,12 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -137,12 +137,12 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
             Dim strName As String
@@ -189,11 +189,11 @@ Friend Class frmNewLCType
 #End Region
 
 #Region "Helper Functions'"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="frmLC"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub Init(ByRef frmLC As frmLandCoverTypes)
         Try
             _frmLC = frmLC
@@ -202,10 +202,10 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub AddRow()
         Try
             Dim idx As Integer = dgvLCTypes.Rows.Add()
@@ -224,10 +224,10 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub InsertRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
@@ -249,10 +249,10 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub DeleteRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
@@ -263,11 +263,11 @@ Friend Class frmNewLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function ValidateGridValues() As Boolean
         Try
             'Need to validate each grid value before saving.  Essentially we take it a row at a time,
@@ -353,12 +353,12 @@ Friend Class frmNewLCType
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strName"></param>
-    ''' <param name="row"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub AddLCClass(ByRef strName As String, ByRef row As DataGridViewRow)
         Try
             'Called from cmdOK_Click, this uses a passed array to insert new landclasses

@@ -29,22 +29,22 @@ Friend Class frmNewPrecip
 
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmNewPrecip_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtPrecipName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipName.TextChanged
         Try
             txtPrecipName.Text = Replace(txtPrecipName.Text, "'", "")
@@ -53,22 +53,22 @@ Friend Class frmNewPrecip
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDesc.TextChanged
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtDesc_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txtDesc.Validating
         Try
             Dim Cancel As Boolean = e.Cancel
@@ -81,22 +81,22 @@ Friend Class frmNewPrecip
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtPrecipFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipFile.TextChanged
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
         Try
             Dim dlgOpen As New Windows.Forms.OpenFileDialog
@@ -140,32 +140,32 @@ Friend Class frmNewPrecip
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGridUnits.SelectedIndexChanged
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipUnits.SelectedIndexChanged
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimePeriod.SelectedIndexChanged
         Try
             If cboTimePeriod.SelectedIndex = 0 Then
@@ -180,32 +180,32 @@ Friend Class frmNewPrecip
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtRainingDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRainingDays.TextChanged
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipType.SelectedIndexChanged
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Dim intSave As Object
@@ -233,12 +233,12 @@ Friend Class frmNewPrecip
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
             Dim intType As Short
@@ -299,12 +299,12 @@ Friend Class frmNewPrecip
 #End Region
 
 #Region "Helper Functions"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="frmPrj"></param>
-    ''' <param name="frmPrec"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Sub Init(ByRef frmPrj As frmProjectSetup, ByRef frmPrec As frmPrecipitation)
         Try
             _frmPrj = frmPrj
@@ -314,11 +314,11 @@ Friend Class frmNewPrecip
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function CheckParams() As Boolean
         Try
             'Check the inputs of the form, before saving

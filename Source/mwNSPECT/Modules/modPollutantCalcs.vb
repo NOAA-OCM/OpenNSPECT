@@ -49,15 +49,15 @@ Module modPollutantCalcs
 
     Private _picks() As String
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="clsPollutant"></param>
-    ''' <param name="strLandClass"></param>
-    ''' <param name="strWQName"></param>
-    ''' <param name="OutputItems"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
     Public Function PollutantConcentrationSetup(ByRef clsPollutant As clsXMLPollutantItem, ByRef strLandClass As String, ByRef strWQName As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'Sub takes incoming parameters (in the form of a pollutant item) from the project file
         'and then parses them out
@@ -134,14 +134,14 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="cmdType"></param>
-    ''' <param name="strCoeffSet"></param>
-    ''' <param name="booLocal"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
     Private Function ConstructMetaData(ByRef cmdType As oledbcommand, ByRef strCoeffSet As String, ByRef booLocal As Boolean) As String
         'Takes the rs and creates a string describing the pollutants and coefficients used in this run, will
         'later be added to the global dictionary
@@ -174,13 +174,13 @@ Module modPollutantCalcs
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="cmdType"></param>
-    ''' <param name="pLCRaster"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
         'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
         'and the Land Class Raster.  Returns a string
@@ -306,13 +306,13 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strConStatement"></param>
-    ''' <param name="OutputItems"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
 
         Dim pMassVolumeRaster As MapWinGIS.Grid = Nothing
@@ -491,14 +491,14 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="pWSFeatureClass"></param>
-    ''' <param name="pPollutantRaster"></param>
-    ''' <param name="OutputItems"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
     Private Function CompareWaterQuality(ByRef pWSFeatureClass As MapWinGIS.Shapefile, ByRef pPollutantRaster As MapWinGIS.Grid, ByRef OutputItems As clsXMLOutputItems) As Boolean
         Dim strWQVAlue As Object
 
@@ -560,13 +560,13 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strPollName"></param>
-    ''' <param name="strWQstdName"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function ReturnWQValue(ByRef strPollName As String, ByRef strWQstdName As String) As String
         Dim strPoll As String
         Dim strWQStd As String = ""
@@ -593,17 +593,17 @@ Module modPollutantCalcs
 
 
 #Region "Raster Math"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim tmpval As Single
         'strexpression = pick([pLandSampleRaster], _picks)"
@@ -618,38 +618,38 @@ Module modPollutantCalcs
         Return Input2 * tmpval
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
         Return Input1 * 0.000001
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Private Function AllConCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         If Input1 = Input1Null Or Input2 = Input2Null Or Input3 = Input3Null Or Input4 = Input4Null Then
             If Input5 = Input5Null Then
@@ -667,17 +667,17 @@ Module modPollutantCalcs
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function concompCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'This rather ugly expression was set up to check for meets/exceed water quality standards for
         'only the streams.  It takes the values of flowaccumulation from watershed delineation fame that

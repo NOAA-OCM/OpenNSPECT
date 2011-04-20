@@ -24,13 +24,13 @@ Friend Class frmCopyCoeffSet
     Private _frmNewPoll As frmNewPollutants
     Const c_sModuleFileName As String = "frmCopyCoeff.vb"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="cmdCoeffSet"></param>
-    ''' <param name="frmPoll"></param>
-    ''' <param name="frmNewPoll"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Public Sub Init(ByRef cmdCoeffSet As OleDbCommand, ByRef frmPoll As frmPollutants, ByRef frmNewPoll As frmNewPollutants)
         Try
             'The form is passed a recordest containing the names of all coefficient sets, allows for
@@ -51,12 +51,12 @@ Friend Class frmCopyCoeffSet
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -65,12 +65,12 @@ Friend Class frmCopyCoeffSet
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
             If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) And Trim(txtCoeffSetName.Text) <> "" Then

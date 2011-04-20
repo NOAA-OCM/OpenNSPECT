@@ -38,19 +38,19 @@ Module modRusle
     Private _strSDRFileName As String 'If user provides own SDR GRid, store path here
     Private _picks As String()
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strNibbleFileName"></param>
-    ''' <param name="strDEMTwoCellFileName"></param>
-    ''' <param name="strRFactorFileName"></param>
-    ''' <param name="strKfactorFileName"></param>
-    ''' <param name="strSDRFileName"></param>
-    ''' <param name="strLandClass"></param>
-    ''' <param name="OutputItems"></param>
-    ''' <param name="dblRFactorConstant"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
     Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, ByRef OutputItems As clsXMLOutputItems, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strNibbleFileName: FileName of the nibble GRID
@@ -138,12 +138,12 @@ Module modRusle
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="booLocal"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Function CreateMetadata(ByRef booLocal As Boolean) As String
 
         Dim strHeader As String
@@ -173,13 +173,13 @@ Module modRusle
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="cmdType"></param>
-    ''' <param name="pLCRaster"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
         'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
         'and the Land Class Raster.  Returns a string
@@ -285,13 +285,13 @@ Module modRusle
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strConStatement"></param>
-    ''' <param name="OutputItems"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
 
         Dim pSoilLossAcres As MapWinGIS.Grid = Nothing  'Soil Loss Acres
@@ -493,17 +493,17 @@ Module modRusle
 
 #Region "Raster Math"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function AllSoilLossCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim tmpval As Single
         For i As Integer = 0 To _picks.Length - 1
@@ -523,22 +523,22 @@ Module modRusle
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="InputBox1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="InputBox2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="InputBox3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="InputBox4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="InputBox5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Private Function pZSedCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
 
@@ -638,17 +638,17 @@ Module modRusle
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function SDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
         If Input1 > 1 Then
@@ -658,17 +658,17 @@ Module modRusle
         End If
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function AllSDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim kmval, daval, tmp3val, tmp4val, tmp5val, tmp6val As Single
 
@@ -702,17 +702,17 @@ Module modRusle
         End If
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function sedYieldCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
         Return Input1 * Input2 * 907.18474

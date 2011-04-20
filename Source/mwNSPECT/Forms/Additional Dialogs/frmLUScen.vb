@@ -31,12 +31,12 @@ Friend Class frmLUScen
 
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmLUScen_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             g_luscen = Me
@@ -65,12 +65,12 @@ Friend Class frmLUScen
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -79,12 +79,12 @@ Friend Class frmLUScen
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmLUScen_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         Try
             If _stopClose Then
@@ -96,12 +96,12 @@ Friend Class frmLUScen
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
             If ValidateData() Then
@@ -115,12 +115,12 @@ Friend Class frmLUScen
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
         Try
             Dim selectfrm As New frmSelectShape
@@ -130,12 +130,12 @@ Friend Class frmLUScen
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboLULayer_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles cboLULayer.MouseClick
         Try
             _SelectLyrPath = ""
@@ -147,12 +147,12 @@ Friend Class frmLUScen
 #End Region
 
 #Region "Helper Subs"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strWQStd"></param>
-    ''' <param name="frmProj"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Sub init(ByVal strWQStd As String, ByRef frmProj As frmProjectSetup)
         Try
             _frmPrj = frmProj
@@ -162,11 +162,11 @@ Friend Class frmLUScen
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function CreateXMLFile() As String
         Try
             Dim clsMan As New clsXMLLUScen
@@ -207,11 +207,11 @@ Friend Class frmLUScen
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function ValidateData() As Boolean
         Try
             'Project Name
@@ -302,10 +302,10 @@ Friend Class frmLUScen
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub PopulateForm()
         Try
             Dim strScenName As String
@@ -352,10 +352,10 @@ Friend Class frmLUScen
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub FillGrid()
         Try
             Dim strSQLWQStd As String
@@ -396,10 +396,10 @@ Friend Class frmLUScen
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Public Sub SetSelectedShape()
         Try
             If g_MapWin.Layers.CurrentLayer <> -1 And g_MapWin.View.SelectedShapes.NumSelected > 0 Then

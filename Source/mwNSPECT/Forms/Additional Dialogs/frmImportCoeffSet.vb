@@ -24,12 +24,12 @@ Friend Class frmImportCoeffSet
     Private _frmPoll As frmPollutants
     Private _cmdCoeff As OleDbCommand
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmImportCoeffSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             InitComboBox(cboLCType, "LCTYPE")
@@ -38,12 +38,12 @@ Friend Class frmImportCoeffSet
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
         Try
             Dim dlgOpen As New Windows.Forms.OpenFileDialog
@@ -58,12 +58,12 @@ Friend Class frmImportCoeffSet
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -72,12 +72,12 @@ Friend Class frmImportCoeffSet
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
             If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) Then
@@ -94,11 +94,11 @@ Friend Class frmImportCoeffSet
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="frmPoll"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub Init(ByRef frmPoll As frmPollutants)
         Try
             _frmPoll = frmPoll
@@ -110,13 +110,13 @@ Friend Class frmImportCoeffSet
     'Need to check the text file coming in from the import menu of the pollutant form.
     'Bringing the Text File itself, and the name of the LCType as picked by John User
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strFileName"></param>
-    ''' <param name="strLCTypeName"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function ValidateCoeffTextFile(ByRef strFileName As String, ByRef strLCTypeName As String) As Boolean
         Try
 

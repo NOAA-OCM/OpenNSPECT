@@ -24,12 +24,12 @@ Friend Class frmImportWQStd
     Private _frmWQ As frmWaterQualityStandard
     Private _strFileName As String
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
         Try
             'browse...get output filename
@@ -48,12 +48,12 @@ Friend Class frmImportWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -62,12 +62,12 @@ Friend Class frmImportWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
 
@@ -137,11 +137,11 @@ Friend Class frmImportWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="frmWQ"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub Init(ByRef frmWQ As frmWaterQualityStandard)
         Try
             _frmWQ = frmWQ
@@ -150,13 +150,13 @@ Friend Class frmImportWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strName"></param>
-    ''' <param name="strPoll"></param>
-    ''' <param name="strThresh"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Sub PollutantAdd(ByRef strName As String, ByRef strPoll As String, ByRef strThresh As String)
         Try
 

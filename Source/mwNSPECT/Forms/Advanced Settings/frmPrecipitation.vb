@@ -29,12 +29,12 @@ Friend Class frmPrecipitation
     Private _pInputPrecipDS As MapWinGIS.Grid
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmPrecipitation_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             _boolLoad = True
@@ -47,12 +47,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboScenName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboScenName.SelectedIndexChanged
         Try
             Dim strSQLPrecip As String
@@ -80,12 +80,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDesc.TextChanged
         Try
             EnableSave()
@@ -95,12 +95,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtPrecipFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipFile.TextChanged
         Try
             EnableSave()
@@ -109,12 +109,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
         Try
             Dim pPrecipRasterDataset As MapWinGIS.Grid
@@ -151,12 +151,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGridUnits.SelectedIndexChanged
         Try
             EnableSave()
@@ -165,12 +165,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipUnits.SelectedIndexChanged
         Try
             EnableSave()
@@ -179,12 +179,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimePeriod.SelectedIndexChanged
         Try
             If cboTimePeriod.SelectedIndex = 0 Then
@@ -200,12 +200,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtRainingDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRainingDays.TextChanged
         Try
             EnableSave()
@@ -215,12 +215,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipType.SelectedIndexChanged
         Try
             If Not _boolLoad Then
@@ -231,12 +231,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             If CheckParams() = True Then
@@ -278,12 +278,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Dim intSave As Object
@@ -305,12 +305,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuNewPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewPrecip.Click
         Try
             Dim newpre As New frmNewPrecip
@@ -321,12 +321,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuDelPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelPrecip.Click
         Try
             Dim intAns As Object
@@ -367,12 +367,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuPrecipHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPrecipHelp.Click
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "precip.htm")
@@ -381,12 +381,12 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboScenName_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboTimePeriod.KeyDown, cboScenName.KeyDown, cboPrecipUnits.KeyDown, cboGridUnits.KeyDown
         Try
             e.SuppressKeyPress = True
@@ -397,11 +397,11 @@ Friend Class frmPrecipitation
 #End Region
 
 #Region "Helper Functions"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function CheckParams() As Boolean
         Try
             'Check the inputs of the form, before saving
@@ -465,10 +465,10 @@ Friend Class frmPrecipitation
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub EnableSave()
         Try
             cmdSave.Enabled = True
@@ -479,11 +479,11 @@ Friend Class frmPrecipitation
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strPrecName"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub UpdatePrecip(ByVal strPrecName As String)
         Try
             cboScenName.Items.Clear()
