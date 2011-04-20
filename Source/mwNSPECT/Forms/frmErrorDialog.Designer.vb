@@ -36,7 +36,7 @@ Partial Class frmErrorDialog
         Me.cmdCopy.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCopy.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCopy.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCopy.Location = New System.Drawing.Point(288, 336)
+        Me.cmdCopy.Location = New System.Drawing.Point(422, 336)
         Me.cmdCopy.Name = "cmdCopy"
         Me.cmdCopy.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCopy.Size = New System.Drawing.Size(72, 25)
@@ -50,9 +50,10 @@ Partial Class frmErrorDialog
         Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
         Me.cmdClose.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdClose.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdClose.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdClose.Location = New System.Drawing.Point(366, 336)
+        Me.cmdClose.Location = New System.Drawing.Point(500, 336)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdClose.Size = New System.Drawing.Size(72, 25)
@@ -70,7 +71,7 @@ Partial Class frmErrorDialog
         Me.txtError.Multiline = True
         Me.txtError.Name = "txtError"
         Me.txtError.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtError.Size = New System.Drawing.Size(426, 304)
+        Me.txtError.Size = New System.Drawing.Size(560, 304)
         Me.txtError.TabIndex = 7
         '
         'lblText
@@ -85,7 +86,8 @@ Partial Class frmErrorDialog
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(450, 366)
+        Me.CancelButton = Me.cmdClose
+        Me.ClientSize = New System.Drawing.Size(584, 366)
         Me.Controls.Add(Me.txtError)
         Me.Controls.Add(Me.cmdCopy)
         Me.Controls.Add(Me.cmdClose)

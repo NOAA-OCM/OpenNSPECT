@@ -23,21 +23,21 @@ Partial Class frmCompareOutputs
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCompareOutputs))
-        Me.pnlTop = New System.Windows.Forms.Panel
-        Me.spltconBase = New System.Windows.Forms.SplitContainer
-        Me.lstbxLeft = New System.Windows.Forms.ListBox
-        Me.chkbxLeftUseLegend = New System.Windows.Forms.CheckBox
-        Me.lstbxRight = New System.Windows.Forms.ListBox
-        Me.chkbxRightUseLegend = New System.Windows.Forms.CheckBox
-        Me.cmdRun = New System.Windows.Forms.Button
-        Me.cmdQuit = New System.Windows.Forms.Button
-        Me.mnustrpMain = New System.Windows.Forms.MenuStrip
-        Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuitmAddToLegend = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuitmExit = New System.Windows.Forms.ToolStripMenuItem
-        Me.chkSelectedPolys = New System.Windows.Forms.CheckBox
-        Me.btnSelect = New System.Windows.Forms.Button
-        Me.lblSelected = New System.Windows.Forms.Label
+        Me.pnlTop = New System.Windows.Forms.Panel()
+        Me.spltconBase = New System.Windows.Forms.SplitContainer()
+        Me.lstbxLeft = New System.Windows.Forms.ListBox()
+        Me.chkbxLeftUseLegend = New System.Windows.Forms.CheckBox()
+        Me.lstbxRight = New System.Windows.Forms.ListBox()
+        Me.chkbxRightUseLegend = New System.Windows.Forms.CheckBox()
+        Me.cmdRun = New System.Windows.Forms.Button()
+        Me.cmdQuit = New System.Windows.Forms.Button()
+        Me.mnustrpMain = New System.Windows.Forms.MenuStrip()
+        Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuitmAddToLegend = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuitmExit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.chkSelectedPolys = New System.Windows.Forms.CheckBox()
+        Me.btnSelect = New System.Windows.Forms.Button()
+        Me.lblSelected = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         Me.spltconBase.Panel1.SuspendLayout()
         Me.spltconBase.Panel2.SuspendLayout()
@@ -48,12 +48,12 @@ Partial Class frmCompareOutputs
         'pnlTop
         '
         Me.pnlTop.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlTop.Controls.Add(Me.spltconBase)
         Me.pnlTop.Location = New System.Drawing.Point(0, 27)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(516, 275)
+        Me.pnlTop.Size = New System.Drawing.Size(584, 299)
         Me.pnlTop.TabIndex = 0
         '
         'spltconBase
@@ -73,19 +73,19 @@ Partial Class frmCompareOutputs
         Me.spltconBase.Panel2.Controls.Add(Me.lstbxRight)
         Me.spltconBase.Panel2.Controls.Add(Me.chkbxRightUseLegend)
         Me.spltconBase.Panel2MinSize = 100
-        Me.spltconBase.Size = New System.Drawing.Size(516, 275)
-        Me.spltconBase.SplitterDistance = 255
+        Me.spltconBase.Size = New System.Drawing.Size(584, 299)
+        Me.spltconBase.SplitterDistance = 288
         Me.spltconBase.TabIndex = 0
         '
         'lstbxLeft
         '
         Me.lstbxLeft.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstbxLeft.FormattingEnabled = True
         Me.lstbxLeft.Location = New System.Drawing.Point(12, 41)
         Me.lstbxLeft.Name = "lstbxLeft"
-        Me.lstbxLeft.Size = New System.Drawing.Size(240, 225)
+        Me.lstbxLeft.Size = New System.Drawing.Size(273, 238)
         Me.lstbxLeft.TabIndex = 1
         '
         'chkbxLeftUseLegend
@@ -101,12 +101,12 @@ Partial Class frmCompareOutputs
         'lstbxRight
         '
         Me.lstbxRight.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstbxRight.FormattingEnabled = True
         Me.lstbxRight.Location = New System.Drawing.Point(4, 41)
         Me.lstbxRight.Name = "lstbxRight"
-        Me.lstbxRight.Size = New System.Drawing.Size(243, 225)
+        Me.lstbxRight.Size = New System.Drawing.Size(278, 238)
         Me.lstbxRight.TabIndex = 2
         '
         'chkbxRightUseLegend
@@ -127,7 +127,7 @@ Partial Class frmCompareOutputs
         Me.cmdRun.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdRun.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdRun.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdRun.Location = New System.Drawing.Point(356, 308)
+        Me.cmdRun.Location = New System.Drawing.Point(414, 332)
         Me.cmdRun.Name = "cmdRun"
         Me.cmdRun.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdRun.Size = New System.Drawing.Size(72, 25)
@@ -141,9 +141,10 @@ Partial Class frmCompareOutputs
         Me.cmdQuit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdQuit.BackColor = System.Drawing.SystemColors.Control
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cmdQuit.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(434, 308)
+        Me.cmdQuit.Location = New System.Drawing.Point(502, 332)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(72, 25)
@@ -157,7 +158,7 @@ Partial Class frmCompareOutputs
         Me.mnustrpMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFile})
         Me.mnustrpMain.Location = New System.Drawing.Point(0, 0)
         Me.mnustrpMain.Name = "mnustrpMain"
-        Me.mnustrpMain.Size = New System.Drawing.Size(516, 24)
+        Me.mnustrpMain.Size = New System.Drawing.Size(584, 24)
         Me.mnustrpMain.TabIndex = 7
         Me.mnustrpMain.Text = "MenuStrip1"
         '
@@ -187,7 +188,7 @@ Partial Class frmCompareOutputs
         Me.chkSelectedPolys.Cursor = System.Windows.Forms.Cursors.Default
         Me.chkSelectedPolys.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkSelectedPolys.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.chkSelectedPolys.Location = New System.Drawing.Point(12, 311)
+        Me.chkSelectedPolys.Location = New System.Drawing.Point(12, 335)
         Me.chkSelectedPolys.Name = "chkSelectedPolys"
         Me.chkSelectedPolys.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.chkSelectedPolys.Size = New System.Drawing.Size(147, 22)
@@ -203,7 +204,7 @@ Partial Class frmCompareOutputs
         Me.btnSelect.Cursor = System.Windows.Forms.Cursors.Default
         Me.btnSelect.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSelect.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnSelect.Location = New System.Drawing.Point(149, 308)
+        Me.btnSelect.Location = New System.Drawing.Point(149, 332)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.btnSelect.Size = New System.Drawing.Size(72, 25)
@@ -214,7 +215,7 @@ Partial Class frmCompareOutputs
         '
         'lblSelected
         '
-        Me.lblSelected.Location = New System.Drawing.Point(227, 314)
+        Me.lblSelected.Location = New System.Drawing.Point(254, 338)
         Me.lblSelected.Name = "lblSelected"
         Me.lblSelected.Size = New System.Drawing.Size(100, 23)
         Me.lblSelected.TabIndex = 66
@@ -224,7 +225,8 @@ Partial Class frmCompareOutputs
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(516, 338)
+        Me.CancelButton = Me.cmdQuit
+        Me.ClientSize = New System.Drawing.Size(584, 362)
         Me.Controls.Add(Me.lblSelected)
         Me.Controls.Add(Me.btnSelect)
         Me.Controls.Add(Me.chkSelectedPolys)
