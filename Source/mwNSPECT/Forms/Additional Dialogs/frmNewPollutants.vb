@@ -33,10 +33,6 @@ Friend Class frmNewPollutants
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmNewPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             modUtil.InitComboBox(cboLCType, "LCType")
@@ -47,11 +43,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboLCType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboLCType.SelectedIndexChanged
@@ -85,11 +76,6 @@ Friend Class frmNewPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuCoeffNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffNewSet.Click
         Try
             g_boolAddCoeff = False
@@ -100,11 +86,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuCoeffCopySet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffCopySet.Click
@@ -119,11 +100,6 @@ Friend Class frmNewPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged
         Try
             _boolChanged = True
@@ -132,11 +108,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub txtPollutant_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPollutant.TextChanged
@@ -149,11 +120,6 @@ Friend Class frmNewPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub txtCoeffSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSet.TextChanged
         Try
             _boolChanged = True
@@ -162,11 +128,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
@@ -179,11 +140,6 @@ Friend Class frmNewPollutants
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -191,11 +147,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
@@ -216,9 +167,6 @@ Friend Class frmNewPollutants
 #Region "Helpers"
 
 
-
-
-
     Public Sub Init(ByRef frmPoll As frmPollutants)
         Try
             _frmPoll = frmPoll
@@ -226,9 +174,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Private Sub CmdSaveEnabled()
@@ -242,10 +187,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Function CheckForm() As Boolean
@@ -295,10 +236,6 @@ Friend Class frmNewPollutants
     End Function
 
 
-
-
-
-
     Private Function ValidateGridValues() As Boolean
         Try
             'Need to validate each grid value before saving.  Essentially we take it a row at a time,
@@ -334,10 +271,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Function
-
-
-
-
 
 
     Private Function UpdateValues() As Boolean
@@ -420,11 +353,6 @@ Friend Class frmNewPollutants
     End Function
 
 
-
-
-
-
-
     Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
@@ -468,11 +396,6 @@ Friend Class frmNewPollutants
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Public Sub AddCoefficient(ByRef strCoeffName As String, ByRef strLCType As String)

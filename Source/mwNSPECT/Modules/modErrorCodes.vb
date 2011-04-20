@@ -55,22 +55,11 @@ Module modErrorCodes
     Public Const MSG8 As String = "XML File(*.xml)|*.xml"
 
 
-
-
-
-
-
-
     Public Sub ErrorGenerator(ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
 
         MsgBox(Error_Renamed & "Row: " & (i + 1) & ", Column: " & (j + 1), MsgBoxStyle.Critical, "Warning")
 
     End Sub
-
-
-
-
-
 
 
     Public Sub HandleError(ByVal OriginName As String, ByRef OriginalException As Exception)

@@ -25,11 +25,6 @@ Friend Class frmImportCoeffSet
     Private _cmdCoeff As OleDbCommand
 
 
-
-
-
-
-
     Private Sub frmImportCoeffSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             InitComboBox(cboLCType, "LCTYPE")
@@ -37,11 +32,6 @@ Friend Class frmImportCoeffSet
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
@@ -59,11 +49,6 @@ Friend Class frmImportCoeffSet
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -71,11 +56,6 @@ Friend Class frmImportCoeffSet
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
@@ -95,10 +75,6 @@ Friend Class frmImportCoeffSet
     End Sub
 
 
-
-
-
-
     Public Sub Init(ByRef frmPoll As frmPollutants)
         Try
             _frmPoll = frmPoll
@@ -109,12 +85,6 @@ Friend Class frmImportCoeffSet
 
     'Need to check the text file coming in from the import menu of the pollutant form.
     'Bringing the Text File itself, and the name of the LCType as picked by John User
-
-
-
-
-
-
 
 
     Private Function ValidateCoeffTextFile(ByRef strFileName As String, ByRef strLCTypeName As String) As Boolean

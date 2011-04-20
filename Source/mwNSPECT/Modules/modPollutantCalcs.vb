@@ -50,14 +50,6 @@ Module modPollutantCalcs
     Private _picks() As String
 
 
-
-
-
-
-
-
-
-
     Public Function PollutantConcentrationSetup(ByRef clsPollutant As clsXMLPollutantItem, ByRef strLandClass As String, ByRef strWQName As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'Sub takes incoming parameters (in the form of a pollutant item) from the project file
         'and then parses them out
@@ -135,13 +127,6 @@ Module modPollutantCalcs
     End Function
 
 
-
-
-
-
-
-
-
     Private Function ConstructMetaData(ByRef cmdType As oledbcommand, ByRef strCoeffSet As String, ByRef booLocal As Boolean) As String
         'Takes the rs and creates a string describing the pollutants and coefficients used in this run, will
         'later be added to the global dictionary
@@ -173,12 +158,6 @@ Module modPollutantCalcs
         ConstructMetaData = strHeader & g_strLandCoverParameters & strConstructMetaData & strLandClassCoeff
 
     End Function
-
-
-
-
-
-
 
 
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
@@ -305,12 +284,6 @@ Module modPollutantCalcs
             MsgBox("Error in pick Statement: " & Err.Number & ": " & Err.Description)
         End Try
     End Function
-
-
-
-
-
-
 
 
     Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
@@ -492,13 +465,6 @@ Module modPollutantCalcs
     End Function
 
 
-
-
-
-
-
-
-
     Private Function CompareWaterQuality(ByRef pWSFeatureClass As MapWinGIS.Shapefile, ByRef pPollutantRaster As MapWinGIS.Grid, ByRef OutputItems As clsXMLOutputItems) As Boolean
         Dim strWQVAlue As Object
 
@@ -561,12 +527,6 @@ Module modPollutantCalcs
     End Function
 
 
-
-
-
-
-
-
     Private Function ReturnWQValue(ByRef strPollName As String, ByRef strWQstdName As String) As String
         Dim strPoll As String
         Dim strWQStd As String = ""
@@ -591,17 +551,7 @@ Module modPollutantCalcs
     End Function
 
 
-
 #Region "Raster Math"
-
-
-
-
-
-
-
-
-
 
 
     Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
@@ -619,35 +569,10 @@ Module modPollutantCalcs
     End Function
 
 
-
-
-
-
-
-
-
-
-
-
     Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
         Return Input1 * 0.000001
     End Function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function AllConCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -666,16 +591,6 @@ Module modPollutantCalcs
         End If
 
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function concompCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single

@@ -44,7 +44,7 @@ Module modMainRun
     Public g_intPrecipType As Short 'Precipitation Type; I, IA, II, III
     Public g_booLocalEffects As Boolean 'Did they check local effects?
     Public g_booSelectedPolys As Boolean 'Did they select n polygons for limiting analysis?
-   
+
     'The Public member datasets, to be used quite a bit
     Public g_pDEMRaster As MapWinGIS.Grid 'DEM Raster
     Public g_pFlowAccRaster As MapWinGIS.Grid 'Flow Accumulation
@@ -61,12 +61,6 @@ Module modMainRun
     Public g_pSelectedPolyClip As MapWinGIS.Shape
 
     Public g_pGroupLayer As Integer = -1
-
-
-
-
-
-
 
 
     Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", Optional ByRef SelectedShapes As Collections.Generic.List(Of Integer) = Nothing)
@@ -158,19 +152,11 @@ Module modMainRun
         End If
 
 
-
         If Len(strError) > 0 Then
             MsgBox(strError, MsgBoxStyle.Critical, "Missing Data")
         End If
 
     End Sub
-
-
-
-
-
-
-
 
 
     Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As Collections.Generic.List(Of Integer), ByRef strBasinFeatClass As String) As MapWinGIS.Shapefile
@@ -205,11 +191,6 @@ Module modMainRun
     End Function
 
 
-
-
-
-
-
     Public Function CheckMultiPartPolygon(ByVal pPolygon As MapWinGIS.Shape) As Boolean
         If pPolygon.NumParts > 1 Then
             CheckMultiPartPolygon = True
@@ -217,11 +198,6 @@ Module modMainRun
             CheckMultiPartPolygon = False
         End If
     End Function
-
-
-
-
-
 
 
     Public Function ReturnSelectGeometry(ByVal strInputSF As String) As MapWinGIS.Shape

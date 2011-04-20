@@ -53,11 +53,6 @@ Public Class clsXMLMgmtScenItem
     Public strChangeToClass As String
 
 
-
-
-
-
-
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -66,11 +61,6 @@ Public Class clsXMLMgmtScenItem
 
         End Get
     End Property
-
-
-
-
-
 
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
@@ -104,10 +94,6 @@ Public Class clsXMLMgmtScenItem
         CreateNode = node
 
     End Function
-
-
-
-
 
 
     Public Overrides Sub LoadNode(ByRef node As XmlNode)

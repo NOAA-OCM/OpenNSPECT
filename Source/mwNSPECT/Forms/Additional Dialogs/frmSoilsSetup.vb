@@ -24,12 +24,8 @@ Friend Class frmSoilsSetup
 
     Private _frmSoil As frmSoils
     Private _pRasterProps As MapWinGIS.Grid
-   
+
 #Region "Events"
-
-
-
-
 
 
     Private Sub cmdDEMBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDEMBrowse.Click
@@ -48,11 +44,6 @@ Friend Class frmSoilsSetup
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
@@ -74,11 +65,6 @@ Friend Class frmSoilsSetup
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Dim intvbYesNo As Short
@@ -98,11 +84,6 @@ Friend Class frmSoilsSetup
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             SaveSoils()
@@ -115,9 +96,6 @@ Friend Class frmSoilsSetup
 #Region "Helper"
 
 
-
-
-
     Public Sub Init(ByRef frmSoil As frmSoils)
         Try
             _frmSoil = frmSoil
@@ -125,9 +103,6 @@ Friend Class frmSoilsSetup
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Private Sub SaveSoils()
@@ -153,10 +128,6 @@ Friend Class frmSoilsSetup
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Function ValidateData() As Boolean
@@ -236,13 +207,6 @@ Friend Class frmSoilsSetup
             HandleError(c_sModuleFileName, ex)
         End Try
     End Function
-
-
-
-
-
-
-
 
 
     Private Function CreateSoilsGrid(ByRef strSoilsFileName As String, ByRef strHydFieldName As String, Optional ByRef strKFactor As String = "") As Boolean
@@ -430,10 +394,6 @@ Friend Class frmSoilsSetup
             CreateSoilsGrid = False
         End Try
     End Function
-
-
-
-
 
 
     Private Sub PopulateCbo()

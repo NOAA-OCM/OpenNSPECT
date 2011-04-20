@@ -24,11 +24,6 @@ Friend Class frmCopyWQStd
     Const c_sModuleFileName As String = "frmcopyWQStd.vb"
 
 
-
-
-
-
-
     Private Sub frmCopyWQStd_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
         Try
             modUtil.InitComboBox(cboStdName, "WQCRITERIA")
@@ -39,11 +34,6 @@ Friend Class frmCopyWQStd
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdCancel_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -51,11 +41,6 @@ Friend Class frmCopyWQStd
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
@@ -113,10 +98,6 @@ Friend Class frmCopyWQStd
     End Sub
 
 
-
-
-
-
     Public Sub Init(ByRef frmWQ As frmWaterQualityStandard)
         Try
             _frmWQStd = frmWQ
@@ -124,7 +105,6 @@ Friend Class frmCopyWQStd
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
 
 
 End Class

@@ -25,10 +25,6 @@ Friend Class frmSoils
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmSoils_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             modUtil.InitComboBox(cboSoils, "SOILS")
@@ -36,11 +32,6 @@ Friend Class frmSoils
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboSoils_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboSoils.SelectedIndexChanged
@@ -61,29 +52,14 @@ Friend Class frmSoils
     End Sub
 
 
-
-
-
-
-
     Private Sub txtSoilsGrid_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSoilsGrid.TextChanged
 
     End Sub
 
 
-
-
-
-
-
     Private Sub txtSoilsKGrid_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSoilsKGrid.TextChanged
 
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
@@ -95,11 +71,6 @@ Friend Class frmSoils
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             Me.Close()
@@ -107,11 +78,6 @@ Friend Class frmSoils
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNew.Click
@@ -123,11 +89,6 @@ Friend Class frmSoils
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelete.Click
@@ -169,11 +130,6 @@ Friend Class frmSoils
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuSoilsHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSoilsHelp.Click

@@ -39,7 +39,6 @@ Public Class clsXMLOutputItems
     End Property
 
 
-
     'Return the count of order items.
     Public ReadOnly Property Count() As Integer
         Get
@@ -58,10 +57,6 @@ Public Class clsXMLOutputItems
     End Property
 
 
-
-
-
-
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
         Try
             GetEnumerator = m_colItems.GetEnumerator
@@ -70,11 +65,6 @@ Public Class clsXMLOutputItems
             GetEnumerator = Nothing
         End Try
     End Function
-
-
-
-
-
 
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
@@ -120,10 +110,6 @@ Public Class clsXMLOutputItems
     End Function
 
 
-
-
-
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -151,9 +137,6 @@ Public Class clsXMLOutputItems
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Public Sub New()

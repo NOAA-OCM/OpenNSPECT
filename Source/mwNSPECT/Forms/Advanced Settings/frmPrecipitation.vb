@@ -31,10 +31,6 @@ Friend Class frmPrecipitation
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmPrecipitation_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             _boolLoad = True
@@ -46,11 +42,6 @@ Friend Class frmPrecipitation
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboScenName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboScenName.SelectedIndexChanged
@@ -81,11 +72,6 @@ Friend Class frmPrecipitation
     End Sub
 
 
-
-
-
-
-
     Private Sub txtDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDesc.TextChanged
         Try
             EnableSave()
@@ -96,11 +82,6 @@ Friend Class frmPrecipitation
     End Sub
 
 
-
-
-
-
-
     Private Sub txtPrecipFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipFile.TextChanged
         Try
             EnableSave()
@@ -108,11 +89,6 @@ Friend Class frmPrecipitation
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
@@ -152,11 +128,6 @@ Friend Class frmPrecipitation
     End Sub
 
 
-
-
-
-
-
     Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGridUnits.SelectedIndexChanged
         Try
             EnableSave()
@@ -166,11 +137,6 @@ Friend Class frmPrecipitation
     End Sub
 
 
-
-
-
-
-
     Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipUnits.SelectedIndexChanged
         Try
             EnableSave()
@@ -178,11 +144,6 @@ Friend Class frmPrecipitation
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimePeriod.SelectedIndexChanged
@@ -201,11 +162,6 @@ Friend Class frmPrecipitation
     End Sub
 
 
-
-
-
-
-
     Private Sub txtRainingDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRainingDays.TextChanged
         Try
             EnableSave()
@@ -214,11 +170,6 @@ Friend Class frmPrecipitation
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipType.SelectedIndexChanged
@@ -230,11 +181,6 @@ Friend Class frmPrecipitation
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
@@ -279,11 +225,6 @@ Friend Class frmPrecipitation
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Dim intSave As Object
@@ -306,11 +247,6 @@ Friend Class frmPrecipitation
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuNewPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewPrecip.Click
         Try
             Dim newpre As New frmNewPrecip
@@ -320,11 +256,6 @@ Friend Class frmPrecipitation
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuDelPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelPrecip.Click
@@ -368,11 +299,6 @@ Friend Class frmPrecipitation
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuPrecipHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPrecipHelp.Click
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "precip.htm")
@@ -380,11 +306,6 @@ Friend Class frmPrecipitation
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboScenName_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboTimePeriod.KeyDown, cboScenName.KeyDown, cboPrecipUnits.KeyDown, cboGridUnits.KeyDown
@@ -397,9 +318,6 @@ Friend Class frmPrecipitation
 #End Region
 
 #Region "Helper Functions"
-
-
-
 
 
     Private Function CheckParams() As Boolean
@@ -466,9 +384,6 @@ Friend Class frmPrecipitation
     End Function
 
 
-
-
-
     Private Sub EnableSave()
         Try
             cmdSave.Enabled = True
@@ -478,10 +393,6 @@ Friend Class frmPrecipitation
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Public Sub UpdatePrecip(ByVal strPrecName As String)

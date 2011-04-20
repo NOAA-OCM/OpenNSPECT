@@ -20,12 +20,6 @@ Public Class frmProgressDialog
     Const c_sModuleFileName As String = "frmProgressDialog.vb"
 
 
-
-
-
-
-
-
     Public Property Title() As String
         Get
             Return Me.Text
@@ -34,11 +28,6 @@ Public Class frmProgressDialog
             Me.Text = value
         End Set
     End Property
-
-
-
-
-
 
 
     Public Property Description() As String
@@ -51,11 +40,6 @@ Public Class frmProgressDialog
     End Property
 
 
-
-
-
-
-
     Public Property MinRange() As Integer
         Get
             Return pbMain.Minimum
@@ -64,11 +48,6 @@ Public Class frmProgressDialog
             pbMain.Minimum = value
         End Set
     End Property
-
-
-
-
-
 
 
     Public Property MaxRange() As Integer
@@ -81,11 +60,6 @@ Public Class frmProgressDialog
     End Property
 
 
-
-
-
-
-
     Public Property Progress() As Integer
         Get
             Return pbMain.Value
@@ -94,11 +68,6 @@ Public Class frmProgressDialog
             pbMain.Value = value
         End Set
     End Property
-
-
-
-
-
 
 
     Public Property CancelEnabled() As Boolean
@@ -111,15 +80,7 @@ Public Class frmProgressDialog
     End Property
 
 
-
-
-
     Private _timerEnabled As Boolean
-
-
-
-
-
 
 
     Public Property TimerEnabled() As Boolean
@@ -137,11 +98,6 @@ Public Class frmProgressDialog
     End Property
 
 
-
-
-
-
-
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Try
             g_boolCancel = False
@@ -149,11 +105,6 @@ Public Class frmProgressDialog
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub tmrEventDriver_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrEventDriver.Tick

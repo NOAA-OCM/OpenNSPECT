@@ -28,10 +28,6 @@ Friend Class frmNewLCType
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmNewLCType_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             dgvLCTypes.Rows.Add()
@@ -51,11 +47,6 @@ Friend Class frmNewLCType
     End Sub
 
 
-
-
-
-
-
     Private Sub dgvLCTypes_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvLCTypes.MouseClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Right Then
@@ -68,11 +59,6 @@ Friend Class frmNewLCType
     End Sub
 
 
-
-
-
-
-
     Private Sub AddRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddRowToolStripMenuItem.Click
         Try
             AddRow()
@@ -80,11 +66,6 @@ Friend Class frmNewLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertRowToolStripMenuItem.Click
@@ -96,11 +77,6 @@ Friend Class frmNewLCType
     End Sub
 
 
-
-
-
-
-
     Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteRowToolStripMenuItem.Click
         Try
             DeleteRow()
@@ -108,11 +84,6 @@ Friend Class frmNewLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub dgvLCTypes_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvLCTypes.DataError
@@ -124,11 +95,6 @@ Friend Class frmNewLCType
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -136,11 +102,6 @@ Friend Class frmNewLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
@@ -172,7 +133,6 @@ Friend Class frmNewLCType
                 Next
 
 
-
                 MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Data Saved")
 
                 Me.Close()
@@ -191,9 +151,6 @@ Friend Class frmNewLCType
 #Region "Helper Functions'"
 
 
-
-
-
     Public Sub Init(ByRef frmLC As frmLandCoverTypes)
         Try
             _frmLC = frmLC
@@ -201,9 +158,6 @@ Friend Class frmNewLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Private Sub AddRow()
@@ -223,9 +177,6 @@ Friend Class frmNewLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Private Sub InsertRow()
@@ -250,9 +201,6 @@ Friend Class frmNewLCType
     End Sub
 
 
-
-
-
     Private Sub DeleteRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
@@ -262,10 +210,6 @@ Friend Class frmNewLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Function ValidateGridValues() As Boolean
@@ -352,11 +296,6 @@ Friend Class frmNewLCType
             HandleError(c_sModuleFileName, ex)
         End Try
     End Function
-
-
-
-
-
 
 
     Private Sub AddLCClass(ByRef strName As String, ByRef row As DataGridViewRow)

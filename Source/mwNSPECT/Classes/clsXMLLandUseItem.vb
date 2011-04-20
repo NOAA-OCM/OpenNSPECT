@@ -52,11 +52,6 @@ Public Class clsXMLLandUseItem
     Public strLUScenXMLFile As String
 
 
-
-
-
-
-
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -65,11 +60,6 @@ Public Class clsXMLLandUseItem
 
         End Get
     End Property
-
-
-
-
-
 
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
@@ -108,10 +98,6 @@ Public Class clsXMLLandUseItem
             CreateNode = Nothing
         End Try
     End Function
-
-
-
-
 
 
     Public Overrides Sub LoadNode(ByRef node As XmlNode)

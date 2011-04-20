@@ -72,10 +72,6 @@ Public Class clsXMLLUScenPollItems
     End Property
 
 
-
-
-
-
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
         Try
             GetEnumerator = m_colItems.GetEnumerator
@@ -84,11 +80,6 @@ Public Class clsXMLLUScenPollItems
             GetEnumerator = Nothing
         End Try
     End Function
-
-
-
-
-
 
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
@@ -127,10 +118,6 @@ Public Class clsXMLLUScenPollItems
     End Function
 
 
-
-
-
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -160,9 +147,6 @@ Public Class clsXMLLUScenPollItems
     End Sub
 
 
-
-
-
     Public Sub New()
         Try
             m_colItems = New Collections.ArrayList
@@ -170,10 +154,6 @@ Public Class clsXMLLUScenPollItems
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Public Sub Add(ByVal Pollutant As clsXMLLUScenPollItem)
@@ -185,10 +165,6 @@ Public Class clsXMLLUScenPollItems
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Public Sub Remove(ByVal Index As Integer)

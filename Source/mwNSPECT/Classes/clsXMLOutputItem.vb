@@ -46,11 +46,6 @@ Public Class clsXMLOutputItem
     End Property
 
 
-
-
-
-
-
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
@@ -87,10 +82,6 @@ Public Class clsXMLOutputItem
             CreateNode = Nothing
         End Try
     End Function
-
-
-
-
 
 
     Public Overrides Sub LoadNode(ByRef node As XmlNode)

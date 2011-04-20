@@ -20,10 +20,6 @@ Public Class frmCompareOutputs
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmCompareOutputs_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             g_comp = Me
@@ -35,11 +31,6 @@ Public Class frmCompareOutputs
     End Sub
 
 
-
-
-
-
-
     Private Sub chkbxLeftUseLegend_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkbxLeftUseLegend.CheckedChanged
         Try
             RefreshLeft()
@@ -47,11 +38,6 @@ Public Class frmCompareOutputs
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub chkbxRightUseLegend_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkbxRightUseLegend.CheckedChanged
@@ -63,11 +49,6 @@ Public Class frmCompareOutputs
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuitmAddToLegend_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuitmAddToLegend.Click
         Try
             AddToLegendFromProj()
@@ -75,11 +56,6 @@ Public Class frmCompareOutputs
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuitmExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuitmExit.Click
@@ -91,11 +67,6 @@ Public Class frmCompareOutputs
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -105,11 +76,6 @@ Public Class frmCompareOutputs
     End Sub
 
 
-
-
-
-
-
     Private Sub cmdRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRun.Click
         Try
             RunCompare()
@@ -117,11 +83,6 @@ Public Class frmCompareOutputs
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
@@ -135,8 +96,6 @@ Public Class frmCompareOutputs
 #End Region
 
 #Region "Helper Functions"
-
-
 
 
     Public Sub SetSelectedShape()
@@ -156,9 +115,6 @@ Public Class frmCompareOutputs
     End Sub
 
 
-
-
-
     Private Sub RefreshLeft()
         Try
             If chkbxLeftUseLegend.Checked Then
@@ -172,9 +128,6 @@ Public Class frmCompareOutputs
     End Sub
 
 
-
-
-
     Private Sub RefreshRight()
         Try
             If chkbxRightUseLegend.Checked Then
@@ -186,10 +139,6 @@ Public Class frmCompareOutputs
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Sub RefreshUsingLegend(ByRef RefreshBox As Windows.Forms.ListBox)
@@ -209,10 +158,6 @@ Public Class frmCompareOutputs
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Sub RefreshUsingProjectDirectory(ByRef RefreshBox As Windows.Forms.ListBox)
@@ -249,9 +194,6 @@ Public Class frmCompareOutputs
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Private Sub AddToLegendFromProj()
@@ -312,12 +254,6 @@ Public Class frmCompareOutputs
     End Sub
 
 
-
-
-
-
-
-
     Private Function GetListFromSelected(ByRef SelectCheckbox As Windows.Forms.CheckBox, ByRef SelectList As Windows.Forms.ListBox) As clsXMLOutputItems
         Try
             Dim tmpOutItems As New clsXMLOutputItems
@@ -359,12 +295,6 @@ Public Class frmCompareOutputs
     End Function
 
 
-
-
-
-
-
-
     Private Function GetTypeFromPath(ByVal path As String, ByVal name As String) As String
         Try
             Dim filename As String = IO.Path.GetFileName(path)
@@ -402,9 +332,6 @@ Public Class frmCompareOutputs
             GetTypeFromPath = ""
         End Try
     End Function
-
-
-
 
 
     Private Sub RunCompare()
@@ -490,15 +417,6 @@ Public Class frmCompareOutputs
 #Region "Raster Math"
 
 
-
-
-
-
-
-
-
-
-
     Private Function CompareCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Try
             Return Input1 - Input2
@@ -506,16 +424,6 @@ Public Class frmCompareOutputs
             HandleError(c_sModuleFileName, ex)
         End Try
     End Function
-
-
-
-
-
-
-
-
-
-
 
 
     Private Function PercChangeCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single

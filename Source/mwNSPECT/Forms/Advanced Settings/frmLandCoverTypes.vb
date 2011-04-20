@@ -48,10 +48,6 @@ Friend Class frmLandCoverTypes
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmLandCoverTypes_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             _dbConn = g_DBConn
@@ -67,11 +63,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cboLCType_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmbxLCType.SelectedIndexChanged
@@ -154,11 +145,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub cmbxLCType_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cmbxLCType.KeyDown
         Try
             e.SuppressKeyPress = True
@@ -168,11 +154,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub txtLCTypeDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtLCTypeDesc.TextChanged
         Try
             CmdSaveEnabled()
@@ -180,11 +161,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
@@ -227,11 +203,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
             If ValidateGridValues() Then
@@ -256,11 +227,6 @@ Friend Class frmLandCoverTypes
             MsgBox("There was an error saving changes: " + ex.Message, MsgBoxStyle.Critical, "Error Saving Changes")
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub btnRestoreDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRestoreDefaults.Click
@@ -304,11 +270,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuNewLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewLCType.Click
         Try
             Dim newLC As New frmNewLCType
@@ -318,11 +279,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuDelLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelLCType.Click
@@ -373,11 +329,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuImpLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuImpLCType.Click
         Try
             Dim impLC As New frmImportLCType
@@ -387,11 +338,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuExpLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExpLCType.Click
@@ -410,11 +356,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuAppend_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAppend.Click
         Try
             AddRow()
@@ -422,11 +363,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub mnuInsertRow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuInsertRow.Click
@@ -438,11 +374,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuDeleteRow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDeleteRow.Click
         Try
             DeleteRow()
@@ -452,11 +383,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub mnuLCHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuLCHelp.Click
         Try
             Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "land_cover.htm")
@@ -464,11 +390,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub dgvLCTypes_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvLCTypes.MouseClick
@@ -483,11 +404,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub AddRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddRowToolStripMenuItem.Click
         Try
             AddRow()
@@ -495,11 +411,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertRowToolStripMenuItem.Click
@@ -511,11 +422,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
-
     Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteRowToolStripMenuItem.Click
         Try
             DeleteRow()
@@ -523,11 +429,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub dgvLCTypes_CellEndEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvLCTypes.CellEndEdit
@@ -538,11 +439,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub dgvLCTypes_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvLCTypes.DataError
@@ -557,8 +453,6 @@ Friend Class frmLandCoverTypes
 #Region "Helper Functions"
 
 
-
-
     Private Sub SaveToDB()
         Try
             _bSource.EndEdit()
@@ -567,9 +461,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Private Sub AddRow()
@@ -587,9 +478,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
     Private Sub InsertRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
@@ -605,9 +493,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
     Private Sub DeleteRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
@@ -621,9 +506,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
     Private Sub CmdSaveEnabled()
         Try
             btnSave.Enabled = _bolGridChanged
@@ -632,10 +514,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Sub CheckCCAPDefault(ByRef strName As String)
@@ -658,10 +536,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Function ValidateGridValues() As Boolean
@@ -732,9 +606,6 @@ Friend Class frmLandCoverTypes
     End Function
 
 
-
-
-
     Private Sub AddDefaultValues()
         Try
             'Dim i As Short
@@ -768,10 +639,6 @@ Friend Class frmLandCoverTypes
     End Sub
 
 
-
-
-
-
     Private Sub ExportLandCover(ByRef strFileName As String)
         Try
             'Exports your current LCType/LCClasses to text or csv.
@@ -796,10 +663,6 @@ Friend Class frmLandCoverTypes
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Public Sub UpdateCombo(ByVal strName As String)

@@ -146,10 +146,6 @@ Friend Class clsXMLPrjFile
     End Property
 
 
-
-
-
-
     Public Sub SaveFile(ByRef strXML As String)
         Try
             Dim dom As New XmlDocument
@@ -161,11 +157,6 @@ Friend Class clsXMLPrjFile
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
@@ -255,10 +246,6 @@ Friend Class clsXMLPrjFile
     End Function
 
 
-
-
-
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -306,9 +293,6 @@ Friend Class clsXMLPrjFile
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
 
 
     Public Sub New()

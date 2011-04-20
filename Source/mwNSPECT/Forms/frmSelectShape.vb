@@ -17,9 +17,6 @@ Public Class frmSelectShape
     Const c_sModuleFileName As String = "frmSelectShape.vb"
 
 
-
-
-
     Public Sub Initialize()
         Try
             Me.Show()
@@ -35,11 +32,6 @@ Public Class frmSelectShape
     End Sub
 
 
-
-
-
-
-
     Private Sub frmSelectShapes_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         If Not g_cb Is Nothing Then g_cb.SetSelectedShape()
         If Not g_comp Is Nothing Then g_comp.SetSelectedShape()
@@ -51,11 +43,6 @@ Public Class frmSelectShape
     End Sub
 
 
-
-
-
-
-
     Private Sub btnDone_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDone.Click
         Try
             Me.Close()
@@ -63,10 +50,6 @@ Public Class frmSelectShape
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Public Sub disableDone(ByVal disable As Boolean)
@@ -77,11 +60,6 @@ Public Class frmSelectShape
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub frmSelectShape_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing

@@ -31,10 +31,6 @@ Friend Class frmAddWQStd
 #Region "Events"
 
 
-
-
-
-
     Private Sub frmAddWQStd_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             'Populate cbo with pollutant names
@@ -58,11 +54,6 @@ Friend Class frmAddWQStd
     End Sub
 
 
-
-
-
-
-
     Private Sub txtWQStdName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWQStdName.TextChanged
         Try
             txtWQStdName.Text = Replace(txtWQStdName.Text, "'", "")
@@ -70,11 +61,6 @@ Friend Class frmAddWQStd
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
@@ -95,11 +81,6 @@ Friend Class frmAddWQStd
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
-
 
 
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
@@ -159,11 +140,6 @@ Friend Class frmAddWQStd
     End Sub
 
 
-
-
-
-
-
     Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
         Try
             cmdSave.Enabled = True
@@ -177,10 +153,6 @@ Friend Class frmAddWQStd
 #Region "Helper Functions"
 
 
-
-
-
-
     Public Sub Init(ByRef frmWQStd As frmWaterQualityStandard, ByRef frmPrj As frmProjectSetup)
         Try
             _frmWQStd = frmWQStd
@@ -189,10 +161,6 @@ Friend Class frmAddWQStd
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-
-
 
 
     Private Function CheckThreshValues() As Boolean
@@ -209,12 +177,6 @@ Friend Class frmAddWQStd
             HandleError(c_sModuleFileName, ex)
         End Try
     End Function
-
-
-
-
-
-
 
 
     Private Sub PollutantAdd(ByRef strName As String, ByRef strPoll As String, ByRef intThresh As String)
