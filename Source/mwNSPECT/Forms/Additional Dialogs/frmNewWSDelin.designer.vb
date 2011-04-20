@@ -39,27 +39,27 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNewWSDelin))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.frmMain = New System.Windows.Forms.GroupBox
-        Me.chkHydroCorr = New System.Windows.Forms.CheckBox
-        Me.cmdBrowseDEMFile = New System.Windows.Forms.Button
-        Me.txtWSDelinName = New System.Windows.Forms.TextBox
-        Me.cboDEMUnits = New System.Windows.Forms.ComboBox
-        Me.txtDEMFile = New System.Windows.Forms.TextBox
-        Me.cboSubWSSize = New System.Windows.Forms.ComboBox
-        Me._Label1_3 = New System.Windows.Forms.Label
-        Me._Label1_2 = New System.Windows.Forms.Label
-        Me._Label1_12 = New System.Windows.Forms.Label
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me.frmAdvanced = New System.Windows.Forms.GroupBox
-        Me.cmdOptions = New System.Windows.Forms.Button
-        Me.cboStreamLayer = New System.Windows.Forms.ComboBox
-        Me.chkStreamAgree = New System.Windows.Forms.CheckBox
-        Me._lblStream_0 = New System.Windows.Forms.Label
-        Me.cmdCreate = New System.Windows.Forms.Button
-        Me.cmdQuit = New System.Windows.Forms.Button
+        Me.frmMain = New System.Windows.Forms.GroupBox()
+        Me.cboDEMUnits = New System.Windows.Forms.ComboBox()
+        Me.chkHydroCorr = New System.Windows.Forms.CheckBox()
+        Me.cmdBrowseDEMFile = New System.Windows.Forms.Button()
+        Me.txtWSDelinName = New System.Windows.Forms.TextBox()
+        Me.txtDEMFile = New System.Windows.Forms.TextBox()
+        Me.cboSubWSSize = New System.Windows.Forms.ComboBox()
+        Me._Label1_3 = New System.Windows.Forms.Label()
+        Me._Label1_2 = New System.Windows.Forms.Label()
+        Me._Label1_12 = New System.Windows.Forms.Label()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me.frmAdvanced = New System.Windows.Forms.GroupBox()
+        Me.cmdOptions = New System.Windows.Forms.Button()
+        Me.cboStreamLayer = New System.Windows.Forms.ComboBox()
+        Me.chkStreamAgree = New System.Windows.Forms.CheckBox()
+        Me._lblStream_0 = New System.Windows.Forms.Label()
+        Me.cmdCreate = New System.Windows.Forms.Button()
+        Me.cmdQuit = New System.Windows.Forms.Button()
         Me.frmMain.SuspendLayout()
         Me.frmAdvanced.SuspendLayout()
         Me.SuspendLayout()
@@ -87,6 +87,20 @@
         Me.frmMain.TabIndex = 7
         Me.frmMain.TabStop = False
         Me.frmMain.Text = "Create a new watershed delineation  "
+        '
+        'cboDEMUnits
+        '
+        Me.cboDEMUnits.BackColor = System.Drawing.SystemColors.Window
+        Me.cboDEMUnits.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cboDEMUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboDEMUnits.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cboDEMUnits.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.cboDEMUnits.Items.AddRange(New Object() {"meters", "feet"})
+        Me.cboDEMUnits.Location = New System.Drawing.Point(119, 99)
+        Me.cboDEMUnits.Name = "cboDEMUnits"
+        Me.cboDEMUnits.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.cboDEMUnits.Size = New System.Drawing.Size(152, 22)
+        Me.cboDEMUnits.TabIndex = 2
         '
         'chkHydroCorr
         '
@@ -130,20 +144,6 @@
         Me.txtWSDelinName.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtWSDelinName.Size = New System.Drawing.Size(134, 20)
         Me.txtWSDelinName.TabIndex = 0
-        '
-        'cboDEMUnits
-        '
-        Me.cboDEMUnits.BackColor = System.Drawing.SystemColors.Window
-        Me.cboDEMUnits.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cboDEMUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboDEMUnits.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboDEMUnits.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboDEMUnits.Items.AddRange(New Object() {"meters", "feet"})
-        Me.cboDEMUnits.Location = New System.Drawing.Point(119, 99)
-        Me.cboDEMUnits.Name = "cboDEMUnits"
-        Me.cboDEMUnits.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboDEMUnits.Size = New System.Drawing.Size(152, 22)
-        Me.cboDEMUnits.TabIndex = 2
         '
         'txtDEMFile
         '
@@ -317,7 +317,7 @@
         Me.cmdCreate.Enabled = False
         Me.cmdCreate.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCreate.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCreate.Location = New System.Drawing.Point(282, 178)
+        Me.cmdCreate.Location = New System.Drawing.Point(282, 331)
         Me.cmdCreate.Name = "cmdCreate"
         Me.cmdCreate.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCreate.Size = New System.Drawing.Size(65, 25)
@@ -332,7 +332,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(357, 178)
+        Me.cmdQuit.Location = New System.Drawing.Point(357, 331)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -345,7 +345,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(469, 209)
+        Me.ClientSize = New System.Drawing.Size(469, 362)
         Me.Controls.Add(Me.frmMain)
         Me.Controls.Add(Me.cmdCreate)
         Me.Controls.Add(Me.cmdQuit)

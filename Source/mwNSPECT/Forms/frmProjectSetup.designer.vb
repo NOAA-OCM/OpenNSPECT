@@ -273,7 +273,7 @@
         Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFile, Me.mnuBigHelp})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
-        Me.MainMenu1.Size = New System.Drawing.Size(642, 24)
+        Me.MainMenu1.Size = New System.Drawing.Size(644, 24)
         Me.MainMenu1.TabIndex = 59
         '
         'mnuFile
@@ -1184,9 +1184,10 @@
         '
         Me.cmdQuit.BackColor = System.Drawing.SystemColors.Control
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
+        Me.cmdQuit.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(537, 471)
+        Me.cmdQuit.Location = New System.Drawing.Point(562, 471)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(72, 25)
@@ -1357,7 +1358,8 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(642, 502)
+        Me.CancelButton = Me.cmdQuit
+        Me.ClientSize = New System.Drawing.Size(644, 502)
         Me.Controls.Add(Me.Frame6)
         Me.Controls.Add(Me.Frame5)
         Me.Controls.Add(Me.Frame4)
@@ -1367,9 +1369,9 @@
         Me.Controls.Add(Me.fraLC)
         Me.Controls.Add(Me.SSTab1)
         Me.Controls.Add(Me.cmdRun)
-        Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me._chkIgnore_0)
         Me.Controls.Add(Me._chkIgnoreMgmt_0)
+        Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me._chkIgnoreLU_0)
         Me.Controls.Add(Me.Frame2)
         Me.Controls.Add(Me.MainMenu1)
