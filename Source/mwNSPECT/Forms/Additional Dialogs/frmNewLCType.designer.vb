@@ -30,32 +30,32 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.txtLCTypeDesc = New System.Windows.Forms.TextBox
-        Me.txtLCType = New System.Windows.Forms.TextBox
-        Me.cmdOK = New System.Windows.Forms.Button
-        Me.cmdCancel = New System.Windows.Forms.Button
-        Me._Label1_6 = New System.Windows.Forms.Label
-        Me._Label2_0 = New System.Windows.Forms.Label
-        Me._Label2_1 = New System.Windows.Forms.Label
-        Me._Label2_2 = New System.Windows.Forms.Label
-        Me._Label1_7 = New System.Windows.Forms.Label
-        Me.dgvLCTypes = New System.Windows.Forms.DataGridView
+        Me.txtLCTypeDesc = New System.Windows.Forms.TextBox()
+        Me.txtLCType = New System.Windows.Forms.TextBox()
+        Me.cmdOK = New System.Windows.Forms.Button()
+        Me.cmdCancel = New System.Windows.Forms.Button()
+        Me._Label1_6 = New System.Windows.Forms.Label()
+        Me._Label2_0 = New System.Windows.Forms.Label()
+        Me._Label2_1 = New System.Windows.Forms.Label()
+        Me._Label2_2 = New System.Windows.Forms.Label()
+        Me._Label1_7 = New System.Windows.Forms.Label()
+        Me.dgvLCTypes = New System.Windows.Forms.DataGridView()
         Me.cntxmnuGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.Value = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.NameCol = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.CNA = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.CNB = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.CNC = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.CND = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.CoverFactor = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.WetCheck = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.LCTYPEID = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.LCClassID = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LCClassID = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.LCTYPEID = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.WetCheck = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.CoverFactor = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CND = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CNC = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CNB = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CNA = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.NameCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Value = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cntxmnuGrid.SuspendLayout()
         Me.SuspendLayout()
@@ -95,7 +95,7 @@
         Me.cmdOK.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdOK.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOK.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOK.Location = New System.Drawing.Point(434, 326)
+        Me.cmdOK.Location = New System.Drawing.Point(405, 335)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdOK.Size = New System.Drawing.Size(65, 25)
@@ -110,7 +110,7 @@
         Me.cmdCancel.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCancel.Location = New System.Drawing.Point(509, 326)
+        Me.cmdCancel.Location = New System.Drawing.Point(517, 335)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
@@ -200,7 +200,7 @@
         Me.dgvLCTypes.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Value, Me.NameCol, Me.CNA, Me.CNB, Me.CNC, Me.CND, Me.CoverFactor, Me.WetCheck, Me.LCTYPEID, Me.LCClassID})
         Me.dgvLCTypes.Location = New System.Drawing.Point(10, 85)
         Me.dgvLCTypes.Name = "dgvLCTypes"
-        Me.dgvLCTypes.Size = New System.Drawing.Size(604, 232)
+        Me.dgvLCTypes.Size = New System.Drawing.Size(582, 232)
         Me.dgvLCTypes.TabIndex = 16
         '
         'cntxmnuGrid
@@ -227,70 +227,13 @@
         Me.DeleteRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
         Me.DeleteRowToolStripMenuItem.Text = "Delete Row"
         '
-        'Value
+        'LCClassID
         '
-        Me.Value.DataPropertyName = "Value"
-        Me.Value.HeaderText = "Value"
-        Me.Value.Name = "Value"
-        Me.Value.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.Value.Width = 42
-        '
-        'NameCol
-        '
-        Me.NameCol.DataPropertyName = "Name"
-        Me.NameCol.HeaderText = "Name"
-        Me.NameCol.Name = "NameCol"
-        Me.NameCol.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.NameCol.Width = 145
-        '
-        'CNA
-        '
-        Me.CNA.DataPropertyName = "CN-A"
-        Me.CNA.HeaderText = "CN-A"
-        Me.CNA.Name = "CNA"
-        Me.CNA.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.CNA.Width = 53
-        '
-        'CNB
-        '
-        Me.CNB.DataPropertyName = "CN-B"
-        Me.CNB.HeaderText = "CN-B"
-        Me.CNB.Name = "CNB"
-        Me.CNB.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.CNB.Width = 53
-        '
-        'CNC
-        '
-        Me.CNC.DataPropertyName = "CN-C"
-        Me.CNC.HeaderText = "CN-C"
-        Me.CNC.Name = "CNC"
-        Me.CNC.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.CNC.Width = 53
-        '
-        'CND
-        '
-        Me.CND.DataPropertyName = "CN-D"
-        Me.CND.HeaderText = "CN-D"
-        Me.CND.Name = "CND"
-        Me.CND.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.CND.Width = 55
-        '
-        'CoverFactor
-        '
-        Me.CoverFactor.DataPropertyName = "CoverFactor"
-        Me.CoverFactor.HeaderText = "Cover-Factor"
-        Me.CoverFactor.Name = "CoverFactor"
-        Me.CoverFactor.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.CoverFactor.Width = 95
-        '
-        'WetCheck
-        '
-        Me.WetCheck.DataPropertyName = "W_WL"
-        Me.WetCheck.FalseValue = "0"
-        Me.WetCheck.HeaderText = "Wet"
-        Me.WetCheck.Name = "WetCheck"
-        Me.WetCheck.TrueValue = "1"
-        Me.WetCheck.Width = 53
+        Me.LCClassID.DataPropertyName = "LCClassID"
+        Me.LCClassID.HeaderText = "LCClassID"
+        Me.LCClassID.Name = "LCClassID"
+        Me.LCClassID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.LCClassID.Visible = False
         '
         'LCTYPEID
         '
@@ -300,26 +243,83 @@
         Me.LCTYPEID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.LCTYPEID.Visible = False
         '
-        'LCClassID
+        'WetCheck
         '
-        Me.LCClassID.DataPropertyName = "LCClassID"
-        Me.LCClassID.HeaderText = "LCClassID"
-        Me.LCClassID.Name = "LCClassID"
-        Me.LCClassID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.LCClassID.Visible = False
+        Me.WetCheck.DataPropertyName = "W_WL"
+        Me.WetCheck.FalseValue = "0"
+        Me.WetCheck.HeaderText = "Wet"
+        Me.WetCheck.Name = "WetCheck"
+        Me.WetCheck.TrueValue = "1"
+        Me.WetCheck.Width = 25
+        '
+        'CoverFactor
+        '
+        Me.CoverFactor.DataPropertyName = "CoverFactor"
+        Me.CoverFactor.HeaderText = "Cover-Factor"
+        Me.CoverFactor.Name = "CoverFactor"
+        Me.CoverFactor.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.CoverFactor.Width = 95
+        '
+        'CND
+        '
+        Me.CND.DataPropertyName = "CN-D"
+        Me.CND.HeaderText = "CN-D"
+        Me.CND.Name = "CND"
+        Me.CND.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.CND.Width = 55
+        '
+        'CNC
+        '
+        Me.CNC.DataPropertyName = "CN-C"
+        Me.CNC.HeaderText = "CN-C"
+        Me.CNC.Name = "CNC"
+        Me.CNC.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.CNC.Width = 53
+        '
+        'CNB
+        '
+        Me.CNB.DataPropertyName = "CN-B"
+        Me.CNB.HeaderText = "CN-B"
+        Me.CNB.Name = "CNB"
+        Me.CNB.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.CNB.Width = 53
+        '
+        'CNA
+        '
+        Me.CNA.DataPropertyName = "CN-A"
+        Me.CNA.HeaderText = "CN-A"
+        Me.CNA.Name = "CNA"
+        Me.CNA.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.CNA.Width = 53
+        '
+        'NameCol
+        '
+        Me.NameCol.DataPropertyName = "Name"
+        Me.NameCol.HeaderText = "Name"
+        Me.NameCol.Name = "NameCol"
+        Me.NameCol.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.NameCol.Width = 145
+        '
+        'Value
+        '
+        Me.Value.DataPropertyName = "Value"
+        Me.Value.HeaderText = "Value"
+        Me.Value.Name = "Value"
+        Me.Value.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.Value.Width = 42
         '
         'frmNewLCType
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(623, 363)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.dgvLCTypes)
         Me.Controls.Add(Me.txtLCTypeDesc)
         Me.Controls.Add(Me.txtLCType)
         Me.Controls.Add(Me.cmdOK)
-        Me.Controls.Add(Me.cmdCancel)
         Me.Controls.Add(Me._Label1_6)
+        Me.Controls.Add(Me.cmdCancel)
         Me.Controls.Add(Me._Label2_0)
         Me.Controls.Add(Me._Label2_1)
         Me.Controls.Add(Me._Label2_2)
@@ -356,5 +356,5 @@
     Friend WithEvents WetCheck As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents LCTYPEID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LCClassID As System.Windows.Forms.DataGridViewTextBoxColumn
-#End Region 
+#End Region
 End Class

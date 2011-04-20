@@ -48,34 +48,34 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.MainMenu1 = New System.Windows.Forms.MenuStrip
-        Me.mnuDefWSDelin = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuNewWSDelin = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuNewExist = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuDelWSDelin = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuWSDelin = New System.Windows.Forms.ToolStripMenuItem
-        Me.Frame1 = New System.Windows.Forms.GroupBox
-        Me.txtLSGrid = New System.Windows.Forms.TextBox
-        Me.cboDEMUnits = New System.Windows.Forms.ComboBox
-        Me.cboWSSize = New System.Windows.Forms.ComboBox
-        Me.chkHydroCorr = New System.Windows.Forms.CheckBox
-        Me.txtFlowAccumGrid = New System.Windows.Forms.TextBox
-        Me.txtWSFile = New System.Windows.Forms.TextBox
-        Me.txtStream = New System.Windows.Forms.TextBox
-        Me.cboWSDelin = New System.Windows.Forms.ComboBox
-        Me.txtDEMFile = New System.Windows.Forms.TextBox
-        Me._Label1_6 = New System.Windows.Forms.Label
-        Me._Label1_12 = New System.Windows.Forms.Label
-        Me._Label1_2 = New System.Windows.Forms.Label
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me._Label1_3 = New System.Windows.Forms.Label
-        Me._Label1_4 = New System.Windows.Forms.Label
-        Me._Label1_5 = New System.Windows.Forms.Label
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me.cmdQuit = New System.Windows.Forms.Button
+        Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuDefWSDelin = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewWSDelin = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewExist = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDelWSDelin = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuWSDelin = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.txtLSGrid = New System.Windows.Forms.TextBox()
+        Me.cboDEMUnits = New System.Windows.Forms.ComboBox()
+        Me.cboWSSize = New System.Windows.Forms.ComboBox()
+        Me.chkHydroCorr = New System.Windows.Forms.CheckBox()
+        Me.txtFlowAccumGrid = New System.Windows.Forms.TextBox()
+        Me.txtWSFile = New System.Windows.Forms.TextBox()
+        Me.txtStream = New System.Windows.Forms.TextBox()
+        Me.cboWSDelin = New System.Windows.Forms.ComboBox()
+        Me.txtDEMFile = New System.Windows.Forms.TextBox()
+        Me._Label1_6 = New System.Windows.Forms.Label()
+        Me._Label1_12 = New System.Windows.Forms.Label()
+        Me._Label1_2 = New System.Windows.Forms.Label()
+        Me._Label1_0 = New System.Windows.Forms.Label()
+        Me._Label1_3 = New System.Windows.Forms.Label()
+        Me._Label1_4 = New System.Windows.Forms.Label()
+        Me._Label1_5 = New System.Windows.Forms.Label()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me.cmdQuit = New System.Windows.Forms.Button()
         Me.MainMenu1.SuspendLayout()
         Me.Frame1.SuspendLayout()
         Me.SuspendLayout()
@@ -85,7 +85,7 @@
         Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDefWSDelin, Me.mnuHelp})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
-        Me.MainMenu1.Size = New System.Drawing.Size(504, 24)
+        Me.MainMenu1.Size = New System.Drawing.Size(594, 24)
         Me.MainMenu1.TabIndex = 2
         '
         'mnuDefWSDelin
@@ -153,7 +153,7 @@
         Me.Frame1.Name = "Frame1"
         Me.Frame1.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame1.Size = New System.Drawing.Size(484, 230)
+        Me.Frame1.Size = New System.Drawing.Size(572, 287)
         Me.Frame1.TabIndex = 1
         Me.Frame1.TabStop = False
         Me.Frame1.Text = "Browse Watershed Delineations  "
@@ -170,7 +170,7 @@
         Me.txtLSGrid.MaxLength = 0
         Me.txtLSGrid.Name = "txtLSGrid"
         Me.txtLSGrid.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtLSGrid.Size = New System.Drawing.Size(293, 19)
+        Me.txtLSGrid.Size = New System.Drawing.Size(391, 20)
         Me.txtLSGrid.TabIndex = 17
         '
         'cboDEMUnits
@@ -184,7 +184,7 @@
         Me.cboDEMUnits.Location = New System.Drawing.Point(178, 67)
         Me.cboDEMUnits.Name = "cboDEMUnits"
         Me.cboDEMUnits.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboDEMUnits.Size = New System.Drawing.Size(170, 22)
+        Me.cboDEMUnits.Size = New System.Drawing.Size(202, 22)
         Me.cboDEMUnits.TabIndex = 16
         Me.cboDEMUnits.Text = "Combo1"
         '
@@ -231,7 +231,7 @@
         Me.txtFlowAccumGrid.MaxLength = 0
         Me.txtFlowAccumGrid.Name = "txtFlowAccumGrid"
         Me.txtFlowAccumGrid.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtFlowAccumGrid.Size = New System.Drawing.Size(293, 19)
+        Me.txtFlowAccumGrid.Size = New System.Drawing.Size(391, 20)
         Me.txtFlowAccumGrid.TabIndex = 6
         '
         'txtWSFile
@@ -246,7 +246,7 @@
         Me.txtWSFile.MaxLength = 0
         Me.txtWSFile.Name = "txtWSFile"
         Me.txtWSFile.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtWSFile.Size = New System.Drawing.Size(293, 19)
+        Me.txtWSFile.Size = New System.Drawing.Size(391, 20)
         Me.txtWSFile.TabIndex = 5
         '
         'txtStream
@@ -261,7 +261,7 @@
         Me.txtStream.MaxLength = 0
         Me.txtStream.Name = "txtStream"
         Me.txtStream.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtStream.Size = New System.Drawing.Size(202, 19)
+        Me.txtStream.Size = New System.Drawing.Size(202, 20)
         Me.txtStream.TabIndex = 4
         Me.txtStream.Visible = False
         '
@@ -275,7 +275,7 @@
         Me.cboWSDelin.Location = New System.Drawing.Point(178, 16)
         Me.cboWSDelin.Name = "cboWSDelin"
         Me.cboWSDelin.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboWSDelin.Size = New System.Drawing.Size(113, 22)
+        Me.cboWSDelin.Size = New System.Drawing.Size(202, 22)
         Me.cboWSDelin.TabIndex = 3
         '
         'txtDEMFile
@@ -290,7 +290,7 @@
         Me.txtDEMFile.MaxLength = 0
         Me.txtDEMFile.Name = "txtDEMFile"
         Me.txtDEMFile.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtDEMFile.Size = New System.Drawing.Size(290, 19)
+        Me.txtDEMFile.Size = New System.Drawing.Size(388, 20)
         Me.txtDEMFile.TabIndex = 2
         '
         '_Label1_6
@@ -348,7 +348,7 @@
         Me._Label1_0.Location = New System.Drawing.Point(43, 115)
         Me._Label1_0.Name = "_Label1_0"
         Me._Label1_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_0.Size = New System.Drawing.Size(131, 14)
+        Me._Label1_0.Size = New System.Drawing.Size(130, 14)
         Me._Label1_0.TabIndex = 12
         Me._Label1_0.Text = "Stream Agreement Layer:"
         Me._Label1_0.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -394,7 +394,7 @@
         Me._Label1_5.Location = New System.Drawing.Point(48, 167)
         Me._Label1_5.Name = "_Label1_5"
         Me._Label1_5.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_5.Size = New System.Drawing.Size(125, 14)
+        Me._Label1_5.Size = New System.Drawing.Size(124, 14)
         Me._Label1_5.TabIndex = 9
         Me._Label1_5.Text = "Flow Accumulation Grid:"
         Me._Label1_5.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -420,7 +420,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(416, 267)
+        Me.cmdQuit.Location = New System.Drawing.Point(517, 335)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -433,7 +433,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(504, 302)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me.MainMenu1)

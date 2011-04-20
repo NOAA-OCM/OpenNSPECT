@@ -40,31 +40,31 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.MainMenu1 = New System.Windows.Forms.MenuStrip
-        Me.mnuWQStd = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuNewWQStd = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuDelWQStd = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuCopyWQStd = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuImpWQStd = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuExpWQStd = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuEditCell = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuAddRow = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuInsertRow = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuDeleteRow = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuWQHelp = New System.Windows.Forms.ToolStripMenuItem
-        Me.cmdQuit = New System.Windows.Forms.Button
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.cboWQStdName = New System.Windows.Forms.ComboBox
-        Me.txtWQStdDesc = New System.Windows.Forms.TextBox
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me.dgvWaterQuality = New System.Windows.Forms.DataGridView
-        Me.colPollutant = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.colThreshold = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Poll_WQCritID = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuWQStd = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewWQStd = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDelWQStd = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuCopyWQStd = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuImpWQStd = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuExpWQStd = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuEditCell = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAddRow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuInsertRow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDeleteRow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuWQHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmdQuit = New System.Windows.Forms.Button()
+        Me.cmdSave = New System.Windows.Forms.Button()
+        Me.cboWQStdName = New System.Windows.Forms.ComboBox()
+        Me.txtWQStdDesc = New System.Windows.Forms.TextBox()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me._Label1_0 = New System.Windows.Forms.Label()
+        Me.dgvWaterQuality = New System.Windows.Forms.DataGridView()
+        Me.colPollutant = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colThreshold = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Poll_WQCritID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MainMenu1.SuspendLayout()
         CType(Me.dgvWaterQuality, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -74,7 +74,7 @@
         Me.MainMenu1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuWQStd, Me.mnuEditCell, Me.mnuHelp})
         Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu1.Name = "MainMenu1"
-        Me.MainMenu1.Size = New System.Drawing.Size(416, 24)
+        Me.MainMenu1.Size = New System.Drawing.Size(594, 24)
         Me.MainMenu1.TabIndex = 8
         '
         'mnuWQStd
@@ -161,7 +161,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(316, 262)
+        Me.cmdQuit.Location = New System.Drawing.Point(494, 332)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -178,7 +178,7 @@
         Me.cmdSave.Enabled = False
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(247, 262)
+        Me.cmdSave.Location = New System.Drawing.Point(425, 332)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdSave.Size = New System.Drawing.Size(65, 25)
@@ -246,13 +246,13 @@
         Me.dgvWaterQuality.AllowUserToDeleteRows = False
         Me.dgvWaterQuality.AllowUserToResizeColumns = False
         Me.dgvWaterQuality.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colPollutant, Me.colThreshold, Me.Poll_WQCritID})
         Me.dgvWaterQuality.Location = New System.Drawing.Point(18, 84)
         Me.dgvWaterQuality.Name = "dgvWaterQuality"
-        Me.dgvWaterQuality.Size = New System.Drawing.Size(365, 172)
+        Me.dgvWaterQuality.Size = New System.Drawing.Size(543, 242)
         Me.dgvWaterQuality.TabIndex = 9
         '
         'colPollutant
@@ -285,7 +285,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(416, 302)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.dgvWaterQuality)
         Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me.cmdSave)

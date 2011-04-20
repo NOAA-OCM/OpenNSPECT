@@ -317,7 +317,7 @@
         Me.cmdCreate.Enabled = False
         Me.cmdCreate.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCreate.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCreate.Location = New System.Drawing.Point(282, 331)
+        Me.cmdCreate.Location = New System.Drawing.Point(407, 341)
         Me.cmdCreate.Name = "cmdCreate"
         Me.cmdCreate.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCreate.Size = New System.Drawing.Size(65, 25)
@@ -332,7 +332,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(357, 331)
+        Me.cmdQuit.Location = New System.Drawing.Point(482, 341)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -345,7 +345,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(469, 362)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.frmMain)
         Me.Controls.Add(Me.cmdCreate)
         Me.Controls.Add(Me.cmdQuit)

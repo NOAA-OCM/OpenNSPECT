@@ -46,34 +46,34 @@
 	'It can be modified using the Windows Form Designer.
 	'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSoilsSetup))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.txtSoilsName = New System.Windows.Forms.TextBox
-        Me.txtDEMFile = New System.Windows.Forms.TextBox
-        Me.Frame2 = New System.Windows.Forms.GroupBox
-        Me.txtMUSLEVal = New System.Windows.Forms.TextBox
-        Me.txtMUSLEExp = New System.Windows.Forms.TextBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.cmdDEMBrowse = New System.Windows.Forms.Button
-        Me.cmdQuit = New System.Windows.Forms.Button
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.Frame1 = New System.Windows.Forms.GroupBox
-        Me.cboSoilFieldsK = New System.Windows.Forms.ComboBox
-        Me.cboSoilFields = New System.Windows.Forms.ComboBox
-        Me.cmdBrowseFile = New System.Windows.Forms.Button
-        Me.txtSoilsDS = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.Label5 = New System.Windows.Forms.Label
+        Me.txtSoilsName = New System.Windows.Forms.TextBox()
+        Me.txtDEMFile = New System.Windows.Forms.TextBox()
+        Me.Frame2 = New System.Windows.Forms.GroupBox()
+        Me.txtMUSLEVal = New System.Windows.Forms.TextBox()
+        Me.txtMUSLEExp = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.cmdDEMBrowse = New System.Windows.Forms.Button()
+        Me.cmdQuit = New System.Windows.Forms.Button()
+        Me.cmdSave = New System.Windows.Forms.Button()
+        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.cboSoilFieldsK = New System.Windows.Forms.ComboBox()
+        Me.cboSoilFields = New System.Windows.Forms.ComboBox()
+        Me.cmdBrowseFile = New System.Windows.Forms.Button()
+        Me.txtSoilsDS = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.Frame2.SuspendLayout()
         Me.Frame1.SuspendLayout()
         Me.SuspendLayout()
@@ -92,7 +92,7 @@
         Me.txtSoilsName.Size = New System.Drawing.Size(212, 20)
         Me.txtSoilsName.TabIndex = 0
         Me.ToolTip1.SetToolTip(Me.txtSoilsName, "Choose the filled DEM you are using.  This will provide Spatial Analyst with the " & _
-                "proper analysis environment.")
+        "proper analysis environment.")
         '
         'txtDEMFile
         '
@@ -108,7 +108,7 @@
         Me.txtDEMFile.Size = New System.Drawing.Size(212, 20)
         Me.txtDEMFile.TabIndex = 1
         Me.ToolTip1.SetToolTip(Me.txtDEMFile, "Choose the filled DEM you are using.  This will provide Spatial Analyst with the " & _
-                "proper analysis environment.")
+        "proper analysis environment.")
         '
         'Frame2
         '
@@ -128,7 +128,7 @@
         Me.Frame2.Name = "Frame2"
         Me.Frame2.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame2.Size = New System.Drawing.Size(329, 157)
+        Me.Frame2.Size = New System.Drawing.Size(328, 157)
         Me.Frame2.TabIndex = 15
         Me.Frame2.TabStop = False
         Me.Frame2.Text = "Advanced MUSLE Specific Coefficients"
@@ -175,7 +175,7 @@
         Me.Label12.Size = New System.Drawing.Size(305, 57)
         Me.Label12.TabIndex = 24
         Me.Label12.Text = "Warning: Q and qp are calculated in English units (acre-feet and cubic feet per s" & _
-            "econd respectively). ""a"" and ""b"" must be derived accordingly."
+    "econd respectively). ""a"" and ""b"" must be derived accordingly."
         '
         'Label7
         '
@@ -277,7 +277,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(274, 358)
+        Me.cmdQuit.Location = New System.Drawing.Point(508, 338)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -292,7 +292,7 @@
         Me.cmdSave.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(204, 358)
+        Me.cmdSave.Location = New System.Drawing.Point(438, 338)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdSave.Size = New System.Drawing.Size(65, 25)
@@ -444,7 +444,7 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(360, 392)
+        Me.ClientSize = New System.Drawing.Size(594, 372)
         Me.Controls.Add(Me.Frame2)
         Me.Controls.Add(Me.txtSoilsName)
         Me.Controls.Add(Me.cmdDEMBrowse)

@@ -236,7 +236,7 @@ Partial Class frmCompareOutputs
         Me.Controls.Add(Me.mnustrpMain)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.mnustrpMain
-        Me.MinimumSize = New System.Drawing.Size(532, 374)
+        Me.MinimumSize = New System.Drawing.Size(600, 400)
         Me.Name = "frmCompareOutputs"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Compare ONSPECT Outputs"

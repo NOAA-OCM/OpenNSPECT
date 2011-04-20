@@ -43,31 +43,31 @@
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmUserWShed))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.cmdQuit = New System.Windows.Forms.Button
-        Me.cmdCreate = New System.Windows.Forms.Button
-        Me.cmdBrowseLS = New System.Windows.Forms.Button
-        Me.Frame1 = New System.Windows.Forms.GroupBox
-        Me.cboDEMUnits = New System.Windows.Forms.ComboBox
-        Me.txtFlowDir = New System.Windows.Forms.TextBox
-        Me.cmdBrowseFlowDir = New System.Windows.Forms.Button
-        Me.cmdBrowseWS = New System.Windows.Forms.Button
-        Me.txtWaterSheds = New System.Windows.Forms.TextBox
-        Me.cmdBrowseFlowAcc = New System.Windows.Forms.Button
-        Me.txtFlowAcc = New System.Windows.Forms.TextBox
-        Me.cmdBrowseDEMFile = New System.Windows.Forms.Button
-        Me.txtWSDelinName = New System.Windows.Forms.TextBox
-        Me.txtDEMFile = New System.Windows.Forms.TextBox
-        Me.txtLS = New System.Windows.Forms.TextBox
-        Me._Label1_2 = New System.Windows.Forms.Label
-        Me._Label1_1 = New System.Windows.Forms.Label
-        Me._Label1_5 = New System.Windows.Forms.Label
-        Me._Label1_4 = New System.Windows.Forms.Label
-        Me._Label1_3 = New System.Windows.Forms.Label
-        Me._Label1_0 = New System.Windows.Forms.Label
-        Me._Label1_12 = New System.Windows.Forms.Label
+        Me.cmdQuit = New System.Windows.Forms.Button()
+        Me.cmdCreate = New System.Windows.Forms.Button()
+        Me.cmdBrowseLS = New System.Windows.Forms.Button()
+        Me.Frame1 = New System.Windows.Forms.GroupBox()
+        Me.cboDEMUnits = New System.Windows.Forms.ComboBox()
+        Me.txtFlowDir = New System.Windows.Forms.TextBox()
+        Me.cmdBrowseFlowDir = New System.Windows.Forms.Button()
+        Me.cmdBrowseWS = New System.Windows.Forms.Button()
+        Me.txtWaterSheds = New System.Windows.Forms.TextBox()
+        Me.cmdBrowseFlowAcc = New System.Windows.Forms.Button()
+        Me.txtFlowAcc = New System.Windows.Forms.TextBox()
+        Me.cmdBrowseDEMFile = New System.Windows.Forms.Button()
+        Me.txtWSDelinName = New System.Windows.Forms.TextBox()
+        Me.txtDEMFile = New System.Windows.Forms.TextBox()
+        Me.txtLS = New System.Windows.Forms.TextBox()
+        Me._Label1_2 = New System.Windows.Forms.Label()
+        Me._Label1_1 = New System.Windows.Forms.Label()
+        Me._Label1_5 = New System.Windows.Forms.Label()
+        Me._Label1_4 = New System.Windows.Forms.Label()
+        Me._Label1_3 = New System.Windows.Forms.Label()
+        Me._Label1_0 = New System.Windows.Forms.Label()
+        Me._Label1_12 = New System.Windows.Forms.Label()
         Me.Frame1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -78,7 +78,7 @@
         Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(403, 240)
+        Me.cmdQuit.Location = New System.Drawing.Point(501, 329)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
@@ -93,7 +93,7 @@
         Me.cmdCreate.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCreate.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCreate.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCreate.Location = New System.Drawing.Point(328, 240)
+        Me.cmdCreate.Location = New System.Drawing.Point(426, 329)
         Me.cmdCreate.Name = "cmdCreate"
         Me.cmdCreate.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCreate.Size = New System.Drawing.Size(65, 25)
@@ -108,7 +108,7 @@
         Me.cmdBrowseLS.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdBrowseLS.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdBrowseLS.Image = CType(resources.GetObject("cmdBrowseLS.Image"), System.Drawing.Image)
-        Me.cmdBrowseLS.Location = New System.Drawing.Point(432, 168)
+        Me.cmdBrowseLS.Location = New System.Drawing.Point(522, 157)
         Me.cmdBrowseLS.Name = "cmdBrowseLS"
         Me.cmdBrowseLS.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdBrowseLS.Size = New System.Drawing.Size(25, 21)
@@ -121,6 +121,7 @@
         Me.Frame1.BackColor = System.Drawing.SystemColors.Control
         Me.Frame1.Controls.Add(Me.cboDEMUnits)
         Me.Frame1.Controls.Add(Me.txtFlowDir)
+        Me.Frame1.Controls.Add(Me.cmdBrowseLS)
         Me.Frame1.Controls.Add(Me.cmdBrowseFlowDir)
         Me.Frame1.Controls.Add(Me.cmdBrowseWS)
         Me.Frame1.Controls.Add(Me.txtWaterSheds)
@@ -143,7 +144,7 @@
         Me.Frame1.Name = "Frame1"
         Me.Frame1.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame1.Size = New System.Drawing.Size(460, 214)
+        Me.Frame1.Size = New System.Drawing.Size(550, 300)
         Me.Frame1.TabIndex = 3
         Me.Frame1.TabStop = False
         Me.Frame1.Text = "Define Watershed Delineation"
@@ -173,7 +174,7 @@
         Me.txtFlowDir.MaxLength = 0
         Me.txtFlowDir.Name = "txtFlowDir"
         Me.txtFlowDir.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtFlowDir.Size = New System.Drawing.Size(245, 19)
+        Me.txtFlowDir.Size = New System.Drawing.Size(346, 20)
         Me.txtFlowDir.TabIndex = 19
         '
         'cmdBrowseFlowDir
@@ -183,7 +184,7 @@
         Me.cmdBrowseFlowDir.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdBrowseFlowDir.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdBrowseFlowDir.Image = CType(resources.GetObject("cmdBrowseFlowDir.Image"), System.Drawing.Image)
-        Me.cmdBrowseFlowDir.Location = New System.Drawing.Point(416, 102)
+        Me.cmdBrowseFlowDir.Location = New System.Drawing.Point(522, 100)
         Me.cmdBrowseFlowDir.Name = "cmdBrowseFlowDir"
         Me.cmdBrowseFlowDir.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdBrowseFlowDir.Size = New System.Drawing.Size(25, 21)
@@ -198,7 +199,7 @@
         Me.cmdBrowseWS.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdBrowseWS.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdBrowseWS.Image = CType(resources.GetObject("cmdBrowseWS.Image"), System.Drawing.Image)
-        Me.cmdBrowseWS.Location = New System.Drawing.Point(416, 184)
+        Me.cmdBrowseWS.Location = New System.Drawing.Point(522, 183)
         Me.cmdBrowseWS.Name = "cmdBrowseWS"
         Me.cmdBrowseWS.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdBrowseWS.Size = New System.Drawing.Size(25, 21)
@@ -217,7 +218,7 @@
         Me.txtWaterSheds.MaxLength = 0
         Me.txtWaterSheds.Name = "txtWaterSheds"
         Me.txtWaterSheds.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtWaterSheds.Size = New System.Drawing.Size(245, 19)
+        Me.txtWaterSheds.Size = New System.Drawing.Size(346, 20)
         Me.txtWaterSheds.TabIndex = 15
         '
         'cmdBrowseFlowAcc
@@ -227,7 +228,7 @@
         Me.cmdBrowseFlowAcc.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdBrowseFlowAcc.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdBrowseFlowAcc.Image = CType(resources.GetObject("cmdBrowseFlowAcc.Image"), System.Drawing.Image)
-        Me.cmdBrowseFlowAcc.Location = New System.Drawing.Point(416, 130)
+        Me.cmdBrowseFlowAcc.Location = New System.Drawing.Point(522, 132)
         Me.cmdBrowseFlowAcc.Name = "cmdBrowseFlowAcc"
         Me.cmdBrowseFlowAcc.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdBrowseFlowAcc.Size = New System.Drawing.Size(25, 21)
@@ -246,7 +247,7 @@
         Me.txtFlowAcc.MaxLength = 0
         Me.txtFlowAcc.Name = "txtFlowAcc"
         Me.txtFlowAcc.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtFlowAcc.Size = New System.Drawing.Size(245, 19)
+        Me.txtFlowAcc.Size = New System.Drawing.Size(346, 20)
         Me.txtFlowAcc.TabIndex = 10
         '
         'cmdBrowseDEMFile
@@ -256,7 +257,7 @@
         Me.cmdBrowseDEMFile.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdBrowseDEMFile.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdBrowseDEMFile.Image = CType(resources.GetObject("cmdBrowseDEMFile.Image"), System.Drawing.Image)
-        Me.cmdBrowseDEMFile.Location = New System.Drawing.Point(416, 49)
+        Me.cmdBrowseDEMFile.Location = New System.Drawing.Point(522, 51)
         Me.cmdBrowseDEMFile.Name = "cmdBrowseDEMFile"
         Me.cmdBrowseDEMFile.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdBrowseDEMFile.Size = New System.Drawing.Size(25, 21)
@@ -275,7 +276,7 @@
         Me.txtWSDelinName.MaxLength = 0
         Me.txtWSDelinName.Name = "txtWSDelinName"
         Me.txtWSDelinName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtWSDelinName.Size = New System.Drawing.Size(245, 19)
+        Me.txtWSDelinName.Size = New System.Drawing.Size(346, 20)
         Me.txtWSDelinName.TabIndex = 0
         '
         'txtDEMFile
@@ -289,7 +290,7 @@
         Me.txtDEMFile.MaxLength = 0
         Me.txtDEMFile.Name = "txtDEMFile"
         Me.txtDEMFile.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtDEMFile.Size = New System.Drawing.Size(245, 19)
+        Me.txtDEMFile.Size = New System.Drawing.Size(346, 20)
         Me.txtDEMFile.TabIndex = 1
         '
         'txtLS
@@ -303,7 +304,7 @@
         Me.txtLS.MaxLength = 0
         Me.txtLS.Name = "txtLS"
         Me.txtLS.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtLS.Size = New System.Drawing.Size(245, 19)
+        Me.txtLS.Size = New System.Drawing.Size(346, 20)
         Me.txtLS.TabIndex = 4
         '
         '_Label1_2
@@ -360,7 +361,7 @@
         Me._Label1_4.Location = New System.Drawing.Point(40, 132)
         Me._Label1_4.Name = "_Label1_4"
         Me._Label1_4.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_4.Size = New System.Drawing.Size(125, 14)
+        Me._Label1_4.Size = New System.Drawing.Size(124, 14)
         Me._Label1_4.TabIndex = 8
         Me._Label1_4.Text = "Flow Accumulation Grid:"
         Me._Label1_4.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -415,10 +416,9 @@
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(486, 273)
+        Me.ClientSize = New System.Drawing.Size(584, 362)
         Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me.cmdCreate)
-        Me.Controls.Add(Me.cmdBrowseLS)
         Me.Controls.Add(Me.Frame1)
         Me.Cursor = System.Windows.Forms.Cursors.Default
         Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
