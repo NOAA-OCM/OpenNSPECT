@@ -18,7 +18,7 @@ Imports System.Data.OleDb
 Imports System.Drawing
 Imports System.Windows.Forms
 
-Friend Class frmProjectSetup
+Friend Class MainForm
     Inherits System.Windows.Forms.Form
 
 
@@ -2196,6 +2196,6 @@ Friend Class frmProjectSetup
     End Sub
 #End Region
 
-   
+
 
 End Class

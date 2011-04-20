@@ -26,7 +26,7 @@ Friend Class frmNewWSDelin
     Private boolChange(3) As Boolean 'Array set to track changes in controls: On Change, cmdCreate is enabled
     Private _booProject As Boolean
     Private _frmWS As frmWatershedDelin
-    Private _frmPrj As frmProjectSetup
+    Private _frmPrj As MainForm
 
     Private _intSize As Short 'Index for Size Combo
     Private _intGridUnits As Short 'Grid Units: 0 = meters, 1 = feet
@@ -291,7 +291,7 @@ Friend Class frmNewWSDelin
 #End Region
 
 #Region "Helper Functions"
-    Public Sub Init(ByRef frmWS As frmWatershedDelin, ByRef frmPrj As frmProjectSetup)
+    Public Sub Init(ByRef frmWS As frmWatershedDelin, ByRef frmPrj As MainForm)
         _frmWS = frmWS
         _frmPrj = frmPrj
     End Sub

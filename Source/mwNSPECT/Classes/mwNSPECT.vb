@@ -443,7 +443,7 @@ Public Class mwNSPECT
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub ShowAnalysisForm()
-        g_frmProjectSetup = New frmProjectSetup
+        g_frmProjectSetup = New MainForm
         g_frmProjectSetup.ShowDialog()
     End Sub
 

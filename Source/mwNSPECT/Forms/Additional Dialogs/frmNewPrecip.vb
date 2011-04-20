@@ -24,7 +24,7 @@ Friend Class frmNewPrecip
 
     Private _pInputPrecipDS As String
     Private _boolChange As Boolean
-    Private _frmPrj As frmProjectSetup
+    Private _frmPrj As MainForm
     Private _frmPrec As frmPrecipitation
 
 
@@ -201,7 +201,7 @@ Friend Class frmNewPrecip
 #Region "Helper Functions"
 
 
-    Public Sub Init(ByRef frmPrj As frmProjectSetup, ByRef frmPrec As frmPrecipitation)
+    Public Sub Init(ByRef frmPrj As MainForm, ByRef frmPrec As frmPrecipitation)
         Try
             _frmPrj = frmPrj
             _frmPrec = frmPrec

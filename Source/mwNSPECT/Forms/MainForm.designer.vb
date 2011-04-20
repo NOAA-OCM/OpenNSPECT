@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class frmProjectSetup
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class MainForm
 #Region "Windows Form Designer generated code "
     <System.Diagnostics.DebuggerNonUserCode()> Public Sub New()
         MyBase.New()
@@ -22,7 +22,7 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmProjectSetup))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.chkSelectedPolys = New System.Windows.Forms.CheckBox()
         Me.chkLocalEffects = New System.Windows.Forms.CheckBox()
