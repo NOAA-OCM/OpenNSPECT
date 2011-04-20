@@ -48,12 +48,12 @@ Friend Class frmNewWSDelin
 
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmNewWSDelin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             'Init bool variables
@@ -78,12 +78,12 @@ Friend Class frmNewWSDelin
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtWSDelinName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWSDelinName.TextChanged
         Try
             boolChange(0) = True
@@ -93,12 +93,12 @@ Friend Class frmNewWSDelin
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtDEMFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDEMFile.TextChanged
         Try
             boolChange(1) = True
@@ -109,12 +109,12 @@ Friend Class frmNewWSDelin
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseDEMFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseDEMFile.Click
         Try
             Dim pDEMRasterDataset As MapWinGIS.Grid
@@ -153,12 +153,12 @@ Friend Class frmNewWSDelin
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub chkHydroCorr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkHydroCorr.CheckedChanged
         Try
             Select Case chkHydroCorr.CheckState
@@ -184,12 +184,12 @@ Friend Class frmNewWSDelin
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboDEMUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboDEMUnits.SelectedIndexChanged
         Try
             boolChange(2) = True
@@ -199,12 +199,12 @@ Friend Class frmNewWSDelin
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboSubWSSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboSubWSSize.SelectedIndexChanged
         Try
             boolChange(3) = True
@@ -215,12 +215,12 @@ Friend Class frmNewWSDelin
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Dim intvbYesNo As Short
@@ -245,12 +245,12 @@ Friend Class frmNewWSDelin
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCreate.Click
         Try
             If _InputDEMPath = "" Then
@@ -340,10 +340,10 @@ Friend Class frmNewWSDelin
         _frmPrj = frmPrj
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Public Sub CheckEnabled()
         Try
 
@@ -372,13 +372,13 @@ Friend Class frmNewWSDelin
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="pSurfaceDatasetIn"></param>
-    ''' <param name="OutPath"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function DelineateWatershed(ByRef pSurfaceDatasetIn As MapWinGIS.Grid, ByVal OutPath As String) As Boolean
         'Declare the raster objects
         Dim pFlowDirRaster As New MapWinGIS.Grid 'Flow Direction
@@ -641,14 +641,14 @@ Friend Class frmNewWSDelin
             MapWinGeoProc.DataManagement.DeleteShapefile(strWSSFOut)
         End Try
     End Function
-   
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="pFeatureClass"></param>
-    ''' <param name="pDEMRaster"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
     Private Function RemoveSmallPolys(ByRef pFeatureClass As MapWinGIS.Shapefile, ByRef pDEMRaster As MapWinGIS.Grid) As MapWinGIS.Shapefile
         Dim pMaskCalcRaster As New MapWinGIS.Grid
         Dim rastersf As New MapWinGIS.Shapefile
@@ -1261,17 +1261,17 @@ Friend Class frmNewWSDelin
 #End Region
 
 #Region "Raster Calc"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function maskCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Try
             If Input1 > 0 Then

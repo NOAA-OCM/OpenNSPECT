@@ -26,12 +26,12 @@ Friend Class frmSoilsSetup
     Private _pRasterProps As MapWinGIS.Grid
    
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdDEMBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDEMBrowse.Click
         Try
             'Browse for DEM
@@ -49,12 +49,12 @@ Friend Class frmSoilsSetup
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
         Try
             'browse...get output filename
@@ -73,12 +73,12 @@ Friend Class frmSoilsSetup
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Dim intvbYesNo As Short
@@ -97,12 +97,12 @@ Friend Class frmSoilsSetup
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             SaveSoils()
@@ -113,11 +113,11 @@ Friend Class frmSoilsSetup
 #End Region
 
 #Region "Helper"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="frmSoil"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub Init(ByRef frmSoil As frmSoils)
         Try
             _frmSoil = frmSoil
@@ -126,10 +126,10 @@ Friend Class frmSoilsSetup
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub SaveSoils()
         Try
             'Check data, if OK create soils grids
@@ -154,11 +154,11 @@ Friend Class frmSoilsSetup
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function ValidateData() As Boolean
         Try
             If Len(txtSoilsName.Text) > 0 Then
@@ -237,14 +237,14 @@ Friend Class frmSoilsSetup
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strSoilsFileName"></param>
-    ''' <param name="strHydFieldName"></param>
-    ''' <param name="strKFactor"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
     Private Function CreateSoilsGrid(ByRef strSoilsFileName As String, ByRef strHydFieldName As String, Optional ByRef strKFactor As String = "") As Boolean
         'Incoming:
         'strSoilsFileName: string of soils file name path
@@ -432,10 +432,10 @@ Friend Class frmSoilsSetup
     End Function
 
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub PopulateCbo()
         Try
             'Populate cboSoilFields & cboSoilFieldsK with the fields in the selected Soils layer

@@ -18,12 +18,12 @@ Public Class frmCompareOutputs
     Const c_sModuleFileName As String = "frmCompareOutputs.vb"
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmCompareOutputs_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             g_comp = Me
@@ -34,12 +34,12 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub chkbxLeftUseLegend_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkbxLeftUseLegend.CheckedChanged
         Try
             RefreshLeft()
@@ -48,12 +48,12 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub chkbxRightUseLegend_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkbxRightUseLegend.CheckedChanged
         Try
             RefreshRight()
@@ -62,12 +62,12 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuitmAddToLegend_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuitmAddToLegend.Click
         Try
             AddToLegendFromProj()
@@ -76,12 +76,12 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuitmExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuitmExit.Click
         Try
             Me.Close()
@@ -90,12 +90,12 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -104,12 +104,12 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdRun.Click
         Try
             RunCompare()
@@ -118,12 +118,12 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
         Try
             Dim selectfrm As New frmSelectShape
@@ -135,10 +135,10 @@ Public Class frmCompareOutputs
 #End Region
 
 #Region "Helper Functions"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Public Sub SetSelectedShape()
         Try
             If g_MapWin.Layers.CurrentLayer <> -1 And g_MapWin.View.SelectedShapes.NumSelected > 0 Then
@@ -155,10 +155,10 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub RefreshLeft()
         Try
             If chkbxLeftUseLegend.Checked Then
@@ -171,10 +171,10 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub RefreshRight()
         Try
             If chkbxRightUseLegend.Checked Then
@@ -187,11 +187,11 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="RefreshBox"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Sub RefreshUsingLegend(ByRef RefreshBox As Windows.Forms.ListBox)
         Try
             Dim glyr As LegendControl.Layer
@@ -210,11 +210,11 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="RefreshBox"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Sub RefreshUsingProjectDirectory(ByRef RefreshBox As Windows.Forms.ListBox)
         Try
             Dim prj As clsXMLPrjFile
@@ -250,10 +250,10 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub AddToLegendFromProj()
         Try
             Dim strFolder As String = modUtil.g_nspectDocPath & "\projects"
@@ -311,13 +311,13 @@ Public Class frmCompareOutputs
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="SelectCheckbox"></param>
-    ''' <param name="SelectList"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function GetListFromSelected(ByRef SelectCheckbox As Windows.Forms.CheckBox, ByRef SelectList As Windows.Forms.ListBox) As clsXMLOutputItems
         Try
             Dim tmpOutItems As New clsXMLOutputItems
@@ -358,13 +358,13 @@ Public Class frmCompareOutputs
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="path"></param>
-    ''' <param name="name"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function GetTypeFromPath(ByVal path As String, ByVal name As String) As String
         Try
             Dim filename As String = IO.Path.GetFileName(path)
@@ -403,10 +403,10 @@ Public Class frmCompareOutputs
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub RunCompare()
         Try
             Dim leftOutItems, rightOutItems As clsXMLOutputItems
@@ -488,17 +488,17 @@ Public Class frmCompareOutputs
 #End Region
 
 #Region "Raster Math"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function CompareCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Try
             Return Input1 - Input2
@@ -507,17 +507,17 @@ Public Class frmCompareOutputs
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function PercChangeCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Try
             If Input2 <> 0 Then

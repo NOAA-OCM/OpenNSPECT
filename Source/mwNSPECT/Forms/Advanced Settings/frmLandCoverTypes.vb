@@ -46,12 +46,12 @@ Friend Class frmLandCoverTypes
     Dim WithEvents _dbConn As OleDbConnection
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmLandCoverTypes_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             _dbConn = g_DBConn
@@ -68,12 +68,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="eventSender"></param>
-    ''' <param name="eventArgs"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboLCType_SelectedIndexChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmbxLCType.SelectedIndexChanged
         Try
             'On the cbo Click to change to a new LandClassType, check if there's been changes, prompt to save
@@ -153,12 +153,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmbxLCType_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cmbxLCType.KeyDown
         Try
             e.SuppressKeyPress = True
@@ -167,12 +167,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtLCTypeDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtLCTypeDesc.TextChanged
         Try
             CmdSaveEnabled()
@@ -181,12 +181,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Try
             If Not _bolSaved And _bolGridChanged Then
@@ -226,12 +226,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
             If ValidateGridValues() Then
@@ -257,12 +257,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub btnRestoreDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRestoreDefaults.Click
         'Restore Defaults Button - just read in NSPECT.LCCLASSDEFAULTS
 
@@ -303,12 +303,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuNewLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewLCType.Click
         Try
             Dim newLC As New frmNewLCType
@@ -319,12 +319,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuDelLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelLCType.Click
         Try
             Dim intAns As Short
@@ -372,12 +372,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuImpLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuImpLCType.Click
         Try
             Dim impLC As New frmImportLCType
@@ -388,12 +388,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuExpLCType_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExpLCType.Click
         Try
             Dim dlgsave As New SaveFileDialog
@@ -409,12 +409,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuAppend_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAppend.Click
         Try
             AddRow()
@@ -423,12 +423,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuInsertRow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuInsertRow.Click
         Try
             InsertRow()
@@ -437,12 +437,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuDeleteRow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDeleteRow.Click
         Try
             DeleteRow()
@@ -451,12 +451,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuLCHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuLCHelp.Click
         Try
             Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "land_cover.htm")
@@ -465,12 +465,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub dgvLCTypes_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvLCTypes.MouseClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Right Then
@@ -482,12 +482,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub AddRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddRowToolStripMenuItem.Click
         Try
             AddRow()
@@ -496,12 +496,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertRowToolStripMenuItem.Click
         Try
             InsertRow()
@@ -510,12 +510,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteRowToolStripMenuItem.Click
         Try
             DeleteRow()
@@ -524,12 +524,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub dgvLCTypes_CellEndEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvLCTypes.CellEndEdit
         Try
             _bolGridChanged = True
@@ -539,12 +539,12 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub dgvLCTypes_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvLCTypes.DataError
         Try
             MsgBox("Please enter a valid number in the cell on row " + (e.RowIndex + 1).ToString + " and column " + (e.ColumnIndex + 1).ToString + ".", MsgBoxStyle.Exclamation, "Data Error")
@@ -555,10 +555,10 @@ Friend Class frmLandCoverTypes
 #End Region
 
 #Region "Helper Functions"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub SaveToDB()
         Try
             _bSource.EndEdit()
@@ -568,10 +568,10 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub AddRow()
         Try
             _dTable.Columns(0).DefaultValue = _dTable.Rows.Count + 1
@@ -586,10 +586,10 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub InsertRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
@@ -604,10 +604,10 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub DeleteRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
@@ -620,10 +620,10 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub CmdSaveEnabled()
         Try
             btnSave.Enabled = _bolGridChanged
@@ -633,11 +633,11 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strName"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Sub CheckCCAPDefault(ByRef strName As String)
         Try
             If strName = "CCAP" Then
@@ -659,11 +659,11 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function ValidateGridValues() As Boolean
         Try
             ''Need to validate each grid value before saving.  Essentially we take it a row at a time,
@@ -731,10 +731,10 @@ Friend Class frmLandCoverTypes
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub AddDefaultValues()
         Try
             'Dim i As Short
@@ -767,11 +767,11 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strFileName"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Sub ExportLandCover(ByRef strFileName As String)
         Try
             'Exports your current LCType/LCClasses to text or csv.
@@ -797,11 +797,11 @@ Friend Class frmLandCoverTypes
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strName"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub UpdateCombo(ByVal strName As String)
         Try
             cmbxLCType.Items.Clear()

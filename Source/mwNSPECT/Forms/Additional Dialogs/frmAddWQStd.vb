@@ -29,12 +29,12 @@ Friend Class frmAddWQStd
 
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmAddWQStd_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             'Populate cbo with pollutant names
@@ -57,12 +57,12 @@ Friend Class frmAddWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtWQStdName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWQStdName.TextChanged
         Try
             txtWQStdName.Text = Replace(txtWQStdName.Text, "'", "")
@@ -71,12 +71,12 @@ Friend Class frmAddWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Dim intvbYesNo As Short = MsgBox("Are you sure you want to exit?  All changes not saved will be lost.", MsgBoxStyle.YesNo, "Exit?")
@@ -96,12 +96,12 @@ Friend Class frmAddWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             Dim strName As String
@@ -158,12 +158,12 @@ Friend Class frmAddWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
         Try
             cmdSave.Enabled = True
@@ -175,12 +175,12 @@ Friend Class frmAddWQStd
 #End Region
 
 #Region "Helper Functions"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="frmWQStd"></param>
-    ''' <param name="frmPrj"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Sub Init(ByRef frmWQStd As frmWaterQualityStandard, ByRef frmPrj As frmProjectSetup)
         Try
             _frmWQStd = frmWQStd
@@ -190,11 +190,11 @@ Friend Class frmAddWQStd
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function CheckThreshValues() As Boolean
         Try
             For Each row As DataGridViewRow In dgvWaterQuality.Rows
@@ -210,13 +210,13 @@ Friend Class frmAddWQStd
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strName"></param>
-    ''' <param name="strPoll"></param>
-    ''' <param name="intThresh"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Sub PollutantAdd(ByRef strName As String, ByRef strPoll As String, ByRef intThresh As String)
         Try
             Dim strPollAdd As String

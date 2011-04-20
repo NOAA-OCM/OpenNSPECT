@@ -26,11 +26,11 @@ Friend Class frmImportLCType
     Private _parent As frmLandCoverTypes
     Const c_sModuleFileName As String = "frmImportLCType.vb"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="parent"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub Init(ByRef parent As frmLandCoverTypes)
         Try
             _parent = parent
@@ -39,12 +39,12 @@ Friend Class frmImportLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtLCType_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtLCType.TextChanged
         Try
             If CBool(Trim(CStr(Len(txtLCType.Text)))) Then
@@ -59,12 +59,12 @@ Friend Class frmImportLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
         Try
             Dim dlgopen As New Windows.Forms.OpenFileDialog
@@ -85,12 +85,12 @@ Friend Class frmImportLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Me.Close()
@@ -99,12 +99,12 @@ Friend Class frmImportLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
             If IO.File.Exists(_strFileName) Then
@@ -167,12 +167,12 @@ Friend Class frmImportLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strName"></param>
-    ''' <param name="strParams"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub AddLCClass(ByRef strName As String, ByRef strParams() As String)
         Try
             Dim strLCTypeAdd As String
@@ -194,12 +194,12 @@ Friend Class frmImportLCType
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="aryValue"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Function CheckGridValuesLCType(ByRef aryValue() As String) As Boolean
         Try
             For i As Integer = 0 To aryValue.Length - 1
@@ -219,11 +219,11 @@ Friend Class frmImportLCType
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strName"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Sub RollBackImport(ByRef strName As String)
         Try
             Dim strSQLDel As String = "DELETE FROM LCTYPE where NAME LIKE '" & strName & "'"

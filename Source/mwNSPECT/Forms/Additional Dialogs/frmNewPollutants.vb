@@ -31,12 +31,12 @@ Friend Class frmNewPollutants
 
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmNewPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             modUtil.InitComboBox(cboLCType, "LCType")
@@ -48,12 +48,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboLCType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboLCType.SelectedIndexChanged
         Try
             Dim strLCClasses As String
@@ -84,12 +84,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuCoeffNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffNewSet.Click
         Try
             g_boolAddCoeff = False
@@ -101,12 +101,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuCoeffCopySet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffCopySet.Click
         Try
             g_boolCopyCoeff = False
@@ -118,12 +118,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged
         Try
             _boolChanged = True
@@ -133,12 +133,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtPollutant_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPollutant.TextChanged
         Try
             _boolChanged = True
@@ -148,12 +148,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtCoeffSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSet.TextChanged
         Try
             _boolChanged = True
@@ -163,12 +163,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
         Try
             _boolChanged = True
@@ -178,12 +178,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -192,12 +192,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             If CheckForm() Then
@@ -214,11 +214,11 @@ Friend Class frmNewPollutants
 #End Region
 
 #Region "Helpers"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="frmPoll"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub Init(ByRef frmPoll As frmPollutants)
         Try
             _frmPoll = frmPoll
@@ -227,10 +227,10 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub CmdSaveEnabled()
         Try
             If _boolChanged Then
@@ -243,11 +243,11 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function CheckForm() As Boolean
         Try
             If Trim(txtPollutant.Text) = "" Then
@@ -294,11 +294,11 @@ Friend Class frmNewPollutants
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function ValidateGridValues() As Boolean
         Try
             'Need to validate each grid value before saving.  Essentially we take it a row at a time,
@@ -335,11 +335,11 @@ Friend Class frmNewPollutants
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function UpdateValues() As Boolean
 
         Dim strInsertPollutant As String 'Insert String for new poll
@@ -419,12 +419,12 @@ Friend Class frmNewPollutants
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strNewCoeffName"></param>
-    ''' <param name="strCoeffSet"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
@@ -469,12 +469,12 @@ Friend Class frmNewPollutants
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strCoeffName"></param>
-    ''' <param name="strLCType"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Sub AddCoefficient(ByRef strCoeffName As String, ByRef strLCType As String)
         Try
             'TODO: verify this is even possible without the _intPollID and _intLCTypeID

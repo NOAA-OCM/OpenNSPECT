@@ -66,12 +66,12 @@ Public Class clsXMLPollutantItem
         End Get
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Parent"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
@@ -112,11 +112,11 @@ Public Class clsXMLPollutantItem
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="node"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the

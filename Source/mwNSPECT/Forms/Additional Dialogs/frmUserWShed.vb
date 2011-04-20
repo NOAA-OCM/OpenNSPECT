@@ -29,12 +29,12 @@ Friend Class frmUserWShed
     Private _dem_null As Double
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="eventSender"></param>
-    ''' <param name="eventArgs"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseDEMFile_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseDEMFile.Click
         Try
             'ReturnGRIDPath txtDEMFile, "Select DEM GRID"
@@ -65,12 +65,12 @@ Friend Class frmUserWShed
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="eventSender"></param>
-    ''' <param name="eventArgs"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseFlowAcc_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseFlowAcc.Click
         Try
             ReturnGRIDPath(txtFlowAcc, "Select Flow Accumulation GRID")
@@ -80,12 +80,12 @@ Friend Class frmUserWShed
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="eventSender"></param>
-    ''' <param name="eventArgs"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseFlowDir_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseFlowDir.Click
         Try
             ReturnGRIDPath(txtFlowDir, "Select Flow Direction GRID")
@@ -95,12 +95,12 @@ Friend Class frmUserWShed
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="eventSender"></param>
-    ''' <param name="eventArgs"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseLS_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseLS.Click
         Try
             ReturnGRIDPath(txtLS, "Select Length-Slope GRID")
@@ -110,12 +110,12 @@ Friend Class frmUserWShed
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="eventSender"></param>
-    ''' <param name="eventArgs"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdBrowseWS_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdBrowseWS.Click
         Try
             txtWaterSheds.Text = BrowseForFileName("Feature", Me, "Select Watersheds Shapefile")
@@ -124,12 +124,12 @@ Friend Class frmUserWShed
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="eventSender"></param>
-    ''' <param name="eventArgs"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdQuit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -138,12 +138,12 @@ Friend Class frmUserWShed
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="eventSender"></param>
-    ''' <param name="eventArgs"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCreate_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCreate.Click
 
         Dim strCmdInsert As String
@@ -198,12 +198,12 @@ Friend Class frmUserWShed
 #End Region
 
 #Region "Helper"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="frmWS"></param>
-    ''' <param name="frmPrj"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Sub Init(ByRef frmWS As frmWatershedDelin, ByRef frmPrj As frmProjectSetup)
         Try
             _frmWS = frmWS
@@ -213,11 +213,11 @@ Friend Class frmUserWShed
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function ValidateDataFormInput() As Boolean
         Try
             'check name
@@ -362,12 +362,12 @@ Friend Class frmUserWShed
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="txtBox"></param>
-    ''' <param name="strTitle"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub ReturnGRIDPath(ByRef txtBox As System.Windows.Forms.TextBox, ByRef strTitle As String)
         Try
             Dim pDEMRasterDataset As MapWinGIS.Grid
@@ -385,12 +385,12 @@ Friend Class frmUserWShed
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strDEMFileName"></param>
-    ''' <param name="strFlowDirFileName"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub Return2BDEM(ByRef strDEMFileName As String, ByRef strFlowDirFileName As String)
         Try
             Dim pDEMOneCell As MapWinGIS.Grid = Nothing
@@ -458,22 +458,22 @@ Friend Class frmUserWShed
 #End Region
 
 #Region "Raster Math"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="InputBox1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="InputBox2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="InputBox3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="InputBox4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="InputBox5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Private Function focalminGrowCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         Try
             'strExpression = "Con(isnull([aml_fdem]), focalmin([aml_fdem]), [aml_fdem])"
@@ -504,22 +504,22 @@ Friend Class frmUserWShed
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Private Function maskCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         Try
             'strExpression = "con([mask] >= 0, 1, 0)"
@@ -537,22 +537,22 @@ Friend Class frmUserWShed
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Private Function flowdvCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         Try
             If Input1 = Input1Null Then
@@ -565,22 +565,22 @@ Friend Class frmUserWShed
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="InputBox1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="InputBox2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="InputBox3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="InputBox4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="InputBox5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Private Function nibCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
     End Function
 #End Region

@@ -145,11 +145,11 @@ Friend Class clsXMLPrjFile
         End Set
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strXML"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub SaveFile(ByRef strXML As String)
         Try
             Dim dom As New XmlDocument
@@ -162,12 +162,12 @@ Friend Class clsXMLPrjFile
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Parent"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
@@ -254,11 +254,11 @@ Friend Class clsXMLPrjFile
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="node"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -307,10 +307,10 @@ Friend Class clsXMLPrjFile
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Public Sub New()
         Try
             clsMgmtScenHolder = New clsXMLMgmtScenItems 'A collection of management scenarios

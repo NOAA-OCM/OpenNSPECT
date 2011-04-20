@@ -33,14 +33,14 @@ Module modMgmtScen
     Private _pLandCoverRaster As MapWinGIS.Grid
     Public g_booLCChange As Boolean
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="clsMgmtScens"></param>
-    ''' <param name="strLCClass"></param>
-    ''' <param name="strLCFileName"></param>
-    ''' <param name="strWorkspace"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
     Public Sub MgmtScenSetup(ByRef clsMgmtScens As clsXMLMgmtScenItems, ByRef strLCClass As String, ByRef strLCFileName As String, ByRef strWorkspace As String)
         'Main Sub for setting everything up
         'clsMgmtScens: XML wrapper for the management scenarios created by the user
@@ -103,13 +103,13 @@ Module modMgmtScen
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="clsMgmtScen"></param>
-    ''' <param name="strLCClass"></param>
-    ''' <param name="outputGrid"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Public Sub ReclassRaster(ByRef clsMgmtScen As clsXMLMgmtScenItem, ByVal strLCClass As String, ByRef outputGrid As MapWinGIS.Grid)
         'We're passing over a single management scenarios in the form of the xml
         'class clsXMLmgmtScenItem, seems to be the easiest way to do this.

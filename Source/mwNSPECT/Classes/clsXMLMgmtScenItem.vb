@@ -52,12 +52,12 @@ Public Class clsXMLMgmtScenItem
     Public strAreaFileName As String
     Public strChangeToClass As String
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -67,12 +67,12 @@ Public Class clsXMLMgmtScenItem
         End Get
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Parent"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         'Return an XML DOM node that represents this class's properties. If a
         'parent DOM node is passed in, then the returned node is also added as a
@@ -105,11 +105,11 @@ Public Class clsXMLMgmtScenItem
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="node"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         'Set this class's properties based on the data found in the
         'given node.

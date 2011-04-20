@@ -62,13 +62,13 @@ Module modMainRun
 
     Public g_pGroupLayer As Integer = -1
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="cmdWShed"></param>
-    ''' <param name="SelectedPath"></param>
-    ''' <param name="SelectedShapes"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", Optional ByRef SelectedShapes As Collections.Generic.List(Of Integer) = Nothing)
         'GOAL:  Set the analysis environment based on the properties of the DEM, and establish
         'the other contributing datasets: Watersheds, flow direction, flow accumulation, length/slope
@@ -165,14 +165,14 @@ Module modMainRun
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="SelectedPath"></param>
-    ''' <param name="SelectedShapes"></param>
-    ''' <param name="strBasinFeatClass"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
     Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As Collections.Generic.List(Of Integer), ByRef strBasinFeatClass As String) As MapWinGIS.Shapefile
         'Incoming
         'pLayer: Layer user has chosen as being the one from which the selected polys will come
@@ -204,12 +204,12 @@ Module modMainRun
         'Return sfOut
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="pPolygon"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Function CheckMultiPartPolygon(ByVal pPolygon As MapWinGIS.Shape) As Boolean
         If pPolygon.NumParts > 1 Then
             CheckMultiPartPolygon = True
@@ -218,12 +218,12 @@ Module modMainRun
         End If
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strInputSF"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Public Function ReturnSelectGeometry(ByVal strInputSF As String) As MapWinGIS.Shape
         ReturnSelectGeometry = Nothing
 

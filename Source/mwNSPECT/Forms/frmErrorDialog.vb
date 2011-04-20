@@ -20,11 +20,11 @@ Public Class frmErrorDialog
     Friend WithEvents btnCopy As System.Windows.Forms.Button
     Const c_sModuleFileName As String = "frmErrorDialog.vb"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="ex"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub New(ByVal ex As System.Exception)
         MyBase.New()
         Try
@@ -38,12 +38,12 @@ Public Class frmErrorDialog
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCopy.Click
         Try
             Windows.Forms.Clipboard.SetText(txtError.Text)
@@ -52,12 +52,12 @@ Public Class frmErrorDialog
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdClose.Click
         Try
             Me.Close()
@@ -66,12 +66,12 @@ Public Class frmErrorDialog
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmErrorDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             txtError.Text = "Open N-SPECT (" + System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString() ' + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
@@ -81,12 +81,12 @@ Public Class frmErrorDialog
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtError_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtError.KeyDown
         Try
             e.SuppressKeyPress = True

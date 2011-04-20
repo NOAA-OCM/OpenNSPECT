@@ -26,12 +26,12 @@ Friend Class frmWaterQualityStandard
     Const c_sModuleFileName As String = "frmWaterQualityStandard.vb"
 
 #Region "Events"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmWaterQualityStandard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             _bolChange = False
@@ -41,12 +41,12 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cboWQStdName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboWQStdName.SelectedIndexChanged
         Try
             Dim intYesNo As Short
@@ -95,12 +95,12 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub txtWQStdDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWQStdDesc.TextChanged
         Try
             _bolChange = True
@@ -110,12 +110,12 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
         Try
             Me.Close()
@@ -124,12 +124,12 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
         Try
             If ValidateData() Then
@@ -142,12 +142,12 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuNewWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewWQStd.Click
         Try
             Dim addwq As New frmAddWQStd
@@ -159,12 +159,12 @@ Friend Class frmWaterQualityStandard
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuDelWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelWQStd.Click
         Try
             Dim intAns As Short
@@ -209,12 +209,12 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuCopyWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopyWQStd.Click
         Try
             Dim copywq As New frmCopyWQStd
@@ -226,12 +226,12 @@ Friend Class frmWaterQualityStandard
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuImpWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuImpWQStd.Click
         Try
             Dim impwq As New frmImportWQStd()
@@ -243,12 +243,12 @@ Friend Class frmWaterQualityStandard
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuExpWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExpWQStd.Click
         Try
             Dim dlgSave As New Windows.Forms.SaveFileDialog
@@ -268,12 +268,12 @@ Friend Class frmWaterQualityStandard
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub mnuWQHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuWQHelp.Click
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "wq_stnds.htm")
@@ -282,12 +282,12 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
         Try
             _bolChange = True
@@ -299,10 +299,10 @@ Friend Class frmWaterQualityStandard
 #End Region
 
 #Region "Helper Functions"
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub UpdateData()
         Try
             Dim strSQLWQStd As String
@@ -341,11 +341,11 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Function ValidateData() As Boolean
         Try
             Dim i As Short
@@ -369,11 +369,11 @@ Friend Class frmWaterQualityStandard
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strWQName"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub UpdateWQ(ByVal strWQName As String)
         Try
             cboWQStdName.Items.Clear()
@@ -385,11 +385,11 @@ Friend Class frmWaterQualityStandard
     End Sub
 
     'Exports your current standard and pollutants to text or csv.
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strFileName"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Private Sub ExportStandard(ByRef strFileName As String)
         Try
             Dim out As New IO.StreamWriter(strFileName)
@@ -410,10 +410,10 @@ Friend Class frmWaterQualityStandard
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Private Sub OKEnable()
         Try
             cmdSave.Enabled = _bolChange

@@ -16,10 +16,10 @@ Public Class frmSelectShape
     Private stopclose As Boolean
     Const c_sModuleFileName As String = "frmSelectShape.vb"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
+
+
+
+
     Public Sub Initialize()
         Try
             Me.Show()
@@ -34,12 +34,12 @@ Public Class frmSelectShape
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmSelectShapes_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         If Not g_cb Is Nothing Then g_cb.SetSelectedShape()
         If Not g_comp Is Nothing Then g_comp.SetSelectedShape()
@@ -50,12 +50,12 @@ Public Class frmSelectShape
         If Not g_luscen Is Nothing Then g_luscen.Visible = True
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub btnDone_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDone.Click
         Try
             Me.Close()
@@ -64,11 +64,11 @@ Public Class frmSelectShape
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="disable"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
     Public Sub disableDone(ByVal disable As Boolean)
         Try
             stopclose = disable
@@ -78,12 +78,12 @@ Public Class frmSelectShape
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Sub frmSelectShape_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         Try
             If stopclose Then

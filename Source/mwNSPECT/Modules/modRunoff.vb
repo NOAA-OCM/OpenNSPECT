@@ -47,16 +47,16 @@ Module modRunoff
 
     Private _picks()() As String
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strLCFileName"></param>
-    ''' <param name="strLCCLassType"></param>
-    ''' <param name="cmdPrecip"></param>
-    ''' <param name="strSoilsFileName"></param>
-    ''' <param name="OutputItems"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
     Public Function CreateRunoffGrid(ByRef strLCFileName As String, ByRef strLCCLassType As String, ByRef cmdPrecip As OleDbCommand, ByRef strSoilsFileName As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'This sub serves as a link between frmPrj and the actual calculation of Runoff
         'It establishes the Rasters being used
@@ -141,12 +141,12 @@ Module modRunoff
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="pInRaster"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
     Private Function ConvertRainGridCMToInches(ByRef pInRaster As MapWinGIS.Grid) As MapWinGIS.Grid
 
         Dim head As MapWinGIS.GridHeader = pInRaster.Header
@@ -170,13 +170,13 @@ Module modRunoff
         Return pInRaster
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strLandClass"></param>
-    ''' <param name="pLCRaster"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function ConstructPickStatment(ByRef strLandClass As String, ByRef pLCRaster As MapWinGIS.Grid) As String()
         'Creates the large initial pick statement using the name of the the LandCass [CCAP, for example]
         'and the Land Class Raster.  Returns a string
@@ -313,13 +313,13 @@ Module modRunoff
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="pLCRaster"></param>
-    ''' <param name="tablepath"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
     Private Function BuildTable(ByRef pLCRaster As MapWinGIS.Grid, ByVal tablepath As String) As Boolean
         Dim mwTable As New MapWinGIS.Table
 
@@ -390,14 +390,14 @@ Module modRunoff
         End If
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="cmdLandClass"></param>
-    ''' <param name="strLandClass"></param>
-    ''' <param name="booLocal"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
     Private Function CreateMetadata(ByRef cmdLandClass As OleDbCommand, ByRef strLandClass As String, ByRef booLocal As Boolean) As String
         CreateMetadata = ""
         Try
@@ -434,16 +434,16 @@ Module modRunoff
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="strPick"></param>
-    ''' <param name="pInRainRaster"></param>
-    ''' <param name="pInLandCoverRaster"></param>
-    ''' <param name="pInSoilsRaster"></param>
-    ''' <param name="OutputItems"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
     Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As MapWinGIS.Grid, ByRef pInLandCoverRaster As MapWinGIS.Grid, ByRef pInSoilsRaster As MapWinGIS.Grid, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'strPickStatement: our friend the dynamic pick statemnt
         'pInRainRaster: the precip grid
@@ -621,17 +621,17 @@ Module modRunoff
 
 #Region "Raster Math"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
     Private Function SC100CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'pSCS100Raster = 100 * con([pHydSoilsRaster] == 1, pick([pLandSampleRaster], " & strPick(0) & "), con([pHydSoilsRaster] == 2, pick([pLandSampleRaster], " & strPick(1) & "), con([pHydSoilsRaster] == 3, pick([pLandSampleRaster], " & strPick(2) & "), con([pHydSoilsRaster] == 4, pick([pLandSampleRaster], " & strPick(3) & ")))))
 
@@ -662,22 +662,22 @@ Module modRunoff
         End If
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Private Function AllRunoffCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         Dim tmpVal, RetentionVal, AbstractVal, RunoffInches, AreaSquareMeters As Single
 
@@ -717,22 +717,22 @@ Module modRunoff
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Private Function metRunoffNoNullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(IsNull([runoffgrid]),0,[runoffgrid])"
         If Input1 <> Input1Null Then
@@ -746,22 +746,22 @@ Module modRunoff
         End If
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Public Function tauD8CellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
         If Input1 = 1 Then
@@ -787,22 +787,22 @@ Module modRunoff
         End If
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Input1"></param>
-    ''' <param name="Input1Null"></param>
-    ''' <param name="Input2"></param>
-    ''' <param name="Input2Null"></param>
-    ''' <param name="Input3"></param>
-    ''' <param name="Input3Null"></param>
-    ''' <param name="Input4"></param>
-    ''' <param name="Input4Null"></param>
-    ''' <param name="Input5"></param>
-    ''' <param name="Input5Null"></param>
-    ''' <param name="OutNull"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Public Function tauD8ToESRICellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
         If Input1 = 1 Then
