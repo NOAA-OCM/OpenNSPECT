@@ -72,7 +72,6 @@
         Me._Label1_5 = New System.Windows.Forms.Label()
         Me._Label1_0 = New System.Windows.Forms.Label()
         Me._Label1_2 = New System.Windows.Forms.Label()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.SSTab1 = New System.Windows.Forms.TabControl()
         Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage()
         Me.dgvPollutants = New System.Windows.Forms.DataGridView()
@@ -748,10 +747,6 @@
         Me._Label1_2.Size = New System.Drawing.Size(36, 19)
         Me._Label1_2.TabIndex = 6
         Me._Label1_2.Text = "Type:"
-        '
-        'Timer1
-        '
-        Me.Timer1.Interval = 1
         '
         'SSTab1
         '
@@ -1466,7 +1461,6 @@
     Private WithEvents _Label1_5 As System.Windows.Forms.Label
     Private WithEvents _Label1_0 As System.Windows.Forms.Label
     Private WithEvents _Label1_2 As System.Windows.Forms.Label
-    Private WithEvents Timer1 As System.Windows.Forms.Timer
     Private WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
     Private WithEvents lblErodFactor As System.Windows.Forms.Label
     Private WithEvents lblKFactor As System.Windows.Forms.Label
