@@ -31,22 +31,12 @@ Friend Class frmNewPrecip
 #Region "Events"
 
 
-    Private Sub frmNewPrecip_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-    End Sub
-
-
     Private Sub txtPrecipName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipName.TextChanged
         Try
             txtPrecipName.Text = Replace(txtPrecipName.Text, "'", "")
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
-    End Sub
-
-
-    Private Sub txtDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDesc.TextChanged
-
     End Sub
 
 
@@ -60,11 +50,6 @@ Friend Class frmNewPrecip
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
-    End Sub
-
-
-    Private Sub txtPrecipFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipFile.TextChanged
-
     End Sub
 
 
@@ -112,16 +97,6 @@ Friend Class frmNewPrecip
     End Sub
 
 
-    Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGridUnits.SelectedIndexChanged
-
-    End Sub
-
-
-    Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipUnits.SelectedIndexChanged
-
-    End Sub
-
-
     Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimePeriod.SelectedIndexChanged
         Try
             If cboTimePeriod.SelectedIndex = 0 Then
@@ -137,16 +112,6 @@ Friend Class frmNewPrecip
     End Sub
 
 
-    Private Sub txtRainingDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRainingDays.TextChanged
-
-    End Sub
-
-
-    Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipType.SelectedIndexChanged
-
-    End Sub
-
-
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
             Dim intSave As Object
@@ -158,7 +123,7 @@ Friend Class frmNewPrecip
                     If Not _frmPrj Is Nothing Then
                         _frmPrj.cboPrecipScen.SelectedIndex = 0
                     End If
-                    Me.Close()
+                    Close()
                 ElseIf intSave = MsgBoxResult.No Then
 
                     Exit Sub
@@ -167,7 +132,7 @@ Friend Class frmNewPrecip
                 If Not _frmPrj Is Nothing Then
                     _frmPrj.cboPrecipScen.SelectedIndex = 0
                 End If
-                Me.Close()
+                Close()
             End If
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -210,12 +175,12 @@ Friend Class frmNewPrecip
 
                     If Not _frmPrj Is Nothing Then
                         _frmPrj.UpdatePrecip(txtPrecipName.Text)
-                        Me.Close()
+                        Close()
                     End If
 
                     If Not _frmPrec Is Nothing Then
                         _frmPrec.UpdatePrecip(txtPrecipName.Text)
-                        Me.Close()
+                        Close()
                     End If
 
                 Else

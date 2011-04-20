@@ -417,10 +417,10 @@ Friend Class frmProjectSetup
 
             If intvbYesNo = MsgBoxResult.Yes Then
                 If SaveXMLFile() Then
-                    Me.Close()
+                    Close()
                 End If
             ElseIf intvbYesNo = MsgBoxResult.No Then
-                Me.Close()
+                Close()
             ElseIf intvbYesNo = MsgBoxResult.Cancel Then
                 Exit Sub
             End If
@@ -781,10 +781,10 @@ Friend Class frmProjectSetup
             'Make sure to let them save before it's lost if they choose to
             If intvbYesNo = MsgBoxResult.Yes Then
                 If SaveXMLFile() Then
-                    Me.Close()
+                    Close()
                 End If
             ElseIf intvbYesNo = MsgBoxResult.No Then
-                Me.Close()
+                Close()
             ElseIf intvbYesNo = MsgBoxResult.Cancel Then
                 Exit Sub
             End If
@@ -1004,7 +1004,7 @@ Friend Class frmProjectSetup
             'Save xml to ensure outputs are saved
             _XMLPrjParams.SaveFile(_strFileName)
 
-            Me.Close()
+            Close()
 
             Exit Sub
         Catch ex As Exception

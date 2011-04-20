@@ -48,7 +48,7 @@ Friend Class frmCopyCoeffSet
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -63,7 +63,7 @@ Friend Class frmCopyCoeffSet
                 Else
                     _frmNewPoll.CopyCoefficient(txtCoeffSetName.Text, cboCoeffSet.Text)
                 End If
-                Me.Close()
+                Close()
             Else
                 MsgBox("The name you have choosen for coefficient set is already in use.  Please pick another.", MsgBoxStyle.Critical, "Name In Use")
                 With txtCoeffSetName

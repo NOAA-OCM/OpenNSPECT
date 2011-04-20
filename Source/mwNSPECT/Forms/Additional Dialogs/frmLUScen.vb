@@ -64,7 +64,7 @@ Friend Class frmLUScen
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -87,7 +87,7 @@ Friend Class frmLUScen
         Try
             If ValidateData() Then
                 CreateXMLFile()
-                Me.Close()
+                Close()
             Else
                 _stopClose = True
             End If

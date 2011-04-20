@@ -55,9 +55,9 @@ Module modErrorCodes
     Public Const MSG8 As String = "XML File(*.xml)|*.xml"
 
 
-    Public Sub ErrorGenerator(ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
+    Public Sub DisplayError(ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
 
-        MsgBox(Error_Renamed & "Row: " & (i + 1) & ", Column: " & (j + 1), MsgBoxStyle.Critical, "Warning")
+        MsgBox(String.Format("{0}Row: {1}, Column: {2}", Error_Renamed, (i + 1), (j + 1)), MsgBoxStyle.Critical, "Warning")
 
     End Sub
 
@@ -70,8 +70,10 @@ Module modErrorCodes
         Dim e As New Exception(vbNewLine + vbNewLine + "Unexpected " + OriginName + " " + stackTrace.GetFrame(1).GetMethod().Name + " error occured" + vbNewLine + vbNewLine + OriginalException.ToString())
 
         Try
-            Dim errorBox As New frmErrorDialog(e)
-            errorBox.ShowDialog()
+            Using errorBox As New frmErrorDialog(e)
+                errorBox.ShowDialog()
+            End Using
+            Trace.TraceError(e.Message)
         Catch ex As Exception
             ' // couldn't show the dialog.
         End Try

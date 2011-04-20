@@ -74,7 +74,7 @@ Friend Class frmImportLCType
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
-            Me.Close()
+            Close()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -133,7 +133,7 @@ Friend Class frmImportLCType
                 modUtil.InitComboBox(_parent.cmbxLCType, "LCTYPE")
                 _parent.cmbxLCType.SelectedIndex = modUtil.GetCboIndex(strname, _parent.cmbxLCType)
                 read.Close()
-                Me.Close()
+                Close()
             Else
                 MsgBox("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, "File Not Found")
             End If

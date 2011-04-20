@@ -290,11 +290,6 @@ Friend Class frmPollutants
     End Sub
 
 
-    Private Sub txtLCType_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtLCType.TextChanged
-
-    End Sub
-
-
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
         Try
             _boolDescChanged = True
@@ -320,17 +315,17 @@ Friend Class frmPollutants
                         _boolChanged = False
                         _boolDescChanged = False
                         _boolSaved = True
-                        Me.Close()
+                        Close()
                     End If
 
                 Else
 
-                    Me.Close()
+                    Close()
 
                 End If
             Else
 
-                Me.Close()
+                Close()
             End If
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -345,7 +340,7 @@ Friend Class frmPollutants
                 UpdateValues()
                 _boolSaved = True
                 MsgBox(cboPollName.Text & " saved successfully.", MsgBoxStyle.Information, "N-SPECT")
-                Me.Close()
+                Close()
 
             End If
         Catch ex As Exception
@@ -528,13 +523,13 @@ Friend Class frmPollutants
 
                     If InStr(1, CStr(val), ".", CompareMethod.Text) > 0 Then
                         If (Len(Split(CStr(val), ".")(1)) > 4) Then
-                            ErrorGenerator(Err6, i, j)
+                            DisplayError(Err6, i, j)
                             Return False
                         End If
                     End If
 
                     If Not IsNumeric(val) Or (val < 0) Or (val > 1000) Then
-                        ErrorGenerator(Err6, i, j)
+                        DisplayError(Err6, i, j)
                         Return False
                     End If
                 Next j
@@ -544,7 +539,7 @@ Friend Class frmPollutants
                 val = dgvWaterQuality.Rows(iQstd).Cells(2).Value
 
                 If Not IsNumeric(val) Or (val < 0) Then
-                    ErrorGenerator(Err5, iQstd, 3)
+                    DisplayError(Err5, iQstd, 3)
                     Return False
                 End If
             Next iQstd

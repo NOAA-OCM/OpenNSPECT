@@ -177,12 +177,12 @@ Friend Class frmLandCoverTypes
                         _bolGridChanged = False
                         _bolSaved = True
                         _bolBegin = False
-                        Me.Close()
+                        Close()
                     End If
 
                 ElseIf intYesNo = MsgBoxResult.No Then
                     _bolBegin = False
-                    Me.Close()
+                    Close()
 
                 Else
                     Exit Sub
@@ -194,7 +194,7 @@ Friend Class frmLandCoverTypes
                 _bolGridChanged = False
                 _bolSaved = True
                 _bolBegin = False
-                Me.Close()
+                Close()
             End If
 
         Catch ex As Exception
@@ -215,7 +215,7 @@ Friend Class frmLandCoverTypes
                 _bolGridChanged = False
                 _bolSaved = True
 
-                Me.Close()
+                Close()
             End If
         Catch ex As Exception
             'TODO: Make sure this error functions
@@ -557,7 +557,7 @@ Friend Class frmLandCoverTypes
                         Select Case j
                             Case 0
                                 If Not IsNumeric(val) Then
-                                    ErrorGenerator(Err1, i, j)
+                                    DisplayError(Err1, i, j)
                                     ValidateGridValues = False
                                     Exit Function
                                 Else
@@ -566,7 +566,7 @@ Friend Class frmLandCoverTypes
                                             dr2 = _dTable.Rows(k)
                                             If k <> i Then 'Don't want to compare value to itself
                                                 If val = dr2.Item(j) Then
-                                                    ErrorGenerator(Err2, i, j)
+                                                    DisplayError(Err2, i, j)
                                                     ValidateGridValues = False
                                                     Exit Function
                                                 End If
@@ -577,20 +577,20 @@ Friend Class frmLandCoverTypes
 
                             Case 1
                                 If IsNumeric(val) Then
-                                    ErrorGenerator(Err1, i, j)
+                                    DisplayError(Err1, i, j)
                                     ValidateGridValues = False
                                     Exit Function
                                 End If
 
                             Case 2, 3, 4, 5
                                 If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 6) Then
-                                    ErrorGenerator(Err1, i, j)
+                                    DisplayError(Err1, i, j)
                                     ValidateGridValues = False
                                     Exit Function
                                 End If
                             Case 6
                                 If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 5) Then
-                                    ErrorGenerator(Err3, i, j)
+                                    DisplayError(Err3, i, j)
                                     ValidateGridValues = False
                                     Exit Function
                                 End If

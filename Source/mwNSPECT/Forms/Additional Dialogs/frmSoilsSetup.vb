@@ -74,7 +74,7 @@ Friend Class frmSoilsSetup
             If intvbYesNo = MsgBoxResult.Yes Then
                 SaveSoils()
             ElseIf intvbYesNo = MsgBoxResult.No Then
-                Me.Close()
+                Close()
             ElseIf intvbYesNo = MsgBoxResult.Cancel Then
                 Exit Sub
             End If
@@ -114,7 +114,7 @@ Friend Class frmSoilsSetup
                         _frmSoil.cboSoils.Items.Clear()
                         modUtil.InitComboBox(_frmSoil.cboSoils, "Soils")
                         _frmSoil.cboSoils.SelectedIndex = modUtil.GetCboIndex(txtSoilsName.Text, _frmSoil.cboSoils)
-                        Me.Close()
+                        Close()
                     End If
                 Else
                     Exit Sub
