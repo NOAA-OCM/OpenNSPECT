@@ -23,16 +23,14 @@ Friend Class MainForm
 
 
 #Region "Class Vars"
-    Private _strFileName As String 'Name of Open doc
-    Private _strWShed As String 'String
 
     Private _XMLPrjParams As clsXMLPrjFile 'xml doc that holds inputs
 
     Private _bolFirstLoad As Boolean 'Is initial Load event
-    Private _booNew As Boolean 'New
     Private _booExists As Boolean 'Has file been saved
     Private _booAnnualPrecip As Boolean 'Is the precip scenario annual, if so = TRUE
 
+    Private _strFileName As String 'Name of Open doc
     Private _strPrecipFile As String
     Private _strOpenFileName As String
 
@@ -48,9 +46,7 @@ Friend Class MainForm
     ' Win 32 Constant Declarations
     Private Const LOGPIXELSX As Short = 88 'Logical pixels/inch in X
 
-
     Const c_sModuleFileName As String = "frmProjectSetup.vb"
-    Private m_ParentHWND As Integer 'Set this to get correct parenting of Error handler forms
 
     Private arrAreaList As New System.Collections.ArrayList
     Private arrClassList As New System.Collections.ArrayList
@@ -125,7 +121,7 @@ Friend Class MainForm
             'Initialize parameter file
             _XMLPrjParams = New clsXMLPrjFile
 
-            Me.Text = "Untitled"
+            Me.Text = "New OpenNspect file"
 
 
             chkCalcErosion_CheckStateChanged(Me, Nothing)
@@ -1190,26 +1186,24 @@ Friend Class MainForm
 
                 strSQLWQStdPoll = "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD " & "FROM POLL_WQCRITERIA INNER JOIN POLLUTANT " & "ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = " & dataWQCrit.Item("WQCRITID")
 
-                Dim WQStdCmd As OleDbCommand = New OleDbCommand(strSQLWQStdPoll, g_DBConn)
-
-                Dim WQStdAdapter As OleDbDataAdapter = New OleDbDataAdapter(WQStdCmd)
-                Dim PollutantsTable As New DataTable
-
-                WQStdAdapter.Fill(PollutantsTable)
-
-                'Don't actually datasource since there's no two-way communication. Just fill grid from the table
-                Dim strPollName As String
-                Dim idx As Integer
-                dgvPollutants.Rows.Clear()
-                For Each row As DataRow In PollutantsTable.Rows
-                    idx = dgvPollutants.Rows.Add()
-                    strPollName = row.Item(0)
-
-                    dgvPollutants.Rows(idx).Cells("PollutantName").Value = strPollName
-                    dgvPollutants.Rows(idx).Cells("Threshold").Value = row.Item(1)
-
-                    PopulateCoefType(strPollName, idx)
-                Next
+                Using WQStdCmd As OleDbCommand = New OleDbCommand(strSQLWQStdPoll, g_DBConn)
+                    Using WQStdAdapter As OleDbDataAdapter = New OleDbDataAdapter(WQStdCmd)
+                        Using PollutantsTable As New DataTable()
+                            WQStdAdapter.Fill(PollutantsTable)
+                            'Don't actually datasource since there's no two-way communication. Just fill grid from the table
+                            Dim strPollName As String
+                            Dim idx As Integer
+                            dgvPollutants.Rows.Clear()
+                            For Each row As DataRow In PollutantsTable.Rows
+                                idx = dgvPollutants.Rows.Add()
+                                strPollName = row.Item(0)
+                                dgvPollutants.Rows(idx).Cells("PollutantName").Value = strPollName
+                                dgvPollutants.Rows(idx).Cells("Threshold").Value = row.Item(1)
+                                PopulateCoefType(strPollName, idx)
+                            Next
+                        End Using
+                    End Using
+                End Using
             Else
                 MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
             End If
