@@ -26,7 +26,7 @@ Module modUtil
 
     Public g_CurrentProjectPath As String
 
-    Public g_cb As MainForm
+    Public g_cbMainForm As MainForm
     Public g_comp As frmCompareOutputs
     Public g_luscen As frmLUScen
 

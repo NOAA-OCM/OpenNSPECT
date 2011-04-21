@@ -29,7 +29,6 @@ Friend Class frmNewWSDelin
     Private _frmPrj As MainForm
 
     Private _intSize As Short 'Index for Size Combo
-    Private _intGridUnits As Short 'Grid Units: 0 = meters, 1 = feet
     Private _intCellSize As Short 'Cell Size of DEM Grid, used in Length Slope Calculation
     Private _InputDEMPath As String
 

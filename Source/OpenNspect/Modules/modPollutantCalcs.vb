@@ -167,10 +167,6 @@ Module modPollutantCalcs
 
         ConstructPickStatment = ""
         Try
-            Dim strCon As String = "" 'Con statement base
-            Dim strParens As String = "" 'String of trailing parens
-            'Dim strCompleteCon As String 'Concatenate of strCon & strParens
-
             Dim TableExist As Boolean
             Dim FieldIndex As Short
             Dim booValueFound As Boolean

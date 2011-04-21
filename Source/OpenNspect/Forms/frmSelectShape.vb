@@ -17,13 +17,13 @@ Public Class frmSelectShape
     Const c_sModuleFileName As String = "frmSelectShape.vb"
 
 
-    Public Sub Initialize()
+    Public Sub InitializeAndShow()
         Try
             Me.Show()
 
             g_MapWin.View.CursorMode = MapWinGIS.tkCursorMode.cmSelection
 
-            If Not g_cb Is Nothing Then g_cb.Visible = False
+            If Not g_cbMainForm Is Nothing Then g_cbMainForm.Visible = False
             If Not g_comp Is Nothing Then g_comp.Visible = False
             If Not g_luscen Is Nothing Then g_luscen.Visible = False
         Catch ex As Exception
@@ -33,11 +33,11 @@ Public Class frmSelectShape
 
 
     Private Sub frmSelectShapes_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        If Not g_cb Is Nothing Then g_cb.SetSelectedShape()
+        If Not g_cbMainForm Is Nothing Then g_cbMainForm.SetSelectedShape()
         If Not g_comp Is Nothing Then g_comp.SetSelectedShape()
         If Not g_luscen Is Nothing Then g_luscen.SetSelectedShape()
         Me.Hide()
-        If Not g_cb Is Nothing Then g_cb.Visible = True
+        If Not g_cbMainForm Is Nothing Then g_cbMainForm.Visible = True
         If Not g_comp Is Nothing Then g_comp.Visible = True
         If Not g_luscen Is Nothing Then g_luscen.Visible = True
     End Sub

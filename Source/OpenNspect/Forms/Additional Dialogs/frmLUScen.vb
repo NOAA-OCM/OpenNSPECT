@@ -100,7 +100,7 @@ Friend Class frmLUScen
     Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
         Try
             Dim selectfrm As New frmSelectShape
-            selectfrm.Initialize()
+            selectfrm.InitializeAndShow()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
