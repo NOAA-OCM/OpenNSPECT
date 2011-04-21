@@ -383,36 +383,35 @@ Public Class mwNSPECT
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub addMenus()
-        Dim nil As Object
-        nil = Nothing
+        Dim nil As Object = Nothing
         With g_MapWin.Menus
             .AddMenu(g_mnuNSPECTMain, nil, "NSPECT")
             _addedMenus.Push(g_mnuNSPECTMain)
-            .AddMenu(g_mnuNSPECTAnalysis, g_mnuNSPECTMain, nil, "Run Analysis")
+            .AddMenu(g_mnuNSPECTAnalysis, g_mnuNSPECTMain, nil, "Run Analysis...")
             _addedMenus.Push(g_mnuNSPECTAnalysis)
             .AddMenu("mnunspectsep0", g_mnuNSPECTMain, nil, "-")
             _addedMenus.Push("mnunspectsep0")
-            .AddMenu(g_mnuNSPECTCompare, g_mnuNSPECTMain, nil, "Compare Outputs")
+            .AddMenu(g_mnuNSPECTCompare, g_mnuNSPECTMain, nil, "Compare Outputs...")
             _addedMenus.Push(g_mnuNSPECTCompare)
             .AddMenu("mnunspectsep1", g_mnuNSPECTMain, nil, "-")
             _addedMenus.Push("mnunspectsep1")
             .AddMenu(g_mnuNSPECTAdvSettings, g_mnuNSPECTMain, nil, "Advanced Settings")
             _addedMenus.Push(g_mnuNSPECTAdvSettings)
-            .AddMenu(g_mnuNSPECTAdvLand, g_mnuNSPECTAdvSettings, nil, "Land Cover Types")
+            .AddMenu(g_mnuNSPECTAdvLand, g_mnuNSPECTAdvSettings, nil, "Land Cover Types...")
             _addedMenus.Push(g_mnuNSPECTAdvLand)
-            .AddMenu(g_mnuNSPECTAdvPolutants, g_mnuNSPECTAdvSettings, nil, "Pollutants")
+            .AddMenu(g_mnuNSPECTAdvPolutants, g_mnuNSPECTAdvSettings, nil, "Pollutants...")
             _addedMenus.Push(g_mnuNSPECTAdvPolutants)
-            .AddMenu(g_mnuNSPECTAdvWQ, g_mnuNSPECTAdvSettings, nil, "Water Quality Standards")
+            .AddMenu(g_mnuNSPECTAdvWQ, g_mnuNSPECTAdvSettings, nil, "Water Quality Standards...")
             _addedMenus.Push(g_mnuNSPECTAdvWQ)
-            .AddMenu(g_mnuNSPECTAdvPrecip, g_mnuNSPECTAdvSettings, nil, "Precipitation Scenarios")
+            .AddMenu(g_mnuNSPECTAdvPrecip, g_mnuNSPECTAdvSettings, nil, "Precipitation Scenarios...")
             _addedMenus.Push(g_mnuNSPECTAdvPrecip)
-            .AddMenu(g_mnuNSPECTAdvWSDelin, g_mnuNSPECTAdvSettings, nil, "Watershed Delineations")
+            .AddMenu(g_mnuNSPECTAdvWSDelin, g_mnuNSPECTAdvSettings, nil, "Watershed Delineations...")
             _addedMenus.Push(g_mnuNSPECTAdvWSDelin)
-            .AddMenu(g_mnuNSPECTAdvSoils, g_mnuNSPECTAdvSettings, nil, "Soils")
+            .AddMenu(g_mnuNSPECTAdvSoils, g_mnuNSPECTAdvSettings, nil, "Soils...")
             _addedMenus.Push(g_mnuNSPECTAdvSoils)
             .AddMenu("mnunspectsep2", g_mnuNSPECTMain, nil, "-")
             _addedMenus.Push("mnunspectsep2")
-            .AddMenu(g_mnuNSPECTHelp, g_mnuNSPECTMain, nil, "Help")
+            .AddMenu(g_mnuNSPECTHelp, g_mnuNSPECTMain, nil, "Help...")
             _addedMenus.Push(g_mnuNSPECTHelp)
 
         End With
