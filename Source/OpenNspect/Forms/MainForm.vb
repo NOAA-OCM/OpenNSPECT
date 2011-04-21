@@ -882,7 +882,7 @@ Friend Class MainForm
             For i = 0 To _XMLPrjParams.clsLUItems.Count - 1
                 If _XMLPrjParams.clsLUItems.Item(i).intApply = 1 Then
                     booLUItems = True
-                    modLanduse.Begin(_XMLPrjParams.strLCGridType, _XMLPrjParams.clsLUItems, dictPollutants, _XMLPrjParams.strLCGridFileName, _XMLPrjParams.strProjectWorkspace)
+                    modLanduse.Begin(_XMLPrjParams.strLCGridType, _XMLPrjParams.clsLUItems, dictPollutants, _XMLPrjParams.strLCGridFileName)
                     Exit For
                 Else
                     booLUItems = False

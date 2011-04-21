@@ -49,13 +49,14 @@ Module modLanduse
     ' Constant used by the Error handler function - DO NOT REMOVE
     Const c_sModuleFileName As String = "modLanduse.vb"
 
-
-
-    Public Sub Begin(ByRef strLCClassName As String, ByRef clsLUScenItems As clsXMLLandUseItems, ByRef dictPollutants As Generic.Dictionary(Of String, String), ByRef strLCFileName As String, ByRef strWorkspace As String)
-        'strLCClassName: str of current land cover class
-        'clsLUScenItems: XML class that holds the params of the user's Land Use Scenario
-        'dictPollutants: dictionary created to hold the pollutants of this particular project
-        'strLCFileName: FileName of land cover grid
+    ''' <summary>
+    ''' Begins working.
+    ''' </summary>
+    ''' <param name="strLCClassName">str of current land cover class.</param>
+    ''' <param name="clsLUScenItems">XML class that holds the params of the user's Land Use Scenario.</param>
+    ''' <param name="dictPollutants">dictionary created to hold the pollutants of this particular project.</param>
+    ''' <param name="strLCFileName">FileName of land cover grid.</param>
+    Public Sub Begin(ByRef strLCClassName As String, ByRef clsLUScenItems As clsXMLLandUseItems, ByRef dictPollutants As Generic.Dictionary(Of String, String), ByRef strLCFileName As String)
 
         Try
             Dim strCurrentLCType As String 'Current LCTYpe
@@ -80,35 +81,42 @@ Module modLanduse
 
 
             'STEP 1: Get the current LCTYPE
-            strCurrentLCType = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCClassName & "'"
-            Dim cmdCurrentLCType As New DataHelper(strCurrentLCType)
-            Dim dataCurrentLCType As OleDbDataReader = cmdCurrentLCType.ExecuteReader
-            dataCurrentLCType.Read()
+            Dim lcTypeId As Object
+            strCurrentLCType = String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", strLCClassName)
+            Using cmdCurrentLCType As New DataHelper(strCurrentLCType)
+                Using dataCurrentLCType As OleDbDataReader = cmdCurrentLCType.ExecuteReader()
+                    dataCurrentLCType.Read()
+                    lcTypeId = dataCurrentLCType("LCTypeID")
+                End Using
+            End Using
 
             'MK - I'm not sure this works like they thought it did.
             'STEP 2: Get the current LCCLASSES of the current LCTYPE
-            strCurrentLCClass = "SELECT * FROM LCCLASS WHERE" & " LCTYPEID = " & dataCurrentLCType("LCTypeID") & " ORDER BY LCCLass.Value"
+
+            strCurrentLCClass = String.Format("SELECT * FROM LCCLASS WHERE LCTYPEID = {0} ORDER BY LCCLass.Value", lcTypeId)
             Dim cmdCurrentLCClass As New DataHelper(strCurrentLCClass)
 
             'STEP 3: Now INSERT a copy of current LCTYPE
             'First, get a temp name... like CCAPLUTemp1, CCAPLUTemp2 etc
             strTempLCTypeName = modUtil.CreateUniqueName("LCTYPE", strLCClassName & "LUTemp")
-            strInsertTempLCType = "INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('" & Replace(strTempLCTypeName, "'", "''") & "', '" & Replace(strTempLCTypeName, "'", "''") & " Description')"
+            strInsertTempLCType = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{0} Description')", Replace(strTempLCTypeName, "'", "''"))
 
             'Add the name to the Dictionary for storage; used for cleanup and in pollutants
             g_DictTempNames.Add(strLCClassName, strTempLCTypeName)
 
             'STEP 4: INSERT the copy of the LCTYPE in
-            Dim cmdInsertCopy As New DataHelper(strInsertTempLCType)
-            cmdInsertCopy.ExecuteNonQuery()
+            Using cmdInsertCopy As New DataHelper(strInsertTempLCType)
+                cmdInsertCopy.ExecuteNonQuery()
+            End Using
 
             'STEP 5: Get it back now so you can use its ID for inserting the landclasses
-            strrsInsertLCType = "SELECT LCTYPEID FROM LCTYPE " & "WHERE LCTYPE.NAME LIKE '" & strTempLCTypeName & "'"
-            Dim cmdInsertType As New DataHelper(strrsInsertLCType)
-            Dim dataInsertType As OleDbDataReader = cmdInsertType.ExecuteReader()
-            dataInsertType.Read()
-            _intLCTypeID = dataInsertType("LCTypeID")
-            dataInsertType.Close()
+            strrsInsertLCType = String.Format("SELECT LCTYPEID FROM LCTYPE WHERE LCTYPE.NAME LIKE '{0}'", strTempLCTypeName)
+            Using cmdInsertType As New DataHelper(strrsInsertLCType)
+                Using dataInsertType As OleDbDataReader = cmdInsertType.ExecuteReader()
+                    dataInsertType.Read()
+                    _intLCTypeID = dataInsertType("LCTypeID")
+                End Using
+            End Using
 
             'STEP 6: Now clone the current landclasses into a new recordset
             Dim cmdCloneLCClass As OleDbCommand = cmdCurrentLCClass.CloneCommand()
@@ -173,12 +181,13 @@ Module modLanduse
                 End If
 
                 'Gather the newly added LCClassIds in an array for use later
-                strNewLandClass = "SELECT LCCLASSID FROM LCCLASS WHERE NAME LIKE '" & clsLUScen.strLUScenName & "'"
-                Dim cmdNewLC As New DataHelper(strNewLandClass)
-                Dim dataNewLC As OleDbDataReader = cmdNewLC.ExecuteReader()
-                dataNewLC.Read()
-                intLCClassIDs(i - 1) = dataNewLC("LCClassID")
-                dataNewLC.Close()
+                strNewLandClass = String.Format("SELECT LCCLASSID FROM LCCLASS WHERE NAME LIKE '{0}'", clsLUScen.strLUScenName)
+                Using cmdNewLC As New DataHelper(strNewLandClass)
+                    Using dataNewLC As OleDbDataReader = cmdNewLC.ExecuteReader()
+                        dataNewLC.Read()
+                        intLCClassIDs(i - 1) = dataNewLC("LCClassID")
+                    End Using
+                End Using
             Next i
 
             'STEP 10: Parse the incoming dictionary
@@ -225,7 +234,8 @@ Module modLanduse
             Next j
 
             g_strLCTypeName = strTempLCTypeName
-            ReclassLanduse(clsLUScenItems, strTempLCTypeName, _strLCFileName)
+            'ReclassLanduse(clsLUScenItems, strTempLCTypeName, _strLCFileName)
+            ReclassLanduse(clsLUScenItems, _strLCFileName)
 
 
         Catch ex As Exception
@@ -245,13 +255,13 @@ Module modLanduse
             Dim strNewLcType As String 'CmdString for inserting new coefficientset               '
             Dim strNewCoeffID As String 'Holder for the CoefficientSetID
 
-            strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
+            strCopySet = String.Format("SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '{0}'", strCoeffSet)
             Dim cmdCopySet As New DataHelper(strCopySet)
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader
             dataCopySet.Read()
 
             'INSERT: new Coefficient set taking the PollID and LCType ID from rsCopySet
-            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strNewCoeffName, "'", "''") & "'," & dataCopySet("POLLID") & "," & _intLCTypeID & ")"
+            strNewLcType = String.Format("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('{0}',{1},{2})", Replace(strNewCoeffName, "'", "''"), dataCopySet("POLLID"), _intLCTypeID)
 
             dataCopySet.Close()
 
@@ -260,7 +270,7 @@ Module modLanduse
             cmdNewLCType.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set
-            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strNewCoeffName & "'"
+            strNewCoeffID = String.Format("SELECT COEFFSETID FROM COEFFICIENTSET WHERE COEFFICIENTSET.NAME LIKE '{0}'", strNewCoeffName)
             Dim cmdNewCoeffId As New DataHelper(strNewCoeffID)
             Dim datanewCoeffId As OleDbDataReader = cmdNewCoeffId.ExecuteReader()
             datanewCoeffId.Read()
@@ -300,13 +310,16 @@ Module modLanduse
         End Try
     End Function
 
-    Private Sub ReclassLanduse(ByRef clsLUScenItems As clsXMLLandUseItems, ByRef strLCClass As String, ByRef strLCFileName As String)
-        'clsLUScenItems: which is a collection of the landuse entered
+    ''' <summary>
+    ''' Reclasses the landuse.
+    ''' </summary>
+    ''' <param name="clsLUScenItems">which is a collection of the landuse entered.</param>
+    ''' <param name="strLCFileName">path to which the landcover grid exists.</param>
+    Private Sub ReclassLanduse(ByRef clsLUScenItems As clsXMLLandUseItems, ByRef strLCFileName As String)
         'strLCClass: Name of the LCTYPE being altered
-        'strLCFileName: path to which the landcover grid exists
+
         Try
             Dim strOutLandCover As String
-
 
             '    'Make sure the landcoverraster exists..it better if they get to this point, ED!
             If g_LandCoverRaster Is Nothing Then
@@ -354,7 +367,7 @@ Module modLanduse
             modProgDialog.KillDialog()
 
         Catch ex As Exception
-            MsgBox("error in MSSetup " & Err.Number & ": " & Err.Description)
+            MsgBox("error in MSSetup ReclassLanduse" & Err.Number & ": " & Err.Description)
         End Try
     End Sub
 
@@ -363,18 +376,18 @@ Module modLanduse
         'We're passing over a single land use scenario in the form of the xml
         'class clsXMLLandUseItem, seems to be the easiest way to do this.
 
-        Dim strSelect As String 'OLEDB selections string
-        Dim LCValue As Double 'value
+        Dim strSelect As String = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}' AND LCCLASS.NAME LIKE '{1}'", strLCClass, clsLUItem.strLUScenName)
+        Dim LCValue As Double
         Dim clsLUItemDetails As New clsXMLLUScen 'The particulars in the landuse
 
         'Open the landclass Value Value 
         'This is the value user's landclass will change to
-        strSelect = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strLCClass & "' AND LCCLASS.NAME LIKE '" & clsLUItem.strLUScenName & "'"
-        Dim cmdLCVal As New OleDbCommand(strSelect, modUtil.g_DBConn)
-        Dim readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
-        readLCVal.Read()
-        LCValue = readLCVal("Value")
-        readLCVal.Close()
+        Using cmdLCVal As New OleDbCommand(strSelect, modUtil.g_DBConn)
+            Using readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
+                readLCVal.Read()
+                LCValue = readLCVal("Value")
+            End Using
+        End Using
 
         'init the landuse xml stuff
         clsLUItemDetails.XML = clsLUItem.strLUScenXMLFile
@@ -393,9 +406,6 @@ Module modLanduse
             sf = modUtil.ReturnFeature(clsLUItemDetails.strLUScenFileName)
             shape = sf.Shape(0)
         End If
-
-        Dim u As New MapWinGIS.Utils
-        Dim pnt As New MapWinGIS.Point
 
         'classify the output grid cells under the area polygon to the correct value
         'Get minimum extents of the area file
@@ -437,21 +447,23 @@ Module modLanduse
             Dim strLCTypeDelete As String
             Dim strLCClassDelete As String
 
-            strLCTypeDelete = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCDeleteName & "'"
+            strLCTypeDelete = String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", strLCDeleteName)
             Using cmdDeleteList As New DataHelper(strLCTypeDelete)
                 Dim dataDeleteList As OleDbDataReader = cmdDeleteList.ExecuteReader()
                 dataDeleteList.Read()
                 strLCClassDelete = "Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID")
                 dataDeleteList.Close()
-                Dim cmdDelete As New DataHelper(strLCClassDelete)
-                cmdDelete.ExecuteNonQuery()
+                Using cmdDelete As New DataHelper(strLCClassDelete)
+                    cmdDelete.ExecuteNonQuery()
+                End Using
 
                 For i = 0 To clsPollItems.Count - 1
                     strCoeffDeleteName = dictNames.Item(clsPollItems.Item(i).strCoeffSet)
                     If Len(strCoeffDeleteName) > 0 Then
-                        strDeleteCoeffSet = "DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '" & strCoeffDeleteName & "'"
-                        Dim cmdDelete2 = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
-                        cmdDelete2.ExecuteNonQuery()
+                        strDeleteCoeffSet = String.Format("DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", strCoeffDeleteName)
+                        Using cmdDelete2 = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
+                            cmdDelete2.ExecuteNonQuery()
+                        End Using
                     End If
                 Next
             End Using
