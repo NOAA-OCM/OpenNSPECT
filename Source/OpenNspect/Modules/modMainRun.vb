@@ -29,7 +29,7 @@ Module modMainRun
     ' *
     ' *  Called By: frmPrj::CmdOK
     ' *
-    ' *  Confession:  N-SPECT started back in 2003 and has lived a long life.  Not sure how,
+    ' *  Confession:  OpenNSPECT started back in 2003 and has lived a long life.  Not sure how,
     ' *  but it has.  It is a cobbled together piece of code now going on 6 years of age.
     ' *  Whomever takes it over, I offer my apologies.  It's a bit overly complex, no doubt about
     ' *  that, but have fun.  On the bright side, modUtil contains nearly ever function you

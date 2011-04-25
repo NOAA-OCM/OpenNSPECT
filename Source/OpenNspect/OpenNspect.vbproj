@@ -119,6 +119,7 @@
     <Reference Include="Interop.MapWinGIS">
       <HintPath>..\libs\Interop.MapWinGIS.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MapWinGeoProc">
       <HintPath>..\libs\MapWinGeoProc.dll</HintPath>

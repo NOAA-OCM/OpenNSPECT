@@ -339,7 +339,7 @@ Friend Class frmPollutants
 
                 UpdateValues()
                 _boolSaved = True
-                MsgBox(cboPollName.Text & " saved successfully.", MsgBoxStyle.Information, "N-SPECT")
+                MsgBox(cboPollName.Text & " saved successfully.", MsgBoxStyle.Information, "OpenNSPECT")
                 Close()
 
             End If

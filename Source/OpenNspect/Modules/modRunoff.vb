@@ -258,7 +258,7 @@ Module modRunoff
                             End If
                         End While
                         If booValueFound = False Then
-                            MsgBox("Error: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                             ConstructPickStatment = Nothing
                             dataLandClass.Close()
                             mwTable.Close()
@@ -400,12 +400,16 @@ Module modRunoff
         End Try
     End Function
 
-
+    Const ProgressTitle As String = "Processing Runoff Calculation..."
+    ''' <summary>
+    ''' Runoffs the calculation.
+    ''' </summary>
+    ''' <param name="strPick">our friend the dynamic pick statemnt.</param>
+    ''' <param name="pInRainRaster">the precip grid.</param>
+    ''' <param name="pInLandCoverRaster">landcover grid.</param>
+    ''' <param name="pInSoilsRaster">soils grid.</param>
+    ''' <param name="OutputItems">The output items.</param><returns></returns>
     Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As MapWinGIS.Grid, ByRef pInLandCoverRaster As MapWinGIS.Grid, ByRef pInSoilsRaster As MapWinGIS.Grid, ByRef OutputItems As clsXMLOutputItems) As Boolean
-        'strPickStatement: our friend the dynamic pick statemnt
-        'pInRainRaster: the precip grid
-        'pInLandCoverRaster: landcover grid
-        'pInSoilsRaster: soils grid
 
         Try
             Dim pSCS100Raster As MapWinGIS.Grid = Nothing  'STEP 2: SCS * 100
@@ -414,15 +418,9 @@ Module modRunoff
             Dim pAccumRunoffRaster As MapWinGIS.Grid = Nothing
             Dim pPermAccumRunoffRaster As MapWinGIS.Grid = Nothing
             Dim pPermAccumLocRunoffRaster As MapWinGIS.Grid = Nothing
-
-
-            'String to hold calculations
-            Dim strExpression As String = ""
             Dim strOutAccum As String
-            Const strTitle As String = "Processing Runoff Calculation..."
 
-
-            modProgDialog.ProgDialog("Calculating maximum potential retention...", strTitle, 0, 10, 3, g_frmProjectSetup)
+            modProgDialog.ProgDialog("Calculating maximum potential retention...", ProgressTitle, 0, 10, 3, g_frmProjectSetup)
 
             If modProgDialog.g_boolCancel Then
                 'Calculate maxiumum potential retention
@@ -441,7 +439,7 @@ Module modRunoff
             End If
 
             If modProgDialog.g_boolCancel Then
-                modProgDialog.ProgDialog("Calculating runoff...", strTitle, 0, 10, 6, g_frmProjectSetup)
+                modProgDialog.ProgDialog("Calculating runoff...", ProgressTitle, 0, 10, 6, g_frmProjectSetup)
                 Dim AllRunOffCalc As New RasterMathCellCalcNulls(AddressOf AllRunoffCellCalc)
                 RasterMath(pSCS100Raster, pInRainRaster, g_pDEMRaster, Nothing, Nothing, pMetRunoffRaster, Nothing, False, AllRunOffCalc)
 
@@ -457,7 +455,7 @@ Module modRunoff
             End If
 
             If g_booLocalEffects Then
-                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 10, 10, g_frmProjectSetup)
+                modProgDialog.ProgDialog("Creating data layer for local effects...", ProgressTitle, 0, 10, 10, g_frmProjectSetup)
                 If modProgDialog.g_boolCancel Then
 
                     'STEP 12: Local Effects -------------------------------------------------
@@ -480,7 +478,7 @@ Module modRunoff
             End If
 
 
-            modProgDialog.ProgDialog("Creating flow accumulation...", strTitle, 0, 10, 9, g_frmProjectSetup)
+            modProgDialog.ProgDialog("Creating flow accumulation...", ProgressTitle, 0, 10, 9, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'STEP 7: ------------------------------------------------------------------------------------
                 'Derive Accumulated Runoff
@@ -507,7 +505,7 @@ Module modRunoff
 
                 Dim strtmpout As String = IO.Path.GetTempFileName
                 g_TempFilesToDel.Add(strtmpout)
-                strtmpout = strtmpout + "out" + g_TAUDEMGridExt
+                strtmpout = String.Format("{0}out{1}", strtmpout, g_TAUDEMGridExt)
                 g_TempFilesToDel.Add(strtmpout)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
@@ -529,7 +527,7 @@ Module modRunoff
 
 
             'Add this then map as our runoff grid
-            modProgDialog.ProgDialog("Creating Runoff Layer...", strTitle, 0, 10, 10, g_frmProjectSetup)
+            modProgDialog.ProgDialog("Creating Runoff Layer...", ProgressTitle, 0, 10, 10, g_frmProjectSetup)
             If modProgDialog.g_boolCancel Then
                 'Get a unique name for accumulation GRID
                 strOutAccum = modUtil.GetUniqueName("runoff", g_strWorkspace, g_FinalOutputGridExt)
@@ -560,7 +558,7 @@ Module modRunoff
                 modProgDialog.g_boolCancel = False
                 RunoffCalculation = False
             ElseIf Err.Number = -2147467259 Then
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit N-SPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
+                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 modProgDialog.g_boolCancel = False
                 modProgDialog.KillDialog()
                 RunoffCalculation = False

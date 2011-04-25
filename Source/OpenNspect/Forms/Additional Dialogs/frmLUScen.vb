@@ -200,7 +200,7 @@ Friend Class frmLUScen
             'Check selected polygons
             If chkSelectedPolys.CheckState = 1 Then
                 If _SelectLyrPath = "" Or _SelectedShapes.Count = 0 Then
-                    MsgBox("You have chosen to use selected polygons from " & cboLULayer.Text & ", but there are no selected features." & vbNewLine & "Please select features or N-SPECT will use the entire extent of " & cboLULayer.Text & " to apply this landuse scenario.", MsgBoxStyle.Information, "No Selected Features Found")
+                    MsgBox("You have chosen to use selected polygons from " & cboLULayer.Text & ", but there are no selected features." & vbNewLine & "Please select features or OpenNSPECT will use the entire extent of " & cboLULayer.Text & " to apply this landuse scenario.", MsgBoxStyle.Information, "No Selected Features Found")
                     ValidateData = False
                 End If
             End If

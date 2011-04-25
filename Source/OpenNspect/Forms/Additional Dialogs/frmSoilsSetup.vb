@@ -66,7 +66,7 @@ Friend Class frmSoilsSetup
         Try
             Dim intvbYesNo As Short
 
-            intvbYesNo = MsgBox("Do you want to save changes you made to soils setup?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
+            intvbYesNo = MsgBox("Do you want to save changes you made to soils setup?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
 
             If intvbYesNo = MsgBoxResult.Yes Then
                 SaveSoils()

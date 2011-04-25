@@ -213,7 +213,7 @@ Module modMUSLE
                             End If
                         End While
                         If booValueFound = False Then
-                            MsgBox("Error: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                             ConstructPickStatment = Nothing
                             dataType.Close()
                             mwTable.Close()
@@ -326,7 +326,7 @@ Module modMUSLE
                         End If
                     End While
                     If booValueFound = False Then
-                        MsgBox("Error: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                        MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                         ConstructPondPickStatement = Nothing
                         dataCF.Close()
                         mwTable.Close()
@@ -606,7 +606,7 @@ Module modMUSLE
             If Err.Number = -2147217297 Then 'S.A. constant for User cancelled operation
                 modProgDialog.g_boolCancel = False
             ElseIf Err.Number = -2147467259 Then  'S.A. constant for crappy ESRI stupid GRID error
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit N-SPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
+                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 CalcMUSLE = False
                 modProgDialog.g_boolCancel = False
                 modProgDialog.KillDialog()

@@ -295,7 +295,7 @@ Public Class mwNSPECT
 
         Dim nspectPath As String
 
-        ' Detects and sets the path to N-SPECT's application folder (installation directory)
+        ' Detects and sets the path to OpenNSPECT's application folder (installation directory)
         'nspectPath = My.Application.Info.DirectoryPath
         nspectPath = "C:\NSPECT\"
 

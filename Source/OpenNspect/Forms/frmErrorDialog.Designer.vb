@@ -94,7 +94,7 @@ Partial Class frmErrorDialog
         Me.Controls.Add(Me.lblText)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "frmErrorDialog"
-        Me.Text = "Open N-SPECT Error Occurred"
+        Me.Text = "Open OpenNSPECT Error Occurred"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

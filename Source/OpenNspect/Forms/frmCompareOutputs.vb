@@ -206,7 +206,7 @@ Public Class frmCompareOutputs
             With dlgXMLOpen
                 .Filter = MSG8XMLFile
                 .InitialDirectory = strFolder
-                .Title = "Open N-SPECT Project File"
+                .Title = "Open OpenNSPECT Project File"
                 .FilterIndex = 1
                 .ShowDialog()
             End With
