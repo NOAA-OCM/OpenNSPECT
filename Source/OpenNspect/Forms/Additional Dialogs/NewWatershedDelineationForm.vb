@@ -366,14 +366,14 @@ Friend Class NewWatershedDelineationForm
 
             'STEP 1:  Fill the Surface
             'if hydrocorrect, then skip the Fill, just use the incoming DEM
-            modProgDialog.ProgDialog("Filling DEM...", strProgTitle, 0, 10, 1, Me)
+            modProgDialog.ShowProgress("Filling DEM...", strProgTitle, 0, 10, 1, Me)
             If chkHydroCorr.CheckState = 1 Then
                 pFillRaster = pSurfaceDatasetIn
                 _strFilledDEMFileName = pSurfaceDatasetIn.Filename
             Else
                 'Call to ProgDialog to use throughout process: keep user informed.
 
-                If modProgDialog.g_boolCancel Then
+                If modProgDialog.g_KeepRunning Then
                     _strFilledDEMFileName = OutPath + "demfill" + g_OutputGridExt
                     MapWinGeoProc.Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
                     pFillRaster.Open(_strFilledDEMFileName)
@@ -384,12 +384,12 @@ Friend Class NewWatershedDelineationForm
 
 
             'STEP 2: Flow Direction
-            modProgDialog.ProgDialog("Computing Flow Direction...", strProgTitle, 0, 10, 2, Me)
+            modProgDialog.ShowProgress("Computing Flow Direction...", strProgTitle, 0, 10, 2, Me)
 
             Dim mwDirFileName As String = OutPath + "mwflowdir" + g_OutputGridExt
             _strDirFileName = OutPath + "flowdir" + g_OutputGridExt
             Dim strSlpFileName As String = OutPath + "slope" + g_OutputGridExt
-            If modProgDialog.g_boolCancel Then
+            If modProgDialog.g_KeepRunning Then
                 ret = MapWinGeoProc.Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Environment.ProcessorCount, Nothing)
                 If ret <> 0 Then Return False
                 pFlowDirRaster.Open(mwDirFileName)
@@ -408,9 +408,9 @@ Friend Class NewWatershedDelineationForm
             End If
 
             'STEP 3: Flow Accumulation
-            modProgDialog.ProgDialog("Computing Flow Accumulation...", strProgTitle, 0, 10, 3, Me)
+            modProgDialog.ShowProgress("Computing Flow Accumulation...", strProgTitle, 0, 10, 3, Me)
             _strAccumFileName = OutPath + "flowacc" + g_OutputGridExt
-            If modProgDialog.g_boolCancel Then
+            If modProgDialog.g_KeepRunning Then
                 ret = MapWinGeoProc.Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Environment.ProcessorCount, Nothing)
                 If ret <> 0 Then Return False
                 pAccumRaster.Open(_strAccumFileName)
@@ -448,8 +448,8 @@ Friend Class NewWatershedDelineationForm
 
             '        'Step 5: Using Hydrology Op to create stream network
             _strStreamLayer = OutPath + "stream.shp"
-            modProgDialog.ProgDialog("Creating Stream Network...", strProgTitle, 0, 10, 4, Me)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Creating Stream Network...", strProgTitle, 0, 10, 4, Me)
+            If modProgDialog.g_KeepRunning Then
                 ret = MapWinGeoProc.Hydrology.DelinStreamGrids(
        pSurfaceDatasetIn.Filename, _
              pFillRaster.Filename, _
@@ -488,16 +488,16 @@ Friend Class NewWatershedDelineationForm
             '    Return False
             'End If
 
-            modProgDialog.ProgDialog("Creating Watershed Shape...", strProgTitle, 0, 10, 7, Me)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Creating Watershed Shape...", strProgTitle, 0, 10, 7, Me)
+            If modProgDialog.g_KeepRunning Then
                 ret = MapWinGeoProc.Hydrology.SubbasinsToShape(pFlowDirRaster.Filename, strWSGridOut, strWSSFOut, Nothing)
                 If ret <> 0 Then Return False
             Else
                 Return False
             End If
 
-            modProgDialog.ProgDialog("Removing Small Polygons...", strProgTitle, 0, 10, 9, Me)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Removing Small Polygons...", strProgTitle, 0, 10, 9, Me)
+            If modProgDialog.g_KeepRunning Then
                 pBasinFeatClass.Open(strWSSFOut)
 
                 pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
@@ -561,14 +561,14 @@ Friend Class NewWatershedDelineationForm
             DelineateWatershed = True
         Catch ex As Exception
             If Err.Number = -2147217297 Then 'User cancelled operation
-                modProgDialog.g_boolCancel = False
+                modProgDialog.g_KeepRunning = False
                 DelineateWatershed = False
             Else
                 HandleError(c_sModuleFileName, ex)
                 DelineateWatershed = False
             End If
         Finally
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
             pFlowDirRaster.Close()
             pAccumRaster.Close()
             pFillRaster.Close()

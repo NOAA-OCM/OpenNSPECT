@@ -265,9 +265,9 @@ Friend Class SoilsSetupForm
             pSoilsFeatClass.StartEditingTable()
             'Now calc the Values
             For i As Integer = 0 To pSoilsFeatClass.NumShapes - 1
-                modProgDialog.ProgDialog("Calculating soils values...", "Processing Soils", 0, pSoilsFeatClass.NumShapes, lngValue, Me)
+                modProgDialog.ShowProgress("Calculating soils values...", "Processing Soils", 0, pSoilsFeatClass.NumShapes, lngValue, Me)
                 'Find the current value
-                If modProgDialog.g_boolCancel Then
+                If modProgDialog.g_KeepRunning Then
                     strHydValue = pSoilsFeatClass.CellValue(lngHydFieldIndex, i)
                     'Based on current value, change GROUP to appropriate setting
                     Select Case strHydValue
@@ -292,13 +292,13 @@ Friend Class SoilsSetupForm
                         Case ""
                             MsgBox("Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", MsgBoxStyle.Critical, "Missing Values Detected")
                             CreateSoilsGrid = False
-                            modProgDialog.KillDialog()
+                            modProgDialog.CloseDialog()
                             Exit Function
                     End Select
                     lngValue = lngValue + 1
                 Else
                     'If they cancel, kill the dialog
-                    modProgDialog.KillDialog()
+                    modProgDialog.CloseDialog()
                     Exit Function
                 End If
             Next
@@ -307,14 +307,14 @@ Friend Class SoilsSetupForm
             pSoilsFeatClass.Close()
 
             'Close dialog
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
 
             'STEP 2:
             'Now do the conversion: Convert soils layer to GRID using new
             'Group field as the value
 
-            If modProgDialog.g_boolCancel Then
-                modProgDialog.ProgDialog("Converting Soils Dataset...", "Processing Soils", 0, 2, 2, Me)
+            If modProgDialog.g_KeepRunning Then
+                modProgDialog.ShowProgress("Converting Soils Dataset...", "Processing Soils", 0, 2, 2, Me)
 
                 strOutSoils = modUtil.GetUniqueName("soils", IO.Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
 
@@ -349,7 +349,7 @@ Friend Class SoilsSetupForm
                 Dim nc As Integer = head.NumberCols - 1
                 Dim nr As Integer = head.NumberRows - 1
                 For row As Integer = 0 To nr
-                    modProgDialog.ProgDialog("Converting Soils Dataset...", "Processing Soils", 1, nr, row, Me)
+                    modProgDialog.ShowProgress("Converting Soils Dataset...", "Processing Soils", 1, nr, row, Me)
                     For col As Integer = 0 To nc
                         outSoils.CellToProj(col, row, x, y)
                         idx = soilsshp.PointInShapefile(x, y)
@@ -378,10 +378,10 @@ Friend Class SoilsSetupForm
                 Dim cmdIns As New DataHelper(strCmd)
                 cmdIns.ExecuteNonQuery()
 
-                modProgDialog.KillDialog()
+                modProgDialog.CloseDialog()
 
             Else
-                modProgDialog.KillDialog()
+                modProgDialog.CloseDialog()
             End If
 
             CreateSoilsGrid = True

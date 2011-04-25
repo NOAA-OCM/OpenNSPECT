@@ -281,8 +281,8 @@ Module modRusle
 
 
         Try
-            modProgDialog.ProgDialog("Solving RUSLE Equation...", strTitle, 0, 13, 3, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Solving RUSLE Equation...", strTitle, 0, 13, 3, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
@@ -302,8 +302,8 @@ Module modRusle
             'BEGIN SDR CODE......
             '***********************************************
             If Len(Trim(_strSDRFileName)) = 0 Then
-                modProgDialog.ProgDialog("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 0, 13, 5, g_frmProjectSetup)
-                If modProgDialog.g_boolCancel Then
+                modProgDialog.ShowProgress("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 0, 13, 5, g_frmProjectSetup)
+                If modProgDialog.g_KeepRunning Then
                     'STEP 4: DAVE'S WACKY CALCULATION OF RELIEF-LENGTH RATIO FOR SEDIMENT DELIVERY RATIO-------
                     Dim pZSedcalc As New RasterMathCellCalcWindowNulls(AddressOf pZSedCellCalc)
                     'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
@@ -314,8 +314,8 @@ Module modRusle
                     'END STEP 4: ------------------------------------------------------------------------------
                 End If
 
-                modProgDialog.ProgDialog("Calculating Sediment Delivery Ratio...", strTitle, 0, 13, 6, g_frmProjectSetup)
-                If modProgDialog.g_boolCancel Then
+                modProgDialog.ShowProgress("Calculating Sediment Delivery Ratio...", strTitle, 0, 13, 6, g_frmProjectSetup)
+                If modProgDialog.g_KeepRunning Then
                     Dim AllSDRCalc As New RasterMathCellCalc(AddressOf AllSDRCellCalc)
                     RasterMath(g_pDEMRaster, pZSedDelRaster, g_pSCS100Raster, Nothing, Nothing, pSDRRaster, AllSDRCalc)
                     pZSedDelRaster.Close()
@@ -328,8 +328,8 @@ Module modRusle
             'END SDR CALC
             '********************************************************************
 
-            modProgDialog.ProgDialog("Applying Sediment Delivery Ratio...", strTitle, 0, 13, 13, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Applying Sediment Delivery Ratio...", strTitle, 0, 13, 13, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'STEP 11: sed_yield = [soil_loss_ac] * [sdr] -------------------------------------------------
                 Dim SedYieldcalc As New RasterMathCellCalc(AddressOf sedYieldCellCalc)
                 RasterMath(pSDRRaster, pSoilLossAcres, Nothing, Nothing, Nothing, pSedYieldRaster, SedYieldcalc)
@@ -340,8 +340,8 @@ Module modRusle
             End If
 
             If g_booLocalEffects Then
-                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, g_frmProjectSetup)
-                If modProgDialog.g_boolCancel Then
+                modProgDialog.ShowProgress("Creating data layer for local effects...", strTitle, 0, 13, 13, g_frmProjectSetup)
+                If modProgDialog.g_KeepRunning Then
 
                     'STEP 12: Local Effects -------------------------------------------------
 
@@ -358,7 +358,7 @@ Module modRusle
                     AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
 
                     CalcRUSLE = True
-                    modProgDialog.KillDialog()
+                    modProgDialog.CloseDialog()
 
                     Exit Function
 
@@ -367,8 +367,8 @@ Module modRusle
             End If
 
 
-            modProgDialog.ProgDialog("Calculating Accumulated Sediment...", strTitle, 0, 13, 13, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating Accumulated Sediment...", strTitle, 0, 13, 13, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
 
                 'STEP 12: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
 
@@ -414,9 +414,9 @@ Module modRusle
             End If
 
 
-            modProgDialog.ProgDialog("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, 13, g_frmProjectSetup)
+            modProgDialog.ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, 13, g_frmProjectSetup)
 
-            If modProgDialog.g_boolCancel Then
+            If modProgDialog.g_KeepRunning Then
                 strOutYield = modUtil.GetUniqueName("RUSLE", g_strWorkspace, g_FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
@@ -436,24 +436,24 @@ Module modRusle
 
             CalcRUSLE = True
 
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
 
 
         Catch ex As Exception
 
             If Err.Number = -2147217297 Then 'User cancelled operation
-                modProgDialog.g_boolCancel = False
+                modProgDialog.g_KeepRunning = False
                 CalcRUSLE = False
             ElseIf Err.Number = -2147467259 Then
                 MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
                 CalcRUSLE = False
             Else
                 MsgBox("RUSLE Error: " & Err.Number & " on RUSLE Calculation: " & strExpression)
                 MsgBox(Err.Number & ": " & Err.Description)
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
                 System.Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
                 CalcRUSLE = False
             End If

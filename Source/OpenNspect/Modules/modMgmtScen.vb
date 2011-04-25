@@ -67,8 +67,8 @@ Module modMgmtScen
 
                 For i = 0 To clsMgmtScens.Count - 1
                     If clsMgmtScens.Item(i).intApply = 1 Then
-                        modProgDialog.ProgDialog("Adding new landclass...", "Creating Management Scenario", 0, CInt(clsMgmtScens.Count), CInt(i), g_frmProjectSetup)
-                        If modProgDialog.g_boolCancel Then
+                        modProgDialog.ShowProgress("Adding new landclass...", "Creating Management Scenario", 0, CInt(clsMgmtScens.Count), CInt(i), g_frmProjectSetup)
+                        If modProgDialog.g_KeepRunning Then
                             Dim mgmtitem As clsXMLMgmtScenItem = clsMgmtScens.Item(i)
                             ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
                             booLandScen = True
@@ -87,11 +87,11 @@ Module modMgmtScen
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
 
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
 
         Catch ex As Exception
             MsgBox("error in MSSetup " & Err.Number & ": " & Err.Description)
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
         End Try
 
     End Sub

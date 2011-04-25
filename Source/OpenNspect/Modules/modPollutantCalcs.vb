@@ -299,8 +299,8 @@ Module modPollutantCalcs
         Dim strAccPoll As String
 
         Try
-            modProgDialog.ProgDialog("Calculating Mass Volume...", strTitle, 0, 13, 2, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating Mass Volume...", strTitle, 0, 13, 2, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'STEP 2: MASS OF PHOSPHORUS PRODUCED BY EACH CELL -----------------------------------------
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
@@ -314,8 +314,8 @@ Module modPollutantCalcs
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
 
-                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 13, 13, g_frmProjectSetup)
-                If modProgDialog.g_boolCancel Then
+                modProgDialog.ShowProgress("Creating data layer for local effects...", strTitle, 0, 13, 13, g_frmProjectSetup)
+                If modProgDialog.g_KeepRunning Then
 
                     strOutConc = modUtil.GetUniqueName("locconc", g_strWorkspace, g_FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
@@ -333,13 +333,13 @@ Module modPollutantCalcs
 
                 End If
 
-                modProgDialog.KillDialog()
+                modProgDialog.CloseDialog()
                 Exit Function
 
             End If
 
-            modProgDialog.ProgDialog("Deriving accumulated pollutant...", strTitle, 0, 13, 3, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Deriving accumulated pollutant...", strTitle, 0, 13, 3, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
 
                 'Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
@@ -387,8 +387,8 @@ Module modPollutantCalcs
             End If
 
             'STEP 3a: Added 7/26: ADD ACCUMULATED POLLUTANT TO GROUP LAYER-----------------------------------
-            modProgDialog.ProgDialog("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 strAccPoll = modUtil.GetUniqueName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
                 'Added 7/23/04 to account for clip by selected polys functionality
                 If g_booSelectedPolys Then
@@ -404,15 +404,15 @@ Module modPollutantCalcs
             'END STEP 3a: ---------------------------------------------------------------------------------
 
 
-            modProgDialog.ProgDialog("Calculating final concentration...", strTitle, 0, 13, 9, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating final concentration...", strTitle, 0, 13, 9, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
                 RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, pTotalPollConc0Raster, Nothing, False, AllConCalc)
             End If
 
 
-            If modProgDialog.g_boolCancel Then
-                modProgDialog.ProgDialog("Creating data layer...", strTitle, 0, 13, 11, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
+                modProgDialog.ShowProgress("Creating data layer...", strTitle, 0, 13, 11, g_frmProjectSetup)
 
                 strOutConc = modUtil.GetUniqueName("conc", g_strWorkspace, g_FinalOutputGridExt)
 
@@ -428,9 +428,9 @@ Module modPollutantCalcs
                 AddOutputGridLayer(pPermTotalConcRaster, _strColor, True, _strPollName & " Conc. (mg/L)", "Pollutant " & _strPollName & " Conc", -1, OutputItems)
             End If
 
-            modProgDialog.ProgDialog("Comparing to water quality standard...", strTitle, 0, 13, 13, g_frmProjectSetup)
+            modProgDialog.ShowProgress("Comparing to water quality standard...", strTitle, 0, 13, 13, g_frmProjectSetup)
 
-            If modProgDialog.g_boolCancel Then
+            If modProgDialog.g_KeepRunning Then
                 If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster, OutputItems) Then
                     CalcPollutantConcentration = False
                     Exit Function
@@ -440,22 +440,22 @@ Module modPollutantCalcs
             'if we get to the end
             CalcPollutantConcentration = True
 
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
 
         Catch ex As Exception
             If Err.Number = -2147217297 Then 'User cancelled operation
-                modProgDialog.g_boolCancel = False
+                modProgDialog.g_KeepRunning = False
                 CalcPollutantConcentration = False
                 Exit Function
             ElseIf Err.Number = -2147467259 Then
                 MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
                 CalcPollutantConcentration = False
             Else
                 HandleError(c_sModuleFileName, ex)     'False, "CalcPollutantConcentration " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
                 CalcPollutantConcentration = False
             End If
         End Try
@@ -512,13 +512,13 @@ Module modPollutantCalcs
             If Err.Number = -2147467259 Then
                 MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 CompareWaterQuality = False
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
             Else
                 HandleError(c_sModuleFileName, ex)     'False, "CompareWaterQuality " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, 0)
                 CompareWaterQuality = False
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
             End If
         End Try
     End Function

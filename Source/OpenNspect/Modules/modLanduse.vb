@@ -347,8 +347,8 @@ Module modLanduse
 
                 For i = 0 To clsLUScenItems.Count - 1
                     If clsLUScenItems.Item(i).intApply = 1 Then
-                        modProgDialog.ProgDialog("Processing Landuse scenario...", "Landuse Scenario", 0, CInt(clsLUScenItems.Count), CInt(i), g_frmProjectSetup)
-                        If modProgDialog.g_boolCancel Then
+                        modProgDialog.ShowProgress("Processing Landuse scenario...", "Landuse Scenario", 0, CInt(clsLUScenItems.Count), CInt(i), g_frmProjectSetup)
+                        If modProgDialog.g_KeepRunning Then
                             ReclassRaster(clsLUScenItems.Item(i), _strLCClass, pNewLandCoverRaster)
                             booLandScen = True
                         Else
@@ -364,7 +364,7 @@ Module modLanduse
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
 
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
 
         Catch ex As Exception
             MsgBox("error in MSSetup ReclassLanduse" & Err.Number & ": " & Err.Description)

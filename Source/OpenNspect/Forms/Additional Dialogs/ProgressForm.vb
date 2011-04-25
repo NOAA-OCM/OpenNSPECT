@@ -100,7 +100,7 @@ Public Class ProgressForm
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Try
-            g_boolCancel = False
+            g_KeepRunning = False
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
