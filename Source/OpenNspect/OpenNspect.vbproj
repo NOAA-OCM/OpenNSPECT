@@ -166,124 +166,124 @@
     <Compile Include="Classes\MapWindowPlugin.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Forms\AboutBox.designer.vb">
-      <DependentUpon>AboutBox.vb</DependentUpon>
+    <Compile Include="Forms\AboutForm.designer.vb">
+      <DependentUpon>AboutForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AboutBox.vb">
+    <Compile Include="Forms\AboutForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmAddCoeffSet.designer.vb">
-      <DependentUpon>frmAddCoeffSet.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\NewCoefficientSetForm.designer.vb">
+      <DependentUpon>NewCoefficientSetForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmAddCoeffSet.vb">
+    <Compile Include="Forms\Additional Dialogs\NewCoefficientSetForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmAddWQStd.designer.vb">
-      <DependentUpon>frmAddWQStd.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\NewWaterQualityStandardForm.designer.vb">
+      <DependentUpon>NewWaterQualityStandardForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmAddWQStd.vb">
+    <Compile Include="Forms\Additional Dialogs\NewWaterQualityStandardForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmCopyCoeffSet.designer.vb">
-      <DependentUpon>frmCopyCoeffSet.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\CopyCoefficientSetForm.designer.vb">
+      <DependentUpon>CopyCoefficientSetForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmCopyCoeffSet.vb">
+    <Compile Include="Forms\Additional Dialogs\CopyCoefficientSetForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmCopyWQStd.designer.vb">
-      <DependentUpon>frmCopyWQStd.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\CopyWaterQualityStandardForm.designer.vb">
+      <DependentUpon>CopyWaterQualityStandardForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmCopyWQStd.vb">
+    <Compile Include="Forms\Additional Dialogs\CopyWaterQualityStandardForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmImportCoeffSet.designer.vb">
-      <DependentUpon>frmImportCoeffSet.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\ImportCoefficientSetForm.designer.vb">
+      <DependentUpon>ImportCoefficientSetForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmImportCoeffSet.vb">
+    <Compile Include="Forms\Additional Dialogs\ImportCoefficientSetForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmImportLCType.designer.vb">
-      <DependentUpon>frmImportLCType.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\ImportLandCoverTypeForm.designer.vb">
+      <DependentUpon>ImportLandCoverTypeForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmImportLCType.vb">
+    <Compile Include="Forms\Additional Dialogs\ImportLandCoverTypeForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmImportWQStd.designer.vb">
-      <DependentUpon>frmImportWQStd.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\ImportWaterQualityStandardForm.designer.vb">
+      <DependentUpon>ImportWaterQualityStandardForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmImportWQStd.vb">
+    <Compile Include="Forms\Additional Dialogs\ImportWaterQualityStandardForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmProgressDialog.Designer.vb">
-      <DependentUpon>frmProgressDialog.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\ProgressForm.Designer.vb">
+      <DependentUpon>ProgressForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmProgressDialog.vb">
+    <Compile Include="Forms\Additional Dialogs\ProgressForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmLandCoverTypes.designer.vb">
-      <DependentUpon>frmLandCoverTypes.vb</DependentUpon>
+    <Compile Include="Forms\Advanced Settings\LandCoverTypesForm.designer.vb">
+      <DependentUpon>LandCoverTypesForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmLandCoverTypes.vb">
+    <Compile Include="Forms\Advanced Settings\LandCoverTypesForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmLUScen.designer.vb">
-      <DependentUpon>frmLUScen.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\EditLandUseScenario.designer.vb">
+      <DependentUpon>EditLandUseScenario.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmLUScen.vb">
+    <Compile Include="Forms\Additional Dialogs\EditLandUseScenario.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmNewLCType.designer.vb">
-      <DependentUpon>frmNewLCType.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\NewLandCoverTypeForm.designer.vb">
+      <DependentUpon>NewLandCoverTypeForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmNewLCType.vb">
+    <Compile Include="Forms\Additional Dialogs\NewLandCoverTypeForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmNewPollutants.designer.vb">
-      <DependentUpon>frmNewPollutants.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\NewPollutantForm.designer.vb">
+      <DependentUpon>NewPollutantForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmNewPollutants.vb">
+    <Compile Include="Forms\Additional Dialogs\NewPollutantForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmNewPrecip.designer.vb">
-      <DependentUpon>frmNewPrecip.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\NewPrecipitationScenarioForm.designer.vb">
+      <DependentUpon>NewPrecipitationScenarioForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmNewPrecip.vb">
+    <Compile Include="Forms\Additional Dialogs\NewPrecipitationScenarioForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmNewWSDelin.designer.vb">
-      <DependentUpon>frmNewWSDelin.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\NewWatershedDelineationForm.designer.vb">
+      <DependentUpon>NewWatershedDelineationForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmNewWSDelin.vb">
+    <Compile Include="Forms\Additional Dialogs\NewWatershedDelineationForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmPollutants.designer.vb">
-      <DependentUpon>frmPollutants.vb</DependentUpon>
+    <Compile Include="Forms\Advanced Settings\PollutantsForm.designer.vb">
+      <DependentUpon>PollutantsForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmPollutants.vb">
+    <Compile Include="Forms\Advanced Settings\PollutantsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmPrecipitation.designer.vb">
-      <DependentUpon>frmPrecipitation.vb</DependentUpon>
+    <Compile Include="Forms\Advanced Settings\PrecipitationScenariosForm.designer.vb">
+      <DependentUpon>PrecipitationScenariosForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmPrecipitation.vb">
+    <Compile Include="Forms\Advanced Settings\PrecipitationScenariosForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmCompareOutputs.Designer.vb">
-      <DependentUpon>frmCompareOutputs.vb</DependentUpon>
+    <Compile Include="Forms\CompareOutputsForm.Designer.vb">
+      <DependentUpon>CompareOutputsForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmCompareOutputs.vb">
+    <Compile Include="Forms\CompareOutputsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmErrorDialog.Designer.vb">
-      <DependentUpon>frmErrorDialog.vb</DependentUpon>
+    <Compile Include="Forms\ErrorForm.Designer.vb">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmErrorDialog.vb">
+    <Compile Include="Forms\ErrorForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmSelectShape.Designer.vb">
-      <DependentUpon>frmSelectShape.vb</DependentUpon>
+    <Compile Include="Forms\SelectionModeForm.Designer.vb">
+      <DependentUpon>SelectionModeForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmSelectShape.vb">
+    <Compile Include="Forms\SelectionModeForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.designer.vb">
@@ -292,34 +292,34 @@
     <Compile Include="Forms\MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmSoilsSetup.designer.vb">
-      <DependentUpon>frmSoilsSetup.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\SoilsSetupForm.designer.vb">
+      <DependentUpon>SoilsSetupForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmSoilsSetup.vb">
+    <Compile Include="Forms\Additional Dialogs\SoilsSetupForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmUserWShed.designer.vb">
-      <DependentUpon>frmUserWShed.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\UserWaterShedDelineationForm.designer.vb">
+      <DependentUpon>UserWaterShedDelineationForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\frmUserWShed.vb">
+    <Compile Include="Forms\Additional Dialogs\UserWaterShedDelineationForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmWatershedDelin.designer.vb">
-      <DependentUpon>frmWatershedDelin.vb</DependentUpon>
+    <Compile Include="Forms\Advanced Settings\WatershedDelineationsForm.designer.vb">
+      <DependentUpon>WatershedDelineationsForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmWatershedDelin.vb">
+    <Compile Include="Forms\Advanced Settings\WatershedDelineationsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmSoils.designer.vb">
-      <DependentUpon>frmSoils.vb</DependentUpon>
+    <Compile Include="Forms\Advanced Settings\SoilsForm.designer.vb">
+      <DependentUpon>SoilsForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmSoils.vb">
+    <Compile Include="Forms\Advanced Settings\SoilsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmWaterQualityStandard.designer.vb">
-      <DependentUpon>frmWaterQualityStandard.vb</DependentUpon>
+    <Compile Include="Forms\Advanced Settings\WaterQualityStandardsForm.designer.vb">
+      <DependentUpon>WaterQualityStandardsForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Advanced Settings\frmWaterQualityStandard.vb">
+    <Compile Include="Forms\Advanced Settings\WaterQualityStandardsForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\ErrorHandling.vb" />
@@ -344,83 +344,83 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\AboutBox.resx">
-      <DependentUpon>AboutBox.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmAddCoeffSet.resX">
-      <DependentUpon>frmAddCoeffSet.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\NewCoefficientSetForm.resX">
+      <DependentUpon>NewCoefficientSetForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmAddWQStd.resX">
-      <DependentUpon>frmAddWQStd.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\NewWaterQualityStandardForm.resX">
+      <DependentUpon>NewWaterQualityStandardForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmCopyCoeffSet.resX">
-      <DependentUpon>frmCopyCoeffSet.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\CopyCoefficientSetForm.resX">
+      <DependentUpon>CopyCoefficientSetForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmCopyWQStd.resX">
-      <DependentUpon>frmCopyWQStd.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\CopyWaterQualityStandardForm.resX">
+      <DependentUpon>CopyWaterQualityStandardForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmImportCoeffSet.resX">
-      <DependentUpon>frmImportCoeffSet.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\ImportCoefficientSetForm.resX">
+      <DependentUpon>ImportCoefficientSetForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmImportLCType.resX">
-      <DependentUpon>frmImportLCType.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\ImportLandCoverTypeForm.resX">
+      <DependentUpon>ImportLandCoverTypeForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmImportWQStd.resX">
-      <DependentUpon>frmImportWQStd.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\ImportWaterQualityStandardForm.resX">
+      <DependentUpon>ImportWaterQualityStandardForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmProgressDialog.resx">
-      <DependentUpon>frmProgressDialog.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\ProgressForm.resx">
+      <DependentUpon>ProgressForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Advanced Settings\frmLandCoverTypes.resX">
-      <DependentUpon>frmLandCoverTypes.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Advanced Settings\LandCoverTypesForm.resX">
+      <DependentUpon>LandCoverTypesForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmLUScen.resX">
-      <DependentUpon>frmLUScen.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\EditLandUseScenario.resX">
+      <DependentUpon>EditLandUseScenario.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmNewLCType.resX">
-      <DependentUpon>frmNewLCType.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\NewLandCoverTypeForm.resX">
+      <DependentUpon>NewLandCoverTypeForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmNewPollutants.resX">
-      <DependentUpon>frmNewPollutants.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\NewPollutantForm.resX">
+      <DependentUpon>NewPollutantForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmNewPrecip.resX">
-      <DependentUpon>frmNewPrecip.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\NewPrecipitationScenarioForm.resX">
+      <DependentUpon>NewPrecipitationScenarioForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmNewWSDelin.resX">
-      <DependentUpon>frmNewWSDelin.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\NewWatershedDelineationForm.resX">
+      <DependentUpon>NewWatershedDelineationForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Advanced Settings\frmPollutants.resX">
-      <DependentUpon>frmPollutants.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Advanced Settings\PollutantsForm.resX">
+      <DependentUpon>PollutantsForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Advanced Settings\frmPrecipitation.resX">
-      <DependentUpon>frmPrecipitation.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Advanced Settings\PrecipitationScenariosForm.resX">
+      <DependentUpon>PrecipitationScenariosForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmCompareOutputs.resx">
-      <DependentUpon>frmCompareOutputs.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\CompareOutputsForm.resx">
+      <DependentUpon>CompareOutputsForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmErrorDialog.resx">
-      <DependentUpon>frmErrorDialog.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\ErrorForm.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSelectShape.resx">
-      <DependentUpon>frmSelectShape.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\SelectionModeForm.resx">
+      <DependentUpon>SelectionModeForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resX">
       <DependentUpon>MainForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmSoilsSetup.resX">
-      <DependentUpon>frmSoilsSetup.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\SoilsSetupForm.resX">
+      <DependentUpon>SoilsSetupForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\frmUserWShed.resX">
-      <DependentUpon>frmUserWShed.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\UserWaterShedDelineationForm.resX">
+      <DependentUpon>UserWaterShedDelineationForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Advanced Settings\frmWatershedDelin.resX">
-      <DependentUpon>frmWatershedDelin.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Advanced Settings\WatershedDelineationsForm.resX">
+      <DependentUpon>WatershedDelineationsForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Advanced Settings\frmSoils.resX">
-      <DependentUpon>frmSoils.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Advanced Settings\SoilsForm.resX">
+      <DependentUpon>SoilsForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Advanced Settings\frmWaterQualityStandard.resX">
-      <DependentUpon>frmWaterQualityStandard.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Advanced Settings\WaterQualityStandardsForm.resX">
+      <DependentUpon>WaterQualityStandardsForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <SubType>Designer</SubType>
@@ -465,8 +465,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\arrow_join.ico" />
+    <Content Include="Images\arrow_join.png" />
+    <Content Include="Images\arrow_join32.png" />
     <Content Include="Readme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PreBuildEvent>

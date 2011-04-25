@@ -31,7 +31,7 @@ Module modProgDialog
     'Public g_pStepProgressor As ESRI.ArcGIS.esriSystem.IStepProgressor 'Step Progress
     'Public g_pTrackCancel As ESRI.ArcGIS.esriSystem.ITrackCancel 'Cancel Button
     'Public g_pProDlgFact As ESRI.ArcGIS.Framework.IProgressDialogFactory 'Factory
-    Public g_progdialog As frmProgressDialog
+    Public g_progdialog As ProgressForm
     Public g_boolCancel As Boolean
 
 
@@ -48,7 +48,7 @@ Module modProgDialog
             If g_progdialog Is Nothing Then
                 g_boolCancel = True
                 'create a CancelTracker
-                g_progdialog = New frmProgressDialog
+                g_progdialog = New ProgressForm
                 g_progdialog.Show()
                 If Not Owner Is Nothing Then
                     Owner.AddOwnedForm(g_progdialog)

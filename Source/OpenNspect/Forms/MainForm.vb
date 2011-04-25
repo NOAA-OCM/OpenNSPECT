@@ -252,7 +252,7 @@ Friend Class MainForm
 
             'If define, then open new window for new definition, else select from database
             If cboPrecipScen.Text = "New precipitation scenario..." Then
-                Using newPre As New frmNewPrecip()
+                Using newPre As New NewPrecipitationScenarioForm()
                     newPre.Init(Me, Nothing)
                     newPre.ShowDialog()
                 End Using
@@ -298,7 +298,7 @@ Friend Class MainForm
 
                 g_boolNewWShed = True
 
-                Using newWS As New frmNewWSDelin()
+                Using newWS As New NewWatershedDelineationForm()
                     newWS.Init(Nothing, Me)
                     newWS.ShowDialog()
                 End Using
@@ -318,7 +318,7 @@ Friend Class MainForm
     Private Sub cboWQStd_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboWQStd.SelectedIndexChanged
         Try
             If cboWQStd.Text = "New water quality standard..." Then
-                Using fNewWQ As New frmAddWQStd()
+                Using fNewWQ As New NewWaterQualityStandardForm()
                     fNewWQ.Init(Nothing, Me)
                     fNewWQ.ShowDialog()
                 End Using
@@ -639,7 +639,7 @@ Friend Class MainForm
             g_strLUScenFileName = ""
 
             'Generate the scenario form
-            Using newscen As New frmLUScen()
+            Using newscen As New EditLandUseScenario()
                 With newscen
                     .init(cboWQStd.Text, Me)
                     .Text = "Add Land Use Scenario"
@@ -667,7 +667,7 @@ Friend Class MainForm
                 g_intManScenRow = dgvLandUse.CurrentRow.Index.ToString
                 g_strLUScenFileName = dgvLandUse.CurrentRow.Cells("LUScenarioXML").Value
 
-                Using newscen As New frmLUScen()
+                Using newscen As New EditLandUseScenario()
                     With newscen
                         .init(cboWQStd.Text, Me)
                         .Text = "Edit Land Use Scenario"
@@ -764,7 +764,7 @@ Friend Class MainForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
-        Dim selectfrm As New frmSelectShape()
+        Dim selectfrm As New SelectionModeForm()
         selectfrm.InitializeAndShow()
 
     End Sub
