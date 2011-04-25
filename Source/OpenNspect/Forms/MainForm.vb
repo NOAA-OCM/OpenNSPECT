@@ -120,7 +120,7 @@ Friend Class MainForm
             'Initialize parameter file
             _XMLPrjParams = New clsXMLPrjFile
 
-            Me.Text = "New OpenNspect file"
+            Me.Text = "New OpenNSPECT file"
 
 
             chkCalcErosion_CheckStateChanged(Me, Nothing)

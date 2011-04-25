@@ -184,10 +184,10 @@
         Me.cboLCLayer.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboLCLayer.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboLCLayer.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboLCLayer.Location = New System.Drawing.Point(69, 23)
+        Me.cboLCLayer.Location = New System.Drawing.Point(55, 25)
         Me.cboLCLayer.Name = "cboLCLayer"
         Me.cboLCLayer.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboLCLayer.Size = New System.Drawing.Size(141, 22)
+        Me.cboLCLayer.Size = New System.Drawing.Size(149, 22)
         Me.cboLCLayer.TabIndex = 0
         Me.ToolTip1.SetToolTip(Me.cboLCLayer, "Choose a Land Cover GRID from current layers in map view")
         '
@@ -338,7 +338,7 @@
         '
         Me.mnuGeneralHelp.Name = "mnuGeneralHelp"
         Me.mnuGeneralHelp.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F1), System.Windows.Forms.Keys)
-        Me.mnuGeneralHelp.Size = New System.Drawing.Size(210, 22)
+        Me.mnuGeneralHelp.Size = New System.Drawing.Size(234, 22)
         Me.mnuGeneralHelp.Text = "OpenNSPECT Help..."
         '
         'Frame6
@@ -348,11 +348,11 @@
         Me.Frame6.Controls.Add(Me._Label1_6)
         Me.Frame6.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Frame6.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Frame6.Location = New System.Drawing.Point(426, 192)
+        Me.Frame6.Location = New System.Drawing.Point(461, 192)
         Me.Frame6.Name = "Frame6"
         Me.Frame6.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame6.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame6.Size = New System.Drawing.Size(209, 58)
+        Me.Frame6.Size = New System.Drawing.Size(174, 58)
         Me.Frame6.TabIndex = 58
         Me.Frame6.TabStop = False
         Me.Frame6.Text = "Water Quality Standard "
@@ -363,10 +363,10 @@
         Me.cboWQStd.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboWQStd.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboWQStd.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboWQStd.Location = New System.Drawing.Point(49, 22)
+        Me.cboWQStd.Location = New System.Drawing.Point(46, 22)
         Me.cboWQStd.Name = "cboWQStd"
         Me.cboWQStd.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboWQStd.Size = New System.Drawing.Size(141, 22)
+        Me.cboWQStd.Size = New System.Drawing.Size(110, 22)
         Me.cboWQStd.TabIndex = 59
         '
         '_Label1_6
@@ -375,7 +375,7 @@
         Me._Label1_6.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_6.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_6.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_6.Location = New System.Drawing.Point(9, 25)
+        Me._Label1_6.Location = New System.Drawing.Point(7, 25)
         Me._Label1_6.Name = "_Label1_6"
         Me._Label1_6.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me._Label1_6.Size = New System.Drawing.Size(44, 16)
@@ -389,11 +389,11 @@
         Me.Frame5.Controls.Add(Me._Label1_3)
         Me.Frame5.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Frame5.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Frame5.Location = New System.Drawing.Point(217, 192)
+        Me.Frame5.Location = New System.Drawing.Point(240, 192)
         Me.Frame5.Name = "Frame5"
         Me.Frame5.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame5.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame5.Size = New System.Drawing.Size(202, 58)
+        Me.Frame5.Size = New System.Drawing.Size(214, 58)
         Me.Frame5.TabIndex = 55
         Me.Frame5.TabStop = False
         Me.Frame5.Text = "Watershed Delineation "
@@ -434,7 +434,7 @@
         Me.Frame4.Name = "Frame4"
         Me.Frame4.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame4.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame4.Size = New System.Drawing.Size(202, 58)
+        Me.Frame4.Size = New System.Drawing.Size(223, 58)
         Me.Frame4.TabIndex = 52
         Me.Frame4.TabStop = False
         Me.Frame4.Text = "Precipitation Scenario  "
@@ -445,10 +445,10 @@
         Me.cboPrecipScen.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboPrecipScen.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboPrecipScen.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboPrecipScen.Location = New System.Drawing.Point(47, 22)
+        Me.cboPrecipScen.Location = New System.Drawing.Point(54, 22)
         Me.cboPrecipScen.Name = "cboPrecipScen"
         Me.cboPrecipScen.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboPrecipScen.Size = New System.Drawing.Size(141, 22)
+        Me.cboPrecipScen.Size = New System.Drawing.Size(149, 22)
         Me.cboPrecipScen.TabIndex = 53
         '
         '_Label1_7
@@ -460,7 +460,7 @@
         Me._Label1_7.Location = New System.Drawing.Point(9, 25)
         Me._Label1_7.Name = "_Label1_7"
         Me._Label1_7.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_7.Size = New System.Drawing.Size(49, 18)
+        Me._Label1_7.Size = New System.Drawing.Size(40, 19)
         Me._Label1_7.TabIndex = 54
         Me._Label1_7.Text = "Name: "
         '
@@ -562,11 +562,11 @@
         Me.txtProjectName.Cursor = System.Windows.Forms.Cursors.IBeam
         Me.txtProjectName.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtProjectName.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtProjectName.Location = New System.Drawing.Point(63, 15)
+        Me.txtProjectName.Location = New System.Drawing.Point(55, 15)
         Me.txtProjectName.MaxLength = 0
         Me.txtProjectName.Name = "txtProjectName"
         Me.txtProjectName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtProjectName.Size = New System.Drawing.Size(161, 20)
+        Me.txtProjectName.Size = New System.Drawing.Size(169, 20)
         Me.txtProjectName.TabIndex = 0
         '
         'Label5
@@ -591,7 +591,7 @@
         Me.Label4.Location = New System.Drawing.Point(11, 17)
         Me.Label4.Name = "Label4"
         Me.Label4.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label4.Size = New System.Drawing.Size(54, 16)
+        Me.Label4.Size = New System.Drawing.Size(40, 16)
         Me.Label4.TabIndex = 41
         Me.Label4.Text = "Name:"
         '
@@ -619,7 +619,7 @@
         Me.cboSoilsLayer.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboSoilsLayer.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboSoilsLayer.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboSoilsLayer.Location = New System.Drawing.Point(7, 37)
+        Me.cboSoilsLayer.Location = New System.Drawing.Point(46, 27)
         Me.cboSoilsLayer.Name = "cboSoilsLayer"
         Me.cboSoilsLayer.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cboSoilsLayer.Size = New System.Drawing.Size(141, 22)
@@ -659,9 +659,9 @@
         Me.Label2.Location = New System.Drawing.Point(7, 19)
         Me.Label2.Name = "Label2"
         Me.Label2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label2.Size = New System.Drawing.Size(136, 17)
+        Me.Label2.Size = New System.Drawing.Size(39, 41)
         Me.Label2.TabIndex = 10
-        Me.Label2.Text = "Soils Definition:"
+        Me.Label2.Text = "Soils Def:"
         '
         'fraLC
         '
@@ -691,10 +691,10 @@
         Me.cboLCUnits.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboLCUnits.ForeColor = System.Drawing.SystemColors.WindowText
         Me.cboLCUnits.Items.AddRange(New Object() {"meters", "feet"})
-        Me.cboLCUnits.Location = New System.Drawing.Point(69, 51)
+        Me.cboLCUnits.Location = New System.Drawing.Point(55, 51)
         Me.cboLCUnits.Name = "cboLCUnits"
         Me.cboLCUnits.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboLCUnits.Size = New System.Drawing.Size(141, 22)
+        Me.cboLCUnits.Size = New System.Drawing.Size(149, 22)
         Me.cboLCUnits.TabIndex = 1
         '
         'cboLCType
@@ -703,10 +703,10 @@
         Me.cboLCType.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboLCType.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboLCType.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboLCType.Location = New System.Drawing.Point(69, 80)
+        Me.cboLCType.Location = New System.Drawing.Point(55, 78)
         Me.cboLCType.Name = "cboLCType"
         Me.cboLCType.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboLCType.Size = New System.Drawing.Size(141, 22)
+        Me.cboLCType.Size = New System.Drawing.Size(149, 22)
         Me.cboLCType.TabIndex = 2
         '
         '_Label1_5
@@ -715,10 +715,10 @@
         Me._Label1_5.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_5.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_5.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_5.Location = New System.Drawing.Point(10, 56)
+        Me._Label1_5.Location = New System.Drawing.Point(10, 55)
         Me._Label1_5.Name = "_Label1_5"
         Me._Label1_5.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_5.Size = New System.Drawing.Size(52, 19)
+        Me._Label1_5.Size = New System.Drawing.Size(40, 19)
         Me._Label1_5.TabIndex = 8
         Me._Label1_5.Text = "Grid Units:"
         '
@@ -728,10 +728,10 @@
         Me._Label1_0.Cursor = System.Windows.Forms.Cursors.Default
         Me._Label1_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._Label1_0.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_0.Location = New System.Drawing.Point(10, 28)
+        Me._Label1_0.Location = New System.Drawing.Point(10, 27)
         Me._Label1_0.Name = "_Label1_0"
         Me._Label1_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_0.Size = New System.Drawing.Size(32, 19)
+        Me._Label1_0.Size = New System.Drawing.Size(40, 19)
         Me._Label1_0.TabIndex = 7
         Me._Label1_0.Text = "Grid:"
         '
@@ -744,7 +744,7 @@
         Me._Label1_2.Location = New System.Drawing.Point(10, 81)
         Me._Label1_2.Name = "_Label1_2"
         Me._Label1_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_2.Size = New System.Drawing.Size(36, 19)
+        Me._Label1_2.Size = New System.Drawing.Size(40, 19)
         Me._Label1_2.TabIndex = 6
         Me._Label1_2.Text = "Type:"
         '
@@ -1252,7 +1252,7 @@
         Me.Frame2.Controls.Add(Me._Label1_12)
         Me.Frame2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Frame2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Frame2.Location = New System.Drawing.Point(12, 407)
+        Me.Frame2.Location = New System.Drawing.Point(10, 502)
         Me.Frame2.Name = "Frame2"
         Me.Frame2.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame2.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -1353,17 +1353,17 @@
         Me.DeleteCurrentRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
         Me.DeleteCurrentRowToolStripMenuItem.Text = "Delete Current Row"
         '
-        'frmProjectSetup
+        'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.CancelButton = Me.cmdQuit
-        Me.ClientSize = New System.Drawing.Size(644, 502)
+        Me.ClientSize = New System.Drawing.Size(644, 572)
         Me.Controls.Add(Me.Frame6)
-        Me.Controls.Add(Me.Frame5)
         Me.Controls.Add(Me.Frame4)
         Me.Controls.Add(Me.frm_raintype)
+        Me.Controls.Add(Me.Frame5)
         Me.Controls.Add(Me.Frame3)
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.fraLC)
@@ -1373,8 +1373,8 @@
         Me.Controls.Add(Me._chkIgnoreMgmt_0)
         Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me._chkIgnoreLU_0)
-        Me.Controls.Add(Me.Frame2)
         Me.Controls.Add(Me.MainMenu1)
+        Me.Controls.Add(Me.Frame2)
         Me.Cursor = System.Windows.Forms.Cursors.Default
         Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -1382,7 +1382,7 @@
         Me.KeyPreview = True
         Me.Location = New System.Drawing.Point(157, 105)
         Me.MaximizeBox = False
-        Me.Name = "frmProjectSetup"
+        Me.Name = "MainForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.MainMenu1.ResumeLayout(False)
