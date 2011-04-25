@@ -16,38 +16,29 @@
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
 
+''' <summary>
+''' Code for handling progress dialog throughout OpenNSPECT
+''' </summary>
+''' <remarks></remarks>
 Module modProgDialog
-    ' *************************************************************************************
-    ' *  Perot Systems Government Services
-    ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
-    ' *  modProgDialog
-    ' *************************************************************************************
-    ' *  Description: Code for handling progress dialog throughout OpenNSPECT
-    ' *
-    ' *
-    ' *  Called By:  Various
-    ' *************************************************************************************
-    'Public g_pProgDialog As ESRI.ArcGIS.Framework.IProgressDialog2 'Prog Dialog
-    'Public g_pStepProgressor As ESRI.ArcGIS.esriSystem.IStepProgressor 'Step Progress
-    'Public g_pTrackCancel As ESRI.ArcGIS.esriSystem.ITrackCancel 'Cancel Button
-    'Public g_pProDlgFact As ESRI.ArcGIS.Framework.IProgressDialogFactory 'Factory
     Public g_progdialog As ProgressForm
     Public g_boolCancel As Boolean
 
-
-    Public Sub ProgDialog(ByRef strMessage As String, ByRef strTitle As String, ByRef lngMin As Integer, ByRef lngMax As Integer, ByRef lngValue As Integer, ByRef Owner As Windows.Forms.Form)
-        'strMessage:  what's it doing
-        'strTitle: Title of Dialog
-        'lngMin: the Min value of the progress bar
-        'lngMax: the max value of the progress bar
-        'lngValue: current value of progress bar
-        'hwnd: handle
+    ''' <summary>
+    ''' Progs the dialog.
+    ''' </summary>
+    ''' <param name="message">what's it doing.</param>
+    ''' <param name="title">Title of Dialog.</param>
+    ''' <param name="min">the Min value of the progress bar.</param>
+    ''' <param name="max">the max value of the progress bar.</param>
+    ''' <param name="value">current value of progress bar.</param>
+    ''' <param name="Owner">The owner.</param>
+    Public Sub ProgDialog(ByRef message As String, ByRef title As String, ByRef min As Integer, ByRef max As Integer, ByRef value As Integer, ByRef Owner As Windows.Forms.Form)
 
         Try
             'first time through, set things up
             If g_progdialog Is Nothing Then
                 g_boolCancel = True
-                'create a CancelTracker
                 g_progdialog = New ProgressForm
                 g_progdialog.Show()
                 If Not Owner Is Nothing Then
@@ -57,11 +48,11 @@ Module modProgDialog
 
             With g_progdialog
                 .CancelEnabled = True
-                .Title = strTitle
-                .Description = strMessage
-                .MinRange = lngMin
-                .MaxRange = lngMax
-                .Progress = lngValue
+                .Title = title
+                .Description = message
+                .MinRange =
+                .MaxRange = max
+                .Progress = value
                 If Not .TimerEnabled Then
                     .TimerEnabled = True
                 End If
@@ -70,8 +61,7 @@ Module modProgDialog
             Windows.Forms.Application.DoEvents()
 
         Catch ex As Exception
-            MsgBox("Error Occurring during ModProgDialog:" & Err.Number)
-
+            HandleError("Error Occurring during ModProgDialog", ex)
         End Try
 
     End Sub

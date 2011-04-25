@@ -372,7 +372,6 @@ Module modMUSLE
 
 
         'String to hold calculations
-        Dim strExpression As String = ""
         Const strTitle As String = "Processing MUSLE Calculation..."
 
         Try
@@ -611,7 +610,7 @@ Module modMUSLE
                 modProgDialog.g_boolCancel = False
                 modProgDialog.KillDialog()
             Else
-                MsgBox("MUSLE Error: " & Err.Number & " on MUSLE Calculation: " & strExpression)
+                MsgBox("MUSLE Error: " & Err.Number & " on MUSLE Calculation: ")
                 CalcMUSLE = False
                 modProgDialog.g_boolCancel = False
                 modProgDialog.KillDialog()
