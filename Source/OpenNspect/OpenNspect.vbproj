@@ -163,7 +163,7 @@
     <Compile Include="Classes\clsXMLOutputItem.vb" />
     <Compile Include="Classes\clsXMLOutputItems.vb" />
     <Compile Include="Classes\DataHelper.vb" />
-    <Compile Include="Classes\mwNSPECT.vb">
+    <Compile Include="Classes\MapWindowPlugin.vb">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Forms\Additional Dialogs\frmAddCoeffSet.designer.vb">

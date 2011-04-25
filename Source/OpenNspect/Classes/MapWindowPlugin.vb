@@ -1,5 +1,5 @@
 '********************************************************************************************************
-'File Name: mwNSPECT.vb
+'File Name: MapWindowPlugin.vb
 'Description: This class initializes and controls the plugin behavior on the MW menu
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -16,7 +16,7 @@
 Imports System.IO
 Imports System.Windows.Forms
 Imports System.Collections.Generic
-Public Class mwNSPECT
+Public Class MapWindowPlugin
     Implements MapWindow.Interfaces.IPlugin
 
 #Region "Private Variables"
@@ -379,13 +379,13 @@ Public Class mwNSPECT
 
 #Region "   Menu/Toolbar Items"
     ''' <summary>
-    ''' Sub used to add all the menus used by the mwNSPECT plugin
+    ''' Sub used to add all the menus used by the plugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub addMenus()
         Dim nil As Object = Nothing
         With g_MapWin.Menus
-            .AddMenu(g_mnuNSPECTMain, nil, "NSPECT")
+            .AddMenu(g_mnuNSPECTMain, nil, "OpenNSPECT")
             _addedMenus.Push(g_mnuNSPECTMain)
             .AddMenu(g_mnuNSPECTAnalysis, g_mnuNSPECTMain, nil, "Run Analysis...")
             _addedMenus.Push(g_mnuNSPECTAnalysis)
@@ -418,7 +418,7 @@ Public Class mwNSPECT
     End Sub
 
     ''' <summary>
-    ''' Sub used to add all toolbars and buttons used by the mwNSPECT plugin
+    ''' Sub used to add all toolbars and buttons used by the plugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub addToolbars()
