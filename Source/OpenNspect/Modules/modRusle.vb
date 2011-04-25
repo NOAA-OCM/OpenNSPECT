@@ -233,7 +233,7 @@ Module modRusle
                             End If
                         End While
                         If booValueFound = False Then
-                            MsgBox("Error: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                             ConstructPickStatment = Nothing
                             dataType.Close()
                             mwTable.Close()
@@ -445,7 +445,7 @@ Module modRusle
                 modProgDialog.g_boolCancel = False
                 CalcRUSLE = False
             ElseIf Err.Number = -2147467259 Then
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit N-SPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
+                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 modProgDialog.g_boolCancel = False
                 modProgDialog.KillDialog()
                 CalcRUSLE = False

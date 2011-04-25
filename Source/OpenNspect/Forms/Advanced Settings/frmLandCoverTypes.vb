@@ -167,7 +167,7 @@ Friend Class frmLandCoverTypes
         Try
             If Not _bolSaved And _bolGridChanged Then
 
-                intYesNo = MsgBox("Do you want to save changes made to " & cmbxLCType.Text & "?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
+                intYesNo = MsgBox("Do you want to save changes made to " & cmbxLCType.Text & "?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
 
                 If intYesNo = MsgBoxResult.Yes Then
 

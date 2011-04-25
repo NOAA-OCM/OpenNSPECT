@@ -22,7 +22,7 @@ Module modProgDialog
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
     ' *  modProgDialog
     ' *************************************************************************************
-    ' *  Description: Code for handling progress dialog throughout N-SPECT
+    ' *  Description: Code for handling progress dialog throughout OpenNSPECT
     ' *
     ' *
     ' *  Called By:  Various

@@ -74,7 +74,7 @@ Friend Class MainForm
             ReleaseDC(Me.Handle.ToInt32, lngMapDC)
 
             If lngDPI <> 96 Then
-                MsgBox("Warning: N-SPECT requires your font size to be 96 DPI." & vbNewLine & "Some controls may appear out of alignment on this form.", MsgBoxStyle.Critical, "Warning!")
+                MsgBox("Warning: OpenNSPECT requires your font size to be 96 DPI." & vbNewLine & "Some controls may appear out of alignment on this form.", MsgBoxStyle.Critical, "Warning!")
             End If
 
             _bolFirstLoad = True 'It's the first load
@@ -340,7 +340,7 @@ Friend Class MainForm
         Try
             Dim intvbYesNo As Short
 
-            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
+            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
             'Make sure they save current before it's lost forever if they want to
             If intvbYesNo = MsgBoxResult.Yes Then
                 If SaveXMLFile() Then
@@ -411,7 +411,7 @@ Friend Class MainForm
         Try
             Dim intvbYesNo As Short
 
-            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
+            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
 
             If intvbYesNo = MsgBoxResult.Yes Then
                 If SaveXMLFile() Then
@@ -779,7 +779,7 @@ Friend Class MainForm
         Try
             Dim intvbYesNo As Short
 
-            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "N-SPECT")
+            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
 
             'Make sure to let them save before it's lost if they choose to
             If intvbYesNo = MsgBoxResult.Yes Then
@@ -993,7 +993,7 @@ Friend Class MainForm
 
             'STEP 16: Apply the metadata to each of the rasters in the group layer ----------------------------------------------
             'TODO
-            'm_App.StatusBar.Message(0) = "Creating metadata for the N-SPECT group layer..."
+            'm_App.StatusBar.Message(0) = "Creating metadata for the OpenNSPECT group layer..."
             'modUtil.CreateMetadata(g_pGroupLayer, strProjectInfo)
             'END STEP 16: -------------------------------------------------------------------------------------------------------
 
@@ -1100,7 +1100,7 @@ Friend Class MainForm
                 With dlgXMLOpen
                     .Filter = MSG8XMLFile
                     .InitialDirectory = strFolder
-                    .Title = "Open N-SPECT Project File"
+                    .Title = "Open OpenNSPECT Project File"
                     .FilterIndex = 1
                     .ShowDialog()
                 End With
@@ -1617,7 +1617,7 @@ Friend Class MainForm
                 Else
                     'Now check to see if the name changed
                     If _strOpenFileName <> txtProjectName.Text Then
-                        intvbYesNo = MsgBox(String.Format("You have changed the name of this project.  Would you like to save your settings as a new file?{0}{1}Yes{1} -    Save as new N-SPECT project file{0}{1}No{1} -    Save changes to current N-SPECT project file{0}{1}Cancel{1} -    Return to the project window", vbNewLine, vbTab), MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel, "N-SPECT")
+                        intvbYesNo = MsgBox(String.Format("You have changed the name of this project.  Would you like to save your settings as a new file?{0}{1}Yes{1} -    Save as new OpenNSPECT project file{0}{1}No{1} -    Save changes to current OpenNSPECT project file{0}{1}Cancel{1} -    Return to the project window", vbNewLine, vbTab), MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel, "OpenNSPECT")
                         If intvbYesNo = MsgBoxResult.Yes Then
                             With dlgXML
                                 .Filter = MSG8XMLFile

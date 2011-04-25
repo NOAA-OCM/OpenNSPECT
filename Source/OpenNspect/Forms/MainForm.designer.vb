@@ -339,7 +339,7 @@
         Me.mnuGeneralHelp.Name = "mnuGeneralHelp"
         Me.mnuGeneralHelp.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F1), System.Windows.Forms.Keys)
         Me.mnuGeneralHelp.Size = New System.Drawing.Size(210, 22)
-        Me.mnuGeneralHelp.Text = "N-SPECT Help..."
+        Me.mnuGeneralHelp.Text = "OpenNSPECT Help..."
         '
         'Frame6
         '

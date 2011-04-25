@@ -47,7 +47,7 @@
         Me.Label1.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Label1.Size = New System.Drawing.Size(127, 50)
         Me.Label1.TabIndex = 1
-        Me.Label1.Text = "Coding support for this project made possible by N-SPECTor Gadget!"
+        Me.Label1.Text = "Coding support for this project made possible by OpenNSPECTor Gadget!"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'Picture1
@@ -77,7 +77,7 @@
         Me.Name = "frmAbout"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "N-SPECTor Gadget"
+        Me.Text = "OpenNSPECTor Gadget"
         CType(Me.Picture1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

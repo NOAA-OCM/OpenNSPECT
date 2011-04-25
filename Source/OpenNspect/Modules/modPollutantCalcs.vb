@@ -144,7 +144,7 @@ Module modPollutantCalcs
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
         End If
 
-        strConstructMetaData = vbTab & "Pollutant Coefficients:" & vbNewLine & vbTab & vbTab & "Pollutant: " & _strPollName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & vbTab & vbTab & "The following lists the landcover classes and associated coefficients used" & vbNewLine & vbTab & vbTab & "in the N-SPECT analysis run that created this dataset: " & vbNewLine
+        strConstructMetaData = vbTab & "Pollutant Coefficients:" & vbNewLine & vbTab & vbTab & "Pollutant: " & _strPollName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & vbTab & vbTab & "The following lists the landcover classes and associated coefficients used" & vbNewLine & vbTab & vbTab & "in the OpenNSPECT analysis run that created this dataset: " & vbNewLine
 
         Dim dataType As OleDbDataReader = cmdType.ExecuteReader()
         While dataType.Read()
@@ -231,7 +231,7 @@ Module modPollutantCalcs
                                 End If
                             End While
                             If booValueFound = False Then
-                                MsgBox("Error: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                                MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                                 ConstructPickStatment = Nothing
                                 dataType.Close()
                                 mwTable.Close()
@@ -257,7 +257,7 @@ Module modPollutantCalcs
                                 End If
                             End While
                             If booValueFound = False Then
-                                MsgBox("Error: Your N-SPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                                MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                                 ConstructPickStatment = Nothing
                                 dataType.Close()
                                 mwTable.Close()
@@ -448,7 +448,7 @@ Module modPollutantCalcs
                 CalcPollutantConcentration = False
                 Exit Function
             ElseIf Err.Number = -2147467259 Then
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit N-SPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
+                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 modProgDialog.g_boolCancel = False
                 modProgDialog.KillDialog()
                 CalcPollutantConcentration = False
@@ -510,7 +510,7 @@ Module modPollutantCalcs
 
         Catch ex As Exception
             If Err.Number = -2147467259 Then
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit N-SPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
+                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 CompareWaterQuality = False
                 modProgDialog.g_boolCancel = False
                 modProgDialog.KillDialog()
