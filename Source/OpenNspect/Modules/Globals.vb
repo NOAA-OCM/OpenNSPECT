@@ -14,32 +14,11 @@
 '               Added licensing and comments to original code
 
 Module Globals
-#Region "Base Globals"
+
     Public g_MapWin As MapWindow.Interfaces.IMapWin
     Public g_handle As Integer
     Public g_StatusBar As System.Windows.Forms.StatusBarPanel
 
-#End Region
-
-#Region "Menu Globals"
-    Public g_mnuNSPECTMain As String = "mnunspectMainMenu"
-    Public g_mnuNSPECTAnalysis As String = "mnunspectAnalysis"
-    Public g_mnuNSPECTCompare As String = "mnunspectCompare"
-    Public g_mnuNSPECTAdvSettings As String = "mnunspectAdvancedSettings"
-    Public g_mnuNSPECTAdvLand As String = "mnunspectLandCover"
-    Public g_mnuNSPECTAdvPolutants As String = "mnunspectPollutants"
-    Public g_mnuNSPECTAdvWQ As String = "mnunspectWaterQuality"
-    Public g_mnuNSPECTAdvPrecip As String = "mnunspectPrecipitation"
-    Public g_mnuNSPECTAdvWSDelin As String = "mnunspectWatershedDelineations"
-    Public g_mnuNSPECTAdvSoils As String = "mnunspectSoils"
-    Public g_mnuNSPECTHelp As String = "mnunspectHelp"
-
-#End Region
-
-#Region "Toolbar Globals"
     Public g_ToolBarName As String = "nspectToolbar"
-
-#End Region
-
 
 End Module

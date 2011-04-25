@@ -9,11 +9,11 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("OpenNspect")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyDescription("Nonpoint-Source Pollution and Erosion Comparison Tool")> 
 <Assembly: AssemblyCompany("http://nspect.codeplex.com/")> 
-<Assembly: AssemblyProduct("")> 
+<Assembly: AssemblyProduct("OpenNspect")> 
 <Assembly: AssemblyCopyright("Copyright © 2011")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyTrademark("OpenNspect (tm)")> 
 
 <Assembly: ComVisible(False)> 
 
