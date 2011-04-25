@@ -467,7 +467,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Shared Sub ShowCompareOutputsForm()
-        Using tmp As New frmCompareOutputs()
+        Using tmp As New CompareOutputsForm()
             tmp.ShowDialog()
         End Using
     End Sub
@@ -477,7 +477,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Shared Sub ShowAdvLandForm()
-        Using tmp As New frmLandCoverTypes()
+        Using tmp As New LandCoverTypesForm()
             tmp.ShowDialog()
         End Using
     End Sub
@@ -487,7 +487,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Shared Sub ShowAdvPollutantsForm()
-        Using tmp As New frmPollutants()
+        Using tmp As New PollutantsForm()
             tmp.ShowDialog()
         End Using
     End Sub
@@ -497,7 +497,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Shared Sub ShowAdvWQForm()
-        Using tmp As New frmWaterQualityStandard()
+        Using tmp As New WaterQualityStandardsForm()
             tmp.ShowDialog()
         End Using
     End Sub
@@ -507,7 +507,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Shared Sub ShowAdvPrecipForm()
-        Using tmp As New frmPrecipitation()
+        Using tmp As New PrecipitationScenariosForm()
             tmp.ShowDialog()
         End Using
     End Sub
@@ -517,7 +517,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Shared Sub ShowAdvWSDelinForm()
-        Using tmp As New frmWatershedDelin()
+        Using tmp As New WatershedDelineationsForm()
             tmp.ShowDialog()
         End Using
     End Sub
@@ -527,7 +527,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Shared Sub ShowAdvSoilsForm()
-        Using tmp As New frmSoils()
+        Using tmp As New SoilsForm()
             tmp.ShowDialog()
         End Using
     End Sub
@@ -545,7 +545,7 @@ Public Class MapWindowPlugin
 #End Region
 
     Private Shared Sub ShowAboutForm()
-        Using form = New AboutBox()
+        Using form = New AboutForm()
             form.AppEntryAssembly = [Assembly].GetExecutingAssembly
             form.ShowDialog()
         End Using

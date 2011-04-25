@@ -70,7 +70,7 @@ Module modErrorCodes
         Dim e As New Exception(vbNewLine + vbNewLine + "Unexpected " + OriginName + " " + stackTrace.GetFrame(1).GetMethod().Name + " error occured" + vbNewLine + vbNewLine + OriginalException.ToString())
 
         Try
-            Using errorBox As New frmErrorDialog(e)
+            Using errorBox As New ErrorForm(e)
                 errorBox.ShowDialog()
             End Using
             Trace.TraceError(e.Message)
