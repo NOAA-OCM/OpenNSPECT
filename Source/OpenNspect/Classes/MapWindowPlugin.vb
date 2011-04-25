@@ -16,8 +16,23 @@
 Imports System.IO
 Imports System.Windows.Forms
 Imports System.Collections.Generic
+Imports System.Reflection
+
 Public Class MapWindowPlugin
     Implements MapWindow.Interfaces.IPlugin
+
+    Private Const mnuNspectMain As String = "mnunspectMainMenu"
+    Private Const mnuNspectAnalysis As String = "mnunspectAnalysis"
+    Private Const mnuNspectCompare As String = "mnunspectCompare"
+    Private Const mnuNspectAdvSettings As String = "mnunspectAdvancedSettings"
+    Private Const mnuNspectAdvLand As String = "mnunspectLandCover"
+    Private Const mnuNspectAdvPolutants As String = "mnunspectPollutants"
+    Private Const mnuNspectAdvWQ As String = "mnunspectWaterQuality"
+    Private Const mnuNspectAdvPrecip As String = "mnunspectPrecipitation"
+    Private Const mnuNspectAdvWSDelin As String = "mnunspectWatershedDelineations"
+    Private Const mnuNspectAdvSoils As String = "mnunspectSoils"
+    Private Const mnuNspectHelp As String = "mnunspectHelp"
+    Private Const mnuNspectAbout As String = "mnunspectAbout"
 
 #Region "Private Variables"
     'Used for removing items on terminate
@@ -289,15 +304,13 @@ Public Class MapWindowPlugin
         g_handle = ParentHandle
         g_StatusBar = g_MapWin.StatusBar.AddPanel("", 2, 10, Windows.Forms.StatusBarPanelAutoSize.Spring)
 
-        addMenus()
+        AddMenus()
         ' addToolbars()
 
-
-        Dim nspectPath As String
+        Dim nspectPath As String = "C:\NSPECT\"
 
         ' Detects and sets the path to OpenNSPECT's application folder (installation directory)
         'nspectPath = My.Application.Info.DirectoryPath
-        nspectPath = "C:\NSPECT\"
 
         If Right(nspectPath, 1) = "\" Then
             nspectPath = Left(nspectPath, Len(nspectPath) - 1)
@@ -307,7 +320,6 @@ Public Class MapWindowPlugin
         End If
 
         modUtil.g_nspectPath = nspectPath
-
         modUtil.g_nspectDocPath = nspectPath
 
         'Initialize the database connection
@@ -352,24 +364,26 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public Sub ItemClicked(ByVal ItemName As String, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.ItemClicked
         Select Case ItemName
-            Case g_mnuNSPECTAnalysis
+            Case mnuNspectAnalysis
                 ShowAnalysisForm()
-            Case g_mnuNSPECTCompare
-                ShowCompareOUtputsForm()
-            Case g_mnuNSPECTAdvLand
+            Case mnuNspectCompare
+                ShowCompareOutputsForm()
+            Case mnuNspectAdvLand
                 ShowAdvLandForm()
-            Case g_mnuNSPECTAdvPolutants
+            Case mnuNspectAdvPolutants
                 ShowAdvPollutantsForm()
-            Case g_mnuNSPECTAdvWQ
+            Case mnuNspectAdvWQ
                 ShowAdvWQForm()
-            Case g_mnuNSPECTAdvPrecip
+            Case mnuNspectAdvPrecip
                 ShowAdvPrecipForm()
-            Case g_mnuNSPECTAdvWSDelin
+            Case mnuNspectAdvWSDelin
                 ShowAdvWSDelinForm()
-            Case g_mnuNSPECTAdvSoils
+            Case mnuNspectAdvSoils
                 ShowAdvSoilsForm()
-            Case g_mnuNSPECTHelp
+            Case mnuNspectHelp
                 ShowHelpIntro()
+            Case mnuNspectAbout
+                ShowAboutForm()
         End Select
     End Sub
 
@@ -379,40 +393,42 @@ Public Class MapWindowPlugin
 
 #Region "   Menu/Toolbar Items"
     ''' <summary>
-    ''' Sub used to add all the menus used by the plugin
+    ''' Add all the menus used by the plugin
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub addMenus()
+    Private Sub AddMenus()
         Dim nil As Object = Nothing
         With g_MapWin.Menus
-            .AddMenu(g_mnuNSPECTMain, nil, "OpenNSPECT")
-            _addedMenus.Push(g_mnuNSPECTMain)
-            .AddMenu(g_mnuNSPECTAnalysis, g_mnuNSPECTMain, nil, "Run Analysis...")
-            _addedMenus.Push(g_mnuNSPECTAnalysis)
-            .AddMenu("mnunspectsep0", g_mnuNSPECTMain, nil, "-")
+            .AddMenu(mnuNspectMain, nil, "OpenNSPECT")
+            _addedMenus.Push(mnuNspectMain)
+            .AddMenu(mnuNspectAnalysis, mnuNspectMain, nil, "Run Analysis...")
+            _addedMenus.Push(mnuNspectAnalysis)
+            .AddMenu("mnunspectsep0", mnuNspectMain, nil, "-")
             _addedMenus.Push("mnunspectsep0")
-            .AddMenu(g_mnuNSPECTCompare, g_mnuNSPECTMain, nil, "Compare Outputs...")
-            _addedMenus.Push(g_mnuNSPECTCompare)
-            .AddMenu("mnunspectsep1", g_mnuNSPECTMain, nil, "-")
+            .AddMenu(mnuNspectCompare, mnuNspectMain, nil, "Compare Outputs...")
+            _addedMenus.Push(mnuNspectCompare)
+            .AddMenu("mnunspectsep1", mnuNspectMain, nil, "-")
             _addedMenus.Push("mnunspectsep1")
-            .AddMenu(g_mnuNSPECTAdvSettings, g_mnuNSPECTMain, nil, "Advanced Settings")
-            _addedMenus.Push(g_mnuNSPECTAdvSettings)
-            .AddMenu(g_mnuNSPECTAdvLand, g_mnuNSPECTAdvSettings, nil, "Land Cover Types...")
-            _addedMenus.Push(g_mnuNSPECTAdvLand)
-            .AddMenu(g_mnuNSPECTAdvPolutants, g_mnuNSPECTAdvSettings, nil, "Pollutants...")
-            _addedMenus.Push(g_mnuNSPECTAdvPolutants)
-            .AddMenu(g_mnuNSPECTAdvWQ, g_mnuNSPECTAdvSettings, nil, "Water Quality Standards...")
-            _addedMenus.Push(g_mnuNSPECTAdvWQ)
-            .AddMenu(g_mnuNSPECTAdvPrecip, g_mnuNSPECTAdvSettings, nil, "Precipitation Scenarios...")
-            _addedMenus.Push(g_mnuNSPECTAdvPrecip)
-            .AddMenu(g_mnuNSPECTAdvWSDelin, g_mnuNSPECTAdvSettings, nil, "Watershed Delineations...")
-            _addedMenus.Push(g_mnuNSPECTAdvWSDelin)
-            .AddMenu(g_mnuNSPECTAdvSoils, g_mnuNSPECTAdvSettings, nil, "Soils...")
-            _addedMenus.Push(g_mnuNSPECTAdvSoils)
-            .AddMenu("mnunspectsep2", g_mnuNSPECTMain, nil, "-")
+            .AddMenu(mnuNspectAdvSettings, mnuNspectMain, nil, "Advanced Settings")
+            _addedMenus.Push(mnuNspectAdvSettings)
+            .AddMenu(mnuNspectAdvLand, mnuNspectAdvSettings, nil, "Land Cover Types...")
+            _addedMenus.Push(mnuNspectAdvLand)
+            .AddMenu(mnuNspectAdvPolutants, mnuNspectAdvSettings, nil, "Pollutants...")
+            _addedMenus.Push(mnuNspectAdvPolutants)
+            .AddMenu(mnuNspectAdvWQ, mnuNspectAdvSettings, nil, "Water Quality Standards...")
+            _addedMenus.Push(mnuNspectAdvWQ)
+            .AddMenu(mnuNspectAdvPrecip, mnuNspectAdvSettings, nil, "Precipitation Scenarios...")
+            _addedMenus.Push(mnuNspectAdvPrecip)
+            .AddMenu(mnuNspectAdvWSDelin, mnuNspectAdvSettings, nil, "Watershed Delineations...")
+            _addedMenus.Push(mnuNspectAdvWSDelin)
+            .AddMenu(mnuNspectAdvSoils, mnuNspectAdvSettings, nil, "Soils...")
+            _addedMenus.Push(mnuNspectAdvSoils)
+            .AddMenu("mnunspectsep2", mnuNspectMain, nil, "-")
             _addedMenus.Push("mnunspectsep2")
-            .AddMenu(g_mnuNSPECTHelp, g_mnuNSPECTMain, nil, "Help...")
-            _addedMenus.Push(g_mnuNSPECTHelp)
+            .AddMenu(mnuNspectHelp, mnuNspectMain, nil, "Help...")
+            _addedMenus.Push(mnuNspectHelp)
+            .AddMenu(mnuNspectAbout, mnuNspectMain, nil, "About...")
+            _addedMenus.Push(mnuNspectAbout)
 
         End With
     End Sub
@@ -527,6 +543,13 @@ Public Class MapWindowPlugin
 #End Region
 
 #End Region
+
+    Private Shared Sub ShowAboutForm()
+        Using form = New AboutBox()
+            form.AppEntryAssembly = [Assembly].GetExecutingAssembly
+            form.ShowDialog()
+        End Using
+    End Sub
 
 End Class
 
