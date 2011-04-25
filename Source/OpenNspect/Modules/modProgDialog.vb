@@ -21,8 +21,8 @@
 ''' </summary>
 ''' <remarks></remarks>
 Module modProgDialog
-    Public g_progdialog As ProgressForm
-    Public g_boolCancel As Boolean
+    Private ProgressForm As ProgressForm
+    Public g_KeepRunning As Boolean
 
     ''' <summary>
     ''' Progs the dialog.
@@ -33,20 +33,20 @@ Module modProgDialog
     ''' <param name="max">the max value of the progress bar.</param>
     ''' <param name="value">current value of progress bar.</param>
     ''' <param name="Owner">The owner.</param>
-    Public Sub ProgDialog(ByRef message As String, ByRef title As String, ByRef min As Integer, ByRef max As Integer, ByRef value As Integer, ByRef Owner As Windows.Forms.Form)
+    Public Sub ShowProgress(ByRef message As String, ByRef title As String, ByRef min As Integer, ByRef max As Integer, ByRef value As Integer, ByRef Owner As Windows.Forms.Form)
 
         Try
             'first time through, set things up
-            If g_progdialog Is Nothing Then
-                g_boolCancel = True
-                g_progdialog = New ProgressForm
-                g_progdialog.Show()
+            If ProgressForm Is Nothing Then
+                g_KeepRunning = True
+                ProgressForm = New ProgressForm
+                ProgressForm.Show()
                 If Not Owner Is Nothing Then
-                    Owner.AddOwnedForm(g_progdialog)
+                    Owner.AddOwnedForm(ProgressForm)
                 End If
             End If
 
-            With g_progdialog
+            With ProgressForm
                 .CancelEnabled = True
                 .Title = title
                 .Description = message
@@ -67,12 +67,14 @@ Module modProgDialog
     End Sub
 
 
-    Public Sub KillDialog()
-        'Sub to kill all
-        If Not g_progdialog Is Nothing Then
-            g_progdialog.TimerEnabled = False
-            g_progdialog.Close()
-            g_progdialog = Nothing
+    ''' <summary>
+    ''' Closes the dialog.
+    ''' </summary>
+    Public Sub CloseDialog()
+        If Not ProgressForm Is Nothing Then
+            ProgressForm.TimerEnabled = False
+            ProgressForm.Close()
+            ProgressForm = Nothing
         End If
     End Sub
 End Module

@@ -420,9 +420,9 @@ Module modRunoff
             Dim pPermAccumLocRunoffRaster As MapWinGIS.Grid = Nothing
             Dim strOutAccum As String
 
-            modProgDialog.ProgDialog("Calculating maximum potential retention...", ProgressTitle, 0, 10, 3, g_frmProjectSetup)
+            modProgDialog.ShowProgress("Calculating maximum potential retention...", ProgressTitle, 0, 10, 3, g_frmProjectSetup)
 
-            If modProgDialog.g_boolCancel Then
+            If modProgDialog.g_KeepRunning Then
                 'Calculate maxiumum potential retention
 
                 Dim picksLength As Integer = strPick(0).Split(",").Length
@@ -438,8 +438,8 @@ Module modRunoff
                 Exit Function
             End If
 
-            If modProgDialog.g_boolCancel Then
-                modProgDialog.ProgDialog("Calculating runoff...", ProgressTitle, 0, 10, 6, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
+                modProgDialog.ShowProgress("Calculating runoff...", ProgressTitle, 0, 10, 6, g_frmProjectSetup)
                 Dim AllRunOffCalc As New RasterMathCellCalcNulls(AddressOf AllRunoffCellCalc)
                 RasterMath(pSCS100Raster, pInRainRaster, g_pDEMRaster, Nothing, Nothing, pMetRunoffRaster, Nothing, False, AllRunOffCalc)
 
@@ -455,8 +455,8 @@ Module modRunoff
             End If
 
             If g_booLocalEffects Then
-                modProgDialog.ProgDialog("Creating data layer for local effects...", ProgressTitle, 0, 10, 10, g_frmProjectSetup)
-                If modProgDialog.g_boolCancel Then
+                modProgDialog.ShowProgress("Creating data layer for local effects...", ProgressTitle, 0, 10, 10, g_frmProjectSetup)
+                If modProgDialog.g_KeepRunning Then
 
                     'STEP 12: Local Effects -------------------------------------------------
                     strOutAccum = modUtil.GetUniqueName("locaccum", g_strWorkspace, g_FinalOutputGridExt)
@@ -472,14 +472,14 @@ Module modRunoff
                     AddOutputGridLayer(pPermAccumLocRunoffRaster, "Blue", True, "Runoff Local Effects (L)", "Runoff Local", -1, OutputItems)
 
                     RunoffCalculation = True
-                    modProgDialog.KillDialog()
+                    modProgDialog.CloseDialog()
                     Exit Function
                 End If
             End If
 
 
-            modProgDialog.ProgDialog("Creating flow accumulation...", ProgressTitle, 0, 10, 9, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Creating flow accumulation...", ProgressTitle, 0, 10, 9, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'STEP 7: ------------------------------------------------------------------------------------
                 'Derive Accumulated Runoff
 
@@ -527,8 +527,8 @@ Module modRunoff
 
 
             'Add this then map as our runoff grid
-            modProgDialog.ProgDialog("Creating Runoff Layer...", ProgressTitle, 0, 10, 10, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Creating Runoff Layer...", ProgressTitle, 0, 10, 10, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'Get a unique name for accumulation GRID
                 strOutAccum = modUtil.GetUniqueName("runoff", g_strWorkspace, g_FinalOutputGridExt)
 
@@ -551,21 +551,21 @@ Module modRunoff
 
             RunoffCalculation = True
 
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
 
         Catch ex As Exception
             If Err.Number = -2147217297 Then 'User cancelled operation
-                modProgDialog.g_boolCancel = False
+                modProgDialog.g_KeepRunning = False
                 RunoffCalculation = False
             ElseIf Err.Number = -2147467259 Then
                 MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
                 RunoffCalculation = False
             Else
                 MsgBox("Error: " & Err.Number & " on RunoffCalculation")
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
                 RunoffCalculation = False
             End If
         End Try

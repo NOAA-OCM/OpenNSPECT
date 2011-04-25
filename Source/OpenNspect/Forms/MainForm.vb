@@ -1013,7 +1013,7 @@ Friend Class MainForm
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         Finally
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
             System.Windows.Forms.Cursor.Current = Cursors.Default
         End Try
 

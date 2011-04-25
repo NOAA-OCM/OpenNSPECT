@@ -114,9 +114,9 @@ Friend Class UserWaterShedDelineationForm
 
         Dim strCmdInsert As String
 
-        modProgDialog.ProgDialog("Validating input...", "Adding New Delineation...", 0, 3, 1, Me)
+        modProgDialog.ShowProgress("Validating input...", "Adding New Delineation...", 0, 3, 1, Me)
         If Not ValidateDataFormInput() Then
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
             Exit Sub
         End If
 
@@ -128,7 +128,7 @@ Friend Class UserWaterShedDelineationForm
             _strDEM2BFileName = txtDEMFile.Text
             _strNibbleName = txtFlowDir.Text
 
-            modProgDialog.ProgDialog("Updating Database...", "Adding New Delineation...", 0, 3, 2, Me)
+            modProgDialog.ShowProgress("Updating Database...", "Adding New Delineation...", 0, 3, 2, Me)
 
             strCmdInsert = "INSERT INTO WSDelineation " & "(Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName," & "FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName) " & " VALUES (" & "'" & CStr(txtWSDelinName.Text) & "', " & "'" & CStr(txtDEMFile.Text) & "', " & "'" & cboDEMUnits.SelectedIndex & "', " & "'" & txtFlowDir.Text & "', " & "'" & txtFlowAcc.Text & "', " & "'" & txtDEMFile.Text & "', " & "'" & "0" & "', " & "'" & "" & "', " & "'" & "0" & "', " & "'" & txtWaterSheds.Text & "', " & "'" & txtLS.Text & "', " & "'" & _strNibbleName & "', " & "'" & _strDEM2BFileName & "')"
 
@@ -137,7 +137,7 @@ Friend Class UserWaterShedDelineationForm
             cmdIns.ExecuteNonQuery()
             System.Windows.Forms.Cursor.Current = Windows.Forms.Cursors.Default
 
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
 
             'Confirm
             MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
@@ -156,7 +156,7 @@ Friend Class UserWaterShedDelineationForm
 
         Catch ex As Exception
             MsgBox("An error occurred while processing your Watershed Delineation.", MsgBoxStyle.Critical, "Error")
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
         End Try
     End Sub
 

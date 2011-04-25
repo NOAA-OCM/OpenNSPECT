@@ -376,8 +376,8 @@ Module modMUSLE
 
         Try
 
-            modProgDialog.ProgDialog("Calculating Watershed Length...", strTitle, 0, 27, 2, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating Watershed Length...", strTitle, 0, 27, 2, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'STEP 2: ------------------------------------------------------------------------------------
                 'Calculate Watershed Length
 
@@ -444,8 +444,8 @@ Module modMUSLE
                 'END STEP 3: -----------------------------------------------------------------------------------
             End If
 
-            modProgDialog.ProgDialog("Calculating Mod Slope...", strTitle, 0, 27, 4, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating Mod Slope...", strTitle, 0, 27, 4, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
                 Dim strtmpslpout As String = IO.Path.GetTempFileName
@@ -469,15 +469,15 @@ Module modMUSLE
             End If
 
 
-            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 18, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating MUSLE...", strTitle, 0, 27, 18, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
                 RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, pQuRaster, AllMUSLECalc)
             End If
             'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, g_OutputGridExt))
 
-            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 22, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating MUSLE...", strTitle, 0, 27, 22, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 ReDim _pondpicks(strConPondStatement.Split(",").Length)
                 _pondpicks = strConPondStatement.Split(",")
                 Dim AllMUSLECalc2 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc2)
@@ -486,8 +486,8 @@ Module modMUSLE
             End If
             'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, g_OutputGridExt))
 
-            modProgDialog.ProgDialog("Calculating MUSLE...", strTitle, 0, 27, 25, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating MUSLE...", strTitle, 0, 27, 25, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
                 Dim AllMUSLECalc3 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc3)
@@ -503,8 +503,8 @@ Module modMUSLE
 
             If g_booLocalEffects Then
 
-                modProgDialog.ProgDialog("Creating data layer for local effects...", strTitle, 0, 27, 27, g_frmProjectSetup)
-                If modProgDialog.g_boolCancel Then
+                modProgDialog.ShowProgress("Creating data layer for local effects...", strTitle, 0, 27, 27, g_frmProjectSetup)
+                If modProgDialog.g_KeepRunning Then
 
                     strMUSLE = modUtil.GetUniqueName("locmusle", g_strWorkspace, g_FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
@@ -522,7 +522,7 @@ Module modMUSLE
                     AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
 
                     CalcMUSLE = True
-                    modProgDialog.KillDialog()
+                    modProgDialog.CloseDialog()
                     Exit Function
 
                 End If
@@ -530,8 +530,8 @@ Module modMUSLE
             End If
 
 
-            modProgDialog.ProgDialog("Calculating the accumulated sediment...", strTitle, 0, 27, 23, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Calculating the accumulated sediment...", strTitle, 0, 27, 23, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 Dim pTauD8Flow As MapWinGIS.Grid = Nothing
 
                 Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
@@ -574,8 +574,8 @@ Module modMUSLE
             End If
 
 
-            modProgDialog.ProgDialog("Adding Sediment Mass to Group Layer...", strTitle, 0, 27, 25, g_frmProjectSetup)
-            If modProgDialog.g_boolCancel Then
+            modProgDialog.ShowProgress("Adding Sediment Mass to Group Layer...", strTitle, 0, 27, 25, g_frmProjectSetup)
+            If modProgDialog.g_KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
                 strMUSLE = modUtil.GetUniqueName("MUSLEmass", g_strWorkspace, g_FinalOutputGridExt)
@@ -598,22 +598,22 @@ Module modMUSLE
 
             CalcMUSLE = True
 
-            modProgDialog.KillDialog()
+            modProgDialog.CloseDialog()
 
 
         Catch ex As Exception
             If Err.Number = -2147217297 Then 'S.A. constant for User cancelled operation
-                modProgDialog.g_boolCancel = False
+                modProgDialog.g_KeepRunning = False
             ElseIf Err.Number = -2147467259 Then  'S.A. constant for crappy ESRI stupid GRID error
                 MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 CalcMUSLE = False
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
             Else
                 MsgBox("MUSLE Error: " & Err.Number & " on MUSLE Calculation: ")
                 CalcMUSLE = False
-                modProgDialog.g_boolCancel = False
-                modProgDialog.KillDialog()
+                modProgDialog.g_KeepRunning = False
+                modProgDialog.CloseDialog()
             End If
         End Try
     End Function
