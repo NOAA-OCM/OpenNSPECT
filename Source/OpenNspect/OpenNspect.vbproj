@@ -475,6 +475,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy /y "$(Targetpath)" "C:\dev\nSpect\Installer\OpenNspect\Base Files\bin\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
