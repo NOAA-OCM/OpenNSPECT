@@ -20,7 +20,6 @@ Imports System.Data.OleDb
 
 Friend Class NewWatershedDelineationForm
 
-    Private Const c_sModuleFileName As String = "frmNewWSDelin.vb"
 
     Private boolChange(3) As Boolean 'Array set to track changes in controls: On Change,OK_Button is enabled
     Private _frmWS As WatershedDelineationsForm
@@ -67,7 +66,7 @@ Friend Class NewWatershedDelineationForm
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -77,7 +76,7 @@ Friend Class NewWatershedDelineationForm
             boolChange(0) = True
             CheckEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -88,7 +87,7 @@ Friend Class NewWatershedDelineationForm
             CheckEnabled()
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -127,7 +126,7 @@ Friend Class NewWatershedDelineationForm
                 '_strDemName = m_strDemArray(UBound(m_strDemArray))
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -153,7 +152,7 @@ Friend Class NewWatershedDelineationForm
             CheckEnabled()
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -163,7 +162,7 @@ Friend Class NewWatershedDelineationForm
             boolChange(2) = True
             CheckEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -174,7 +173,7 @@ Friend Class NewWatershedDelineationForm
             CheckEnabled()
             _intSize = cboSubWSSize.SelectedIndex
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -298,7 +297,7 @@ Friend Class NewWatershedDelineationForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -542,7 +541,7 @@ Friend Class NewWatershedDelineationForm
                 modProgDialog.g_KeepRunning = False
                 DelineateWatershed = False
             Else
-                HandleError(c_sModuleFileName, ex)
+                HandleError(ex)
                 DelineateWatershed = False
             End If
         Finally
@@ -650,7 +649,7 @@ Friend Class NewWatershedDelineationForm
             'outputSf.StopEditingTable()
             'Return outputSf
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             Return Nothing
         Finally
             pMaskCalcRaster.Close()
@@ -1188,7 +1187,7 @@ Friend Class NewWatershedDelineationForm
                 Return OutNull
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 

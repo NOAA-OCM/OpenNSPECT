@@ -21,7 +21,6 @@ Friend Class CopyCoefficientSetForm
 
     Private _frmPoll As PollutantsForm
     Private _frmNewPoll As NewPollutantForm
-    Const c_sModuleFileName As String = "frmCopyCoeff.vb"
 
 
     Public Sub Init(ByRef cmdCoeffSet As OleDbCommand, ByRef frmPoll As PollutantsForm, ByRef frmNewPoll As NewPollutantForm)
@@ -40,7 +39,7 @@ Friend Class CopyCoefficientSetForm
             _frmPoll = frmPoll
             _frmNewPoll = frmNewPoll
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -62,7 +61,7 @@ Friend Class CopyCoefficientSetForm
                 End With
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

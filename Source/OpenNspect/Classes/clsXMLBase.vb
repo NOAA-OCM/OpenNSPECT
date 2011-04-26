@@ -19,7 +19,6 @@
 Imports System.Xml
 
 Public Class clsXMLBase
-    Const c_sModuleFileName As String = "clsXMLBase.vb"
 
 
     Public Overridable Property XML() As String
@@ -78,7 +77,7 @@ Public Class clsXMLBase
             NodeGetText = node.SelectSingleNode(strNodeName).Value
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             NodeGetText = ""
         End Try
     End Function
@@ -105,7 +104,7 @@ Public Class clsXMLBase
             node.Attributes.Append(attr)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -134,7 +133,7 @@ Public Class clsXMLBase
             node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -160,7 +159,7 @@ Public Class clsXMLBase
                 GetNodeText = ""
             End If
 
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 End Class

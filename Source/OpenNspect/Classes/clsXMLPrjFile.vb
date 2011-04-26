@@ -42,7 +42,6 @@ Friend Class clsXMLPrjFile
 
     'Following are the names of the NODES
 
-    Const c_sModuleFileName As String = "clsXMLPrjFile.vb"
 
     Private Const NODE_NAME As String = "NSPECTProjectFile"
     Private Const NODE_PRJNAME As String = "PrjName"
@@ -154,7 +153,7 @@ Friend Class clsXMLPrjFile
             dom.Save(strXML)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -240,7 +239,7 @@ Friend Class clsXMLPrjFile
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -290,7 +289,7 @@ Friend Class clsXMLPrjFile
             clsLUItems.LoadNode(node.SelectSingleNode(clsLUItems.NodeName))
             clsOutputItems.LoadNode(node.SelectSingleNode(clsOutputItems.NodeName))
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -302,7 +301,7 @@ Friend Class clsXMLPrjFile
             clsLUItems = New clsXMLLandUseItems 'A collection of landuses
             clsOutputItems = New clsXMLOutputItems 'A collection of outputs
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

@@ -40,7 +40,6 @@ Public Class clsXMLLUScenPollItems
     'The NODE_NAME constant contains the name of the XML element that
     'is being wrapped.
 
-    Const c_sModuleFileName As String = "clsXMLPollItems.vb"
 
     Private Const NODE_NAME As String = "ManScenPollutants"
 
@@ -76,7 +75,7 @@ Public Class clsXMLLUScenPollItems
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             GetEnumerator = Nothing
         End Try
     End Function
@@ -112,7 +111,7 @@ Public Class clsXMLLUScenPollItems
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -142,7 +141,7 @@ Public Class clsXMLLUScenPollItems
             Next PollNode
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -151,7 +150,7 @@ Public Class clsXMLLUScenPollItems
         Try
             m_colItems = New Collections.ArrayList
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -162,7 +161,7 @@ Public Class clsXMLLUScenPollItems
             m_colItems.Add(Pollutant)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -173,7 +172,7 @@ Public Class clsXMLLUScenPollItems
             m_colItems.Remove(Index)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

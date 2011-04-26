@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 
 Friend Class PrecipitationScenariosForm
-    Private Const c_sModuleFileName As String = "frmPrecipitation.vb"
 
     Private _boolLoad As Boolean
 
@@ -35,7 +34,7 @@ Friend Class PrecipitationScenariosForm
             OK_Button.Enabled = False
             _boolLoad = False
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -64,7 +63,7 @@ Friend Class PrecipitationScenariosForm
 
             OK_Button.Enabled = False
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -74,7 +73,7 @@ Friend Class PrecipitationScenariosForm
             MakeDirty()
             txtDesc.Text = Replace(txtDesc.Text, "'", "")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -83,7 +82,7 @@ Friend Class PrecipitationScenariosForm
         Try
             MakeDirty()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -120,7 +119,7 @@ Friend Class PrecipitationScenariosForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -129,7 +128,7 @@ Friend Class PrecipitationScenariosForm
         Try
             MakeDirty()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -138,7 +137,7 @@ Friend Class PrecipitationScenariosForm
         Try
             MakeDirty()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -154,7 +153,7 @@ Friend Class PrecipitationScenariosForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -164,7 +163,7 @@ Friend Class PrecipitationScenariosForm
             MakeDirty()
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -175,7 +174,7 @@ Friend Class PrecipitationScenariosForm
                 MakeDirty()
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -215,7 +214,7 @@ Friend Class PrecipitationScenariosForm
             newpre.Init(Nothing, Me)
             newpre.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -256,7 +255,7 @@ Friend Class PrecipitationScenariosForm
                 MsgBox("Please select a Precipitation Scenario", MsgBoxStyle.Critical, "No Scenario Selected")
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -265,7 +264,7 @@ Friend Class PrecipitationScenariosForm
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "precip.htm")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -274,7 +273,7 @@ Friend Class PrecipitationScenariosForm
         Try
             e.SuppressKeyPress = True
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region
@@ -341,7 +340,7 @@ Friend Class PrecipitationScenariosForm
 
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -357,7 +356,7 @@ Friend Class PrecipitationScenariosForm
             modUtil.InitComboBox(cboScenName, "PrecipScenario")
             cboScenName.SelectedIndex = modUtil.GetCboIndex(strPrecName, cboScenName)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -374,7 +373,7 @@ Friend Class PrecipitationScenariosForm
            
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

@@ -22,7 +22,6 @@ Public Class clsXMLOutputItems
     Inherits clsXMLBase
     Implements System.Collections.IEnumerable
 
-    Const c_sModuleFileName As String = "clsXMLOutputItems.vb"
 
     'The NODE_NAME constant contains the name of the XML element that
     'is being wrapped.
@@ -61,7 +60,7 @@ Public Class clsXMLOutputItems
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             GetEnumerator = Nothing
         End Try
     End Function
@@ -104,7 +103,7 @@ Public Class clsXMLOutputItems
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -134,7 +133,7 @@ Public Class clsXMLOutputItems
             Next outNode
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -143,7 +142,7 @@ Public Class clsXMLOutputItems
         Try
             m_colItems = New Collections.ArrayList
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

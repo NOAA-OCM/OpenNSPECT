@@ -38,7 +38,6 @@ Public Class clsXMLLUScenPollItem
     ' *
     ' *************************************************************************************
 
-    Const c_sModuleFileName As String = "clsWrapperPoll.vb"
 
     Private Const NODE_NAME As String = "LUScenPollutant"
     Private Const ATTRIBUTE_PollID As String = "ID"
@@ -98,7 +97,7 @@ Public Class clsXMLLUScenPollItem
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -120,7 +119,7 @@ Public Class clsXMLLUScenPollItem
             intType4 = CDbl(GetNodeText(node, ELEMENT_Type4))
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

@@ -17,7 +17,6 @@
 '               Added licensing and comments to code
 
 Public Class ProgressForm
-    Const c_sModuleFileName As String = "frmProgressDialog.vb"
 
 
     Public Property Title() As String
@@ -102,7 +101,7 @@ Public Class ProgressForm
         Try
             g_KeepRunning = False
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -111,7 +110,7 @@ Public Class ProgressForm
         Try
             Windows.Forms.Application.DoEvents()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

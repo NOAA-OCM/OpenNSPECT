@@ -21,7 +21,6 @@ Imports System.Xml
 Public Class clsXMLOutputItem
     Inherits clsXMLBase
 
-    Const c_sModuleFileName As String = "clsXMLOutputItem.vb"
 
     Private Const NODE_NAME As String = "OutputFile"
     Private Const ELEMENT_OutputPath As String = "OutputPath"
@@ -78,7 +77,7 @@ Public Class clsXMLOutputItem
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -102,7 +101,7 @@ Public Class clsXMLOutputItem
                 booUseStretch = False
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

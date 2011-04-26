@@ -38,7 +38,6 @@ Module modMUSLE
     Private _strMusleMetadata As String 'MUSLE metadata string
 
     ' Variables used by the Error handler function - DO NOT REMOVE
-    Const c_sModuleFileName As String = "modMUSLE.vb"
     Private _picks As String()
     Private _pondpicks As String()
 

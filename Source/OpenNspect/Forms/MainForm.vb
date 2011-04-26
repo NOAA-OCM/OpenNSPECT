@@ -45,7 +45,6 @@ Friend Class MainForm
     ' Win 32 Constant Declarations
     Private Const LOGPIXELSX As Short = 88 'Logical pixels/inch in X
 
-    Const c_sModuleFileName As String = "frmProjectSetup.vb"
 
     Private arrAreaList As New System.Collections.ArrayList
     Private arrClassList As New System.Collections.ArrayList
@@ -137,7 +136,7 @@ Friend Class MainForm
 
             txtProjectName.Focus()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -187,7 +186,7 @@ Friend Class MainForm
                 End If
             End Using
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cmdOpenWS_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "cmdOpenWS_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -201,7 +200,7 @@ Friend Class MainForm
         Try
             cboLCUnits.SelectedIndex = modUtil.GetRasterDistanceUnits(cboLCLayer.Text)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cboLCLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "cboLCLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -215,7 +214,7 @@ Friend Class MainForm
         Try
             FillCboLCCLass()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cboLCType_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "cboLCType_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -237,7 +236,7 @@ Friend Class MainForm
                 soilData.Close()
             End Using
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cboSoilsLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "cboSoilsLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -284,7 +283,7 @@ Friend Class MainForm
                 End Using
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cboPrecipScen_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "cboPrecipScen_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -307,7 +306,7 @@ Friend Class MainForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cboWSDelin_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "cboWSDelin_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -328,7 +327,7 @@ Friend Class MainForm
                 PopulatePollutants()
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cboWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "cboWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -360,7 +359,7 @@ Friend Class MainForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuNew_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "mnuNew_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -384,7 +383,7 @@ Friend Class MainForm
         Try
             SaveXMLFile()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuSave_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "mnuSave_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -399,7 +398,7 @@ Friend Class MainForm
             _booExists = False
             SaveXMLFile()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuSaveAs_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "mnuSaveAs_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -426,7 +425,7 @@ Friend Class MainForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuExit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "mnuExit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -462,7 +461,7 @@ Friend Class MainForm
                 txtbxRainGrid.Enabled = optUseGRID.Checked
                 txtRainValue.Enabled = optUseValue.Checked
             Catch ex As Exception
-                HandleError(c_sModuleFileName, ex)     'True, "optUseGRID_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+                HandleError(ex)     'True, "optUseGRID_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
             End Try
         End If
     End Sub
@@ -479,7 +478,7 @@ Friend Class MainForm
                 txtRainValue.Enabled = optUseValue.Checked
                 txtbxRainGrid.Enabled = optUseGRID.Checked
             Catch ex As Exception
-                HandleError(c_sModuleFileName, ex)     'True, "optUseValue_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+                HandleError(ex)     'True, "optUseValue_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
             End Try
         End If
     End Sub
@@ -533,7 +532,7 @@ Friend Class MainForm
             lblKFactor.Visible = chkCalcErosion.CheckState
             Label7.Visible = chkCalcErosion.CheckState
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "chkCalcErosion_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "chkCalcErosion_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -653,7 +652,7 @@ Friend Class MainForm
             End Using
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "MnuLUAdd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "MnuLUAdd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -679,7 +678,7 @@ Friend Class MainForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "MnuLUEdit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "MnuLUEdit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
 
     End Sub
@@ -704,7 +703,7 @@ Friend Class MainForm
                 End If
             End With
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuLUDelete_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "mnuLUDelete_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
 
     End Sub
@@ -796,7 +795,7 @@ Friend Class MainForm
 
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1013,7 +1012,7 @@ Friend Class MainForm
 
             Exit Sub
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         Finally
             modProgDialog.CloseDialog()
             System.Windows.Forms.Cursor.Current = Cursors.Default
@@ -1079,7 +1078,7 @@ Friend Class MainForm
 
             frmProjectSetup_Load(Nothing, Nothing)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "ClearForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "ClearForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1120,7 +1119,7 @@ Friend Class MainForm
             _strOpenFileName = txtProjectName.Text
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -1142,7 +1141,7 @@ Friend Class MainForm
             _strOpenFileName = txtProjectName.Text
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -1167,7 +1166,7 @@ Friend Class MainForm
             End Using
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "FillCboLCCLass " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "FillCboLCCLass " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1213,7 +1212,7 @@ Friend Class MainForm
             End Using
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "PopPollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "PopPollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1235,7 +1234,7 @@ Friend Class MainForm
                 coefData.Close()
             End Using
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -1258,7 +1257,7 @@ Friend Class MainForm
                 classcell.Items.Add(arrClassList(i))
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -1572,7 +1571,7 @@ Friend Class MainForm
             System.Windows.Forms.Cursor.Current = Cursors.Default
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "FillForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "FillForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1657,7 +1656,7 @@ Friend Class MainForm
                 SaveXMLFile = False
                 Exit Function
             Else
-                HandleError(c_sModuleFileName, ex)
+                HandleError(ex)
 
                 SaveXMLFile = False
             End If
@@ -1976,7 +1975,7 @@ Friend Class MainForm
             _XMLPrjParams = clsParamsPrj
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         Finally
             SSTab1.SelectedIndex = 0
         End Try
@@ -2010,7 +2009,7 @@ Friend Class MainForm
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "ValidatePollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "ValidatePollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -2110,7 +2109,7 @@ Friend Class MainForm
 
             ValidateWaterShed = True
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "ValidateWaterShed " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "ValidateWaterShed " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -2143,7 +2142,7 @@ Friend Class MainForm
             ValidateMgmtScenario = True
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "ValidateMgmtScenario " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'False, "ValidateMgmtScenario " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -2160,7 +2159,7 @@ Friend Class MainForm
             dgvLandUse.Rows(row).Cells("LUScenario").Value = name
             dgvLandUse.Rows(row).Cells("LUScenarioXML").Value = strXML
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -2176,7 +2175,7 @@ Friend Class MainForm
             cboPrecipScen.Items.Insert(cboPrecipScen.Items.Count, "New precipitation scenario...")
             cboPrecipScen.SelectedIndex = modUtil.GetCboIndex(strPrecName, cboPrecipScen)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -2192,7 +2191,7 @@ Friend Class MainForm
             cboWQStd.Items.Insert(cboWQStd.Items.Count, "Define a new water quality standard...")
             cboWQStd.SelectedIndex = modUtil.GetCboIndex(strWQName, cboWQStd)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region

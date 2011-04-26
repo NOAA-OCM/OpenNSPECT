@@ -20,7 +20,6 @@ Imports System.Data.OleDb
 Friend Class CopyWaterQualityStandardForm
 
     Private _frmWQStd As WaterQualityStandardsForm
-    Const c_sModuleFileName As String = "frmcopyWQStd.vb"
 
 
     Private Sub frmCopyWQStd_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
@@ -28,7 +27,7 @@ Friend Class CopyWaterQualityStandardForm
             modUtil.InitComboBox(cboStdName, "WQCRITERIA")
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -78,7 +77,7 @@ Friend Class CopyWaterQualityStandardForm
             MyBase.OK_Button_Click(sender, e)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

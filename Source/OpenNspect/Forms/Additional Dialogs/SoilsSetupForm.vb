@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 Friend Class SoilsSetupForm
 
-    Const c_sModuleFileName As String = "frmSoilsSetup.vb"
 
     Private _frmSoil As SoilsForm
     Private _pRasterProps As MapWinGIS.Grid
@@ -40,7 +39,7 @@ Friend Class SoilsSetupForm
                 Exit Sub
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -56,7 +55,7 @@ Friend Class SoilsSetupForm
             End Using
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -74,7 +73,7 @@ Friend Class SoilsSetupForm
         Try
             _frmSoil = frmSoil
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -99,7 +98,7 @@ Friend Class SoilsSetupForm
 
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -178,7 +177,7 @@ Friend Class SoilsSetupForm
 
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -363,7 +362,7 @@ Friend Class SoilsSetupForm
 
             CreateSoilsGrid = True
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             'MsgBox(Err.Number & ": " & Err.Description)
             CreateSoilsGrid = False
         End Try
@@ -388,7 +387,7 @@ Friend Class SoilsSetupForm
             Next i
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region

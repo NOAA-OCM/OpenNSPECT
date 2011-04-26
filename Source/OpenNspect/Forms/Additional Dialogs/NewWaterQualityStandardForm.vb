@@ -20,7 +20,6 @@ Imports System.Windows.Forms
 Imports System.Data.OleDb
 Friend Class NewWaterQualityStandardForm
 
-    Const c_sModuleFileName As String = "frmAddWQStd.vb"
 
     Private _frmWQStd As WaterQualityStandardsForm
     Private _frmPrj As MainForm
@@ -49,7 +48,7 @@ Friend Class NewWaterQualityStandardForm
             End Using
             OK_Button.Enabled = False
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -58,7 +57,7 @@ Friend Class NewWaterQualityStandardForm
         Try
             txtWQStdName.Text = Replace(txtWQStdName.Text, "'", "")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -115,7 +114,7 @@ Friend Class NewWaterQualityStandardForm
             MyBase.OK_Button_Click(sender, e)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
 
     End Sub
@@ -142,7 +141,7 @@ Friend Class NewWaterQualityStandardForm
             _frmWQStd = frmWQStd
             _frmPrj = frmPrj
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -158,7 +157,7 @@ Friend Class NewWaterQualityStandardForm
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -192,7 +191,7 @@ Friend Class NewWaterQualityStandardForm
             End Using
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region

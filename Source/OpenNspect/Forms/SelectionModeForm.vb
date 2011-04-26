@@ -14,7 +14,6 @@
 '               Added licensing and comments to code
 Public Class SelectionModeForm
     Private stopclose As Boolean
-    Const c_sModuleFileName As String = "frmSelectShape.vb"
 
 
     Public Sub InitializeAndShow()
@@ -27,7 +26,7 @@ Public Class SelectionModeForm
             If Not g_comp Is Nothing Then g_comp.Visible = False
             If Not g_luscen Is Nothing Then g_luscen.Visible = False
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -47,7 +46,7 @@ Public Class SelectionModeForm
         Try
             Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -57,7 +56,7 @@ Public Class SelectionModeForm
             stopclose = disable
             btnDone.Enabled = Not disable
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -68,7 +67,7 @@ Public Class SelectionModeForm
                 e.Cancel = True
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

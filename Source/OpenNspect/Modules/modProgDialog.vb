@@ -61,7 +61,7 @@ Module modProgDialog
             Windows.Forms.Application.DoEvents()
 
         Catch ex As Exception
-            HandleError("Error Occurring during ModProgDialog", ex)
+            HandleError(ex)
         End Try
 
     End Sub

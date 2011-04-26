@@ -22,7 +22,6 @@ Friend Class WaterQualityStandardsForm
 
     Dim _bolChange As Boolean = False
 
-    Const c_sModuleFileName As String = "frmWaterQualityStandard.vb"
 
 #Region "Events"
 
@@ -32,7 +31,7 @@ Friend Class WaterQualityStandardsForm
             _bolChange = False
             modUtil.InitComboBox(cboWQStdName, "WQCRITERIA")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -80,7 +79,7 @@ Friend Class WaterQualityStandardsForm
             OK_Button.Enabled = False
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -90,7 +89,7 @@ Friend Class WaterQualityStandardsForm
             OK_Button.Enabled = True
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -100,7 +99,7 @@ Friend Class WaterQualityStandardsForm
             addwq.Init(Me, Nothing)
             addwq.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuNewWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)     'True, "mnuNewWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
@@ -157,7 +156,7 @@ Friend Class WaterQualityStandardsForm
             copywq.Init(Me)
             copywq.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuCopyWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)     'True, "mnuCopyWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
@@ -169,7 +168,7 @@ Friend Class WaterQualityStandardsForm
             impwq.Init(Me)
             impwq.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuImpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)     'True, "mnuImpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
@@ -188,7 +187,7 @@ Friend Class WaterQualityStandardsForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "mnuExpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)     'True, "mnuExpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
@@ -198,7 +197,7 @@ Friend Class WaterQualityStandardsForm
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "wq_stnds.htm")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -245,7 +244,7 @@ Friend Class WaterQualityStandardsForm
 
             _bolChange = False
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "UpdateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)     'False, "UpdateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
 
@@ -269,7 +268,7 @@ Friend Class WaterQualityStandardsForm
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)     'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Function
 
@@ -280,7 +279,7 @@ Friend Class WaterQualityStandardsForm
             modUtil.InitComboBox(cboWQStdName, "WQCRITERIA")
             cboWQStdName.SelectedIndex = modUtil.GetCboIndex(strWQName, cboWQStdName)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -303,7 +302,7 @@ Friend Class WaterQualityStandardsForm
 
             out.Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "ExportStandard " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)     'False, "ExportStandard " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
 

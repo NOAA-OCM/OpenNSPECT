@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 Friend Class WatershedDelineationsForm
 
-    Private Const c_sModuleFileName As String = "frmWatershedDelin.vb"
 
 #Region "Events"
 
@@ -28,7 +27,7 @@ Friend Class WatershedDelineationsForm
         Try
             modUtil.InitComboBox(cboWSDelin, "WSDELINEATION")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -57,7 +56,7 @@ Friend Class WatershedDelineationsForm
                 End Using
             End Using
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -67,7 +66,7 @@ Friend Class WatershedDelineationsForm
             newWS.Init(Me, Nothing)
             newWS.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -78,7 +77,7 @@ Friend Class WatershedDelineationsForm
             newWS.Init(Me, Nothing)
             newWS.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -127,7 +126,7 @@ Friend Class WatershedDelineationsForm
                 MsgBox("Please select a watershed delineation", MsgBoxStyle.Critical, "No Scenario Selected")
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -136,7 +135,7 @@ Friend Class WatershedDelineationsForm
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "wsdelin.htm")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region

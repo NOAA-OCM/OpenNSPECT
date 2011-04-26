@@ -42,7 +42,6 @@ Public Class clsXMLLandUseItems
 
     'The NODE_NAME constant contains the name of the XML element that
     'is being wrapped.
-    Const c_sModuleFileName As String = "clsXMLLandUseItems.vb"
 
 
     Private Const NODE_NAME As String = "LandUses"
@@ -80,7 +79,7 @@ Public Class clsXMLLandUseItems
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             GetEnumerator = Nothing
         End Try
     End Function
@@ -123,7 +122,7 @@ Public Class clsXMLLandUseItems
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -153,7 +152,7 @@ Public Class clsXMLLandUseItems
             Next LuNode
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -162,7 +161,7 @@ Public Class clsXMLLandUseItems
         Try
             m_colItems = New Collections.ArrayList
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

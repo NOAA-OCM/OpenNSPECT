@@ -38,7 +38,6 @@ Public Class clsXMLPollutantItem
     ' *
     ' *************************************************************************************
 
-    Const c_sModuleFileName As String = "clsXMLPollutantItem.vb"
 
     Private Const NODE_NAME As String = "Pollutant"
     Private Const ATTRIBUTE_ID As String = "ID"
@@ -102,7 +101,7 @@ Public Class clsXMLPollutantItem
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -125,7 +124,7 @@ Public Class clsXMLPollutantItem
             strTypeDefXMLFile = GetNodeText(node, ELEMENT_TypeDefXMLFile)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

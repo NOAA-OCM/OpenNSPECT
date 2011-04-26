@@ -22,7 +22,6 @@ Imports System.Windows.Forms
 
 Friend Class LandCoverTypesForm
 
-    Private Const c_sModuleFileName As String = "frmLandCoverTypes.vb"
 
     Private _intLCTypeID As Integer 'LCTypeID#
 
@@ -48,7 +47,7 @@ Friend Class LandCoverTypesForm
             'Initialize the Grid and populate the combobox
             modUtil.InitComboBox(cmbxLCType, "LCTYPE")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -128,7 +127,7 @@ Friend Class LandCoverTypesForm
                 _bolBegin = True
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -137,7 +136,7 @@ Friend Class LandCoverTypesForm
         Try
             e.SuppressKeyPress = True
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -146,7 +145,7 @@ Friend Class LandCoverTypesForm
         Try
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
     Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
@@ -219,7 +218,7 @@ Friend Class LandCoverTypesForm
             newLC.Init(Me)
             newLC.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -264,7 +263,7 @@ Friend Class LandCoverTypesForm
                 Exit Sub
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -275,7 +274,7 @@ Friend Class LandCoverTypesForm
             impLC.Init(Me)
             impLC.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -291,7 +290,7 @@ Friend Class LandCoverTypesForm
                 ExportLandCover(dlgsave.FileName)
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -300,7 +299,7 @@ Friend Class LandCoverTypesForm
         Try
             AddRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -309,7 +308,7 @@ Friend Class LandCoverTypesForm
         Try
             InsertRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -318,7 +317,7 @@ Friend Class LandCoverTypesForm
         Try
             DeleteRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -327,7 +326,7 @@ Friend Class LandCoverTypesForm
         Try
             Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "land_cover.htm")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -339,7 +338,7 @@ Friend Class LandCoverTypesForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -348,7 +347,7 @@ Friend Class LandCoverTypesForm
         Try
             AddRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -357,7 +356,7 @@ Friend Class LandCoverTypesForm
         Try
             InsertRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -366,7 +365,7 @@ Friend Class LandCoverTypesForm
         Try
             DeleteRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -376,7 +375,7 @@ Friend Class LandCoverTypesForm
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -385,7 +384,7 @@ Friend Class LandCoverTypesForm
         Try
             MsgBox("Please enter a valid number in the cell on row " + (e.RowIndex + 1).ToString + " and column " + (e.ColumnIndex + 1).ToString + ".", MsgBoxStyle.Exclamation, "Data Error")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region
@@ -398,7 +397,7 @@ Friend Class LandCoverTypesForm
             _bSource.EndEdit()
             _LCAdapter.Update(_dTable)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -413,7 +412,7 @@ Friend Class LandCoverTypesForm
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -428,7 +427,7 @@ Friend Class LandCoverTypesForm
                 CmdSaveEnabled()
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -441,7 +440,7 @@ Friend Class LandCoverTypesForm
                 CmdSaveEnabled()
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -468,7 +467,7 @@ Friend Class LandCoverTypesForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -536,7 +535,7 @@ Friend Class LandCoverTypesForm
 
             ValidateGridValues = True
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -569,7 +568,7 @@ Friend Class LandCoverTypesForm
 
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -595,7 +594,7 @@ Friend Class LandCoverTypesForm
             out.Close()
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -607,7 +606,7 @@ Friend Class LandCoverTypesForm
             modUtil.InitComboBox(cmbxLCType, "LCType")
             cmbxLCType.SelectedItem = strName
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

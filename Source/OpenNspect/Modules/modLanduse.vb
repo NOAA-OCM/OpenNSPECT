@@ -47,7 +47,6 @@ Module modLanduse
     Public g_strLCTypeName As String 'the temp name of Land Cover type, if indeed landuses are applied.
     Public g_DictTempNames As New Generic.Dictionary(Of String, String) 'Array holding the temp names of the LCType, and subsequent Coefficient Set Names
     ' Constant used by the Error handler function - DO NOT REMOVE
-    Const c_sModuleFileName As String = "modLanduse.vb"
 
     ''' <summary>
     ''' Begins working.
@@ -469,7 +468,7 @@ Module modLanduse
             End Using
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "Cleanup " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "Cleanup " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 End Module

@@ -15,7 +15,6 @@
 Public Class CompareOutputsForm
     Private _SelectLyrPath As String
     Private _SelectedShapes As Collections.Generic.List(Of Integer)
-    Const c_sModuleFileName As String = "frmCompareOutputs.vb"
 
 #Region "Events"
 
@@ -26,7 +25,7 @@ Public Class CompareOutputsForm
             RefreshLeft()
             RefreshRight()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -35,7 +34,7 @@ Public Class CompareOutputsForm
         Try
             RefreshLeft()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -44,7 +43,7 @@ Public Class CompareOutputsForm
         Try
             RefreshRight()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -53,7 +52,7 @@ Public Class CompareOutputsForm
         Try
             AddToLegendFromProj()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -62,7 +61,7 @@ Public Class CompareOutputsForm
         Try
             Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -71,7 +70,7 @@ Public Class CompareOutputsForm
         Try
             Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -80,7 +79,7 @@ Public Class CompareOutputsForm
         Try
             RunCompare()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -90,7 +89,7 @@ Public Class CompareOutputsForm
             Dim selectfrm As New SelectionModeForm
             selectfrm.InitializeAndShow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region
@@ -110,7 +109,7 @@ Public Class CompareOutputsForm
                 lblSelected.Text = g_MapWin.View.SelectedShapes.NumSelected.ToString + " selected"
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -123,7 +122,7 @@ Public Class CompareOutputsForm
                 RefreshUsingProjectDirectory(lstbxLeft)
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -136,7 +135,7 @@ Public Class CompareOutputsForm
                 RefreshUsingProjectDirectory(lstbxRight)
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -155,7 +154,7 @@ Public Class CompareOutputsForm
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -191,7 +190,7 @@ Public Class CompareOutputsForm
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -249,7 +248,7 @@ Public Class CompareOutputsForm
                 Exit Sub
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -289,7 +288,7 @@ Public Class CompareOutputsForm
 
             Return tmpOutItems
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             GetListFromSelected = Nothing
         End Try
     End Function
@@ -328,7 +327,7 @@ Public Class CompareOutputsForm
                 Return ""
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             GetTypeFromPath = ""
         End Try
     End Function
@@ -409,7 +408,7 @@ Public Class CompareOutputsForm
                 MsgBox("Please select an output set from both lists to compare.", MsgBoxStyle.Exclamation, "Compare Error")
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region
@@ -421,7 +420,7 @@ Public Class CompareOutputsForm
         Try
             Return Input1 - Input2
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -434,7 +433,7 @@ Public Class CompareOutputsForm
                 Return OutNull
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 #End Region
