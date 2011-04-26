@@ -163,6 +163,7 @@
         '
         'cboLCLayer
         '
+        Me.cboLCLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLCLayer.Location = New System.Drawing.Point(55, 23)
         Me.cboLCLayer.Name = "cboLCLayer"
         Me.cboLCLayer.Size = New System.Drawing.Size(149, 21)
@@ -287,6 +288,7 @@
         '
         'cboWQStd
         '
+        Me.cboWQStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWQStd.Location = New System.Drawing.Point(46, 20)
         Me.cboWQStd.Name = "cboWQStd"
         Me.cboWQStd.Size = New System.Drawing.Size(110, 21)
@@ -314,6 +316,7 @@
         '
         'cboWSDelin
         '
+        Me.cboWSDelin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWSDelin.Location = New System.Drawing.Point(46, 20)
         Me.cboWSDelin.Name = "cboWSDelin"
         Me.cboWSDelin.Size = New System.Drawing.Size(141, 21)
@@ -341,6 +344,7 @@
         '
         'cboPrecipScen
         '
+        Me.cboPrecipScen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPrecipScen.Location = New System.Drawing.Point(54, 20)
         Me.cboPrecipScen.Name = "cboPrecipScen"
         Me.cboPrecipScen.Size = New System.Drawing.Size(149, 21)
@@ -463,6 +467,7 @@
         '
         'cboSoilsLayer
         '
+        Me.cboSoilsLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboSoilsLayer.Location = New System.Drawing.Point(46, 25)
         Me.cboSoilsLayer.Name = "cboSoilsLayer"
         Me.cboSoilsLayer.Size = New System.Drawing.Size(141, 21)
@@ -509,6 +514,7 @@
         '
         'cboLCUnits
         '
+        Me.cboLCUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLCUnits.Enabled = False
         Me.cboLCUnits.Items.AddRange(New Object() {"meters", "feet"})
         Me.cboLCUnits.Location = New System.Drawing.Point(55, 47)
@@ -518,6 +524,7 @@
         '
         'cboLCType
         '
+        Me.cboLCType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLCType.Location = New System.Drawing.Point(55, 72)
         Me.cboLCType.Name = "cboLCType"
         Me.cboLCType.Size = New System.Drawing.Size(149, 21)

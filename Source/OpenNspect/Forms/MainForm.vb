@@ -481,18 +481,6 @@ Friend Class MainForm
     End Sub
 
     ''' <summary>
-    ''' Stop keypresses in the LC layer combo
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub cboLCLayer_KeyDown (ByVal sender As Object, ByVal e As KeyEventArgs) _
-        Handles cboWSDelin.KeyDown, cboWQStd.KeyDown, cboPrecipScen.KeyDown, cboLCUnits.KeyDown, cboLCType.KeyDown, _
-                cboLCLayer.KeyDown
-        e.SuppressKeyPress = True
-    End Sub
-
-    ''' <summary>
     ''' Handles showing the appropriate elements when the use grid checkbox is used
     ''' </summary>
     ''' <param name="sender"></param>

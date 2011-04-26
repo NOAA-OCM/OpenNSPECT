@@ -214,10 +214,10 @@
     <Compile Include="Forms\Additional Dialogs\ImportWaterQualityStandardForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\ProgressForm.Designer.vb">
+    <Compile Include="Forms\ProgressForm.Designer.vb">
       <DependentUpon>ProgressForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\ProgressForm.vb">
+    <Compile Include="Forms\ProgressForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Advanced Settings\LandCoverTypesForm.designer.vb">
@@ -374,7 +374,7 @@
     <EmbeddedResource Include="Forms\Additional Dialogs\ImportWaterQualityStandardForm.resX">
       <DependentUpon>ImportWaterQualityStandardForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\ProgressForm.resx">
+    <EmbeddedResource Include="Forms\ProgressForm.resx">
       <DependentUpon>ProgressForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Advanced Settings\LandCoverTypesForm.resX">
