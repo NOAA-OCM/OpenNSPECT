@@ -148,8 +148,8 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\clsWrapperManScen.vb" />
-    <Compile Include="Classes\clsWrapperPoll.vb" />
+    <Compile Include="Classes\clsXMLLUMangementScenario.vb" />
+    <Compile Include="Classes\clsXMLLUScenPollItem.vb" />
     <Compile Include="Classes\clsXMLBase.vb" />
     <Compile Include="Classes\clsXMLCoeffTypeDef.vb" />
     <Compile Include="Classes\clsXMLLandUseItem.vb" />
@@ -476,7 +476,9 @@
     <Content Include="Images\NOAA_Logo.ico" />
     <Content Include="Readme.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Xml\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -18,7 +18,7 @@
 Imports System.Collections.Generic
 Imports System.Xml
 
-Public Class clsXMLLUScen
+Public Class clsXMLLUMangementScenario
     Inherits clsXMLBase
     ' *************************************************************************************
     ' *  Perot Systems Government Services
@@ -77,7 +77,7 @@ Public Class clsXMLLUScen
         End Get
     End Property
 
-    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
@@ -89,44 +89,44 @@ Public Class clsXMLLUScen
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml ("<" & NODE_NAME & "/>")
+                dom.LoadXml(String.Format("<{0}/>", NODE_NAME))
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement (NODE_NAME)
-                Parent.AppendChild (node)
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
             End If
 
             '*********************************************************************
-            NodeAppendChildElement (dom, node, NODE_ManScenName, strLUScenName)
-            NodeAppendChildElement (dom, node, NODE_ManScenLyrName, strLUScenLyrName)
-            NodeAppendChildElement (dom, node, NODE_ManScenFileName, strLUScenFileName)
-            NodeAppendChildElement (dom, node, NODE_ManScenSelectedPoly, intLUScenSelectedPoly)
+            NodeAppendChildElement(dom, node, NODE_ManScenName, strLUScenName)
+            NodeAppendChildElement(dom, node, NODE_ManScenLyrName, strLUScenLyrName)
+            NodeAppendChildElement(dom, node, NODE_ManScenFileName, strLUScenFileName)
+            NodeAppendChildElement(dom, node, NODE_ManScenSelectedPoly, intLUScenSelectedPoly)
             Dim strlist As String = ""
-            If intLUScenSelectedPolyList.Count > 0 Then strlist = intLUScenSelectedPolyList (0).ToString
+            If intLUScenSelectedPolyList.Count > 0 Then strlist = intLUScenSelectedPolyList(0).ToString
             For i As Integer = 1 To intLUScenSelectedPolyList.Count - 1
-                strlist = strlist + "," + intLUScenSelectedPolyList (i).ToString
+                strlist = String.Format("{0},{1}", strlist, intLUScenSelectedPolyList(i))
             Next
-            NodeAppendChildElement (dom, node, NODE_ManScenSelectedPolyList, strlist)
-            NodeAppendChildElement (dom, node, NODE_SCSCurveA, intSCSCurveA)
-            NodeAppendChildElement (dom, node, NODE_SCSCurveB, intSCSCurveB)
-            NodeAppendChildElement (dom, node, NODE_SCSCurveC, intSCSCurveC)
-            NodeAppendChildElement (dom, node, NODE_SCSCurveD, intSCSCurveD)
-            NodeAppendChildElement (dom, node, NODE_CoverFactor, lngCoverFactor)
-            NodeAppendChildElement (dom, node, NODE_WaterWetlands, intWaterWetlands)
+            NodeAppendChildElement(dom, node, NODE_ManScenSelectedPolyList, strlist)
+            NodeAppendChildElement(dom, node, NODE_SCSCurveA, intSCSCurveA)
+            NodeAppendChildElement(dom, node, NODE_SCSCurveB, intSCSCurveB)
+            NodeAppendChildElement(dom, node, NODE_SCSCurveC, intSCSCurveC)
+            NodeAppendChildElement(dom, node, NODE_SCSCurveD, intSCSCurveD)
+            NodeAppendChildElement(dom, node, NODE_CoverFactor, lngCoverFactor)
+            NodeAppendChildElement(dom, node, NODE_WaterWetlands, intWaterWetlands)
 
-            clsPollItems.CreateNode (node)
+            clsPollItems.CreateNode(node)
 
             CreateNode = node
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode (ByRef node As XmlNode)
+    Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -134,28 +134,28 @@ Public Class clsXMLLUScen
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
 
-            strLUScenName = GetNodeText (node, NODE_ManScenName)
-            strLUScenLyrName = GetNodeText (node, NODE_ManScenLyrName)
-            strLUScenFileName = GetNodeText (node, NODE_ManScenFileName)
-            intLUScenSelectedPoly = CShort (GetNodeText (node, NODE_ManScenSelectedPoly))
-            Dim tmpstr As String() = GetNodeText (node, NODE_ManScenSelectedPolyList).Split (",")
+            strLUScenName = GetNodeText(node, NODE_ManScenName)
+            strLUScenLyrName = GetNodeText(node, NODE_ManScenLyrName)
+            strLUScenFileName = GetNodeText(node, NODE_ManScenFileName)
+            intLUScenSelectedPoly = CShort(GetNodeText(node, NODE_ManScenSelectedPoly))
+            Dim tmpstr As String() = GetNodeText(node, NODE_ManScenSelectedPolyList).Split(",")
             intLUScenSelectedPolyList.Clear()
             For i As Integer = 0 To tmpstr.Length - 1
-                If tmpstr (i) <> "" Then
-                    intLUScenSelectedPolyList.Add (CShort (tmpstr (i)))
+                If tmpstr(i) <> "" Then
+                    intLUScenSelectedPolyList.Add(CShort(tmpstr(i)))
                 End If
             Next
-            intSCSCurveA = CDbl (GetNodeText (node, NODE_SCSCurveA))
-            intSCSCurveB = CDbl (GetNodeText (node, NODE_SCSCurveB))
-            intSCSCurveC = CDbl (GetNodeText (node, NODE_SCSCurveC))
-            intSCSCurveD = CDbl (GetNodeText (node, NODE_SCSCurveD))
-            lngCoverFactor = CDbl (GetNodeText (node, NODE_CoverFactor))
-            intWaterWetlands = CShort (GetNodeText (node, NODE_WaterWetlands))
+            intSCSCurveA = CDbl(GetNodeText(node, NODE_SCSCurveA))
+            intSCSCurveB = CDbl(GetNodeText(node, NODE_SCSCurveB))
+            intSCSCurveC = CDbl(GetNodeText(node, NODE_SCSCurveC))
+            intSCSCurveD = CDbl(GetNodeText(node, NODE_SCSCurveD))
+            lngCoverFactor = CDbl(GetNodeText(node, NODE_CoverFactor))
+            intWaterWetlands = CShort(GetNodeText(node, NODE_WaterWetlands))
 
-            clsPollItems.LoadNode (node.SelectSingleNode (clsPollItems.NodeName))
+            clsPollItems.LoadNode(node.SelectSingleNode(clsPollItems.NodeName))
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -165,7 +165,7 @@ Public Class clsXMLLUScen
             clsPollItems = New clsXMLLUScenPollItems
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

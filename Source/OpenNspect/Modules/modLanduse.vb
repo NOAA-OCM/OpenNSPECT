@@ -83,7 +83,7 @@ Module modLanduse
             Dim k As Short
             Dim intValue As Short
             'Temp new landclasses fake value
-            Dim clsLUScen As New clsXMLLUScen
+            Dim clsLUScen As New clsXMLLUMangementScenario
             'XML Land use scenario
             Dim strCoeffSetTempName As String
             'New temp name for the coefficient set
@@ -418,7 +418,7 @@ Module modLanduse
                                "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}' AND LCCLASS.NAME LIKE '{1}'", _
                                strLCClass, clsLUItem.strLUScenName)
         Dim LCValue As Double
-        Dim clsLUItemDetails As New clsXMLLUScen
+        Dim clsLUItemDetails As New clsXMLLUMangementScenario
         'The particulars in the landuse
 
         'Open the landclass Value Value 
