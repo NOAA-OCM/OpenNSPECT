@@ -19,6 +19,7 @@ Imports System.Data
 Imports MapWindow.Interfaces
 Imports System.Data.OleDb
 Imports MapWinGIS
+Imports OpenNspect.Xml
 Imports Point = System.Drawing.Point
 
 Friend Class MainForm
@@ -26,7 +27,7 @@ Friend Class MainForm
 
 #Region "Class Vars"
 
-    Private _XmlPrjParams As XmlPrjFile
+    Private _XmlPrjParams As ProjectFile
     'xml doc that holds inputs
 
     Private _bolFirstLoad As Boolean
@@ -132,7 +133,7 @@ Friend Class MainForm
             _intLUCount = 0
 
             'Initialize parameter file
-            _XmlPrjParams = New XmlPrjFile
+            _XmlPrjParams = New ProjectFile
 
             UpdateFormTitle("*")
 
@@ -1039,7 +1040,7 @@ Friend Class MainForm
             For i = 0 To _XmlPrjParams.PollItems.Count - 1
                 If _XmlPrjParams.PollItems.Item(i).intApply = 1 Then
                     'If user is NOT ignoring the pollutant then send the whole item over along with LCType
-                    Dim pollitem As XmlPollutantItem = _XmlPrjParams.PollItems.Item(i)
+                    Dim pollitem As PollutantItem = _XmlPrjParams.PollItems.Item(i)
                     If _
                         Not _
                         PollutantConcentrationSetup(pollitem, _XmlPrjParams.strLCGridType, _
@@ -1865,7 +1866,7 @@ Friend Class MainForm
         Try
             Dim strUpdatePrecip As String
 
-            Dim ParamsPrj As New XmlPrjFile
+            Dim ParamsPrj As New ProjectFile
             'Just a holder for the xml
 
             SSTab1.SelectedIndex = 0
@@ -2117,10 +2118,10 @@ Friend Class MainForm
             SSTab1.SelectedIndex = 3
             'Managment Scenarios
             If ValidateMgmtScenario() Then
-                Dim mgmtitem As XmlMgmtScenItem
+                Dim mgmtitem As ManagementScenarioItem
                 For Each row As DataGridViewRow In dgvManagementScen.Rows
                     If Len(row.Cells("ChangeAreaLayer").Value) > 0 Then
-                        mgmtitem = New XmlMgmtScenItem
+                        mgmtitem = New ManagementScenarioItem
                         mgmtitem.intID = row.Index + 1
                         If row.Cells("ManageApply").FormattedValue Then
                             mgmtitem.intApply = 1
@@ -2142,10 +2143,10 @@ Friend Class MainForm
             SSTab1.SelectedIndex = 0
             'Pollutants
             If ValidatePollutants() Then
-                Dim pollitem As XmlPollutantItem
+                Dim pollitem As PollutantItem
                 For Each row As DataGridViewRow In dgvPollutants.Rows
                     'Adding a New Pollutantant Item to the Project file
-                    pollitem = New XmlPollutantItem
+                    pollitem = New PollutantItem
                     pollitem.intID = row.Index + 1
                     If row.Cells("PollApply").FormattedValue Then
                         pollitem.intApply = 1
@@ -2170,9 +2171,9 @@ Friend Class MainForm
             SSTab1.SelectedIndex = 2
             'Land Uses
             For Each row As DataGridViewRow In dgvLandUse.Rows
-                Dim luitem As XmlLandUseItem
+                Dim luitem As LandUseItem
                 If Len(row.Cells("LUScenario").Value) > 0 Then
-                    luitem = New XmlLandUseItem
+                    luitem = New LandUseItem
                     luitem.intID = row.Index + 1
                     luitem.intApply = CShort(row.Cells("LUApply").FormattedValue)
                     luitem.strLUScenName = row.Cells("LUScenario").Value

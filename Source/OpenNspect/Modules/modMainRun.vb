@@ -19,6 +19,7 @@ Imports System.Collections.Generic
 Imports MapWinGeoProc
 Imports MapWinGIS
 Imports System.Data.OleDb
+Imports OpenNspect.Xml
 
 Module modMainRun
     ' *************************************************************************************
@@ -73,7 +74,7 @@ Module modMainRun
 
     Public g_dicMetadata As Dictionary(Of String, String)
     'Global dictionary to hold name of layer, metadata process string
-    Public g_XmlPrjFile As XmlPrjFile
+    Public g_XmlPrjFile As ProjectFile
     'Global xml project file for metadata support
 
     Public g_pSelectedPolyClip As Shape

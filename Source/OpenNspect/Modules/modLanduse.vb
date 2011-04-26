@@ -20,6 +20,7 @@ Imports System.Data
 Imports MapWindow.Interfaces
 Imports MapWinGIS
 Imports System.Data.OleDb
+Imports OpenNspect.Xml
 
 Module modLanduse
     ' *************************************************************************************************
@@ -61,7 +62,7 @@ Module modLanduse
     ''' <param name="LUScenItems">Xml class that holds the params of the user's Land Use Scenario.</param>
     ''' <param name="dictPollutants">dictionary created to hold the pollutants of this particular project.</param>
     ''' <param name="strLCFileName">FileName of land cover grid.</param>
-    Public Sub Begin(ByRef strLCClassName As String, ByRef LUScenItems As XmlLandUseItems, _
+    Public Sub Begin(ByRef strLCClassName As String, ByRef LUScenItems As LandUseItems, _
                       ByRef dictPollutants As Dictionary(Of String, String), ByRef strLCFileName As String)
 
         Try
@@ -83,7 +84,7 @@ Module modLanduse
             Dim k As Short
             Dim intValue As Short
             'Temp new landclasses fake value
-            Dim LUScen As New XmlLUMangementScenario
+            Dim LUScen As New LandUseMangementScenario
             'Xml Land use scenario
             Dim strCoeffSetTempName As String
             'New temp name for the coefficient set
@@ -349,7 +350,7 @@ Module modLanduse
     ''' </summary>
     ''' <param name="LUScenItems">which is a collection of the landuse entered.</param>
     ''' <param name="strLCFileName">path to which the landcover grid exists.</param>
-    Private Sub ReclassLanduse(ByRef LUScenItems As XmlLandUseItems, ByRef strLCFileName As String)
+    Private Sub ReclassLanduse(ByRef LUScenItems As LandUseItems, ByRef strLCFileName As String)
         'strLCClass: Name of the LCTYPE being altered
 
         Try
@@ -406,7 +407,7 @@ Module modLanduse
         End Try
     End Sub
 
-    Private Sub ReclassRaster(ByRef LUItem As XmlLandUseItem, ByRef strLCClass As String, _
+    Private Sub ReclassRaster(ByRef LUItem As LandUseItem, ByRef strLCClass As String, _
                                ByRef outputGrid As Grid)
 
         'We're passing over a single land use scenario in the form of the xml
@@ -418,7 +419,7 @@ Module modLanduse
                                "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}' AND LCCLASS.NAME LIKE '{1}'", _
                                strLCClass, LUItem.strLUScenName)
         Dim LCValue As Double
-        Dim LUItemDetails As New XmlLUMangementScenario
+        Dim LUItemDetails As New LandUseMangementScenario
         'The particulars in the landuse
 
         'Open the landclass Value Value 
@@ -477,7 +478,7 @@ Module modLanduse
     End Sub
 
     Public Sub Cleanup(ByRef dictNames As Dictionary(Of String, String), _
-                        ByRef PollItems As XmlPollutantItems, ByRef strLCTypeName As String)
+                        ByRef PollItems As PollutantItems, ByRef strLCTypeName As String)
         Try
             Dim strDeleteCoeffSet As String
             Dim strCoeffDeleteName As String

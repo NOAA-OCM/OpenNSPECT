@@ -148,20 +148,20 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Xml\clsXMLLUMangementScenario.vb" />
-    <Compile Include="Xml\clsXMLLUScenPollItem.vb" />
-    <Compile Include="Xml\XmlBase.vb" />
-    <Compile Include="Xml\clsXMLCoeffTypeDef.vb" />
-    <Compile Include="Xml\clsXMLLandUseItem.vb" />
-    <Compile Include="Xml\clsXMLLandUseItems.vb" />
-    <Compile Include="Xml\clsXMLMgmtScenItem.vb" />
-    <Compile Include="Xml\clsXMLMgmtScenItems.vb" />
-    <Compile Include="Xml\clsXMLPollItems.vb" />
-    <Compile Include="Xml\clsXMLPollutantItem.vb" />
-    <Compile Include="Xml\clsXMLPollutantItems.vb" />
-    <Compile Include="Xml\clsXMLPrjFile.vb" />
-    <Compile Include="Xml\clsXMLOutputItem.vb" />
-    <Compile Include="Xml\clsXMLOutputItems.vb" />
+    <Compile Include="Xml\LandUseMangementScenario.vb" />
+    <Compile Include="Xml\LandUseScenarioPollutantItem.vb" />
+    <Compile Include="Xml\Base.vb" />
+    <Compile Include="Xml\CoefficientTypeDefinition.vb" />
+    <Compile Include="Xml\LandUseItem.vb" />
+    <Compile Include="Xml\LandUseItems.vb" />
+    <Compile Include="Xml\ManagementScenarioItem.vb" />
+    <Compile Include="Xml\ManagementScenarioItems.vb" />
+    <Compile Include="Xml\LandUseScenarioPollutantItems.vb" />
+    <Compile Include="Xml\PollutantItem.vb" />
+    <Compile Include="Xml\PollutantItems.vb" />
+    <Compile Include="Xml\ProjectFile.vb" />
+    <Compile Include="Xml\OutputItem.vb" />
+    <Compile Include="Xml\OutputItems.vb" />
     <Compile Include="Classes\DataHelper.vb" />
     <Compile Include="Classes\MapWindowPlugin.vb">
       <SubType>Code</SubType>

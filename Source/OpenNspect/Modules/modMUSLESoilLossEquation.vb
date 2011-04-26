@@ -19,6 +19,7 @@ Imports System.Data.OleDb
 Imports System.IO
 Imports MapWinGeoProc
 Imports MapWinGIS
+Imports OpenNspect.Xml
 
 Module modMUSLESoilLossEquation
     ' *************************************************************************************
@@ -49,7 +50,7 @@ Module modMUSLESoilLossEquation
     Private _pondpicks As String()
 
     Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, _
-                                ByRef strLandClass As String, ByRef OutputItems As XmlOutputItems) As Boolean
+                                ByRef strLandClass As String, ByRef OutputItems As OutputItems) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strSoilsDefName: Name of the Soils Definition being used
         'strKFactorFileName: K Factor FileName
@@ -379,7 +380,7 @@ Module modMUSLESoilLossEquation
     End Function
 
     Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, _
-                                ByRef OutputItems As XmlOutputItems) As Boolean
+                                ByRef OutputItems As OutputItems) As Boolean
         'Incoming strings: strConStatment: the monster con statement
         'strConPondstatement: the con for the pond stuff
         'Calculates the MUSLE erosion model

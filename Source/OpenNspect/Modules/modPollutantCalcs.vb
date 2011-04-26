@@ -19,6 +19,7 @@ Imports System.Data.OleDb
 Imports System.IO
 Imports MapWinGeoProc
 Imports MapWinGIS
+Imports OpenNspect.Xml
 
 Module modPollutantCalcs
     ' *************************************************************************************
@@ -52,8 +53,8 @@ Module modPollutantCalcs
 
     Private _picks() As String
 
-    Public Function PollutantConcentrationSetup(ByRef Pollutant As XmlPollutantItem, ByRef strLandClass As String, _
-                                                 ByRef strWQName As String, ByRef OutputItems As XmlOutputItems) _
+    Public Function PollutantConcentrationSetup(ByRef Pollutant As PollutantItem, ByRef strLandClass As String, _
+                                                 ByRef strWQName As String, ByRef OutputItems As OutputItems) _
         As Boolean
         'Sub takes incoming parameters (in the form of a pollutant item) from the project file
         'and then parses them out
@@ -310,7 +311,7 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As XmlOutputItems) _
+    Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As OutputItems) _
         As Boolean
 
         Dim pMassVolumeRaster As Grid = Nothing
@@ -501,7 +502,7 @@ Module modPollutantCalcs
 
     Private Function CompareWaterQuality(ByRef pWSFeatureClass As Shapefile, _
                                           ByRef pPollutantRaster As Grid, _
-                                          ByRef OutputItems As XmlOutputItems) As Boolean
+                                          ByRef OutputItems As OutputItems) As Boolean
         Dim strWQVAlue As Object
 
         'Get the zone dataset from the first layer in ArcMap
