@@ -29,8 +29,6 @@
         Me.cboLCLayer = New System.Windows.Forms.ComboBox()
         Me.txtRainValue = New System.Windows.Forms.TextBox()
         Me.optUseValue = New System.Windows.Forms.RadioButton()
-        Me.txtOutputFile = New System.Windows.Forms.TextBox()
-        Me._Label1_12 = New System.Windows.Forms.Label()
         Me.txtbxRainGrid = New System.Windows.Forms.TextBox()
         Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
         Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem()
@@ -113,10 +111,6 @@
         Me._chkIgnore_0 = New System.Windows.Forms.CheckBox()
         Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox()
         Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox()
-        Me.Frame2 = New System.Windows.Forms.GroupBox()
-        Me.txtThemeName = New System.Windows.Forms.TextBox()
-        Me.cmdOutputBrowse = New System.Windows.Forms.Button()
-        Me._Label1_11 = New System.Windows.Forms.Label()
         Me.cnxtmnuLandUse = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AddScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EditScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -143,7 +137,6 @@
         CType(Me.dgvLandUse, System.ComponentModel.ISupportInitialize).BeginInit()
         Me._SSTab1_TabPage3.SuspendLayout()
         CType(Me.dgvManagementScen, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Frame2.SuspendLayout()
         Me.cnxtmnuLandUse.SuspendLayout()
         Me.cnxtmnuManagement.SuspendLayout()
         Me.SuspendLayout()
@@ -221,37 +214,6 @@
         Me.optUseValue.Text = "Use Constant Value: "
         Me.ToolTip1.SetToolTip(Me.optUseValue, "Functionality to be implemented in Alpha2")
         Me.optUseValue.UseVisualStyleBackColor = False
-        '
-        'txtOutputFile
-        '
-        Me.txtOutputFile.AcceptsReturn = True
-        Me.txtOutputFile.BackColor = System.Drawing.SystemColors.Window
-        Me.txtOutputFile.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.txtOutputFile.Enabled = False
-        Me.txtOutputFile.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOutputFile.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtOutputFile.Location = New System.Drawing.Point(100, 22)
-        Me.txtOutputFile.MaxLength = 0
-        Me.txtOutputFile.Name = "txtOutputFile"
-        Me.txtOutputFile.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtOutputFile.Size = New System.Drawing.Size(196, 20)
-        Me.txtOutputFile.TabIndex = 17
-        Me.txtOutputFile.Text = "C:\Temp\test.shp"
-        Me.ToolTip1.SetToolTip(Me.txtOutputFile, "Functionality to be finalized in Alpha2")
-        '
-        '_Label1_12
-        '
-        Me._Label1_12.BackColor = System.Drawing.Color.Transparent
-        Me._Label1_12.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_12.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_12.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_12.Location = New System.Drawing.Point(6, 22)
-        Me._Label1_12.Name = "_Label1_12"
-        Me._Label1_12.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_12.Size = New System.Drawing.Size(100, 19)
-        Me._Label1_12.TabIndex = 20
-        Me._Label1_12.Text = "Output Shapefile:"
-        Me.ToolTip1.SetToolTip(Me._Label1_12, "Functionality to be finalized in Alpha2")
         '
         'txtbxRainGrid
         '
@@ -1242,69 +1204,6 @@
         Me._chkIgnoreLU_0.Text = "Check2"
         Me._chkIgnoreLU_0.UseVisualStyleBackColor = False
         '
-        'Frame2
-        '
-        Me.Frame2.BackColor = System.Drawing.SystemColors.Control
-        Me.Frame2.Controls.Add(Me.txtThemeName)
-        Me.Frame2.Controls.Add(Me.cmdOutputBrowse)
-        Me.Frame2.Controls.Add(Me.txtOutputFile)
-        Me.Frame2.Controls.Add(Me._Label1_11)
-        Me.Frame2.Controls.Add(Me._Label1_12)
-        Me.Frame2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Frame2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Frame2.Location = New System.Drawing.Point(10, 502)
-        Me.Frame2.Name = "Frame2"
-        Me.Frame2.Padding = New System.Windows.Forms.Padding(0)
-        Me.Frame2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Frame2.Size = New System.Drawing.Size(614, 52)
-        Me.Frame2.TabIndex = 16
-        Me.Frame2.TabStop = False
-        Me.Frame2.Text = "Results Output "
-        Me.Frame2.Visible = False
-        '
-        'txtThemeName
-        '
-        Me.txtThemeName.AcceptsReturn = True
-        Me.txtThemeName.BackColor = System.Drawing.SystemColors.Window
-        Me.txtThemeName.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.txtThemeName.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtThemeName.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtThemeName.Location = New System.Drawing.Point(422, 22)
-        Me.txtThemeName.MaxLength = 30
-        Me.txtThemeName.Name = "txtThemeName"
-        Me.txtThemeName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.txtThemeName.Size = New System.Drawing.Size(154, 20)
-        Me.txtThemeName.TabIndex = 19
-        '
-        'cmdOutputBrowse
-        '
-        Me.cmdOutputBrowse.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdOutputBrowse.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdOutputBrowse.Enabled = False
-        Me.cmdOutputBrowse.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdOutputBrowse.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOutputBrowse.Image = CType(resources.GetObject("cmdOutputBrowse.Image"), System.Drawing.Image)
-        Me.cmdOutputBrowse.Location = New System.Drawing.Point(298, 21)
-        Me.cmdOutputBrowse.Name = "cmdOutputBrowse"
-        Me.cmdOutputBrowse.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdOutputBrowse.Size = New System.Drawing.Size(23, 20)
-        Me.cmdOutputBrowse.TabIndex = 18
-        Me.cmdOutputBrowse.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdOutputBrowse.UseVisualStyleBackColor = False
-        '
-        '_Label1_11
-        '
-        Me._Label1_11.BackColor = System.Drawing.Color.Transparent
-        Me._Label1_11.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_11.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_11.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_11.Location = New System.Drawing.Point(349, 22)
-        Me._Label1_11.Name = "_Label1_11"
-        Me._Label1_11.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_11.Size = New System.Drawing.Size(73, 14)
-        Me._Label1_11.TabIndex = 21
-        Me._Label1_11.Text = "Layer Name:"
-        '
         'cnxtmnuLandUse
         '
         Me.cnxtmnuLandUse.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddScenarioToolStripMenuItem, Me.EditScenarioToolStripMenuItem, Me.DeleteScenarioToolStripMenuItem})
@@ -1359,7 +1258,7 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.CancelButton = Me.cmdQuit
-        Me.ClientSize = New System.Drawing.Size(644, 572)
+        Me.ClientSize = New System.Drawing.Size(644, 506)
         Me.Controls.Add(Me.Frame6)
         Me.Controls.Add(Me.Frame4)
         Me.Controls.Add(Me.frm_raintype)
@@ -1374,7 +1273,6 @@
         Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me._chkIgnoreLU_0)
         Me.Controls.Add(Me.MainMenu1)
-        Me.Controls.Add(Me.Frame2)
         Me.Cursor = System.Windows.Forms.Cursors.Default
         Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -1409,8 +1307,6 @@
         Me._SSTab1_TabPage3.ResumeLayout(False)
         Me._SSTab1_TabPage3.PerformLayout()
         CType(Me.dgvManagementScen, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Frame2.ResumeLayout(False)
-        Me.Frame2.PerformLayout()
         Me.cnxtmnuLandUse.ResumeLayout(False)
         Me.cnxtmnuManagement.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -1430,7 +1326,6 @@
     Private WithEvents _chkIgnore_0 As System.Windows.Forms.CheckBox
     Private WithEvents _chkIgnoreMgmt_0 As System.Windows.Forms.CheckBox
     Private WithEvents _chkIgnoreLU_0 As System.Windows.Forms.CheckBox
-    Private WithEvents Frame2 As System.Windows.Forms.GroupBox
     Private WithEvents ToolTip1 As System.Windows.Forms.ToolTip
     Private WithEvents mnuNew As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents mnuOpen As System.Windows.Forms.ToolStripMenuItem
@@ -1482,11 +1377,6 @@
     Private WithEvents _SSTab1_TabPage1 As System.Windows.Forms.TabPage
     Private WithEvents _SSTab1_TabPage2 As System.Windows.Forms.TabPage
     Private WithEvents _SSTab1_TabPage3 As System.Windows.Forms.TabPage
-    Private WithEvents txtThemeName As System.Windows.Forms.TextBox
-    Private WithEvents cmdOutputBrowse As System.Windows.Forms.Button
-    Private WithEvents txtOutputFile As System.Windows.Forms.TextBox
-    Private WithEvents _Label1_11 As System.Windows.Forms.Label
-    Private WithEvents _Label1_12 As System.Windows.Forms.Label
     Private WithEvents dgvPollutants As System.Windows.Forms.DataGridView
     Private WithEvents dgvLandUse As System.Windows.Forms.DataGridView
     Private WithEvents dgvManagementScen As System.Windows.Forms.DataGridView

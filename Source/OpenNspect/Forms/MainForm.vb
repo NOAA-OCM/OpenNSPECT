@@ -1070,9 +1070,6 @@ Friend Class MainForm
             chkCalcErosion.CheckState = System.Windows.Forms.CheckState.Unchecked
             txtRainValue.Text = ""
 
-            'txtOutputFile.Text = ""
-            txtThemeName.Text = ""
-
             'clear the grids
             dgvPollutants.Rows.Clear()
             dgvLandUse.Rows.Clear()
