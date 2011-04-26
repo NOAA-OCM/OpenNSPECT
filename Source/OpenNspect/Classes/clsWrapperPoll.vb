@@ -38,7 +38,6 @@ Public Class clsXMLLUScenPollItem
     ' *
     ' *************************************************************************************
 
-
     Private Const NODE_NAME As String = "LUScenPollutant"
     Private Const ATTRIBUTE_PollID As String = "ID"
     Private Const ELEMENT_Name As String = "PollName"
@@ -54,16 +53,13 @@ Public Class clsXMLLUScenPollItem
     Public intType3 As Double
     Public intType4 As Double
 
-
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
             NodeName = NODE_NAME
 
         End Get
-
     End Property
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -102,7 +98,6 @@ Public Class clsXMLLUScenPollItem
         End Try
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -122,5 +117,4 @@ Public Class clsXMLLUScenPollItem
             HandleError(ex)
         End Try
     End Sub
-
 End Class

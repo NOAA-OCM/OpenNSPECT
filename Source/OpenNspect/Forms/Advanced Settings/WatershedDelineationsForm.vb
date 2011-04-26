@@ -17,11 +17,10 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
+
 Friend Class WatershedDelineationsForm
 
-
 #Region "Events"
-
 
     Private Sub frmWatershedDelin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -31,8 +30,8 @@ Friend Class WatershedDelineationsForm
         End Try
     End Sub
 
-
-    Private Sub cboWSDelin_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboWSDelin.SelectedIndexChanged
+    Private Sub cboWSDelin_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboWSDelin.SelectedIndexChanged
         Try
             'String and recordset
             Dim strSQLDelin As String = "SELECT * FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
@@ -51,7 +50,9 @@ Friend Class WatershedDelineationsForm
                         txtFlowAccumGrid.Text = delin.Item("FlowAccumFileName") & ""
                         txtLSGrid.Text = delin.Item("LSFileName") & ""
                     Else
-                        MsgBox("Warning: There are no watershed delineation scenarios remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
+                        MsgBox( _
+                                "Warning: There are no watershed delineation scenarios remaining.  Please add a new one.", _
+                                MsgBoxStyle.Critical, "Recordset Empty")
                     End If
                 End Using
             End Using
@@ -60,7 +61,8 @@ Friend Class WatershedDelineationsForm
         End Try
     End Sub
 
-    Private Sub mnuNewWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewWSDelin.Click
+    Private Sub mnuNewWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuNewWSDelin.Click
         Try
             Dim newWS As New NewWatershedDelineationForm
             newWS.Init(Me, Nothing)
@@ -69,7 +71,6 @@ Friend Class WatershedDelineationsForm
             HandleError(ex)
         End Try
     End Sub
-
 
     Private Sub mnuNewExist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewExist.Click
         Try
@@ -81,8 +82,8 @@ Friend Class WatershedDelineationsForm
         End Try
     End Sub
 
-
-    Private Sub mnuDelWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelWSDelin.Click
+    Private Sub mnuDelWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuDelWSDelin.Click
         Try
             Dim intAns As Object
             Dim strSQLWSDel As String
@@ -91,7 +92,11 @@ Friend Class WatershedDelineationsForm
             strSQLWSDel = "DELETE FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
 
             If Not (cboWSDelin.Text = "") Then
-                intAns = MsgBox("Are you sure you want to delete the watershed delineation scenario '" & cboWSDelin.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
+                intAns = _
+                    MsgBox( _
+                            "Are you sure you want to delete the watershed delineation scenario '" & _
+                            cboWSDelin.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, _
+                            "Confirm Delete")
                 'code to handle response
                 If intAns = MsgBoxResult.Yes Then
 
@@ -130,7 +135,6 @@ Friend Class WatershedDelineationsForm
         End Try
     End Sub
 
-
     Private Sub mnuWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuWSDelin.Click
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "wsdelin.htm")
@@ -138,10 +142,10 @@ Friend Class WatershedDelineationsForm
             HandleError(ex)
         End Try
     End Sub
+
 #End Region
 
 #Region "Helper Functions"
 
 #End Region
-
 End Class

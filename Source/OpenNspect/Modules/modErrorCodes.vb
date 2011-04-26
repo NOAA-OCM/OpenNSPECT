@@ -30,18 +30,37 @@ Module modErrorCodes
     ' *  Called By:  Various
     ' *************************************************************************************
 
+    Public _
+        Const _
+        Err1 As String = "Warning: There is a problem with the value you just entered.  Please insure " & _
+                         "your entry is numeric, in the range of 0 - 1, and contains no more than " & vbNewLine & _
+                         "four (4) values after the decimal point.  "
 
-    Public Const Err1 As String = "Warning: There is a problem with the value you just entered.  Please insure " & "your entry is numeric, in the range of 0 - 1, and contains no more than " & vbNewLine & "four (4) values after the decimal point.  "
     Public Const Err2 As String = "Values must be unique.  Please check the number entered in the following cell:  "
-    Public Const Err3 As String = "Warning: There is a problem with the value you just entered.  Please insure " & "your entry is numeric, in the range of 0 - 1, and contains no more than " & vbNewLine & "three (3) values after the decimal point.  "
+
+    Public _
+        Const _
+        Err3 As String = "Warning: There is a problem with the value you just entered.  Please insure " & _
+                         "your entry is numeric, in the range of 0 - 1, and contains no more than " & vbNewLine & _
+                         "three (3) values after the decimal point.  "
+
     Public Const Err4 As String = "The name you have chosen is already in use.  Please enter another."
     Public Const Err5 As String = "Warning: Values must be greater than or equal to 0."
-    Public Const Err6 As String = "Warning: There is a problem with the value you just entered.  Please insure " & "your entry is numeric, in the range of 0 - 1000, and contains no more than " & vbNewLine & "four (4) values after the decimal point.  "
+
+    Public _
+        Const _
+        Err6 As String = "Warning: There is a problem with the value you just entered.  Please insure " & _
+                         "your entry is numeric, in the range of 0 - 1000, and contains no more than " & vbNewLine & _
+                         "four (4) values after the decimal point.  "
 
     Public intYesNo As Short
     Public Const strYesNo As String = "You have made changes to the data.  Would you like to save before continuing?"
     Public Const strYesNoTitle As String = "Save Changes?"
-    Public Const strDefault As String = "Are you sure you want to delete the current settings and restore default CCAP data?"
+
+    Public _
+        Const _
+        strDefault As String = "Are you sure you want to delete the current settings and restore default CCAP data?"
+
     Public Const strDefaultTitle As String = "Restore Defaults Settings?"
 
     'Constants for File Dialogs
@@ -54,11 +73,10 @@ Module modErrorCodes
     Public Const MSG7 As String = ""
     Public Const MSG8XMLFile As String = "XML File(*.xml)|*.xml"
 
-
     Public Sub DisplayError(ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
-        MsgBox(String.Format("{0}Row: {1}, Column: {2}", Error_Renamed, (i + 1), (j + 1)), MsgBoxStyle.Critical, "Warning")
+        MsgBox(String.Format("{0}Row: {1}, Column: {2}", Error_Renamed, (i + 1), (j + 1)), MsgBoxStyle.Critical, _
+                "Warning")
     End Sub
-
 
     Public Sub HandleError(ByRef ex As Exception)
         Try

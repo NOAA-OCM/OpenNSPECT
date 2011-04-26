@@ -38,7 +38,6 @@ Public Class clsXMLMgmtScenItem
     ' *
     ' *************************************************************************************
 
-
     Private Const NODE_NAME As String = "MgmtScenario"
     Private Const ATTRIBUTE_ID As String = "ID"
     Private Const ELEMENT_Apply As String = "Apply"
@@ -52,7 +51,6 @@ Public Class clsXMLMgmtScenItem
     Public strAreaFileName As String
     Public strChangeToClass As String
 
-
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -61,7 +59,6 @@ Public Class clsXMLMgmtScenItem
 
         End Get
     End Property
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         'Return an XML DOM node that represents this class's properties. If a
@@ -95,7 +92,6 @@ Public Class clsXMLMgmtScenItem
 
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         'Set this class's properties based on the data found in the
         'given node.
@@ -110,5 +106,4 @@ Public Class clsXMLMgmtScenItem
         strChangeToClass = GetNodeText(node, ELEMENT_ChangeToClass)
 
     End Sub
-
 End Class

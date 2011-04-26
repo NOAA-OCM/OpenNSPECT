@@ -17,6 +17,7 @@
 '               Added licensing and comments to code
 
 Imports System.Xml
+
 Public Class clsXMLPollutantItems
     Inherits clsXMLBase
     Implements System.Collections.IEnumerable
@@ -38,7 +39,6 @@ Public Class clsXMLPollutantItems
     ' *
     ' *************************************************************************************
 
-
     Private Const NODE_NAME As String = "Pollutants"
 
     Private m_colItems As System.Collections.ArrayList
@@ -52,7 +52,6 @@ Public Class clsXMLPollutantItems
         End Get
     End Property
 
-
     Public ReadOnly Property Count() As Integer
         Get
             'Return the count of order items.
@@ -61,7 +60,6 @@ Public Class clsXMLPollutantItems
 
         End Get
     End Property
-
 
     Public Property Item(ByVal Index As Integer) As clsXMLPollutantItem
         Get
@@ -73,8 +71,8 @@ Public Class clsXMLPollutantItems
         End Set
     End Property
 
-
-    Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
+    Public Function GetEnumerator() As System.Collections.IEnumerator _
+        Implements System.Collections.IEnumerable.GetEnumerator
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
@@ -82,7 +80,6 @@ Public Class clsXMLPollutantItems
             GetEnumerator = Nothing
         End Try
     End Function
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -125,7 +122,6 @@ Public Class clsXMLPollutantItems
         End Try
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -153,7 +149,6 @@ Public Class clsXMLPollutantItems
         End Try
     End Sub
 
-
     Public Sub New()
         Try
             m_colItems = New Collections.ArrayList
@@ -161,7 +156,6 @@ Public Class clsXMLPollutantItems
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Sub Add(ByVal MgmtScen As clsXMLPollutantItem)
         'Add a mgmt scen item.
@@ -173,7 +167,6 @@ Public Class clsXMLPollutantItems
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Sub Remove(ByVal Index As Integer)
         'Remove an order item.

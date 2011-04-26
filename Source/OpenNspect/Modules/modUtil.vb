@@ -39,44 +39,52 @@ Module modUtil
 
     Public g_TempFilesToDel As New Collections.Generic.List(Of String)
 
-
     'Database Variables
-    Public g_DBConn As OleDbConnection 'Connection
-    Public g_strConn As String 'Connection String
-    Public g_boolConnected As Boolean 'Bool: connected
+    Public g_DBConn As OleDbConnection
+    'Connection
+    Public g_strConn As String
+    'Connection String
+    Public g_boolConnected As Boolean
+    'Bool: connected
 
     Public g_boolAddCoeff As Boolean
-    Public g_boolCopyCoeff As Boolean 'True: called frmPollutants, False: called frmNewPollutants
-    Public g_boolAgree As Boolean 'True: use the Agree Function on Streams.
-    Public g_boolHydCorr As Boolean 'True: Hyrdologically Correct DEM, no fill needed
-    Public g_boolNewWShed As Boolean 'True: New WaterShed form called from frmPrj
-
+    Public g_boolCopyCoeff As Boolean
+    'True: called frmPollutants, False: called frmNewPollutants
+    Public g_boolAgree As Boolean
+    'True: use the Agree Function on Streams.
+    Public g_boolHydCorr As Boolean
+    'True: Hyrdologically Correct DEM, no fill needed
+    Public g_boolNewWShed As Boolean
+    'True: New WaterShed form called from frmPrj
 
     'WqStd
 
     'Agree DEM Stuff
-    Public g_boolParams As Boolean 'Flag to indicate Agree params have been entered
-
+    Public g_boolParams As Boolean
+    'Flag to indicate Agree params have been entered
 
     'Project Form Variables
-    Public g_strPrjFileName As String 'Project file name
+    Public g_strPrjFileName As String
+    'Project file name
 
     'Management Scenario variables::frmPrjCalc
-    Public g_strLUScenFileName As String 'Management scenario file name
-    Public g_intManScenRow As String 'Management scenario ROW number
+    Public g_strLUScenFileName As String
+    'Management scenario file name
+    Public g_intManScenRow As String
+    'Management scenario ROW number
 
     'Pollutant Coefficient variable::frmPrjCalc
-    Public g_intCoeffRow As Short 'Coeff Row Number
-    Public g_strCoeffCalc As String 'if the Calc option is chosen, hold results in string
+    Public g_intCoeffRow As Short
+    'Coeff Row Number
+    Public g_strCoeffCalc As String
+    'if the Calc option is chosen, hold results in string
 
     Public g_frmProjectSetup As Windows.Forms.Form
 
-
-    Private m_ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
-
+    Private m_ParentHWND As Integer
+    ' Set this to get correct parenting of Error handler forms
 
     'Function for connection to NSPECT.mdb: fires on dll load
-
 
     Public Sub DBConnection()
         Try
@@ -93,11 +101,13 @@ Module modUtil
             End If
             Exit Sub
         Catch ex As Exception
-            MsgBox(Err.Number & Err.Description & " Error connecting to database, please check NSPECTDAT enviornment variable.  Current value of NSPECTDAT: " & g_strConn, MsgBoxStyle.Critical, "Error Connecting")
+            MsgBox( _
+                    Err.Number & Err.Description & _
+                    " Error connecting to database, please check NSPECTDAT enviornment variable.  Current value of NSPECTDAT: " & _
+                    g_strConn, MsgBoxStyle.Critical, "Error Connecting")
 
         End Try
     End Sub
-
 
     Public Sub InitComboBox(ByRef cbo As System.Windows.Forms.ComboBox, ByRef strName As String)
         Try
@@ -105,7 +115,6 @@ Module modUtil
             Dim rsNamesCmd As OleDbCommand
             Dim rsNames As OleDbDataReader
             Dim strSelectStatement As String
-
 
             strSelectStatement = "SELECT NAME FROM " & strName & " ORDER BY NAME ASC"
 
@@ -127,20 +136,20 @@ Module modUtil
 
                 cbo.SelectedIndex = 0
             Else
-                MsgBox("Warning.  There are no records remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
+                MsgBox("Warning.  There are no records remaining.  Please add a new one.", MsgBoxStyle.Critical, _
+                        "Recordset Empty")
                 Exit Sub
             End If
 
             'Cleanup
             rsNames.Close()
         Catch ex As Exception
-            HandleError(ex)     'True, "InitComboBox " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "InitComboBox " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
-
     'Returns a filename given for example C:\temp\dataset returns dataset
-
 
     Public Function SplitFileName(ByRef sWholeName As String) As String
         SplitFileName = ""
@@ -167,7 +176,6 @@ Module modUtil
         End Try
     End Function
 
-
     Public Function GetRasterDistanceUnits(ByRef strLayerName As String) As Short
         For i As Integer = 0 To g_MapWin.Layers.NumLayers - 1
             If g_MapWin.Layers(i).Name = strLayerName Then
@@ -179,7 +187,9 @@ Module modUtil
                         Return 1
                     End If
                 Else
-                    MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                    MsgBox( _
+                            "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
+                            MsgBoxStyle.Exclamation, "No Project Information Detected")
                     Return -1
                 End If
             End If
@@ -187,9 +197,7 @@ Module modUtil
         Return -1
     End Function
 
-
     'General Function used to simply get the index of combobox entries
-
 
     Public Function GetCboIndex(ByRef strList As String, ByRef cbo As System.Windows.Forms.ComboBox) As Short
         Try
@@ -202,14 +210,13 @@ Module modUtil
                 End If
             Next i
         Catch ex As Exception
-            HandleError(ex)     'True, "GetCboIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "GetCboIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
-
     Public Function LayerInMap(ByRef strName As String) As Boolean
         Try
-
 
             For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
                 Dim pLayer As MapWindow.Interfaces.Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
@@ -221,10 +228,10 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(ex)     'True, "LayerInMap " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "LayerInMap " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
-
 
     Public Function LayerInMapByFileName(ByRef strName As String) As Boolean
 
@@ -240,7 +247,6 @@ Module modUtil
         Next
     End Function
 
-
     Public Function GetLayerIndex(ByRef strLayerName As String) As Integer
         GetLayerIndex = -1
         Try
@@ -253,10 +259,10 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(ex)     'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
-
 
     Public Function GetLayerIndexByFilename(ByRef strLayerFileName As String) As Integer
         GetLayerIndexByFilename = -1
@@ -270,10 +276,10 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(ex)     'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
-
 
     Public Function GetLayerFilename(ByRef strLayerName As String) As String
         GetLayerFilename = ""
@@ -292,10 +298,10 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(ex)     'True, "GetLayerFilename " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "GetLayerFilename " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
-
 
     Public Function AddRasterLayerToMapFromFileName(ByRef strName As String) As Boolean
         Try
@@ -312,8 +318,8 @@ Module modUtil
 
     End Function
 
-
-    Public Function AddFeatureLayerToMapFromFileName(ByRef strName As String, Optional ByRef strLyrName As String = "") As Boolean
+    Public Function AddFeatureLayerToMapFromFileName(ByRef strName As String, Optional ByRef strLyrName As String = "") _
+        As Boolean
         Try
             If IO.Path.GetExtension(strName) <> "" Then
                 If IO.File.Exists(strName) Then
@@ -342,11 +348,9 @@ Module modUtil
         End Try
     End Function
 
-
     Public Function AddInputFromGxBrowser(ByRef strType As String) As String
         Try
             Dim pFilter As String = ""
-
 
             Select Case strType
                 Case "Feature"
@@ -372,8 +376,9 @@ Module modUtil
         Return ""
     End Function
 
-
-    Public Function AddInputFromGxBrowserText(ByRef txtInput As System.Windows.Forms.TextBox, ByRef strTitle As String, ByRef frm As System.Windows.Forms.Form, ByRef intType As Short) As MapWinGIS.Grid
+    Public Function AddInputFromGxBrowserText(ByRef txtInput As System.Windows.Forms.TextBox, ByRef strTitle As String, _
+                                               ByRef frm As System.Windows.Forms.Form, ByRef intType As Short) _
+        As MapWinGIS.Grid
         AddInputFromGxBrowserText = Nothing
         Try
             Dim dlgOpen As New Windows.Forms.OpenFileDialog
@@ -388,11 +393,11 @@ Module modUtil
                 Return Nothing
             End If
         Catch ex As Exception
-            MsgBox("The file you have choosen is not a valid GRID dataset.  Please select another.", MsgBoxStyle.Critical, "Invalid Data Type")
+            MsgBox("The file you have choosen is not a valid GRID dataset.  Please select another.", _
+                    MsgBoxStyle.Critical, "Invalid Data Type")
         End Try
 
     End Function
-
 
     Public Function FeatureExists(ByRef strFeatureFileName As String) As Boolean
 
@@ -404,7 +409,6 @@ Module modUtil
 
     End Function
 
-
     Public Function RasterExists(ByRef strRasterFileName As String) As Boolean
         If IO.Path.GetExtension(strRasterFileName) = "" Then
             Return IO.File.Exists(strRasterFileName + "\sta.adf")
@@ -413,7 +417,6 @@ Module modUtil
         End If
 
     End Function
-
 
     Public Function ReturnFeature(ByRef strFeatureFileName As String) As MapWinGIS.Shapefile
 
@@ -443,7 +446,6 @@ Module modUtil
 
     End Function
 
-
     Public Function ReturnRaster(ByRef strRasterFileName As String) As MapWinGIS.Grid
         If IO.Path.GetExtension(strRasterFileName) = "" Then
             If IO.File.Exists(strRasterFileName + "\sta.adf") Then
@@ -471,8 +473,8 @@ Module modUtil
 
     End Function
 
-
-    Public Function ReturnPermanentRaster(ByRef pRaster As MapWinGIS.Grid, ByRef sOutputName As String) As MapWinGIS.Grid
+    Public Function ReturnPermanentRaster(ByRef pRaster As MapWinGIS.Grid, ByRef sOutputName As String) _
+        As MapWinGIS.Grid
         pRaster.Save()
         pRaster.Save(sOutputName)
         pRaster.Header.Projection = g_MapWin.Project.ProjectProjection
@@ -482,8 +484,8 @@ Module modUtil
         Return tmpraster
     End Function
 
-
-    Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As MapWinGIS.Grid, ByRef strColor As String) As MapWinGIS.GridColorScheme
+    Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As MapWinGIS.Grid, ByRef strColor As String) _
+        As MapWinGIS.GridColorScheme
         ReturnRasterStretchColorRampCS = Nothing
         Try
             Dim rTo, bTo, gTo, rFrom, bFrom, gFrom, rTo2, bTo2, gTo2, rFrom2, bFrom2, gFrom2 As Integer
@@ -650,7 +652,8 @@ Module modUtil
             For row As Integer = 0 To nr
                 pRaster.GetRow(row, rowvals(0))
                 For col As Integer = 0 To nc
-                    If rowvals(col) <> nodata And rowvals(col) < Double.MaxValue And rowvals(col) > Double.MinValue Then
+                    If rowvals(col) <> nodata And rowvals(col) < Double.MaxValue And rowvals(col) > Double.MinValue _
+                        Then
                         total = total + rowvals(col)
                         sqrtotal = sqrtotal + (rowvals(col) * rowvals(col))
                         count = count + 1
@@ -698,8 +701,8 @@ Module modUtil
         End Try
     End Function
 
-
-    Public Function ReturnContinuousRampColorCS(ByRef grd As MapWinGIS.Grid, ByRef strColor As String) As MapWinGIS.GridColorScheme
+    Public Function ReturnContinuousRampColorCS(ByRef grd As MapWinGIS.Grid, ByRef strColor As String) _
+        As MapWinGIS.GridColorScheme
         'Based on the Mapwindow Grid Coloring Scheme Editor MakeContinuousRamp function
         Dim arr(), val As Object, i, j As Integer
         Dim ht As New Hashtable
@@ -767,7 +770,6 @@ Module modUtil
                     gFrom = CInt(Split(strColor, ",")(1))
                     bFrom = CInt(Split(strColor, ",")(2))
 
-
                     rTo = CInt(Split(strColor, ",")(3))
                     gTo = CInt(Split(strColor, ",")(4))
                     bTo = CInt(Split(strColor, ",")(5))
@@ -800,7 +802,6 @@ Module modUtil
             End Select
 
             coloringType = MapWinGIS.ColoringType.Gradient
-
 
             '' No Data break
             'brk = New MapWinGIS.GridColorBreak()
@@ -841,7 +842,11 @@ Module modUtil
                 bStep = (eB - sB) / brkArr.Length
 
                 'This must be double.parse(convert.tostring) for handling of sbyte values - cdm 11/13/2005
-                startVal = CInt(IIf(Double.Parse(Convert.ToString(grd.Header.NodataValue)) = Double.Parse(Convert.ToString(brkArr(0))), 1, 0))
+                startVal = _
+                    CInt( _
+                        IIf( _
+                             Double.Parse(Convert.ToString(grd.Header.NodataValue)) = _
+                             Double.Parse(Convert.ToString(brkArr(0))), 1, 0))
                 'startVal = CInt(IIf(CDbl(grd.Header.NodataValue) = CDbl(brkArr(0)), 1, 0))
                 For i = startVal To brkArr.Length - 1
                     brk = New MapWinGIS.GridColorBreak
@@ -869,7 +874,11 @@ Module modUtil
                 bStep = (eB - sB) / numBreaks
 
                 Dim min As Double, max As Double, range As Double
-                startVal = CInt(IIf(Double.Parse(Convert.ToString(grd.Header.NodataValue)) = Double.Parse(Convert.ToString(arr(0))), 1, 0))
+                startVal = _
+                    CInt( _
+                        IIf( _
+                             Double.Parse(Convert.ToString(grd.Header.NodataValue)) = _
+                             Double.Parse(Convert.ToString(arr(0))), 1, 0))
 
                 min = Double.Parse(Convert.ToString(arr(startVal)))
                 max = Double.Parse(Convert.ToString(arr(arr.Length() - 1)))
@@ -939,13 +948,14 @@ Module modUtil
             End If
             Return coloringscheme
         Catch ex As Exception
-            HandleError(ex)     'True, "MakeContinuousRamp " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "MakeContinuousRamp " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
             Return Nothing
         End Try
     End Function
 
-
-    Public Function ReturnUniqueRasterRenderer(ByRef pRaster As MapWinGIS.Grid, ByRef strStandardName As String) As Object
+    Public Function ReturnUniqueRasterRenderer(ByRef pRaster As MapWinGIS.Grid, ByRef strStandardName As String) _
+        As Object
         Try
             'Create two colors, red, green
             'pColorRed.RGB = System.Convert.ToUInt32(RGB(214, 71, 0))
@@ -979,7 +989,6 @@ Module modUtil
         End Try
     End Function
 
-
     Public Function ReturnHSVColorString() As String
         ReturnHSVColorString = ""
         Try
@@ -993,10 +1002,10 @@ Module modUtil
             ReturnHSVColorString = CStr(intHue) & ",97,100," & CStr(intHue) & ",5,100"
 
         Catch ex As Exception
-            HandleError(ex)     'True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
-
 
     Public Function CheckSpatialReference(ByRef pRasGeoDataset As MapWinGIS.Grid) As String
         CheckSpatialReference = ""
@@ -1007,8 +1016,15 @@ Module modUtil
                     Return strprj
                 Else
                     If IO.Path.GetFileName(pRasGeoDataset.Filename) = "sta.adf" Then
-                        If IO.File.Exists(IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + IO.Path.DirectorySeparatorChar + "prj.adf") Then
-                            Dim infile As New IO.StreamReader(IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + IO.Path.DirectorySeparatorChar + "prj.adf")
+                        If _
+                            IO.File.Exists( _
+                                            IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + _
+                                            IO.Path.DirectorySeparatorChar + "prj.adf") Then
+                            Dim _
+                                infile As _
+                                    New IO.StreamReader( _
+                                                         IO.Path.GetDirectoryName(pRasGeoDataset.Filename) + _
+                                                         IO.Path.DirectorySeparatorChar + "prj.adf")
                             'TODO: Temporary measure that allows at least units to be recognized
                             If infile.ReadToEnd.Contains("METERS") Then
                                 Return "units=m"
@@ -1027,12 +1043,13 @@ Module modUtil
                 Return ""
             End If
         Catch ex As Exception
-            HandleError(ex)     'True, "CheckSpatialReference " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "CheckSpatialReference " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
-
-    Public Function ClipBySelectedPoly(ByRef pGridToClip As MapWinGIS.Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As MapWinGIS.Grid
+    Public Function ClipBySelectedPoly(ByRef pGridToClip As MapWinGIS.Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, _
+                                        ByVal outputFileName As String) As MapWinGIS.Grid
         Dim strtmp1 As String = IO.Path.GetTempFileName
         g_TempFilesToDel.Add(strtmp1)
         strtmp1 = strtmp1 + g_OutputGridExt
@@ -1049,8 +1066,8 @@ Module modUtil
         Return out
     End Function
 
-
-    Public Function BrowseForFileName(ByRef strType As String, ByRef frm As System.Windows.Forms.Form, ByRef strTitle As String) As String
+    Public Function BrowseForFileName(ByRef strType As String, ByRef frm As System.Windows.Forms.Form, _
+                                       ByRef strTitle As String) As String
 
         Dim pfilter As String
 
@@ -1074,9 +1091,7 @@ Module modUtil
             Return ""
         End If
 
-
     End Function
-
 
     Public Sub CleanupRasterFolder(ByRef strWorkspacePath As String)
         Try
@@ -1106,15 +1121,14 @@ Module modUtil
             'Loop
 
         Catch ex As Exception
-            HandleError(ex)     'True, "CleanupRasterFolder " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "CleanupRasterFolder " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
-
 
     Public Sub CleanGlobals()
         Try
             'Sub to rid the world of stragling GRIDS, i.e. the ones established for global usse
-
 
             'Had an 'elegant' solution using an Iarray to hold global rasters, but that didn't seem to do the
             'job, so we have to manually set each and everyone to nothing
@@ -1190,10 +1204,10 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(ex)     'True, "CleanGlobals " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "CleanGlobals " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
-
 
     Public Function UniqueName(ByRef strTableName As String, ByRef strName As String) As Boolean
         Try
@@ -1210,12 +1224,12 @@ Module modUtil
             End If
             datName.Close()
         Catch ex As Exception
-            HandleError(ex)     'True, "UniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "UniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
     'Tests name inputs to insure unique values for databases
-
 
     Public Function CreateUniqueName(ByRef strTableName As String, ByRef strName As String) As String
         CreateUniqueName = ""
@@ -1223,7 +1237,8 @@ Module modUtil
             Dim strCmdText As String
             Dim sCurrNum As String
             Dim strCurrNameRecord As String
-            strCmdText = "SELECT * FROM " & strTableName '& " WHERE NAME LIKE '" & strName & "'"
+            strCmdText = "SELECT * FROM " & strTableName
+            '& " WHERE NAME LIKE '" & strName & "'"
             Dim cmd As New DataHelper(strCmdText)
             Dim data As OleDbDataReader = cmd.ExecuteReader
             sCurrNum = "0"
@@ -1256,12 +1271,13 @@ Module modUtil
             data.Close()
 
         Catch ex As Exception
-            HandleError(ex)     'True, "CreateUniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
+            'True, "CreateUniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
-
-    Public Function GetUniqueName(ByRef Name As String, ByRef folderPath As String, ByVal Extension As String) As String
+    Public Function GetUniqueName(ByRef Name As String, ByRef folderPath As String, ByVal Extension As String) _
+        As String
         GetUniqueName = ""
         Dim i As Integer = 0
         Dim nameAttempt As String
@@ -1276,8 +1292,8 @@ Module modUtil
         End If
     End Function
 
-
-    Public Function ExportSelectedFeatures(ByVal SelectLyrPath As String, ByRef SelectedShapes As Collections.Generic.List(Of Integer)) As String
+    Public Function ExportSelectedFeatures(ByVal SelectLyrPath As String, _
+                                            ByRef SelectedShapes As Collections.Generic.List(Of Integer)) As String
         ' Modified from http://www.mapwindow.org/wiki/index.php/MapWinGIS:SampleCode-VB_Net:ExportSelectedShapes
         Dim Result As Boolean
         Dim cdlSave As New SaveFileDialog
@@ -1332,7 +1348,8 @@ Module modUtil
 
                 'Populate the aspatial data
                 For iFieldCnt = 0 To myShapeFile.NumFields - 1
-                    newShapefile.EditCellValue(iFieldCnt, iShapeHandle, myShapeFile.CellValue(iFieldCnt, SelectedShapes(i)))
+                    newShapefile.EditCellValue(iFieldCnt, iShapeHandle, _
+                                                myShapeFile.CellValue(iFieldCnt, SelectedShapes(i)))
                 Next iFieldCnt
             Next i
 
@@ -1344,11 +1361,12 @@ Module modUtil
             MsgBox("Error in exporting selected features.", MsgBoxStyle.Exclamation, "Exporting Selected Error")
         End Try
 
-
     End Function
 
-
-    Public Function AddOutputGridLayer(ByRef outRast As MapWinGIS.Grid, ByVal ColorString As String, ByVal UseStretch As Boolean, ByVal LayerName As String, ByVal OutputType As String, ByVal OutputGroup As Integer, ByRef OutputItems As clsXMLOutputItems) As Boolean
+    Public Function AddOutputGridLayer(ByRef outRast As MapWinGIS.Grid, ByVal ColorString As String, _
+                                        ByVal UseStretch As Boolean, ByVal LayerName As String, _
+                                        ByVal OutputType As String, ByVal OutputGroup As Integer, _
+                                        ByRef OutputItems As clsXMLOutputItems) As Boolean
         Dim cs As MapWinGIS.GridColorScheme
         If UseStretch = True Then
             cs = ReturnRasterStretchColorRampCS(outRast, ColorString)
@@ -1375,14 +1393,20 @@ Module modUtil
         End If
     End Function
 
+    Public Delegate Function RasterMathCellCalc _
+        (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, _
+         ByVal Input5 As Single, ByVal OutNull As Single) As Single
 
-    Public Delegate Function RasterMathCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Public Delegate Function RasterMathCellCalcNulls _
+        (ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, _
+         ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, _
+         ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
 
-
-    Public Delegate Function RasterMathCellCalcNulls(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-
-
-    Public Sub RasterMath(ByRef InputGrid1 As MapWinGIS.Grid, ByRef InputGrid2 As MapWinGIS.Grid, ByRef Inputgrid3 As MapWinGIS.Grid, ByRef Inputgrid4 As MapWinGIS.Grid, ByRef Inputgrid5 As MapWinGIS.Grid, ByRef Outputgrid As MapWinGIS.Grid, ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
+    Public Sub RasterMath(ByRef InputGrid1 As MapWinGIS.Grid, ByRef InputGrid2 As MapWinGIS.Grid, _
+                           ByRef Inputgrid3 As MapWinGIS.Grid, ByRef Inputgrid4 As MapWinGIS.Grid, _
+                           ByRef Inputgrid5 As MapWinGIS.Grid, ByRef Outputgrid As MapWinGIS.Grid, _
+                           ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, _
+                           Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
         Dim head1, head2, head3, head4, head5, headnew As MapWinGIS.GridHeader
         Dim ncol As Integer
         Dim nrow As Integer
@@ -1460,13 +1484,19 @@ Module modUtil
 
             For col As Integer = 0 To ncol
                 If checkNullFirst Then
-                    If rowvals1(col) = nodata1 OrElse rowvals2(col) = nodata2 OrElse rowvals3(col) = nodata3 OrElse rowvals4(col) = nodata4 OrElse rowvals5(col) = nodata5 Then
+                    If _
+                        rowvals1(col) = nodata1 OrElse rowvals2(col) = nodata2 OrElse rowvals3(col) = nodata3 OrElse _
+                        rowvals4(col) = nodata4 OrElse rowvals5(col) = nodata5 Then
                         rowvalsout(col) = nodataout
                     Else
-                        rowvalsout(col) = CellCalc.Invoke(rowvals1(col), rowvals2(col), rowvals3(col), rowvals4(col), rowvals5(col), nodataout)
+                        rowvalsout(col) = _
+                            CellCalc.Invoke(rowvals1(col), rowvals2(col), rowvals3(col), rowvals4(col), _
+                                             rowvals5(col), nodataout)
                     End If
                 Else
-                    rowvalsout(col) = CellCalcNull.Invoke(rowvals1(col), nodata1, rowvals2(col), nodata2, rowvals3(col), nodata3, rowvals4(col), nodata4, rowvals5(col), nodata5, nodataout)
+                    rowvalsout(col) = _
+                        CellCalcNull.Invoke(rowvals1(col), nodata1, rowvals2(col), nodata2, rowvals3(col), nodata3, _
+                                             rowvals4(col), nodata4, rowvals5(col), nodata5, nodataout)
                 End If
             Next
 
@@ -1474,14 +1504,22 @@ Module modUtil
         Next
     End Sub
 
+    Public Delegate Function RasterMathCellCalcWindow _
+        (ByRef InputBox1(,) As Single, ByRef InputBox2(,) As Single, ByRef InputBox3(,) As Single, _
+         ByRef InputBox4(,) As Single, ByRef InputBox5(,) As Single, ByVal OutNull As Single) As Single
 
-    Public Delegate Function RasterMathCellCalcWindow(ByRef InputBox1(,) As Single, ByRef InputBox2(,) As Single, ByRef InputBox3(,) As Single, ByRef InputBox4(,) As Single, ByRef InputBox5(,) As Single, ByVal OutNull As Single) As Single
+    Public Delegate Function RasterMathCellCalcWindowNulls _
+        (ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, _
+         ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, _
+         ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, _
+         ByVal Input5Null As Single, ByVal OutNull As Single) As Single
 
-
-    Public Delegate Function RasterMathCellCalcWindowNulls(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-
-
-    Public Sub RasterMathWindow(ByRef InputGrid1 As MapWinGIS.Grid, ByRef InputGrid2 As MapWinGIS.Grid, ByRef Inputgrid3 As MapWinGIS.Grid, ByRef Inputgrid4 As MapWinGIS.Grid, ByRef Inputgrid5 As MapWinGIS.Grid, ByRef Outputgrid As MapWinGIS.Grid, ByRef CellCalcWindow As RasterMathCellCalcWindow, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcWindowNull As RasterMathCellCalcWindowNulls = Nothing)
+    Public Sub RasterMathWindow(ByRef InputGrid1 As MapWinGIS.Grid, ByRef InputGrid2 As MapWinGIS.Grid, _
+                                 ByRef Inputgrid3 As MapWinGIS.Grid, ByRef Inputgrid4 As MapWinGIS.Grid, _
+                                 ByRef Inputgrid5 As MapWinGIS.Grid, ByRef Outputgrid As MapWinGIS.Grid, _
+                                 ByRef CellCalcWindow As RasterMathCellCalcWindow, _
+                                 Optional ByVal checkNullFirst As Boolean = True, _
+                                 Optional ByRef CellCalcWindowNull As RasterMathCellCalcWindowNulls = Nothing)
         Dim head1, head2, head3, head4, head5, headnew As MapWinGIS.GridHeader
         Dim ncol As Integer
         Dim nrow As Integer
@@ -1629,7 +1667,6 @@ Module modUtil
                 ReDim rowvals5(2)(rowvals1(1).Length)
             End If
 
-
             For col As Integer = 1 To ncol - 1
                 If row <> 0 Then
                     InputBox1(0, 0) = rowvals1(0)(col - 1)
@@ -1716,18 +1753,36 @@ Module modUtil
                 End If
 
                 If checkNullFirst Then
-                    If InputBox1(0, 0) = nodata1 OrElse InputBox1(0, 1) = nodata1 OrElse InputBox1(0, 2) = nodata1 OrElse InputBox2(0, 0) = nodata2 OrElse InputBox2(0, 1) = nodata2 OrElse InputBox2(0, 2) = nodata2 OrElse InputBox3(0, 0) = nodata3 OrElse InputBox3(0, 1) = nodata3 OrElse InputBox3(0, 2) = nodata3 OrElse InputBox4(0, 0) = nodata4 OrElse InputBox4(0, 1) = nodata4 OrElse InputBox4(0, 2) = nodata4 OrElse InputBox5(0, 0) = nodata5 OrElse InputBox5(0, 1) = nodata5 OrElse InputBox5(0, 2) = nodata5 OrElse InputBox1(1, 0) = nodata1 OrElse InputBox1(1, 1) = nodata1 OrElse InputBox1(1, 2) = nodata1 OrElse InputBox2(1, 0) = nodata2 OrElse InputBox2(1, 1) = nodata2 OrElse InputBox2(1, 2) = nodata2 OrElse InputBox3(1, 0) = nodata3 OrElse InputBox3(1, 1) = nodata3 OrElse InputBox3(1, 2) = nodata3 OrElse InputBox4(1, 0) = nodata4 OrElse InputBox4(1, 1) = nodata4 OrElse InputBox4(1, 2) = nodata4 OrElse InputBox5(1, 0) = nodata5 OrElse InputBox5(1, 1) = nodata5 OrElse InputBox5(1, 2) = nodata5 OrElse InputBox1(2, 0) = nodata1 OrElse InputBox1(2, 1) = nodata1 OrElse InputBox1(2, 2) = nodata1 OrElse InputBox2(2, 0) = nodata2 OrElse InputBox2(2, 1) = nodata2 OrElse InputBox2(2, 2) = nodata2 OrElse InputBox3(2, 0) = nodata3 OrElse InputBox3(2, 1) = nodata3 OrElse InputBox3(2, 2) = nodata3 OrElse InputBox4(2, 0) = nodata4 OrElse InputBox4(2, 1) = nodata4 OrElse InputBox4(2, 2) = nodata4 OrElse InputBox5(2, 0) = nodata5 OrElse InputBox5(2, 1) = nodata5 OrElse InputBox5(2, 2) = nodata5 Then
+                    If _
+                        InputBox1(0, 0) = nodata1 OrElse InputBox1(0, 1) = nodata1 OrElse InputBox1(0, 2) = nodata1 OrElse _
+                        InputBox2(0, 0) = nodata2 OrElse InputBox2(0, 1) = nodata2 OrElse InputBox2(0, 2) = nodata2 OrElse _
+                        InputBox3(0, 0) = nodata3 OrElse InputBox3(0, 1) = nodata3 OrElse InputBox3(0, 2) = nodata3 OrElse _
+                        InputBox4(0, 0) = nodata4 OrElse InputBox4(0, 1) = nodata4 OrElse InputBox4(0, 2) = nodata4 OrElse _
+                        InputBox5(0, 0) = nodata5 OrElse InputBox5(0, 1) = nodata5 OrElse InputBox5(0, 2) = nodata5 OrElse _
+                        InputBox1(1, 0) = nodata1 OrElse InputBox1(1, 1) = nodata1 OrElse InputBox1(1, 2) = nodata1 OrElse _
+                        InputBox2(1, 0) = nodata2 OrElse InputBox2(1, 1) = nodata2 OrElse InputBox2(1, 2) = nodata2 OrElse _
+                        InputBox3(1, 0) = nodata3 OrElse InputBox3(1, 1) = nodata3 OrElse InputBox3(1, 2) = nodata3 OrElse _
+                        InputBox4(1, 0) = nodata4 OrElse InputBox4(1, 1) = nodata4 OrElse InputBox4(1, 2) = nodata4 OrElse _
+                        InputBox5(1, 0) = nodata5 OrElse InputBox5(1, 1) = nodata5 OrElse InputBox5(1, 2) = nodata5 OrElse _
+                        InputBox1(2, 0) = nodata1 OrElse InputBox1(2, 1) = nodata1 OrElse InputBox1(2, 2) = nodata1 OrElse _
+                        InputBox2(2, 0) = nodata2 OrElse InputBox2(2, 1) = nodata2 OrElse InputBox2(2, 2) = nodata2 OrElse _
+                        InputBox3(2, 0) = nodata3 OrElse InputBox3(2, 1) = nodata3 OrElse InputBox3(2, 2) = nodata3 OrElse _
+                        InputBox4(2, 0) = nodata4 OrElse InputBox4(2, 1) = nodata4 OrElse InputBox4(2, 2) = nodata4 OrElse _
+                        InputBox5(2, 0) = nodata5 OrElse InputBox5(2, 1) = nodata5 OrElse InputBox5(2, 2) = nodata5 _
+                        Then
                         rowvalsout(col) = nodataout
                     Else
-                        rowvalsout(col) = CellCalcWindow.Invoke(InputBox1, InputBox2, InputBox3, InputBox4, InputBox5, nodataout)
+                        rowvalsout(col) = _
+                            CellCalcWindow.Invoke(InputBox1, InputBox2, InputBox3, InputBox4, InputBox5, nodataout)
                     End If
                 Else
-                    rowvalsout(col) = CellCalcWindowNull.Invoke(InputBox1, nodata1, InputBox2, nodata2, InputBox3, nodata3, InputBox4, nodata4, InputBox5, nodata5, nodataout)
+                    rowvalsout(col) = _
+                        CellCalcWindowNull.Invoke(InputBox1, nodata1, InputBox2, nodata2, InputBox3, nodata3, InputBox4, _
+                                                   nodata4, InputBox5, nodata5, nodataout)
                 End If
             Next
 
             Outputgrid.PutRow(row, rowvalsout(0))
         Next
     End Sub
-
 End Module

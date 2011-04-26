@@ -38,9 +38,7 @@ Public Class clsXMLLUScen
     ' *
     ' *************************************************************************************
 
-
     'Following are the names of the NODES
-
 
     Private Const NODE_NAME As String = "LUScenFile"
     Private Const NODE_ManScenName As String = "LUScenName"
@@ -78,7 +76,6 @@ Public Class clsXMLLUScen
 
         End Get
     End Property
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -129,7 +126,6 @@ Public Class clsXMLLUScen
         End Try
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -163,7 +159,6 @@ Public Class clsXMLLUScen
         End Try
     End Sub
 
-
     Public Sub New()
         Try
             clsPollutant = New clsXMLLUScenPollItem
@@ -173,5 +168,4 @@ Public Class clsXMLLUScen
             HandleError(ex)
         End Try
     End Sub
-
 End Class

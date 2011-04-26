@@ -30,25 +30,31 @@ Module modMUSLE
     ' *
     ' *  Called By:  frmPrj
     ' *************************************************************************************
-    Private _strCFactorConStatement As String 'C Factor Con Statement
-    Private _strPondConStatement As String 'Pond Factor con statement
-    Private _dblMUSLEVal As Double 'Customizable MUSLE value in Equation
-    Private _dblMUSLEExp As Double 'Customizable musle exponent in equation
+    Private _strCFactorConStatement As String
+    'C Factor Con Statement
+    Private _strPondConStatement As String
+    'Pond Factor con statement
+    Private _dblMUSLEVal As Double
+    'Customizable MUSLE value in Equation
+    Private _dblMUSLEExp As Double
+    'Customizable musle exponent in equation
 
-    Private _strMusleMetadata As String 'MUSLE metadata string
+    Private _strMusleMetadata As String
+    'MUSLE metadata string
 
     ' Variables used by the Error handler function - DO NOT REMOVE
     Private _picks As String()
     Private _pondpicks As String()
 
-
-    Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, ByRef strLandClass As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
+    Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, _
+                                ByRef strLandClass As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strSoilsDefName: Name of the Soils Definition being used
         'strKFactorFileName: K Factor FileName
         'strLandClass: Name of the Landclass we're using
 
-        Dim strTempLCType As String 'Our potential holder for a temp landtype
+        Dim strTempLCType As String
+        'Our potential holder for a temp landtype
 
         Dim strSoilsDef As String
 
@@ -81,10 +87,13 @@ Module modMUSLE
         End If
 
         'Get the landclasses of type strLandClass
-        strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
+        strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & _
+                       "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & _
+                       strTempLCType & "' ORDER BY LCCLASS.VALUE"
         Dim cmdCovfact As New DataHelper(strCovFactor)
 
-        _strMusleMetadata = CreateMetadata(g_booLocalEffects) ', rsCoverFactor)
+        _strMusleMetadata = CreateMetadata(g_booLocalEffects)
+        ', rsCoverFactor)
 
         If Len(strError) > 0 Then
             MsgBox(strError)
@@ -105,7 +114,6 @@ Module modMUSLE
 
     End Function
 
-
     Private Function CreateMetadata(ByRef booLocal As Boolean) As String
 
         Dim strHeader As String
@@ -114,9 +122,21 @@ Module modMUSLE
 
         'Set up the header w/or without flow direction
         If booLocal = True Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_clsXMLPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & g_strLandCoverParameters & vbNewLine 'append the g_strLandCoverParameters that was set up during runoff
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
+                        g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
+                        g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
+                        g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
+                        g_clsXMLPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
+                        g_strLSFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
+            'append the g_strLandCoverParameters that was set up during runoff
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_clsXMLPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
+                        g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
+                        g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
+                        g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
+                        g_clsXMLPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
+                        g_strLSFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & _
+                        vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
 
         'Now report the C:Factor figures for the landcover
@@ -131,18 +151,20 @@ Module modMUSLE
         '        rsCFactor.MoveNext
         '    Next i
 
-        CreateMetadata = strHeader '& vbTab & "C-Factor values: " & vbNewLine & strCFactor
+        CreateMetadata = strHeader
+        '& vbTab & "C-Factor values: " & vbNewLine & strCFactor
 
     End Function
-
 
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
         'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
         'and the Land Class Raster.  Returns a string
         ConstructPickStatment = ""
         Try
-            Dim strCon As String = "" 'Con statement base
-            Dim strParens As String = "" 'String of trailing parens
+            Dim strCon As String = ""
+            'Con statement base
+            Dim strParens As String = ""
+            'String of trailing parens
             'Dim strCompleteCon As String 'Concatenate of strCon & strParens
 
             Dim TableExist As Boolean
@@ -175,7 +197,9 @@ Module modMUSLE
 
             Dim mwTable As New MapWinGIS.Table
             If Not TableExist Then
-                MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+                MsgBox( _
+                        "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
+                        MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
                 Return ""
             Else
@@ -193,7 +217,8 @@ Module modMUSLE
                 Dim rowidx As Integer = 0
                 Dim dataType As OleDbDataReader
                 For i = 1 To maxVal
-                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
+                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then _
+'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         dataType = cmdType.ExecuteReader
 
                         booValueFound = False
@@ -212,7 +237,8 @@ Module modMUSLE
                             End If
                         End While
                         If booValueFound = False Then
-                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                            MsgBox( _
+                                    "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                             ConstructPickStatment = Nothing
                             dataType.Close()
                             mwTable.Close()
@@ -241,8 +267,8 @@ Module modMUSLE
         End Try
     End Function
 
-
-    Private Function ConstructPondPickStatement(ByRef cmdCF As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
+    Private Function ConstructPondPickStatement(ByRef cmdCF As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) _
+        As String
         'Creates the Con Statement used in the Pond Factor GRID
         'Returns: String
         'Looks like: con(([nu_lulc] eq 16), 0, con((nu_lulc eq 17), 0...
@@ -280,7 +306,9 @@ Module modMUSLE
 
         Dim mwTable As New MapWinGIS.Table
         If Not TableExist Then
-            MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+            MsgBox( _
+                    "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
+                    MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
             Return ""
         Else
@@ -298,20 +326,23 @@ Module modMUSLE
             Dim rowidx As Integer = 0
             Dim dataCF As OleDbDataReader
             For i = 1 To maxVal
-                If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
+                If (mwTable.CellValue(FieldIndex, rowidx) = i) Then _
+'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                     dataCF = cmdCF.ExecuteReader
 
                     booValueFound = False
                     While dataCF.Read()
                         If mwTable.CellValue(FieldIndex, rowidx) = dataCF("Value") Then
                             booValueFound = True
-                            If dataCF("W_WL") = 0 Then 'Means the current landclass is NOT Water or Wetland, therefore gets a 1
+                            If dataCF("W_WL") = 0 Then _
+'Means the current landclass is NOT Water or Wetland, therefore gets a 1
                                 If strpick = "" Then
                                     strpick = "1"
                                 Else
                                     strpick = strpick & ", " & "1"
                                 End If
-                            ElseIf dataCF("W_WL") = 1 Then 'Means the current landclass is Water or Wetland, therefore gets a 0
+                            ElseIf dataCF("W_WL") = 1 Then _
+'Means the current landclass is Water or Wetland, therefore gets a 0
                                 If strpick = "" Then
                                     strpick = "0"
                                 Else
@@ -325,7 +356,8 @@ Module modMUSLE
                         End If
                     End While
                     If booValueFound = False Then
-                        MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                        MsgBox( _
+                                "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                         ConstructPondPickStatement = Nothing
                         dataCF.Close()
                         mwTable.Close()
@@ -345,30 +377,38 @@ Module modMUSLE
             mwTable.Close()
         End If
 
-
         'strCompleteCon = strCon & strParens
         ConstructPondPickStatement = strpick
 
     End Function
 
-
-    Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
+    Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, _
+                                ByRef OutputItems As clsXMLOutputItems) As Boolean
         'Incoming strings: strConStatment: the monster con statement
         'strConPondstatement: the con for the pond stuff
         'Calculates the MUSLE erosion model
 
-        Dim pWSLengthRaster As MapWinGIS.Grid = Nothing  'STEP 2: Watershed length
-        Dim pWSLengthUnitsRaster As MapWinGIS.Grid = Nothing  'STEP 3: Units conversion
-        Dim pSlopePRRaster As MapWinGIS.Grid = Nothing  'STEP 4: Average Slope
-        Dim pSlopeModRaster As MapWinGIS.Grid = Nothing  'STEP 4a: Mod Slope
-        Dim pQuRaster As MapWinGIS.Grid = Nothing 'STep 12b: Who Knows(b)
-        Dim pHISYTempRaster As MapWinGIS.Grid = Nothing  'STEP 16c: HI Specific temp yield
-        Dim pHISYMGRaster As MapWinGIS.Grid = Nothing  'STEP 17b: tons to milligrams, HI Specific
-        Dim pPermMUSLERaster As MapWinGIS.Grid = Nothing  'STEP 17c: Local Effects permanent raster
-        Dim pTotSedMassHIRaster As MapWinGIS.Grid = Nothing  'STEP 20HI: tot sed mass HI
-        Dim pPermTotSedConcHIraster As MapWinGIS.Grid = Nothing  'Permanent MUSLE
+        Dim pWSLengthRaster As MapWinGIS.Grid = Nothing
+        'STEP 2: Watershed length
+        Dim pWSLengthUnitsRaster As MapWinGIS.Grid = Nothing
+        'STEP 3: Units conversion
+        Dim pSlopePRRaster As MapWinGIS.Grid = Nothing
+        'STEP 4: Average Slope
+        Dim pSlopeModRaster As MapWinGIS.Grid = Nothing
+        'STEP 4a: Mod Slope
+        Dim pQuRaster As MapWinGIS.Grid = Nothing
+        'STep 12b: Who Knows(b)
+        Dim pHISYTempRaster As MapWinGIS.Grid = Nothing
+        'STEP 16c: HI Specific temp yield
+        Dim pHISYMGRaster As MapWinGIS.Grid = Nothing
+        'STEP 17b: tons to milligrams, HI Specific
+        Dim pPermMUSLERaster As MapWinGIS.Grid = Nothing
+        'STEP 17c: Local Effects permanent raster
+        Dim pTotSedMassHIRaster As MapWinGIS.Grid = Nothing
+        'STEP 20HI: tot sed mass HI
+        Dim pPermTotSedConcHIraster As MapWinGIS.Grid = Nothing
+        'Permanent MUSLE
         Dim strMUSLE As String
-
 
         'String to hold calculations
         Const strTitle As String = "Processing MUSLE Calculation..."
@@ -412,7 +452,8 @@ Module modMUSLE
                 MapWinGeoProc.DataManagement.DeleteGrid(strStrahlOut)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                MapWinGeoProc.Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, Environment.ProcessorCount, Nothing)
+                MapWinGeoProc.Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, _
+                                                    Environment.ProcessorCount, Nothing)
                 'strExpression = "flowlength([flowdir], [weight], upstream)"
 
                 pTauD8Flow.Close()
@@ -467,11 +508,11 @@ Module modMUSLE
                 'END STEP 4a ------------------------------------------------------------------------------------
             End If
 
-
             modProgDialog.ShowProgress("Calculating MUSLE...", strTitle, 0, 27, 18, g_frmProjectSetup)
             If modProgDialog.g_KeepRunning Then
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
-                RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, pQuRaster, AllMUSLECalc)
+                RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, _
+                            pQuRaster, AllMUSLECalc)
             End If
             'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, g_OutputGridExt))
 
@@ -480,7 +521,8 @@ Module modMUSLE
                 ReDim _pondpicks(strConPondStatement.Split(",").Length)
                 _pondpicks = strConPondStatement.Split(",")
                 Dim AllMUSLECalc2 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc2)
-                RasterMath(pQuRaster, g_LandCoverRaster, g_pDEMRaster, g_pMetRunoffRaster, Nothing, pHISYTempRaster, AllMUSLECalc2)
+                RasterMath(pQuRaster, g_LandCoverRaster, g_pDEMRaster, g_pMetRunoffRaster, Nothing, pHISYTempRaster, _
+                            AllMUSLECalc2)
                 pQuRaster.Close()
             End If
             'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, g_OutputGridExt))
@@ -490,25 +532,28 @@ Module modMUSLE
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
                 Dim AllMUSLECalc3 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc3)
-                RasterMath(pHISYTempRaster, g_LandCoverRaster, g_KFactorRaster, g_pLSRaster, Nothing, pHISYMGRaster, AllMUSLECalc3)
+                RasterMath(pHISYTempRaster, g_LandCoverRaster, g_KFactorRaster, g_pLSRaster, Nothing, pHISYMGRaster, _
+                            AllMUSLECalc3)
                 pHISYTempRaster.Close()
             End If
             'modUtil.ReturnPermanentRaster(pHISYMGRaster, modUtil.GetUniqueName("hisymg", g_strWorkspace, g_OutputGridExt))
 
-
             Dim pHISYMGRasterNoNull As MapWinGIS.Grid = Nothing
             Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
-            RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, hisymgrnonullcalc)
+            RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, _
+                        hisymgrnonullcalc)
 
             If g_booLocalEffects Then
 
-                modProgDialog.ShowProgress("Creating data layer for local effects...", strTitle, 0, 27, 27, g_frmProjectSetup)
+                modProgDialog.ShowProgress("Creating data layer for local effects...", strTitle, 0, 27, 27, _
+                                            g_frmProjectSetup)
                 If modProgDialog.g_KeepRunning Then
 
                     strMUSLE = modUtil.GetUniqueName("locmusle", g_strWorkspace, g_FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
-                        pPermMUSLERaster = modUtil.ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
+                        pPermMUSLERaster = _
+                            modUtil.ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
                         'pPermMUSLERaster = modUtil.ClipBySelectedPoly(pHISYMGRaster, g_pSelectedPolyClip, strMUSLE)
                     Else
                         pPermMUSLERaster = modUtil.ReturnPermanentRaster(pHISYMGRasterNoNull, strMUSLE)
@@ -518,7 +563,8 @@ Module modMUSLE
                     'metadata time
                     g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
 
-                    AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
+                    AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, _
+                                        OutputItems)
 
                     CalcMUSLE = True
                     modProgDialog.CloseDialog()
@@ -528,8 +574,8 @@ Module modMUSLE
 
             End If
 
-
-            modProgDialog.ShowProgress("Calculating the accumulated sediment...", strTitle, 0, 27, 23, g_frmProjectSetup)
+            modProgDialog.ShowProgress("Calculating the accumulated sediment...", strTitle, 0, 27, 23, _
+                                        g_frmProjectSetup)
             If modProgDialog.g_KeepRunning Then
                 Dim pTauD8Flow As MapWinGIS.Grid = Nothing
 
@@ -558,9 +604,9 @@ Module modMUSLE
                 g_TempFilesToDel.Add(strtmpout)
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmpout)
 
-
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                MapWinGeoProc.Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
+                MapWinGeoProc.Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
+                                                        Environment.ProcessorCount, Nothing)
                 'strExpression = "FlowAccumulation([flowdir], [pHISYMGRaster], FLOAT)"
 
                 pTotSedMassHIRaster = New MapWinGIS.Grid
@@ -572,7 +618,6 @@ Module modMUSLE
                 MapWinGeoProc.DataManagement.DeleteGrid(strtmp2)
             End If
 
-
             modProgDialog.ShowProgress("Adding Sediment Mass to Group Layer...", strTitle, 0, 27, 25, g_frmProjectSetup)
             If modProgDialog.g_KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
@@ -581,30 +626,32 @@ Module modMUSLE
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
-                    pPermTotSedConcHIraster = modUtil.ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, strMUSLE)
+                    pPermTotSedConcHIraster = _
+                        modUtil.ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, strMUSLE)
                 Else
                     pPermTotSedConcHIraster = modUtil.ReturnPermanentRaster(pTotSedMassHIRaster, strMUSLE)
                 End If
 
-
                 'Metadata:
                 g_dicMetadata.Add("MUSLE Sediment Mass (kg)", _strMusleMetadata)
 
-                AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (kg)", "MUSLE Accum", -1, OutputItems)
+                AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (kg)", "MUSLE Accum", _
+                                    -1, OutputItems)
 
             End If
-
 
             CalcMUSLE = True
 
             modProgDialog.CloseDialog()
 
-
         Catch ex As Exception
             If Err.Number = -2147217297 Then 'S.A. constant for User cancelled operation
                 modProgDialog.g_KeepRunning = False
-            ElseIf Err.Number = -2147467259 Then  'S.A. constant for crappy ESRI stupid GRID error
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
+            ElseIf Err.Number = -2147467259 Then 'S.A. constant for crappy ESRI stupid GRID error
+                MsgBox( _
+                        "ArcMap has reached the maximum number of GRIDs allowed in memory.  " & _
+                        "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
+                        "Maximum GRID Number Encountered")
                 CalcMUSLE = False
                 modProgDialog.g_KeepRunning = False
                 modProgDialog.CloseDialog()
@@ -617,8 +664,8 @@ Module modMUSLE
         End Try
     End Function
 
-
 #Region "Raster Math"
+
     'Private Function weightCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
     '    'strExpression = "Con([flowdir] eq 2, 1.41421, " & "Con([flowdir] eq 8, 1.41421, " & "Con([flowdir] eq 32, 1.41421, " & "Con([flowdir] eq 128, 1.41421, 1.0))))"
     '    'Con(
@@ -648,14 +695,15 @@ Module modMUSLE
     '    Return Input1 / g_dblCellSize
     'End Function
 
-
-    Private Function wslengthCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function wslengthCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                       ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
+        As Single
         'strExpression = "([cell_wslength] * 3.28084)"
         Return Input1 * 3.28084
     End Function
 
-
-    Private Function slpmodCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function slpmodCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                     ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con([slopepr] eq 0, 0.1, [slopepr])"
         If Input1 = 0 Then
             Return 0.1
@@ -739,8 +787,8 @@ Module modMUSLE
     '    Return Math.Pow(Input1, 2)
     'End Function
 
-
-    Private Function c0CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c0CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.30550," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 2.23537," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 2.18219," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 2.10624," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.00303," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 1.87733," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 1.76312, 1.67889)))))))"
         'Con(
         '  ([ip] le 0.10),
@@ -784,8 +832,8 @@ Module modMUSLE
 
     End Function
 
-
-    Private Function c0CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c0CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.03250," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 1.91978," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 1.83842," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 1.72657, 1.63417))))"
         'Con(
         '  ([ip] le 0.10),
@@ -813,8 +861,8 @@ Module modMUSLE
         End If
     End Function
 
-
-    Private Function c0CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c0CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.55323," & "Con(([ip] gt 0.10 and [ip] lt 0.30), 2.46532," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.41896," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 2.36409," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 2.29238, 2.20282)))))"
         'Con(
         '  ([ip] le 0.10),
@@ -847,8 +895,8 @@ Module modMUSLE
         End If
     End Function
 
-
-    Private Function c0CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c0CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCZero = "Con(([ip] le 0.10), 2.47317," & "Con(([ip] ge 0.10 and [ip] lt 0.30), 2.39628," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.35477," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 2.30726," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 2.24876, 2.17772)))))"
         'Con(
         '  ([ip] le 0.10),
@@ -881,8 +929,8 @@ Module modMUSLE
         End If
     End Function
 
-
-    Private Function c1CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c1CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), -0.51429," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.50387," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.48488," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.45695," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.40769," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.32274," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.15644, -0.06930)))))))"
         'Con(
         '  ([ip] le 0.10),
@@ -925,8 +973,8 @@ Module modMUSLE
         End If
     End Function
 
-
-    Private Function c1CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c1CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), 2.03250," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 1.91978," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 1.83842," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 1.72657, 1.63417))))"
         'Con(
         '  ([ip] le 0.10),
@@ -954,8 +1002,8 @@ Module modMUSLE
         End If
     End Function
 
-
-    Private Function c1CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c1CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), -0.31583," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.28215," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.25543," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.19826, -0.09100))))"
         'Con(
         '  ([ip] le 0.10), 
@@ -984,8 +1032,8 @@ Module modMUSLE
 
     End Function
 
-
-    Private Function c1CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c1CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCone = "Con(([ip] le 0.10), -0.51848," & "Con(([ip] ge 0.10 and [ip] lt 0.30), -0.51202," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.49735," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.46541," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.41314, -0.36803)))))"
         'Con(
         '  ([ip] le 0.10), 
@@ -1019,8 +1067,8 @@ Module modMUSLE
 
     End Function
 
-
-    Private Function c2CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c2CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.11750," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.08929," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.06589," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.02835," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 0.01983," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 0.05754," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 0.00453, 0.00000)))))))"
         'Con(
         '  ([ip] le 0.10), 
@@ -1064,8 +1112,8 @@ Module modMUSLE
 
     End Function
 
-
-    Private Function c2CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c2CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.13748," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.07020," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.02597," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.02633, -0.0))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1093,8 +1141,8 @@ Module modMUSLE
         End If
     End Function
 
-
-    Private Function c2CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c2CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.16403," & "Con(([ip] gt 0.10 and [ip] lt 0.30), -0.11657," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.08820," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.05621," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.02281, -0.01259)))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1127,8 +1175,8 @@ Module modMUSLE
         End If
     End Function
 
-
-    Private Function c2CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function c2CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'm_strCTwo = "Con(([ip] le 0.10), -0.17083," & "Con(([ip] ge 0.10 and [ip] lt 0.30), -0.13245," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.11985," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.11094," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.11508, -0.09525)))))"
         'Con(
         '  ([ip] le 0.10),
@@ -1161,13 +1209,28 @@ Module modMUSLE
         End If
     End Function
 
-
     'pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster
 
-
-    Private Function AllMUSLECellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        Dim tmp1val, tmp2val, tmp3val, tmp4val, lagval, tocval, toctmpval, modtocval, logtocval, _
-             logtoctmpval, RetentionVal, AbstractVal, abprecval, c0calc, c1calc, c2calc, logquval As Single
+    Private Function AllMUSLECellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                       ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
+        As Single
+        Dim tmp1val, _
+            tmp2val, _
+            tmp3val, _
+            tmp4val, _
+            lagval, _
+            tocval, _
+            toctmpval, _
+            modtocval, _
+            logtocval, _
+            logtoctmpval, _
+            RetentionVal, _
+            AbstractVal, _
+            abprecval, _
+            c0calc, _
+            c1calc, _
+            c2calc, _
+            logquval As Single
 
         'strExpression = "Pow([cell_wslngft], 0.8)"
         tmp1val = Math.Pow(Input1, 0.8)
@@ -1223,7 +1286,6 @@ Module modMUSLE
 
                     AbstractVal = 0.2 * RetentionVal
                 End If
-
 
                 'strExpression = "[abstract] / [rain]"
                 If Input4 = 0 Then
@@ -1281,8 +1343,9 @@ Module modMUSLE
 
     'quval   g_LandCoverRaster    g_pDEMRaster  g_pMetRunoffRaster  g_KFactorRaster, g_pLSRaster
 
-
-    Private Function AllMUSLECellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function AllMUSLECellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                        ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
+        As Single
         Dim pondval, qpval, sqmival, afval, runoff_inches As Single
 
         For i As Integer = 0 To _pondpicks.Length - 1
@@ -1302,7 +1365,6 @@ Module modMUSLE
             runoff_inches = 0
         End If
 
-
         'strExpression = "[qu] * [cellarea_sqmi] * [runoff_in] * [pondfact]"
         qpval = Input1 * sqmival * runoff_inches * pondval
 
@@ -1316,8 +1378,9 @@ Module modMUSLE
 
     'hisytmpval   g_LandCoverRaster   g_KFactorRaster, g_pLSRaster
 
-
-    Private Function AllMUSLECellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function AllMUSLECellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+                                        ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
+        As Single
         Dim cfactval, hisyval As Single
 
         For i As Integer = 0 To _picks.Length - 1
@@ -1333,10 +1396,12 @@ Module modMUSLE
         'strExpression = "[sy] * 907.184740"
         Return hisyval * 907.18474
 
-
     End Function
 
-    Function hisymgrnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+    Function hisymgrnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
+                                    ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
+                                    ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
+                                    ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         If Input1 <> Input1Null Then
             Return Input1
         Else
@@ -1345,6 +1410,6 @@ Module modMUSLE
             End If
         End If
     End Function
-#End Region
 
+#End Region
 End Module

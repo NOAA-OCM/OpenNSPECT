@@ -38,15 +38,16 @@ Public Class clsXMLCoeffTypeDef
     ' *
     ' *************************************************************************************
 
-
     'Following are the names of the NODES
 
-
     Private Const NODE_NAME As String = "TypeDefFile"
-    Private Const NODE_TDLyrName As String = "TDLyrName" 'Layer Name
-    Private Const NODE_TDLyrFileName As String = "TDLyrFileName" 'Layer FileName
+    Private Const NODE_TDLyrName As String = "TDLyrName"
+    'Layer Name
+    Private Const NODE_TDLyrFileName As String = "TDLyrFileName"
+    'Layer FileName
     Private Const NODE_TDAttribute As String = "TDAttribute"
-    Private Const NODE_TDType As String = "TDType" 'Alpha/Numeric 0 = Alpha, 1 = Numeric
+    Private Const NODE_TDType As String = "TDType"
+    'Alpha/Numeric 0 = Alpha, 1 = Numeric
     Private Const NODE_TDDef1 As String = "TDDef1"
     Private Const NODE_TDDef2 As String = "TDDef2"
     Private Const NODE_TDDef3 As String = "TDDef3"
@@ -62,7 +63,6 @@ Public Class clsXMLCoeffTypeDef
     Public strTDDef3 As String
     Public strTDDef4 As String
 
-
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -71,7 +71,6 @@ Public Class clsXMLCoeffTypeDef
 
         End Get
     End Property
-
 
     Public Sub SaveFile(ByRef strXML As String)
         Try
@@ -85,7 +84,6 @@ Public Class clsXMLCoeffTypeDef
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -128,7 +126,6 @@ Public Class clsXMLCoeffTypeDef
         End Try
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -149,5 +146,4 @@ Public Class clsXMLCoeffTypeDef
             HandleError(ex)
         End Try
     End Sub
-
 End Class

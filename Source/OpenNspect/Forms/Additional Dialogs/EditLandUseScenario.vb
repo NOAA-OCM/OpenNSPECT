@@ -18,8 +18,8 @@
 
 Imports System.Windows.Forms
 Imports System.Data.OleDb
-Friend Class EditLandUseScenario
 
+Friend Class EditLandUseScenario
     Private _clsManScen As clsXMLLUScen
     Private _strWQStd As String
     Private _frmPrj As MainForm
@@ -27,9 +27,7 @@ Friend Class EditLandUseScenario
     Private _SelectLyrPath As String
     Private _SelectedShapes As Collections.Generic.List(Of Integer)
 
-
 #Region "Events"
-
 
     Private Sub frmLUScen_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -59,8 +57,8 @@ Friend Class EditLandUseScenario
         End Try
     End Sub
 
-
-    Private Sub frmLUScen_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmLUScen_FormClosing(ByVal sender As System.Object, _
+                                       ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         Try
             If _stopClose Then
                 e.Cancel = True
@@ -93,8 +91,8 @@ Friend Class EditLandUseScenario
         End Try
     End Sub
 
-
-    Private Sub cboLULayer_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles cboLULayer.MouseClick
+    Private Sub cboLULayer_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Handles cboLULayer.MouseClick
         Try
             _SelectLyrPath = ""
             _SelectedShapes.Clear()
@@ -102,10 +100,10 @@ Friend Class EditLandUseScenario
             HandleError(ex)
         End Try
     End Sub
+
 #End Region
 
 #Region "Helper Subs"
-
 
     Public Sub init(ByVal strWQStd As String, ByRef frmProj As MainForm)
         Try
@@ -115,7 +113,6 @@ Friend Class EditLandUseScenario
             HandleError(ex)
         End Try
     End Sub
-
 
     Private Function CreateXMLFile() As String
         Try
@@ -157,12 +154,12 @@ Friend Class EditLandUseScenario
         End Try
     End Function
 
-
     Private Function ValidateData() As Boolean
         Try
             'Project Name
             If Len(txtLUName.Text) = 0 Or Len(txtLUName.Text) > 30 Then
-                MsgBox("Please enter a name for the scenario.  Names must be 30 characters or less.", MsgBoxStyle.Critical, "Enter Name")
+                MsgBox("Please enter a name for the scenario.  Names must be 30 characters or less.", _
+                        MsgBoxStyle.Critical, "Enter Name")
                 txtLUName.Focus()
                 ValidateData = False
                 Exit Function
@@ -178,7 +175,8 @@ Friend Class EditLandUseScenario
                 Exit Function
             Else
                 If Not modUtil.LayerInMap(cboLULayer.Text) Then
-                    MsgBox("The layer you have choosen is not in the current map frame.", MsgBoxStyle.Critical, "Layer Not Found")
+                    MsgBox("The layer you have choosen is not in the current map frame.", MsgBoxStyle.Critical, _
+                            "Layer Not Found")
                     ValidateData = False
                     Exit Function
                 End If
@@ -187,7 +185,11 @@ Friend Class EditLandUseScenario
             'Check selected polygons
             If chkSelectedPolys.CheckState = 1 Then
                 If _SelectLyrPath = "" Or _SelectedShapes.Count = 0 Then
-                    MsgBox("You have chosen to use selected polygons from " & cboLULayer.Text & ", but there are no selected features." & vbNewLine & "Please select features or OpenNSPECT will use the entire extent of " & cboLULayer.Text & " to apply this landuse scenario.", MsgBoxStyle.Information, "No Selected Features Found")
+                    MsgBox( _
+                            "You have chosen to use selected polygons from " & cboLULayer.Text & _
+                            ", but there are no selected features." & vbNewLine & _
+                            "Please select features or OpenNSPECT will use the entire extent of " & cboLULayer.Text & _
+                            " to apply this landuse scenario.", MsgBoxStyle.Information, "No Selected Features Found")
                     ValidateData = False
                 End If
             End If
@@ -198,7 +200,8 @@ Friend Class EditLandUseScenario
                     ValidateData = True
                 End If
             Else
-                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
+                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, _
+                        "Check SCS Values")
                 ValidateData = False
                 _txtLUCN_0.Focus()
                 Exit Function
@@ -208,7 +211,8 @@ Friend Class EditLandUseScenario
                     ValidateData = True
                 End If
             Else
-                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
+                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, _
+                        "Check SCS Values")
                 ValidateData = False
                 _txtLUCN_1.Focus()
                 Exit Function
@@ -218,7 +222,8 @@ Friend Class EditLandUseScenario
                     ValidateData = True
                 End If
             Else
-                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
+                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, _
+                        "Check SCS Values")
                 ValidateData = False
                 _txtLUCN_2.Focus()
                 Exit Function
@@ -228,7 +233,8 @@ Friend Class EditLandUseScenario
                     ValidateData = True
                 End If
             Else
-                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
+                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, _
+                        "Check SCS Values")
                 ValidateData = False
                 _txtLUCN_3.Focus()
                 Exit Function
@@ -238,7 +244,8 @@ Friend Class EditLandUseScenario
                     ValidateData = True
                 End If
             Else
-                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
+                MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, _
+                        "Check SCS Values")
                 ValidateData = False
                 _txtLUCN_4.Focus()
                 Exit Function
@@ -247,7 +254,6 @@ Friend Class EditLandUseScenario
             HandleError(ex)
         End Try
     End Function
-
 
     Private Sub PopulateForm()
         Try
@@ -295,12 +301,10 @@ Friend Class EditLandUseScenario
         End Try
     End Sub
 
-
     Private Sub FillGrid()
         Try
             Dim strSQLWQStd As String
             Dim strSQLWQStdPoll As String
-
 
             'Selection based on combo box
             strSQLWQStd = "SELECT * FROM WQCRITERIA WHERE NAME LIKE '" & _strWQStd & "'"
@@ -310,7 +314,10 @@ Friend Class EditLandUseScenario
 
             If dataWQStd.HasRows Then
 
-                strSQLWQStdPoll = "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD " & "FROM POLL_WQCRITERIA INNER JOIN POLLUTANT " & "ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = " & dataWQStd.Item("WQCRITID")
+                strSQLWQStdPoll = "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD " & _
+                                  "FROM POLL_WQCRITERIA INNER JOIN POLLUTANT " & _
+                                  "ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = " & _
+                                  dataWQStd.Item("WQCRITID")
                 Dim cmdSQLWQStdPoll As New DataHelper(strSQLWQStdPoll)
                 Dim dataWQStdPoll As OleDbDataReader = cmdSQLWQStdPoll.ExecuteReader()
 
@@ -328,14 +335,14 @@ Friend Class EditLandUseScenario
                 dataWQStd.Close()
                 dataWQStdPoll.Close()
             Else
-                MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
+                MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", _
+                        MsgBoxStyle.Critical, "Recordset Empty")
             End If
 
         Catch ex As Exception
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Sub SetSelectedShape()
         Try
@@ -347,7 +354,8 @@ Friend Class EditLandUseScenario
                         cboLULayer.Items.Add(g_MapWin.Layers(i).Name)
                     End If
                 Next
-                cboLULayer.SelectedIndex = modUtil.GetCboIndex(g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).Name, cboLULayer)
+                cboLULayer.SelectedIndex = _
+                    modUtil.GetCboIndex(g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).Name, cboLULayer)
 
                 _SelectLyrPath = g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).FileName
                 _SelectedShapes = New Collections.Generic.List(Of Integer)
@@ -360,6 +368,6 @@ Friend Class EditLandUseScenario
             HandleError(ex)
         End Try
     End Sub
-#End Region
 
+#End Region
 End Class

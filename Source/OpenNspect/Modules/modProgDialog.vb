@@ -20,7 +20,7 @@
 ''' Code for handling progress dialog throughout OpenNSPECT
 ''' </summary>
 ''' <remarks></remarks>
-Module modProgDialog
+    Module modProgDialog
     Private ProgressForm As ProgressForm
     Public g_KeepRunning As Boolean
 
@@ -33,7 +33,8 @@ Module modProgDialog
     ''' <param name="max">the max value of the progress bar.</param>
     ''' <param name="value">current value of progress bar.</param>
     ''' <param name="Owner">The owner.</param>
-    Public Sub ShowProgress(ByRef message As String, ByRef title As String, ByRef min As Integer, ByRef max As Integer, ByRef value As Integer, ByRef Owner As Windows.Forms.Form)
+    Public Sub ShowProgress (ByRef message As String, ByRef title As String, ByRef min As Integer, ByRef max As Integer, _
+                             ByRef value As Integer, ByRef Owner As Windows.Forms.Form)
 
         Try
             'first time through, set things up
@@ -42,7 +43,7 @@ Module modProgDialog
                 ProgressForm = New ProgressForm
                 ProgressForm.Show()
                 If Not Owner Is Nothing Then
-                    Owner.AddOwnedForm(ProgressForm)
+                    Owner.AddOwnedForm (ProgressForm)
                 End If
             End If
 
@@ -50,8 +51,7 @@ Module modProgDialog
                 .CancelEnabled = True
                 .Title = title
                 .Description = message
-                .MinRange =
-                .MaxRange = max
+                .MinRange = .MaxRange = max
                 .Progress = value
                 If Not .TimerEnabled Then
                     .TimerEnabled = True
@@ -61,11 +61,10 @@ Module modProgDialog
             Windows.Forms.Application.DoEvents()
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
 
     End Sub
-
 
     ''' <summary>
     ''' Closes the dialog.

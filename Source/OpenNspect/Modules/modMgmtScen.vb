@@ -17,6 +17,7 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
+
 Module modMgmtScen
     ' *************************************************************************************
     ' *  Perot Systems Government Services
@@ -33,8 +34,8 @@ Module modMgmtScen
     Private _pLandCoverRaster As MapWinGIS.Grid
     Public g_booLCChange As Boolean
 
-
-    Public Sub MgmtScenSetup(ByRef clsMgmtScens As clsXMLMgmtScenItems, ByRef strLCClass As String, ByRef strLCFileName As String, ByRef strWorkspace As String)
+    Public Sub MgmtScenSetup(ByRef clsMgmtScens As clsXMLMgmtScenItems, ByRef strLCClass As String, _
+                              ByRef strLCFileName As String, ByRef strWorkspace As String)
         'Main Sub for setting everything up
         'clsMgmtScens: XML wrapper for the management scenarios created by the user
         'strLCClass: Name of the LandCover being used, CCAP
@@ -67,7 +68,8 @@ Module modMgmtScen
 
                 For i = 0 To clsMgmtScens.Count - 1
                     If clsMgmtScens.Item(i).intApply = 1 Then
-                        modProgDialog.ShowProgress("Adding new landclass...", "Creating Management Scenario", 0, CInt(clsMgmtScens.Count), CInt(i), g_frmProjectSetup)
+                        modProgDialog.ShowProgress("Adding new landclass...", "Creating Management Scenario", 0, _
+                                                    CInt(clsMgmtScens.Count), CInt(i), g_frmProjectSetup)
                         If modProgDialog.g_KeepRunning Then
                             Dim mgmtitem As clsXMLMgmtScenItem = clsMgmtScens.Item(i)
                             ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
@@ -96,16 +98,20 @@ Module modMgmtScen
 
     End Sub
 
-
-    Public Sub ReclassRaster(ByRef clsMgmtScen As clsXMLMgmtScenItem, ByVal strLCClass As String, ByRef outputGrid As MapWinGIS.Grid)
+    Public Sub ReclassRaster(ByRef clsMgmtScen As clsXMLMgmtScenItem, ByVal strLCClass As String, _
+                              ByRef outputGrid As MapWinGIS.Grid)
         'We're passing over a single management scenarios in the form of the xml
         'class clsXMLmgmtScenItem, seems to be the easiest way to do this.
-        Dim strSelect As String 'OLEDB selections string
-        Dim LCValue As Double 'value
+        Dim strSelect As String
+        'OLEDB selections string
+        Dim LCValue As Double
+        'value
 
         'Open the landclass Value Value 
         'This is the value user's landclass will change to
-        strSelect = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strLCClass & "' AND LCCLASS.NAME LIKE '" & clsMgmtScen.strChangeToClass & "'"
+        strSelect = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & _
+                    "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & _
+                    strLCClass & "' AND LCCLASS.NAME LIKE '" & clsMgmtScen.strChangeToClass & "'"
         Dim cmdLCVal As New OleDbCommand(strSelect, modUtil.g_DBConn)
         Dim readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
         readLCVal.Read()
@@ -115,7 +121,6 @@ Module modMgmtScen
         'classify the output grid cells under the area polygon to the correct value
         Dim sf As New MapWinGIS.Shapefile
         sf = modUtil.ReturnFeature(clsMgmtScen.strAreaFileName)
-
 
         'Get minimum extents of the area file
         Dim sfExt As MapWinGIS.Extents = sf.Extents

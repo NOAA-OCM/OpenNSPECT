@@ -21,7 +21,6 @@ Imports System.Xml
 Public Class clsXMLOutputItem
     Inherits clsXMLBase
 
-
     Private Const NODE_NAME As String = "OutputFile"
     Private Const ELEMENT_OutputPath As String = "OutputPath"
     Private Const ELEMENT_OutputName As String = "OutputName"
@@ -43,7 +42,6 @@ Public Class clsXMLOutputItem
 
         End Get
     End Property
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -82,7 +80,6 @@ Public Class clsXMLOutputItem
         End Try
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -104,5 +101,4 @@ Public Class clsXMLOutputItem
             HandleError(ex)
         End Try
     End Sub
-
 End Class

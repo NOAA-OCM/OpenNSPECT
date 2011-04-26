@@ -17,6 +17,7 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
+
 Module modMainRun
     ' *************************************************************************************
     ' *  Perot Systems Government Services
@@ -39,39 +40,56 @@ Module modMainRun
     'Following represent variables that will be used for all analysis
     'Garnered primarily from the DEM Dataset
 
-    Public g_intDistanceUnits As Short 'Global Units 0 = meters, 1 = feet
-    Public g_dblCellSize As Double 'Global Cell Size, again taken from DEM
-    Public g_intPrecipType As Short 'Precipitation Type; I, IA, II, III
-    Public g_booLocalEffects As Boolean 'Did they check local effects?
-    Public g_booSelectedPolys As Boolean 'Did they select n polygons for limiting analysis?
+    Public g_intDistanceUnits As Short
+    'Global Units 0 = meters, 1 = feet
+    Public g_dblCellSize As Double
+    'Global Cell Size, again taken from DEM
+    Public g_intPrecipType As Short
+    'Precipitation Type; I, IA, II, III
+    Public g_booLocalEffects As Boolean
+    'Did they check local effects?
+    Public g_booSelectedPolys As Boolean
+    'Did they select n polygons for limiting analysis?
 
     'The Public member datasets, to be used quite a bit
-    Public g_pDEMRaster As MapWinGIS.Grid 'DEM Raster
-    Public g_pFlowAccRaster As MapWinGIS.Grid 'Flow Accumulation
-    Public g_pFlowDirRaster As MapWinGIS.Grid 'Flow Direction
-    Public g_strFlowDirFilename As String 'Flow Direction file name
-    Public g_strLSFileName As String 'LS file name
-    Public g_pLSRaster As MapWinGIS.Grid 'LS Raster
-    Public g_pWaterShedFeatClass As MapWinGIS.Shapefile 'WaterShed Poly featureclass
-    Public g_KFactorRaster As MapWinGIS.Grid 'K Factor DS, used in RUSLE or MUSLE
+    Public g_pDEMRaster As MapWinGIS.Grid
+    'DEM Raster
+    Public g_pFlowAccRaster As MapWinGIS.Grid
+    'Flow Accumulation
+    Public g_pFlowDirRaster As MapWinGIS.Grid
+    'Flow Direction
+    Public g_strFlowDirFilename As String
+    'Flow Direction file name
+    Public g_strLSFileName As String
+    'LS file name
+    Public g_pLSRaster As MapWinGIS.Grid
+    'LS Raster
+    Public g_pWaterShedFeatClass As MapWinGIS.Shapefile
+    'WaterShed Poly featureclass
+    Public g_KFactorRaster As MapWinGIS.Grid
+    'K Factor DS, used in RUSLE or MUSLE
 
-    Public g_dicMetadata As Generic.Dictionary(Of String, String) 'Global dictionary to hold name of layer, metadata process string
-    Public g_clsXMLPrjFile As clsXMLPrjFile 'Global xml project file for metadata support
+    Public g_dicMetadata As Generic.Dictionary(Of String, String)
+    'Global dictionary to hold name of layer, metadata process string
+    Public g_clsXMLPrjFile As clsXMLPrjFile
+    'Global xml project file for metadata support
 
     Public g_pSelectedPolyClip As MapWinGIS.Shape
 
     Public g_pGroupLayer As Integer = -1
 
-
-    Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", Optional ByRef SelectedShapes As Collections.Generic.List(Of Integer) = Nothing)
+    Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", _
+                                     Optional ByRef SelectedShapes As Collections.Generic.List(Of Integer) = Nothing)
         'GOAL:  Set the analysis environment based on the properties of the DEM, and establish
         'the other contributing datasets: Watersheds, flow direction, flow accumulation, length/slope
         'Incoming Parameters:
         'rsWShed: the recordset of the selected ws delineation...used to get paths to datasets
         'strWorkspace: Workspace identified by user in main project window
         'pWShedlayer: selection layer, usually a watershed selection
-        Dim dblCellSize As Double 'Cell Size
-        Dim strError As String = "" 'Error Handling String
+        Dim dblCellSize As Double
+        'Cell Size
+        Dim strError As String = ""
+        'Error Handling String
         Dim strDEM As String
         Dim strWS As String
         Dim strFlowDir As String
@@ -89,7 +107,6 @@ Module modMainRun
         strFlowAcc = dataWshed("FlowAccumFileName")
         strLS = dataWshed("LSFileName")
         intDistUnits = dataWshed("DEMGridUnits")
-
 
         'STEP 1: Get the workspaces set
         g_strFlowDirFilename = strFlowDir
@@ -151,15 +168,15 @@ Module modMainRun
             strError = "Length Slope raster does not Exist: " & strLS
         End If
 
-
         If Len(strError) > 0 Then
             MsgBox(strError, MsgBoxStyle.Critical, "Missing Data")
         End If
 
     End Sub
 
-
-    Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As Collections.Generic.List(Of Integer), ByRef strBasinFeatClass As String) As MapWinGIS.Shapefile
+    Private Function ReturnAnalysisMask(ByVal SelectedPath As String, _
+                                         ByRef SelectedShapes As Collections.Generic.List(Of Integer), _
+                                         ByRef strBasinFeatClass As String) As MapWinGIS.Shapefile
         'Incoming
         'pLayer: Layer user has chosen as being the one from which the selected polys will come
         'pMap: current map
@@ -173,7 +190,6 @@ Module modMainRun
 
         'ARA 12/5/2010 Since this is purely used for zoom, intersecting with the basins is kind of pointless and ExportShapesWithPolygons isn't working anyways, so just returning the extents of the selection area.
         Return sfSelected
-
 
         ''Make a call to get the BasinPoly featureclass using the name sent over
         'Dim basinSF As MapWinGIS.Shapefile = modUtil.ReturnFeature(strBasinFeatClass)
@@ -190,7 +206,6 @@ Module modMainRun
         'Return sfOut
     End Function
 
-
     Public Function CheckMultiPartPolygon(ByVal pPolygon As MapWinGIS.Shape) As Boolean
         If pPolygon.NumParts > 1 Then
             CheckMultiPartPolygon = True
@@ -198,7 +213,6 @@ Module modMainRun
             CheckMultiPartPolygon = False
         End If
     End Function
-
 
     Public Function ReturnSelectGeometry(ByVal strInputSF As String) As MapWinGIS.Shape
         ReturnSelectGeometry = Nothing
@@ -213,5 +227,4 @@ Module modMainRun
             Return unionShape
         End If
     End Function
-
 End Module

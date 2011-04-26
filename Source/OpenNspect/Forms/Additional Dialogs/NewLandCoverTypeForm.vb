@@ -18,13 +18,11 @@
 
 Imports System.Data.OleDb
 Imports System.Windows.Forms
-Friend Class NewLandCoverTypeForm
 
+Friend Class NewLandCoverTypeForm
     Private _frmLC As LandCoverTypesForm
 
-
 #Region "Events"
-
 
     Private Sub frmNewLCType_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -44,8 +42,8 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-
-    Private Sub dgvLCTypes_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvLCTypes.MouseClick
+    Private Sub dgvLCTypes_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Handles dgvLCTypes.MouseClick
         Try
             If e.Button = Windows.Forms.MouseButtons.Right Then
                 cntxmnuGrid.Show(dgvLCTypes, New Drawing.Point(e.X, e.Y))
@@ -56,8 +54,8 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-
-    Private Sub AddRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddRowToolStripMenuItem.Click
+    Private Sub AddRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles AddRowToolStripMenuItem.Click
         Try
             AddRow()
         Catch ex As Exception
@@ -65,8 +63,8 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-
-    Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InsertRowToolStripMenuItem.Click
+    Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles InsertRowToolStripMenuItem.Click
         Try
             InsertRow()
         Catch ex As Exception
@@ -74,8 +72,8 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-
-    Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteRowToolStripMenuItem.Click
+    Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles DeleteRowToolStripMenuItem.Click
         Try
             DeleteRow()
         Catch ex As Exception
@@ -83,8 +81,9 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-
-    Private Sub dgvLCTypes_DataError(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) Handles dgvLCTypes.DataError
+    Private Sub dgvLCTypes_DataError(ByVal sender As System.Object, _
+                                      ByVal e As System.Windows.Forms.DataGridViewDataErrorEventArgs) _
+        Handles dgvLCTypes.DataError
         Try
             MsgBox("Please enter a valid number.")
         Catch ex As Exception
@@ -96,7 +95,8 @@ Friend Class NewLandCoverTypeForm
         Try
             Dim strName As String
             Dim strDescript As String
-            Dim strCmd As String 'INSERT function
+            Dim strCmd As String
+            'INSERT function
 
             If ValidateGridValues() Then
                 'Get rid of possible apostrophes in name
@@ -104,13 +104,17 @@ Friend Class NewLandCoverTypeForm
                 strDescript = Trim(txtLCTypeDesc.Text)
 
                 If modUtil.UniqueName("LCTYPE", strName) And (Trim(strName) <> "") Then
-                    strCmd = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(strName, "'", "''"), Replace(strDescript, "'", "''"))
+                    strCmd = _
+                        String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
+                                       Replace(strName, "'", "''"), Replace(strDescript, "'", "''"))
                     Dim cmdStr As New DataHelper(strCmd)
                     cmdStr.ExecuteNonQuery()
                 Else
-                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
+                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, _
+                            "Select Unique Name")
                     Exit Sub
-                End If 'End unique name check
+                End If
+                'End unique name check
 
                 'Now add GRID values
                 For Each row As DataGridViewRow In dgvLCTypes.Rows
@@ -126,13 +130,14 @@ Friend Class NewLandCoverTypeForm
             HandleError(ex)
         End Try
     End Sub
+
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-       
+
     End Sub
+
 #End Region
 
 #Region "Helper Functions'"
-
 
     Public Sub Init(ByRef frmLC As LandCoverTypesForm)
         Try
@@ -141,7 +146,6 @@ Friend Class NewLandCoverTypeForm
             HandleError(ex)
         End Try
     End Sub
-
 
     Private Sub AddRow()
         Try
@@ -160,7 +164,6 @@ Friend Class NewLandCoverTypeForm
             HandleError(ex)
         End Try
     End Sub
-
 
     Private Sub InsertRow()
         Try
@@ -183,7 +186,6 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-
     Private Sub DeleteRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
@@ -194,7 +196,6 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-
     Private Function ValidateGridValues() As Boolean
         Try
             'Need to validate each grid value before saving.  Essentially we take it a row at a time,
@@ -203,8 +204,10 @@ Friend Class NewLandCoverTypeForm
 
             'Returns: True or False
 
-            Dim val As String 'txtActiveCell value
-            Dim val2 As String 'Value of Column 2 ([VALUE]) - have to check for unique
+            Dim val As String
+            'txtActiveCell value
+            Dim val2 As String
+            'Value of Column 2 ([VALUE]) - have to check for unique
             Dim i As Short
             Dim j As Short
             Dim k As Short
@@ -232,7 +235,6 @@ Friend Class NewLandCoverTypeForm
                                     End If
                                 Next k
                             End If
-
 
                         Case 1
                             If IsNumeric(val) Then
@@ -280,7 +282,6 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Function
 
-
     Private Sub AddLCClass(ByRef strName As String, ByRef row As DataGridViewRow)
         Try
             'Called from cmdOK_Click, this uses a passed array to insert new landclasses
@@ -294,18 +295,23 @@ Friend Class NewLandCoverTypeForm
             Dim datLCType As OleDbDataReader = lctypeaddCmd.ExecuteReader()
             datLCType.Read()
 
-            strCmdInsert = "INSERT INTO LCCLASS([Value],[Name],[LCTYPEID],[CN-A],[CN-B],[CN-C],[CN-D],[CoverFactor],[W_WL]) VALUES(" & CStr(row.Cells(0).Value) & ",'" & CStr(row.Cells(1).Value) & "'," & CStr(datLCType("LCTypeID")) & "," & CStr(row.Cells(2).Value) & "," & CStr(row.Cells(3).Value) & "," & CStr(row.Cells(4).Value) & "," & CStr(row.Cells(5).Value) & "," & CStr(row.Cells(6).Value) & "," & CStr(row.Cells(7).Value) & ")"
+            strCmdInsert = _
+                "INSERT INTO LCCLASS([Value],[Name],[LCTYPEID],[CN-A],[CN-B],[CN-C],[CN-D],[CoverFactor],[W_WL]) VALUES(" & _
+                CStr(row.Cells(0).Value) & ",'" & CStr(row.Cells(1).Value) & "'," & CStr(datLCType("LCTypeID")) & _
+                "," & CStr(row.Cells(2).Value) & "," & CStr(row.Cells(3).Value) & "," & CStr(row.Cells(4).Value) & _
+                "," & CStr(row.Cells(5).Value) & "," & CStr(row.Cells(6).Value) & "," & CStr(row.Cells(7).Value) & _
+                ")"
             Dim insertCmd As New DataHelper(strCmdInsert)
             insertCmd.ExecuteNonQuery()
 
             datLCType.Close()
 
         Catch ex As Exception
-            MsgBox("There is an error inserting records into LCClass.", MsgBoxStyle.Critical, Err.Number & ": " & Err.Description)
+            MsgBox("There is an error inserting records into LCClass.", MsgBoxStyle.Critical, _
+                    Err.Number & ": " & Err.Description)
         End Try
 
     End Sub
 
 #End Region
-
 End Class

@@ -15,7 +15,6 @@
 Public Class SelectionModeForm
     Private stopclose As Boolean
 
-
     Public Sub InitializeAndShow()
         Try
             Me.Show()
@@ -30,8 +29,9 @@ Public Class SelectionModeForm
         End Try
     End Sub
 
-
-    Private Sub frmSelectShapes_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
+    Private Sub frmSelectShapes_FormClosed(ByVal sender As System.Object, _
+                                            ByVal e As System.Windows.Forms.FormClosedEventArgs) _
+        Handles MyBase.FormClosed
         If Not g_cbMainForm Is Nothing Then g_cbMainForm.SetSelectedShape()
         If Not g_comp Is Nothing Then g_comp.SetSelectedShape()
         If Not g_luscen Is Nothing Then g_luscen.SetSelectedShape()
@@ -41,7 +41,6 @@ Public Class SelectionModeForm
         If Not g_luscen Is Nothing Then g_luscen.Visible = True
     End Sub
 
-
     Private Sub btnDone_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDone.Click
         Try
             Close()
@@ -49,7 +48,6 @@ Public Class SelectionModeForm
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Sub disableDone(ByVal disable As Boolean)
         Try
@@ -60,8 +58,9 @@ Public Class SelectionModeForm
         End Try
     End Sub
 
-
-    Private Sub frmSelectShape_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmSelectShape_FormClosing(ByVal sender As System.Object, _
+                                            ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+        Handles MyBase.FormClosing
         Try
             If stopclose Then
                 e.Cancel = True
@@ -70,5 +69,4 @@ Public Class SelectionModeForm
             HandleError(ex)
         End Try
     End Sub
-
 End Class

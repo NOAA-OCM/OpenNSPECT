@@ -14,9 +14,7 @@
 '               Added licensing and comments to original code
 
 Module Globals
-
     Public g_MapWin As MapWindow.Interfaces.IMapWin
     Public g_handle As Integer
     Public g_StatusBar As System.Windows.Forms.StatusBarPanel
-
 End Module

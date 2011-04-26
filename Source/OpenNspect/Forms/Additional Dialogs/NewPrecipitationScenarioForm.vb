@@ -17,17 +17,15 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
+
 Friend Class NewPrecipitationScenarioForm
-
-
     Private _frmPrj As MainForm
     Private _frmPrec As PrecipitationScenariosForm
 
-
 #Region "Events"
 
-
-    Private Sub txtPrecipName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipName.TextChanged
+    Private Sub txtPrecipName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtPrecipName.TextChanged
         Try
             txtPrecipName.Text = Replace(txtPrecipName.Text, "'", "")
         Catch ex As Exception
@@ -35,8 +33,8 @@ Friend Class NewPrecipitationScenarioForm
         End Try
     End Sub
 
-
-    Private Sub txtDesc_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txtDesc.Validating
+    Private Sub txtDesc_Validating(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) _
+        Handles txtDesc.Validating
         Try
             Dim Cancel As Boolean = e.Cancel
 
@@ -48,8 +46,8 @@ Friend Class NewPrecipitationScenarioForm
         End Try
     End Sub
 
-
-    Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
+    Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cmdBrowseFile.Click
         Try
             Dim dlgOpen As New Windows.Forms.OpenFileDialog
 
@@ -62,18 +60,29 @@ Friend Class NewPrecipitationScenarioForm
                     txtPrecipFile.Text = dlgOpen.FileName
                     Dim proj As String = g.Header.Projection
                     If IO.Path.GetFileName(dlgOpen.FileName) = "sta.adf" Then
-                        If IO.File.Exists(IO.Path.GetDirectoryName(dlgOpen.FileName) + IO.Path.DirectorySeparatorChar + "prj.adf") Then
-                            Dim infile As New IO.StreamReader(IO.Path.GetDirectoryName(dlgOpen.FileName) + IO.Path.DirectorySeparatorChar + "prj.adf")
+                        If _
+                            IO.File.Exists( _
+                                            IO.Path.GetDirectoryName(dlgOpen.FileName) + IO.Path.DirectorySeparatorChar + _
+                                            "prj.adf") Then
+                            Dim _
+                                infile As _
+                                    New IO.StreamReader( _
+                                                         IO.Path.GetDirectoryName(dlgOpen.FileName) + _
+                                                         IO.Path.DirectorySeparatorChar + "prj.adf")
                             If infile.ReadToEnd.Contains("METERS") Then
                                 proj = "units=m"
                             End If
                         Else
-                            MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                            MsgBox( _
+                                    "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
+                                    MsgBoxStyle.Exclamation, "No Project Information Detected")
                             Exit Sub
                         End If
                     End If
                     If proj = "" Then
-                        MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                        MsgBox( _
+                                "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
+                                MsgBoxStyle.Exclamation, "No Project Information Detected")
                         Exit Sub
                     Else
                         If proj.Contains("units=m") Then
@@ -86,14 +95,13 @@ Friend Class NewPrecipitationScenarioForm
                 End If
             End If
 
-
         Catch ex As Exception
             HandleError(ex)
         End Try
     End Sub
 
-
-    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimePeriod.SelectedIndexChanged
+    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboTimePeriod.SelectedIndexChanged
         Try
             If cboTimePeriod.SelectedIndex = 0 Then
                 lblRainingDays.Visible = True
@@ -106,6 +114,7 @@ Friend Class NewPrecipitationScenarioForm
             HandleError(ex)
         End Try
     End Sub
+
     Protected Overrides Sub Cancel_Button_Click(sender As Object, e As System.EventArgs)
         IsDirty = True
         MyBase.Cancel_Button_Click(sender, e)
@@ -113,6 +122,7 @@ Friend Class NewPrecipitationScenarioForm
             _frmPrj.cboPrecipScen.SelectedIndex = 0
         End If
     End Sub
+
     Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
 
         Try
@@ -129,7 +139,13 @@ Friend Class NewPrecipitationScenarioForm
                 End If
 
                 'Compose the INSERT statement.
-                strCmdInsert = "INSERT INTO PrecipScenario " & "(Name, Description, PrecipFileName, PrecipGridUnits, PrecipUnits, Type, PrecipType, RainingDays) VALUES (" & "'" & Replace(CStr(txtPrecipName.Text), "'", "''") & "', " & "'" & Replace(CStr(txtDesc.Text), "'", "''") & "', " & "'" & Replace(txtPrecipFile.Text, "'", "''") & "', " & "" & cboGridUnits.SelectedIndex & ", " & "" & cboPrecipUnits.SelectedIndex & ", " & "" & intType & ", " & "" & cboPrecipType.SelectedIndex & ", " & "" & intRainingDays & ")"
+                strCmdInsert = "INSERT INTO PrecipScenario " & _
+                               "(Name, Description, PrecipFileName, PrecipGridUnits, PrecipUnits, Type, PrecipType, RainingDays) VALUES (" & _
+                               "'" & Replace(CStr(txtPrecipName.Text), "'", "''") & "', " & "'" & _
+                               Replace(CStr(txtDesc.Text), "'", "''") & "', " & "'" & _
+                               Replace(txtPrecipFile.Text, "'", "''") & "', " & "" & cboGridUnits.SelectedIndex & ", " & _
+                               "" & cboPrecipUnits.SelectedIndex & ", " & "" & intType & ", " & "" & _
+                               cboPrecipType.SelectedIndex & ", " & "" & intRainingDays & ")"
 
                 If modUtil.UniqueName("PrecipScenario", txtPrecipName.Text) Then
                     'Execute the statement.
@@ -162,7 +178,6 @@ Friend Class NewPrecipitationScenarioForm
 
 #Region "Helper Functions"
 
-
     Public Sub Init(ByRef frmPrj As MainForm, ByRef frmPrec As PrecipitationScenariosForm)
         Try
             _frmPrj = frmPrj
@@ -171,7 +186,6 @@ Friend Class NewPrecipitationScenarioForm
             HandleError(ex)
         End Try
     End Sub
-
 
     Private Function CheckParams() As Boolean
         Try
@@ -220,7 +234,8 @@ Friend Class NewPrecipitationScenarioForm
 
             If cboTimePeriod.SelectedIndex = 0 Then
                 If Not IsNumeric(txtRainingDays.Text) Or Len(txtRainingDays.Text) = 0 Then
-                    MsgBox("Please enter a numeric value for Raining Days.", MsgBoxStyle.Critical, "Raining Days Value Incorrect")
+                    MsgBox("Please enter a numeric value for Raining Days.", MsgBoxStyle.Critical, _
+                            "Raining Days Value Incorrect")
                     txtRainingDays.Focus()
                     CheckParams = False
                     Exit Function
@@ -230,11 +245,10 @@ Friend Class NewPrecipitationScenarioForm
             'if it got through all that, then set it to true
             CheckParams = True
 
-
         Catch ex As Exception
             HandleError(ex)
         End Try
     End Function
-#End Region
 
+#End Region
 End Class

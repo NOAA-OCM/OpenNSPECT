@@ -17,13 +17,10 @@
 '               Added licensing and comments to code
 
 Friend Class NewCoefficientSetForm
-
     Private _frmPoll As PollutantsForm
     Private _frmNewPoll As NewPollutantForm
 
-
 #Region "Events"
-
 
     Private Sub frmAddCoeffSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -33,8 +30,8 @@ Friend Class NewCoefficientSetForm
         End Try
     End Sub
 
-
-    Private Sub txtCoeffSetName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetName.TextChanged
+    Private Sub txtCoeffSetName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtCoeffSetName.TextChanged
         Try
             If Len(txtCoeffSetName.Text) > 0 Then
                 OK_Button.Enabled = True
@@ -45,6 +42,7 @@ Friend Class NewCoefficientSetForm
             HandleError(ex)
         End Try
     End Sub
+
     Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
 
         Try
@@ -66,10 +64,10 @@ Friend Class NewCoefficientSetForm
             HandleError(ex)
         End Try
     End Sub
+
 #End Region
 
 #Region "Helper Functions"
-
 
     Public Sub Init(ByRef frmPoll As PollutantsForm, ByRef frmNewPoll As NewPollutantForm)
         Try
@@ -81,6 +79,4 @@ Friend Class NewCoefficientSetForm
     End Sub
 
 #End Region
-
-
 End Class

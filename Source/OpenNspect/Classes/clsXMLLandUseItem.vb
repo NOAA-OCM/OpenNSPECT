@@ -38,7 +38,6 @@ Public Class clsXMLLandUseItem
     ' *
     ' *************************************************************************************
 
-
     Private Const NODE_NAME As String = "Landuse"
     Private Const ATTRIBUTE_ID As String = "ID"
     Private Const ELEMENT_Apply As String = "Apply"
@@ -50,7 +49,6 @@ Public Class clsXMLLandUseItem
     Public strLUScenName As String
     Public strLUScenXMLFile As String
 
-
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -59,7 +57,6 @@ Public Class clsXMLLandUseItem
 
         End Get
     End Property
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -88,7 +85,6 @@ Public Class clsXMLLandUseItem
             NodeAppendChildElement(dom, node, ELEMENT_LUScenName, strLUScenName)
             NodeAppendChildElement(dom, node, ELEMENT_LUScenXMLFile, strLUScenXMLFile)
 
-
             'Return the created node
             CreateNode = node
 
@@ -97,7 +93,6 @@ Public Class clsXMLLandUseItem
             CreateNode = Nothing
         End Try
     End Function
-
 
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
@@ -116,5 +111,4 @@ Public Class clsXMLLandUseItem
             HandleError(ex)
         End Try
     End Sub
-
 End Class
