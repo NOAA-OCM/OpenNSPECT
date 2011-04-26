@@ -32,9 +32,11 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 ;Source: "License.rtf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Base Files\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs uninsneveruninstall
+Source: "Base Files\*"; Excludes: "*..svnbridge*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs uninsneveruninstall
 Source: "Base Files\bin\OpenNSPECT.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly
-Source: "Base Files\bin\MapWinGeoProc.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}\..\.."; Flags: ignoreversion overwritereadonly
+
+; It should NOT be necessary to modify this file. The user may need to update their installation of MapWindow, however
+;Source: "Base Files\bin\MapWinGeoProc.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}\..\.."; Flags: ignoreversion overwritereadonly
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

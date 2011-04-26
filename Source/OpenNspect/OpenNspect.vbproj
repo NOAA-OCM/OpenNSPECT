@@ -97,7 +97,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\nSpect\</OutputPath>
+    <OutputPath>..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
     <BaseAddress>285212672</BaseAddress>
     <DocumentationFile>OpenNspect.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
@@ -475,7 +475,6 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy /y "$(Targetpath)" "C:\dev\nSpect\Installer\OpenNspect\Base Files\bin\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
