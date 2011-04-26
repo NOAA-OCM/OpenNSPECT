@@ -239,7 +239,7 @@ Partial Class CompareOutputsForm
         Me.MinimumSize = New System.Drawing.Size(600, 400)
         Me.Name = "CompareOutputsForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Compare ONSPECT Outputs"
+        Me.Text = "Compare OpenNSPECT Outputs"
         Me.pnlTop.ResumeLayout(False)
         Me.spltconBase.Panel1.ResumeLayout(False)
         Me.spltconBase.Panel1.PerformLayout()
