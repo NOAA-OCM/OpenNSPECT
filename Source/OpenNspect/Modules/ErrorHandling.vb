@@ -23,34 +23,34 @@ Module ErrorHandling
 
     Private Sub DisplayVersion2Dialog (ByRef sProcedureName As String, ByRef sErrDescription As String)
         Beep()
-        MsgBox( _
+        MsgBox ( _
                 "An error has occured in the application.   Record the call stack sequence" & vbCrLf & _
                 "and the description of the error." & vbCrLf & vbCrLf & "Error Call Stack Sequence " & vbCrLf & vbTab & _
                 sProcedureName & vbCrLf & sErrDescription, MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, _
                 "Unexpected Program Error")
     End Sub
 
-    Private Sub DisplayVersion3Dialog(ByRef sProcedureName As String, ByRef sErrDescription As String, _
+    Private Sub DisplayVersion3Dialog (ByRef sProcedureName As String, ByRef sErrDescription As String, _
                                        ByRef parentHWND As Integer, ByRef raiseException As Boolean)
         Beep()
-        MsgBox( _
+        MsgBox ( _
                 "An error has occured in the application.   Record the call stack sequence" & vbCrLf & _
                 "and the description of the error." & vbCrLf & vbCrLf & "Error Call Stack Sequence " & vbCrLf & vbTab & _
                 sProcedureName & vbCrLf & sErrDescription, MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, _
                 "Unexpected Program Error")
     End Sub
 
-    Private Sub DisplayVersion4Dialog(ByRef sProcedureName As String, ByRef sErrDescription As String, _
+    Private Sub DisplayVersion4Dialog (ByRef sProcedureName As String, ByRef sErrDescription As String, _
                                        ByRef parentHWND As Integer)
         Beep()
-        MsgBox( _
+        MsgBox ( _
                 "An error has occured in the application.   Record the call stack sequence" & vbCrLf & _
                 "and the description of the error." & vbCrLf & vbCrLf & "Error Call Stack Sequence " & vbCrLf & vbTab & _
                 sProcedureName & vbCrLf & sErrDescription, MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, _
                 "Unexpected Program Error")
     End Sub
 
-    Public Sub HandleError2010(ByVal bTopProcedure As Boolean, ByVal sProcedureName As String, _
+    Public Sub HandleError2010 (ByVal bTopProcedure As Boolean, ByVal sProcedureName As String, _
                                 ByVal lErrNumber As Integer, ByVal sErrSource As String, ByVal sErrDescription As String, _
                                 Optional ByVal version As Integer = 1, Optional ByVal parentHWND As Integer = 0, _
                                 Optional ByVal reserved1 As Object = 0, Optional ByVal reserved2 As Object = 0, _
@@ -80,21 +80,21 @@ Module ErrorHandling
             ' Top most procedure in call stack so report error to user
             ' Via a dialog
             If (Not entered) Then
-                sErrDescription = vbCrLf & "Error Number " & vbCrLf & vbTab & CStr(lErrNumber) & vbCrLf & "Description" & _
+                sErrDescription = vbCrLf & "Error Number " & vbCrLf & vbTab & CStr (lErrNumber) & vbCrLf & "Description" & _
                                   vbCrLf & vbTab & sErrDescription & vbCrLf & vbCrLf
             End If
             entered = False
             If (version = 4) Then
-                DisplayVersion4Dialog(sProcedureName, sErrDescription, parentHWND)
+                DisplayVersion4Dialog (sProcedureName, sErrDescription, parentHWND)
             ElseIf (version = 3) Then
-                DisplayVersion3Dialog(sProcedureName, sErrDescription, parentHWND, raiseError)
+                DisplayVersion3Dialog (sProcedureName, sErrDescription, parentHWND, raiseError)
                 If (raiseError) Then _
-                    Err.Raise(lErrNumber, sErrSource, vbTab & sProcedureName & vbCrLf & sErrDescription)
+                    Err.Raise (lErrNumber, sErrSource, vbTab & sProcedureName & vbCrLf & sErrDescription)
             ElseIf (version = 2) Then
-                DisplayVersion2Dialog(sProcedureName, sErrDescription)
+                DisplayVersion2Dialog (sProcedureName, sErrDescription)
             Else
                 Beep()
-                MsgBox( _
+                MsgBox ( _
                         "An error has occured in the application.   Record the call stack sequence" & vbCrLf & _
                         "and the description of the error." & vbCrLf & vbCrLf & "Error Call Stack Sequence " & vbCrLf & _
                         vbTab & sProcedureName & vbCrLf & sErrDescription, MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, _
@@ -104,14 +104,14 @@ Module ErrorHandling
             ' An error has occured but we are not at the top of the call stack
             ' so append the callstack and raise another error
             If (Not entered) Then _
-                sErrDescription = vbCrLf & "Error Number " & vbCrLf & vbTab & CStr(lErrNumber) & vbCrLf & "Description" & _
+                sErrDescription = vbCrLf & "Error Number " & vbCrLf & vbTab & CStr (lErrNumber) & vbCrLf & "Description" & _
                                   vbCrLf & vbTab & sErrDescription & vbCrLf & vbCrLf
             entered = True
-            Err.Raise(lErrNumber, sErrSource, vbTab & sProcedureName & vbCrLf & sErrDescription)
+            Err.Raise (lErrNumber, sErrSource, vbTab & sProcedureName & vbCrLf & sErrDescription)
         End If
     End Sub
 
-    Public Function GetErrorLineNumberString(ByVal lLineNumber As Integer) As String
+    Public Function GetErrorLineNumberString (ByVal lLineNumber As Integer) As String
         ' Test the line number if it is non zero create a string
         If (lLineNumber <> 0) Then GetErrorLineNumberString = "Line : " & lLineNumber Else GetErrorLineNumberString = ""
     End Function

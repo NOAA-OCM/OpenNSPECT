@@ -15,18 +15,17 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Dec 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Xml
 
 Public Class clsXMLOutputItems
     Inherits clsXMLBase
-    Implements System.Collections.IEnumerable
+    Implements IEnumerable
 
     'The NODE_NAME constant contains the name of the XML element that
     'is being wrapped.
     Private Const NODE_NAME As String = "OutputFiles"
 
-    Private m_colItems As Collections.ArrayList
+    Private m_colItems As ArrayList
 
     Public ReadOnly Property NodeName() As String
         Get
@@ -44,27 +43,27 @@ Public Class clsXMLOutputItems
         End Get
     End Property
 
-    Public Property Item(ByVal Index As Integer) As clsXMLOutputItem
+    Public Property Item (ByVal Index As Integer) As clsXMLOutputItem
         Get
             'Get the order item at the given index.
-            Item = m_colItems.Item(Index)
+            Item = m_colItems.Item (Index)
         End Get
-        Set(ByVal Value As clsXMLOutputItem)
-            m_colItems.Add(Value)
+        Set (ByVal Value As clsXMLOutputItem)
+            m_colItems.Add (Value)
         End Set
     End Property
 
-    Public Function GetEnumerator() As System.Collections.IEnumerator _
-        Implements System.Collections.IEnumerable.GetEnumerator
+    Public Function GetEnumerator() As IEnumerator _
+        Implements IEnumerable.GetEnumerator
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
             GetEnumerator = Nothing
         End Try
     End Function
 
-    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
@@ -76,13 +75,13 @@ Public Class clsXMLOutputItems
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml("<" & NODE_NAME & "/>")
+                dom.LoadXml ("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement(NODE_NAME)
-                Parent.AppendChild(node)
+                node = dom.CreateElement (NODE_NAME)
+                Parent.AppendChild (node)
             End If
 
             'Save the repeating <OrderItem> elements.
@@ -90,23 +89,23 @@ Public Class clsXMLOutputItems
             Dim clsOutput As clsXMLOutputItem
 
             For Each clsOutput In m_colItems
-                node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-                clsOutput.CreateNode(node)
+                node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+                clsOutput.CreateNode (node)
             Next clsOutput
 
-            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
 
             clsOutput = Nothing
 
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode(ByRef node As XmlNode)
+    Public Overrides Sub LoadNode (ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -119,35 +118,35 @@ Public Class clsXMLOutputItems
             Dim outNode As XmlNode
 
             clsOutput = New clsXMLOutputItem
-            m_colItems = New Collections.ArrayList
+            m_colItems = New ArrayList
 
-            nodes = node.SelectNodes(clsOutput.NodeName)
+            nodes = node.SelectNodes (clsOutput.NodeName)
             For Each outNode In nodes
                 clsOutput = New clsXMLOutputItem
-                clsOutput.LoadNode(outNode)
-                m_colItems.Add(clsOutput)
+                clsOutput.LoadNode (outNode)
+                m_colItems.Add (clsOutput)
             Next outNode
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
     Public Sub New()
         Try
-            m_colItems = New Collections.ArrayList
+            m_colItems = New ArrayList
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
     'Add an order item.
-    Public Sub Add(ByVal OutItem As clsXMLOutputItem)
-        m_colItems.Add(OutItem)
+    Public Sub Add (ByVal OutItem As clsXMLOutputItem)
+        m_colItems.Add (OutItem)
     End Sub
 
     'Remove an order item.
-    Public Sub Remove(ByVal Index As Integer)
-        m_colItems.Remove(Index)
+    Public Sub Remove (ByVal Index As Integer)
+        m_colItems.Remove (Index)
     End Sub
 End Class

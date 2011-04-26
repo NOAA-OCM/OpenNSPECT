@@ -15,7 +15,8 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
+Imports System.Windows.Forms
+Imports System.IO
 Imports System.Data.OleDb
 
 Friend Class ImportLandCoverTypeForm
@@ -26,18 +27,18 @@ Friend Class ImportLandCoverTypeForm
     Private _strFileName As String
     Private _parent As LandCoverTypesForm
 
-    Public Sub Init(ByRef parent As LandCoverTypesForm)
+    Public Sub Init (ByRef parent As LandCoverTypesForm)
         Try
             _parent = parent
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub txtLCType_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub txtLCType_TextChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles txtLCType.TextChanged
         Try
-            If CBool(Trim(CStr(Len(txtLCType.Text)))) Then
+            If CBool (Trim (CStr (Len (txtLCType.Text)))) Then
                 _booName = True
             End If
 
@@ -45,19 +46,19 @@ Friend Class ImportLandCoverTypeForm
                 OK_Button.Enabled = True
             End If
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
+    Private Sub cmdBrowse_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowse.Click
         Try
             Using _
                 dlgopen As _
-                    New Windows.Forms.OpenFileDialog() _
+                    New OpenFileDialog() _
                         With {
-                .Filter = Replace(MSG1TextFile, "<name>", "Land Cover Type"), _
-                            .Title = Replace(MSG2, "<name>", "Land Cover Type")}
-                If dlgopen.ShowDialog = Windows.Forms.DialogResult.OK Then
+                .Filter = Replace (MSG1TextFile, "<name>", "Land Cover Type"), _
+                            .Title = Replace (MSG2, "<name>", "Land Cover Type")}
+                If dlgopen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                     txtImpFile.Text = dlgopen.FileName
                     _strFileName = dlgopen.FileName
                     _booFile = True
@@ -68,14 +69,14 @@ Friend Class ImportLandCoverTypeForm
                 OK_Button.Enabled = True
             End If
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
+    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
         Try
-            If IO.File.Exists(_strFileName) Then
-                Using read As New IO.StreamReader(_strFileName)
+            If File.Exists (_strFileName) Then
+                Using read As New StreamReader (_strFileName)
                     Dim strline As String = ""
                     Dim strname As String = ""
                     Dim strDesc As String = ""
@@ -85,24 +86,24 @@ Friend Class ImportLandCoverTypeForm
                         line = line + 1
                         If line = 1 Then
                             strname = txtLCType.Text.Trim()
-                            strDesc = strline.Split(",")(1)
+                            strDesc = strline.Split (",") (1)
                             If strname = "" Then
-                                MsgBox("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
+                                MsgBox ("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
                                 txtLCType.Focus()
                                 Exit Sub
                             Else
                                 'Name Check, if cool perform
-                                If modUtil.UniqueName("LCTYPE", txtLCType.Text) Then
+                                If UniqueName ("LCTYPE", txtLCType.Text) Then
                                     Dim _
                                         strCmd As String = _
-                                            String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
-                                                           Replace(txtLCType.Text, "'", "''"), _
-                                                           Replace(strDesc, "'", "''"))
-                                    Using cmdIns As New DataHelper(strCmd)
+                                            String.Format ("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
+                                                           Replace (txtLCType.Text, "'", "''"), _
+                                                           Replace (strDesc, "'", "''"))
+                                    Using cmdIns As New DataHelper (strCmd)
                                         cmdIns.ExecuteNonQuery()
                                     End Using
                                 Else
-                                    MsgBox("The name you have chosen is already in use.  Please select another.", _
+                                    MsgBox ("The name you have chosen is already in use.  Please select another.", _
                                             MsgBoxStyle.Critical, "Select Unique Name")
                                     Exit Sub
                                 End If
@@ -113,14 +114,14 @@ Friend Class ImportLandCoverTypeForm
                             ' > line 1
                             If strline.Trim.Length > 0 Then
                                 'Create an array of lines ie Value,Descript,1,2,3,4,CoverFactor,W/WL
-                                Dim strparams() As String = strline.Trim.Split(",")
+                                Dim strparams() As String = strline.Trim.Split (",")
                                 'Check the values, if ok add them, if not rollback
-                                If CheckGridValuesLCType(strparams) Then
-                                    AddLCClass(strname, strparams)
+                                If CheckGridValuesLCType (strparams) Then
+                                    AddLCClass (strname, strparams)
                                 Else
-                                    RollBackImport(strname)
+                                    RollBackImport (strname)
                                     _parent.cmbxLCType.Items.Clear()
-                                    modUtil.InitComboBox(_parent.cmbxLCType, "LCTYPE")
+                                    InitComboBox (_parent.cmbxLCType, "LCTYPE")
                                 End If
                                 'End check
                             End If
@@ -128,59 +129,59 @@ Friend Class ImportLandCoverTypeForm
                         ' line = 1 or not
                     End While
                     _parent.cmbxLCType.Items.Clear()
-                    modUtil.InitComboBox(_parent.cmbxLCType, "LCTYPE")
-                    _parent.cmbxLCType.SelectedIndex = modUtil.GetCboIndex(strname, _parent.cmbxLCType)
+                    InitComboBox (_parent.cmbxLCType, "LCTYPE")
+                    _parent.cmbxLCType.SelectedIndex = GetCboIndex (strname, _parent.cmbxLCType)
                     read.Close()
                 End Using
-                MyBase.OK_Button_Click(sender, e)
+                MyBase.OK_Button_Click (sender, e)
             Else
-                MsgBox("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, _
+                MsgBox ("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, _
                         "File Not Found")
             End If
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub AddLCClass(ByRef strName As String, ByRef strParams() As String)
+    Private Sub AddLCClass (ByRef strName As String, ByRef strParams() As String)
         Try
             Dim strLCTypeAdd As String
             Dim strCmdInsert As String
 
             'Get the WQCriteria values using the name
-            strLCTypeAdd = String.Format("SELECT * FROM LCTYPE WHERE NAME = '{0}'", strName)
-            Using cmdType As New DataHelper(strLCTypeAdd)
+            strLCTypeAdd = String.Format ("SELECT * FROM LCTYPE WHERE NAME = '{0}'", strName)
+            Using cmdType As New DataHelper (strLCTypeAdd)
                 Dim dataType As OleDbDataReader = cmdType.ExecuteReader()
                 dataType.Read()
                 strCmdInsert = _
-                    String.Format( _
+                    String.Format ( _
                                    "INSERT INTO LCCLASS([Value],[Name],[LCTYPEID],[CN-A],[CN-B],[CN-C],[CN-D],[CoverFactor],[W_WL]) VALUES({0},'{1}',{2},{3},{4},{5},{6},{7},{8})", _
-                                   Replace(CStr(strParams(0)), "'", "''"), Replace(CStr(strParams(1)), "'", "''"), _
-                                   Replace(CStr(dataType("LCTypeID")), "'", "''"), _
-                                   Replace(CStr(strParams(2)), "'", "''"), Replace(CStr(strParams(3)), "'", "''"), _
-                                   Replace(CStr(strParams(4)), "'", "''"), Replace(CStr(strParams(5)), "'", "''"), _
-                                   Replace(CStr(strParams(6)), "'", "''"), Replace(CStr(strParams(7)), "'", "''"))
+                                   Replace (CStr (strParams (0)), "'", "''"), Replace (CStr (strParams (1)), "'", "''"), _
+                                   Replace (CStr (dataType ("LCTypeID")), "'", "''"), _
+                                   Replace (CStr (strParams (2)), "'", "''"), Replace (CStr (strParams (3)), "'", "''"), _
+                                   Replace (CStr (strParams (4)), "'", "''"), Replace (CStr (strParams (5)), "'", "''"), _
+                                   Replace (CStr (strParams (6)), "'", "''"), Replace (CStr (strParams (7)), "'", "''"))
                 dataType.Close()
-                Using cmdIns As New DataHelper(strCmdInsert)
+                Using cmdIns As New DataHelper (strCmdInsert)
                     cmdIns.ExecuteNonQuery()
                 End Using
             End Using
         Catch ex As Exception
-            MsgBox( _
+            MsgBox ( _
                     "There was a problem updating the database.  Insure that your values meet the correct " & _
                     "value ranges for each field.", MsgBoxStyle.Critical, "Invalid Values Found")
         End Try
     End Sub
 
-    Private Function CheckGridValuesLCType(ByRef aryValue() As String) As Boolean
+    Private Function CheckGridValuesLCType (ByRef aryValue() As String) As Boolean
         Try
             For i As Integer = 0 To aryValue.Length - 1
 
                 Select Case i
                     Case 6
-                        If aryValue(i) < 0 Or aryValue(i) > 1 Then
-                            MsgBox("Cover Factor must be between 0 and 1.  Please check values", MsgBoxStyle.Critical, _
+                        If aryValue (i) < 0 Or aryValue (i) > 1 Then
+                            MsgBox ("Cover Factor must be between 0 and 1.  Please check values", MsgBoxStyle.Critical, _
                                     "Check Cover Number")
                             CheckGridValuesLCType = False
                         Else
@@ -189,18 +190,18 @@ Friend Class ImportLandCoverTypeForm
                 End Select
             Next i
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Function
 
-    Private Sub RollBackImport(ByRef strName As String)
+    Private Sub RollBackImport (ByRef strName As String)
         Try
             Dim strSQLDel As String = "DELETE FROM LCTYPE where NAME LIKE '" & strName & "'"
-            Using cmdDel As New DataHelper(strSQLDel)
+            Using cmdDel As New DataHelper (strSQLDel)
                 cmdDel.ExecuteNonQuery()
             End Using
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 End Class

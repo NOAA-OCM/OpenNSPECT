@@ -1,8 +1,11 @@
-Imports System.Reflection
 Imports System.Windows.Forms
-Imports System.IO
+Imports System.Reflection
+Imports System.Collections.Specialized
 Imports System.Drawing
+Imports System.IO
 Imports System.Text.RegularExpressions
+Imports System.Resources
+Imports System.Runtime.InteropServices
 Imports Microsoft.Win32
 
 ''' <summary>
@@ -15,14 +18,14 @@ Imports Microsoft.Win32
 ''' Originally called 'AboutBox'
 ''' </remarks>
     Public Class AboutForm
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
     Private _IsPainted As Boolean = False
     Private _EntryAssemblyName As String
     Private _CallingAssemblyName As String
     Private _ExecutingAssemblyName As String
-    Private _EntryAssembly As System.Reflection.Assembly
-    Private _EntryAssemblyAttribCollection As Specialized.NameValueCollection
+    Private _EntryAssembly As Assembly
+    Private _EntryAssemblyAttribCollection As NameValueCollection
     Private _MinWindowHeight As Integer
 
 #Region "Properties"
@@ -34,11 +37,11 @@ Imports Microsoft.Win32
     ''' This is usually read-only, but in some weird cases (Smart Client apps) 
     ''' you won't have an entry assembly, so you may want to set this manually.
     ''' </remarks>
-    Public Property AppEntryAssembly() As System.Reflection.Assembly
+    Public Property AppEntryAssembly() As Assembly
         Get
             Return _EntryAssembly
         End Get
-        Set (ByVal Value As System.Reflection.Assembly)
+        Set (ByVal Value As Assembly)
             _EntryAssembly = Value
         End Set
     End Property
@@ -179,7 +182,7 @@ Imports Microsoft.Win32
     ''' exception-safe retrieval of LastWriteTime for this assembly.
     ''' </summary>
     ''' <returns>File.GetLastWriteTime, or DateTime.MaxValue if exception was encountered.</returns>
-    Private Shared Function AssemblyLastWriteTime (ByVal a As System.Reflection.Assembly) As DateTime
+    Private Shared Function AssemblyLastWriteTime (ByVal a As Assembly) As DateTime
         Try
             Return File.GetLastWriteTime (a.Location)
         Catch ex As Exception
@@ -194,10 +197,10 @@ Imports Microsoft.Win32
     ''' <param name="a">Assembly to get build date for</param>
     ''' <param name="ForceFileDate">Don't attempt to use the build number to calculate the date</param>
     ''' <returns>DateTime this assembly was last built</returns>
-    Private Shared Function AssemblyBuildDate (ByVal a As System.Reflection.Assembly, _
+    Private Shared Function AssemblyBuildDate (ByVal a As Assembly, _
                                                Optional ByVal ForceFileDate As Boolean = False) As DateTime
 
-        Dim AssemblyVersion As System.Version = a.GetName.Version
+        Dim AssemblyVersion As Version = a.GetName.Version
         Dim dt As DateTime
 
         If ForceFileDate Then
@@ -234,11 +237,11 @@ Imports Microsoft.Win32
     ''' Description     = AssemblyDescription string
     ''' Title           = AssemblyTitle string
     ''' </remarks>
-    Private Function AssemblyAttribs (ByVal a As System.Reflection.Assembly) As Specialized.NameValueCollection
+    Private Function AssemblyAttribs (ByVal a As Assembly) As NameValueCollection
         Dim TypeName As String
         Dim Name As String
         Dim Value As String
-        Dim nvc As New Specialized.NameValueCollection
+        Dim nvc As New NameValueCollection
         Dim r As New Regex ("(\.Assembly|\.)(?<Name>[^.]*)Attribute$", RegexOptions.IgnoreCase)
         Try
 
@@ -250,7 +253,7 @@ Imports Microsoft.Win32
                     Case "System.CLSCompliantAttribute"
                         Value = CType (attrib, CLSCompliantAttribute).IsCompliant.ToString
                     Case "System.Diagnostics.DebuggableAttribute"
-                        Value = CType (attrib, Diagnostics.DebuggableAttribute).IsJITTrackingEnabled.ToString
+                        Value = CType (attrib, DebuggableAttribute).IsJITTrackingEnabled.ToString
                     Case "System.Reflection.AssemblyCompanyAttribute"
                         Value = CType (attrib, AssemblyCompanyAttribute).Company.ToString
                     Case "System.Reflection.AssemblyConfigurationAttribute"
@@ -274,20 +277,20 @@ Imports Microsoft.Win32
                     Case "System.Reflection.AssemblyTitleAttribute"
                         Value = CType (attrib, AssemblyTitleAttribute).Title.ToString
                     Case "System.Resources.NeutralResourcesLanguageAttribute"
-                        Value = CType (attrib, Resources.NeutralResourcesLanguageAttribute).CultureName.ToString
+                        Value = CType (attrib, NeutralResourcesLanguageAttribute).CultureName.ToString
                     Case "System.Resources.SatelliteContractVersionAttribute"
-                        Value = CType (attrib, Resources.SatelliteContractVersionAttribute).Version.ToString
+                        Value = CType (attrib, SatelliteContractVersionAttribute).Version.ToString
                     Case "System.Runtime.InteropServices.ComCompatibleVersionAttribute"
-                        Dim x As Runtime.InteropServices.ComCompatibleVersionAttribute
-                        x = CType (attrib, Runtime.InteropServices.ComCompatibleVersionAttribute)
+                        Dim x As ComCompatibleVersionAttribute
+                        x = CType (attrib, ComCompatibleVersionAttribute)
                         Value = x.MajorVersion & "." & x.MinorVersion & "." & x.RevisionNumber & "." & x.BuildNumber
                     Case "System.Runtime.InteropServices.ComVisibleAttribute"
-                        Value = CType (attrib, Runtime.InteropServices.ComVisibleAttribute).Value.ToString
+                        Value = CType (attrib, ComVisibleAttribute).Value.ToString
                     Case "System.Runtime.InteropServices.GuidAttribute"
-                        Value = CType (attrib, Runtime.InteropServices.GuidAttribute).Value.ToString
+                        Value = CType (attrib, GuidAttribute).Value.ToString
                     Case "System.Runtime.InteropServices.TypeLibVersionAttribute"
-                        Dim x As Runtime.InteropServices.TypeLibVersionAttribute
-                        x = CType (attrib, Runtime.InteropServices.TypeLibVersionAttribute)
+                        Dim x As TypeLibVersionAttribute
+                        x = CType (attrib, TypeLibVersionAttribute)
                         Value = x.MajorVersion & "." & x.MinorVersion
                     Case "System.Security.AllowPartiallyTrustedCallersAttribute"
                         Value = "(Present)"
@@ -311,7 +314,7 @@ Imports Microsoft.Win32
             ' codebase
             Try
                 .Add ("CodeBase", a.CodeBase.Replace ("file:///", ""))
-            Catch ex As System.NotSupportedException
+            Catch ex As NotSupportedException
                 .Add ("CodeBase", "(not supported)")
             End Try
             ' build date
@@ -324,7 +327,7 @@ Imports Microsoft.Win32
             ' location
             Try
                 .Add ("Location", a.Location)
-            Catch ex As System.NotSupportedException
+            Catch ex As NotSupportedException
                 .Add ("Location", "(not supported)")
             End Try
             ' version
@@ -404,7 +407,7 @@ Imports Microsoft.Win32
     ''' populates the Application Information listview
     ''' </summary>
     Private Sub PopulateAppInfo()
-        Dim d As System.AppDomain = System.AppDomain.CurrentDomain
+        Dim d As AppDomain = AppDomain.CurrentDomain
         Populate (AppInfoListView, "Application Name", d.SetupInformation.ApplicationName)
         Populate (AppInfoListView, "Application Base", d.SetupInformation.ApplicationBase)
         Populate (AppInfoListView, "Cache Path", d.SetupInformation.CachePath)
@@ -434,7 +437,7 @@ Imports Microsoft.Win32
     ''' populate Assembly Information listview with summary view for a specific assembly
     ''' </summary>
     Private Sub PopulateAssemblySummary (ByVal a As [Assembly])
-        Dim nvc As Specialized.NameValueCollection = AssemblyAttribs (a)
+        Dim nvc As NameValueCollection = AssemblyAttribs (a)
 
         Dim strAssemblyName As String = a.GetName.Name
 
@@ -529,14 +532,14 @@ Imports Microsoft.Win32
     ''' <summary>
     ''' populate details for a single assembly
     ''' </summary>
-    Private Sub PopulateAssemblyDetails (ByVal a As System.Reflection.Assembly, ByVal lvw As ListView)
+    Private Sub PopulateAssemblyDetails (ByVal a As Assembly, ByVal lvw As ListView)
         lvw.Items.Clear()
 
         ' this assembly property is only available in framework versions 1.1+
         Populate (lvw, "Image Runtime Version", a.ImageRuntimeVersion)
         Populate (lvw, "Loaded from GAC", a.GlobalAssemblyCache.ToString)
 
-        Dim nvc As Specialized.NameValueCollection = AssemblyAttribs (a)
+        Dim nvc As NameValueCollection = AssemblyAttribs (a)
         For Each strKey As String In nvc
             Populate (lvw, strKey, nvc.Item (strKey))
         Next
@@ -557,7 +560,7 @@ Imports Microsoft.Win32
     ''' <summary>
     ''' things to do when form is loaded
     ''' </summary>
-    Private Sub AboutBox_Load (ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub AboutBox_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 
         ' if the user didn't provide an assembly, try to guess which one is the entry assembly
         If _EntryAssembly Is Nothing Then
@@ -599,7 +602,7 @@ Imports Microsoft.Win32
     ''' <summary>
     ''' expand about dialog to show additional advanced details
     ''' </summary>
-    Private Sub DetailsButton_Click (ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub DetailsButton_Click (ByVal sender As Object, ByVal e As EventArgs) _
         Handles DetailsButton.Click
         Cursor.Current = Cursors.WaitCursor
         DetailsButton.Visible = False
@@ -621,7 +624,7 @@ Imports Microsoft.Win32
     ''' <summary>
     ''' for detailed system info, launch the external Microsoft system info app
     ''' </summary>
-    Private Sub SysInfoButton_Click (ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub SysInfoButton_Click (ByVal sender As Object, ByVal e As EventArgs) _
         Handles SysInfoButton.Click
         ShowSysInfo()
     End Sub
@@ -629,7 +632,7 @@ Imports Microsoft.Win32
     ''' <summary>
     ''' if an assembly is double-clicked, go to the detail page for that assembly
     ''' </summary>
-    Private Sub AssemblyInfoListView_DoubleClick (ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub AssemblyInfoListView_DoubleClick (ByVal sender As Object, ByVal e As EventArgs) _
         Handles AssemblyInfoListView.DoubleClick
         Dim strAssemblyName As String
         If AssemblyInfoListView.SelectedItems.Count > 0 Then
@@ -642,7 +645,7 @@ Imports Microsoft.Win32
     ''' <summary>
     ''' if a new assembly is selected from the combo box, show details for that assembly
     ''' </summary>
-    Private Sub AssemblyNamesComboBox_SelectedIndexChanged (ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub AssemblyNamesComboBox_SelectedIndexChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles AssemblyNamesComboBox.SelectedIndexChanged
         Dim strAssemblyName As String = Convert.ToString (AssemblyNamesComboBox.SelectedItem)
         PopulateAssemblyDetails (MatchAssemblyByName (strAssemblyName), AssemblyDetailsListView)
@@ -716,7 +719,7 @@ Imports Microsoft.Win32
     ''' <summary>
     ''' things to do when the selected tab is changed
     ''' </summary>
-    Private Sub TabPanelDetails_SelectedIndexChanged (ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub TabPanelDetails_SelectedIndexChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles TabPanelDetails.SelectedIndexChanged
         If TabPanelDetails.SelectedTab Is Me.TabPageAssemblyDetails Then
             AssemblyNamesComboBox.Focus()

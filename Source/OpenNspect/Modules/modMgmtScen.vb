@@ -15,7 +15,7 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
+Imports MapWinGIS
 Imports System.Data.OleDb
 
 Module modMgmtScen
@@ -31,10 +31,10 @@ Module modMgmtScen
     ' *************************************************************************************
 
     Private _strLCClass As String
-    Private _pLandCoverRaster As MapWinGIS.Grid
+    Private _pLandCoverRaster As Grid
     Public g_booLCChange As Boolean
 
-    Public Sub MgmtScenSetup(ByRef clsMgmtScens As clsXMLMgmtScenItems, ByRef strLCClass As String, _
+    Public Sub MgmtScenSetup (ByRef clsMgmtScens As clsXMLMgmtScenItems, ByRef strLCClass As String, _
                               ByRef strLCFileName As String, ByRef strWorkspace As String)
         'Main Sub for setting everything up
         'clsMgmtScens: XML wrapper for the management scenarios created by the user
@@ -43,36 +43,36 @@ Module modMgmtScen
         Try
             Dim strOutLandCover As String
             Dim booLandScen As Boolean
-            Dim pNewLandCoverRaster As New MapWinGIS.Grid
+            Dim pNewLandCoverRaster As New Grid
 
             'init everything
             _strLCClass = strLCClass
 
             'Make sure the landcoverraster exists..it better if they get to this point, ED!
-            If modUtil.RasterExists(strLCFileName) Then
-                _pLandCoverRaster = modUtil.ReturnRaster(strLCFileName)
+            If RasterExists (strLCFileName) Then
+                _pLandCoverRaster = ReturnRaster (strLCFileName)
             Else
                 Exit Sub
             End If
 
-            strOutLandCover = modUtil.GetUniqueName("landcover", g_strWorkspace, g_OutputGridExt)
+            strOutLandCover = GetUniqueName ("landcover", g_strWorkspace, g_OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
             Dim i As Short
             If clsMgmtScens.Count > 0 Then
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
-                _pLandCoverRaster.Save(strOutLandCover)
+                _pLandCoverRaster.Save (strOutLandCover)
                 _pLandCoverRaster.Close()
-                pNewLandCoverRaster.Open(strOutLandCover)
+                pNewLandCoverRaster.Open (strOutLandCover)
 
                 For i = 0 To clsMgmtScens.Count - 1
-                    If clsMgmtScens.Item(i).intApply = 1 Then
-                        modProgDialog.ShowProgress("Adding new landclass...", "Creating Management Scenario", 0, _
-                                                    CInt(clsMgmtScens.Count), CInt(i), g_frmProjectSetup)
-                        If modProgDialog.g_KeepRunning Then
-                            Dim mgmtitem As clsXMLMgmtScenItem = clsMgmtScens.Item(i)
-                            ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
+                    If clsMgmtScens.Item (i).intApply = 1 Then
+                        ShowProgress ("Adding new landclass...", "Creating Management Scenario", 0, _
+                                      CInt (clsMgmtScens.Count), CInt (i), g_frmProjectSetup)
+                        If g_KeepRunning Then
+                            Dim mgmtitem As clsXMLMgmtScenItem = clsMgmtScens.Item (i)
+                            ReclassRaster (mgmtitem, _strLCClass, pNewLandCoverRaster)
                             booLandScen = True
                         Else
                             pNewLandCoverRaster.Close()
@@ -89,17 +89,17 @@ Module modMgmtScen
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
 
-            modProgDialog.CloseDialog()
+            CloseDialog()
 
         Catch ex As Exception
-            MsgBox("error in MSSetup " & Err.Number & ": " & Err.Description)
-            modProgDialog.CloseDialog()
+            MsgBox ("error in MSSetup " & Err.Number & ": " & Err.Description)
+            CloseDialog()
         End Try
 
     End Sub
 
-    Public Sub ReclassRaster(ByRef clsMgmtScen As clsXMLMgmtScenItem, ByVal strLCClass As String, _
-                              ByRef outputGrid As MapWinGIS.Grid)
+    Public Sub ReclassRaster (ByRef clsMgmtScen As clsXMLMgmtScenItem, ByVal strLCClass As String, _
+                              ByRef outputGrid As Grid)
         'We're passing over a single management scenarios in the form of the xml
         'class clsXMLmgmtScenItem, seems to be the easiest way to do this.
         Dim strSelect As String
@@ -112,36 +112,36 @@ Module modMgmtScen
         strSelect = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & _
                     "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & _
                     strLCClass & "' AND LCCLASS.NAME LIKE '" & clsMgmtScen.strChangeToClass & "'"
-        Dim cmdLCVal As New OleDbCommand(strSelect, modUtil.g_DBConn)
+        Dim cmdLCVal As New OleDbCommand (strSelect, g_DBConn)
         Dim readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
         readLCVal.Read()
-        LCValue = readLCVal("Value")
+        LCValue = readLCVal ("Value")
         readLCVal.Close()
 
         'classify the output grid cells under the area polygon to the correct value
-        Dim sf As New MapWinGIS.Shapefile
-        sf = modUtil.ReturnFeature(clsMgmtScen.strAreaFileName)
+        Dim sf As New Shapefile
+        sf = ReturnFeature (clsMgmtScen.strAreaFileName)
 
         'Get minimum extents of the area file
-        Dim sfExt As MapWinGIS.Extents = sf.Extents
+        Dim sfExt As Extents = sf.Extents
         Dim startRow, startCol, endRow, endCol As Integer
-        outputGrid.ProjToCell(sfExt.xMin, sfExt.yMax, startCol, startRow)
-        outputGrid.ProjToCell(sfExt.xMax, sfExt.yMin, endCol, endRow)
+        outputGrid.ProjToCell (sfExt.xMin, sfExt.yMax, startCol, startRow)
+        outputGrid.ProjToCell (sfExt.xMax, sfExt.yMin, endCol, endRow)
 
-        Dim u As New MapWinGIS.Utils
+        Dim u As New Utils
 
         Dim x, y As Double
-        Dim pnt As New MapWinGIS.Point
+        Dim pnt As New Point
         sf.BeginPointInShapefile()
         'cycle and test cell center, then set the appropriate when found
         For row As Integer = startRow To endRow
             For col As Integer = startCol To endCol
-                outputGrid.CellToProj(col, row, x, y)
+                outputGrid.CellToProj (col, row, x, y)
                 pnt.x = x
                 pnt.y = y
                 'If u.PointInPolygon(sf.Shape(0), pnt) Then
-                If sf.PointInShapefile(x, y) <> -1 Then
-                    outputGrid.Value(col, row) = LCValue
+                If sf.PointInShapefile (x, y) <> - 1 Then
+                    outputGrid.Value (col, row) = LCValue
                 End If
             Next
         Next

@@ -15,51 +15,51 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Data.OleDb
+Imports System.Windows.Forms
 
 Friend Class SoilsForm
 
 #Region "Events"
 
-    Private Sub frmSoils_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmSoils_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
-            modUtil.InitComboBox(cboSoils, "SOILS")
+            InitComboBox (cboSoils, "SOILS")
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub cboSoils_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub cboSoils_SelectedIndexChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles cboSoils.SelectedIndexChanged
         Try
-            Dim strSQLSoils As String = String.Format("SELECT * FROM SOILS WHERE NAME LIKE '{0}'", cboSoils.Text)
-            Using soilCmd As New OleDbCommand(strSQLSoils, modUtil.g_DBConn)
+            Dim strSQLSoils As String = String.Format ("SELECT * FROM SOILS WHERE NAME LIKE '{0}'", cboSoils.Text)
+            Using soilCmd As New OleDbCommand (strSQLSoils, g_DBConn)
                 Dim soil As OleDbDataReader = soilCmd.ExecuteReader()
                 If soil.HasRows Then
                     soil.Read()
                     'Populate the controls...
-                    txtSoilsGrid.Text = soil.Item("SoilsFileName")
-                    txtSoilsKGrid.Text = soil.Item("SoilsKFileName")
+                    txtSoilsGrid.Text = soil.Item ("SoilsFileName")
+                    txtSoilsKGrid.Text = soil.Item ("SoilsKFileName")
                 End If
                 soil.Close()
             End Using
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub mnuNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNew.Click
+    Private Sub mnuNew_Click (ByVal sender As Object, ByVal e As EventArgs) Handles mnuNew.Click
         Try
             Dim newsoil As New SoilsSetupForm
-            newsoil.Init(Me)
+            newsoil.Init (Me)
             newsoil.ShowDialog()
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub mnuDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelete.Click
+    Private Sub mnuDelete_Click (ByVal sender As Object, ByVal e As EventArgs) Handles mnuDelete.Click
         Try
             Dim intAns As Object
             Dim strSQLSoilsDel As String
@@ -69,16 +69,16 @@ Friend Class SoilsForm
 
             If Not (cboSoils.Text = "") Then
                 intAns = _
-                    MsgBox("Are you sure you want to delete the soils setup '" & cboSoils.SelectedItem & "'?", _
+                    MsgBox ("Are you sure you want to delete the soils setup '" & cboSoils.SelectedItem & "'?", _
                             MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
                 'code to handle response
                 If intAns = MsgBoxResult.Yes Then
 
                     'Set up a delete rs and get rid of it
-                    Dim cmdDel As New DataHelper(strSQLSoilsDel)
+                    Dim cmdDel As New DataHelper (strSQLSoilsDel)
                     cmdDel.ExecuteNonQuery()
 
-                    MsgBox(cboSoils.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
+                    MsgBox (cboSoils.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
                     'Clear everything, clean up form
                     cboSoils.Items.Clear()
@@ -86,7 +86,7 @@ Friend Class SoilsForm
                     txtSoilsGrid.Text = ""
                     txtSoilsKGrid.Text = ""
 
-                    modUtil.InitComboBox(cboSoils, "SOILS")
+                    InitComboBox (cboSoils, "SOILS")
 
                     Me.Refresh()
 
@@ -94,19 +94,19 @@ Friend Class SoilsForm
                     Exit Sub
                 End If
             Else
-                MsgBox("Please select a Soils Setup", MsgBoxStyle.Critical, "No Soils Setup Selected")
+                MsgBox ("Please select a Soils Setup", MsgBoxStyle.Critical, "No Soils Setup Selected")
             End If
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub mnuSoilsHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub mnuSoilsHelp_Click (ByVal sender As Object, ByVal e As EventArgs) _
         Handles mnuSoilsHelp.Click
         Try
-            System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "soils.htm")
+            Help.ShowHelp (Me, g_nspectPath & "\Help\nspect.chm", "soils.htm")
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 

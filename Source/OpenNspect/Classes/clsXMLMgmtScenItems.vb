@@ -15,12 +15,11 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Xml
 
 Public Class clsXMLMgmtScenItems
     Inherits clsXMLBase
-    Implements System.Collections.IEnumerable
+    Implements IEnumerable
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
@@ -41,7 +40,7 @@ Public Class clsXMLMgmtScenItems
 
     Private Const NODE_NAME As String = "MgmtScenarios"
 
-    Private m_colItems As Collections.ArrayList
+    Private m_colItems As ArrayList
 
     Public ReadOnly Property NodeName() As String
         Get
@@ -61,22 +60,22 @@ Public Class clsXMLMgmtScenItems
         End Get
     End Property
 
-    Public Property Item(ByVal Index As Integer) As clsXMLMgmtScenItem
+    Public Property Item (ByVal Index As Integer) As clsXMLMgmtScenItem
         Get
             'Get the order item at the given index.
-            Item = m_colItems.Item(Index)
+            Item = m_colItems.Item (Index)
         End Get
-        Set(ByVal Value As clsXMLMgmtScenItem)
-            m_colItems.Add(Value)
+        Set (ByVal Value As clsXMLMgmtScenItem)
+            m_colItems.Add (Value)
         End Set
     End Property
 
-    Public Function GetEnumerator() As System.Collections.IEnumerator _
-        Implements System.Collections.IEnumerable.GetEnumerator
+    Public Function GetEnumerator() As IEnumerator _
+        Implements IEnumerable.GetEnumerator
         GetEnumerator = m_colItems.GetEnumerator
     End Function
 
-    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         'Return an XML DOM node that represents this class's properties. If a
         'parent DOM node is passed in, then the returned node is also added as a
         'child node of the parent.
@@ -87,23 +86,23 @@ Public Class clsXMLMgmtScenItems
         'If no parent was passed in, then create a DOM and document element.
         If Parent Is Nothing Then
             dom = New XmlDocument
-            dom.LoadXml("<" & NODE_NAME & "/>")
+            dom.LoadXml ("<" & NODE_NAME & "/>")
             node = dom.DocumentElement
             'Otherwise use passed-in parent.
         Else
             dom = Parent.OwnerDocument
-            node = dom.CreateElement(NODE_NAME)
-            Parent.AppendChild(node)
+            node = dom.CreateElement (NODE_NAME)
+            Parent.AppendChild (node)
         End If
 
         Dim clsMgmtScen As clsXMLMgmtScenItem
 
         For Each clsMgmtScen In m_colItems
-            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-            clsMgmtScen.CreateNode(node)
+            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+            clsMgmtScen.CreateNode (node)
         Next clsMgmtScen
 
-        node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+        node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
 
         clsMgmtScen = Nothing
 
@@ -111,7 +110,7 @@ Public Class clsXMLMgmtScenItems
 
     End Function
 
-    Public Overrides Sub LoadNode(ByRef node As XmlNode)
+    Public Overrides Sub LoadNode (ByRef node As XmlNode)
         'Set this class's properties based on the data found in the
         'given node.
 
@@ -123,29 +122,29 @@ Public Class clsXMLMgmtScenItems
         Dim MgmtNode As XmlNode
 
         clsMgmtScen = New clsXMLMgmtScenItem
-        m_colItems = New Collections.ArrayList
+        m_colItems = New ArrayList
 
-        nodes = node.SelectNodes(clsMgmtScen.NodeName)
+        nodes = node.SelectNodes (clsMgmtScen.NodeName)
         For Each MgmtNode In nodes
             clsMgmtScen = New clsXMLMgmtScenItem
-            clsMgmtScen.LoadNode(MgmtNode)
-            m_colItems.Add(clsMgmtScen)
+            clsMgmtScen.LoadNode (MgmtNode)
+            m_colItems.Add (clsMgmtScen)
         Next MgmtNode
 
     End Sub
 
     Public Sub New()
-        m_colItems = New Collections.ArrayList
+        m_colItems = New ArrayList
     End Sub
 
-    Public Sub Add(ByVal MgmtScen As clsXMLMgmtScenItem)
-        m_colItems.Add(MgmtScen)
+    Public Sub Add (ByVal MgmtScen As clsXMLMgmtScenItem)
+        m_colItems.Add (MgmtScen)
     End Sub
 
-    Public Sub Remove(ByVal Index As Integer)
+    Public Sub Remove (ByVal Index As Integer)
         'Remove an order item.
 
-        m_colItems.Remove(Index)
+        m_colItems.Remove (Index)
 
     End Sub
 End Class

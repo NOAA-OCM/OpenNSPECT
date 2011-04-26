@@ -15,30 +15,31 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
+Imports System.Windows.Forms
+Imports System.IO
 Imports System.Data.OleDb
 
 Friend Class ImportWaterQualityStandardForm
     Private _frmWQ As WaterQualityStandardsForm
     Private _strFileName As String
 
-    Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
+    Private Sub cmdBrowse_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowse.Click
         Try
             'browse...get output filename
-            Using dlgOpen As New Windows.Forms.OpenFileDialog() With {.Filter = MSG1TextFile, .Title = MSG2}
-                If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
-                    txtImpFile.Text = Trim(dlgOpen.FileName)
+            Using dlgOpen As New OpenFileDialog() With {.Filter = MSG1TextFile, .Title = MSG2}
+                If dlgOpen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+                    txtImpFile.Text = Trim (dlgOpen.FileName)
                     _strFileName = txtImpFile.Text
                     OK_Button.Enabled = True
                 End If
             End Using
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
+    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
 
         Try
             Dim strLine As String
@@ -49,61 +50,61 @@ Friend Class ImportWaterQualityStandardForm
             Dim strThresh As String
             Dim strCmd As String
 
-            Using read As New IO.StreamReader(_strFileName)
+            Using read As New StreamReader (_strFileName)
                 intLine = 0
                 Do While Not read.EndOfStream
                     strLine = read.ReadLine
                     intLine = intLine + 1
                     If intLine = 1 Then
-                        strName = Trim(txtStdName.Text)
-                        strDescript = Split(strLine, ",")(1)
+                        strName = Trim (txtStdName.Text)
+                        strDescript = Split (strLine, ",") (1)
                         If strName = "" Then
-                            MsgBox("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
+                            MsgBox ("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
                             txtStdName.Focus()
                             Exit Sub
                         Else
                             strCmd = _
-                                String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
-                                               Replace(txtStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
+                                String.Format ("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
+                                               Replace (txtStdName.Text, "'", "''"), Replace (strDescript, "'", "''"))
                             'Name Check
-                            If modUtil.UniqueName("WQCRITERIA", (txtStdName.Text)) Then
-                                Using cmdIns As New DataHelper(strCmd)
+                            If UniqueName ("WQCRITERIA", (txtStdName.Text)) Then
+                                Using cmdIns As New DataHelper (strCmd)
                                     cmdIns.ExecuteNonQuery()
                                 End Using
                             Else
-                                MsgBox("The name you have chosen is already in use.  Please select another.", _
+                                MsgBox ("The name you have chosen is already in use.  Please select another.", _
                                         MsgBoxStyle.Critical, "Select Unique Name")
                                 Exit Sub
                             End If
                         End If
                     Else
-                        strPoll = Split(strLine, ",")(0)
-                        strThresh = Split(strLine, ",")(1)
+                        strPoll = Split (strLine, ",") (0)
+                        strThresh = Split (strLine, ",") (1)
                         'Insert the pollutant/threshold value into POLL_WQCRITERIA
-                        PollutantAdd(strName, strPoll, strThresh)
+                        PollutantAdd (strName, strPoll, strThresh)
                     End If
                 Loop
             End Using
 
             'Cleanup
             _frmWQ.cboWQStdName.Items.Clear()
-            modUtil.InitComboBox(_frmWQ.cboWQStdName, "WQCRITERIA")
-            _frmWQ.cboWQStdName.SelectedIndex = modUtil.GetCboIndex((txtStdName.Text), _frmWQ.cboWQStdName)
-            MyBase.OK_Button_Click(sender, e)
+            InitComboBox (_frmWQ.cboWQStdName, "WQCRITERIA")
+            _frmWQ.cboWQStdName.SelectedIndex = GetCboIndex ((txtStdName.Text), _frmWQ.cboWQStdName)
+            MyBase.OK_Button_Click (sender, e)
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Public Sub Init(ByRef frmWQ As WaterQualityStandardsForm)
+    Public Sub Init (ByRef frmWQ As WaterQualityStandardsForm)
         Try
             _frmWQ = frmWQ
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub PollutantAdd(ByRef strName As String, ByRef strPoll As String, ByRef strThresh As String)
+    Private Sub PollutantAdd (ByRef strName As String, ByRef strPoll As String, ByRef strThresh As String)
         Try
 
             Dim strPollAdd As String
@@ -112,25 +113,25 @@ Friend Class ImportWaterQualityStandardForm
 
             'Get the WQCriteria values using the name
             strPollAdd = "SELECT * FROM WQCriteria WHERE NAME = " & "'" & strName & "'"
-            Dim cmdPollAdd As New DataHelper(strPollAdd)
+            Dim cmdPollAdd As New DataHelper (strPollAdd)
             Dim datapolladd As OleDbDataReader = cmdPollAdd.ExecuteReader
             datapolladd.Read()
 
             'Get the pollutant particulars
             strPollDetails = "SELECT * FROM POLLUTANT WHERE NAME =" & "'" & strPoll & "'"
-            Dim cmdPollDet As New DataHelper(strPollDetails)
+            Dim cmdPollDet As New DataHelper (strPollDetails)
             Dim datapolldet As OleDbDataReader = cmdPollDet.ExecuteReader
             datapolldet.Read()
 
-            strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('" & datapolldet("POLLID") & _
-                           "', '" & datapolladd("WQCRITID") & "'," & strThresh & ")"
-            Dim cmdIns As New DataHelper(strCmdInsert)
+            strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('" & datapolldet ("POLLID") & _
+                           "', '" & datapolladd ("WQCRITID") & "'," & strThresh & ")"
+            Dim cmdIns As New DataHelper (strCmdInsert)
             cmdIns.ExecuteNonQuery()
 
             datapolladd.Close()
             datapolldet.Close()
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 End Class

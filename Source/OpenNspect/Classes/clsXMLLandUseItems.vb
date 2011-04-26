@@ -15,12 +15,11 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Xml
 
 Public Class clsXMLLandUseItems
     Inherits clsXMLBase
-    Implements System.Collections.IEnumerable
+    Implements IEnumerable
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
@@ -44,7 +43,7 @@ Public Class clsXMLLandUseItems
 
     Private Const NODE_NAME As String = "LandUses"
 
-    Private m_colItems As Collections.ArrayList
+    Private m_colItems As ArrayList
 
     Public ReadOnly Property NodeName() As String
         Get
@@ -62,27 +61,27 @@ Public Class clsXMLLandUseItems
         End Get
     End Property
 
-    Public Property Item(ByVal Index As Integer) As clsXMLLandUseItem
+    Public Property Item (ByVal Index As Integer) As clsXMLLandUseItem
         Get
             'Get the order item at the given index.
-            Item = m_colItems.Item(Index)
+            Item = m_colItems.Item (Index)
         End Get
-        Set(ByVal Value As clsXMLLandUseItem)
-            m_colItems.Add(Value)
+        Set (ByVal Value As clsXMLLandUseItem)
+            m_colItems.Add (Value)
         End Set
     End Property
 
-    Public Function GetEnumerator() As System.Collections.IEnumerator _
-        Implements System.Collections.IEnumerable.GetEnumerator
+    Public Function GetEnumerator() As IEnumerator _
+        Implements IEnumerable.GetEnumerator
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
             GetEnumerator = Nothing
         End Try
     End Function
 
-    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
@@ -94,13 +93,13 @@ Public Class clsXMLLandUseItems
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml("<" & NODE_NAME & "/>")
+                dom.LoadXml ("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement(NODE_NAME)
-                Parent.AppendChild(node)
+                node = dom.CreateElement (NODE_NAME)
+                Parent.AppendChild (node)
             End If
 
             'Save the repeating <OrderItem> elements.
@@ -108,23 +107,23 @@ Public Class clsXMLLandUseItems
             Dim clsLandUse As clsXMLLandUseItem
 
             For Each clsLandUse In m_colItems
-                node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-                clsLandUse.CreateNode(node)
+                node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+                clsLandUse.CreateNode (node)
             Next clsLandUse
 
-            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
 
             clsLandUse = Nothing
 
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode(ByRef node As XmlNode)
+    Public Overrides Sub LoadNode (ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -137,35 +136,35 @@ Public Class clsXMLLandUseItems
             Dim LuNode As XmlNode
 
             clsLandUse = New clsXMLLandUseItem
-            m_colItems = New Collections.ArrayList
+            m_colItems = New ArrayList
 
-            nodes = node.SelectNodes(clsLandUse.NodeName)
+            nodes = node.SelectNodes (clsLandUse.NodeName)
             For Each LuNode In nodes
                 clsLandUse = New clsXMLLandUseItem
-                clsLandUse.LoadNode(LuNode)
-                m_colItems.Add(clsLandUse)
+                clsLandUse.LoadNode (LuNode)
+                m_colItems.Add (clsLandUse)
             Next LuNode
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
     Public Sub New()
         Try
-            m_colItems = New Collections.ArrayList
+            m_colItems = New ArrayList
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
     'Add an order item.
-    Public Sub Add(ByVal LUItem As clsXMLLandUseItem)
-        m_colItems.Add(LUItem)
+    Public Sub Add (ByVal LUItem As clsXMLLandUseItem)
+        m_colItems.Add (LUItem)
     End Sub
 
     'Remove an order item.
-    Public Sub Remove(ByVal Index As Integer)
-        m_colItems.Remove(Index)
+    Public Sub Remove (ByVal Index As Integer)
+        m_colItems.Remove (Index)
     End Sub
 End Class

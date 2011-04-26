@@ -15,8 +15,10 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Data.OleDb
+Imports System.IO
+Imports MapWinGeoProc
+Imports MapWinGIS
 
 Module modPollutantCalcs
     ' *************************************************************************************
@@ -186,7 +188,7 @@ Module modPollutantCalcs
 
     End Function
 
-    Private Function ConstructPickStatment (ByRef cmdType As OleDbCommand, ByRef pLCRaster As MapWinGIS.Grid) As String
+    Private Function ConstructPickStatment (ByRef cmdType As OleDbCommand, ByRef pLCRaster As Grid) As String
         'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
         'and the Land Class Raster.  Returns a string
 
@@ -201,17 +203,17 @@ Module modPollutantCalcs
             Dim tablepath As String = ""
             'Get the raster table
             Dim lcPath As String = pLCRaster.Filename
-            If IO.Path.GetFileName (lcPath) = "sta.adf" Then
-                tablepath = IO.Path.GetDirectoryName (lcPath) + ".dbf"
-                If IO.File.Exists (tablepath) Then
+            If Path.GetFileName (lcPath) = "sta.adf" Then
+                tablepath = Path.GetDirectoryName (lcPath) + ".dbf"
+                If File.Exists (tablepath) Then
 
                     TableExist = True
                 Else
                     TableExist = False
                 End If
             Else
-                tablepath = IO.Path.ChangeExtension (lcPath, ".dbf")
-                If IO.File.Exists (tablepath) Then
+                tablepath = Path.ChangeExtension (lcPath, ".dbf")
+                If File.Exists (tablepath) Then
                     TableExist = True
                 Else
                     TableExist = False
@@ -220,7 +222,7 @@ Module modPollutantCalcs
 
             Dim strpick As String = ""
 
-            Dim mwTable As New MapWinGIS.Table
+            Dim mwTable As New Table
             If Not TableExist Then
                 MsgBox ( _
                         "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
@@ -315,12 +317,12 @@ Module modPollutantCalcs
     Private Function CalcPollutantConcentration (ByRef strConStatement As String, ByRef OutputItems As clsXMLOutputItems) _
         As Boolean
 
-        Dim pMassVolumeRaster As MapWinGIS.Grid = Nothing
-        Dim pPermMassVolumeRaster As MapWinGIS.Grid = Nothing
-        Dim pAccumPollRaster As MapWinGIS.Grid = Nothing
-        Dim pPermAccPollRaster As MapWinGIS.Grid = Nothing
-        Dim pPermTotalConcRaster As MapWinGIS.Grid = Nothing
-        Dim pTotalPollConc0Raster As MapWinGIS.Grid = Nothing
+        Dim pMassVolumeRaster As Grid = Nothing
+        Dim pPermMassVolumeRaster As Grid = Nothing
+        Dim pAccumPollRaster As Grid = Nothing
+        Dim pPermAccPollRaster As Grid = Nothing
+        Dim pPermTotalConcRaster As Grid = Nothing
+        Dim pTotalPollConc0Raster As Grid = Nothing
         'gets rid of no data...replace with 0
 
         'String to hold calculations
@@ -330,8 +332,8 @@ Module modPollutantCalcs
         Dim strAccPoll As String
 
         Try
-            modProgDialog.ShowProgress ("Calculating Mass Volume...", strTitle, 0, 13, 2, g_frmProjectSetup)
-            If modProgDialog.g_KeepRunning Then
+            ShowProgress ("Calculating Mass Volume...", strTitle, 0, 13, 2, g_frmProjectSetup)
+            If g_KeepRunning Then
                 'STEP 2: MASS OF PHOSPHORUS PRODUCED BY EACH CELL -----------------------------------------
                 ReDim _picks(strConStatement.Split (",").Length)
                 _picks = strConStatement.Split (",")
@@ -346,17 +348,17 @@ Module modPollutantCalcs
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
 
-                modProgDialog.ShowProgress ("Creating data layer for local effects...", strTitle, 0, 13, 13, _
-                                            g_frmProjectSetup)
-                If modProgDialog.g_KeepRunning Then
+                ShowProgress ("Creating data layer for local effects...", strTitle, 0, 13, 13, _
+                              g_frmProjectSetup)
+                If g_KeepRunning Then
 
-                    strOutConc = modUtil.GetUniqueName ("locconc", g_strWorkspace, g_FinalOutputGridExt)
+                    strOutConc = GetUniqueName ("locconc", g_strWorkspace, g_FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
                         pPermMassVolumeRaster = _
-                            modUtil.ClipBySelectedPoly (pMassVolumeRaster, g_pSelectedPolyClip, strOutConc)
+                            ClipBySelectedPoly (pMassVolumeRaster, g_pSelectedPolyClip, strOutConc)
                     Else
-                        pPermMassVolumeRaster = modUtil.ReturnPermanentRaster (pMassVolumeRaster, strOutConc)
+                        pPermMassVolumeRaster = ReturnPermanentRaster (pMassVolumeRaster, strOutConc)
                     End If
 
                     g_dicMetadata.Add (_strPollName & "Local Effects (mg)", _strPollCoeffMetadata)
@@ -368,68 +370,68 @@ Module modPollutantCalcs
 
                 End If
 
-                modProgDialog.CloseDialog()
+                CloseDialog()
                 Exit Function
 
             End If
 
-            modProgDialog.ShowProgress ("Deriving accumulated pollutant...", strTitle, 0, 13, 3, g_frmProjectSetup)
-            If modProgDialog.g_KeepRunning Then
+            ShowProgress ("Deriving accumulated pollutant...", strTitle, 0, 13, 3, g_frmProjectSetup)
+            If g_KeepRunning Then
                 'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
 
                 'Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
-                Dim pTauD8Flow As MapWinGIS.Grid = Nothing
+                Dim pTauD8Flow As Grid = Nothing
 
                 Dim tauD8calc As New RasterMathCellCalcNulls (AddressOf tauD8CellCalc)
                 RasterMath (g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = - 1
 
-                Dim strtmp1 As String = IO.Path.GetTempFileName
+                Dim strtmp1 As String = Path.GetTempFileName
                 g_TempFilesToDel.Add (strtmp1)
                 strtmp1 = strtmp1 + g_TAUDEMGridExt
                 g_TempFilesToDel.Add (strtmp1)
-                MapWinGeoProc.DataManagement.DeleteGrid (strtmp1)
+                DataManagement.DeleteGrid (strtmp1)
                 pTauD8Flow.Save (strtmp1)
 
-                Dim strtmp2 As String = IO.Path.GetTempFileName
+                Dim strtmp2 As String = Path.GetTempFileName
                 g_TempFilesToDel.Add (strtmp2)
                 strtmp2 = strtmp2 + g_TAUDEMGridExt
                 g_TempFilesToDel.Add (strtmp2)
-                MapWinGeoProc.DataManagement.DeleteGrid (strtmp2)
+                DataManagement.DeleteGrid (strtmp2)
                 pMassVolumeRaster.Save (strtmp2)
 
-                Dim strtmpout As String = IO.Path.GetTempFileName
+                Dim strtmpout As String = Path.GetTempFileName
                 g_TempFilesToDel.Add (strtmpout)
                 strtmpout = strtmpout + "out" + g_TAUDEMGridExt
                 g_TempFilesToDel.Add (strtmpout)
-                MapWinGeoProc.DataManagement.DeleteGrid (strtmpout)
+                DataManagement.DeleteGrid (strtmpout)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                MapWinGeoProc.Hydrology.WeightedAreaD8 (strtmp1, strtmp2, "", strtmpout, False, False, _
-                                                        Environment.ProcessorCount, Nothing)
+                Hydrology.WeightedAreaD8 (strtmp1, strtmp2, "", strtmpout, False, False, _
+                                          Environment.ProcessorCount, Nothing)
                 'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
 
-                Dim tmpGrid As New MapWinGIS.Grid
+                Dim tmpGrid As New Grid
                 tmpGrid.Open (strtmpout)
 
                 Dim multAccumcalc As New RasterMathCellCalc (AddressOf multAccumCellCalc)
                 RasterMath (tmpGrid, Nothing, Nothing, Nothing, Nothing, pAccumPollRaster, multAccumcalc)
 
                 pTauD8Flow.Close()
-                MapWinGeoProc.DataManagement.DeleteGrid (strtmp1)
+                DataManagement.DeleteGrid (strtmp1)
 
                 'END STEP 3: ------------------------------------------------------------------------------
             End If
 
             'STEP 3a: Added 7/26: ADD ACCUMULATED POLLUTANT TO GROUP LAYER-----------------------------------
-            modProgDialog.ShowProgress ("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, g_frmProjectSetup)
-            If modProgDialog.g_KeepRunning Then
-                strAccPoll = modUtil.GetUniqueName ("accpoll", g_strWorkspace, g_FinalOutputGridExt)
+            ShowProgress ("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, g_frmProjectSetup)
+            If g_KeepRunning Then
+                strAccPoll = GetUniqueName ("accpoll", g_strWorkspace, g_FinalOutputGridExt)
                 'Added 7/23/04 to account for clip by selected polys functionality
                 If g_booSelectedPolys Then
-                    pPermAccPollRaster = modUtil.ClipBySelectedPoly (pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
+                    pPermAccPollRaster = ClipBySelectedPoly (pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
                 Else
-                    pPermAccPollRaster = modUtil.ReturnPermanentRaster (pAccumPollRaster, strAccPoll)
+                    pPermAccPollRaster = ReturnPermanentRaster (pAccumPollRaster, strAccPoll)
                 End If
 
                 g_dicMetadata.Add ("Accumulated " & _strPollName & " (kg)", _strPollCoeffMetadata)
@@ -439,23 +441,23 @@ Module modPollutantCalcs
             End If
             'END STEP 3a: ---------------------------------------------------------------------------------
 
-            modProgDialog.ShowProgress ("Calculating final concentration...", strTitle, 0, 13, 9, g_frmProjectSetup)
-            If modProgDialog.g_KeepRunning Then
+            ShowProgress ("Calculating final concentration...", strTitle, 0, 13, 9, g_frmProjectSetup)
+            If g_KeepRunning Then
                 Dim AllConCalc As New RasterMathCellCalcNulls (AddressOf AllConCellCalc)
                 RasterMath (pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, _
                             pTotalPollConc0Raster, Nothing, False, AllConCalc)
             End If
 
-            If modProgDialog.g_KeepRunning Then
-                modProgDialog.ShowProgress ("Creating data layer...", strTitle, 0, 13, 11, g_frmProjectSetup)
+            If g_KeepRunning Then
+                ShowProgress ("Creating data layer...", strTitle, 0, 13, 11, g_frmProjectSetup)
 
-                strOutConc = modUtil.GetUniqueName ("conc", g_strWorkspace, g_FinalOutputGridExt)
+                strOutConc = GetUniqueName ("conc", g_strWorkspace, g_FinalOutputGridExt)
 
                 If g_booSelectedPolys Then
                     pPermTotalConcRaster = _
-                        modUtil.ClipBySelectedPoly (pTotalPollConc0Raster, g_pSelectedPolyClip, strOutConc)
+                        ClipBySelectedPoly (pTotalPollConc0Raster, g_pSelectedPolyClip, strOutConc)
                 Else
-                    pPermTotalConcRaster = modUtil.ReturnPermanentRaster (pTotalPollConc0Raster, strOutConc)
+                    pPermTotalConcRaster = ReturnPermanentRaster (pTotalPollConc0Raster, strOutConc)
                 End If
 
                 g_dicMetadata.Add (_strPollName & " Conc. (mg/L)", _strPollCoeffMetadata)
@@ -464,9 +466,9 @@ Module modPollutantCalcs
                                     "Pollutant " & _strPollName & " Conc", - 1, OutputItems)
             End If
 
-            modProgDialog.ShowProgress ("Comparing to water quality standard...", strTitle, 0, 13, 13, g_frmProjectSetup)
+            ShowProgress ("Comparing to water quality standard...", strTitle, 0, 13, 13, g_frmProjectSetup)
 
-            If modProgDialog.g_KeepRunning Then
+            If g_KeepRunning Then
                 If Not CompareWaterQuality (g_pWaterShedFeatClass, pTotalPollConc0Raster, OutputItems) Then
                     CalcPollutantConcentration = False
                     Exit Function
@@ -476,11 +478,11 @@ Module modPollutantCalcs
             'if we get to the end
             CalcPollutantConcentration = True
 
-            modProgDialog.CloseDialog()
+            CloseDialog()
 
         Catch ex As Exception
             If Err.Number = - 2147217297 Then 'User cancelled operation
-                modProgDialog.g_KeepRunning = False
+                g_KeepRunning = False
                 CalcPollutantConcentration = False
                 Exit Function
             ElseIf Err.Number = - 2147467259 Then
@@ -488,30 +490,30 @@ Module modPollutantCalcs
                         "ArcMap has reached the maximum number of GRIDs allowed in memory.  " & _
                         "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
                         "Maximum GRID Number Encountered")
-                modProgDialog.g_KeepRunning = False
-                modProgDialog.CloseDialog()
+                g_KeepRunning = False
+                CloseDialog()
                 CalcPollutantConcentration = False
             Else
                 HandleError (ex)
                 'False, "CalcPollutantConcentration " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
-                modProgDialog.g_KeepRunning = False
-                modProgDialog.CloseDialog()
+                g_KeepRunning = False
+                CloseDialog()
                 CalcPollutantConcentration = False
             End If
         End Try
     End Function
 
-    Private Function CompareWaterQuality (ByRef pWSFeatureClass As MapWinGIS.Shapefile, _
-                                          ByRef pPollutantRaster As MapWinGIS.Grid, _
+    Private Function CompareWaterQuality (ByRef pWSFeatureClass As Shapefile, _
+                                          ByRef pPollutantRaster As Grid, _
                                           ByRef OutputItems As clsXMLOutputItems) As Boolean
         Dim strWQVAlue As Object
 
         'Get the zone dataset from the first layer in ArcMap
-        Dim pMaxRaster As MapWinGIS.Grid = Nothing
-        Dim pConRaster As MapWinGIS.Grid = Nothing
-        Dim pClipWQRaster As MapWinGIS.Grid = Nothing
-        Dim pPermWQRaster As MapWinGIS.Grid = Nothing
-        Dim pWQRasterLayer As MapWinGIS.Grid = Nothing
+        Dim pMaxRaster As Grid = Nothing
+        Dim pConRaster As Grid = Nothing
+        Dim pClipWQRaster As Grid = Nothing
+        Dim pPermWQRaster As Grid = Nothing
+        Dim pWQRasterLayer As Grid = Nothing
         Dim dblConvertValue As Double
         Dim strOutWQ As String
         Dim strExpression As String = ""
@@ -531,13 +533,13 @@ Module modPollutantCalcs
             Dim concalc As New RasterMathCellCalc (AddressOf concompCellCalc)
             RasterMath (pPollutantRaster, g_pFlowAccRaster, Nothing, Nothing, Nothing, pConRaster, concalc)
 
-            strOutWQ = modUtil.GetUniqueName ("wq", g_strWorkspace, g_FinalOutputGridExt)
+            strOutWQ = GetUniqueName ("wq", g_strWorkspace, g_FinalOutputGridExt)
 
             'Clip if selectedpolys
             If g_booSelectedPolys Then
-                pPermWQRaster = modUtil.ClipBySelectedPoly (pConRaster, g_pSelectedPolyClip, strOutWQ)
+                pPermWQRaster = ClipBySelectedPoly (pConRaster, g_pSelectedPolyClip, strOutWQ)
             Else
-                pPermWQRaster = modUtil.ReturnPermanentRaster (pConRaster, strOutWQ)
+                pPermWQRaster = ReturnPermanentRaster (pConRaster, strOutWQ)
             End If
 
             strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _strWQName & _
@@ -558,14 +560,14 @@ Module modPollutantCalcs
                         "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
                         "Maximum GRID Number Encountered")
                 CompareWaterQuality = False
-                modProgDialog.g_KeepRunning = False
-                modProgDialog.CloseDialog()
+                g_KeepRunning = False
+                CloseDialog()
             Else
                 HandleError (ex)
                 'False, "CompareWaterQuality " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, 0)
                 CompareWaterQuality = False
-                modProgDialog.g_KeepRunning = False
-                modProgDialog.CloseDialog()
+                g_KeepRunning = False
+                CloseDialog()
             End If
         End Try
     End Function
