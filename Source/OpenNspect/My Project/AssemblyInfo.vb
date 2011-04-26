@@ -10,7 +10,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("OpenNspect")> 
 <Assembly: AssemblyDescription("Nonpoint-Source Pollution and Erosion Comparison Tool")> 
-<Assembly: AssemblyCompany("http://nspect.codeplex.com/")> 
+<Assembly: AssemblyCompany("http://nspect.codeplex.com/ and NOAA Coastal Services Center")> 
 <Assembly: AssemblyProduct("OpenNspect")> 
 <Assembly: AssemblyCopyright("Copyright © 2011")> 
 <Assembly: AssemblyTrademark("OpenNspect (tm)")> 
