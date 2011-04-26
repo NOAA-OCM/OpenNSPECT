@@ -30,7 +30,7 @@ Friend Class NewWaterQualityStandardForm
             'Populate cbo with pollutant names
             _Change = False
 
-            Dim strPollutant As String = "SELECT NAME FROM POLLUTANT ORDER BY NAME ASC"
+            Const strPollutant As String = "SELECT NAME FROM POLLUTANT ORDER BY NAME ASC"
             Using pollCmd As New DataHelper (strPollutant)
                 Dim datPoll As OleDbDataReader = pollCmd.ExecuteReader
                 Dim idx As Integer

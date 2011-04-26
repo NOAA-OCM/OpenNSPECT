@@ -131,10 +131,6 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-    Private Sub cmdOK_Click (ByVal sender As Object, ByVal e As EventArgs)
-
-    End Sub
-
 #End Region
 
 #Region "Helper Functions'"

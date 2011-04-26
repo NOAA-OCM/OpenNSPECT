@@ -76,7 +76,6 @@ Friend Class ImportCoefficientSetForm
             Dim strLine As String
             Dim intLine As Short
             Dim strValue As String
-            Dim strParams(7) As Object
             Dim strLCTypeNum As String
             Dim j As Short
             Dim dataLCType As OleDbDataReader
