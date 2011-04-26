@@ -319,6 +319,13 @@ Public Class MapWindowPlugin
 
 #End Region
 
+    Private Sub VerifyMapWindowVersion()
+        Dim requiredVersion = New System.Version(4, 8, 2, 21243)
+        Dim ver = Assembly.GetEntryAssembly().GetName().Version
+        If ver < requiredVersion Then
+            MessageBox.Show(String.Format("Your copy of MapWindow {0} is older than the required version {1} to run {2}. Visit http://www.mapwindow.org to update your copy.", ver, requiredVersion, Name))
+        End If
+    End Sub
 #Region "Start and Stop Methods"
 
     ''' <summary>
@@ -334,6 +341,8 @@ Public Class MapWindowPlugin
         '  This sets global for use elsewhere in program
         g_handle = ParentHandle
         g_StatusBar = g_MapWin.StatusBar.AddPanel("", 2, 10, StatusBarPanelAutoSize.Spring)
+
+        VerifyMapWindowVersion()
 
         AddMenus()
 
