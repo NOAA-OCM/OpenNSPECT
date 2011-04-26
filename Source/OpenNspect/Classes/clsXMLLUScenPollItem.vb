@@ -72,7 +72,7 @@ Public Class clsXMLLUScenPollItem
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml ("<" & NODE_NAME & "/>")
+                dom.LoadXml(String.Format("<{0}/>", NODE_NAME))
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
