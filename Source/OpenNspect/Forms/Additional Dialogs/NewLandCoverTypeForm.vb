@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 Imports System.Windows.Forms
 Friend Class NewLandCoverTypeForm
-    Inherits System.Windows.Forms.Form
 
     Private _frmLC As LandCoverTypesForm
 
@@ -94,23 +93,11 @@ Friend Class NewLandCoverTypeForm
         End Try
     End Sub
 
-
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             Dim strName As String
             Dim strDescript As String
             Dim strCmd As String 'INSERT function
-            Dim arrParams(7) As Object 'Array that holds each row's contents
-
 
             If ValidateGridValues() Then
                 'Get rid of possible apostrophes in name
@@ -118,7 +105,7 @@ Friend Class NewLandCoverTypeForm
                 strDescript = Trim(txtLCTypeDesc.Text)
 
                 If modUtil.UniqueName("LCTYPE", strName) And (Trim(strName) <> "") Then
-                    strCmd = "INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('" & Replace(strName, "'", "''") & "', '" & Replace(strDescript, "'", "''") & "')"
+                    strCmd = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(strName, "'", "''"), Replace(strDescript, "'", "''"))
                     Dim cmdStr As New DataHelper(strCmd)
                     cmdStr.ExecuteNonQuery()
                 Else
@@ -127,24 +114,21 @@ Friend Class NewLandCoverTypeForm
                 End If 'End unique name check
 
                 'Now add GRID values
-
                 For Each row As DataGridViewRow In dgvLCTypes.Rows
                     AddLCClass(strName, row)
                 Next
 
-
                 MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Data Saved")
 
-                Close()
                 _frmLC.UpdateCombo(strName)
-            Else
-                Exit Sub
+                MyBase.OK_Button_Click(sender, e)
             End If
-
-
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
+    End Sub
+    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+       
     End Sub
 #End Region
 

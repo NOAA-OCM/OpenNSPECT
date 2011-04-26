@@ -19,29 +19,16 @@
 Imports System.Data
 Imports System.Data.OleDb
 Friend Class PollutantsForm
-    Inherits System.Windows.Forms.Form
 
     Const c_sModuleFileName As String = "frmPollutants.vb"
 
-    Private _boolLoaded As Boolean
-    Private _boolChanged As Boolean 'Bool for enabling save button
     Private _boolDescChanged As Boolean 'Boolship for seeing if Description Changed
-    Private _boolSaved As Boolean 'Boolship for whether or not things have saved
 
     Private _coefCmd As OleDbCommand
 
-    Private _intCurFrame As Short 'Current Frame visible in SSTab
-    Private _intPollRow As Short 'Row Number for grdPolldef
-    Private _intPollCol As Short 'Column Number for grdPollDef
-    Private _intRowWQ As Short 'Row Number for grdPollWQStd
-    Private _intColWQ As Short 'Column Number for grdPollDef
     Private _intPollID As Short 'There's a need to have the PollID so we'll store it here
     Private _intLCTypeID As Short 'Land Class (CCAP) ID - needed to add new coefficient sets
-    Private _intCoeffID As Short 'Key for CoefficientSetID - needed to add new coefficients 'See above
 
-    Private _strUndoText As String 'Text for txtActiveCell     |
-    Private _strUndoTextWQ As String 'Text for txtActiveCellWQ   |-all three used to detect change
-    Private _strUndoDesc As String 'Text for Description       |
     Private _strLCType As String 'Need for name, we'll store here
 
     Private _coefs As OleDbDataAdapter
@@ -56,15 +43,11 @@ Friend Class PollutantsForm
 
     Private Sub frmPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            _boolChanged = False
-
             'Toss in the names of all pollutants and call the cbo click event
             InitComboBox(cboPollName, "Pollutant")
 
             SSTab1.SelectedIndex = 0
-            _boolLoaded = True
-            _boolChanged = False
-            _boolSaved = False
+
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -80,15 +63,13 @@ Friend Class PollutantsForm
 
         Try
             'Check to see if things have changed
-            If _boolChanged Then
+            If IsDirty Then
 
-                intYesNo = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNoTitle)
+                'intYesNo = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNlasoTitle)
 
                 If intYesNo = MsgBoxResult.Yes Then
 
                     UpdateValues()
-
-                    _boolChanged = False
 
                     'Selection based on combo box
                     strSQLPollutant = "SELECT * FROM POLLUTANT WHERE NAME = '" & cboPollName.Text & "'"
@@ -132,7 +113,7 @@ Friend Class PollutantsForm
 
                 ElseIf intYesNo = MsgBoxResult.No Then
 
-                    _boolChanged = False
+                    IsDirty = False
 
                     'Selection based on combo box
                     strSQLPollutant = "SELECT * FROM POLLUTANT WHERE NAME = '" & cboPollName.Text & "'"
@@ -177,7 +158,7 @@ Friend Class PollutantsForm
                 End If
             Else
 
-                _boolChanged = False
+                IsDirty = False
 
                 'Selection based on combo box
                 strSQLPollutant = "SELECT * FROM POLLUTANT WHERE NAME = '" & cboPollName.Text & "'"
@@ -221,7 +202,7 @@ Friend Class PollutantsForm
 
             End If
 
-            _boolChanged = False
+            IsDirty = False
             CmdSaveEnabled()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -232,7 +213,7 @@ Friend Class PollutantsForm
     Private Sub cboCoeffSet_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboCoeffSet.SelectedIndexChanged
         Try
 
-            If _boolChanged Then
+            If IsDirty Then
 
                 intYesNo = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNoTitle)
 
@@ -240,7 +221,6 @@ Friend Class PollutantsForm
 
                     If ValidateGridValues() Then
                         UpdateValues()
-                        _boolChanged = False
                     End If
                 Else
                     NoSaveCoeffSetChange()
@@ -281,7 +261,7 @@ Friend Class PollutantsForm
             _coefs.Fill(_dtCoeff)
             dgvCoef.DataSource = _dtCoeff
 
-            _boolChanged = False
+            IsDirty = False
             _boolDescChanged = False
             CmdSaveEnabled()
         Catch ex As Exception
@@ -292,6 +272,7 @@ Friend Class PollutantsForm
 
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
         Try
+            IsDirty = True
             _boolDescChanged = True
             CmdSaveEnabled()
         Catch ex As Exception
@@ -299,54 +280,18 @@ Friend Class PollutantsForm
         End Try
     End Sub
 
-
-    Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Try
-
-            If (_boolChanged Or _boolDescChanged) And Not _boolSaved Then
-
-                intYesNo = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNoTitle)
-
-                If intYesNo = MsgBoxResult.Yes Then
-
-                    If ValidateGridValues() Then
-                        UpdateValues()
-                        MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Save Successful")
-                        _boolChanged = False
-                        _boolDescChanged = False
-                        _boolSaved = True
-                        Close()
-                    End If
-
-                Else
-
-                    Close()
-
-                End If
-            Else
-
-                Close()
-            End If
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             If ValidateGridValues() Then
-
                 UpdateValues()
-                _boolSaved = True
                 MsgBox(cboPollName.Text & " saved successfully.", MsgBoxStyle.Information, "OpenNSPECT")
-                Close()
-
+                MyBase.OK_Button_Click(sender, e)
             End If
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
+
 
 
     Private Sub mnuPollHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPollHelp.Click
@@ -483,7 +428,7 @@ Friend Class PollutantsForm
 
     Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged, dgvWaterQuality.CellValueChanged
         Try
-            _boolChanged = True
+            IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -494,10 +439,10 @@ Friend Class PollutantsForm
 
 #Region "Helper Functions"
     Private Sub CmdSaveEnabled()
-        If _boolChanged Or _boolDescChanged Then
-            cmdSave.Enabled = True
+        If IsDirty Or _boolDescChanged Then
+            OK_Button.Enabled = True
         Else
-            cmdSave.Enabled = False
+            OK_Button.Enabled = False
         End If
 
     End Sub
@@ -616,6 +561,8 @@ Friend Class PollutantsForm
                 adaptNewWQ.Update(dt)
             Next i
 
+            IsDirty = False
+
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -625,8 +572,9 @@ Friend Class PollutantsForm
     Private Sub DeletePollutant(ByRef strName As String)
         Try
             Dim strPollDelete As String = "Delete * FROM Pollutant WHERE NAME LIKE '" & strName & "'"
-            Dim cmdPollDel As New DataHelper(strPollDelete)
-            cmdPollDel.ExecuteNonQuery()
+            Using cmdPollDel As New DataHelper(strPollDelete)
+                cmdPollDel.ExecuteNonQuery()
+            End Using
 
             MsgBox(strName & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
@@ -902,6 +850,5 @@ Friend Class PollutantsForm
         End Try
     End Sub
 #End Region
-
 
 End Class

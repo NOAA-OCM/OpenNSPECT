@@ -19,8 +19,7 @@
 Imports System.Windows.Forms
 Imports System.Data.OleDb
 Friend Class EditLandUseScenario
-    Inherits System.Windows.Forms.Form
-    Private _strUndoText As String
+
     Private _clsManScen As clsXMLLUScen
     Private _strWQStd As String
     Private _frmPrj As MainForm
@@ -62,15 +61,6 @@ Friend Class EditLandUseScenario
     End Sub
 
 
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
     Private Sub frmLUScen_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         Try
             If _stopClose Then
@@ -82,12 +72,11 @@ Friend Class EditLandUseScenario
         End Try
     End Sub
 
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             If ValidateData() Then
                 CreateXMLFile()
-                Close()
+                MyBase.OK_Button_Click(sender, e)
             Else
                 _stopClose = True
             End If
@@ -95,7 +84,6 @@ Friend Class EditLandUseScenario
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
 
     Private Sub btnSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelect.Click
         Try

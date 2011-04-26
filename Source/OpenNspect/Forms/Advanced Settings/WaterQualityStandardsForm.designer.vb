@@ -1,4 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class WaterQualityStandardsForm
+    Inherits OpenNspect.BaseDialogForm
 #Region "Windows Form Designer generated code "
     <System.Diagnostics.DebuggerNonUserCode()> Public Sub New()
         MyBase.New()
@@ -30,8 +31,6 @@
     Public WithEvents mnuWQHelp As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents mnuHelp As System.Windows.Forms.ToolStripMenuItem
     Public WithEvents MainMenu1 As System.Windows.Forms.MenuStrip
-    Public WithEvents cmdQuit As System.Windows.Forms.Button
-    Public WithEvents cmdSave As System.Windows.Forms.Button
     Public WithEvents cboWQStdName As System.Windows.Forms.ComboBox
     Public WithEvents txtWQStdDesc As System.Windows.Forms.TextBox
     Public WithEvents _Label1_1 As System.Windows.Forms.Label
@@ -56,8 +55,6 @@
         Me.mnuDeleteRow = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuWQHelp = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmdQuit = New System.Windows.Forms.Button()
-        Me.cmdSave = New System.Windows.Forms.Button()
         Me.cboWQStdName = New System.Windows.Forms.ComboBox()
         Me.txtWQStdDesc = New System.Windows.Forms.TextBox()
         Me._Label1_1 = New System.Windows.Forms.Label()
@@ -155,89 +152,36 @@
         Me.mnuWQHelp.Size = New System.Drawing.Size(261, 22)
         Me.mnuWQHelp.Text = "Water Quality Standards..."
         '
-        'cmdQuit
-        '
-        Me.cmdQuit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdQuit.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(494, 332)
-        Me.cmdQuit.Name = "cmdQuit"
-        Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
-        Me.cmdQuit.TabIndex = 3
-        Me.cmdQuit.TabStop = False
-        Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = True
-        '
-        'cmdSave
-        '
-        Me.cmdSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdSave.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdSave.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdSave.Enabled = False
-        Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(413, 332)
-        Me.cmdSave.Name = "cmdSave"
-        Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
-        Me.cmdSave.TabIndex = 2
-        Me.cmdSave.TabStop = False
-        Me.cmdSave.Text = "OK"
-        Me.cmdSave.UseVisualStyleBackColor = True
-        '
         'cboWQStdName
         '
-        Me.cboWQStdName.BackColor = System.Drawing.SystemColors.Window
-        Me.cboWQStdName.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboWQStdName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboWQStdName.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboWQStdName.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboWQStdName.Location = New System.Drawing.Point(97, 30)
+        Me.cboWQStdName.Location = New System.Drawing.Point(97, 28)
         Me.cboWQStdName.Name = "cboWQStdName"
-        Me.cboWQStdName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboWQStdName.Size = New System.Drawing.Size(160, 22)
+        Me.cboWQStdName.Size = New System.Drawing.Size(160, 21)
         Me.cboWQStdName.TabIndex = 0
         '
         'txtWQStdDesc
         '
         Me.txtWQStdDesc.AcceptsReturn = True
-        Me.txtWQStdDesc.BackColor = System.Drawing.SystemColors.Window
-        Me.txtWQStdDesc.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.txtWQStdDesc.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtWQStdDesc.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtWQStdDesc.Location = New System.Drawing.Point(97, 58)
+        Me.txtWQStdDesc.Location = New System.Drawing.Point(97, 54)
         Me.txtWQStdDesc.MaxLength = 100
         Me.txtWQStdDesc.Name = "txtWQStdDesc"
-        Me.txtWQStdDesc.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtWQStdDesc.Size = New System.Drawing.Size(286, 20)
         Me.txtWQStdDesc.TabIndex = 1
         '
         '_Label1_1
         '
-        Me._Label1_1.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_1.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_1.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_1.Location = New System.Drawing.Point(15, 60)
+        Me._Label1_1.Location = New System.Drawing.Point(15, 56)
         Me._Label1_1.Name = "_Label1_1"
-        Me._Label1_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_1.Size = New System.Drawing.Size(67, 19)
+        Me._Label1_1.Size = New System.Drawing.Size(67, 18)
         Me._Label1_1.TabIndex = 5
         Me._Label1_1.Text = "Description:"
         '
         '_Label1_0
         '
-        Me._Label1_0.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_0.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_0.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_0.Location = New System.Drawing.Point(14, 32)
+        Me._Label1_0.Location = New System.Drawing.Point(14, 30)
         Me._Label1_0.Name = "_Label1_0"
-        Me._Label1_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_0.Size = New System.Drawing.Size(95, 19)
+        Me._Label1_0.Size = New System.Drawing.Size(95, 18)
         Me._Label1_0.TabIndex = 4
         Me._Label1_0.Text = "Standard Name:"
         '
@@ -251,9 +195,9 @@
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colPollutant, Me.colThreshold, Me.Poll_WQCritID})
-        Me.dgvWaterQuality.Location = New System.Drawing.Point(18, 84)
+        Me.dgvWaterQuality.Location = New System.Drawing.Point(18, 78)
         Me.dgvWaterQuality.Name = "dgvWaterQuality"
-        Me.dgvWaterQuality.Size = New System.Drawing.Size(543, 242)
+        Me.dgvWaterQuality.Size = New System.Drawing.Size(543, 225)
         Me.dgvWaterQuality.TabIndex = 9
         '
         'colPollutant
@@ -283,29 +227,26 @@
         '
         'WaterQualityStandardsForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(594, 372)
+        Me.ClientSize = New System.Drawing.Size(594, 345)
         Me.Controls.Add(Me.dgvWaterQuality)
-        Me.Controls.Add(Me.cmdQuit)
-        Me.Controls.Add(Me.cmdSave)
         Me.Controls.Add(Me.cboWQStdName)
         Me.Controls.Add(Me.txtWQStdDesc)
         Me.Controls.Add(Me._Label1_1)
         Me.Controls.Add(Me._Label1_0)
         Me.Controls.Add(Me.MainMenu1)
-        Me.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(9, 27)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
         Me.Name = "WaterQualityStandardsForm"
-        Me.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Water Quality Standards"
+        Me.Controls.SetChildIndex(Me.MainMenu1, 0)
+        Me.Controls.SetChildIndex(Me._Label1_0, 0)
+        Me.Controls.SetChildIndex(Me._Label1_1, 0)
+        Me.Controls.SetChildIndex(Me.txtWQStdDesc, 0)
+        Me.Controls.SetChildIndex(Me.cboWQStdName, 0)
+        Me.Controls.SetChildIndex(Me.dgvWaterQuality, 0)
         Me.MainMenu1.ResumeLayout(False)
         Me.MainMenu1.PerformLayout()
         CType(Me.dgvWaterQuality, System.ComponentModel.ISupportInitialize).EndInit()

@@ -18,7 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class CopyCoefficientSetForm
-    Inherits System.Windows.Forms.Form
 
     Private _frmPoll As PollutantsForm
     Private _frmNewPoll As NewPollutantForm
@@ -45,17 +44,7 @@ Friend Class CopyCoefficientSetForm
         End Try
     End Sub
 
-
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) And Trim(txtCoeffSetName.Text) <> "" Then
                 If g_boolCopyCoeff Then
@@ -63,7 +52,7 @@ Friend Class CopyCoefficientSetForm
                 Else
                     _frmNewPoll.CopyCoefficient(txtCoeffSetName.Text, cboCoeffSet.Text)
                 End If
-                Close()
+                MyBase.OK_Button_Click(sender, e)
             Else
                 MsgBox("The name you have choosen for coefficient set is already in use.  Please pick another.", MsgBoxStyle.Critical, "Name In Use")
                 With txtCoeffSetName
@@ -71,10 +60,10 @@ Friend Class CopyCoefficientSetForm
                     .SelectionLength = Len(txtCoeffSetName.Text)
                     .Focus()
                 End With
-
             End If
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
+
 End Class

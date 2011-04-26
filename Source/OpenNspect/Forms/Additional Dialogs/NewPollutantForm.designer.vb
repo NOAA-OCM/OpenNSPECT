@@ -1,4 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class NewPollutantForm
+    Inherits OpenNspect.BaseDialogForm
 #Region "Windows Form Designer generated code "
     <System.Diagnostics.DebuggerNonUserCode()> Public Sub New()
         MyBase.New()
@@ -33,8 +34,6 @@
     Public WithEvents txtCoeffSet As System.Windows.Forms.TextBox
     Public WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
     Public WithEvents SSTab1 As System.Windows.Forms.TabControl
-    Public WithEvents cmdSave As System.Windows.Forms.Button
-    Public WithEvents cmdQuit As System.Windows.Forms.Button
     Public dlgCMD1Open As System.Windows.Forms.OpenFileDialog
     Public dlgCMD1Save As System.Windows.Forms.SaveFileDialog
     Public dlgCMD1Font As System.Windows.Forms.FontDialog
@@ -73,8 +72,6 @@
         Me.txtCoeffSetDesc = New System.Windows.Forms.TextBox()
         Me.txtCoeffSet = New System.Windows.Forms.TextBox()
         Me._Label1_7 = New System.Windows.Forms.Label()
-        Me.cmdSave = New System.Windows.Forms.Button()
-        Me.cmdQuit = New System.Windows.Forms.Button()
         Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog()
         Me.dlgCMD1Save = New System.Windows.Forms.SaveFileDialog()
         Me.dlgCMD1Font = New System.Windows.Forms.FontDialog()
@@ -117,14 +114,9 @@
         'txtPollutant
         '
         Me.txtPollutant.AcceptsReturn = True
-        Me.txtPollutant.BackColor = System.Drawing.SystemColors.Window
-        Me.txtPollutant.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.txtPollutant.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPollutant.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtPollutant.Location = New System.Drawing.Point(106, 26)
+        Me.txtPollutant.Location = New System.Drawing.Point(106, 24)
         Me.txtPollutant.MaxLength = 0
         Me.txtPollutant.Name = "txtPollutant"
-        Me.txtPollutant.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtPollutant.Size = New System.Drawing.Size(134, 20)
         Me.txtPollutant.TabIndex = 0
         '
@@ -134,12 +126,11 @@
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
-        Me.SSTab1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
-        Me.SSTab1.Location = New System.Drawing.Point(16, 53)
+        Me.SSTab1.Location = New System.Drawing.Point(16, 49)
         Me.SSTab1.Name = "SSTab1"
         Me.SSTab1.SelectedIndex = 1
-        Me.SSTab1.Size = New System.Drawing.Size(554, 482)
+        Me.SSTab1.Size = New System.Drawing.Size(554, 448)
         Me.SSTab1.TabIndex = 8
         '
         '_SSTab1_TabPage0
@@ -156,7 +147,7 @@
         Me._SSTab1_TabPage0.Controls.Add(Me._Label1_7)
         Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
-        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(546, 456)
+        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(546, 422)
         Me._SSTab1_TabPage0.TabIndex = 0
         Me._SSTab1_TabPage0.Text = "Coefficients"
         '
@@ -167,9 +158,9 @@
         Me.dgvCoef.AllowUserToResizeColumns = False
         Me.dgvCoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn6, Me.DataGridViewTextBoxColumn7, Me.DataGridViewTextBoxColumn8})
-        Me.dgvCoef.Location = New System.Drawing.Point(15, 108)
+        Me.dgvCoef.Location = New System.Drawing.Point(15, 100)
         Me.dgvCoef.Name = "dgvCoef"
-        Me.dgvCoef.Size = New System.Drawing.Size(489, 345)
+        Me.dgvCoef.Size = New System.Drawing.Size(489, 320)
         Me.dgvCoef.TabIndex = 21
         '
         'DataGridViewTextBoxColumn1
@@ -232,196 +223,110 @@
         '
         '_Label1_6
         '
-        Me._Label1_6.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_6.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_6.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_6.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_6.Location = New System.Drawing.Point(18, 63)
+        Me._Label1_6.Location = New System.Drawing.Point(18, 58)
         Me._Label1_6.Name = "_Label1_6"
-        Me._Label1_6.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_6.Size = New System.Drawing.Size(74, 17)
+        Me._Label1_6.Size = New System.Drawing.Size(74, 16)
         Me._Label1_6.TabIndex = 9
         Me._Label1_6.Text = "Description:"
         '
         '_Label1_1
         '
-        Me._Label1_1.BackColor = System.Drawing.SystemColors.Control
         Me._Label1_1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label1_1.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_1.ForeColor = System.Drawing.Color.Black
-        Me._Label1_1.Location = New System.Drawing.Point(57, 88)
+        Me._Label1_1.Location = New System.Drawing.Point(57, 82)
         Me._Label1_1.Name = "_Label1_1"
-        Me._Label1_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_1.Size = New System.Drawing.Size(215, 17)
+        Me._Label1_1.Size = New System.Drawing.Size(215, 16)
         Me._Label1_1.TabIndex = 10
         Me._Label1_1.Text = "Class"
         Me._Label1_1.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         '_Label1_2
         '
-        Me._Label1_2.BackColor = System.Drawing.SystemColors.Control
         Me._Label1_2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label1_2.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_2.ForeColor = System.Drawing.Color.Black
-        Me._Label1_2.Location = New System.Drawing.Point(278, 88)
+        Me._Label1_2.Location = New System.Drawing.Point(278, 82)
         Me._Label1_2.Name = "_Label1_2"
-        Me._Label1_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_2.Size = New System.Drawing.Size(226, 17)
+        Me._Label1_2.Size = New System.Drawing.Size(226, 16)
         Me._Label1_2.TabIndex = 11
         Me._Label1_2.Text = "Coefficients (mg/L)"
         Me._Label1_2.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         '_Label1_3
         '
-        Me._Label1_3.BackColor = System.Drawing.SystemColors.Control
         Me._Label1_3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label1_3.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_3.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_3.Location = New System.Drawing.Point(15, 88)
+        Me._Label1_3.Location = New System.Drawing.Point(15, 82)
         Me._Label1_3.Name = "_Label1_3"
-        Me._Label1_3.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_3.Size = New System.Drawing.Size(36, 17)
+        Me._Label1_3.Size = New System.Drawing.Size(36, 16)
         Me._Label1_3.TabIndex = 12
         Me._Label1_3.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         '_Label1_5
         '
-        Me._Label1_5.BackColor = System.Drawing.Color.Transparent
-        Me._Label1_5.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_5.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_5.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_5.Location = New System.Drawing.Point(18, 37)
+        Me._Label1_5.Location = New System.Drawing.Point(18, 34)
         Me._Label1_5.Name = "_Label1_5"
-        Me._Label1_5.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_5.Size = New System.Drawing.Size(78, 17)
+        Me._Label1_5.Size = New System.Drawing.Size(78, 16)
         Me._Label1_5.TabIndex = 17
         Me._Label1_5.Text = "Coefficient Set:"
         '
         'cboLCType
         '
-        Me.cboLCType.BackColor = System.Drawing.SystemColors.Window
-        Me.cboLCType.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboLCType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboLCType.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboLCType.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboLCType.Location = New System.Drawing.Point(350, 32)
+        Me.cboLCType.Location = New System.Drawing.Point(350, 30)
         Me.cboLCType.Name = "cboLCType"
-        Me.cboLCType.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboLCType.Size = New System.Drawing.Size(147, 22)
+        Me.cboLCType.Size = New System.Drawing.Size(147, 21)
         Me.cboLCType.Sorted = True
         Me.cboLCType.TabIndex = 2
         '
         'txtCoeffSetDesc
         '
         Me.txtCoeffSetDesc.AcceptsReturn = True
-        Me.txtCoeffSetDesc.BackColor = System.Drawing.SystemColors.Window
-        Me.txtCoeffSetDesc.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.txtCoeffSetDesc.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCoeffSetDesc.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtCoeffSetDesc.Location = New System.Drawing.Point(100, 62)
+        Me.txtCoeffSetDesc.Location = New System.Drawing.Point(100, 58)
         Me.txtCoeffSetDesc.MaxLength = 0
         Me.txtCoeffSetDesc.Name = "txtCoeffSetDesc"
-        Me.txtCoeffSetDesc.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtCoeffSetDesc.Size = New System.Drawing.Size(399, 20)
         Me.txtCoeffSetDesc.TabIndex = 3
         '
         'txtCoeffSet
         '
         Me.txtCoeffSet.AcceptsReturn = True
-        Me.txtCoeffSet.BackColor = System.Drawing.SystemColors.Window
-        Me.txtCoeffSet.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.txtCoeffSet.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCoeffSet.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtCoeffSet.Location = New System.Drawing.Point(100, 35)
+        Me.txtCoeffSet.Location = New System.Drawing.Point(100, 32)
         Me.txtCoeffSet.MaxLength = 0
         Me.txtCoeffSet.Name = "txtCoeffSet"
-        Me.txtCoeffSet.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtCoeffSet.Size = New System.Drawing.Size(134, 20)
         Me.txtCoeffSet.TabIndex = 1
         '
         '_Label1_7
         '
-        Me._Label1_7.BackColor = System.Drawing.Color.Transparent
-        Me._Label1_7.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_7.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_7.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_7.Location = New System.Drawing.Point(257, 35)
+        Me._Label1_7.Location = New System.Drawing.Point(257, 32)
         Me._Label1_7.Name = "_Label1_7"
-        Me._Label1_7.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_7.Size = New System.Drawing.Size(97, 17)
+        Me._Label1_7.Size = New System.Drawing.Size(97, 16)
         Me._Label1_7.TabIndex = 16
         Me._Label1_7.Text = "Land Cover Type:"
         '
-        'cmdSave
-        '
-        Me.cmdSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdSave.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdSave.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdSave.Enabled = False
-        Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(411, 553)
-        Me.cmdSave.Name = "cmdSave"
-        Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
-        Me.cmdSave.TabIndex = 6
-        Me.cmdSave.Text = "OK"
-        Me.cmdSave.UseVisualStyleBackColor = True
-        '
-        'cmdQuit
-        '
-        Me.cmdQuit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdQuit.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(501, 553)
-        Me.cmdQuit.Name = "cmdQuit"
-        Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
-        Me.cmdQuit.TabIndex = 7
-        Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = True
-        '
         '_Label1_0
         '
-        Me._Label1_0.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_0.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_0.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_0.Location = New System.Drawing.Point(21, 30)
+        Me._Label1_0.Location = New System.Drawing.Point(21, 28)
         Me._Label1_0.Name = "_Label1_0"
-        Me._Label1_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_0.Size = New System.Drawing.Size(86, 17)
+        Me._Label1_0.Size = New System.Drawing.Size(86, 16)
         Me._Label1_0.TabIndex = 5
         Me._Label1_0.Text = "Pollutant Name:"
         '
         'NewPollutantForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(594, 590)
+        Me.ClientSize = New System.Drawing.Size(594, 548)
         Me.Controls.Add(Me.txtPollutant)
         Me.Controls.Add(Me.SSTab1)
-        Me.Controls.Add(Me.cmdSave)
-        Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me._Label1_0)
         Me.Controls.Add(Me.MainMenu1)
-        Me.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(268, 127)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
         Me.Name = "NewPollutantForm"
-        Me.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Add Pollutant"
+        Me.Controls.SetChildIndex(Me.MainMenu1, 0)
+        Me.Controls.SetChildIndex(Me._Label1_0, 0)
+        Me.Controls.SetChildIndex(Me.SSTab1, 0)
+        Me.Controls.SetChildIndex(Me.txtPollutant, 0)
         Me.MainMenu1.ResumeLayout(False)
         Me.MainMenu1.PerformLayout()
         Me.SSTab1.ResumeLayout(False)

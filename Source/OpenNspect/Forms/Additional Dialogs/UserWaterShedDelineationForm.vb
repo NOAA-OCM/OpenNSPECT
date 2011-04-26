@@ -18,7 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class UserWaterShedDelineationForm
-    Inherits System.Windows.Forms.Form
 
     Const c_sModuleFileName As String = "frmUserWShed.vb"
 
@@ -101,17 +100,7 @@ Friend Class UserWaterShedDelineationForm
     End Sub
 
 
-    Private Sub cmdQuit_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdQuit.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdCreate_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCreate.Click
-
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Dim strCmdInsert As String
 
         modProgDialog.ShowProgress("Validating input...", "Adding New Delineation...", 0, 3, 1, Me)
@@ -119,7 +108,6 @@ Friend Class UserWaterShedDelineationForm
             modProgDialog.CloseDialog()
             Exit Sub
         End If
-
 
         Try
             'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
@@ -147,20 +135,18 @@ Friend Class UserWaterShedDelineationForm
                 _frmPrj.cboWSDelin.Items.Clear()
                 modUtil.InitComboBox((_frmPrj.cboWSDelin), "WSDelineation")
                 _frmPrj.cboWSDelin.SelectedIndex = modUtil.GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWSDelin))
-                Close()
+                MyBase.OK_Button_Click(sender, e)
             Else
-                Close()
+                MyBase.OK_Button_Click(sender, e)
                 _frmWS.Close()
             End If
-
 
         Catch ex As Exception
             MsgBox("An error occurred while processing your Watershed Delineation.", MsgBoxStyle.Critical, "Error")
             modProgDialog.CloseDialog()
         End Try
+
     End Sub
-
-
 #End Region
 
 #Region "Helper"

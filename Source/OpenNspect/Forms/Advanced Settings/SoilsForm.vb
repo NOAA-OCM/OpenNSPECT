@@ -18,8 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class SoilsForm
-    Inherits System.Windows.Forms.Form
-
     Private Const c_sModuleFileName As String = "frmSoils.vb"
 
 #Region "Events"
@@ -51,25 +49,6 @@ Friend Class SoilsForm
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-    Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
 
     Private Sub mnuNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNew.Click
         Try

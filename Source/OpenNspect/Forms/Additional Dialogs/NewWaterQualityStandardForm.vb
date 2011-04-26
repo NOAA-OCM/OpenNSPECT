@@ -19,7 +19,6 @@
 Imports System.Windows.Forms
 Imports System.Data.OleDb
 Friend Class NewWaterQualityStandardForm
-    Inherits System.Windows.Forms.Form
 
     Const c_sModuleFileName As String = "frmAddWQStd.vb"
 
@@ -48,7 +47,7 @@ Friend Class NewWaterQualityStandardForm
                 Loop
                 datPoll.Close()
             End Using
-            cmdSave.Enabled = False
+            OK_Button.Enabled = False
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -63,28 +62,7 @@ Friend Class NewWaterQualityStandardForm
         End Try
     End Sub
 
-
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Dim intvbYesNo As Short = MsgBox("Are you sure you want to exit?  All changes not saved will be lost.", MsgBoxStyle.YesNo, "Exit?")
-
-            If intvbYesNo = MsgBoxResult.Yes Then
-                If Not _frmPrj Is Nothing Then
-                    _frmPrj.cboWQStd.SelectedIndex = 0
-                End If
-
-                Close()
-            Else
-                Exit Sub
-            End If
-
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             Dim strName As String
             Dim strDescript As String
@@ -103,7 +81,7 @@ Friend Class NewWaterQualityStandardForm
                 If modUtil.UniqueName("WQCRITERIA", (txtWQStdName.Text)) Then
                     'Value check
                     If CheckThreshValues() Then
-                        strCmd = "INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('" & Replace(txtWQStdName.Text, "'", "''") & "', '" & Replace(strDescript, "'", "''") & "')"
+                        strCmd = String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(txtWQStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
                         Using cmdInsert As New DataHelper(strCmd)
                             cmdInsert.ExecuteNonQuery()
                         End Using
@@ -134,21 +112,25 @@ Friend Class NewWaterQualityStandardForm
                 _frmPrj.UpdateWQ(txtWQStdName.Text)
             End If
 
-            Close()
+            MyBase.OK_Button_Click(sender, e)
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
+
     End Sub
 
+    Protected Overrides Sub Cancel_Button_Click(sender As Object, e As System.EventArgs)
+        IsDirty = True
+        MyBase.Cancel_Button_Click(sender, e)
+        If Not _frmPrj Is Nothing Then
+            _frmPrj.cboWQStd.SelectedIndex = 0
+        End If
+    End Sub
 
     Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
-        Try
-            cmdSave.Enabled = True
 
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+        OK_Button.Enabled = True
     End Sub
 #End Region
 

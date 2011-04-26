@@ -19,12 +19,10 @@
 Imports System.Data.OleDb
 
 Friend Class NewWatershedDelineationForm
-    Inherits System.Windows.Forms.Form
 
     Private Const c_sModuleFileName As String = "frmNewWSDelin.vb"
 
-    Private boolChange(3) As Boolean 'Array set to track changes in controls: On Change, cmdCreate is enabled
-    Private _booProject As Boolean
+    Private boolChange(3) As Boolean 'Array set to track changes in controls: On Change,OK_Button is enabled
     Private _frmWS As WatershedDelineationsForm
     Private _frmPrj As MainForm
 
@@ -181,32 +179,8 @@ Friend Class NewWatershedDelineationForm
     End Sub
 
 
-    Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Try
-            Dim intvbYesNo As Short
 
-            intvbYesNo = MsgBox("Are you sure you want to exit?  Your changes will not be saved.", MsgBoxStyle.YesNo, "Exit")
-
-            If intvbYesNo = MsgBoxResult.Yes Then
-                If Not _frmPrj Is Nothing Then
-                    _frmPrj.cboPrecipScen.SelectedIndex = 0
-                End If
-                Close()
-            Else
-                Exit Sub
-            End If
-
-            _booProject = False
-
-
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-
-    End Sub
-
-
-    Private Sub cmdCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCreate.Click
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             If _InputDEMPath = "" Then
                 If txtDEMFile.Text <> "" Then
@@ -270,21 +244,25 @@ Friend Class NewWatershedDelineationForm
                     _frmPrj.cboWSDelin.Items.Clear()
                     modUtil.InitComboBox((_frmPrj.cboWSDelin), "WSDelineation")
                     _frmPrj.cboWSDelin.SelectedIndex = modUtil.GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWSDelin))
-                    Close()
+                    MyBase.OK_Button_Click(sender, e)
                 Else
-                    Close()
+                    MyBase.OK_Button_Click(sender, e)
                     _frmWS.Close()
                 End If
             Else
                 Exit Sub
             End If
 
-            'Reset project boolean
-            _booProject = False
         Catch ex As Exception
             MsgBox(Err.Number & Err.Description & " :New Watershed Delineation")
         End Try
 
+    End Sub
+    Protected Overrides Sub Cancel_Button_Click(sender As Object, e As System.EventArgs)
+        If Not _frmPrj Is Nothing Then
+            _frmPrj.cboPrecipScen.SelectedIndex = 0
+        End If
+        MyBase.Cancel_Button_Click(sender, e)
     End Sub
 
 #End Region
@@ -301,21 +279,21 @@ Friend Class NewWatershedDelineationForm
 
             If chkHydroCorr.CheckState And chkStreamAgree.CheckState Then
                 If boolChange(0) And boolChange(1) And boolChange(2) And boolChange(3) And g_boolParams Then
-                    cmdCreate.Enabled = True
+                    OK_Button.Enabled = True
                 Else
-                    cmdCreate.Enabled = False
+                    OK_Button.Enabled = False
                 End If
             ElseIf chkHydroCorr.CheckState And Not chkStreamAgree.CheckState Then
                 If boolChange(0) And boolChange(1) And boolChange(2) And boolChange(3) Then
-                    cmdCreate.Enabled = True
+                    OK_Button.Enabled = True
                 Else
-                    cmdCreate.Enabled = False
+                    OK_Button.Enabled = False
                 End If
             ElseIf Not chkHydroCorr.CheckState Then
                 If boolChange(0) And boolChange(1) And boolChange(2) And boolChange(3) Then
-                    cmdCreate.Enabled = True
+                    OK_Button.Enabled = True
                 Else
-                    cmdCreate.Enabled = False
+                    OK_Button.Enabled = False
                 End If
             End If
 

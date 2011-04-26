@@ -18,7 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class ImportWaterQualityStandardForm
-    Inherits System.Windows.Forms.Form
 
     Const c_sModuleFileName As String = "frmImportWQStd.vb"
     Private _frmWQ As WaterQualityStandardsForm
@@ -32,7 +31,7 @@ Friend Class ImportWaterQualityStandardForm
                 If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
                     txtImpFile.Text = Trim(dlgOpen.FileName)
                     _strFileName = txtImpFile.Text
-                    cmdOK.Enabled = True
+                    OK_Button.Enabled = True
                 End If
             End Using
 
@@ -41,20 +40,9 @@ Friend Class ImportWaterQualityStandardForm
         End Try
     End Sub
 
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
 
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
         Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
-        Try
-
-
             Dim strLine As String
             Dim intLine As Short
             Dim strName As String = ""
@@ -63,63 +51,48 @@ Friend Class ImportWaterQualityStandardForm
             Dim strThresh As String
             Dim strCmd As String
 
-            Dim read As New IO.StreamReader(_strFileName)
-
-            intLine = 0
-
-            Do While Not read.EndOfStream
-                strLine = read.ReadLine
-                intLine = intLine + 1
-                'MsgBox theLine
-
-                If intLine = 1 Then
-
-                    strName = Trim(txtStdName.Text)
-                    strDescript = Split(strLine, ",")(1)
-
-                    If strName = "" Then
-
-                        MsgBox("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
-                        txtStdName.Focus()
-                        Exit Sub
-
-                    Else
-
-                        strCmd = "INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('" & Replace(txtStdName.Text, "'", "''") & "', '" & Replace(strDescript, "'", "''") & "')"
-                        'Name Check
-                        If modUtil.UniqueName("WQCRITERIA", (txtStdName.Text)) Then
-                            Dim cmdIns As New DataHelper(strCmd)
-                            cmdIns.ExecuteNonQuery()
-                        Else
-                            MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
+            Using read As New IO.StreamReader(_strFileName)
+                intLine = 0
+                Do While Not read.EndOfStream
+                    strLine = read.ReadLine
+                    intLine = intLine + 1
+                    If intLine = 1 Then
+                        strName = Trim(txtStdName.Text)
+                        strDescript = Split(strLine, ",")(1)
+                        If strName = "" Then
+                            MsgBox("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
+                            txtStdName.Focus()
                             Exit Sub
+                        Else
+                            strCmd = String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(txtStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
+                            'Name Check
+                            If modUtil.UniqueName("WQCRITERIA", (txtStdName.Text)) Then
+                                Using cmdIns As New DataHelper(strCmd)
+                                    cmdIns.ExecuteNonQuery()
+                                End Using
+                            Else
+                                MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
+                                Exit Sub
+                            End If
                         End If
-
+                    Else
+                        strPoll = Split(strLine, ",")(0)
+                        strThresh = Split(strLine, ",")(1)
+                        'Insert the pollutant/threshold value into POLL_WQCRITERIA
+                        PollutantAdd(strName, strPoll, strThresh)
                     End If
-
-                Else
-
-                    strPoll = Split(strLine, ",")(0)
-                    strThresh = Split(strLine, ",")(1)
-                    'Insert the pollutant/threshold value into POLL_WQCRITERIA
-                    PollutantAdd(strName, strPoll, strThresh)
-
-                End If
-
-            Loop
-
-            read.Close()
+                Loop
+            End Using
 
             'Cleanup
             _frmWQ.cboWQStdName.Items.Clear()
             modUtil.InitComboBox(_frmWQ.cboWQStdName, "WQCRITERIA")
             _frmWQ.cboWQStdName.SelectedIndex = modUtil.GetCboIndex((txtStdName.Text), _frmWQ.cboWQStdName)
-            Close()
+            MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
 
     Public Sub Init(ByRef frmWQ As WaterQualityStandardsForm)
         Try

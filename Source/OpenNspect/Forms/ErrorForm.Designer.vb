@@ -31,14 +31,9 @@ Partial Class ErrorForm
         'cmdCopy
         '
         Me.cmdCopy.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdCopy.BackColor = System.Drawing.SystemColors.Control
         Me.cmdCopy.CausesValidation = False
-        Me.cmdCopy.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdCopy.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdCopy.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdCopy.Location = New System.Drawing.Point(419, 336)
         Me.cmdCopy.Name = "cmdCopy"
-        Me.cmdCopy.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCopy.Size = New System.Drawing.Size(75, 23)
         Me.cmdCopy.TabIndex = 5
         Me.cmdCopy.TabStop = False
@@ -48,14 +43,9 @@ Partial Class ErrorForm
         'cmdClose
         '
         Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdClose.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdClose.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.cmdClose.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdClose.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdClose.Location = New System.Drawing.Point(500, 336)
         Me.cmdClose.Name = "cmdClose"
-        Me.cmdClose.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdClose.Size = New System.Drawing.Size(75, 23)
         Me.cmdClose.TabIndex = 6
         Me.cmdClose.TabStop = False

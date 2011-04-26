@@ -122,14 +122,9 @@ Partial Class CompareOutputsForm
         'cmdRun
         '
         Me.cmdRun.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdRun.BackColor = System.Drawing.SystemColors.Control
         Me.cmdRun.CausesValidation = False
-        Me.cmdRun.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdRun.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdRun.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdRun.Location = New System.Drawing.Point(414, 332)
         Me.cmdRun.Name = "cmdRun"
-        Me.cmdRun.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdRun.Size = New System.Drawing.Size(75, 23)
         Me.cmdRun.TabIndex = 5
         Me.cmdRun.TabStop = False
@@ -139,14 +134,9 @@ Partial Class CompareOutputsForm
         'cmdQuit
         '
         Me.cmdQuit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdQuit.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdQuit.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
         Me.cmdQuit.Location = New System.Drawing.Point(502, 332)
         Me.cmdQuit.Name = "cmdQuit"
-        Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 6
         Me.cmdQuit.TabStop = False
@@ -184,13 +174,8 @@ Partial Class CompareOutputsForm
         'chkSelectedPolys
         '
         Me.chkSelectedPolys.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.chkSelectedPolys.BackColor = System.Drawing.SystemColors.Control
-        Me.chkSelectedPolys.Cursor = System.Windows.Forms.Cursors.Default
-        Me.chkSelectedPolys.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSelectedPolys.ForeColor = System.Drawing.SystemColors.ControlText
         Me.chkSelectedPolys.Location = New System.Drawing.Point(12, 335)
         Me.chkSelectedPolys.Name = "chkSelectedPolys"
-        Me.chkSelectedPolys.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.chkSelectedPolys.Size = New System.Drawing.Size(147, 22)
         Me.chkSelectedPolys.TabIndex = 63
         Me.chkSelectedPolys.Text = "Selected Polygons Only"
@@ -199,14 +184,9 @@ Partial Class CompareOutputsForm
         'btnSelect
         '
         Me.btnSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSelect.BackColor = System.Drawing.SystemColors.Control
         Me.btnSelect.CausesValidation = False
-        Me.btnSelect.Cursor = System.Windows.Forms.Cursors.Default
-        Me.btnSelect.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSelect.ForeColor = System.Drawing.SystemColors.ControlText
         Me.btnSelect.Location = New System.Drawing.Point(149, 332)
         Me.btnSelect.Name = "btnSelect"
-        Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.btnSelect.Size = New System.Drawing.Size(75, 23)
         Me.btnSelect.TabIndex = 65
         Me.btnSelect.TabStop = False

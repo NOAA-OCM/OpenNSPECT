@@ -19,11 +19,8 @@
 Imports System.Data.OleDb
 
 Friend Class PrecipitationScenariosForm
-    Inherits System.Windows.Forms.Form
-
     Private Const c_sModuleFileName As String = "frmPrecipitation.vb"
 
-    Private _boolChange As Boolean
     Private _boolLoad As Boolean
 
     Private _pInputPrecipDS As MapWinGIS.Grid
@@ -35,8 +32,7 @@ Friend Class PrecipitationScenariosForm
         Try
             _boolLoad = True
             modUtil.InitComboBox(cboScenName, "PRECIPSCENARIO")
-            cmdSave.Enabled = False
-            _boolChange = False
+            OK_Button.Enabled = False
             _boolLoad = False
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -66,7 +62,7 @@ Friend Class PrecipitationScenariosForm
                 End Using
             End Using
 
-            cmdSave.Enabled = False
+            OK_Button.Enabled = False
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -75,7 +71,7 @@ Friend Class PrecipitationScenariosForm
 
     Private Sub txtDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDesc.TextChanged
         Try
-            EnableSave()
+            MakeDirty()
             txtDesc.Text = Replace(txtDesc.Text, "'", "")
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -85,7 +81,7 @@ Friend Class PrecipitationScenariosForm
 
     Private Sub txtPrecipFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipFile.TextChanged
         Try
-            EnableSave()
+            MakeDirty()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -131,7 +127,7 @@ Friend Class PrecipitationScenariosForm
 
     Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGridUnits.SelectedIndexChanged
         Try
-            EnableSave()
+            MakeDirty()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -140,7 +136,7 @@ Friend Class PrecipitationScenariosForm
 
     Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipUnits.SelectedIndexChanged
         Try
-            EnableSave()
+            MakeDirty()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -165,7 +161,7 @@ Friend Class PrecipitationScenariosForm
 
     Private Sub txtRainingDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRainingDays.TextChanged
         Try
-            EnableSave()
+            MakeDirty()
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -176,7 +172,7 @@ Friend Class PrecipitationScenariosForm
     Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipType.SelectedIndexChanged
         Try
             If Not _boolLoad Then
-                EnableSave()
+                MakeDirty()
             End If
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -184,69 +180,34 @@ Friend Class PrecipitationScenariosForm
     End Sub
 
 
-    Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
-        Try
-            If CheckParams() = True Then
-                Dim strSQLPrecip As String = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
+    Private Sub SaveRecord()
+        Dim strSQLPrecip As String = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
 
-                Dim precipCmd As New OleDbCommand(strSQLPrecip, modUtil.g_DBConn)
-                Dim precipAdapter As New OleDbDataAdapter(precipCmd)
-                Dim cBuilder As New OleDbCommandBuilder(precipAdapter)
-                cBuilder.QuotePrefix = "["
-                cBuilder.QuoteSuffix = "]"
-                Dim dt As New Data.DataTable
-                precipAdapter.Fill(dt)
+        Dim precipCmd As New OleDbCommand(strSQLPrecip, modUtil.g_DBConn)
+        Dim precipAdapter As New OleDbDataAdapter(precipCmd)
+        Dim cBuilder As New OleDbCommandBuilder(precipAdapter)
+        cBuilder.QuotePrefix = "["
+        cBuilder.QuoteSuffix = "]"
+        Dim dt As New Data.DataTable
+        precipAdapter.Fill(dt)
 
-                dt.Rows(0)("Name") = cboScenName.Text
-                dt.Rows(0)("Description") = txtDesc.Text
-                dt.Rows(0)("PrecipFileName") = txtPrecipFile.Text
-                dt.Rows(0)("PrecipGridUnits") = cboGridUnits.SelectedIndex
-                dt.Rows(0)("PrecipUnits") = cboPrecipUnits.SelectedIndex
-                dt.Rows(0)("PrecipType") = cboPrecipType.SelectedIndex
-                dt.Rows(0)("Type") = cboTimePeriod.SelectedIndex
+        dt.Rows(0)("Name") = cboScenName.Text
+        dt.Rows(0)("Description") = txtDesc.Text
+        dt.Rows(0)("PrecipFileName") = txtPrecipFile.Text
+        dt.Rows(0)("PrecipGridUnits") = cboGridUnits.SelectedIndex
+        dt.Rows(0)("PrecipUnits") = cboPrecipUnits.SelectedIndex
+        dt.Rows(0)("PrecipType") = cboPrecipType.SelectedIndex
+        dt.Rows(0)("Type") = cboTimePeriod.SelectedIndex
 
-                If cboTimePeriod.SelectedIndex = 0 Then
-                    dt.Rows(0)("RainingDays") = CShort(txtRainingDays.Text)
-                Else
-                    dt.Rows(0)("RainingDays") = 0
-                End If
-                precipAdapter.Update(dt)
+        If cboTimePeriod.SelectedIndex = 0 Then
+            dt.Rows(0)("RainingDays") = CShort(txtRainingDays.Text)
+        Else
+            dt.Rows(0)("RainingDays") = 0
+        End If
+        precipAdapter.Update(dt)
 
-                _boolChange = False
-
-                MsgBox(cboScenName.Text & " saved successfully.", MsgBoxStyle.OkOnly, "Record Saved")
-                Close()
-            Else
-                Exit Sub
-
-            End If
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+        IsDirty = False
     End Sub
-
-
-    Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Try
-            Dim intSave As Object
-
-            If _boolChange Then
-                intSave = MsgBox("You have made changes to this record, are you sure you want to quit?", MsgBoxStyle.YesNo, "Quit?")
-
-                If intSave = MsgBoxResult.Yes Then
-                    Close()
-                ElseIf intSave = MsgBoxResult.No Then
-                    Exit Sub
-                End If
-            Else
-                Close()
-            End If
-
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
 
     Private Sub mnuNewPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewPrecip.Click
         Try
@@ -384,15 +345,9 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Function
 
-
-    Private Sub EnableSave()
-        Try
-            cmdSave.Enabled = True
-            _boolChange = True
-
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+    Private Sub MakeDirty()
+        OK_Button.Enabled = True
+        IsDirty = True
     End Sub
 
 
@@ -408,5 +363,19 @@ Friend Class PrecipitationScenariosForm
 
 #End Region
 
+    Protected Overrides Sub OK_Button_Click(sender As System.Object, e As System.EventArgs)
+
+        Try
+            If CheckParams() = True Then
+                SaveRecord()
+
+                MsgBox(cboScenName.Text & " saved successfully.", MsgBoxStyle.OkOnly, "Record Saved")
+                MyBase.OK_Button_Click(sender, e)
+           
+            End If
+        Catch ex As Exception
+            HandleError(c_sModuleFileName, ex)
+        End Try
+    End Sub
 
 End Class

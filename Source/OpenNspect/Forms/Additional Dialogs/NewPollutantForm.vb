@@ -18,10 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class NewPollutantForm
-    Inherits System.Windows.Forms.Form
-
-    Private _boolLoaded As Boolean
-    Private _boolChanged As Boolean
 
     Private _intPollID As Short 'There's a need to have the PollID so we'll store it here
     Private _intLCTypeID As Short 'Land Class (CCAP) ID - needed to add new coefficient sets
@@ -36,9 +32,6 @@ Friend Class NewPollutantForm
     Private Sub frmNewPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             modUtil.InitComboBox(cboLCType, "LCType")
-
-            _boolLoaded = True
-            _boolChanged = False
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
@@ -101,7 +94,7 @@ Friend Class NewPollutantForm
 
     Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged
         Try
-            _boolChanged = True
+            IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -111,7 +104,7 @@ Friend Class NewPollutantForm
 
     Private Sub txtPollutant_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPollutant.TextChanged
         Try
-            _boolChanged = True
+            IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -121,7 +114,7 @@ Friend Class NewPollutantForm
 
     Private Sub txtCoeffSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSet.TextChanged
         Try
-            _boolChanged = True
+            IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -131,36 +124,32 @@ Friend Class NewPollutantForm
 
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
         Try
-            _boolChanged = True
+            IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
-
-    Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             If CheckForm() Then
                 If UpdateValues() Then
                     MsgBox(txtPollutant.Text & " successfully added.  Please enter value for associated water quality standards.", MsgBoxStyle.Information, "Pollutant Successfully Added")
-                    Close()
+
                     _frmPoll.SSTab1.SelectedIndex = 1
+                    MyBase.OK_Button_Click(sender, e)
                 End If
             End If
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
+
+    Protected Overrides Sub Cancel_Button_Click(sender As Object, e As System.EventArgs)
+        MyBase.Cancel_Button_Click(sender, e)
+    End Sub
+
 #End Region
 
 #Region "Helpers"
@@ -176,15 +165,7 @@ Friend Class NewPollutantForm
 
 
     Private Sub CmdSaveEnabled()
-        Try
-            If _boolChanged Then
-                cmdSave.Enabled = True
-            Else
-                cmdSave.Enabled = False
-            End If
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+        OK_Button.Enabled = IsDirty
     End Sub
 
 
