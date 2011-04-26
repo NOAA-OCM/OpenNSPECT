@@ -36,7 +36,6 @@ Public Class MapWindowPlugin
 
 #Region "Private Variables"
     'Used for removing items on terminate
-    Private _addedButtons As New System.Collections.Stack()
     Private _addedMenus As New System.Collections.Stack()
 
 #End Region
@@ -305,7 +304,6 @@ Public Class MapWindowPlugin
         g_StatusBar = g_MapWin.StatusBar.AddPanel("", 2, 10, Windows.Forms.StatusBarPanelAutoSize.Spring)
 
         AddMenus()
-        ' addToolbars()
 
         Dim nspectPath As String = "C:\NSPECT\"
 
@@ -333,16 +331,6 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public Sub Terminate() Implements MapWindow.Interfaces.IPlugin.Terminate
         g_MapWin.StatusBar.RemovePanel(g_StatusBar)
-
-        Dim t As MapWindow.Interfaces.Toolbar = g_MapWin.Toolbar
-        While (_addedButtons.Count > 0)
-            Try
-                t.RemoveButton(_addedButtons.Pop().ToString())
-            Catch ex As Exception
-
-            End Try
-        End While
-        t.RemoveToolbar(g_ToolBarName)
 
         While (_addedMenus.Count > 0)
             Try
@@ -389,8 +377,6 @@ Public Class MapWindowPlugin
 
 #End Region
 
-#Region "Helper Functions"
-
 #Region "   Menu/Toolbar Items"
     ''' <summary>
     ''' Add all the menus used by the plugin
@@ -432,25 +418,6 @@ Public Class MapWindowPlugin
 
         End With
     End Sub
-
-    ''' <summary>
-    ''' Sub used to add all toolbars and buttons used by the plugin
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub addToolbars()
-        'g_MapWin.Toolbar.AddToolbar(g_ToolBarName)
-
-        'Dim tlbrbtnfreehandCapture As MapWindow.Interfaces.ToolbarButton = g_MapWin.Toolbar.AddButton(g_btnFreehand, g_ToolBarName, "", "")
-        'Dim freehand_ico As New Drawing.Icon(Me.GetType, "pencilFreehand.ico")
-        'tlbrbtnfreehandCapture.Picture = freehand_ico
-        'tlbrbtnfreehandCapture.Tooltip = "Manually Add a Feature"
-        '_addedButtons.Push(g_btnFreehand)
-
-
-        'Dim tlbrbtntmp As MapWindow.Interfaces.ToolbarButton = g_MapWin.Toolbar.AddButton("tmp", g_ToolBarName, "", "")
-        '_addedButtons.Push("tmp")
-    End Sub
-#End Region
 
 #Region "   Itemclicked Items"
     ''' <summary>

@@ -19,6 +19,4 @@ Module Globals
     Public g_handle As Integer
     Public g_StatusBar As System.Windows.Forms.StatusBarPanel
 
-    Public g_ToolBarName As String = "nspectToolbar"
-
 End Module
