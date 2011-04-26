@@ -66,10 +66,10 @@
         Me.cmdCancel.Location = New System.Drawing.Point(488, 336)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 3
         Me.cmdCancel.Text = "Cancel"
-        Me.cmdCancel.UseVisualStyleBackColor = False
+        Me.cmdCancel.UseVisualStyleBackColor = True
         '
         'cmdSave
         '
@@ -79,13 +79,13 @@
         Me.cmdSave.Enabled = False
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(420, 336)
+        Me.cmdSave.Location = New System.Drawing.Point(407, 336)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdSave.Size = New System.Drawing.Size(65, 25)
+        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
         Me.cmdSave.TabIndex = 2
         Me.cmdSave.Text = "Save"
-        Me.cmdSave.UseVisualStyleBackColor = False
+        Me.cmdSave.UseVisualStyleBackColor = True
         '
         'txtWQStdName
         '

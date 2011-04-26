@@ -204,13 +204,13 @@
         Me.cmdSave.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(446, 335)
+        Me.cmdSave.Location = New System.Drawing.Point(436, 335)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdSave.Size = New System.Drawing.Size(65, 25)
+        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
         Me.cmdSave.TabIndex = 1
         Me.cmdSave.Text = "OK"
-        Me.cmdSave.UseVisualStyleBackColor = False
+        Me.cmdSave.UseVisualStyleBackColor = True
         '
         'cmdQuit
         '
@@ -221,12 +221,12 @@
         Me.cmdQuit.Location = New System.Drawing.Point(517, 335)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 0
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
-        'frmSoils
+        'SoilsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -242,7 +242,7 @@
         Me.Location = New System.Drawing.Point(11, 30)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmSoils"
+        Me.Name = "SoilsForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

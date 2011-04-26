@@ -82,7 +82,7 @@
         Me.cmdOK.Size = New System.Drawing.Size(66, 25)
         Me.cmdOK.TabIndex = 3
         Me.cmdOK.Text = "OK"
-        Me.cmdOK.UseVisualStyleBackColor = False
+        Me.cmdOK.UseVisualStyleBackColor = True
         '
         'cmdCancel
         '
@@ -91,13 +91,13 @@
         Me.cmdCancel.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCancel.Location = New System.Drawing.Point(259, 81)
+        Me.cmdCancel.Location = New System.Drawing.Point(262, 81)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.cmdCancel.Size = New System.Drawing.Size(66, 25)
         Me.cmdCancel.TabIndex = 4
         Me.cmdCancel.Text = "Cancel"
-        Me.cmdCancel.UseVisualStyleBackColor = False
+        Me.cmdCancel.UseVisualStyleBackColor = True
         '
         'cmdBrowse
         '
@@ -112,7 +112,7 @@
         Me.cmdBrowse.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowse.TabIndex = 0
         Me.cmdBrowse.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowse.UseVisualStyleBackColor = False
+        Me.cmdBrowse.UseVisualStyleBackColor = True
         '
         '_Label1_5
         '

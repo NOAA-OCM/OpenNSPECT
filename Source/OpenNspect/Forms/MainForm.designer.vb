@@ -154,7 +154,7 @@
         Me.chkSelectedPolys.TabIndex = 61
         Me.chkSelectedPolys.Text = "Selected Polygons Only"
         Me.ToolTip1.SetToolTip(Me.chkSelectedPolys, "Select to limit analysis to selected polygons from a map layer")
-        Me.chkSelectedPolys.UseVisualStyleBackColor = False
+        Me.chkSelectedPolys.UseVisualStyleBackColor = True
         '
         'chkLocalEffects
         '
@@ -169,7 +169,7 @@
         Me.chkLocalEffects.TabIndex = 51
         Me.chkLocalEffects.Text = "Local Effects Only"
         Me.ToolTip1.SetToolTip(Me.chkLocalEffects, "Select for analysis of local effects only")
-        Me.chkLocalEffects.UseVisualStyleBackColor = False
+        Me.chkLocalEffects.UseVisualStyleBackColor = True
         '
         'cboLCLayer
         '
@@ -213,7 +213,7 @@
         Me.optUseValue.TabStop = True
         Me.optUseValue.Text = "Use Constant Value: "
         Me.ToolTip1.SetToolTip(Me.optUseValue, "Functionality to be implemented in Alpha2")
-        Me.optUseValue.UseVisualStyleBackColor = False
+        Me.optUseValue.UseVisualStyleBackColor = True
         '
         'txtbxRainGrid
         '
@@ -446,7 +446,7 @@
         '
         'lblSelected
         '
-        Me.lblSelected.Location = New System.Drawing.Point(75, 54)
+        Me.lblSelected.Location = New System.Drawing.Point(85, 52)
         Me.lblSelected.Name = "lblSelected"
         Me.lblSelected.Size = New System.Drawing.Size(84, 23)
         Me.lblSelected.TabIndex = 68
@@ -463,11 +463,11 @@
         Me.btnSelect.Location = New System.Drawing.Point(7, 48)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnSelect.Size = New System.Drawing.Size(56, 25)
+        Me.btnSelect.Size = New System.Drawing.Size(75, 23)
         Me.btnSelect.TabIndex = 67
         Me.btnSelect.TabStop = False
         Me.btnSelect.Text = "Select"
-        Me.btnSelect.UseVisualStyleBackColor = False
+        Me.btnSelect.UseVisualStyleBackColor = True
         '
         'Frame3
         '
@@ -501,7 +501,7 @@
         Me.cmdOpenWS.Size = New System.Drawing.Size(23, 20)
         Me.cmdOpenWS.TabIndex = 40
         Me.cmdOpenWS.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdOpenWS.UseVisualStyleBackColor = False
+        Me.cmdOpenWS.UseVisualStyleBackColor = True
         '
         'txtOutputWS
         '
@@ -876,7 +876,7 @@
         Me.chkCalcErosion.Size = New System.Drawing.Size(331, 19)
         Me.chkCalcErosion.TabIndex = 15
         Me.chkCalcErosion.Text = "Calculate Erosion for Annual Type Precipitation Scenario"
-        Me.chkCalcErosion.UseVisualStyleBackColor = False
+        Me.chkCalcErosion.UseVisualStyleBackColor = True
         '
         'frameRainFall
         '
@@ -910,7 +910,7 @@
         Me.btnOpenRainfallFactorGrid.Size = New System.Drawing.Size(23, 20)
         Me.btnOpenRainfallFactorGrid.TabIndex = 68
         Me.btnOpenRainfallFactorGrid.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnOpenRainfallFactorGrid.UseVisualStyleBackColor = False
+        Me.btnOpenRainfallFactorGrid.UseVisualStyleBackColor = True
         '
         'optUseGRID
         '
@@ -927,7 +927,7 @@
         Me.optUseGRID.TabIndex = 23
         Me.optUseGRID.TabStop = True
         Me.optUseGRID.Text = "Use GRID: "
-        Me.optUseGRID.UseVisualStyleBackColor = False
+        Me.optUseGRID.UseVisualStyleBackColor = True
         '
         'cboErodFactor
         '
@@ -986,7 +986,7 @@
         Me.cmdOpenSDR.Size = New System.Drawing.Size(23, 20)
         Me.cmdOpenSDR.TabIndex = 67
         Me.cmdOpenSDR.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdOpenSDR.UseVisualStyleBackColor = False
+        Me.cmdOpenSDR.UseVisualStyleBackColor = True
         '
         'txtSDRGRID
         '
@@ -1015,7 +1015,7 @@
         Me.chkSDR.Size = New System.Drawing.Size(217, 17)
         Me.chkSDR.TabIndex = 65
         Me.chkSDR.Text = "Sediment Delivery Ratio GRID (optional)"
-        Me.chkSDR.UseVisualStyleBackColor = False
+        Me.chkSDR.UseVisualStyleBackColor = True
         '
         '_SSTab1_TabPage2
         '
@@ -1136,11 +1136,11 @@
         Me.cmdRun.Location = New System.Drawing.Point(459, 471)
         Me.cmdRun.Name = "cmdRun"
         Me.cmdRun.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdRun.Size = New System.Drawing.Size(72, 25)
+        Me.cmdRun.Size = New System.Drawing.Size(75, 23)
         Me.cmdRun.TabIndex = 3
         Me.cmdRun.TabStop = False
         Me.cmdRun.Text = "Run"
-        Me.cmdRun.UseVisualStyleBackColor = False
+        Me.cmdRun.UseVisualStyleBackColor = True
         '
         'cmdQuit
         '
@@ -1152,11 +1152,11 @@
         Me.cmdQuit.Location = New System.Drawing.Point(562, 471)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(72, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 4
         Me.cmdQuit.TabStop = False
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
         '_chkIgnore_0
         '
@@ -1171,7 +1171,7 @@
         Me._chkIgnore_0.Size = New System.Drawing.Size(15, 13)
         Me._chkIgnore_0.TabIndex = 30
         Me._chkIgnore_0.Text = "Check2"
-        Me._chkIgnore_0.UseVisualStyleBackColor = False
+        Me._chkIgnore_0.UseVisualStyleBackColor = True
         Me._chkIgnore_0.Visible = False
         '
         '_chkIgnoreMgmt_0
@@ -1187,7 +1187,7 @@
         Me._chkIgnoreMgmt_0.Size = New System.Drawing.Size(15, 13)
         Me._chkIgnoreMgmt_0.TabIndex = 35
         Me._chkIgnoreMgmt_0.Text = "Check2"
-        Me._chkIgnoreMgmt_0.UseVisualStyleBackColor = False
+        Me._chkIgnoreMgmt_0.UseVisualStyleBackColor = True
         '
         '_chkIgnoreLU_0
         '
@@ -1202,7 +1202,7 @@
         Me._chkIgnoreLU_0.Size = New System.Drawing.Size(15, 13)
         Me._chkIgnoreLU_0.TabIndex = 36
         Me._chkIgnoreLU_0.Text = "Check2"
-        Me._chkIgnoreLU_0.UseVisualStyleBackColor = False
+        Me._chkIgnoreLU_0.UseVisualStyleBackColor = True
         '
         'cnxtmnuLandUse
         '

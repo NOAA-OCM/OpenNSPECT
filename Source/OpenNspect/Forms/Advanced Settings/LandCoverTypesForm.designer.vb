@@ -183,7 +183,7 @@
         Me.btnRestoreDefaults.Size = New System.Drawing.Size(103, 25)
         Me.btnRestoreDefaults.TabIndex = 6
         Me.btnRestoreDefaults.Text = "Restore Defaults"
-        Me.btnRestoreDefaults.UseVisualStyleBackColor = False
+        Me.btnRestoreDefaults.UseVisualStyleBackColor = True
         '
         'btnCancel
         '
@@ -195,10 +195,10 @@
         Me.btnCancel.Location = New System.Drawing.Point(533, 535)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnCancel.Size = New System.Drawing.Size(65, 25)
+        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 5
         Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = False
+        Me.btnCancel.UseVisualStyleBackColor = True
         '
         'btnSave
         '
@@ -211,10 +211,10 @@
         Me.btnSave.Location = New System.Drawing.Point(438, 535)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnSave.Size = New System.Drawing.Size(65, 25)
+        Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 4
         Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = False
+        Me.btnSave.UseVisualStyleBackColor = True
         '
         'txtLCTypeDesc
         '

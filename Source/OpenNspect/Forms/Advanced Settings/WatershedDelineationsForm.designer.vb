@@ -218,7 +218,7 @@
         Me.chkHydroCorr.Size = New System.Drawing.Size(173, 19)
         Me.chkHydroCorr.TabIndex = 7
         Me.chkHydroCorr.Text = "Hydrologically Corrected DEM"
-        Me.chkHydroCorr.UseVisualStyleBackColor = False
+        Me.chkHydroCorr.UseVisualStyleBackColor = True
         '
         'txtFlowAccumGrid
         '
@@ -424,10 +424,10 @@
         Me.cmdQuit.Location = New System.Drawing.Point(517, 335)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 0
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
         'WatershedDelineationsForm
         '

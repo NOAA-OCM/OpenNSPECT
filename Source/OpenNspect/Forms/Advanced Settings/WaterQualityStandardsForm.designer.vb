@@ -165,11 +165,11 @@
         Me.cmdQuit.Location = New System.Drawing.Point(494, 332)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 3
         Me.cmdQuit.TabStop = False
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
         'cmdSave
         '
@@ -179,14 +179,14 @@
         Me.cmdSave.Enabled = False
         Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(425, 332)
+        Me.cmdSave.Location = New System.Drawing.Point(413, 332)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdSave.Size = New System.Drawing.Size(65, 25)
+        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
         Me.cmdSave.TabIndex = 2
         Me.cmdSave.TabStop = False
         Me.cmdSave.Text = "OK"
-        Me.cmdSave.UseVisualStyleBackColor = False
+        Me.cmdSave.UseVisualStyleBackColor = True
         '
         'cboWQStdName
         '
@@ -281,7 +281,7 @@
         Me.Poll_WQCritID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.Poll_WQCritID.Visible = False
         '
-        'frmWaterQualityStandard
+        'WaterQualityStandardsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -301,7 +301,7 @@
         Me.Location = New System.Drawing.Point(9, 27)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmWaterQualityStandard"
+        Me.Name = "WaterQualityStandardsForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

@@ -53,7 +53,7 @@
         Me.cmdBrowse.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowse.TabIndex = 2
         Me.cmdBrowse.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowse.UseVisualStyleBackColor = False
+        Me.cmdBrowse.UseVisualStyleBackColor = True
         '
         'cmdCancel
         '
@@ -63,13 +63,13 @@
         Me.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCancel.Location = New System.Drawing.Point(259, 81)
+        Me.cmdCancel.Location = New System.Drawing.Point(270, 80)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 4
         Me.cmdCancel.Text = "Cancel"
-        Me.cmdCancel.UseVisualStyleBackColor = False
+        Me.cmdCancel.UseVisualStyleBackColor = True
         '
         'cmdOK
         '
@@ -82,10 +82,10 @@
         Me.cmdOK.Location = New System.Drawing.Point(189, 81)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdOK.Size = New System.Drawing.Size(65, 25)
+        Me.cmdOK.Size = New System.Drawing.Size(75, 23)
         Me.cmdOK.TabIndex = 3
         Me.cmdOK.Text = "OK"
-        Me.cmdOK.UseVisualStyleBackColor = False
+        Me.cmdOK.UseVisualStyleBackColor = True
         '
         'txtImpFile
         '
@@ -143,7 +143,7 @@
         Me._Label1_5.Text = "New Standard Name:"
         Me._Label1_5.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'frmImportWQStd
+        'ImportWaterQualityStandardForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -164,7 +164,7 @@
         Me.Location = New System.Drawing.Point(3, 21)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmImportWQStd"
+        Me.Name = "ImportWaterQualityStandardForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent

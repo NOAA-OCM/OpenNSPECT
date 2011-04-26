@@ -135,7 +135,7 @@
         Me.chkSelectedPolys.Size = New System.Drawing.Size(162, 25)
         Me.chkSelectedPolys.TabIndex = 24
         Me.chkSelectedPolys.Text = "Use Selected Polygons Only"
-        Me.chkSelectedPolys.UseVisualStyleBackColor = False
+        Me.chkSelectedPolys.UseVisualStyleBackColor = True
         '
         'chkWatWetlands
         '
@@ -149,7 +149,7 @@
         Me.chkWatWetlands.Size = New System.Drawing.Size(109, 19)
         Me.chkWatWetlands.TabIndex = 7
         Me.chkWatWetlands.Text = "Water/Wetlands"
-        Me.chkWatWetlands.UseVisualStyleBackColor = False
+        Me.chkWatWetlands.UseVisualStyleBackColor = True
         '
         'txtLUName
         '
@@ -176,11 +176,11 @@
         Me.cmdCancel.Location = New System.Drawing.Point(312, 445)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 9
         Me.cmdCancel.TabStop = False
         Me.cmdCancel.Text = "Cancel"
-        Me.cmdCancel.UseVisualStyleBackColor = False
+        Me.cmdCancel.UseVisualStyleBackColor = True
         '
         'cmdOK
         '
@@ -190,14 +190,14 @@
         Me.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdOK.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOK.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOK.Location = New System.Drawing.Point(240, 445)
+        Me.cmdOK.Location = New System.Drawing.Point(231, 445)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdOK.Size = New System.Drawing.Size(65, 25)
+        Me.cmdOK.Size = New System.Drawing.Size(75, 23)
         Me.cmdOK.TabIndex = 8
         Me.cmdOK.TabStop = False
         Me.cmdOK.Text = "OK"
-        Me.cmdOK.UseVisualStyleBackColor = False
+        Me.cmdOK.UseVisualStyleBackColor = True
         '
         '_txtLUCN_4
         '
@@ -512,13 +512,13 @@
         Me.btnSelect.Location = New System.Drawing.Point(226, 87)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnSelect.Size = New System.Drawing.Size(72, 25)
+        Me.btnSelect.Size = New System.Drawing.Size(75, 23)
         Me.btnSelect.TabIndex = 67
         Me.btnSelect.TabStop = False
         Me.btnSelect.Text = "Select"
-        Me.btnSelect.UseVisualStyleBackColor = False
+        Me.btnSelect.UseVisualStyleBackColor = True
         '
-        'frmLUScen
+        'EditLandUseScenario
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -557,7 +557,7 @@
         Me.Location = New System.Drawing.Point(4, 23)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmLUScen"
+        Me.Name = "EditLandUseScenario"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

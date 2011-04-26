@@ -81,10 +81,10 @@
         Me.cmdQuit.Location = New System.Drawing.Point(501, 329)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 14
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
         'cmdCreate
         '
@@ -93,13 +93,13 @@
         Me.cmdCreate.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCreate.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCreate.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCreate.Location = New System.Drawing.Point(426, 329)
+        Me.cmdCreate.Location = New System.Drawing.Point(420, 329)
         Me.cmdCreate.Name = "cmdCreate"
         Me.cmdCreate.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCreate.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCreate.Size = New System.Drawing.Size(75, 23)
         Me.cmdCreate.TabIndex = 13
         Me.cmdCreate.Text = "OK"
-        Me.cmdCreate.UseVisualStyleBackColor = False
+        Me.cmdCreate.UseVisualStyleBackColor = True
         '
         'cmdBrowseLS
         '
@@ -114,7 +114,7 @@
         Me.cmdBrowseLS.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseLS.TabIndex = 12
         Me.cmdBrowseLS.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowseLS.UseVisualStyleBackColor = False
+        Me.cmdBrowseLS.UseVisualStyleBackColor = True
         '
         'Frame1
         '
@@ -190,7 +190,7 @@
         Me.cmdBrowseFlowDir.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFlowDir.TabIndex = 18
         Me.cmdBrowseFlowDir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowseFlowDir.UseVisualStyleBackColor = False
+        Me.cmdBrowseFlowDir.UseVisualStyleBackColor = True
         '
         'cmdBrowseWS
         '
@@ -205,7 +205,7 @@
         Me.cmdBrowseWS.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseWS.TabIndex = 17
         Me.cmdBrowseWS.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowseWS.UseVisualStyleBackColor = False
+        Me.cmdBrowseWS.UseVisualStyleBackColor = True
         '
         'txtWaterSheds
         '
@@ -234,7 +234,7 @@
         Me.cmdBrowseFlowAcc.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFlowAcc.TabIndex = 11
         Me.cmdBrowseFlowAcc.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowseFlowAcc.UseVisualStyleBackColor = False
+        Me.cmdBrowseFlowAcc.UseVisualStyleBackColor = True
         '
         'txtFlowAcc
         '
@@ -263,7 +263,7 @@
         Me.cmdBrowseDEMFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseDEMFile.TabIndex = 2
         Me.cmdBrowseDEMFile.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowseDEMFile.UseVisualStyleBackColor = False
+        Me.cmdBrowseDEMFile.UseVisualStyleBackColor = True
         '
         'txtWSDelinName
         '

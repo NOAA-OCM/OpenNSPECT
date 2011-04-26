@@ -268,7 +268,7 @@
         Me.cmdDEMBrowse.Size = New System.Drawing.Size(25, 21)
         Me.cmdDEMBrowse.TabIndex = 2
         Me.cmdDEMBrowse.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdDEMBrowse.UseVisualStyleBackColor = False
+        Me.cmdDEMBrowse.UseVisualStyleBackColor = True
         '
         'cmdQuit
         '
@@ -280,10 +280,10 @@
         Me.cmdQuit.Location = New System.Drawing.Point(508, 338)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 8
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
         'cmdSave
         '
@@ -295,10 +295,10 @@
         Me.cmdSave.Location = New System.Drawing.Point(417, 338)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdSave.Size = New System.Drawing.Size(65, 25)
+        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
         Me.cmdSave.TabIndex = 7
         Me.cmdSave.Text = "OK"
-        Me.cmdSave.UseVisualStyleBackColor = False
+        Me.cmdSave.UseVisualStyleBackColor = True
         '
         'Frame1
         '
@@ -358,7 +358,7 @@
         Me.cmdBrowseFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFile.TabIndex = 4
         Me.cmdBrowseFile.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowseFile.UseVisualStyleBackColor = False
+        Me.cmdBrowseFile.UseVisualStyleBackColor = True
         '
         'txtSoilsDS
         '
