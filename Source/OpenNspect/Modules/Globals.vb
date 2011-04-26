@@ -12,9 +12,11 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Nov 23, 2009:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to original code
+Imports System.Windows.Forms
+Imports MapWindow.Interfaces
 
 Module Globals
-    Public g_MapWin As MapWindow.Interfaces.IMapWin
+    Public g_MapWin As IMapWin
     Public g_handle As Integer
-    Public g_StatusBar As System.Windows.Forms.StatusBarPanel
+    Public g_StatusBar As StatusBarPanel
 End Module

@@ -15,74 +15,75 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Data.OleDb
+Imports System.IO
+Imports System.Windows.Forms
 
 Friend Class WatershedDelineationsForm
 
 #Region "Events"
 
-    Private Sub frmWatershedDelin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmWatershedDelin_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
-            modUtil.InitComboBox(cboWSDelin, "WSDELINEATION")
+            InitComboBox (cboWSDelin, "WSDELINEATION")
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub cboWSDelin_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub cboWSDelin_SelectedIndexChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles cboWSDelin.SelectedIndexChanged
         Try
             'String and recordset
             Dim strSQLDelin As String = "SELECT * FROM WSDELINEATION WHERE NAME LIKE '" & cboWSDelin.Text & "'"
-            Using delinCmd As New OleDbCommand(strSQLDelin, modUtil.g_DBConn)
+            Using delinCmd As New OleDbCommand (strSQLDelin, g_DBConn)
                 Using delin As OleDbDataReader = delinCmd.ExecuteReader()
                     'Check for records
                     If delin.HasRows Then
                         delin.Read()
                         'Populate the controls...
-                        txtDEMFile.Text = delin.Item("DEMFileName")
-                        cboDEMUnits.SelectedIndex = delin.Item("DEMGridUnits")
-                        txtStream.Text = delin.Item("StreamFileName") & ""
-                        chkHydroCorr.CheckState = delin.Item("HydroCorrected")
-                        cboWSSize.SelectedIndex = delin.Item("SubWSSize")
-                        txtWSFile.Text = delin.Item("wsfilename") & ""
-                        txtFlowAccumGrid.Text = delin.Item("FlowAccumFileName") & ""
-                        txtLSGrid.Text = delin.Item("LSFileName") & ""
+                        txtDEMFile.Text = delin.Item ("DEMFileName")
+                        cboDEMUnits.SelectedIndex = delin.Item ("DEMGridUnits")
+                        txtStream.Text = delin.Item ("StreamFileName") & ""
+                        chkHydroCorr.CheckState = delin.Item ("HydroCorrected")
+                        cboWSSize.SelectedIndex = delin.Item ("SubWSSize")
+                        txtWSFile.Text = delin.Item ("wsfilename") & ""
+                        txtFlowAccumGrid.Text = delin.Item ("FlowAccumFileName") & ""
+                        txtLSGrid.Text = delin.Item ("LSFileName") & ""
                     Else
-                        MsgBox( _
+                        MsgBox ( _
                                 "Warning: There are no watershed delineation scenarios remaining.  Please add a new one.", _
                                 MsgBoxStyle.Critical, "Recordset Empty")
                     End If
                 End Using
             End Using
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub mnuNewWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub mnuNewWSDelin_Click (ByVal sender As Object, ByVal e As EventArgs) _
         Handles mnuNewWSDelin.Click
         Try
             Dim newWS As New NewWatershedDelineationForm
-            newWS.Init(Me, Nothing)
+            newWS.Init (Me, Nothing)
             newWS.ShowDialog()
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub mnuNewExist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewExist.Click
+    Private Sub mnuNewExist_Click (ByVal sender As Object, ByVal e As EventArgs) Handles mnuNewExist.Click
         Try
             Dim newWS As New UserWaterShedDelineationForm
-            newWS.Init(Me, Nothing)
+            newWS.Init (Me, Nothing)
             newWS.ShowDialog()
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub mnuDelWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub mnuDelWSDelin_Click (ByVal sender As Object, ByVal e As EventArgs) _
         Handles mnuDelWSDelin.Click
         Try
             Dim intAns As Object
@@ -93,7 +94,7 @@ Friend Class WatershedDelineationsForm
 
             If Not (cboWSDelin.Text = "") Then
                 intAns = _
-                    MsgBox( _
+                    MsgBox ( _
                             "Are you sure you want to delete the watershed delineation scenario '" & _
                             cboWSDelin.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, _
                             "Confirm Delete")
@@ -101,26 +102,26 @@ Friend Class WatershedDelineationsForm
                 If intAns = MsgBoxResult.Yes Then
 
                     'Set up a delete rs and get rid of it
-                    Dim cmdDel As New DataHelper(strSQLWSDel)
+                    Dim cmdDel As New DataHelper (strSQLWSDel)
                     cmdDel.ExecuteNonQuery()
 
-                    strFolder = modUtil.g_nspectPath & "\wsdelin\" & cboWSDelin.Text
-                    If IO.Directory.Exists(strFolder) Then
-                        IO.Directory.Delete(strFolder, True)
+                    strFolder = g_nspectPath & "\wsdelin\" & cboWSDelin.Text
+                    If Directory.Exists (strFolder) Then
+                        Directory.Delete (strFolder, True)
                     End If
 
                     'Confirm
-                    MsgBox(cboWSDelin.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
+                    MsgBox (cboWSDelin.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
                     'Clear everything, clean up form
                     cboWSDelin.Items.Clear()
-                    chkHydroCorr.CheckState = System.Windows.Forms.CheckState.Unchecked
+                    chkHydroCorr.CheckState = CheckState.Unchecked
                     txtDEMFile.Text = ""
                     txtStream.Text = ""
                     txtWSFile.Text = ""
                     txtFlowAccumGrid.Text = ""
 
-                    modUtil.InitComboBox(cboWSDelin, "WSDELINEATION")
+                    InitComboBox (cboWSDelin, "WSDELINEATION")
 
                     Me.Refresh()
 
@@ -128,18 +129,18 @@ Friend Class WatershedDelineationsForm
                     Exit Sub
                 End If
             Else
-                MsgBox("Please select a watershed delineation", MsgBoxStyle.Critical, "No Scenario Selected")
+                MsgBox ("Please select a watershed delineation", MsgBoxStyle.Critical, "No Scenario Selected")
             End If
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub mnuWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuWSDelin.Click
+    Private Sub mnuWSDelin_Click (ByVal sender As Object, ByVal e As EventArgs) Handles mnuWSDelin.Click
         Try
-            System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "wsdelin.htm")
+            Help.ShowHelp (Me, g_nspectPath & "\Help\nspect.chm", "wsdelin.htm")
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 

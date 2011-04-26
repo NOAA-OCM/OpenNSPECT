@@ -15,6 +15,7 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
+Imports System.Windows.Forms
 
 ''' <summary>
 ''' Code for handling progress dialog throughout OpenNSPECT
@@ -34,7 +35,7 @@
     ''' <param name="value">current value of progress bar.</param>
     ''' <param name="Owner">The owner.</param>
     Public Sub ShowProgress (ByRef message As String, ByRef title As String, ByRef min As Integer, ByRef max As Integer, _
-                             ByRef value As Integer, ByRef Owner As Windows.Forms.Form)
+                             ByRef value As Integer, ByRef Owner As Form)
 
         Try
             'first time through, set things up
@@ -58,7 +59,7 @@
                 End If
             End With
 
-            Windows.Forms.Application.DoEvents()
+            Application.DoEvents()
 
         Catch ex As Exception
             HandleError (ex)

@@ -1,4 +1,4 @@
-﻿Imports System.Windows.Forms
+﻿
 
 Public Class BaseDialogForm
     Private _isDirty As Boolean
@@ -18,13 +18,13 @@ Public Class BaseDialogForm
         End Set
     End Property
 
-    Protected Overridable Sub OK_Button_Click (ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Protected Overridable Sub OK_Button_Click (ByVal sender As Object, ByVal e As EventArgs) _
         Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Protected Overridable Sub Cancel_Button_Click (ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Protected Overridable Sub Cancel_Button_Click (ByVal sender As Object, ByVal e As EventArgs) _
         Handles Cancel_Button.Click
 
         If _isDirty AndAlso Not ConfirmCancel() Then

@@ -15,12 +15,11 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Xml
 
 Public Class clsXMLLUScenPollItems
     Inherits clsXMLBase
-    Implements System.Collections.IEnumerable
+    Implements IEnumerable
     '*************************************************************************
     'XML Wrapper Class
     '-------------------------------------------------------------------------
@@ -41,9 +40,9 @@ Public Class clsXMLLUScenPollItems
 
     Private Const NODE_NAME As String = "ManScenPollutants"
 
-    Private m_colItems As Collections.ArrayList
+    Private m_colItems As ArrayList
 
-    Public ReadOnly Property Item() As Collections.ArrayList
+    Public ReadOnly Property Item() As ArrayList
         Get
             Return m_colItems
         End Get
@@ -66,17 +65,17 @@ Public Class clsXMLLUScenPollItems
         End Get
     End Property
 
-    Public Function GetEnumerator() As System.Collections.IEnumerator _
-        Implements System.Collections.IEnumerable.GetEnumerator
+    Public Function GetEnumerator() As IEnumerator _
+        Implements IEnumerable.GetEnumerator
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
             GetEnumerator = Nothing
         End Try
     End Function
 
-    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
@@ -88,30 +87,30 @@ Public Class clsXMLLUScenPollItems
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml("<" & NODE_NAME & "/>")
+                dom.LoadXml ("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement(NODE_NAME)
-                Parent.AppendChild(node)
+                node = dom.CreateElement (NODE_NAME)
+                Parent.AppendChild (node)
             End If
 
             Dim clsPoll As clsXMLLUScenPollItem
 
             For Each clsPoll In m_colItems
-                clsPoll.CreateNode(node)
+                clsPoll.CreateNode (node)
             Next clsPoll
 
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode(ByRef node As XmlNode)
+    Public Overrides Sub LoadNode (ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -124,45 +123,45 @@ Public Class clsXMLLUScenPollItems
             Dim PollNode As XmlNode
 
             clsPoll = New clsXMLLUScenPollItem
-            m_colItems = New Collections.ArrayList
+            m_colItems = New ArrayList
 
-            nodes = node.SelectNodes(clsPoll.NodeName)
+            nodes = node.SelectNodes (clsPoll.NodeName)
             For Each PollNode In nodes
                 clsPoll = New clsXMLLUScenPollItem
-                clsPoll.LoadNode(PollNode)
-                m_colItems.Add(clsPoll)
+                clsPoll.LoadNode (PollNode)
+                m_colItems.Add (clsPoll)
             Next PollNode
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
     Public Sub New()
         Try
-            m_colItems = New Collections.ArrayList
+            m_colItems = New ArrayList
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Public Sub Add(ByVal Pollutant As clsXMLLUScenPollItem)
+    Public Sub Add (ByVal Pollutant As clsXMLLUScenPollItem)
         Try
             'Add a pollutant item.
-            m_colItems.Add(Pollutant)
+            m_colItems.Add (Pollutant)
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Public Sub Remove(ByVal Index As Integer)
+    Public Sub Remove (ByVal Index As Integer)
         Try
             'Remove an order item.
-            m_colItems.Remove(Index)
+            m_colItems.Remove (Index)
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 

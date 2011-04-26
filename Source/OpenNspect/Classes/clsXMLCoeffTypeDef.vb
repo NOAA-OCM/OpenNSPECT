@@ -15,7 +15,6 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Xml
 
 Public Class clsXMLCoeffTypeDef
@@ -72,20 +71,20 @@ Public Class clsXMLCoeffTypeDef
         End Get
     End Property
 
-    Public Sub SaveFile(ByRef strXML As String)
+    Public Sub SaveFile (ByRef strXML As String)
         Try
             Dim dom As New XmlDocument
-            dom.LoadXml(strXML)
+            dom.LoadXml (strXML)
 
             'TODO
             'frmPrj.grdCoeffs.set_TextMatrix(g_intCoeffRow, 6, strXML)
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
             'Return an XML DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
@@ -97,53 +96,53 @@ Public Class clsXMLCoeffTypeDef
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml("<" & NODE_NAME & "/>")
+                dom.LoadXml ("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement(NODE_NAME)
-                Parent.AppendChild(node)
+                node = dom.CreateElement (NODE_NAME)
+                Parent.AppendChild (node)
             End If
 
             '*********************************************************************
-            NodeAppendChildElement(dom, node, NODE_TDLyrName, strTDLyrName)
-            NodeAppendChildElement(dom, node, NODE_TDLyrFileName, strTDLyrFileName)
-            NodeAppendChildElement(dom, node, NODE_TDAttribute, strTDAttribute)
-            NodeAppendChildElement(dom, node, NODE_TDType, intTDType)
-            NodeAppendChildElement(dom, node, NODE_TDDef1, strTDDef1)
-            NodeAppendChildElement(dom, node, NODE_TDDef2, strTDDef2)
-            NodeAppendChildElement(dom, node, NODE_TDDef3, strTDDef3)
-            NodeAppendChildElement(dom, node, NODE_TDDef4, strTDDef4)
+            NodeAppendChildElement (dom, node, NODE_TDLyrName, strTDLyrName)
+            NodeAppendChildElement (dom, node, NODE_TDLyrFileName, strTDLyrFileName)
+            NodeAppendChildElement (dom, node, NODE_TDAttribute, strTDAttribute)
+            NodeAppendChildElement (dom, node, NODE_TDType, intTDType)
+            NodeAppendChildElement (dom, node, NODE_TDDef1, strTDDef1)
+            NodeAppendChildElement (dom, node, NODE_TDDef2, strTDDef2)
+            NodeAppendChildElement (dom, node, NODE_TDDef3, strTDDef3)
+            NodeAppendChildElement (dom, node, NODE_TDDef4, strTDDef4)
 
             'Return the created node
 
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode(ByRef node As XmlNode)
+    Public Overrides Sub LoadNode (ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
 
-            strTDLyrName = GetNodeText(node, NODE_TDLyrName)
-            strTDLyrFileName = GetNodeText(node, NODE_TDLyrFileName)
-            strTDAttribute = GetNodeText(node, NODE_TDAttribute)
-            intTDType = CShort(GetNodeText(node, NODE_TDType))
-            strTDDef1 = GetNodeText(node, NODE_TDDef1)
-            strTDDef2 = GetNodeText(node, NODE_TDDef2)
-            strTDDef3 = GetNodeText(node, NODE_TDDef3)
-            strTDDef4 = GetNodeText(node, NODE_TDDef4)
+            strTDLyrName = GetNodeText (node, NODE_TDLyrName)
+            strTDLyrFileName = GetNodeText (node, NODE_TDLyrFileName)
+            strTDAttribute = GetNodeText (node, NODE_TDAttribute)
+            intTDType = CShort (GetNodeText (node, NODE_TDType))
+            strTDDef1 = GetNodeText (node, NODE_TDDef1)
+            strTDDef2 = GetNodeText (node, NODE_TDDef2)
+            strTDDef3 = GetNodeText (node, NODE_TDDef3)
+            strTDDef4 = GetNodeText (node, NODE_TDDef4)
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 End Class

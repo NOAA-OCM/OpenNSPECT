@@ -15,8 +15,11 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
-Imports System.Data.OleDb
+Imports System.Windows.Forms
+Imports System.IO
+Imports MapWindow.Interfaces
+Imports MapWinGeoProc
+Imports MapWinGIS
 
 Friend Class NewWatershedDelineationForm
     Private boolChange(3) As Boolean
@@ -48,7 +51,7 @@ Friend Class NewWatershedDelineationForm
 
 #Region "Events"
 
-    Private Sub frmNewWSDelin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmNewWSDelin_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             'Init bool variables
             g_boolAgree = False
@@ -57,60 +60,60 @@ Friend Class NewWatershedDelineationForm
 
             Dim i As Short
 
-            For i = 0 To UBound(boolChange)
-                boolChange(i) = False
+            For i = 0 To UBound (boolChange)
+                boolChange (i) = False
             Next i
 
             cboStreamLayer.Items.Clear()
             For i = 0 To g_MapWin.Layers.NumLayers - 1
                 If _
-                    g_MapWin.Layers(g_MapWin.Layers.GetHandle(i)).LayerType = _
-                    MapWindow.Interfaces.eLayerType.LineShapefile Then
-                    cboStreamLayer.Items.Add(g_MapWin.Layers(g_MapWin.Layers.GetHandle(i)).Name)
+                    g_MapWin.Layers (g_MapWin.Layers.GetHandle (i)).LayerType = _
+                    eLayerType.LineShapefile Then
+                    cboStreamLayer.Items.Add (g_MapWin.Layers (g_MapWin.Layers.GetHandle (i)).Name)
                 End If
             Next
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub txtWSDelinName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub txtWSDelinName_TextChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles txtWSDelinName.TextChanged
         Try
-            boolChange(0) = True
+            boolChange (0) = True
             CheckEnabled()
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub txtDEMFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub txtDEMFile_TextChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles txtDEMFile.TextChanged
         Try
-            boolChange(1) = True
+            boolChange (1) = True
             CheckEnabled()
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub cmdBrowseDEMFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub cmdBrowseDEMFile_Click (ByVal sender As Object, ByVal e As EventArgs) _
         Handles cmdBrowseDEMFile.Click
         Try
-            Dim pDEMRasterDataset As MapWinGIS.Grid
+            Dim pDEMRasterDataset As Grid
 
-            pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM GRID", Me, 0)
+            pDEMRasterDataset = AddInputFromGxBrowserText (txtDEMFile, "Choose DEM GRID", Me, 0)
             If Not pDEMRasterDataset Is Nothing Then
                 'Get the spatial reference
-                Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
+                Dim strProj As String = CheckSpatialReference (pDEMRasterDataset)
                 If strProj = "" Then
-                    MsgBox( _
+                    MsgBox ( _
                             "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
                             MsgBoxStyle.Exclamation, "No Project Information Detected")
                     Exit Sub
                 Else
-                    If strProj.ToLower.Contains("units=m") Then
+                    If strProj.ToLower.Contains ("units=m") Then
                         cboDEMUnits.SelectedIndex = 0
                     Else
                         cboDEMUnits.SelectedIndex = 1
@@ -132,21 +135,21 @@ Friend Class NewWatershedDelineationForm
                 '_strDemName = m_strDemArray(UBound(m_strDemArray))
             End If
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub chkHydroCorr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub chkHydroCorr_CheckedChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles chkHydroCorr.CheckedChanged
         Try
             Select Case chkHydroCorr.CheckState
-                Case Windows.Forms.CheckState.Checked
+                Case CheckState.Checked
                     chkStreamAgree.Enabled = True
                     cboStreamLayer.Enabled = True
                     cmdOptions.Enabled = True
                     g_boolHydCorr = True
 
-                Case Windows.Forms.CheckState.Unchecked
+                Case CheckState.Unchecked
 
                     chkStreamAgree.Enabled = False
                     cboStreamLayer.Enabled = False
@@ -158,45 +161,45 @@ Friend Class NewWatershedDelineationForm
             CheckEnabled()
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub cboDEMUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub cboDEMUnits_SelectedIndexChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles cboDEMUnits.SelectedIndexChanged
         Try
-            boolChange(2) = True
+            boolChange (2) = True
             CheckEnabled()
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub cboSubWSSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub cboSubWSSize_SelectedIndexChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles cboSubWSSize.SelectedIndexChanged
         Try
-            boolChange(3) = True
+            boolChange (3) = True
             CheckEnabled()
             _intSize = cboSubWSSize.SelectedIndex
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
+    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
         Try
             If _InputDEMPath = "" Then
                 If txtDEMFile.Text <> "" Then
-                    If IO.Directory.Exists(txtDEMFile.Text) Then
-                        If IO.File.Exists(txtDEMFile.Text + "sta.adf") Then
+                    If Directory.Exists (txtDEMFile.Text) Then
+                        If File.Exists (txtDEMFile.Text + "sta.adf") Then
                             _InputDEMPath = txtDEMFile.Text + "sta.adf"
                         Else
-                            If IO.File.Exists(txtDEMFile.Text + IO.Path.DirectorySeparatorChar + "sta.adf") Then
-                                _InputDEMPath = txtDEMFile.Text + IO.Path.DirectorySeparatorChar + "sta.adf"
+                            If File.Exists (txtDEMFile.Text + Path.DirectorySeparatorChar + "sta.adf") Then
+                                _InputDEMPath = txtDEMFile.Text + Path.DirectorySeparatorChar + "sta.adf"
                             End If
                         End If
                     Else
-                        If IO.File.Exists(txtDEMFile.Text) Then
+                        If File.Exists (txtDEMFile.Text) Then
                             _InputDEMPath = txtDEMFile.Text
                         End If
                     End If
@@ -205,30 +208,30 @@ Friend Class NewWatershedDelineationForm
             End If
 
             If _InputDEMPath = "" Then
-                MsgBox("The File you have choosen does not exist.", MsgBoxStyle.Critical, "File Not Found")
+                MsgBox ("The File you have choosen does not exist.", MsgBoxStyle.Critical, "File Not Found")
                 txtDEMFile.Focus()
                 Exit Sub
             End If
 
-            Dim pRasterDataset As New MapWinGIS.Grid
-            If Not pRasterDataset.Open(_InputDEMPath) Then
-                MsgBox("The File you have choosen is not a raster.", MsgBoxStyle.Critical, "File Not Raster")
+            Dim pRasterDataset As New Grid
+            If Not pRasterDataset.Open (_InputDEMPath) Then
+                MsgBox ("The File you have choosen is not a raster.", MsgBoxStyle.Critical, "File Not Raster")
                 txtDEMFile.Focus()
                 Exit Sub
             End If
 
             Dim outpath As String
-            If Not IO.Directory.Exists(g_nspectPath + "\wsdelin\" + txtWSDelinName.Text) Then
+            If Not Directory.Exists (g_nspectPath + "\wsdelin\" + txtWSDelinName.Text) Then
                 outpath = g_nspectPath + "\wsdelin\" + txtWSDelinName.Text + "\"
-                IO.Directory.CreateDirectory(outpath)
+                Directory.CreateDirectory (outpath)
             Else
-                MsgBox("Name in use.  Please select another.", MsgBoxStyle.Critical, "Choose New Name")
+                MsgBox ("Name in use.  Please select another.", MsgBoxStyle.Critical, "Choose New Name")
                 txtWSDelinName.Focus()
                 Exit Sub
             End If
 
             'Give the call; if successful insert new record
-            If DelineateWatershed(pRasterDataset, outpath) Then
+            If DelineateWatershed (pRasterDataset, outpath) Then
                 'SQL Insert
                 'DataBase Update
                 'Compose the INSERT statement.
@@ -236,8 +239,8 @@ Friend Class NewWatershedDelineationForm
                     strCmdInsert As String = "INSERT INTO WSDelineation " & _
                                              "(Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName," & _
                                              "FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName) " & _
-                                             " VALUES (" & "'" & CStr(txtWSDelinName.Text) & "', " & "'" & _
-                                             CStr(_InputDEMPath) & "', " & "'" & cboDEMUnits.SelectedIndex & "', " & _
+                                             " VALUES (" & "'" & CStr (txtWSDelinName.Text) & "', " & "'" & _
+                                             CStr (_InputDEMPath) & "', " & "'" & cboDEMUnits.SelectedIndex & "', " & _
                                              "'" & _strDirFileName & "', " & "'" & _strAccumFileName & "', " & "'" & _
                                              _strFilledDEMFileName & "', " & "'" & chkHydroCorr.CheckState & "', " & "'" & _
                                              _strStreamLayer & "', " & "'" & cboSubWSSize.SelectedIndex & "', " & "'" & _
@@ -245,21 +248,21 @@ Friend Class NewWatershedDelineationForm
                                              _strNibbleName & "', " & "'" & _strDEM2BName & "')"
 
                 'Execute the statement.
-                Dim insCmd As New DataHelper(strCmdInsert)
+                Dim insCmd As New DataHelper (strCmdInsert)
                 insCmd.ExecuteNonQuery()
 
                 'Confirm
-                MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
+                MsgBox (txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
 
                 If g_boolNewWShed Then
                     'frmPrj.Show
                     _frmPrj.Visible = True
                     _frmPrj.cboWSDelin.Items.Clear()
-                    modUtil.InitComboBox((_frmPrj.cboWSDelin), "WSDelineation")
-                    _frmPrj.cboWSDelin.SelectedIndex = modUtil.GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWSDelin))
-                    MyBase.OK_Button_Click(sender, e)
+                    InitComboBox ((_frmPrj.cboWSDelin), "WSDelineation")
+                    _frmPrj.cboWSDelin.SelectedIndex = GetCboIndex ((txtWSDelinName.Text), (_frmPrj.cboWSDelin))
+                    MyBase.OK_Button_Click (sender, e)
                 Else
-                    MyBase.OK_Button_Click(sender, e)
+                    MyBase.OK_Button_Click (sender, e)
                     _frmWS.Close()
                 End If
             Else
@@ -267,23 +270,23 @@ Friend Class NewWatershedDelineationForm
             End If
 
         Catch ex As Exception
-            MsgBox(Err.Number & Err.Description & " :New Watershed Delineation")
+            MsgBox (Err.Number & Err.Description & " :New Watershed Delineation")
         End Try
 
     End Sub
 
-    Protected Overrides Sub Cancel_Button_Click(sender As Object, e As System.EventArgs)
+    Protected Overrides Sub Cancel_Button_Click (sender As Object, e As EventArgs)
         If Not _frmPrj Is Nothing Then
             _frmPrj.cboPrecipScen.SelectedIndex = 0
         End If
-        MyBase.Cancel_Button_Click(sender, e)
+        MyBase.Cancel_Button_Click (sender, e)
     End Sub
 
 #End Region
 
 #Region "Helper Functions"
 
-    Public Sub Init(ByRef frmWS As WatershedDelineationsForm, ByRef frmPrj As MainForm)
+    Public Sub Init (ByRef frmWS As WatershedDelineationsForm, ByRef frmPrj As MainForm)
         _frmWS = frmWS
         _frmPrj = frmPrj
     End Sub
@@ -292,19 +295,19 @@ Friend Class NewWatershedDelineationForm
         Try
 
             If chkHydroCorr.CheckState And chkStreamAgree.CheckState Then
-                If boolChange(0) And boolChange(1) And boolChange(2) And boolChange(3) And g_boolParams Then
+                If boolChange (0) And boolChange (1) And boolChange (2) And boolChange (3) And g_boolParams Then
                     OK_Button.Enabled = True
                 Else
                     OK_Button.Enabled = False
                 End If
             ElseIf chkHydroCorr.CheckState And Not chkStreamAgree.CheckState Then
-                If boolChange(0) And boolChange(1) And boolChange(2) And boolChange(3) Then
+                If boolChange (0) And boolChange (1) And boolChange (2) And boolChange (3) Then
                     OK_Button.Enabled = True
                 Else
                     OK_Button.Enabled = False
                 End If
             ElseIf Not chkHydroCorr.CheckState Then
-                If boolChange(0) And boolChange(1) And boolChange(2) And boolChange(3) Then
+                If boolChange (0) And boolChange (1) And boolChange (2) And boolChange (3) Then
                     OK_Button.Enabled = True
                 Else
                     OK_Button.Enabled = False
@@ -312,23 +315,23 @@ Friend Class NewWatershedDelineationForm
             End If
 
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Function DelineateWatershed(ByRef pSurfaceDatasetIn As MapWinGIS.Grid, ByVal OutPath As String) As Boolean
+    Private Function DelineateWatershed (ByRef pSurfaceDatasetIn As Grid, ByVal OutPath As String) As Boolean
         'Declare the raster objects
-        Dim pFlowDirRaster As New MapWinGIS.Grid
+        Dim pFlowDirRaster As New Grid
         'Flow Direction
-        Dim pAccumRaster As New MapWinGIS.Grid
+        Dim pAccumRaster As New Grid
         'Flow Accumulation
-        Dim pFillRaster As New MapWinGIS.Grid
+        Dim pFillRaster As New Grid
         'Fill GDS
-        Dim pWShedRaster As New MapWinGIS.Grid
+        Dim pWShedRaster As New Grid
         'WaterShed GDS
-        Dim pBasinRaster As New MapWinGIS.Grid
+        Dim pBasinRaster As New Grid
         'Basin GDS
-        Dim pOutputFeatClass As New MapWinGIS.Shapefile
+        Dim pOutputFeatClass As New Shapefile
         'output basins
         Dim strahlordout As String = ""
         Dim longestupslopeout As String = ""
@@ -341,7 +344,7 @@ Friend Class NewWatershedDelineationForm
         Dim strWSSFOut As String = ""
 
         'Featureclass objects
-        Dim pBasinFeatClass As New MapWinGIS.Shapefile
+        Dim pBasinFeatClass As New Shapefile
         'Basin Featureclass
 
         Try
@@ -363,17 +366,17 @@ Friend Class NewWatershedDelineationForm
 
             'STEP 1:  Fill the Surface
             'if hydrocorrect, then skip the Fill, just use the incoming DEM
-            modProgDialog.ShowProgress("Filling DEM...", strProgTitle, 0, 10, 1, Me)
+            ShowProgress ("Filling DEM...", strProgTitle, 0, 10, 1, Me)
             If chkHydroCorr.CheckState = 1 Then
                 pFillRaster = pSurfaceDatasetIn
                 _strFilledDEMFileName = pSurfaceDatasetIn.Filename
             Else
                 'Call to ProgDialog to use throughout process: keep user informed.
 
-                If modProgDialog.g_KeepRunning Then
+                If g_KeepRunning Then
                     _strFilledDEMFileName = OutPath + "demfill" + g_OutputGridExt
-                    MapWinGeoProc.Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
-                    pFillRaster.Open(_strFilledDEMFileName)
+                    Hydrology.Fill (pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
+                    pFillRaster.Open (_strFilledDEMFileName)
                 Else
                     Return False
                 End If
@@ -381,41 +384,41 @@ Friend Class NewWatershedDelineationForm
             'End if Fill
 
             'STEP 2: Flow Direction
-            modProgDialog.ShowProgress("Computing Flow Direction...", strProgTitle, 0, 10, 2, Me)
+            ShowProgress ("Computing Flow Direction...", strProgTitle, 0, 10, 2, Me)
 
             Dim mwDirFileName As String = OutPath + "mwflowdir" + g_OutputGridExt
             _strDirFileName = OutPath + "flowdir" + g_OutputGridExt
             Dim strSlpFileName As String = OutPath + "slope" + g_OutputGridExt
-            If modProgDialog.g_KeepRunning Then
+            If g_KeepRunning Then
                 ret = _
-                    MapWinGeoProc.Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, _
-                                                Environment.ProcessorCount, Nothing)
+                    Hydrology.D8 (pFillRaster.Filename, mwDirFileName, strSlpFileName, _
+                                  Environment.ProcessorCount, Nothing)
                 If ret <> 0 Then Return False
-                pFlowDirRaster.Open(mwDirFileName)
+                pFlowDirRaster.Open (mwDirFileName)
 
-                Dim pESRID8Flow As New MapWinGIS.Grid
-                Dim tmphead As New MapWinGIS.GridHeader
-                tmphead.CopyFrom(pFlowDirRaster.Header)
-                pESRID8Flow.CreateNew(_strDirFileName, tmphead, MapWinGIS.GridDataType.FloatDataType, -1)
-                Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls(AddressOf tauD8ToESRICellCalc)
-                RasterMath(pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, _
+                Dim pESRID8Flow As New Grid
+                Dim tmphead As New GridHeader
+                tmphead.CopyFrom (pFlowDirRaster.Header)
+                pESRID8Flow.CreateNew (_strDirFileName, tmphead, GridDataType.FloatDataType, - 1)
+                Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls (AddressOf tauD8ToESRICellCalc)
+                RasterMath (pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, _
                             tauD8ToESRIcalc)
-                pESRID8Flow.Header.NodataValue = -1
-                pESRID8Flow.Save(_strDirFileName)
+                pESRID8Flow.Header.NodataValue = - 1
+                pESRID8Flow.Save (_strDirFileName)
                 pESRID8Flow.Close()
             Else
                 Return False
             End If
 
             'STEP 3: Flow Accumulation
-            modProgDialog.ShowProgress("Computing Flow Accumulation...", strProgTitle, 0, 10, 3, Me)
+            ShowProgress ("Computing Flow Accumulation...", strProgTitle, 0, 10, 3, Me)
             _strAccumFileName = OutPath + "flowacc" + g_OutputGridExt
-            If modProgDialog.g_KeepRunning Then
+            If g_KeepRunning Then
                 ret = _
-                    MapWinGeoProc.Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, _
-                                                    Environment.ProcessorCount, Nothing)
+                    Hydrology.AreaD8 (pFlowDirRaster.Filename, "", _strAccumFileName, False, False, _
+                                      Environment.ProcessorCount, Nothing)
                 If ret <> 0 Then Return False
-                pAccumRaster.Open(_strAccumFileName)
+                pAccumRaster.Open (_strAccumFileName)
             Else
                 Return False
             End If
@@ -430,11 +433,11 @@ Friend Class NewWatershedDelineationForm
 
             Select Case _intSize
                 Case 0 'small
-                    dblSubShedSize = dblMax * _dblSmall
+                    dblSubShedSize = dblMax*_dblSmall
                 Case 1 'medium
-                    dblSubShedSize = dblMax * _dblMedium
+                    dblSubShedSize = dblMax*_dblMedium
                 Case 2 'large
-                    dblSubShedSize = dblMax * _dblLarge
+                    dblSubShedSize = dblMax*_dblLarge
             End Select
 
             strahlordout = OutPath + "strahlord" + g_OutputGridExt
@@ -449,28 +452,28 @@ Friend Class NewWatershedDelineationForm
 
             '        'Step 5: Using Hydrology Op to create stream network
             _strStreamLayer = OutPath + "stream.shp"
-            modProgDialog.ShowProgress("Creating Stream Network...", strProgTitle, 0, 10, 4, Me)
-            If modProgDialog.g_KeepRunning Then
-                ret = MapWinGeoProc.Hydrology.DelinStreamGrids(pSurfaceDatasetIn.Filename, _
-                                                                pFillRaster.Filename, _
-                                                                pFlowDirRaster.Filename, _
-                                                                strSlpFileName, _
-                                                                pAccumRaster.Filename, _
-                                                                "", _
-                                                                strahlordout, _
-                                                                longestupslopeout, _
-                                                                totalupslopeout, _
-                                                                streamgridout, _
-                                                                streamordout, _
-                                                                treedatout, _
-                                                                coorddatout, _
-                                                                _strStreamLayer, _
-                                                                strWSGridOut, _
-                                                                dblSubShedSize, _
-                                                                False, _
-                                                                False, _
-                                                                2, _
-                                                                Nothing)
+            ShowProgress ("Creating Stream Network...", strProgTitle, 0, 10, 4, Me)
+            If g_KeepRunning Then
+                ret = Hydrology.DelinStreamGrids (pSurfaceDatasetIn.Filename, _
+                                                  pFillRaster.Filename, _
+                                                  pFlowDirRaster.Filename, _
+                                                  strSlpFileName, _
+                                                  pAccumRaster.Filename, _
+                                                  "", _
+                                                  strahlordout, _
+                                                  longestupslopeout, _
+                                                  totalupslopeout, _
+                                                  streamgridout, _
+                                                  streamordout, _
+                                                  treedatout, _
+                                                  coorddatout, _
+                                                  _strStreamLayer, _
+                                                  strWSGridOut, _
+                                                  dblSubShedSize, _
+                                                  False, _
+                                                  False, _
+                                                  2, _
+                                                  Nothing)
                 If ret <> 0 Then Return False
             Else
                 Return False
@@ -488,20 +491,20 @@ Friend Class NewWatershedDelineationForm
             '    Return False
             'End If
 
-            modProgDialog.ShowProgress("Creating Watershed Shape...", strProgTitle, 0, 10, 7, Me)
-            If modProgDialog.g_KeepRunning Then
+            ShowProgress ("Creating Watershed Shape...", strProgTitle, 0, 10, 7, Me)
+            If g_KeepRunning Then
                 ret = _
-                    MapWinGeoProc.Hydrology.SubbasinsToShape(pFlowDirRaster.Filename, strWSGridOut, strWSSFOut, Nothing)
+                    Hydrology.SubbasinsToShape (pFlowDirRaster.Filename, strWSGridOut, strWSSFOut, Nothing)
                 If ret <> 0 Then Return False
             Else
                 Return False
             End If
 
-            modProgDialog.ShowProgress("Removing Small Polygons...", strProgTitle, 0, 10, 9, Me)
-            If modProgDialog.g_KeepRunning Then
-                pBasinFeatClass.Open(strWSSFOut)
+            ShowProgress ("Removing Small Polygons...", strProgTitle, 0, 10, 9, Me)
+            If g_KeepRunning Then
+                pBasinFeatClass.Open (strWSSFOut)
 
-                pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
+                pOutputFeatClass = RemoveSmallPolys (pBasinFeatClass, pFillRaster)
             Else
                 Return False
             End If
@@ -512,48 +515,48 @@ Friend Class NewWatershedDelineationForm
             tmpfile = _strFilledDEMFileName
             _strFilledDEMFileName = OutPath + "demfill" + g_FinalOutputGridExt
             pFillRaster.Close()
-            pFillRaster = New MapWinGIS.Grid
-            pFillRaster.Open(tmpfile)
+            pFillRaster = New Grid
+            pFillRaster.Open (tmpfile)
             pFillRaster.Header.Projection = proj
-            pFillRaster.Save(_strFilledDEMFileName)
+            pFillRaster.Save (_strFilledDEMFileName)
             pFillRaster.Close()
-            IO.File.Delete(tmpfile)
+            File.Delete (tmpfile)
 
             tmpfile = strSlpFileName
             strSlpFileName = OutPath + "slope" + g_FinalOutputGridExt
-            Dim pslope As New MapWinGIS.Grid
-            pslope.Open(tmpfile)
+            Dim pslope As New Grid
+            pslope.Open (tmpfile)
             pslope.Header.Projection = proj
-            pslope.Save(strSlpFileName)
+            pslope.Save (strSlpFileName)
             pslope.Close()
-            IO.File.Delete(tmpfile)
+            File.Delete (tmpfile)
 
             tmpfile = _strDirFileName
             _strDirFileName = OutPath + "flowdir" + g_FinalOutputGridExt
             pFlowDirRaster.Close()
-            pFlowDirRaster = New MapWinGIS.Grid
-            pFlowDirRaster.Open(tmpfile)
+            pFlowDirRaster = New Grid
+            pFlowDirRaster.Open (tmpfile)
             pFlowDirRaster.Header.Projection = proj
-            pFlowDirRaster.Save(_strDirFileName)
+            pFlowDirRaster.Save (_strDirFileName)
             pFlowDirRaster.Close()
-            IO.File.Delete(tmpfile)
+            File.Delete (tmpfile)
 
             tmpfile = _strAccumFileName
             _strAccumFileName = OutPath + "flowacc" + g_FinalOutputGridExt
             pAccumRaster.Close()
-            pAccumRaster = New MapWinGIS.Grid
-            pAccumRaster.Open(tmpfile)
+            pAccumRaster = New Grid
+            pAccumRaster.Open (tmpfile)
             pAccumRaster.Header.Projection = proj
-            pAccumRaster.Save(_strAccumFileName)
+            pAccumRaster.Save (_strAccumFileName)
             pAccumRaster.Close()
-            IO.File.Delete(tmpfile)
+            File.Delete (tmpfile)
 
             'With all of that done, now go get the name of the LS Grid while actually computing said LS Grid
             '_strLSFileName = CalcLengthSlope(pFillRaster, pFlowDirRaster, pAccumRaster, pEnv, "0", pWorkspace)
             _strLSFileName = OutPath + "lsgrid" + g_FinalOutputGridExt
-            Dim g As New MapWinGIS.Grid
-            g.Open(longestupslopeout)
-            g.Save(_strLSFileName)
+            Dim g As New Grid
+            g.Open (longestupslopeout)
+            g.Save (_strLSFileName)
             g.Close()
             _strNibbleName = _strDirFileName
             _strDEM2BName = pSurfaceDatasetIn.Filename
@@ -561,15 +564,15 @@ Friend Class NewWatershedDelineationForm
 
             DelineateWatershed = True
         Catch ex As Exception
-            If Err.Number = -2147217297 Then 'User cancelled operation
-                modProgDialog.g_KeepRunning = False
+            If Err.Number = - 2147217297 Then 'User cancelled operation
+                g_KeepRunning = False
                 DelineateWatershed = False
             Else
-                HandleError(ex)
+                HandleError (ex)
                 DelineateWatershed = False
             End If
         Finally
-            modProgDialog.CloseDialog()
+            CloseDialog()
             pFlowDirRaster.Close()
             pAccumRaster.Close()
             pFillRaster.Close()
@@ -577,22 +580,22 @@ Friend Class NewWatershedDelineationForm
             pBasinRaster.Close()
             pBasinFeatClass.Close()
             pOutputFeatClass.Close()
-            MapWinGeoProc.DataManagement.DeleteGrid(strahlordout)
-            MapWinGeoProc.DataManagement.DeleteGrid(longestupslopeout)
-            MapWinGeoProc.DataManagement.DeleteGrid(totalupslopeout)
-            MapWinGeoProc.DataManagement.DeleteGrid(streamgridout)
-            MapWinGeoProc.DataManagement.DeleteGrid(streamordout)
-            IO.File.Delete(treedatout)
-            IO.File.Delete(coorddatout)
-            MapWinGeoProc.DataManagement.DeleteGrid(strWSGridOut)
-            MapWinGeoProc.DataManagement.DeleteShapefile(strWSSFOut)
+            DataManagement.DeleteGrid (strahlordout)
+            DataManagement.DeleteGrid (longestupslopeout)
+            DataManagement.DeleteGrid (totalupslopeout)
+            DataManagement.DeleteGrid (streamgridout)
+            DataManagement.DeleteGrid (streamordout)
+            File.Delete (treedatout)
+            File.Delete (coorddatout)
+            DataManagement.DeleteGrid (strWSGridOut)
+            DataManagement.DeleteShapefile (strWSSFOut)
         End Try
     End Function
 
-    Private Function RemoveSmallPolys(ByRef pFeatureClass As MapWinGIS.Shapefile, ByRef pDEMRaster As MapWinGIS.Grid) _
-        As MapWinGIS.Shapefile
-        Dim pMaskCalcRaster As New MapWinGIS.Grid
-        Dim rastersf As New MapWinGIS.Shapefile
+    Private Function RemoveSmallPolys (ByRef pFeatureClass As Shapefile, ByRef pDEMRaster As Grid) _
+        As Shapefile
+        Dim pMaskCalcRaster As New Grid
+        Dim rastersf As New Shapefile
         Try
             'TODO: Find way in mapwindow to generate a decent outline of the grid
             '#1 First step, get a 1, 0 representation of the DEM, so we can get the outline
@@ -640,14 +643,14 @@ Friend Class NewWatershedDelineationForm
             '#3 determine size of 'small' watersheds, this is the area
             'Number of cells in the DEM area that are not null * a number dave came up with * CellSize Squared
             Dim _
-                dblArea As Double = ((pDEMRaster.Header.NumberCols * pDEMRaster.Header.NumberRows) * 0.004) * _intCellSize * _
+                dblArea As Double = ((pDEMRaster.Header.NumberCols*pDEMRaster.Header.NumberRows)*0.004)*_intCellSize* _
                                     _intCellSize
 
             '#4 Now with the Area of small sheds determined we can remove polygons that are too small.  To do this
             pFeatureClass.StartEditingShapes()
             For i As Integer = pFeatureClass.NumShapes - 1 To 0
-                If pFeatureClass.Shape(i).Area() < dblArea Then
-                    pFeatureClass.EditDeleteShape(i)
+                If pFeatureClass.Shape (i).Area() < dblArea Then
+                    pFeatureClass.EditDeleteShape (i)
                 End If
             Next
             pFeatureClass.StopEditingShapes()
@@ -656,10 +659,10 @@ Friend Class NewWatershedDelineationForm
             '#5  Now, time to union the outline of the of the DEM with the newly paired down basin poly
             'Dim outputSf As MapWinGIS.Shapefile = rastersf.GetIntersection(False, pFeatureClass, False, pFeatureClass.ShapefileType, Nothing)
             'outputSf.SaveAs(_strWShedFileName)
-            pFeatureClass.SaveAs(_strWShedFileName)
+            pFeatureClass.SaveAs (_strWShedFileName)
             pFeatureClass.Close()
-            Dim outputSf As New MapWinGIS.Shapefile
-            outputSf.Open(_strWShedFileName)
+            Dim outputSf As New Shapefile
+            outputSf.Open (_strWShedFileName)
             Return outputSf
 
             'Dim currshape As MapWinGIS.Shape = rastersf.Shape(0)
@@ -672,7 +675,7 @@ Friend Class NewWatershedDelineationForm
             'outputSf.StopEditingTable()
             'Return outputSf
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
             Return Nothing
         Finally
             pMaskCalcRaster.Close()
@@ -1197,7 +1200,7 @@ Friend Class NewWatershedDelineationForm
 
 #Region "Raster Calc"
 
-    Private Function maskCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+    Private Function maskCellCalc (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                    ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Try
             If Input1 > 0 Then
@@ -1206,7 +1209,7 @@ Friend Class NewWatershedDelineationForm
                 Return OutNull
             End If
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Function
 

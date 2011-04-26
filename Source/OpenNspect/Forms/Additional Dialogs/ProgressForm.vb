@@ -15,6 +15,7 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
+Imports System.Windows.Forms
 
 Public Class ProgressForm
     Public Property Title() As String
@@ -30,7 +31,7 @@ Public Class ProgressForm
         Get
             Return lblDesc.Text
         End Get
-        Set(ByVal value As String)
+        Set (ByVal value As String)
             lblDesc.Text = value
         End Set
     End Property
@@ -39,7 +40,7 @@ Public Class ProgressForm
         Get
             Return pbMain.Minimum
         End Get
-        Set(ByVal value As Integer)
+        Set (ByVal value As Integer)
             pbMain.Minimum = value
         End Set
     End Property
@@ -48,7 +49,7 @@ Public Class ProgressForm
         Get
             Return pbMain.Maximum
         End Get
-        Set(ByVal value As Integer)
+        Set (ByVal value As Integer)
             pbMain.Maximum = value
         End Set
     End Property
@@ -57,7 +58,7 @@ Public Class ProgressForm
         Get
             Return pbMain.Value
         End Get
-        Set(ByVal value As Integer)
+        Set (ByVal value As Integer)
             pbMain.Value = value
         End Set
     End Property
@@ -66,7 +67,7 @@ Public Class ProgressForm
         Get
             Return btnCancel.Enabled
         End Get
-        Set(ByVal value As Boolean)
+        Set (ByVal value As Boolean)
             btnCancel.Enabled = value
         End Set
     End Property
@@ -77,7 +78,7 @@ Public Class ProgressForm
         Get
             Return _timerEnabled
         End Get
-        Set(ByVal value As Boolean)
+        Set (ByVal value As Boolean)
             _timerEnabled = value
             If value Then
                 tmrEventDriver.Start()
@@ -87,20 +88,20 @@ Public Class ProgressForm
         End Set
     End Property
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click (ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         Try
             g_KeepRunning = False
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub tmrEventDriver_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub tmrEventDriver_Tick (ByVal sender As Object, ByVal e As EventArgs) _
         Handles tmrEventDriver.Tick
         Try
-            Windows.Forms.Application.DoEvents()
+            Application.DoEvents()
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 End Class

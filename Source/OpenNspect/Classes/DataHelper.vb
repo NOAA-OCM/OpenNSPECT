@@ -1,6 +1,4 @@
 ﻿Imports System.Data.OleDb
-Imports System.Data
-Imports System.Drawing
 
 Public Class DataHelper
     Implements IDisposable

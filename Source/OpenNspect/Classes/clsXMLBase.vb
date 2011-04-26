@@ -15,7 +15,6 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-
 Imports System.Xml
 
 Public Class clsXMLBase
@@ -53,7 +52,7 @@ Public Class clsXMLBase
     ''' </summary>
     ''' <param name="node"></param>
     ''' <remarks></remarks>
-    Public Overridable Sub LoadNode(ByRef node As XmlNode)
+    Public Overridable Sub LoadNode (ByRef node As XmlNode)
 
     End Sub
 

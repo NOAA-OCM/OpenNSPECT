@@ -12,14 +12,17 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
+Imports System.Windows.Forms
+Imports System.Reflection
+Imports System.IO
 
 Public Class ErrorForm
     Private ReadOnly m_exception As Exception
-    Friend WithEvents lblErr As System.Windows.Forms.Label
-    Friend WithEvents txtComments As System.Windows.Forms.TextBox
-    Friend WithEvents btnCopy As System.Windows.Forms.Button
+    Friend WithEvents lblErr As Label
+    Friend WithEvents txtComments As TextBox
+    Friend WithEvents btnCopy As Button
 
-    Public Sub New(ByVal ex As System.Exception)
+    Public Sub New (ByVal ex As Exception)
         MyBase.New()
         Try
             'This call is required by the Windows Form Designer.
@@ -27,31 +30,31 @@ Public Class ErrorForm
 
             m_exception = ex
         Catch ext As Exception
-            HandleError(ext)
+            HandleError (ext)
         End Try
     End Sub
 
-    Private Sub cmdCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCopy.Click
+    Private Sub cmdCopy_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdCopy.Click
         Try
-            Windows.Forms.Clipboard.SetText(txtError.Text)
+            Clipboard.SetText (txtError.Text)
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 
-    Private Sub cmdClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdClose.Click
+    Private Sub cmdClose_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdClose.Click
         Close()
     End Sub
 
-    Private Sub frmErrorDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmErrorDialog_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             txtError.Text = "OpenNSPECT (" + _
-                            System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location) _
+                            File.GetLastWriteTime (Assembly.GetExecutingAssembly().Location) _
                                 .ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString()
             ' + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
             txtError.SelectionStart = txtError.Text.Length
         Catch ex As Exception
-            HandleError(ex)
+            HandleError (ex)
         End Try
     End Sub
 End Class
