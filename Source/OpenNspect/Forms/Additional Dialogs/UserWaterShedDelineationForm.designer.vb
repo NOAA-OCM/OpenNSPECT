@@ -285,7 +285,6 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(584, 336)
         Me.Controls.Add(Me.Frame1)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(4, 30)
         Me.Name = "UserWaterShedDelineationForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

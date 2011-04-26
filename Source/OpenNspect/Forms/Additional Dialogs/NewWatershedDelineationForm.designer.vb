@@ -235,7 +235,6 @@
         Me.ClientSize = New System.Drawing.Size(594, 345)
         Me.Controls.Add(Me.frmMain)
         Me.Controls.Add(Me.frmAdvanced)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(213, 196)
         Me.Name = "NewWatershedDelineationForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

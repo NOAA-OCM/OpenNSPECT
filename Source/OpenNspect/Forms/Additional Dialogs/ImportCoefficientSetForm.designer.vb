@@ -117,7 +117,6 @@
         Me.Controls.Add(Me._Label1_0)
         Me.Controls.Add(Me._Label1_7)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(3, 21)
         Me.Name = "ImportCoefficientSetForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

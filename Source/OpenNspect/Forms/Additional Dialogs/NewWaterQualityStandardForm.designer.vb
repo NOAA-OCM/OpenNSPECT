@@ -27,7 +27,6 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(NewWaterQualityStandardForm))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.txtWQStdDesc = New System.Windows.Forms.TextBox()
         Me.txtWQStdName = New System.Windows.Forms.TextBox()
@@ -110,7 +109,6 @@
         Me.Controls.Add(Me.txtWQStdName)
         Me.Controls.Add(Me._Label1_1)
         Me.Controls.Add(Me._Label1_7)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(3, 21)
         Me.Name = "NewWaterQualityStandardForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

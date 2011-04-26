@@ -45,7 +45,6 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(NewPollutantForm))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
         Me.mnuCoeff = New System.Windows.Forms.ToolStripMenuItem()
@@ -130,7 +129,7 @@
         Me.SSTab1.Location = New System.Drawing.Point(16, 49)
         Me.SSTab1.Name = "SSTab1"
         Me.SSTab1.SelectedIndex = 1
-        Me.SSTab1.Size = New System.Drawing.Size(554, 448)
+        Me.SSTab1.Size = New System.Drawing.Size(554, 459)
         Me.SSTab1.TabIndex = 8
         '
         '_SSTab1_TabPage0
@@ -147,7 +146,7 @@
         Me._SSTab1_TabPage0.Controls.Add(Me._Label1_7)
         Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
-        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(546, 422)
+        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(546, 433)
         Me._SSTab1_TabPage0.TabIndex = 0
         Me._SSTab1_TabPage0.Text = "Coefficients"
         '
@@ -156,6 +155,8 @@
         Me.dgvCoef.AllowUserToAddRows = False
         Me.dgvCoef.AllowUserToDeleteRows = False
         Me.dgvCoef.AllowUserToResizeColumns = False
+        Me.dgvCoef.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.dgvCoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn6, Me.DataGridViewTextBoxColumn7, Me.DataGridViewTextBoxColumn8})
         Me.dgvCoef.Location = New System.Drawing.Point(15, 100)
@@ -313,12 +314,11 @@
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(594, 548)
+        Me.ClientSize = New System.Drawing.Size(594, 559)
         Me.Controls.Add(Me.txtPollutant)
         Me.Controls.Add(Me.SSTab1)
         Me.Controls.Add(Me._Label1_0)
         Me.Controls.Add(Me.MainMenu1)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(268, 127)
         Me.Name = "NewPollutantForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

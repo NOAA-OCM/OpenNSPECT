@@ -30,7 +30,6 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(NewLandCoverTypeForm))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.txtLCTypeDesc = New System.Windows.Forms.TextBox()
         Me.txtLCType = New System.Windows.Forms.TextBox()
@@ -254,7 +253,6 @@
         Me.Controls.Add(Me._Label2_1)
         Me.Controls.Add(Me._Label2_2)
         Me.Controls.Add(Me._Label1_7)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(3, 21)
         Me.Name = "NewLandCoverTypeForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
