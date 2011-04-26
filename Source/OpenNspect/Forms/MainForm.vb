@@ -120,8 +120,7 @@ Friend Class MainForm
             'Initialize parameter file
             _XMLPrjParams = New clsXMLPrjFile
 
-            Me.Text = "New OpenNSPECT file"
-
+            UpdateFormTitle("*")
 
             chkCalcErosion_CheckStateChanged(Me, Nothing)
 
@@ -152,6 +151,9 @@ Friend Class MainForm
         LoadPreviousXMLFile()
     End Sub
 
+    Private Sub UpdateFormTitle(ByVal projectName As String)
+        Me.Text = String.Format("OpenNSPECT - {0}", projectName)
+    End Sub
     ''' <summary>
     ''' Changes the form title with the project name
     ''' </summary>
@@ -159,7 +161,7 @@ Friend Class MainForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub txtProjectName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProjectName.TextChanged
-        Me.Text = txtProjectName.Text
+        UpdateFormTitle(txtProjectName.Text)
     End Sub
 
     ''' <summary>
