@@ -73,7 +73,7 @@ Module modMainRun
 
     Public g_dicMetadata As Dictionary(Of String, String)
     'Global dictionary to hold name of layer, metadata process string
-    Public g_clsXMLPrjFile As clsXMLPrjFile
+    Public g_XmlPrjFile As XmlPrjFile
     'Global xml project file for metadata support
 
     Public g_pSelectedPolyClip As Shape

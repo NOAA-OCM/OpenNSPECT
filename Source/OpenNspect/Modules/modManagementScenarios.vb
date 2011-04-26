@@ -34,10 +34,10 @@ Module modManagementScenarios
     Private _pLandCoverRaster As Grid
     Public g_booLCChange As Boolean
 
-    Public Sub MgmtScenSetup(ByRef clsMgmtScens As clsXMLMgmtScenItems, ByRef strLCClass As String, _
+    Public Sub MgmtScenSetup(ByRef MgmtScens As XmlMgmtScenItems, ByRef strLCClass As String, _
                               ByRef strLCFileName As String, ByRef strWorkspace As String)
         'Main Sub for setting everything up
-        'clsMgmtScens: XML wrapper for the management scenarios created by the user
+        'MgmtScens: Xml wrapper for the management scenarios created by the user
         'strLCClass: Name of the LandCover being used, CCAP
         'strLCFileName: filename of location of LandCover file
         Try
@@ -60,18 +60,18 @@ Module modManagementScenarios
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
             Dim i As Short
-            If clsMgmtScens.Count > 0 Then
+            If MgmtScens.Count > 0 Then
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
                 _pLandCoverRaster.Save(strOutLandCover)
                 _pLandCoverRaster.Close()
                 pNewLandCoverRaster.Open(strOutLandCover)
 
-                For i = 0 To clsMgmtScens.Count - 1
-                    If clsMgmtScens.Item(i).intApply = 1 Then
+                For i = 0 To MgmtScens.Count - 1
+                    If MgmtScens.Item(i).intApply = 1 Then
                         ShowProgress("Adding new landclass...", "Creating Management Scenario", 0, _
-                                      CInt(clsMgmtScens.Count), CInt(i), g_frmProjectSetup)
+                                      CInt(MgmtScens.Count), CInt(i), g_frmProjectSetup)
                         If g_KeepRunning Then
-                            Dim mgmtitem As clsXMLMgmtScenItem = clsMgmtScens.Item(i)
+                            Dim mgmtitem As XmlMgmtScenItem = MgmtScens.Item(i)
                             ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
                             booLandScen = True
                         Else
@@ -98,10 +98,10 @@ Module modManagementScenarios
 
     End Sub
 
-    Public Sub ReclassRaster(ByRef clsMgmtScen As clsXMLMgmtScenItem, ByVal strLCClass As String, _
+    Public Sub ReclassRaster(ByRef MgmtScen As XmlMgmtScenItem, ByVal strLCClass As String, _
                               ByRef outputGrid As Grid)
         'We're passing over a single management scenarios in the form of the xml
-        'class clsXMLmgmtScenItem, seems to be the easiest way to do this.
+        'class XmlmgmtScenItem, seems to be the easiest way to do this.
         Dim strSelect As String
         'OLEDB selections string
         Dim LCValue As Double
@@ -111,7 +111,7 @@ Module modManagementScenarios
         'This is the value user's landclass will change to
         strSelect = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & _
                     "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & _
-                    strLCClass & "' AND LCCLASS.NAME LIKE '" & clsMgmtScen.strChangeToClass & "'"
+                    strLCClass & "' AND LCCLASS.NAME LIKE '" & MgmtScen.strChangeToClass & "'"
         Dim cmdLCVal As New OleDbCommand(strSelect, g_DBConn)
         Dim readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
         readLCVal.Read()
@@ -120,7 +120,7 @@ Module modManagementScenarios
 
         'classify the output grid cells under the area polygon to the correct value
         Dim sf As New Shapefile
-        sf = ReturnFeature(clsMgmtScen.strAreaFileName)
+        sf = ReturnFeature(MgmtScen.strAreaFileName)
 
         'Get minimum extents of the area file
         Dim sfExt As Extents = sf.Extents

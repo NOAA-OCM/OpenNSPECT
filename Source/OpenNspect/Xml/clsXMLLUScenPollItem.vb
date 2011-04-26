@@ -1,5 +1,5 @@
 '********************************************************************************************************
-'File Name: clsWrapperPoll.vb
+'File Name: WrapperPoll.vb
 'Description: A class for handling the pollutant xml
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -17,14 +17,14 @@
 '               Added licensing and comments to code
 Imports System.Xml
 
-Public Class clsXMLLUScenPollItem
-    Inherits clsXMLBase
+Public Class XmlLUScenPollItem
+    Inherits XmlBase
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
-    ' *  clsXMLLUScenPollItem
+    ' *  XmlLUScenPollItem
     ' *************************************************************************************
-    ' *  Description: XML Wrapper for use Pollutant Items with a management scenarios
+    ' *  Description: Xml Wrapper for use Pollutant Items with a management scenarios
     ' *
     ' *  Called By:
     ' *************************************************************************************
@@ -60,9 +60,9 @@ Public Class clsXMLLUScenPollItem
         End Get
     End Property
 
-    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
-            'Return an XML DOM node that represents this class's properties. If a
+            'Return an Xml DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
             'child node of the parent.
 
@@ -77,27 +77,27 @@ Public Class clsXMLLUScenPollItem
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement (NODE_NAME)
-                Parent.AppendChild (node)
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
             End If
 
-            NodeAppendAttribute (dom, node, ATTRIBUTE_PollID, intID)
-            NodeAppendChildElement (dom, node, ELEMENT_Name, strPollName)
-            NodeAppendChildElement (dom, node, ELEMENT_Type1, intType1)
-            NodeAppendChildElement (dom, node, ELEMENT_Type2, intType2)
-            NodeAppendChildElement (dom, node, ELEMENT_Type3, intType3)
-            NodeAppendChildElement (dom, node, ELEMENT_Type4, intType4)
+            NodeAppendAttribute(dom, node, ATTRIBUTE_PollID, intID)
+            NodeAppendChildElement(dom, node, ELEMENT_Name, strPollName)
+            NodeAppendChildElement(dom, node, ELEMENT_Type1, intType1)
+            NodeAppendChildElement(dom, node, ELEMENT_Type2, intType2)
+            NodeAppendChildElement(dom, node, ELEMENT_Type3, intType3)
+            NodeAppendChildElement(dom, node, ELEMENT_Type4, intType4)
 
             'Return the created node
             CreateNode = node
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode (ByRef node As XmlNode)
+    Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -105,15 +105,15 @@ Public Class clsXMLLUScenPollItem
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
 
-            intID = CShort (GetNodeText (node, "@" & ATTRIBUTE_PollID))
-            strPollName = GetNodeText (node, ELEMENT_Name)
-            intType1 = CDbl (GetNodeText (node, ELEMENT_Type1))
-            intType2 = CDbl (GetNodeText (node, ELEMENT_Type2))
-            intType3 = CDbl (GetNodeText (node, ELEMENT_Type3))
-            intType4 = CDbl (GetNodeText (node, ELEMENT_Type4))
+            intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_PollID))
+            strPollName = GetNodeText(node, ELEMENT_Name)
+            intType1 = CDbl(GetNodeText(node, ELEMENT_Type1))
+            intType2 = CDbl(GetNodeText(node, ELEMENT_Type2))
+            intType3 = CDbl(GetNodeText(node, ELEMENT_Type3))
+            intType4 = CDbl(GetNodeText(node, ELEMENT_Type4))
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

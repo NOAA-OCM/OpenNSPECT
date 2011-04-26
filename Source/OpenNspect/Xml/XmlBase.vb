@@ -1,5 +1,5 @@
 ﻿'********************************************************************************************************
-'File Name: clsXMLBase.vb
+'File Name: XmlBase.vb
 'Description: A class for handling the NSPECT xml base structure
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -17,17 +17,17 @@
 '               Added licensing and comments to code
 Imports System.Xml
 
-Public Class clsXMLBase
-    Public Overridable Property XML() As String
+Public Class XmlBase
+    Public Overridable Property Xml() As String
         Get
-            'Retrieve the XML string that this class represents. The XML returned is
+            'Retrieve the Xml string that this class represents. The Xml returned is
             'built from the values of this class's properties.
 
-            XML = Me.CreateNode().OuterXml
+            Xml = Me.CreateNode().OuterXml
 
         End Get
         Set(ByVal Value As String)
-            'Assign a new XML string to this class. The newly assigned XML is parsed,
+            'Assign a new Xml string to this class. The newly assigned Xml is parsed,
             'and the class's properties are set accordingly.
 
             Dim dom As New XmlDocument

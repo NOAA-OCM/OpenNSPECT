@@ -1367,7 +1367,7 @@ Module Utilities
     Public Function AddOutputGridLayer(ByRef outRast As Grid, ByVal ColorString As String, _
                                         ByVal UseStretch As Boolean, ByVal LayerName As String, _
                                         ByVal OutputType As String, ByVal OutputGroup As Integer, _
-                                        ByRef OutputItems As clsXMLOutputItems) As Boolean
+                                        ByRef OutputItems As XmlOutputItems) As Boolean
         Dim cs As GridColorScheme
         If UseStretch = True Then
             cs = ReturnRasterStretchColorRampCS(outRast, ColorString)
@@ -1384,7 +1384,7 @@ Module Utilities
             lyr.MoveTo(0, g_pGroupLayer)
         End If
         If Not OutputItems Is Nothing Then
-            Dim OutItem As New clsXMLOutputItem
+            Dim OutItem As New XmlOutputItem
             OutItem.strPath = outRast.Filename
             OutItem.strName = LayerName
             OutItem.strType = OutputType

@@ -1,5 +1,5 @@
 '********************************************************************************************************
-'File Name: clsXMLPrjFile.vb
+'File Name: XmlPrjFile.vb
 'Description: Class for handling the project file xml
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -18,14 +18,14 @@
 Imports System.Collections.Generic
 Imports System.Xml
 
-Friend Class clsXMLPrjFile
-    Inherits clsXMLBase
+Friend Class XmlPrjFile
+    Inherits XmlBase
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
-    ' *  clsWrapperMain
+    ' *  WrapperMain
     ' *************************************************************************************
-    ' *  Description: XML Wrapper for use with main form's variables
+    ' *  Description: Xml Wrapper for use with main form's variables
     ' *
     ' *  Called By:
     ' *************************************************************************************
@@ -89,13 +89,13 @@ Friend Class clsXMLPrjFile
     Public intLocalEffects As Short
 
     'Class holders for DataGrid goodies
-    Public clsMgmtScenHolder As clsXMLMgmtScenItems
+    Public MgmtScenHolder As XmlMgmtScenItems
     'A collection of management scenarios
-    Public clsPollItems As clsXMLPollutantItems
+    Public PollItems As XmlPollutantItems
     'A collection of pollutants from pollutants tab
-    Public clsLUItems As clsXMLLandUseItems
+    Public LUItems As XmlLandUseItems
     'A collection of land uses
-    Public clsOutputItems As clsXMLOutputItems
+    Public OutputItems As XmlOutputItems
     'A collection of outputs
 
     Public intCalcErosion As Short
@@ -116,49 +116,49 @@ Friend Class clsXMLPrjFile
         End Get
     End Property
 
-    Public Overrides Property XML() As String
+    Public Overrides Property Xml() As String
         Get
-            'Retrieve the XML string that this class represents. The XML returned is
+            'Retrieve the Xml string that this class represents. The Xml returned is
             'built from the values of this class's properties.
 
-            XML = Me.CreateNode().OuterXml
+            Xml = Me.CreateNode().OuterXml
 
         End Get
-        Set (ByVal Value As String)
-            'Assign a new XML string to this class. The newly assigned XML is parsed,
+        Set(ByVal Value As String)
+            'Assign a new Xml string to this class. The newly assigned Xml is parsed,
             'and the class's properties are set accordingly.
 
             Dim dom As New XmlDocument
             Dim node As XmlNode
 
-            If InStr (Value, ".xml") > 0 Then
-                dom.Load (Value)
+            If InStr(Value, ".xml") > 0 Then
+                dom.Load(Value)
             Else
-                dom.LoadXml (Value)
+                dom.LoadXml(Value)
             End If
 
             node = dom.DocumentElement
 
-            LoadNode (node)
+            LoadNode(node)
 
         End Set
     End Property
 
-    Public Sub SaveFile (ByRef strXML As String)
+    Public Sub SaveFile(ByRef strXml As String)
         Try
             Dim dom As New XmlDocument
-            dom.LoadXml (Me.XML)
+            dom.LoadXml(Me.Xml)
 
-            dom.Save (strXML)
+            dom.Save(strXml)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
-            'Return an XML DOM node that represents this class's properties. If a
+            'Return an Xml DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
             'child node of the parent.
 
@@ -168,81 +168,81 @@ Friend Class clsXMLPrjFile
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml ("<" & NODE_NAME & "/>")
+                dom.LoadXml("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement (NODE_NAME)
-                Parent.AppendChild (node)
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
             End If
 
             '*********************************************************************
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
-            NodeAppendChildElement (dom, node, NODE_PRJNAME, strProjectName)
-            NodeAppendChildElement (dom, node, NODE_PRJWORKSPACE, strProjectWorkspace)
-            NodeAppendChildElement (dom, node, NODE_LCGridName, strLCGridName)
-            NodeAppendChildElement (dom, node, NODE_LCGridFileName, strLCGridFileName)
-            NodeAppendChildElement (dom, node, NODE_LCGridUnits, strLCGridUnits)
-            NodeAppendChildElement (dom, node, NODE_LCGridType, strLCGridType)
-            NodeAppendChildElement (dom, node, NODE_SoilsDefName, strSoilsDefName)
-            NodeAppendChildElement (dom, node, NODE_SoilsHydFileName, strSoilsHydFileName)
-            NodeAppendChildElement (dom, node, NODE_SoilsKFileName, strSoilsKFileName)
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            NodeAppendChildElement(dom, node, NODE_PRJNAME, strProjectName)
+            NodeAppendChildElement(dom, node, NODE_PRJWORKSPACE, strProjectWorkspace)
+            NodeAppendChildElement(dom, node, NODE_LCGridName, strLCGridName)
+            NodeAppendChildElement(dom, node, NODE_LCGridFileName, strLCGridFileName)
+            NodeAppendChildElement(dom, node, NODE_LCGridUnits, strLCGridUnits)
+            NodeAppendChildElement(dom, node, NODE_LCGridType, strLCGridType)
+            NodeAppendChildElement(dom, node, NODE_SoilsDefName, strSoilsDefName)
+            NodeAppendChildElement(dom, node, NODE_SoilsHydFileName, strSoilsHydFileName)
+            NodeAppendChildElement(dom, node, NODE_SoilsKFileName, strSoilsKFileName)
             'NodeAppendChildElement dom, node, NODE_RainFallType, intRainFallType
-            NodeAppendChildElement (dom, node, NODE_PrecipScenario, strPrecipScenario)
-            NodeAppendChildElement (dom, node, NODE_WaterShedDelin, strWaterShedDelin)
-            NodeAppendChildElement (dom, node, NODE_WaterQuality, strWaterQuality)
-            NodeAppendChildElement (dom, node, NODE_SelectedPolys, intSelectedPolys)
-            NodeAppendChildElement (dom, node, NODE_SelectedPolyFileName, strSelectedPolyFileName)
+            NodeAppendChildElement(dom, node, NODE_PrecipScenario, strPrecipScenario)
+            NodeAppendChildElement(dom, node, NODE_WaterShedDelin, strWaterShedDelin)
+            NodeAppendChildElement(dom, node, NODE_WaterQuality, strWaterQuality)
+            NodeAppendChildElement(dom, node, NODE_SelectedPolys, intSelectedPolys)
+            NodeAppendChildElement(dom, node, NODE_SelectedPolyFileName, strSelectedPolyFileName)
             Dim strlist As String = ""
-            If intSelectedPolyList.Count > 0 Then strlist = intSelectedPolyList (0).ToString
+            If intSelectedPolyList.Count > 0 Then strlist = intSelectedPolyList(0).ToString
             For i As Integer = 1 To intSelectedPolyList.Count - 1
-                strlist = strlist + "," + intSelectedPolyList (i).ToString
+                strlist = strlist + "," + intSelectedPolyList(i).ToString
             Next
-            NodeAppendChildElement (dom, node, NODE_SelectedPolyList, strlist)
-            NodeAppendChildElement (dom, node, NODE_SelectedPolyLyrName, strSelectedPolyLyrName)
-            NodeAppendChildElement (dom, node, NODE_LocalEffects, intLocalEffects)
-            NodeAppendChildElement (dom, node, NODE_CalcErosion, intCalcErosion)
-            NodeAppendChildElement (dom, node, NODE_UseOWNSDR, intUseOwnSDR)
-            NodeAppendChildElement (dom, node, NODE_SDRGridFileName, strSDRGridFileName)
-            NodeAppendChildElement (dom, node, NODE_RainGridBool, intRainGridBool)
-            NodeAppendChildElement (dom, node, NODE_RainGridName, strRainGridName)
-            NodeAppendChildElement (dom, node, NODE_RainGridFileName, strRainGridFileName)
-            NodeAppendChildElement (dom, node, NODE_RainConstBool, intRainConstBool)
-            NodeAppendChildElement (dom, node, NODE_RainConstValue, dblRainConstValue)
+            NodeAppendChildElement(dom, node, NODE_SelectedPolyList, strlist)
+            NodeAppendChildElement(dom, node, NODE_SelectedPolyLyrName, strSelectedPolyLyrName)
+            NodeAppendChildElement(dom, node, NODE_LocalEffects, intLocalEffects)
+            NodeAppendChildElement(dom, node, NODE_CalcErosion, intCalcErosion)
+            NodeAppendChildElement(dom, node, NODE_UseOWNSDR, intUseOwnSDR)
+            NodeAppendChildElement(dom, node, NODE_SDRGridFileName, strSDRGridFileName)
+            NodeAppendChildElement(dom, node, NODE_RainGridBool, intRainGridBool)
+            NodeAppendChildElement(dom, node, NODE_RainGridName, strRainGridName)
+            NodeAppendChildElement(dom, node, NODE_RainGridFileName, strRainGridFileName)
+            NodeAppendChildElement(dom, node, NODE_RainConstBool, intRainConstBool)
+            NodeAppendChildElement(dom, node, NODE_RainConstValue, dblRainConstValue)
 
             'Format
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
 
             'Pollutants
-            clsPollItems.CreateNode (node)
+            PollItems.CreateNode(node)
 
             'Format
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
 
             'Management Scenarios
-            clsMgmtScenHolder.CreateNode (node)
+            MgmtScenHolder.CreateNode(node)
 
             'Format
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
-            clsLUItems.CreateNode (node)
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            LUItems.CreateNode(node)
 
             'Format
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
-            clsOutputItems.CreateNode (node)
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            OutputItems.CreateNode(node)
 
             'Format
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
 
             CreateNode = node
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode (ByRef node As XmlNode)
+    Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -250,58 +250,58 @@ Friend Class clsXMLPrjFile
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
 
-            strProjectName = GetNodeText (node, NODE_PRJNAME)
-            strProjectWorkspace = GetNodeText (node, NODE_PRJWORKSPACE)
-            strLCGridName = GetNodeText (node, NODE_LCGridName)
-            strLCGridFileName = GetNodeText (node, NODE_LCGridFileName)
-            strLCGridUnits = GetNodeText (node, NODE_LCGridUnits)
-            strLCGridType = GetNodeText (node, NODE_LCGridType)
-            strSoilsDefName = GetNodeText (node, NODE_SoilsDefName)
-            strSoilsHydFileName = GetNodeText (node, NODE_SoilsHydFileName)
-            strSoilsKFileName = GetNodeText (node, NODE_SoilsKFileName)
-            strPrecipScenario = GetNodeText (node, NODE_PrecipScenario)
-            strWaterShedDelin = GetNodeText (node, NODE_WaterShedDelin)
-            strWaterQuality = GetNodeText (node, NODE_WaterQuality)
-            intSelectedPolys = CShort (GetNodeText (node, NODE_SelectedPolys))
-            strSelectedPolyFileName = GetNodeText (node, NODE_SelectedPolyFileName)
-            Dim tmpstr As String() = GetNodeText (node, NODE_SelectedPolyList).Split (",")
+            strProjectName = GetNodeText(node, NODE_PRJNAME)
+            strProjectWorkspace = GetNodeText(node, NODE_PRJWORKSPACE)
+            strLCGridName = GetNodeText(node, NODE_LCGridName)
+            strLCGridFileName = GetNodeText(node, NODE_LCGridFileName)
+            strLCGridUnits = GetNodeText(node, NODE_LCGridUnits)
+            strLCGridType = GetNodeText(node, NODE_LCGridType)
+            strSoilsDefName = GetNodeText(node, NODE_SoilsDefName)
+            strSoilsHydFileName = GetNodeText(node, NODE_SoilsHydFileName)
+            strSoilsKFileName = GetNodeText(node, NODE_SoilsKFileName)
+            strPrecipScenario = GetNodeText(node, NODE_PrecipScenario)
+            strWaterShedDelin = GetNodeText(node, NODE_WaterShedDelin)
+            strWaterQuality = GetNodeText(node, NODE_WaterQuality)
+            intSelectedPolys = CShort(GetNodeText(node, NODE_SelectedPolys))
+            strSelectedPolyFileName = GetNodeText(node, NODE_SelectedPolyFileName)
+            Dim tmpstr As String() = GetNodeText(node, NODE_SelectedPolyList).Split(",")
             intSelectedPolyList.Clear()
             For i As Integer = 0 To tmpstr.Length - 1
-                If tmpstr (i) <> "" Then
-                    intSelectedPolyList.Add (CShort (tmpstr (i)))
+                If tmpstr(i) <> "" Then
+                    intSelectedPolyList.Add(CShort(tmpstr(i)))
                 End If
             Next
-            intLocalEffects = CShort (GetNodeText (node, NODE_LocalEffects))
-            intCalcErosion = CShort (GetNodeText (node, NODE_CalcErosion))
-            intUseOwnSDR = CShort (GetNodeText (node, NODE_UseOWNSDR, "integer"))
-            strSDRGridFileName = GetNodeText (node, NODE_SDRGridFileName)
-            intRainGridBool = CShort (GetNodeText (node, NODE_RainGridBool))
-            strRainGridName = GetNodeText (node, NODE_RainGridName)
-            strRainGridFileName = GetNodeText (node, NODE_RainGridFileName)
-            intRainConstBool = CShort (GetNodeText (node, NODE_RainConstBool))
-            dblRainConstValue = CDbl (GetNodeText (node, NODE_RainConstValue))
+            intLocalEffects = CShort(GetNodeText(node, NODE_LocalEffects))
+            intCalcErosion = CShort(GetNodeText(node, NODE_CalcErosion))
+            intUseOwnSDR = CShort(GetNodeText(node, NODE_UseOWNSDR, "integer"))
+            strSDRGridFileName = GetNodeText(node, NODE_SDRGridFileName)
+            intRainGridBool = CShort(GetNodeText(node, NODE_RainGridBool))
+            strRainGridName = GetNodeText(node, NODE_RainGridName)
+            strRainGridFileName = GetNodeText(node, NODE_RainGridFileName)
+            intRainConstBool = CShort(GetNodeText(node, NODE_RainConstBool))
+            dblRainConstValue = CDbl(GetNodeText(node, NODE_RainConstValue))
 
-            clsMgmtScenHolder.LoadNode (node.SelectSingleNode (clsMgmtScenHolder.NodeName))
-            clsPollItems.LoadNode (node.SelectSingleNode (clsPollItems.NodeName))
-            clsLUItems.LoadNode (node.SelectSingleNode (clsLUItems.NodeName))
-            clsOutputItems.LoadNode (node.SelectSingleNode (clsOutputItems.NodeName))
+            MgmtScenHolder.LoadNode(node.SelectSingleNode(MgmtScenHolder.NodeName))
+            PollItems.LoadNode(node.SelectSingleNode(PollItems.NodeName))
+            LUItems.LoadNode(node.SelectSingleNode(LUItems.NodeName))
+            OutputItems.LoadNode(node.SelectSingleNode(OutputItems.NodeName))
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Public Sub New()
         Try
-            clsMgmtScenHolder = New clsXMLMgmtScenItems
+            MgmtScenHolder = New XmlMgmtScenItems
             'A collection of management scenarios
-            clsPollItems = New clsXMLPollutantItems
+            PollItems = New XmlPollutantItems
             'A collection of Pollutants
-            clsLUItems = New clsXMLLandUseItems
+            LUItems = New XmlLandUseItems
             'A collection of landuses
-            clsOutputItems = New clsXMLOutputItems
+            OutputItems = New XmlOutputItems
             'A collection of outputs
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

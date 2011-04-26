@@ -1,5 +1,5 @@
 '********************************************************************************************************
-'File Name: clsXMLPollItems
+'File Name: XmlPollItems
 'Description: Class for handling pollutant items xml
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -17,15 +17,15 @@
 '               Added licensing and comments to code
 Imports System.Xml
 
-Public Class clsXMLLUScenPollItems
-    Inherits clsXMLBase
+Public Class XmlLUScenPollItems
+    Inherits XmlBase
     Implements IEnumerable
     '*************************************************************************
-    'XML Wrapper Class
+    'Xml Wrapper Class
     '-------------------------------------------------------------------------
-    'Use this template to create a class that is able to read and write XML
+    'Use this template to create a class that is able to read and write Xml
     'conforming to your specific schema. Refer to the MSDN Magazine article,
-    '"Wrap Your XML Schema in Visual Basic Objects," for complete
+    '"Wrap Your Xml Schema in Visual Basic Objects," for complete
     'documentation.
     '
     'Template Class Authors:
@@ -35,7 +35,7 @@ Public Class clsXMLLUScenPollItems
     '
     '*************************************************************************
 
-    'The NODE_NAME constant contains the name of the XML element that
+    'The NODE_NAME constant contains the name of the Xml element that
     'is being wrapped.
 
     Private Const NODE_NAME As String = "ManScenPollutants"
@@ -70,14 +70,14 @@ Public Class clsXMLLUScenPollItems
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             GetEnumerator = Nothing
         End Try
     End Function
 
-    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
-            'Return an XML DOM node that represents this class's properties. If a
+            'Return an Xml DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
             'child node of the parent.
 
@@ -87,30 +87,30 @@ Public Class clsXMLLUScenPollItems
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml ("<" & NODE_NAME & "/>")
+                dom.LoadXml("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement (NODE_NAME)
-                Parent.AppendChild (node)
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
             End If
 
-            Dim clsPoll As clsXMLLUScenPollItem
+            Dim Poll As XmlLUScenPollItem
 
-            For Each clsPoll In m_colItems
-                clsPoll.CreateNode (node)
-            Next clsPoll
+            For Each Poll In m_colItems
+                Poll.CreateNode(node)
+            Next Poll
 
             CreateNode = node
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode (ByRef node As XmlNode)
+    Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -118,22 +118,22 @@ Public Class clsXMLLUScenPollItems
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
 
-            Dim clsPoll As clsXMLLUScenPollItem
+            Dim Poll As XmlLUScenPollItem
             Dim nodes As XmlNodeList
             Dim PollNode As XmlNode
 
-            clsPoll = New clsXMLLUScenPollItem
+            Poll = New XmlLUScenPollItem
             m_colItems = New ArrayList
 
-            nodes = node.SelectNodes (clsPoll.NodeName)
+            nodes = node.SelectNodes(Poll.NodeName)
             For Each PollNode In nodes
-                clsPoll = New clsXMLLUScenPollItem
-                clsPoll.LoadNode (PollNode)
-                m_colItems.Add (clsPoll)
+                Poll = New XmlLUScenPollItem
+                Poll.LoadNode(PollNode)
+                m_colItems.Add(Poll)
             Next PollNode
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -141,27 +141,27 @@ Public Class clsXMLLUScenPollItems
         Try
             m_colItems = New ArrayList
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub Add (ByVal Pollutant As clsXMLLUScenPollItem)
+    Public Sub Add(ByVal Pollutant As XmlLUScenPollItem)
         Try
             'Add a pollutant item.
-            m_colItems.Add (Pollutant)
+            m_colItems.Add(Pollutant)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub Remove (ByVal Index As Integer)
+    Public Sub Remove(ByVal Index As Integer)
         Try
             'Remove an order item.
-            m_colItems.Remove (Index)
+            m_colItems.Remove(Index)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
