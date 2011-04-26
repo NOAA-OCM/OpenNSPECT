@@ -47,10 +47,10 @@
         Me.cmdCancel.Location = New System.Drawing.Point(263, 81)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 3
         Me.cmdCancel.Text = "Cancel"
-        Me.cmdCancel.UseVisualStyleBackColor = False
+        Me.cmdCancel.UseVisualStyleBackColor = True
         '
         'cmdOK
         '
@@ -58,13 +58,13 @@
         Me.cmdOK.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdOK.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOK.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOK.Location = New System.Drawing.Point(192, 81)
+        Me.cmdOK.Location = New System.Drawing.Point(182, 81)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdOK.Size = New System.Drawing.Size(65, 25)
+        Me.cmdOK.Size = New System.Drawing.Size(75, 23)
         Me.cmdOK.TabIndex = 2
         Me.cmdOK.Text = "OK"
-        Me.cmdOK.UseVisualStyleBackColor = False
+        Me.cmdOK.UseVisualStyleBackColor = True
         '
         'txtStdName
         '
@@ -119,7 +119,7 @@
         Me._Label1_0.TabIndex = 4
         Me._Label1_0.Text = "Copy from Standard Name:"
         '
-        'frmCopyWQStd
+        'CopyWaterQualityStandardForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -138,7 +138,7 @@
         Me.Location = New System.Drawing.Point(473, 457)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmCopyWQStd"
+        Me.Name = "CopyWaterQualityStandardForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

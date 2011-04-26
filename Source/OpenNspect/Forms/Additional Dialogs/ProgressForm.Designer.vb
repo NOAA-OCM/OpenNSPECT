@@ -59,7 +59,7 @@ Partial Class ProgressForm
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 2
         Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = False
+        Me.btnCancel.UseVisualStyleBackColor = True
         '
         'tmrEventDriver
         '

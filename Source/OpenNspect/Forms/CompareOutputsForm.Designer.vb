@@ -130,11 +130,11 @@ Partial Class CompareOutputsForm
         Me.cmdRun.Location = New System.Drawing.Point(414, 332)
         Me.cmdRun.Name = "cmdRun"
         Me.cmdRun.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdRun.Size = New System.Drawing.Size(72, 25)
+        Me.cmdRun.Size = New System.Drawing.Size(75, 23)
         Me.cmdRun.TabIndex = 5
         Me.cmdRun.TabStop = False
         Me.cmdRun.Text = "Run"
-        Me.cmdRun.UseVisualStyleBackColor = False
+        Me.cmdRun.UseVisualStyleBackColor = True
         '
         'cmdQuit
         '
@@ -147,11 +147,11 @@ Partial Class CompareOutputsForm
         Me.cmdQuit.Location = New System.Drawing.Point(502, 332)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(72, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 6
         Me.cmdQuit.TabStop = False
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
         'mnustrpMain
         '
@@ -194,7 +194,7 @@ Partial Class CompareOutputsForm
         Me.chkSelectedPolys.Size = New System.Drawing.Size(147, 22)
         Me.chkSelectedPolys.TabIndex = 63
         Me.chkSelectedPolys.Text = "Selected Polygons Only"
-        Me.chkSelectedPolys.UseVisualStyleBackColor = False
+        Me.chkSelectedPolys.UseVisualStyleBackColor = True
         '
         'btnSelect
         '
@@ -207,11 +207,11 @@ Partial Class CompareOutputsForm
         Me.btnSelect.Location = New System.Drawing.Point(149, 332)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnSelect.Size = New System.Drawing.Size(72, 25)
+        Me.btnSelect.Size = New System.Drawing.Size(75, 23)
         Me.btnSelect.TabIndex = 65
         Me.btnSelect.TabStop = False
         Me.btnSelect.Text = "Select"
-        Me.btnSelect.UseVisualStyleBackColor = False
+        Me.btnSelect.UseVisualStyleBackColor = True
         '
         'lblSelected
         '

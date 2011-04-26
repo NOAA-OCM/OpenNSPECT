@@ -72,13 +72,13 @@
         Me.cmdCancel.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCancel.Location = New System.Drawing.Point(265, 84)
+        Me.cmdCancel.Location = New System.Drawing.Point(275, 84)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 3
         Me.cmdCancel.Text = "Cancel"
-        Me.cmdCancel.UseVisualStyleBackColor = False
+        Me.cmdCancel.UseVisualStyleBackColor = True
         '
         'cmdOK
         '
@@ -91,10 +91,10 @@
         Me.cmdOK.Location = New System.Drawing.Point(194, 84)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdOK.Size = New System.Drawing.Size(65, 25)
+        Me.cmdOK.Size = New System.Drawing.Size(75, 23)
         Me.cmdOK.TabIndex = 2
         Me.cmdOK.Text = "OK"
-        Me.cmdOK.UseVisualStyleBackColor = False
+        Me.cmdOK.UseVisualStyleBackColor = True
         '
         '_Label1_5
         '
@@ -124,7 +124,7 @@
         Me._Label1_7.Text = "Land Cover Type:"
         Me._Label1_7.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'frmAddCoeffSet
+        'NewCoefficientSetForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -143,7 +143,7 @@
         Me.Location = New System.Drawing.Point(519, 231)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmAddCoeffSet"
+        Me.Name = "NewCoefficientSetForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

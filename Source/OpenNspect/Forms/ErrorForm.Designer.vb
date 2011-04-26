@@ -36,14 +36,14 @@ Partial Class ErrorForm
         Me.cmdCopy.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdCopy.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCopy.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdCopy.Location = New System.Drawing.Point(422, 336)
+        Me.cmdCopy.Location = New System.Drawing.Point(419, 336)
         Me.cmdCopy.Name = "cmdCopy"
         Me.cmdCopy.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCopy.Size = New System.Drawing.Size(72, 25)
+        Me.cmdCopy.Size = New System.Drawing.Size(75, 23)
         Me.cmdCopy.TabIndex = 5
         Me.cmdCopy.TabStop = False
         Me.cmdCopy.Text = "Copy"
-        Me.cmdCopy.UseVisualStyleBackColor = False
+        Me.cmdCopy.UseVisualStyleBackColor = True
         '
         'cmdClose
         '
@@ -56,11 +56,11 @@ Partial Class ErrorForm
         Me.cmdClose.Location = New System.Drawing.Point(500, 336)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdClose.Size = New System.Drawing.Size(72, 25)
+        Me.cmdClose.Size = New System.Drawing.Size(75, 23)
         Me.cmdClose.TabIndex = 6
         Me.cmdClose.TabStop = False
         Me.cmdClose.Text = "Close"
-        Me.cmdClose.UseVisualStyleBackColor = False
+        Me.cmdClose.UseVisualStyleBackColor = True
         '
         'txtError
         '
@@ -74,7 +74,7 @@ Partial Class ErrorForm
         Me.txtError.Size = New System.Drawing.Size(560, 318)
         Me.txtError.TabIndex = 7
         '
-        'ErrorDialog
+        'ErrorForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -84,7 +84,7 @@ Partial Class ErrorForm
         Me.Controls.Add(Me.cmdCopy)
         Me.Controls.Add(Me.cmdClose)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "ErrorDialog"
+        Me.Name = "ErrorForm"
         Me.Text = "OpenNSPECT Error Occurred"
         Me.ResumeLayout(False)
         Me.PerformLayout()

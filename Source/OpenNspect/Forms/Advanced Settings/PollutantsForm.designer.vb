@@ -504,10 +504,10 @@
         Me.cmdSave.Location = New System.Drawing.Point(404, 735)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdSave.Size = New System.Drawing.Size(65, 25)
+        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
         Me.cmdSave.TabIndex = 2
         Me.cmdSave.Text = "OK"
-        Me.cmdSave.UseVisualStyleBackColor = False
+        Me.cmdSave.UseVisualStyleBackColor = True
         '
         'cmdQuit
         '
@@ -519,10 +519,10 @@
         Me.cmdQuit.Location = New System.Drawing.Point(510, 735)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 3
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
         'cboPollName
         '

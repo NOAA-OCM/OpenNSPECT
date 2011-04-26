@@ -114,7 +114,7 @@
         Me.chkHydroCorr.Size = New System.Drawing.Size(241, 24)
         Me.chkHydroCorr.TabIndex = 17
         Me.chkHydroCorr.Text = "DEM is hyrdologically correct (filled)"
-        Me.chkHydroCorr.UseVisualStyleBackColor = False
+        Me.chkHydroCorr.UseVisualStyleBackColor = True
         '
         'cmdBrowseDEMFile
         '
@@ -129,7 +129,7 @@
         Me.cmdBrowseDEMFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseDEMFile.TabIndex = 1
         Me.cmdBrowseDEMFile.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowseDEMFile.UseVisualStyleBackColor = False
+        Me.cmdBrowseDEMFile.UseVisualStyleBackColor = True
         '
         'txtWSDelinName
         '
@@ -262,7 +262,7 @@
         Me.cmdOptions.Size = New System.Drawing.Size(67, 25)
         Me.cmdOptions.TabIndex = 16
         Me.cmdOptions.Text = "Options..."
-        Me.cmdOptions.UseVisualStyleBackColor = False
+        Me.cmdOptions.UseVisualStyleBackColor = True
         '
         'cboStreamLayer
         '
@@ -292,7 +292,7 @@
         Me.chkStreamAgree.Size = New System.Drawing.Size(149, 19)
         Me.chkStreamAgree.TabIndex = 13
         Me.chkStreamAgree.Text = "Force Stream Agreement"
-        Me.chkStreamAgree.UseVisualStyleBackColor = False
+        Me.chkStreamAgree.UseVisualStyleBackColor = True
         '
         '_lblStream_0
         '
@@ -320,10 +320,10 @@
         Me.cmdCreate.Location = New System.Drawing.Point(407, 341)
         Me.cmdCreate.Name = "cmdCreate"
         Me.cmdCreate.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCreate.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCreate.Size = New System.Drawing.Size(75, 23)
         Me.cmdCreate.TabIndex = 5
         Me.cmdCreate.Text = "OK"
-        Me.cmdCreate.UseVisualStyleBackColor = False
+        Me.cmdCreate.UseVisualStyleBackColor = True
         '
         'cmdQuit
         '
@@ -335,10 +335,10 @@
         Me.cmdQuit.Location = New System.Drawing.Point(517, 341)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(65, 25)
+        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 6
         Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = False
+        Me.cmdQuit.UseVisualStyleBackColor = True
         '
         'frmNewWSDelin
         '

@@ -70,7 +70,7 @@
         Me.cmdBrowse.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowse.TabIndex = 3
         Me.cmdBrowse.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowse.UseVisualStyleBackColor = False
+        Me.cmdBrowse.UseVisualStyleBackColor = True
         '
         'cmdCancel
         '
@@ -81,10 +81,10 @@
         Me.cmdCancel.Location = New System.Drawing.Point(342, 100)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 5
         Me.cmdCancel.Text = "Cancel"
-        Me.cmdCancel.UseVisualStyleBackColor = False
+        Me.cmdCancel.UseVisualStyleBackColor = True
         '
         'cmdOK
         '
@@ -93,13 +93,13 @@
         Me.cmdOK.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdOK.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOK.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOK.Location = New System.Drawing.Point(273, 100)
+        Me.cmdOK.Location = New System.Drawing.Point(261, 100)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdOK.Size = New System.Drawing.Size(65, 25)
+        Me.cmdOK.Size = New System.Drawing.Size(75, 23)
         Me.cmdOK.TabIndex = 4
         Me.cmdOK.Text = "OK"
-        Me.cmdOK.UseVisualStyleBackColor = False
+        Me.cmdOK.UseVisualStyleBackColor = True
         '
         'txtImpFile
         '
@@ -171,7 +171,7 @@
         Me._Label1_7.Text = "Land Cover Type:"
         Me._Label1_7.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'frmImportCoeffSet
+        'ImportCoefficientSetForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -193,7 +193,7 @@
         Me.Location = New System.Drawing.Point(3, 21)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmImportCoeffSet"
+        Me.Name = "ImportCoefficientSetForm"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

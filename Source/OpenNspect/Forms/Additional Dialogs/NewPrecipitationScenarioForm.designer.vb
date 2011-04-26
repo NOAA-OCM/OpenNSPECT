@@ -195,7 +195,7 @@
         Me.cmdBrowseFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFile.TabIndex = 2
         Me.cmdBrowseFile.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.cmdBrowseFile.UseVisualStyleBackColor = False
+        Me.cmdBrowseFile.UseVisualStyleBackColor = True
         '
         'cboPrecipUnits
         '
@@ -347,10 +347,10 @@
         Me.cmdCancel.Location = New System.Drawing.Point(513, 339)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdCancel.Size = New System.Drawing.Size(65, 25)
+        Me.cmdCancel.Size = New System.Drawing.Size(75, 23)
         Me.cmdCancel.TabIndex = 7
         Me.cmdCancel.Text = "Cancel"
-        Me.cmdCancel.UseVisualStyleBackColor = False
+        Me.cmdCancel.UseVisualStyleBackColor = True
         '
         'cmdOK
         '
@@ -359,13 +359,13 @@
         Me.cmdOK.Cursor = System.Windows.Forms.Cursors.Default
         Me.cmdOK.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdOK.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdOK.Location = New System.Drawing.Point(443, 339)
+        Me.cmdOK.Location = New System.Drawing.Point(432, 339)
         Me.cmdOK.Name = "cmdOK"
         Me.cmdOK.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdOK.Size = New System.Drawing.Size(65, 25)
+        Me.cmdOK.Size = New System.Drawing.Size(75, 23)
         Me.cmdOK.TabIndex = 6
         Me.cmdOK.Text = "OK"
-        Me.cmdOK.UseVisualStyleBackColor = False
+        Me.cmdOK.UseVisualStyleBackColor = True
         '
         'NewPrecipitationScenarioForm
         '
