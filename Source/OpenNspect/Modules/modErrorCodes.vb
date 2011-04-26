@@ -56,25 +56,17 @@ Module modErrorCodes
 
 
     Public Sub DisplayError(ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
-
         MsgBox(String.Format("{0}Row: {1}, Column: {2}", Error_Renamed, (i + 1), (j + 1)), MsgBoxStyle.Critical, "Warning")
-
     End Sub
 
 
-    Public Sub HandleError(ByVal OriginName As String, ByRef OriginalException As Exception)
-        'get call stack
-        Dim stackTrace As New StackTrace()
-
-        'Generate exception with custom output string from origin, calling method, and original exception
-        Dim e As New Exception(vbNewLine + vbNewLine + "Unexpected " + OriginName + " " + stackTrace.GetFrame(1).GetMethod().Name + " error occured" + vbNewLine + vbNewLine + OriginalException.ToString())
-
+    Public Sub HandleError(ByRef ex As Exception)
         Try
-            Using errorBox As New ErrorForm(e)
+            Using errorBox As New ErrorForm(ex)
                 errorBox.ShowDialog()
             End Using
-            Trace.TraceError(e.Message)
-        Catch ex As Exception
+            Trace.TraceError(ex.Message)
+        Catch ex2 As Exception
             ' // couldn't show the dialog.
         End Try
     End Sub

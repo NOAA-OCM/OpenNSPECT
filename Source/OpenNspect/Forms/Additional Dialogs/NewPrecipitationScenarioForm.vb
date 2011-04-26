@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 Friend Class NewPrecipitationScenarioForm
 
-    Const c_sModuleFileName As String = "frmNewPrecip.vb"
 
     Private _frmPrj As MainForm
     Private _frmPrec As PrecipitationScenariosForm
@@ -32,7 +31,7 @@ Friend Class NewPrecipitationScenarioForm
         Try
             txtPrecipName.Text = Replace(txtPrecipName.Text, "'", "")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -45,7 +44,7 @@ Friend Class NewPrecipitationScenarioForm
 
             e.Cancel = Cancel
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -89,7 +88,7 @@ Friend Class NewPrecipitationScenarioForm
 
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -104,7 +103,7 @@ Friend Class NewPrecipitationScenarioForm
                 txtRainingDays.Visible = False
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
     Protected Overrides Sub Cancel_Button_Click(sender As Object, e As System.EventArgs)
@@ -155,7 +154,7 @@ Friend Class NewPrecipitationScenarioForm
 
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -169,7 +168,7 @@ Friend Class NewPrecipitationScenarioForm
             _frmPrj = frmPrj
             _frmPrec = frmPrec
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -233,7 +232,7 @@ Friend Class NewPrecipitationScenarioForm
 
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 #End Region

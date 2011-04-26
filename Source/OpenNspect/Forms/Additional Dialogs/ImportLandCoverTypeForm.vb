@@ -23,14 +23,13 @@ Friend Class ImportLandCoverTypeForm
     Private _booFile As Boolean 'Check if FileName is correct
     Private _strFileName As String
     Private _parent As LandCoverTypesForm
-    Const c_sModuleFileName As String = "frmImportLCType.vb"
 
 
     Public Sub Init(ByRef parent As LandCoverTypesForm)
         Try
             _parent = parent
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -45,7 +44,7 @@ Friend Class ImportLandCoverTypeForm
                 OK_Button.Enabled = True
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -66,7 +65,7 @@ Friend Class ImportLandCoverTypeForm
                 OK_Button.Enabled = True
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -127,7 +126,7 @@ Friend Class ImportLandCoverTypeForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -169,7 +168,7 @@ Friend Class ImportLandCoverTypeForm
                 End Select
             Next i
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -181,7 +180,7 @@ Friend Class ImportLandCoverTypeForm
                 cmdDel.ExecuteNonQuery()
             End Using
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

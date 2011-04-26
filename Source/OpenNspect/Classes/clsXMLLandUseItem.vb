@@ -38,7 +38,6 @@ Public Class clsXMLLandUseItem
     ' *
     ' *************************************************************************************
 
-    Const c_sModuleFileName As String = "clsXMLLandUseItem.vb"
 
     Private Const NODE_NAME As String = "Landuse"
     Private Const ATTRIBUTE_ID As String = "ID"
@@ -94,7 +93,7 @@ Public Class clsXMLLandUseItem
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -114,7 +113,7 @@ Public Class clsXMLLandUseItem
             strLUScenXMLFile = GetNodeText(node, ELEMENT_LUScenXMLFile)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

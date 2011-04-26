@@ -38,7 +38,6 @@ Public Class clsXMLPollutantItems
     ' *
     ' *************************************************************************************
 
-    Const c_sModuleFileName As String = "clsXMLPollutantItems.vb"
 
     Private Const NODE_NAME As String = "Pollutants"
 
@@ -79,7 +78,7 @@ Public Class clsXMLPollutantItems
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             GetEnumerator = Nothing
         End Try
     End Function
@@ -121,7 +120,7 @@ Public Class clsXMLPollutantItems
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -150,7 +149,7 @@ Public Class clsXMLPollutantItems
             Next MgmtNode
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -159,7 +158,7 @@ Public Class clsXMLPollutantItems
         Try
             m_colItems = New Collections.ArrayList
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -171,7 +170,7 @@ Public Class clsXMLPollutantItems
             m_colItems.Add(MgmtScen)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -183,7 +182,7 @@ Public Class clsXMLPollutantItems
             m_colItems.Remove(Index)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

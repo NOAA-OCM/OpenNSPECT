@@ -23,7 +23,6 @@ Friend Class NewPollutantForm
     Private _intLCTypeID As Short 'Land Class (CCAP) ID - needed to add new coefficient sets
 
     Private _frmPoll As PollutantsForm
-    Const c_sModuleFileName As String = "frmNewPollutants.vb"
 
 
 #Region "Events"
@@ -33,7 +32,7 @@ Friend Class NewPollutantForm
         Try
             modUtil.InitComboBox(cboLCType, "LCType")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -63,7 +62,7 @@ Friend Class NewPollutantForm
                 End Using
             End Using
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -75,7 +74,7 @@ Friend Class NewPollutantForm
             addCoeff.Init(Nothing, Me)
             addCoeff.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -87,7 +86,7 @@ Friend Class NewPollutantForm
             newCopyCoef.Init(Nothing, Nothing, Me)
             newCopyCoef.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -97,7 +96,7 @@ Friend Class NewPollutantForm
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -107,7 +106,7 @@ Friend Class NewPollutantForm
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -117,7 +116,7 @@ Friend Class NewPollutantForm
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -127,7 +126,7 @@ Friend Class NewPollutantForm
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -142,7 +141,7 @@ Friend Class NewPollutantForm
                 End If
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -159,7 +158,7 @@ Friend Class NewPollutantForm
         Try
             _frmPoll = frmPoll
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -211,7 +210,7 @@ Friend Class NewPollutantForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -248,7 +247,7 @@ Friend Class NewPollutantForm
             ValidateGridValues = True
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -328,7 +327,7 @@ Friend Class NewPollutantForm
         Catch ex As Exception
             'ALFREDO
             MsgBox("An error occurred while creating new pollutant." & vbNewLine & Err.Number & ": " & Err.Description, MsgBoxStyle.Critical, "Error")
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -373,7 +372,7 @@ Friend Class NewPollutantForm
             End While
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -452,7 +451,7 @@ Friend Class NewPollutantForm
             Close()
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

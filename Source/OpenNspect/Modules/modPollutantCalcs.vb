@@ -44,7 +44,6 @@ Module modPollutantCalcs
     Private _FlowMax As Single
 
     ' Constant used by the Error handler function - DO NOT REMOVE
-    Const c_sModuleFileName As String = "modPollutantCalcs.vb"
     Private _ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
 
     Private _picks() As String
@@ -122,7 +121,7 @@ Module modPollutantCalcs
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "PollutantConcentrationSetup " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
+            HandleError(ex)     'True, "PollutantConcentrationSetup " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
             PollutantConcentrationSetup = False
         End Try
     End Function
@@ -453,7 +452,7 @@ Module modPollutantCalcs
                 modProgDialog.CloseDialog()
                 CalcPollutantConcentration = False
             Else
-                HandleError(c_sModuleFileName, ex)     'False, "CalcPollutantConcentration " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
+                HandleError(ex)     'False, "CalcPollutantConcentration " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
                 modProgDialog.g_KeepRunning = False
                 modProgDialog.CloseDialog()
                 CalcPollutantConcentration = False
@@ -515,7 +514,7 @@ Module modPollutantCalcs
                 modProgDialog.g_KeepRunning = False
                 modProgDialog.CloseDialog()
             Else
-                HandleError(c_sModuleFileName, ex)     'False, "CompareWaterQuality " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, 0)
+                HandleError(ex)     'False, "CompareWaterQuality " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, 0)
                 CompareWaterQuality = False
                 modProgDialog.g_KeepRunning = False
                 modProgDialog.CloseDialog()

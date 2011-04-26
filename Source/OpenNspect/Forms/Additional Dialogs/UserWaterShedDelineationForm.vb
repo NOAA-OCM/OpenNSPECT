@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 Friend Class UserWaterShedDelineationForm
 
-    Const c_sModuleFileName As String = "frmUserWShed.vb"
 
     Private _frmWS As WatershedDelineationsForm
     Private _frmPrj As MainForm
@@ -56,7 +55,7 @@ Friend Class UserWaterShedDelineationForm
 
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -66,7 +65,7 @@ Friend Class UserWaterShedDelineationForm
             ReturnGRIDPath(txtFlowAcc, "Select Flow Accumulation GRID")
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -76,7 +75,7 @@ Friend Class UserWaterShedDelineationForm
             ReturnGRIDPath(txtFlowDir, "Select Flow Direction GRID")
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -86,7 +85,7 @@ Friend Class UserWaterShedDelineationForm
             ReturnGRIDPath(txtLS, "Select Length-Slope GRID")
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -95,7 +94,7 @@ Friend Class UserWaterShedDelineationForm
         Try
             txtWaterSheds.Text = BrowseForFileName("Feature", Me, "Select Watersheds Shapefile")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -157,7 +156,7 @@ Friend Class UserWaterShedDelineationForm
             _frmWS = frmWS
             _frmPrj = frmPrj
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -302,7 +301,7 @@ Friend Class UserWaterShedDelineationForm
 
             ValidateDataFormInput = True
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -320,7 +319,7 @@ Friend Class UserWaterShedDelineationForm
                 End If
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -385,7 +384,7 @@ Friend Class UserWaterShedDelineationForm
             modUtil.ReturnPermanentRaster(pNibble, _strNibbleName)
             pNibble.Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -420,7 +419,7 @@ Friend Class UserWaterShedDelineationForm
                 Return InputBox1(1, 1)
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -438,7 +437,7 @@ Friend Class UserWaterShedDelineationForm
                 Return OutNull
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -451,7 +450,7 @@ Friend Class UserWaterShedDelineationForm
                 Return Input1
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 

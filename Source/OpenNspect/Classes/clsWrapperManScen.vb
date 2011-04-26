@@ -41,7 +41,6 @@ Public Class clsXMLLUScen
 
     'Following are the names of the NODES
 
-    Const c_sModuleFileName As String = "clsWrapprManScen.vb"
 
     Private Const NODE_NAME As String = "LUScenFile"
     Private Const NODE_ManScenName As String = "LUScenName"
@@ -125,7 +124,7 @@ Public Class clsXMLLUScen
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -160,7 +159,7 @@ Public Class clsXMLLUScen
             clsPollItems.LoadNode(node.SelectSingleNode(clsPollItems.NodeName))
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -171,7 +170,7 @@ Public Class clsXMLLUScen
             clsPollItems = New clsXMLLUScenPollItems
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

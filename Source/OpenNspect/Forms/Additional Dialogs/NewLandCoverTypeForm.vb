@@ -22,7 +22,6 @@ Friend Class NewLandCoverTypeForm
 
     Private _frmLC As LandCoverTypesForm
 
-    Const c_sModuleFileName As String = "frmNewLCType.vb"
 
 #Region "Events"
 
@@ -41,7 +40,7 @@ Friend Class NewLandCoverTypeForm
                 .Cells(7).Value = "0"
             End With
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -53,7 +52,7 @@ Friend Class NewLandCoverTypeForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -62,7 +61,7 @@ Friend Class NewLandCoverTypeForm
         Try
             AddRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -71,7 +70,7 @@ Friend Class NewLandCoverTypeForm
         Try
             InsertRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -80,7 +79,7 @@ Friend Class NewLandCoverTypeForm
         Try
             DeleteRow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -89,7 +88,7 @@ Friend Class NewLandCoverTypeForm
         Try
             MsgBox("Please enter a valid number.")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -124,7 +123,7 @@ Friend Class NewLandCoverTypeForm
                 MyBase.OK_Button_Click(sender, e)
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
     Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -139,7 +138,7 @@ Friend Class NewLandCoverTypeForm
         Try
             _frmLC = frmLC
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -158,7 +157,7 @@ Friend Class NewLandCoverTypeForm
                 .Cells(7).Value = "0"
             End With
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -180,7 +179,7 @@ Friend Class NewLandCoverTypeForm
                 End With
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -191,7 +190,7 @@ Friend Class NewLandCoverTypeForm
                 dgvLCTypes.Rows.Remove(dgvLCTypes.CurrentRow)
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -277,7 +276,7 @@ Friend Class NewLandCoverTypeForm
             ValidateGridValues = True
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 

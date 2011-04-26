@@ -42,7 +42,6 @@ Module modRunoff
     Public g_intRainingDays As Short '# of Raining Days for Annual Precip
     Public g_intRunoffPrecipType As Short  'Precip Event Type: 0=Annual; 1=Event
     ' Variables used by the Error handler function - DO NOT REMOVE
-    Const c_sModuleFileName As String = "modRunoff.vb"
     Private _ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
 
     Private _picks()() As String
@@ -396,7 +395,7 @@ Module modRunoff
 
             dataLandClass.Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'False, "CreateMetadata " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
+            HandleError(ex)     'False, "CreateMetadata " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
         End Try
     End Function
 

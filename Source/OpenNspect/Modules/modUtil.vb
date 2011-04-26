@@ -72,7 +72,6 @@ Module modUtil
     Public g_frmProjectSetup As Windows.Forms.Form
 
 
-    Const c_sModuleFileName As String = "modUtil.vb"
     Private m_ParentHWND As Integer ' Set this to get correct parenting of Error handler forms
 
 
@@ -135,7 +134,7 @@ Module modUtil
             'Cleanup
             rsNames.Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "InitComboBox " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "InitComboBox " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -203,7 +202,7 @@ Module modUtil
                 End If
             Next i
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "GetCboIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "GetCboIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -222,7 +221,7 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "LayerInMap " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "LayerInMap " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -254,7 +253,7 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -271,7 +270,7 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -293,7 +292,7 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "GetLayerFilename " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "GetLayerFilename " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -940,7 +939,7 @@ Module modUtil
             End If
             Return coloringscheme
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "MakeContinuousRamp " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "MakeContinuousRamp " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
             Return Nothing
         End Try
     End Function
@@ -994,7 +993,7 @@ Module modUtil
             ReturnHSVColorString = CStr(intHue) & ",97,100," & CStr(intHue) & ",5,100"
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -1028,7 +1027,7 @@ Module modUtil
                 Return ""
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "CheckSpatialReference " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "CheckSpatialReference " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -1107,7 +1106,7 @@ Module modUtil
             'Loop
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "CleanupRasterFolder " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "CleanupRasterFolder " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1191,7 +1190,7 @@ Module modUtil
                 End If
             Next
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "CleanGlobals " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "CleanGlobals " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1211,7 +1210,7 @@ Module modUtil
             End If
             datName.Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "UniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "UniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -1257,7 +1256,7 @@ Module modUtil
             data.Close()
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "CreateUniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)     'True, "CreateUniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 

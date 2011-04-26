@@ -26,7 +26,6 @@ Friend Class EditLandUseScenario
     Private _stopClose As Boolean
     Private _SelectLyrPath As String
     Private _SelectedShapes As Collections.Generic.List(Of Integer)
-    Const c_sModuleFileName As String = "frmLUScen.vb"
 
 
 #Region "Events"
@@ -56,7 +55,7 @@ Friend Class EditLandUseScenario
                 _txtLUCN_3.Text = "0"
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -68,7 +67,7 @@ Friend Class EditLandUseScenario
                 _stopClose = False
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -81,7 +80,7 @@ Friend Class EditLandUseScenario
                 _stopClose = True
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -90,7 +89,7 @@ Friend Class EditLandUseScenario
             Dim selectfrm As New SelectionModeForm
             selectfrm.InitializeAndShow()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -100,7 +99,7 @@ Friend Class EditLandUseScenario
             _SelectLyrPath = ""
             _SelectedShapes.Clear()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region
@@ -113,7 +112,7 @@ Friend Class EditLandUseScenario
             _frmPrj = frmProj
             _strWQStd = strWQStd
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -153,7 +152,7 @@ Friend Class EditLandUseScenario
             CreateXMLFile = clsMan.XML
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateXMLFile = Nothing
         End Try
     End Function
@@ -245,7 +244,7 @@ Friend Class EditLandUseScenario
                 Exit Function
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -292,7 +291,7 @@ Friend Class EditLandUseScenario
             Next i
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -333,7 +332,7 @@ Friend Class EditLandUseScenario
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -358,7 +357,7 @@ Friend Class EditLandUseScenario
                 lblSelected.Text = g_MapWin.View.SelectedShapes.NumSelected.ToString + " selected"
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region

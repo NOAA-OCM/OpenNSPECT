@@ -41,7 +41,6 @@ Public Class clsXMLCoeffTypeDef
 
     'Following are the names of the NODES
 
-    Const c_sModuleFileName As String = "clsXMLCoeffTypeDef.vb"
 
     Private Const NODE_NAME As String = "TypeDefFile"
     Private Const NODE_TDLyrName As String = "TDLyrName" 'Layer Name
@@ -83,7 +82,7 @@ Public Class clsXMLCoeffTypeDef
             'frmPrj.grdCoeffs.set_TextMatrix(g_intCoeffRow, 6, strXML)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -124,7 +123,7 @@ Public Class clsXMLCoeffTypeDef
             CreateNode = node
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
@@ -147,7 +146,7 @@ Public Class clsXMLCoeffTypeDef
             strTDDef4 = GetNodeText(node, NODE_TDDef4)
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

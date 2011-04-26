@@ -20,7 +20,6 @@ Friend Class NewCoefficientSetForm
 
     Private _frmPoll As PollutantsForm
     Private _frmNewPoll As NewPollutantForm
-    Const c_sModuleFileName As String = "frmAddCoeff.vb"
 
 
 #Region "Events"
@@ -30,7 +29,7 @@ Friend Class NewCoefficientSetForm
         Try
             modUtil.InitComboBox(cboLCType, "LCTYPE")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -43,7 +42,7 @@ Friend Class NewCoefficientSetForm
                 OK_Button.Enabled = False
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
     Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
@@ -64,7 +63,7 @@ Friend Class NewCoefficientSetForm
 
             MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region
@@ -77,7 +76,7 @@ Friend Class NewCoefficientSetForm
             _frmPoll = frmPoll
             _frmNewPoll = frmNewPoll
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

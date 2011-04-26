@@ -18,7 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class SoilsForm
-    Private Const c_sModuleFileName As String = "frmSoils.vb"
 
 #Region "Events"
 
@@ -27,7 +26,7 @@ Friend Class SoilsForm
         Try
             modUtil.InitComboBox(cboSoils, "SOILS")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -46,7 +45,7 @@ Friend Class SoilsForm
                 soil.Close()
             End Using
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -56,7 +55,7 @@ Friend Class SoilsForm
             newsoil.Init(Me)
             newsoil.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -97,7 +96,7 @@ Friend Class SoilsForm
                 MsgBox("Please select a Soils Setup", MsgBoxStyle.Critical, "No Soils Setup Selected")
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -106,7 +105,7 @@ Friend Class SoilsForm
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "soils.htm")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 

@@ -60,6 +60,7 @@ Partial Class ErrorForm
         Me.txtError.Location = New System.Drawing.Point(12, 12)
         Me.txtError.Multiline = True
         Me.txtError.Name = "txtError"
+        Me.txtError.ReadOnly = True
         Me.txtError.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtError.Size = New System.Drawing.Size(560, 318)
         Me.txtError.TabIndex = 7

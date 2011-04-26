@@ -20,7 +20,6 @@ Imports System.Data
 Imports System.Data.OleDb
 Friend Class PollutantsForm
 
-    Const c_sModuleFileName As String = "frmPollutants.vb"
 
     Private _boolDescChanged As Boolean 'Boolship for seeing if Description Changed
 
@@ -49,7 +48,7 @@ Friend Class PollutantsForm
             SSTab1.SelectedIndex = 0
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -205,7 +204,7 @@ Friend Class PollutantsForm
             IsDirty = False
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -231,7 +230,7 @@ Friend Class PollutantsForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -265,7 +264,7 @@ Friend Class PollutantsForm
             _boolDescChanged = False
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -276,7 +275,7 @@ Friend Class PollutantsForm
             _boolDescChanged = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -288,7 +287,7 @@ Friend Class PollutantsForm
                 MyBase.OK_Button_Click(sender, e)
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -298,7 +297,7 @@ Friend Class PollutantsForm
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pollutants.htm")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -307,7 +306,7 @@ Friend Class PollutantsForm
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "pol_coeftab.htm")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -318,7 +317,7 @@ Friend Class PollutantsForm
             newPoll.Init(Me)
             newPoll.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -335,7 +334,7 @@ Friend Class PollutantsForm
                 Exit Sub
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -347,7 +346,7 @@ Friend Class PollutantsForm
             addCoeff.Init(Me, Nothing)
             addCoeff.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
 
     End Sub
@@ -360,7 +359,7 @@ Friend Class PollutantsForm
             newCopyCoef.Init(_coefCmd, Me, Nothing)
             newCopyCoef.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -403,7 +402,7 @@ Friend Class PollutantsForm
             newImportCoef.Init(Me)
             newImportCoef.ShowDialog()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -420,7 +419,7 @@ Friend Class PollutantsForm
                 ExportCoeffSet(dlgSave.FileName)
             End If
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
 
     End Sub
@@ -431,7 +430,7 @@ Friend Class PollutantsForm
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region
@@ -492,7 +491,7 @@ Friend Class PollutantsForm
             ValidateGridValues = True
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 
@@ -564,7 +563,7 @@ Friend Class PollutantsForm
             IsDirty = False
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -583,7 +582,7 @@ Friend Class PollutantsForm
             Me.Refresh()
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -662,7 +661,7 @@ Friend Class PollutantsForm
             datalctype.Close()
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -730,7 +729,7 @@ Friend Class PollutantsForm
             cboPollName_SelectedIndexChanged(cboPollName, New System.EventArgs())
             cboCoeffSet.SelectedIndex = GetCboIndex(strNewCoeffName, cboCoeffSet)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -747,7 +746,7 @@ Friend Class PollutantsForm
             Next i
             out.Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -846,7 +845,7 @@ Friend Class PollutantsForm
             End While
             cboCoeffSet.SelectedIndex = modUtil.GetCboIndex(strCoeffName, cboCoeffSet)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 #End Region

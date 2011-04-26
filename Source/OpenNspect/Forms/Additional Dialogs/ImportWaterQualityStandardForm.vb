@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 Friend Class ImportWaterQualityStandardForm
 
-    Const c_sModuleFileName As String = "frmImportWQStd.vb"
     Private _frmWQ As WaterQualityStandardsForm
     Private _strFileName As String
 
@@ -36,7 +35,7 @@ Friend Class ImportWaterQualityStandardForm
             End Using
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -90,7 +89,7 @@ Friend Class ImportWaterQualityStandardForm
             _frmWQ.cboWQStdName.SelectedIndex = modUtil.GetCboIndex((txtStdName.Text), _frmWQ.cboWQStdName)
             MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -98,7 +97,7 @@ Friend Class ImportWaterQualityStandardForm
         Try
             _frmWQ = frmWQ
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -130,7 +129,7 @@ Friend Class ImportWaterQualityStandardForm
             datapolladd.Close()
             datapolldet.Close()
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

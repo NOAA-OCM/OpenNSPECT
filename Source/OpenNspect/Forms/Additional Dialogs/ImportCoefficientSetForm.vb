@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 Friend Class ImportCoefficientSetForm
 
-    Const c_sModuleFileName As String = "frmImportCoeffSet.vb"
     Private _frmPoll As PollutantsForm
     Private _cmdCoeff As OleDbCommand
 
@@ -28,7 +27,7 @@ Friend Class ImportCoefficientSetForm
         Try
             InitComboBox(cboLCType, "LCTYPE")
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -44,7 +43,7 @@ Friend Class ImportCoefficientSetForm
                 End If
             End Using
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
     Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
@@ -59,7 +58,7 @@ Friend Class ImportCoefficientSetForm
             End If
             MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -149,7 +148,7 @@ Friend Class ImportCoefficientSetForm
             End If
 
         Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
+            HandleError(ex)
         End Try
     End Function
 End Class
