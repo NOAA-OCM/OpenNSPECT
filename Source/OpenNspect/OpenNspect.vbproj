@@ -148,20 +148,20 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\clsXMLLUMangementScenario.vb" />
-    <Compile Include="Classes\clsXMLLUScenPollItem.vb" />
-    <Compile Include="Classes\clsXMLBase.vb" />
-    <Compile Include="Classes\clsXMLCoeffTypeDef.vb" />
-    <Compile Include="Classes\clsXMLLandUseItem.vb" />
-    <Compile Include="Classes\clsXMLLandUseItems.vb" />
-    <Compile Include="Classes\clsXMLMgmtScenItem.vb" />
-    <Compile Include="Classes\clsXMLMgmtScenItems.vb" />
-    <Compile Include="Classes\clsXMLPollItems.vb" />
-    <Compile Include="Classes\clsXMLPollutantItem.vb" />
-    <Compile Include="Classes\clsXMLPollutantItems.vb" />
-    <Compile Include="Classes\clsXMLPrjFile.vb" />
-    <Compile Include="Classes\clsXMLOutputItem.vb" />
-    <Compile Include="Classes\clsXMLOutputItems.vb" />
+    <Compile Include="Xml\clsXMLLUMangementScenario.vb" />
+    <Compile Include="Xml\clsXMLLUScenPollItem.vb" />
+    <Compile Include="Xml\clsXMLBase.vb" />
+    <Compile Include="Xml\clsXMLCoeffTypeDef.vb" />
+    <Compile Include="Xml\clsXMLLandUseItem.vb" />
+    <Compile Include="Xml\clsXMLLandUseItems.vb" />
+    <Compile Include="Xml\clsXMLMgmtScenItem.vb" />
+    <Compile Include="Xml\clsXMLMgmtScenItems.vb" />
+    <Compile Include="Xml\clsXMLPollItems.vb" />
+    <Compile Include="Xml\clsXMLPollutantItem.vb" />
+    <Compile Include="Xml\clsXMLPollutantItems.vb" />
+    <Compile Include="Xml\clsXMLPrjFile.vb" />
+    <Compile Include="Xml\clsXMLOutputItem.vb" />
+    <Compile Include="Xml\clsXMLOutputItems.vb" />
     <Compile Include="Classes\DataHelper.vb" />
     <Compile Include="Classes\MapWindowPlugin.vb">
       <SubType>Code</SubType>
@@ -476,9 +476,7 @@
     <Content Include="Images\NOAA_Logo.ico" />
     <Content Include="Readme.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Xml\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PreBuildEvent>
