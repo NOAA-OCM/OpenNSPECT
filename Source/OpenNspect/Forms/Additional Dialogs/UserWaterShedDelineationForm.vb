@@ -35,7 +35,7 @@ Friend Class UserWaterShedDelineationForm
 
             Dim pDEMRasterDataset As Grid
 
-            pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM GRID", Me, 0)
+            pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM GRID")
             If Not pDEMRasterDataset Is Nothing Then
                 'Get the spatial reference
                 Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
@@ -94,7 +94,7 @@ Friend Class UserWaterShedDelineationForm
     Private Sub cmdBrowseWS_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
         Handles cmdBrowseWS.Click
         Try
-            txtWaterSheds.Text = BrowseForFileName("Feature", Me, "Select Watersheds Shapefile")
+            txtWaterSheds.Text = BrowseForFileName("Feature")
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -336,7 +336,7 @@ Friend Class UserWaterShedDelineationForm
         Try
             Dim pDEMRasterDataset As Grid
 
-            pDEMRasterDataset = AddInputFromGxBrowserText(txtBox, strTitle, Me, 0)
+            pDEMRasterDataset = AddInputFromGxBrowserText(txtBox, strTitle)
             If Not pDEMRasterDataset Is Nothing Then
                 'Get the spatial reference
                 If CheckSpatialReference(pDEMRasterDataset) Is Nothing Then

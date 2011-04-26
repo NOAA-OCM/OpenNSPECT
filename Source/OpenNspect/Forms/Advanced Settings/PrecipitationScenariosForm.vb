@@ -92,7 +92,7 @@ Friend Class PrecipitationScenariosForm
             Dim pPrecipRasterDataset As Grid
             Dim strProj As String
 
-            _pInputPrecipDS = AddInputFromGxBrowserText (txtPrecipFile, "Choose Precipitation GRID", Me, 0)
+            _pInputPrecipDS = AddInputFromGxBrowserText(txtPrecipFile, "Choose Precipitation GRID")
 
             If _pInputPrecipDS Is Nothing Then
                 Exit Sub

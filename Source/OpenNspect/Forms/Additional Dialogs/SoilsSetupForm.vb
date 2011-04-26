@@ -30,7 +30,7 @@ Friend Class SoilsSetupForm
         Try
             'Browse for DEM
             Dim pDEMRasterDataset As Grid
-            pDEMRasterDataset = AddInputFromGxBrowserText (txtDEMFile, "Choose DEM Dataset", Me, 0)
+            pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM Dataset")
 
             If Not pDEMRasterDataset Is Nothing Then
                 _pRasterProps = pDEMRasterDataset

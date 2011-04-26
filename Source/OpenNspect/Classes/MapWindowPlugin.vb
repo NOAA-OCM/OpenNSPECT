@@ -205,6 +205,10 @@ Public Class MapWindowPlugin
 
         Dim nspectPath As String = "C:\NSPECT\"
 
+        If Not Directory.Exists(nspectPath) Then
+            MessageBox.Show("{0} is not a valid directory. You need to reinstall the plugin.", nspectPath)
+        End If
+
         ' Detects and sets the path to OpenNSPECT's application folder (installation directory)
         'nspectPath = My.Application.Info.DirectoryPath
 
