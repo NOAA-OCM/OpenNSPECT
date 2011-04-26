@@ -281,17 +281,15 @@ Imports Microsoft.Win32
                     Case "System.Resources.SatelliteContractVersionAttribute"
                         Value = CType (attrib, SatelliteContractVersionAttribute).Version.ToString
                     Case "System.Runtime.InteropServices.ComCompatibleVersionAttribute"
-                        Dim x As ComCompatibleVersionAttribute
-                        x = CType (attrib, ComCompatibleVersionAttribute)
-                        Value = x.MajorVersion & "." & x.MinorVersion & "." & x.RevisionNumber & "." & x.BuildNumber
+                        Dim x As ComCompatibleVersionAttribute = CType(attrib, ComCompatibleVersionAttribute)
+                        Value = String.Format("{0}.{1}.{2}.{3}", x.MajorVersion, x.MinorVersion, x.RevisionNumber, x.BuildNumber)
                     Case "System.Runtime.InteropServices.ComVisibleAttribute"
                         Value = CType (attrib, ComVisibleAttribute).Value.ToString
                     Case "System.Runtime.InteropServices.GuidAttribute"
                         Value = CType (attrib, GuidAttribute).Value.ToString
                     Case "System.Runtime.InteropServices.TypeLibVersionAttribute"
-                        Dim x As TypeLibVersionAttribute
-                        x = CType (attrib, TypeLibVersionAttribute)
-                        Value = x.MajorVersion & "." & x.MinorVersion
+                        Dim x As TypeLibVersionAttribute = CType(attrib, TypeLibVersionAttribute)
+                        Value = String.Format("{0}.{1}", x.MajorVersion, x.MinorVersion)
                     Case "System.Security.AllowPartiallyTrustedCallersAttribute"
                         Value = "(Present)"
                     Case Else
