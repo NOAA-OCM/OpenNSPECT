@@ -187,15 +187,6 @@
   <metadata name="ChangeToClass.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="cmdOutputBrowse.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABsAAAAZCAIAAABPfsIJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAKRJREFUSEvtlFEO
-        gCAIhjm6x+vRh+5jGJVOEYF8aYs514g+gZ+EtNoAgXvcFq6fuKabtj7CbYKSBiLSHhA9157yyj09lG6f
-        LJ/jtDohgCFidErZjztr8u8wImYcQZudrbQ+Y5JjD3UTS3Z85ZW3acK8jyHAaGm1PpW5ZLHi8pD280ha
-        ozlwQ6IbJxEFQczz+PI+N9wUypM+QVTWog9jLjj9x2zkAb6quIVMsJ+kAAAAAElFTkSuQmCC
-</value>
-  </data>
   <metadata name="cnxtmnuLandUse.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>233, 17</value>
   </metadata>
