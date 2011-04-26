@@ -1969,7 +1969,7 @@ Friend Class MainForm
                     'Can't find it...well, then send user to Browse
                     MsgBox (String.Format ("Unable to find precip dataset: {0}.  Please Correct", _strPrecipFile), _
                             MsgBoxStyle.Information, "Cannot Find Dataset")
-                    _strPrecipFile = BrowseForFileName ("Raster", Me, "Browse for Precipitation Dataset...")
+                    _strPrecipFile = BrowseForFileName("Raster")
                     'If new one found, then we must update DataBase
                     If Len (_strPrecipFile) > 0 Then
                         strUpdatePrecip = _
@@ -2264,7 +2264,7 @@ Friend Class MainForm
                         If Not RasterExists (dtWS.Rows (0) ("DEMFileName")) Then
                             MsgBox (String.Format ("Unable to locate DEM dataset: {0}.", dtWS.Rows (0) ("DEMFileName")), _
                                     MsgBoxStyle.Critical, "Missing Dataset")
-                            strDEM = BrowseForFileName ("Raster", Me, "Browse for DEM...")
+                            strDEM = BrowseForFileName("Raster")
                             If Len (strDEM) > 0 Then
                                 dtWS.Rows (0) ("DEMFileName") = strDEM
                                 'rsWShed.Fields("DEMFileName").Value = strDEM
@@ -2279,7 +2279,7 @@ Friend Class MainForm
                                     String.Format ("Unable to locate Watershed dataset: {0}.", _
                                                    dtWS.Rows (0) ("wsfilename")), MsgBoxStyle.Critical, _
                                     "Missing Dataset")
-                            strWShed = BrowseForFileName ("Feature", Me, "Browse for Watershed Dataset...")
+                            strWShed = BrowseForFileName("Feature")
                             If Len (strWShed) > 0 Then
                                 dtWS.Rows (0) ("wsfilename") = strWShed
                                 booUpdate = True
@@ -2294,7 +2294,7 @@ Friend Class MainForm
                                                    dtWS.Rows (0) ("FlowDirFileName")), MsgBoxStyle.Critical, _
                                     "Missing Dataset")
                             strFlowDirFileName = _
-                                BrowseForFileName ("Raster", Me, "Browse for Flow Direction GRID...")
+                                BrowseForFileName("Raster")
                             If Len (strFlowDirFileName) > 0 Then
                                 dtWS.Rows (0) ("FlowDirFileName") = strFlowDirFileName
                                 booUpdate = True
@@ -2309,7 +2309,7 @@ Friend Class MainForm
                                                    dtWS.Rows (0) ("FlowAccumFileName")), MsgBoxStyle.Critical, _
                                     "Missing Dataset")
                             strFlowAccumFileName = _
-                                BrowseForFileName ("Raster", Me, "Browse for Flow Accumulation GRID...")
+                                BrowseForFileName("Raster")
                             If Len (strFlowAccumFileName) > 0 Then
                                 dtWS.Rows (0) ("FlowAccumFileName") = strFlowAccumFileName
                                 booUpdate = True
@@ -2325,7 +2325,7 @@ Friend Class MainForm
                                                        dtWS.Rows (0) ("FilledDEMFileName")), MsgBoxStyle.Critical, _
                                         "Missing Dataset")
                                 strFilledDEMFileName = _
-                                    BrowseForFileName ("Raster", Me, "Browse for Filled DEM...")
+                                    BrowseForFileName("Raster")
                                 If Len (strFilledDEMFileName) > 0 Then
                                     dtWS.Rows (0) ("FilledDEMFileName") = strFilledDEMFileName
                                     booUpdate = True

@@ -103,7 +103,7 @@ Friend Class NewWatershedDelineationForm
         Try
             Dim pDEMRasterDataset As Grid
 
-            pDEMRasterDataset = AddInputFromGxBrowserText (txtDEMFile, "Choose DEM GRID", Me, 0)
+            pDEMRasterDataset = AddInputFromGxBrowserText(txtDEMFile, "Choose DEM GRID")
             If Not pDEMRasterDataset Is Nothing Then
                 'Get the spatial reference
                 Dim strProj As String = CheckSpatialReference (pDEMRasterDataset)
