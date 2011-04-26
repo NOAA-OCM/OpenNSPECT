@@ -35,6 +35,7 @@ Public Class MapWindowPlugin
     Private Const mnuNspectAbout As String = "mnunspectAbout"
 
 #Region "Private Variables"
+
     'Used for removing items on terminate
     Private _addedMenus As New System.Collections.Stack()
 
@@ -50,7 +51,8 @@ Public Class MapWindowPlugin
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
     <CLSCompliant(False)> _
-    Public Sub LegendDoubleClick(ByVal Handle As Integer, ByVal Location As MapWindow.Interfaces.ClickLocation, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.LegendDoubleClick
+    Public Sub LegendDoubleClick(ByVal Handle As Integer, ByVal Location As MapWindow.Interfaces.ClickLocation, _
+                                  ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.LegendDoubleClick
 
     End Sub
 
@@ -63,7 +65,9 @@ Public Class MapWindowPlugin
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
     <CLSCompliant(False)> _
-    Public Sub LegendMouseDown(ByVal Handle As Integer, ByVal Button As Integer, ByVal Location As MapWindow.Interfaces.ClickLocation, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.LegendMouseDown
+    Public Sub LegendMouseDown(ByVal Handle As Integer, ByVal Button As Integer, _
+                                ByVal Location As MapWindow.Interfaces.ClickLocation, ByRef Handled As Boolean) _
+        Implements MapWindow.Interfaces.IPlugin.LegendMouseDown
 
     End Sub
 
@@ -76,7 +80,9 @@ Public Class MapWindowPlugin
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
     <CLSCompliant(False)> _
-    Public Sub LegendMouseUp(ByVal Handle As Integer, ByVal Button As Integer, ByVal Location As MapWindow.Interfaces.ClickLocation, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.LegendMouseUp
+    Public Sub LegendMouseUp(ByVal Handle As Integer, ByVal Button As Integer, _
+                              ByVal Location As MapWindow.Interfaces.ClickLocation, ByRef Handled As Boolean) _
+        Implements MapWindow.Interfaces.IPlugin.LegendMouseUp
 
     End Sub
 
@@ -86,7 +92,8 @@ Public Class MapWindowPlugin
     ''' <param name="Bounds"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub MapDragFinished(ByVal Bounds As System.Drawing.Rectangle, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapDragFinished
+    Public Sub MapDragFinished(ByVal Bounds As System.Drawing.Rectangle, ByRef Handled As Boolean) _
+        Implements MapWindow.Interfaces.IPlugin.MapDragFinished
 
     End Sub
 
@@ -99,7 +106,8 @@ Public Class MapWindowPlugin
     ''' <param name="y"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub MapMouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapMouseUp
+    Public Sub MapMouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
+                           ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapMouseUp
 
     End Sub
 
@@ -119,7 +127,8 @@ Public Class MapWindowPlugin
     ''' <param name="ProjectFile"></param>
     ''' <param name="SettingsString"></param>
     ''' <remarks></remarks>
-    Public Sub ProjectSaving(ByVal ProjectFile As String, ByRef SettingsString As String) Implements MapWindow.Interfaces.IPlugin.ProjectSaving
+    Public Sub ProjectSaving(ByVal ProjectFile As String, ByRef SettingsString As String) _
+        Implements MapWindow.Interfaces.IPlugin.ProjectSaving
     End Sub
 
     ''' <summary>
@@ -129,7 +138,8 @@ Public Class MapWindowPlugin
     ''' <param name="SelectInfo"></param>
     ''' <remarks></remarks>
     <CLSCompliant(False)> _
-    Public Sub ShapesSelected(ByVal Handle As Integer, ByVal SelectInfo As MapWindow.Interfaces.SelectInfo) Implements MapWindow.Interfaces.IPlugin.ShapesSelected
+    Public Sub ShapesSelected(ByVal Handle As Integer, ByVal SelectInfo As MapWindow.Interfaces.SelectInfo) _
+        Implements MapWindow.Interfaces.IPlugin.ShapesSelected
 
     End Sub
 
@@ -148,7 +158,8 @@ Public Class MapWindowPlugin
     ''' <param name="ProjectFile"></param>
     ''' <param name="SettingsString"></param>
     ''' <remarks></remarks>
-    Public Sub ProjectLoading(ByVal ProjectFile As String, ByVal SettingsString As String) Implements MapWindow.Interfaces.IPlugin.ProjectLoading
+    Public Sub ProjectLoading(ByVal ProjectFile As String, ByVal SettingsString As String) _
+        Implements MapWindow.Interfaces.IPlugin.ProjectLoading
 
     End Sub
 
@@ -161,7 +172,8 @@ Public Class MapWindowPlugin
     ''' <param name="y"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub MapMouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapMouseDown
+    Public Sub MapMouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
+                             ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapMouseDown
 
     End Sub
 
@@ -172,7 +184,8 @@ Public Class MapWindowPlugin
     ''' <param name="ScreenY"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub MapMouseMove(ByVal ScreenX As Integer, ByVal ScreenY As Integer, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.MapMouseMove
+    Public Sub MapMouseMove(ByVal ScreenX As Integer, ByVal ScreenY As Integer, ByRef Handled As Boolean) _
+        Implements MapWindow.Interfaces.IPlugin.MapMouseMove
 
     End Sub
 
@@ -191,7 +204,8 @@ Public Class MapWindowPlugin
     ''' <param name="Layers"></param>
     ''' <remarks></remarks>
     <CLSCompliant(False)> _
-    Public Sub LayersAdded(ByVal Layers() As MapWindow.Interfaces.Layer) Implements MapWindow.Interfaces.IPlugin.LayersAdded
+    Public Sub LayersAdded(ByVal Layers() As MapWindow.Interfaces.Layer) _
+        Implements MapWindow.Interfaces.IPlugin.LayersAdded
 
     End Sub
 
@@ -209,11 +223,12 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public Sub MapExtentsChanged() Implements MapWindow.Interfaces.IPlugin.MapExtentsChanged
 
-
     End Sub
+
 #End Region
 
 #Region "Plug-in Information"
+
     ''' <summary>
     ''' 
     ''' </summary>
@@ -234,7 +249,8 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public ReadOnly Property Description() As String Implements MapWindow.Interfaces.IPlugin.Description
         Get
-            Return "This plugin implements the Nonpoint-Source Pollution and Erosion Comparison Tool.  Primary developer: Allen Anselmo"
+            Return _
+                "This plugin implements the Nonpoint-Source Pollution and Erosion Comparison Tool.  Primary developer: Allen Anselmo"
         End Get
     End Property
 
@@ -298,8 +314,10 @@ Public Class MapWindowPlugin
     ''' <param name="ParentHandle"></param>
     ''' <remarks></remarks>
     <CLSCompliant(False)> _
-    Public Sub Initialize(ByVal MapWin As MapWindow.Interfaces.IMapWin, ByVal ParentHandle As Integer) Implements MapWindow.Interfaces.IPlugin.Initialize
-        g_MapWin = MapWin  '  This sets global for use elsewhere in program
+    Public Sub Initialize(ByVal MapWin As MapWindow.Interfaces.IMapWin, ByVal ParentHandle As Integer) _
+        Implements MapWindow.Interfaces.IPlugin.Initialize
+        g_MapWin = MapWin
+        '  This sets global for use elsewhere in program
         g_handle = ParentHandle
         g_StatusBar = g_MapWin.StatusBar.AddPanel("", 2, 10, Windows.Forms.StatusBarPanelAutoSize.Spring)
 
@@ -340,6 +358,7 @@ Public Class MapWindowPlugin
             End Try
         End While
     End Sub
+
 #End Region
 
 #Region "Used Interface Methods"
@@ -350,7 +369,8 @@ Public Class MapWindowPlugin
     ''' <param name="ItemName"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub ItemClicked(ByVal ItemName As String, ByRef Handled As Boolean) Implements MapWindow.Interfaces.IPlugin.ItemClicked
+    Public Sub ItemClicked(ByVal ItemName As String, ByRef Handled As Boolean) _
+        Implements MapWindow.Interfaces.IPlugin.ItemClicked
         Select Case ItemName
             Case mnuNspectAnalysis
                 ShowAnalysisForm()
@@ -378,6 +398,7 @@ Public Class MapWindowPlugin
 #End Region
 
 #Region "   Menu/Toolbar Items"
+
     ''' <summary>
     ''' Add all the menus used by the plugin
     ''' </summary>
@@ -420,6 +441,7 @@ Public Class MapWindowPlugin
     End Sub
 
 #Region "   Itemclicked Items"
+
     ''' <summary>
     ''' Shows the main Analysis form
     ''' </summary>
@@ -517,6 +539,5 @@ Public Class MapWindowPlugin
             form.ShowDialog()
         End Using
     End Sub
-
 End Class
 

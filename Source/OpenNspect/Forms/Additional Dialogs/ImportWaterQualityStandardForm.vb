@@ -17,11 +17,10 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
-Friend Class ImportWaterQualityStandardForm
 
+Friend Class ImportWaterQualityStandardForm
     Private _frmWQ As WaterQualityStandardsForm
     Private _strFileName As String
-
 
     Private Sub cmdBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowse.Click
         Try
@@ -63,14 +62,17 @@ Friend Class ImportWaterQualityStandardForm
                             txtStdName.Focus()
                             Exit Sub
                         Else
-                            strCmd = String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(txtStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
+                            strCmd = _
+                                String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
+                                               Replace(txtStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
                             'Name Check
                             If modUtil.UniqueName("WQCRITERIA", (txtStdName.Text)) Then
                                 Using cmdIns As New DataHelper(strCmd)
                                     cmdIns.ExecuteNonQuery()
                                 End Using
                             Else
-                                MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
+                                MsgBox("The name you have chosen is already in use.  Please select another.", _
+                                        MsgBoxStyle.Critical, "Select Unique Name")
                                 Exit Sub
                             End If
                         End If
@@ -101,14 +103,12 @@ Friend Class ImportWaterQualityStandardForm
         End Try
     End Sub
 
-
     Private Sub PollutantAdd(ByRef strName As String, ByRef strPoll As String, ByRef strThresh As String)
         Try
 
             Dim strPollAdd As String
             Dim strPollDetails As String
             Dim strCmdInsert As String
-
 
             'Get the WQCriteria values using the name
             strPollAdd = "SELECT * FROM WQCriteria WHERE NAME = " & "'" & strName & "'"
@@ -122,7 +122,8 @@ Friend Class ImportWaterQualityStandardForm
             Dim datapolldet As OleDbDataReader = cmdPollDet.ExecuteReader
             datapolldet.Read()
 
-            strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('" & datapolldet("POLLID") & "', '" & datapolladd("WQCRITID") & "'," & strThresh & ")"
+            strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('" & datapolldet("POLLID") & _
+                           "', '" & datapolladd("WQCRITID") & "'," & strThresh & ")"
             Dim cmdIns As New DataHelper(strCmdInsert)
             cmdIns.ExecuteNonQuery()
 

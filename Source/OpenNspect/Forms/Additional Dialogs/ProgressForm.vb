@@ -17,17 +17,14 @@
 '               Added licensing and comments to code
 
 Public Class ProgressForm
-
-
     Public Property Title() As String
         Get
             Return Me.Text
         End Get
-        Set(ByVal value As String)
+        Set (ByVal value As String)
             Me.Text = value
         End Set
     End Property
-
 
     Public Property Description() As String
         Get
@@ -38,7 +35,6 @@ Public Class ProgressForm
         End Set
     End Property
 
-
     Public Property MinRange() As Integer
         Get
             Return pbMain.Minimum
@@ -47,7 +43,6 @@ Public Class ProgressForm
             pbMain.Minimum = value
         End Set
     End Property
-
 
     Public Property MaxRange() As Integer
         Get
@@ -58,7 +53,6 @@ Public Class ProgressForm
         End Set
     End Property
 
-
     Public Property Progress() As Integer
         Get
             Return pbMain.Value
@@ -67,7 +61,6 @@ Public Class ProgressForm
             pbMain.Value = value
         End Set
     End Property
-
 
     Public Property CancelEnabled() As Boolean
         Get
@@ -78,9 +71,7 @@ Public Class ProgressForm
         End Set
     End Property
 
-
     Private _timerEnabled As Boolean
-
 
     Public Property TimerEnabled() As Boolean
         Get
@@ -96,7 +87,6 @@ Public Class ProgressForm
         End Set
     End Property
 
-
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Try
             g_KeepRunning = False
@@ -105,8 +95,8 @@ Public Class ProgressForm
         End Try
     End Sub
 
-
-    Private Sub tmrEventDriver_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrEventDriver.Tick
+    Private Sub tmrEventDriver_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles tmrEventDriver.Tick
         Try
             Windows.Forms.Application.DoEvents()
         Catch ex As Exception

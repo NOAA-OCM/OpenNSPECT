@@ -17,16 +17,15 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
+
 Friend Class SoilsSetupForm
-
-
     Private _frmSoil As SoilsForm
     Private _pRasterProps As MapWinGIS.Grid
 
 #Region "Events"
 
-
-    Private Sub cmdDEMBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDEMBrowse.Click
+    Private Sub cmdDEMBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cmdDEMBrowse.Click
         Try
             'Browse for DEM
             Dim pDEMRasterDataset As MapWinGIS.Grid
@@ -43,11 +42,13 @@ Friend Class SoilsSetupForm
         End Try
     End Sub
 
-
-    Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
+    Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cmdBrowseFile.Click
         Try
             'browse...get output filename
-            Using dlgOpen As New Windows.Forms.OpenFileDialog() With {.Filter = MSG6ShapeFile, .Title = "Open Soils Dataset"}
+            Using _
+                dlgOpen As _
+                    New Windows.Forms.OpenFileDialog() With {.Filter = MSG6ShapeFile, .Title = "Open Soils Dataset"}
                 If dlgOpen.ShowDialog = Windows.Forms.DialogResult.OK Then
                     txtSoilsDS.Text = Trim(dlgOpen.FileName)
                     PopulateCbo()
@@ -68,7 +69,6 @@ Friend Class SoilsSetupForm
 
 #Region "Helper"
 
-
     Public Sub Init(ByRef frmSoil As SoilsForm)
         Try
             _frmSoil = frmSoil
@@ -76,7 +76,6 @@ Friend Class SoilsSetupForm
             HandleError(ex)
         End Try
     End Sub
-
 
     Private Sub SaveSoils()
         Try
@@ -96,12 +95,10 @@ Friend Class SoilsSetupForm
                 Exit Sub
             End If
 
-
         Catch ex As Exception
             HandleError(ex)
         End Try
     End Sub
-
 
     Private Function ValidateData() As Boolean
         Try
@@ -109,7 +106,8 @@ Friend Class SoilsSetupForm
                 If modUtil.UniqueName("Soils", (txtSoilsName.Text)) Then
                     ValidateData = True
                 Else
-                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
+                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, _
+                            "Select Unique Name")
                     ValidateData = False
                     txtSoilsName.Focus()
                     Exit Function
@@ -153,7 +151,8 @@ Friend Class SoilsSetupForm
                 If IsNumeric(CDbl(txtMUSLEVal.Text)) Then
                     ValidateData = True
                 Else
-                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, "Numeric Values Only")
+                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, _
+                            "Numeric Values Only")
                     ValidateData = False
                 End If
             Else
@@ -166,7 +165,8 @@ Friend Class SoilsSetupForm
                 If IsNumeric(CDbl(txtMUSLEExp.Text)) Then
                     ValidateData = True
                 Else
-                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, "Numeric Values Only")
+                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, _
+                            "Numeric Values Only")
                     ValidateData = False
                 End If
             Else
@@ -175,28 +175,35 @@ Friend Class SoilsSetupForm
                 ValidateData = False
             End If
 
-
         Catch ex As Exception
             HandleError(ex)
         End Try
     End Function
 
-
-    Private Function CreateSoilsGrid(ByRef strSoilsFileName As String, ByRef strHydFieldName As String, Optional ByRef strKFactor As String = "") As Boolean
+    Private Function CreateSoilsGrid(ByRef strSoilsFileName As String, ByRef strHydFieldName As String, _
+                                      Optional ByRef strKFactor As String = "") As Boolean
         'Incoming:
         'strSoilsFileName: string of soils file name path
         'strHydFieldName: string of hydrologic group attribute
         'strKFactor: string of K factor attribute
 
         Try
-            Dim pSoilsFeatClass As MapWinGIS.Shapefile 'Soils Featureclass
-            Dim lngHydFieldIndex As Integer 'HydGroup Field Index
-            Dim lngNewHydFieldIndex As Integer 'New Group Field index
-            Dim lngKFieldIndex As Integer 'K factor Field index
-            Dim strHydValue As String 'Hyd Value to check
-            Dim lngValue As Integer 'Count
-            Dim strCmd As String 'String to insert new stuff in dbase
-            Dim strOutSoils As String 'OutSoils name
+            Dim pSoilsFeatClass As MapWinGIS.Shapefile
+            'Soils Featureclass
+            Dim lngHydFieldIndex As Integer
+            'HydGroup Field Index
+            Dim lngNewHydFieldIndex As Integer
+            'New Group Field index
+            Dim lngKFieldIndex As Integer
+            'K factor Field index
+            Dim strHydValue As String
+            'Hyd Value to check
+            Dim lngValue As Integer
+            'Count
+            Dim strCmd As String
+            'String to insert new stuff in dbase
+            Dim strOutSoils As String
+            'OutSoils name
             Dim strOutKSoils As String
 
             'Get the soils featurclass
@@ -225,7 +232,6 @@ Friend Class SoilsSetupForm
                 End If
             Next
 
-
             'If the GROUP field is missing, we have to add it
             If lngNewHydFieldIndex = -1 Then
                 Dim fieldedit As New MapWinGIS.Field
@@ -241,7 +247,8 @@ Friend Class SoilsSetupForm
             pSoilsFeatClass.StartEditingTable()
             'Now calc the Values
             For i As Integer = 0 To pSoilsFeatClass.NumShapes - 1
-                modProgDialog.ShowProgress("Calculating soils values...", "Processing Soils", 0, pSoilsFeatClass.NumShapes, lngValue, Me)
+                modProgDialog.ShowProgress("Calculating soils values...", "Processing Soils", 0, _
+                                            pSoilsFeatClass.NumShapes, lngValue, Me)
                 'Find the current value
                 If modProgDialog.g_KeepRunning Then
                     strHydValue = pSoilsFeatClass.CellValue(lngHydFieldIndex, i)
@@ -266,7 +273,9 @@ Friend Class SoilsSetupForm
                         Case "A/D"
                             pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
                         Case ""
-                            MsgBox("Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", MsgBoxStyle.Critical, "Missing Values Detected")
+                            MsgBox( _
+                                    "Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", _
+                                    MsgBoxStyle.Critical, "Missing Values Detected")
                             CreateSoilsGrid = False
                             modProgDialog.CloseDialog()
                             Exit Function
@@ -292,7 +301,8 @@ Friend Class SoilsSetupForm
             If modProgDialog.g_KeepRunning Then
                 modProgDialog.ShowProgress("Converting Soils Dataset...", "Processing Soils", 0, 2, 2, Me)
 
-                strOutSoils = modUtil.GetUniqueName("soils", IO.Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
+                strOutSoils = _
+                    modUtil.GetUniqueName("soils", IO.Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
 
                 'Hand convert the soils shapefile to grids by creating new grids based on header of dem
                 Dim dem As New MapWinGIS.Grid
@@ -313,7 +323,8 @@ Friend Class SoilsSetupForm
                 outSoils.CreateNew(strOutSoils, head, MapWinGIS.GridDataType.DoubleDataType, head.NodataValue)
 
                 If Len(strKFactor) > 0 Then
-                    strOutKSoils = modUtil.GetUniqueName("soilsk", IO.Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
+                    strOutKSoils = _
+                        modUtil.GetUniqueName("soilsk", IO.Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
                     outSoilsK.CreateNew(strOutKSoils, headK, MapWinGIS.GridDataType.DoubleDataType, head.NodataValue)
                 Else
                     strOutKSoils = ""
@@ -350,7 +361,10 @@ Friend Class SoilsSetupForm
                 soilsshp.Close()
                 'STEP 4:
                 'Now enter all into database
-                strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & CDbl(txtMUSLEExp.Text) & ")"
+                strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & _
+                         Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & _
+                         Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & _
+                         CDbl(txtMUSLEExp.Text) & ")"
                 Dim cmdIns As New DataHelper(strCmd)
                 cmdIns.ExecuteNonQuery()
 
@@ -367,7 +381,6 @@ Friend Class SoilsSetupForm
             CreateSoilsGrid = False
         End Try
     End Function
-
 
     Private Sub PopulateCbo()
         Try
@@ -390,6 +403,6 @@ Friend Class SoilsSetupForm
             HandleError(ex)
         End Try
     End Sub
-#End Region
 
+#End Region
 End Class

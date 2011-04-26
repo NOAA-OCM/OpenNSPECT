@@ -19,7 +19,6 @@ Public Class ErrorForm
     Friend WithEvents txtComments As System.Windows.Forms.TextBox
     Friend WithEvents btnCopy As System.Windows.Forms.Button
 
-
     Public Sub New(ByVal ex As System.Exception)
         MyBase.New()
         Try
@@ -32,7 +31,6 @@ Public Class ErrorForm
         End Try
     End Sub
 
-
     Private Sub cmdCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCopy.Click
         Try
             Windows.Forms.Clipboard.SetText(txtError.Text)
@@ -41,15 +39,16 @@ Public Class ErrorForm
         End Try
     End Sub
 
-
     Private Sub cmdClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdClose.Click
         Close()
     End Sub
 
-
     Private Sub frmErrorDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            txtError.Text = "OpenNSPECT (" + System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString() ' + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
+            txtError.Text = "OpenNSPECT (" + _
+                            System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location) _
+                                .ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString()
+            ' + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
             txtError.SelectionStart = txtError.Text.Length
         Catch ex As Exception
             HandleError(ex)

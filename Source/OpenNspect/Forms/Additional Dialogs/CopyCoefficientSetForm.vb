@@ -17,13 +17,13 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
-Friend Class CopyCoefficientSetForm
 
+Friend Class CopyCoefficientSetForm
     Private _frmPoll As PollutantsForm
     Private _frmNewPoll As NewPollutantForm
 
-
-    Public Sub Init(ByRef cmdCoeffSet As OleDbCommand, ByRef frmPoll As PollutantsForm, ByRef frmNewPoll As NewPollutantForm)
+    Public Sub Init(ByRef cmdCoeffSet As OleDbCommand, ByRef frmPoll As PollutantsForm, _
+                     ByRef frmNewPoll As NewPollutantForm)
         Try
             'The form is passed a recordest containing the names of all coefficient sets, allows for
             'easier populating
@@ -53,7 +53,8 @@ Friend Class CopyCoefficientSetForm
                 End If
                 MyBase.OK_Button_Click(sender, e)
             Else
-                MsgBox("The name you have choosen for coefficient set is already in use.  Please pick another.", MsgBoxStyle.Critical, "Name In Use")
+                MsgBox("The name you have choosen for coefficient set is already in use.  Please pick another.", _
+                        MsgBoxStyle.Critical, "Name In Use")
                 With txtCoeffSetName
                     .SelectionStart = 0
                     .SelectionLength = Len(txtCoeffSetName.Text)
@@ -64,5 +65,4 @@ Friend Class CopyCoefficientSetForm
             HandleError(ex)
         End Try
     End Sub
-
 End Class

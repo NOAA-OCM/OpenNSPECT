@@ -19,14 +19,12 @@
 Imports System.Data.OleDb
 
 Friend Class WaterQualityStandardsForm
-
     Dim _bolChange As Boolean = False
-
 
 #Region "Events"
 
-
-    Private Sub frmWaterQualityStandard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmWaterQualityStandard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles MyBase.Load
         Try
             _bolChange = False
             modUtil.InitComboBox(cboWQStdName, "WQCRITERIA")
@@ -35,13 +33,15 @@ Friend Class WaterQualityStandardsForm
         End Try
     End Sub
 
-
-    Private Sub cboWQStdName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboWQStdName.SelectedIndexChanged
+    Private Sub cboWQStdName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboWQStdName.SelectedIndexChanged
         Try
             Dim intYesNo As Short
 
             If _bolChange Then
-                intYesNo = MsgBox("You have made changes to the data.  Would you like to save before coninuing?", MsgBoxStyle.YesNo, "Save Changes?")
+                intYesNo = _
+                    MsgBox("You have made changes to the data.  Would you like to save before coninuing?", _
+                            MsgBoxStyle.YesNo, "Save Changes?")
                 If intYesNo = MsgBoxResult.Yes Then
                     UpdateData()
                     _bolChange = False
@@ -63,7 +63,10 @@ Friend Class WaterQualityStandardsForm
                 WQCrit.Read()
                 txtWQStdDesc.Text = WQCrit.Item("Description")
 
-                strSQLWQStdPoll = "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD, POLL_WQCRITERIA.POLL_WQCRITID " & "FROM POLL_WQCRITERIA INNER JOIN POLLUTANT " & "ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = " & WQCrit.Item("WQCRITID")
+                strSQLWQStdPoll = "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD, POLL_WQCRITERIA.POLL_WQCRITID " & _
+                                  "FROM POLL_WQCRITERIA INNER JOIN POLLUTANT " & _
+                                  "ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = " & _
+                                  WQCrit.Item("WQCRITID")
 
                 Dim WQCmd As New OleDbCommand(strSQLWQStdPoll, modUtil.g_DBConn)
                 Dim WQ As New OleDbDataAdapter(WQCmd)
@@ -73,7 +76,8 @@ Friend Class WaterQualityStandardsForm
                 dgvWaterQuality.DataSource = dt
             Else
 
-                MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
+                MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", _
+                        MsgBoxStyle.Critical, "Recordset Empty")
             End If
 
             OK_Button.Enabled = False
@@ -83,8 +87,8 @@ Friend Class WaterQualityStandardsForm
         End Try
     End Sub
 
-
-    Private Sub txtWQStdDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWQStdDesc.TextChanged
+    Private Sub txtWQStdDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtWQStdDesc.TextChanged
         Try
             OK_Button.Enabled = True
 
@@ -99,16 +103,19 @@ Friend Class WaterQualityStandardsForm
             addwq.Init(Me, Nothing)
             addwq.ShowDialog()
         Catch ex As Exception
-            HandleError(ex)     'True, "mnuNewWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)
+            'True, "mnuNewWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
 
-
     Private Sub mnuDelWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelWQStd.Click
         Try
             Dim intAns As Short
-            intAns = MsgBox("Are you sure you want to delete the Water Quality Standard '" & cboWQStdName.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
+            intAns = _
+                MsgBox( _
+                        "Are you sure you want to delete the Water Quality Standard '" & cboWQStdName.SelectedItem & _
+                        "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
             'code to handle response
 
             'WQ Recordset
@@ -145,22 +152,23 @@ Friend Class WaterQualityStandardsForm
             End If
 
         Catch ex As Exception
-            MsgBox("An Error occurred during deletion." & "  " & Err.Number & ": " & Err.Description, MsgBoxStyle.Critical, "Error")
+            MsgBox("An Error occurred during deletion." & "  " & Err.Number & ": " & Err.Description, _
+                    MsgBoxStyle.Critical, "Error")
         End Try
     End Sub
 
-
-    Private Sub mnuCopyWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopyWQStd.Click
+    Private Sub mnuCopyWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuCopyWQStd.Click
         Try
             Dim copywq As New CopyWaterQualityStandardForm
             copywq.Init(Me)
             copywq.ShowDialog()
         Catch ex As Exception
-            HandleError(ex)     'True, "mnuCopyWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)
+            'True, "mnuCopyWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
-
 
     Private Sub mnuImpWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuImpWQStd.Click
         Try
@@ -168,11 +176,11 @@ Friend Class WaterQualityStandardsForm
             impwq.Init(Me)
             impwq.ShowDialog()
         Catch ex As Exception
-            HandleError(ex)     'True, "mnuImpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)
+            'True, "mnuImpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
-
 
     Private Sub mnuExpWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExpWQStd.Click
         Try
@@ -187,11 +195,11 @@ Friend Class WaterQualityStandardsForm
             End If
 
         Catch ex As Exception
-            HandleError(ex)     'True, "mnuExpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)
+            'True, "mnuExpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
-
 
     Private Sub mnuWQHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuWQHelp.Click
         Try
@@ -201,14 +209,15 @@ Friend Class WaterQualityStandardsForm
         End Try
     End Sub
 
-
-    Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
+    Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, _
+                                                  ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) _
+        Handles dgvWaterQuality.CellValueChanged
         OK_Button.Enabled = True
     End Sub
+
 #End Region
 
 #Region "Helper Functions"
-
 
     Private Sub UpdateData()
         Try
@@ -230,7 +239,8 @@ Friend Class WaterQualityStandardsForm
 
             'Now update Threshold values
             For i = 0 To dgvWaterQuality.Rows.Count - 1
-                strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & dgvWaterQuality.Rows(i).Cells(2).Value.ToString
+                strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & _
+                              dgvWaterQuality.Rows(i).Cells(2).Value.ToString
                 Dim cmdWQSel As New DataHelper(strWQSelect)
                 Dim adWQSel = cmdWQSel.GetAdapter()
                 Dim buWQSel As New OleDbCommandBuilder(adWQSel)
@@ -244,10 +254,10 @@ Friend Class WaterQualityStandardsForm
 
             _bolChange = False
         Catch ex As Exception
-            HandleError(ex)     'False, "UpdateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)
+            'False, "UpdateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
-
 
     Private Function ValidateData() As Boolean
         Try
@@ -259,7 +269,8 @@ Friend Class WaterQualityStandardsForm
                     If CShort(val) >= 0 Then
                         ValidateData = True
                     Else
-                        MsgBox("Warning: Values must be greater than or equal to 0.", MsgBoxStyle.Critical, "Invalid Value")
+                        MsgBox("Warning: Values must be greater than or equal to 0.", MsgBoxStyle.Critical, _
+                                "Invalid Value")
                         Return False
                     End If
                 ElseIf val <> "" Then
@@ -268,10 +279,10 @@ Friend Class WaterQualityStandardsForm
                 End If
             Next
         Catch ex As Exception
-            HandleError(ex)     'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)
+            'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Function
-
 
     Public Sub UpdateWQ(ByVal strWQName As String)
         Try
@@ -284,7 +295,6 @@ Friend Class WaterQualityStandardsForm
     End Sub
 
     'Exports your current standard and pollutants to text or csv.
-
 
     Private Sub ExportStandard(ByRef strFileName As String)
         Try
@@ -302,7 +312,8 @@ Friend Class WaterQualityStandardsForm
 
             out.Close()
         Catch ex As Exception
-            HandleError(ex)     'False, "ExportStandard " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
+            HandleError(ex)
+            'False, "ExportStandard " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
 
@@ -317,7 +328,8 @@ Friend Class WaterQualityStandardsForm
             End If
 
         Catch ex As Exception
-            MsgBox("Error updating Water Quality Standards: " & Err.Number & vbNewLine & Err.Description, MsgBoxStyle.Critical, "Error")
+            MsgBox("Error updating Water Quality Standards: " & Err.Number & vbNewLine & Err.Description, _
+                    MsgBoxStyle.Critical, "Error")
         End Try
     End Sub
 End Class

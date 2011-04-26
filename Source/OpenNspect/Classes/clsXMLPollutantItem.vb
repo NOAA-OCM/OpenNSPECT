@@ -38,7 +38,6 @@ Public Class clsXMLPollutantItem
     ' *
     ' *************************************************************************************
 
-
     Private Const NODE_NAME As String = "Pollutant"
     Private Const ATTRIBUTE_ID As String = "ID"
     Private Const ELEMENT_Apply As String = "Apply"
@@ -64,7 +63,6 @@ Public Class clsXMLPollutantItem
 
         End Get
     End Property
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -105,7 +103,6 @@ Public Class clsXMLPollutantItem
             CreateNode = Nothing
         End Try
     End Function
-
 
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try

@@ -39,14 +39,13 @@ Public Class clsXMLLandUseItems
     ' *
     ' *************************************************************************************
 
-
     'The NODE_NAME constant contains the name of the XML element that
     'is being wrapped.
-
 
     Private Const NODE_NAME As String = "LandUses"
 
     Private m_colItems As Collections.ArrayList
+
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -55,7 +54,6 @@ Public Class clsXMLLandUseItems
 
         End Get
     End Property
-
 
     'Return the count of order items.
     Public ReadOnly Property Count() As Integer
@@ -74,8 +72,8 @@ Public Class clsXMLLandUseItems
         End Set
     End Property
 
-
-    Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
+    Public Function GetEnumerator() As System.Collections.IEnumerator _
+        Implements System.Collections.IEnumerable.GetEnumerator
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
@@ -83,7 +81,6 @@ Public Class clsXMLLandUseItems
             GetEnumerator = Nothing
         End Try
     End Function
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -127,12 +124,10 @@ Public Class clsXMLLandUseItems
         End Try
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
-
 
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
@@ -155,7 +150,6 @@ Public Class clsXMLLandUseItems
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Sub New()
         Try

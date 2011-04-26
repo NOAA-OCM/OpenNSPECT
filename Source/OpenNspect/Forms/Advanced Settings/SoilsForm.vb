@@ -17,10 +17,10 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
+
 Friend Class SoilsForm
 
 #Region "Events"
-
 
     Private Sub frmSoils_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -30,8 +30,8 @@ Friend Class SoilsForm
         End Try
     End Sub
 
-
-    Private Sub cboSoils_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboSoils.SelectedIndexChanged
+    Private Sub cboSoils_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboSoils.SelectedIndexChanged
         Try
             Dim strSQLSoils As String = String.Format("SELECT * FROM SOILS WHERE NAME LIKE '{0}'", cboSoils.Text)
             Using soilCmd As New OleDbCommand(strSQLSoils, modUtil.g_DBConn)
@@ -59,7 +59,6 @@ Friend Class SoilsForm
         End Try
     End Sub
 
-
     Private Sub mnuDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelete.Click
         Try
             Dim intAns As Object
@@ -69,7 +68,9 @@ Friend Class SoilsForm
             strSQLSoilsDel = "DELETE FROM SOILS WHERE NAME LIKE '" & cboSoils.Text & "'"
 
             If Not (cboSoils.Text = "") Then
-                intAns = MsgBox("Are you sure you want to delete the soils setup '" & cboSoils.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
+                intAns = _
+                    MsgBox("Are you sure you want to delete the soils setup '" & cboSoils.SelectedItem & "'?", _
+                            MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
                 'code to handle response
                 If intAns = MsgBoxResult.Yes Then
 
@@ -100,8 +101,8 @@ Friend Class SoilsForm
         End Try
     End Sub
 
-
-    Private Sub mnuSoilsHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSoilsHelp.Click
+    Private Sub mnuSoilsHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuSoilsHelp.Click
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "soils.htm")
         Catch ex As Exception
@@ -114,6 +115,4 @@ Friend Class SoilsForm
 #Region "Helper Functions"
 
 #End Region
-
-
 End Class

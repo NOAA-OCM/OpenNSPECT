@@ -18,7 +18,6 @@
 
 Imports System.Xml
 
-
 Friend Class clsXMLPrjFile
     Inherits clsXMLBase
     ' *************************************************************************************
@@ -39,9 +38,7 @@ Friend Class clsXMLPrjFile
     ' *
     ' *************************************************************************************
 
-
     'Following are the names of the NODES
-
 
     Private Const NODE_NAME As String = "NSPECTProjectFile"
     Private Const NODE_PRJNAME As String = "PrjName"
@@ -92,10 +89,14 @@ Friend Class clsXMLPrjFile
     Public intLocalEffects As Short
 
     'Class holders for DataGrid goodies
-    Public clsMgmtScenHolder As clsXMLMgmtScenItems 'A collection of management scenarios
-    Public clsPollItems As clsXMLPollutantItems 'A collection of pollutants from pollutants tab
-    Public clsLUItems As clsXMLLandUseItems 'A collection of land uses
-    Public clsOutputItems As clsXMLOutputItems 'A collection of outputs
+    Public clsMgmtScenHolder As clsXMLMgmtScenItems
+    'A collection of management scenarios
+    Public clsPollItems As clsXMLPollutantItems
+    'A collection of pollutants from pollutants tab
+    Public clsLUItems As clsXMLLandUseItems
+    'A collection of land uses
+    Public clsOutputItems As clsXMLOutputItems
+    'A collection of outputs
 
     Public intCalcErosion As Short
     Public intUseOwnSDR As Short
@@ -114,7 +115,6 @@ Friend Class clsXMLPrjFile
 
         End Get
     End Property
-
 
     Public Overrides Property XML() As String
         Get
@@ -144,7 +144,6 @@ Friend Class clsXMLPrjFile
         End Set
     End Property
 
-
     Public Sub SaveFile(ByRef strXML As String)
         Try
             Dim dom As New XmlDocument
@@ -156,7 +155,6 @@ Friend Class clsXMLPrjFile
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -244,7 +242,6 @@ Friend Class clsXMLPrjFile
         End Try
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -293,17 +290,18 @@ Friend Class clsXMLPrjFile
         End Try
     End Sub
 
-
     Public Sub New()
         Try
-            clsMgmtScenHolder = New clsXMLMgmtScenItems 'A collection of management scenarios
-            clsPollItems = New clsXMLPollutantItems 'A collection of Pollutants
-            clsLUItems = New clsXMLLandUseItems 'A collection of landuses
-            clsOutputItems = New clsXMLOutputItems 'A collection of outputs
+            clsMgmtScenHolder = New clsXMLMgmtScenItems
+            'A collection of management scenarios
+            clsPollItems = New clsXMLPollutantItems
+            'A collection of Pollutants
+            clsLUItems = New clsXMLLandUseItems
+            'A collection of landuses
+            clsOutputItems = New clsXMLOutputItems
+            'A collection of outputs
         Catch ex As Exception
             HandleError(ex)
         End Try
     End Sub
-
-
 End Class

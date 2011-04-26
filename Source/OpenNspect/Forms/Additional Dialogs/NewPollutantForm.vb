@@ -17,16 +17,16 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
-Friend Class NewPollutantForm
 
-    Private _intPollID As Short 'There's a need to have the PollID so we'll store it here
-    Private _intLCTypeID As Short 'Land Class (CCAP) ID - needed to add new coefficient sets
+Friend Class NewPollutantForm
+    Private _intPollID As Short
+    'There's a need to have the PollID so we'll store it here
+    Private _intLCTypeID As Short
+    'Land Class (CCAP) ID - needed to add new coefficient sets
 
     Private _frmPoll As PollutantsForm
 
-
 #Region "Events"
-
 
     Private Sub frmNewPollutants_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -36,12 +36,15 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
-    Private Sub cboLCType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboLCType.SelectedIndexChanged
+    Private Sub cboLCType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboLCType.SelectedIndexChanged
         Try
             Dim strLCClasses As String
 
-            strLCClasses = "SELECT LCTYPE.LCTYPEID, LCCLASS.VALUE, LCCLASS.NAME, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON " & "LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '" & cboLCType.Text & "'" & " ORDER BY LCCLASS.VALUE"
+            strLCClasses = _
+                "SELECT LCTYPE.LCTYPEID, LCCLASS.VALUE, LCCLASS.NAME, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON " & _
+                "LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '" & cboLCType.Text & "'" & _
+                " ORDER BY LCCLASS.VALUE"
             Using cmdLC As New DataHelper(strLCClasses)
                 Using dataLC As OleDbDataReader = cmdLC.ExecuteReader()
                     dgvCoef.Rows.Clear()
@@ -66,8 +69,8 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
-    Private Sub mnuCoeffNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffNewSet.Click
+    Private Sub mnuCoeffNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuCoeffNewSet.Click
         Try
             g_boolAddCoeff = False
             Dim addCoeff As New NewCoefficientSetForm
@@ -78,8 +81,8 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
-    Private Sub mnuCoeffCopySet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCoeffCopySet.Click
+    Private Sub mnuCoeffCopySet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuCoeffCopySet.Click
         Try
             g_boolCopyCoeff = False
             Dim newCopyCoef As New CopyCoefficientSetForm
@@ -90,8 +93,9 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
-    Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged
+    Private Sub dgvCoef_CellValueChanged(ByVal sender As System.Object, _
+                                          ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) _
+        Handles dgvCoef.CellValueChanged
         Try
             IsDirty = True
             CmdSaveEnabled()
@@ -100,8 +104,8 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
-    Private Sub txtPollutant_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPollutant.TextChanged
+    Private Sub txtPollutant_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtPollutant.TextChanged
         Try
             IsDirty = True
             CmdSaveEnabled()
@@ -110,8 +114,8 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
-    Private Sub txtCoeffSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSet.TextChanged
+    Private Sub txtCoeffSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtCoeffSet.TextChanged
         Try
             IsDirty = True
             CmdSaveEnabled()
@@ -120,8 +124,8 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
-    Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetDesc.TextChanged
+    Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtCoeffSetDesc.TextChanged
         Try
             IsDirty = True
             CmdSaveEnabled()
@@ -134,7 +138,10 @@ Friend Class NewPollutantForm
         Try
             If CheckForm() Then
                 If UpdateValues() Then
-                    MsgBox(txtPollutant.Text & " successfully added.  Please enter value for associated water quality standards.", MsgBoxStyle.Information, "Pollutant Successfully Added")
+                    MsgBox( _
+                            txtPollutant.Text & _
+                            " successfully added.  Please enter value for associated water quality standards.", _
+                            MsgBoxStyle.Information, "Pollutant Successfully Added")
 
                     _frmPoll.SSTab1.SelectedIndex = 1
                     MyBase.OK_Button_Click(sender, e)
@@ -153,7 +160,6 @@ Friend Class NewPollutantForm
 
 #Region "Helpers"
 
-
     Public Sub Init(ByRef frmPoll As PollutantsForm)
         Try
             _frmPoll = frmPoll
@@ -162,11 +168,9 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
     Private Sub CmdSaveEnabled()
         OK_Button.Enabled = IsDirty
     End Sub
-
 
     Private Function CheckForm() As Boolean
         Try
@@ -214,7 +218,6 @@ Friend Class NewPollutantForm
         End Try
     End Function
 
-
     Private Function ValidateGridValues() As Boolean
         Try
             'Need to validate each grid value before saving.  Essentially we take it a row at a time,
@@ -251,26 +254,35 @@ Friend Class NewPollutantForm
         End Try
     End Function
 
-
     Private Function UpdateValues() As Boolean
 
-        Dim strInsertPollutant As String 'Insert String for new poll
-        Dim strSelectPollutant As String 'Select string for new poll
-        Dim strSelectLCType As String 'Select string for LCType
-        Dim strInsertCoeffSet As String 'Insert string for new coeff set
-        Dim strSelectCoeffSet As String 'Select string for new coeff set
-        Dim strInsertCoeffs As String 'Insert string for the coefficients
-        Dim strSelectWQCrit As String 'Select string for Water Quality
-        Dim strInsertWQCrit As String 'Insert string for Water Quality
-        Dim strNewColor As String 'New color
-
+        Dim strInsertPollutant As String
+        'Insert String for new poll
+        Dim strSelectPollutant As String
+        'Select string for new poll
+        Dim strSelectLCType As String
+        'Select string for LCType
+        Dim strInsertCoeffSet As String
+        'Insert string for new coeff set
+        Dim strSelectCoeffSet As String
+        'Select string for new coeff set
+        Dim strInsertCoeffs As String
+        'Insert string for the coefficients
+        Dim strSelectWQCrit As String
+        'Select string for Water Quality
+        Dim strInsertWQCrit As String
+        'Insert string for Water Quality
+        Dim strNewColor As String
+        'New color
 
         Try
             'Step 1a: Get a new color for this pollutant
             strNewColor = modUtil.ReturnHSVColorString
 
             'Step 1: Insert the New Pollutant
-            strInsertPollutant = "INSERT INTO POLLUTANT(NAME, POLLTYPE, COLOR) VALUES ('" & Replace(Trim(txtPollutant.Text), "'", "''") & "', 0, " & "'" & strNewColor & "'" & ")"
+            strInsertPollutant = "INSERT INTO POLLUTANT(NAME, POLLTYPE, COLOR) VALUES ('" & _
+                                 Replace(Trim(txtPollutant.Text), "'", "''") & "', 0, " & "'" & strNewColor & "'" & _
+                                 ")"
             Dim cmdinspol As New DataHelper(strInsertPollutant)
             cmdinspol.ExecuteNonQuery()
 
@@ -286,7 +298,8 @@ Friend Class NewPollutantForm
             Dim dataWQCrit As OleDbDataReader = cmdWQCrit.ExecuteReader()
 
             While dataWQCrit.Read()
-                strInsertWQCrit = "INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES (" & dataNewPoll("POLLID") & "," & dataWQCrit("WQCRITID") & "," & "0 )"
+                strInsertWQCrit = "INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES (" & _
+                                  dataNewPoll("POLLID") & "," & dataWQCrit("WQCRITID") & "," & "0 )"
                 Dim cmdInsWQCrit As New DataHelper(strInsertWQCrit)
                 cmdInsWQCrit.ExecuteNonQuery()
             End While
@@ -299,7 +312,10 @@ Friend Class NewPollutantForm
             dataNewType.Read()
 
             'Step 4: Insert the New coefficient set
-            strInsertCoeffSet = "INSERT INTO COEFFICIENTSET (NAME, DESCRIPTION, LCTYPEID, POLLID) VALUES ('" & Replace(Trim(txtCoeffSet.Text), "'", "''") & "', '" & Replace(Trim(txtCoeffSetDesc.Text), "'", "''") & "'," & dataNewType("LCTypeID") & "," & dataNewPoll("POLLID") & ")"
+            strInsertCoeffSet = "INSERT INTO COEFFICIENTSET (NAME, DESCRIPTION, LCTYPEID, POLLID) VALUES ('" & _
+                                Replace(Trim(txtCoeffSet.Text), "'", "''") & "', '" & _
+                                Replace(Trim(txtCoeffSetDesc.Text), "'", "''") & "'," & dataNewType("LCTypeID") & "," & _
+                                dataNewPoll("POLLID") & ")"
             dataNewPoll.Close()
             dataNewType.Close()
             Dim cmdInsCoef As New DataHelper(strInsertCoeffSet)
@@ -313,7 +329,11 @@ Friend Class NewPollutantForm
 
             'Step 6: Insert the new coeffs for that set
             For i As Integer = 0 To dgvCoef.Rows.Count - 1
-                strInsertCoeffs = "INSERT INTO COEFFICIENT (COEFF1, COEFF2, COEFF3, COEFF4, COEFFSETID, LCCLASSID) VALUES (" & dgvCoef.Rows(i).Cells(2).Value.ToString & ", " & dgvCoef.Rows(i).Cells(3).Value.ToString & ", " & dgvCoef.Rows(i).Cells(4).Value.ToString & ", " & dgvCoef.Rows(i).Cells(5).Value.ToString & ", " & dataCoeff("CoeffSetID") & ", " & dgvCoef.Rows(i).Cells(7).Value.ToString & ")"
+                strInsertCoeffs = _
+                    "INSERT INTO COEFFICIENT (COEFF1, COEFF2, COEFF3, COEFF4, COEFFSETID, LCCLASSID) VALUES (" & _
+                    dgvCoef.Rows(i).Cells(2).Value.ToString & ", " & dgvCoef.Rows(i).Cells(3).Value.ToString & ", " & _
+                    dgvCoef.Rows(i).Cells(4).Value.ToString & ", " & dgvCoef.Rows(i).Cells(5).Value.ToString & ", " & _
+                    dataCoeff("CoeffSetID") & ", " & dgvCoef.Rows(i).Cells(7).Value.ToString & ")"
                 Dim cmdInsCoeffs As New DataHelper(strInsertCoeffs)
                 cmdInsCoeffs.ExecuteNonQuery()
             Next i
@@ -326,22 +346,25 @@ Friend Class NewPollutantForm
             UpdateValues = True
         Catch ex As Exception
             'ALFREDO
-            MsgBox("An error occurred while creating new pollutant." & vbNewLine & Err.Number & ": " & Err.Description, MsgBoxStyle.Critical, "Error")
+            MsgBox("An error occurred while creating new pollutant." & vbNewLine & Err.Number & ": " & Err.Description, _
+                    MsgBoxStyle.Critical, "Error")
             HandleError(ex)
         End Try
     End Function
-
 
     Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
             'the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
             'from the set being copied
-            Dim strCopySet As String 'The Recordset of existing coefficients being copied
-            Dim strLandClass As String 'Select for Landclass
+            Dim strCopySet As String
+            'The Recordset of existing coefficients being copied
+            Dim strLandClass As String
+            'Select for Landclass
             Dim i As Short = 0
 
-            strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
+            strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & _
+                         "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
             Dim cmdCopySet As New DataHelper(strCopySet)
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
 
@@ -376,7 +399,6 @@ Friend Class NewPollutantForm
         End Try
     End Sub
 
-
     Public Sub AddCoefficient(ByRef strCoeffName As String, ByRef strLCType As String)
         Try
             'TODO: verify this is even possible without the _intPollID and _intLCTypeID
@@ -386,27 +408,34 @@ Friend Class NewPollutantForm
             'garnered above during a cbo click event.  Once that's done, we'll add a series of blank
             'coefficients for the landclass type the user chooses...ie CCAP, NotCCAP, whatever
 
-            Dim strNewLcType As String 'CmdString for inserting new coefficientset
-            Dim strDefault As String '
-            Dim strNewCoeffID As String 'Holder for the CoefficientSetID
+            Dim strNewLcType As String
+            'CmdString for inserting new coefficientset
+            Dim strDefault As String
+            '
+            Dim strNewCoeffID As String
+            'Holder for the CoefficientSetID
             Dim intCoeffSetID As Short
             Dim i As Short = 0
 
-
             'First need to add the coefficient set to that table
-            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & _intLCTypeID & ")"
+            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & _
+                           Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & _intLCTypeID & ")"
             Dim cmdInsLC As New DataHelper(strNewLcType)
             cmdInsLC.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
             'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
-            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
+            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & _
+                            "'"
             Dim cmdNewCoefID As New DataHelper(strNewCoeffID)
             Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
             dataNewCoeffID.Read()
             intCoeffSetID = dataNewCoeffID("CoeffSetID")
 
-            strDefault = "SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "'"
+            strDefault = "SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & _
+                         "LCCLASS.VAlue as valValue FROM LCTYPE " & _
+                         "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & _
+                         strLCType & "'"
             Dim cmdCopySet As New DataHelper(strDefault)
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
 
@@ -431,7 +460,6 @@ Friend Class NewPollutantForm
                 row("LCClassID") = dataCopySet("LCClassID")
                 dt.Rows.Add(row)
 
-
                 dgvCoef.Rows(i).Cells(0).Value = dataCopySet("valValue")
                 dgvCoef.Rows(i).Cells(1).Value = dataCopySet("valName")
                 dgvCoef.Rows(i).Cells(2).Value = "0"
@@ -447,7 +475,6 @@ Friend Class NewPollutantForm
             dataCopySet.Close()
             dataNewCoeffID.Close()
 
-
             Close()
 
         Catch ex As Exception
@@ -456,6 +483,4 @@ Friend Class NewPollutantForm
     End Sub
 
 #End Region
-
-
 End Class

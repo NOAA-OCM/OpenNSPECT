@@ -17,12 +17,12 @@
 '               Added licensing and comments to code
 
 Imports System.Data.OleDb
-Friend Class CopyWaterQualityStandardForm
 
+Friend Class CopyWaterQualityStandardForm
     Private _frmWQStd As WaterQualityStandardsForm
 
-
-    Private Sub frmCopyWQStd_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
+    Private Sub frmCopyWQStd_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) _
+        Handles MyBase.Load
         Try
             modUtil.InitComboBox(cboStdName, "WQCRITERIA")
 
@@ -47,7 +47,9 @@ Friend Class CopyWaterQualityStandardForm
                     strPollStandard = "SELECT * FROM POLL_WQCRITERIA WHERE WQCRITID =" & datastd("WQCRITID").ToString
                     Using datahelper As New DataHelper(strPollStandard)
                         Using datapoll = datahelper.ExecuteReader()
-                            strCmd = String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(Trim(txtStdName.Text), "'", "''"), datastd("Description"))
+                            strCmd = _
+                                String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
+                                               Replace(Trim(txtStdName.Text), "'", "''"), datastd("Description"))
                             If modUtil.UniqueName("WQCRITERIA", Trim(txtStdName.Text)) Then
                                 Using cmdIns As New DataHelper(strCmd)
                                     cmdIns.ExecuteNonQuery()
@@ -56,11 +58,19 @@ Friend Class CopyWaterQualityStandardForm
                                 MsgBox(Err4, MsgBoxStyle.Critical, "Enter Unique Name")
                                 Exit Sub
                             End If
-                            Using cmdNewStandard As New DataHelper(String.Format("Select * from WQCRITERIA WHERE NAME LIKE '{0}'", Trim(txtStdName.Text)))
+                            Using _
+                                cmdNewStandard As _
+                                    New DataHelper( _
+                                                    String.Format("Select * from WQCRITERIA WHERE NAME LIKE '{0}'", _
+                                                                   Trim(txtStdName.Text)))
                                 Using datanewstd As OleDbDataReader = cmdNewStandard.ExecuteReader()
                                     datanewstd.Read()
                                     While datapoll.Read()
-                                        strCmd2 = String.Format("INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES ({0}, {1}, {2})", datapoll("POLLID"), datanewstd("WQCRITID"), datapoll("Threshold"))
+                                        strCmd2 = _
+                                            String.Format( _
+                                                           "INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES ({0}, {1}, {2})", _
+                                                           datapoll("POLLID"), datanewstd("WQCRITID"), _
+                                                           datapoll("Threshold"))
                                         Using cmdIns2 As New DataHelper(strCmd2)
                                             cmdIns2.ExecuteNonQuery()
                                         End Using
@@ -84,5 +94,4 @@ Friend Class CopyWaterQualityStandardForm
     Public Sub Init(ByRef frmWQ As WaterQualityStandardsForm)
         _frmWQStd = frmWQ
     End Sub
-
 End Class

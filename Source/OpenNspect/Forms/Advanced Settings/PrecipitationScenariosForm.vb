@@ -19,13 +19,11 @@
 Imports System.Data.OleDb
 
 Friend Class PrecipitationScenariosForm
-
     Private _boolLoad As Boolean
 
     Private _pInputPrecipDS As MapWinGIS.Grid
 
 #Region "Events"
-
 
     Private Sub frmPrecipitation_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
@@ -38,8 +36,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub cboScenName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboScenName.SelectedIndexChanged
+    Private Sub cboScenName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboScenName.SelectedIndexChanged
         Try
             Dim strSQLPrecip As String
             strSQLPrecip = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
@@ -67,8 +65,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub txtDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDesc.TextChanged
+    Private Sub txtDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtDesc.TextChanged
         Try
             MakeDirty()
             txtDesc.Text = Replace(txtDesc.Text, "'", "")
@@ -77,8 +75,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub txtPrecipFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPrecipFile.TextChanged
+    Private Sub txtPrecipFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtPrecipFile.TextChanged
         Try
             MakeDirty()
         Catch ex As Exception
@@ -86,8 +84,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFile.Click
+    Private Sub cmdBrowseFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cmdBrowseFile.Click
         Try
             Dim pPrecipRasterDataset As MapWinGIS.Grid
             Dim strProj As String
@@ -102,7 +100,9 @@ Friend Class PrecipitationScenariosForm
                 strProj = CheckSpatialReference(pPrecipRasterDataset)
                 If strProj = "" Then
 
-                    MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                    MsgBox( _
+                            "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
+                            MsgBoxStyle.Exclamation, "No Project Information Detected")
                     txtPrecipFile.Text = ""
                     Exit Sub
 
@@ -123,8 +123,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGridUnits.SelectedIndexChanged
+    Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboGridUnits.SelectedIndexChanged
         Try
             MakeDirty()
         Catch ex As Exception
@@ -132,8 +132,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipUnits.SelectedIndexChanged
+    Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboPrecipUnits.SelectedIndexChanged
         Try
             MakeDirty()
         Catch ex As Exception
@@ -141,8 +141,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTimePeriod.SelectedIndexChanged
+    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboTimePeriod.SelectedIndexChanged
         Try
             If cboTimePeriod.SelectedIndex = 0 Then
                 lblRainingDays.Visible = True
@@ -157,8 +157,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub txtRainingDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRainingDays.TextChanged
+    Private Sub txtRainingDays_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles txtRainingDays.TextChanged
         Try
             MakeDirty()
 
@@ -167,8 +167,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPrecipType.SelectedIndexChanged
+    Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles cboPrecipType.SelectedIndexChanged
         Try
             If Not _boolLoad Then
                 MakeDirty()
@@ -177,7 +177,6 @@ Friend Class PrecipitationScenariosForm
             HandleError(ex)
         End Try
     End Sub
-
 
     Private Sub SaveRecord()
         Dim strSQLPrecip As String = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
@@ -208,7 +207,8 @@ Friend Class PrecipitationScenariosForm
         IsDirty = False
     End Sub
 
-    Private Sub mnuNewPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewPrecip.Click
+    Private Sub mnuNewPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuNewPrecip.Click
         Try
             Dim newpre As New NewPrecipitationScenarioForm
             newpre.Init(Nothing, Me)
@@ -218,8 +218,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub mnuDelPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDelPrecip.Click
+    Private Sub mnuDelPrecip_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuDelPrecip.Click
         Try
             Dim intAns As Object
             Dim strSQLPrecipDel As String
@@ -228,7 +228,10 @@ Friend Class PrecipitationScenariosForm
             strSQLPrecipDel = "DELETE FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
 
             If Not (cboScenName.Text = "") Then
-                intAns = MsgBox("Are you sure you want to delete the precipitation scenario '" & cboScenName.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
+                intAns = _
+                    MsgBox( _
+                            "Are you sure you want to delete the precipitation scenario '" & cboScenName.SelectedItem & _
+                            "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
                 'code to handle response
                 If intAns = MsgBoxResult.Yes Then
                     'Set up a delete rs and get rid of it
@@ -259,8 +262,8 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub mnuPrecipHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPrecipHelp.Click
+    Private Sub mnuPrecipHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles mnuPrecipHelp.Click
         Try
             System.Windows.Forms.Help.ShowHelp(Me, modUtil.g_nspectPath & "\Help\nspect.chm", "precip.htm")
         Catch ex As Exception
@@ -268,18 +271,18 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-
-    Private Sub cboScenName_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cboTimePeriod.KeyDown, cboScenName.KeyDown, cboPrecipUnits.KeyDown, cboGridUnits.KeyDown
+    Private Sub cboScenName_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) _
+        Handles cboTimePeriod.KeyDown, cboScenName.KeyDown, cboPrecipUnits.KeyDown, cboGridUnits.KeyDown
         Try
             e.SuppressKeyPress = True
         Catch ex As Exception
             HandleError(ex)
         End Try
     End Sub
+
 #End Region
 
 #Region "Helper Functions"
-
 
     Private Function CheckParams() As Boolean
         Try
@@ -328,7 +331,8 @@ Friend Class PrecipitationScenariosForm
 
             If cboTimePeriod.SelectedIndex = 0 Then
                 If Not IsNumeric(txtRainingDays.Text) Or Len(txtRainingDays.Text) = 0 Then
-                    MsgBox("Please enter a numeric value for Raining Days.", MsgBoxStyle.Critical, "Raining Days Value Incorrect")
+                    MsgBox("Please enter a numeric value for Raining Days.", MsgBoxStyle.Critical, _
+                            "Raining Days Value Incorrect")
                     txtRainingDays.Focus()
                     CheckParams = False
                     Exit Function
@@ -337,7 +341,6 @@ Friend Class PrecipitationScenariosForm
 
             'if it got through all that, then set it to true
             CheckParams = True
-
 
         Catch ex As Exception
             HandleError(ex)
@@ -348,7 +351,6 @@ Friend Class PrecipitationScenariosForm
         OK_Button.Enabled = True
         IsDirty = True
     End Sub
-
 
     Public Sub UpdatePrecip(ByVal strPrecName As String)
         Try
@@ -370,11 +372,10 @@ Friend Class PrecipitationScenariosForm
 
                 MsgBox(cboScenName.Text & " saved successfully.", MsgBoxStyle.OkOnly, "Record Saved")
                 MyBase.OK_Button_Click(sender, e)
-           
+
             End If
         Catch ex As Exception
             HandleError(ex)
         End Try
     End Sub
-
 End Class

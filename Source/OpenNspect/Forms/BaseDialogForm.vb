@@ -2,6 +2,7 @@
 
 Public Class BaseDialogForm
     Private _isDirty As Boolean
+
     ''' <summary>
     ''' Gets or sets a value indicating whether this instance is dirty, i.e. whether it has changes.
     ''' </summary>
@@ -12,16 +13,19 @@ Public Class BaseDialogForm
         Get
             Return _isDirty
         End Get
-        Set(ByVal value As Boolean)
+        Set (ByVal value As Boolean)
             _isDirty = value
         End Set
     End Property
-    Protected Overridable Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+
+    Protected Overridable Sub OK_Button_Click (ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Protected Overridable Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Protected Overridable Sub Cancel_Button_Click (ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles Cancel_Button.Click
 
         If _isDirty AndAlso Not ConfirmCancel() Then
             Exit Sub
@@ -32,7 +36,8 @@ Public Class BaseDialogForm
     End Sub
 
     Public Function ConfirmCancel() As Boolean
-        Return MsgBoxResult.Yes = MsgBox("You have made changes, are you sure you want to quit?", MsgBoxStyle.YesNo, "Quit?")
+        Return _
+            MsgBoxResult.Yes = _
+            MsgBox ("Are you sure you want to cancel, losing unsaved changes?", MsgBoxStyle.YesNo, "Discard Changes?")
     End Function
-
 End Class

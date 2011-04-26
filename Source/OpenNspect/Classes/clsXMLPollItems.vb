@@ -36,10 +36,8 @@ Public Class clsXMLLUScenPollItems
     '
     '*************************************************************************
 
-
     'The NODE_NAME constant contains the name of the XML element that
     'is being wrapped.
-
 
     Private Const NODE_NAME As String = "ManScenPollutants"
 
@@ -51,7 +49,6 @@ Public Class clsXMLLUScenPollItems
         End Get
     End Property
 
-
     Public ReadOnly Property NodeName() As String
         Get
             'Retrieve the name of the element that this class wraps.
@@ -61,7 +58,6 @@ Public Class clsXMLLUScenPollItems
         End Get
     End Property
 
-
     Public ReadOnly Property Count() As Integer
         Get
             'Return the count of order items.
@@ -70,8 +66,8 @@ Public Class clsXMLLUScenPollItems
         End Get
     End Property
 
-
-    Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
+    Public Function GetEnumerator() As System.Collections.IEnumerator _
+        Implements System.Collections.IEnumerable.GetEnumerator
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
@@ -79,7 +75,6 @@ Public Class clsXMLLUScenPollItems
             GetEnumerator = Nothing
         End Try
     End Function
-
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
@@ -116,7 +111,6 @@ Public Class clsXMLLUScenPollItems
         End Try
     End Function
 
-
     Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
@@ -124,7 +118,6 @@ Public Class clsXMLLUScenPollItems
 
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
-
 
             Dim clsPoll As clsXMLLUScenPollItem
             Dim nodes As XmlNodeList
@@ -145,7 +138,6 @@ Public Class clsXMLLUScenPollItems
         End Try
     End Sub
 
-
     Public Sub New()
         Try
             m_colItems = New Collections.ArrayList
@@ -153,7 +145,6 @@ Public Class clsXMLLUScenPollItems
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Sub Add(ByVal Pollutant As clsXMLLUScenPollItem)
         Try
@@ -164,7 +155,6 @@ Public Class clsXMLLUScenPollItems
             HandleError(ex)
         End Try
     End Sub
-
 
     Public Sub Remove(ByVal Index As Integer)
         Try
