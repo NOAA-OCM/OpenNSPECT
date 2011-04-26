@@ -101,22 +101,31 @@ Public Class clsXMLBase
         End Try
     End Sub
 
+    ''' <summary>
+    '''The GetNodeText function retrieves the value of the given child element
+    '''within the given parent element. If the requested child element is not
+    '''found, then an empty string is returned.
+    ''' </summary>
+    ''' <param name="Parent">The parent.</param>
+    ''' <param name="ChildName">Name of the child.</param>
+    ''' <param name="NodeTextType">Type of the node text.</param><returns></returns>
     Public Function GetNodeText(ByRef Parent As XmlNode, ByRef ChildName As String, _
                                  Optional ByRef NodeTextType As String = "") As String
-        Try
-            'The GetNodeText function retrieves the value of the given child element
-            'within the given parent element. If the requested child element is not
-            'found, then an empty string is returned.
 
-            GetNodeText = Parent.SelectSingleNode(ChildName).InnerText
-        Catch ex As Exception
-            If NodeTextType = "integer" Then
-                GetNodeText = "0"
-            Else
-                GetNodeText = ""
+        Try
+            If Parent Is Nothing Or Parent.SelectSingleNode(ChildName) Is Nothing Then
+                If NodeTextType = "integer" Then
+                    Return "0"
+                Else
+                    Return ""
+                End If
             End If
 
+            Return Parent.SelectSingleNode(ChildName).InnerText
+
+        Catch ex As Exception
             HandleError(ex)
+            Return ""
         End Try
     End Function
 End Class
