@@ -59,27 +59,12 @@ Public Class MapWindowPlugin
     End Property
 #Region "Unused Plug-in Interface Elements"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Handle"></param>
-    ''' <param name="Location"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub LegendDoubleClick(ByVal Handle As Integer, ByVal Location As ClickLocation, _
                                   ByRef Handled As Boolean) Implements IPlugin.LegendDoubleClick
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Handle"></param>
-    ''' <param name="Button"></param>
-    ''' <param name="Location"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub LegendMouseDown(ByVal Handle As Integer, ByVal Button As Integer, _
                                 ByVal Location As ClickLocation, ByRef Handled As Boolean) _
@@ -87,14 +72,6 @@ Public Class MapWindowPlugin
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Handle"></param>
-    ''' <param name="Button"></param>
-    ''' <param name="Location"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub LegendMouseUp(ByVal Handle As Integer, ByVal Button As Integer, _
                               ByVal Location As ClickLocation, ByRef Handled As Boolean) _
@@ -102,141 +79,63 @@ Public Class MapWindowPlugin
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Bounds"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     Public Sub MapDragFinished(ByVal Bounds As Rectangle, ByRef Handled As Boolean) _
         Implements IPlugin.MapDragFinished
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Button"></param>
-    ''' <param name="Shift"></param>
-    ''' <param name="x"></param>
-    ''' <param name="y"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     Public Sub MapMouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
                            ByRef Handled As Boolean) Implements IPlugin.MapMouseUp
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="msg"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     Public Sub Message(ByVal msg As String, ByRef Handled As Boolean) Implements IPlugin.Message
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="ProjectFile"></param>
-    ''' <param name="SettingsString"></param>
-    ''' <remarks></remarks>
     Public Sub ProjectSaving(ByVal ProjectFile As String, ByRef SettingsString As String) _
         Implements IPlugin.ProjectSaving
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Handle"></param>
-    ''' <param name="SelectInfo"></param>
-    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub ShapesSelected(ByVal Handle As Integer, ByVal SelectInfo As SelectInfo) _
         Implements IPlugin.ShapesSelected
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Handle"></param>
-    ''' <remarks></remarks>
     Public Sub LayerSelected(ByVal Handle As Integer) Implements IPlugin.LayerSelected
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="ProjectFile"></param>
-    ''' <param name="SettingsString"></param>
-    ''' <remarks></remarks>
     Public Sub ProjectLoading(ByVal ProjectFile As String, ByVal SettingsString As String) _
         Implements IPlugin.ProjectLoading
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Button"></param>
-    ''' <param name="Shift"></param>
-    ''' <param name="x"></param>
-    ''' <param name="y"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     Public Sub MapMouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
                              ByRef Handled As Boolean) Implements IPlugin.MapMouseDown
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="ScreenX"></param>
-    ''' <param name="ScreenY"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     Public Sub MapMouseMove(ByVal ScreenX As Integer, ByVal ScreenY As Integer, ByRef Handled As Boolean) _
         Implements IPlugin.MapMouseMove
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Handle"></param>
-    ''' <remarks></remarks>
     Public Sub LayerRemoved(ByVal Handle As Integer) Implements IPlugin.LayerRemoved
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Layers"></param>
-    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub LayersAdded(ByVal Layers() As Layer) _
         Implements IPlugin.LayersAdded
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
     Public Sub LayersCleared() Implements IPlugin.LayersCleared
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
     Public Sub MapExtentsChanged() Implements IPlugin.MapExtentsChanged
 
     End Sub
@@ -245,72 +144,36 @@ Public Class MapWindowPlugin
 
 #Region "Plug-in Information"
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
             Return ReferenceFile.ProductName
         End Get
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property Description() As String Implements IPlugin.Description
         Get
             Return ReferenceFile.Comments
         End Get
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property Author() As String Implements IPlugin.Author
         Get
             Return ReferenceFile.CompanyName
         End Get
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property Version() As String Implements IPlugin.Version
         Get
             Return ReferenceFile.FileVersion
         End Get
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property BuildDate() As String Implements IPlugin.BuildDate
         Get
             Return File.GetLastWriteTime(ReferenceAssembly.Location)
         End Get
     End Property
 
-    ''' <summary>
-    ''' This property is obsolete.
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property SerialNumber() As String Implements IPlugin.SerialNumber
         Get
             Return String.Empty
@@ -328,12 +191,6 @@ Public Class MapWindowPlugin
     End Sub
 #Region "Start and Stop Methods"
 
-    ''' <summary>
-    ''' Event triggered on execution of the plugin
-    ''' </summary>
-    ''' <param name="MapWin"></param>
-    ''' <param name="ParentHandle"></param>
-    ''' <remarks></remarks>
     <CLSCompliant(False)> _
     Public Sub Initialize(ByVal MapWin As IMapWin, ByVal ParentHandle As Integer) _
         Implements IPlugin.Initialize
@@ -366,10 +223,6 @@ Public Class MapWindowPlugin
 
     End Sub
 
-    ''' <summary>
-    ''' Event triggered on termination of the plugin
-    ''' </summary>
-    ''' <remarks></remarks>
     Public Sub Terminate() Implements IPlugin.Terminate
         g_MapWin.StatusBar.RemovePanel(g_StatusBar)
 
@@ -386,12 +239,6 @@ Public Class MapWindowPlugin
 
 #Region "Used Interface Methods"
 
-    ''' <summary>
-    ''' Triggered when a menu or toolbar item is clicked
-    ''' </summary>
-    ''' <param name="ItemName"></param>
-    ''' <param name="Handled"></param>
-    ''' <remarks></remarks>
     Public Sub ItemClicked(ByVal ItemName As String, ByRef Handled As Boolean) _
         Implements IPlugin.ItemClicked
         Select Case ItemName
@@ -422,10 +269,6 @@ Public Class MapWindowPlugin
 
 #Region "   Menu/Toolbar Items"
 
-    ''' <summary>
-    ''' Add all the menus used by the plugin
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Sub AddMenus()
         Dim nil As Object = Nothing
         With g_MapWin.Menus
@@ -465,89 +308,53 @@ Public Class MapWindowPlugin
 
 #Region "   Itemclicked Items"
 
-    ''' <summary>
-    ''' Shows the main Analysis form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Sub ShowAnalysisForm()
         g_frmProjectSetup = New MainForm
         g_frmProjectSetup.ShowDialog()
     End Sub
 
-    ''' <summary>
-    ''' Shows the outputs comparison form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Shared Sub ShowCompareOutputsForm()
         Using tmp As New CompareOutputsForm()
             tmp.ShowDialog()
         End Using
     End Sub
 
-    ''' <summary>
-    ''' Shows the Land Cover form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Shared Sub ShowAdvLandForm()
         Using tmp As New LandCoverTypesForm()
             tmp.ShowDialog()
         End Using
     End Sub
 
-    ''' <summary>
-    ''' Shows the Pollutant form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Shared Sub ShowAdvPollutantsForm()
         Using tmp As New PollutantsForm()
             tmp.ShowDialog()
         End Using
     End Sub
 
-    ''' <summary>
-    ''' Shows the Water Quality form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Shared Sub ShowAdvWQForm()
         Using tmp As New WaterQualityStandardsForm()
             tmp.ShowDialog()
         End Using
     End Sub
 
-    ''' <summary>
-    ''' Shows the Precipitation form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Shared Sub ShowAdvPrecipForm()
         Using tmp As New PrecipitationScenariosForm()
             tmp.ShowDialog()
         End Using
     End Sub
 
-    ''' <summary>
-    ''' Shows the Watershed Delin form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Shared Sub ShowAdvWSDelinForm()
         Using tmp As New WatershedDelineationsForm()
             tmp.ShowDialog()
         End Using
     End Sub
 
-    ''' <summary>
-    ''' Shows the Soils form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Shared Sub ShowAdvSoilsForm()
         Using tmp As New SoilsForm()
             tmp.ShowDialog()
         End Using
     End Sub
 
-    ''' <summary>
-    ''' Shows the Help form
-    ''' </summary>
-    ''' <remarks></remarks>
     Private Sub ShowHelpIntro()
         Help.ShowHelp(Nothing, g_nspectPath & "\Help\nspect.chm", "Introduction.htm")
     End Sub

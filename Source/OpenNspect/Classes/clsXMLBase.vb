@@ -26,67 +26,41 @@ Public Class clsXMLBase
             XML = Me.CreateNode().OuterXml
 
         End Get
-        Set (ByVal Value As String)
+        Set(ByVal Value As String)
             'Assign a new XML string to this class. The newly assigned XML is parsed,
             'and the class's properties are set accordingly.
 
             Dim dom As New XmlDocument
-            dom.LoadXml (Value)
-            LoadNode ((dom.DocumentElement))
+            dom.LoadXml(Value)
+            LoadNode((dom.DocumentElement))
 
         End Set
     End Property
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Parent"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Overridable Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overridable Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Return Nothing
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="node"></param>
-    ''' <remarks></remarks>
-    Public Overridable Sub LoadNode (ByRef node As XmlNode)
+    Public Overridable Sub LoadNode(ByRef node As XmlNode)
 
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="node"></param>
-    ''' <param name="strNodeName"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function NodeGetText (ByVal node As XmlNode, ByVal strNodeName As String) As String
+    Public Function NodeGetText(ByVal node As XmlNode, ByVal strNodeName As String) As String
         Try
             'The NodeGetText function uses selectSingleNode on the passed-in node to
             'find the child node having the given name. When found, the text of that
             'node is returned. If the child node is not found in the node, then an
             'empty string is returned.
 
-            NodeGetText = node.SelectSingleNode (strNodeName).Value
+            NodeGetText = node.SelectSingleNode(strNodeName).Value
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             NodeGetText = ""
         End Try
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="dom"></param>
-    ''' <param name="node"></param>
-    ''' <param name="strName"></param>
-    ''' <param name="varValue"></param>
-    ''' <remarks></remarks>
-    Public Sub NodeAppendAttribute (ByVal dom As XmlDocument, ByVal node As XmlNode, ByVal strName As String, _
+    Public Sub NodeAppendAttribute(ByVal dom As XmlDocument, ByVal node As XmlNode, ByVal strName As String, _
                                     ByVal varValue As Object)
         Try
             'The NodeAppendAttribute subroutine creates an attribute having the given
@@ -95,25 +69,17 @@ Public Class clsXMLBase
             Dim attr As XmlAttribute
 
             'Create a new attribute and set its value.
-            attr = dom.CreateAttribute (strName)
+            attr = dom.CreateAttribute(strName)
             attr.Value = varValue
 
-            node.Attributes.Append (attr)
+            node.Attributes.Append(attr)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="dom"></param>
-    ''' <param name="node"></param>
-    ''' <param name="Name"></param>
-    ''' <param name="Value"></param>
-    ''' <remarks></remarks>
-    Public Sub NodeAppendChildElement (ByVal dom As XmlDocument, ByVal node As XmlNode, ByVal Name As String, _
+    Public Sub NodeAppendChildElement(ByVal dom As XmlDocument, ByVal node As XmlNode, ByVal Name As String, _
                                        ByVal Value As Object)
         Try
             'The NodeAppendChildElement subroutine creates an element having the given
@@ -122,35 +88,27 @@ Public Class clsXMLBase
             Dim element As XmlElement
 
             'Create a new child element and set its value.
-            element = dom.CreateElement (Name)
-            element.InnerText = CStr (Value)
+            element = dom.CreateElement(Name)
+            element.InnerText = CStr(Value)
 
             'Append the new child element to the node.
-            node.AppendChild (element)
+            node.AppendChild(element)
             'Format nicely
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="Parent"></param>
-    ''' <param name="ChildName"></param>
-    ''' <param name="NodeTextType"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function GetNodeText (ByRef Parent As XmlNode, ByRef ChildName As String, _
+    Public Function GetNodeText(ByRef Parent As XmlNode, ByRef ChildName As String, _
                                  Optional ByRef NodeTextType As String = "") As String
         Try
             'The GetNodeText function retrieves the value of the given child element
             'within the given parent element. If the requested child element is not
             'found, then an empty string is returned.
 
-            GetNodeText = Parent.SelectSingleNode (ChildName).InnerText
+            GetNodeText = Parent.SelectSingleNode(ChildName).InnerText
         Catch ex As Exception
             If NodeTextType = "integer" Then
                 GetNodeText = "0"
@@ -158,7 +116,7 @@ Public Class clsXMLBase
                 GetNodeText = ""
             End If
 
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Function
 End Class
