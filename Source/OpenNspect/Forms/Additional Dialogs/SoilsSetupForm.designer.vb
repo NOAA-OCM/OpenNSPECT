@@ -305,7 +305,6 @@
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label5)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(3, 22)
         Me.Name = "SoilsSetupForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

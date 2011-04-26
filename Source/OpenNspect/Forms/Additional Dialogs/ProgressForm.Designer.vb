@@ -23,7 +23,6 @@ Partial Class ProgressForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ProgressForm))
         Me.lblDesc = New System.Windows.Forms.Label()
         Me.pbMain = New System.Windows.Forms.ProgressBar()
         Me.btnCancel = New System.Windows.Forms.Button()
@@ -75,7 +74,6 @@ Partial Class ProgressForm
         Me.Controls.Add(Me.pbMain)
         Me.Controls.Add(Me.lblDesc)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MinimumSize = New System.Drawing.Size(300, 156)
         Me.Name = "ProgressForm"
         Me.ShowInTaskbar = False

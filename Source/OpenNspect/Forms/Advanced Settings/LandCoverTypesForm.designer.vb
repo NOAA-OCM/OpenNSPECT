@@ -44,7 +44,6 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LandCoverTypesForm))
         Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
         Me.mnuLCTypes = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewLCType = New System.Windows.Forms.ToolStripMenuItem()
@@ -378,7 +377,6 @@
         Me.Controls.Add(Me._Label1_6)
         Me.Controls.Add(Me._Label1_7)
         Me.Controls.Add(Me.MainMenu1)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(268, 71)
         Me.Name = "LandCoverTypesForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

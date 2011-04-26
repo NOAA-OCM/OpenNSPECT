@@ -36,7 +36,6 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SoilsForm))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
         Me.mnuOptions = New System.Windows.Forms.ToolStripMenuItem()
@@ -168,7 +167,6 @@
         Me.ClientSize = New System.Drawing.Size(594, 345)
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.MainMenu1)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(11, 30)
         Me.Name = "SoilsForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

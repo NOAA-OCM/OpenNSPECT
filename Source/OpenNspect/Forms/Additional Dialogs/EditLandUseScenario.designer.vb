@@ -47,7 +47,6 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditLandUseScenario))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
         Me.mnuPopLU = New System.Windows.Forms.ToolStripMenuItem()
@@ -406,7 +405,6 @@
         Me.Controls.Add(Me._Label1_19)
         Me.Controls.Add(Me.MainMenu1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(4, 23)
         Me.Name = "EditLandUseScenario"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

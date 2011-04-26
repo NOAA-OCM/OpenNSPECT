@@ -329,7 +329,7 @@ Partial Class AboutForm
         Me.AssemblyNamesComboBox.Sorted = True
         Me.AssemblyNamesComboBox.TabIndex = 18
         '
-        'AboutBox
+        'AboutForm
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.CancelButton = Me.OKButton
@@ -350,7 +350,7 @@ Partial Class AboutForm
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "AboutBox"
+        Me.Name = "AboutForm"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "About %title%"

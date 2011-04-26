@@ -474,9 +474,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\arrow_join.ico" />
-    <Content Include="Images\arrow_join.png" />
-    <Content Include="Images\arrow_join32.png" />
+    <Content Include="Images\NOAA_Logo.ico" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup />

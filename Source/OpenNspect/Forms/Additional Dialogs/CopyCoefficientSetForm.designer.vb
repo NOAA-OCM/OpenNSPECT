@@ -28,7 +28,6 @@ Partial Class CopyCoefficientSetForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CopyCoefficientSetForm))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.cboCoeffSet = New System.Windows.Forms.ComboBox()
         Me.txtCoeffSetName = New System.Windows.Forms.TextBox()
@@ -81,7 +80,6 @@ Partial Class CopyCoefficientSetForm
         Me.Controls.Add(Me._Label1_0)
         Me.Controls.Add(Me._Label1_5)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(3, 21)
         Me.Name = "CopyCoefficientSetForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

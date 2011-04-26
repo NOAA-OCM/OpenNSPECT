@@ -92,7 +92,6 @@
         Me.Controls.Add(Me._Label1_5)
         Me.Controls.Add(Me._Label1_0)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(3, 21)
         Me.Name = "ImportLandCoverTypeForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

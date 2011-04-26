@@ -251,7 +251,6 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(594, 345)
         Me.Controls.Add(Me.Frame1)
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(3, 21)
         Me.Name = "NewPrecipitationScenarioForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
