@@ -20,6 +20,7 @@ Imports System.Windows.Forms
 Imports MapWinGeoProc
 Imports MapWinGIS
 Imports System.Data.OleDb
+Imports OpenNspect.Xml
 
 Module modRusleSoilLossEquation
     ' *************************************************************************************
@@ -52,7 +53,7 @@ Module modRusleSoilLossEquation
     Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, _
                                 ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, _
                                 ByRef strSDRFileName As String, ByRef strLandClass As String, _
-                                ByRef OutputItems As XmlOutputItems, Optional ByRef dblRFactorConstant As Double = 0) _
+                                ByRef OutputItems As OutputItems, Optional ByRef dblRFactorConstant As Double = 0) _
         As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strNibbleFileName: FileName of the nibble GRID
@@ -290,7 +291,7 @@ Module modRusleSoilLossEquation
         End Try
     End Function
 
-    Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As XmlOutputItems) As Boolean
+    Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As OutputItems) As Boolean
 
         Dim pSoilLossAcres As Grid = Nothing
         'Soil Loss Acres

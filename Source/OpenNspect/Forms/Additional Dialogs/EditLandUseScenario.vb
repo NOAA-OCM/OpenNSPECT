@@ -19,9 +19,10 @@ Imports System.Collections.Generic
 Imports System.Windows.Forms
 Imports MapWindow.Interfaces
 Imports System.Data.OleDb
+Imports OpenNspect.Xml
 
 Friend Class EditLandUseScenario
-    Private _ManScen As XMLLUMangementScenario
+    Private _ManScen As LandUseMangementScenario
     Private _strWQStd As String
     Private _frmPrj As MainForm
     Private _stopClose As Boolean
@@ -42,7 +43,7 @@ Friend Class EditLandUseScenario
 
             FillGrid()
 
-            _ManScen = New XMLLUMangementScenario
+            _ManScen = New LandUseMangementScenario
 
             If Len(g_strLUScenFileName) > 0 Then
                 _ManScen.XML = g_strLUScenFileName
@@ -117,7 +118,7 @@ Friend Class EditLandUseScenario
 
     Private Function CreateXmlFile() As String
         Try
-            Dim Man As New XMLLUMangementScenario
+            Dim Man As New LandUseMangementScenario
 
             With Man
 
@@ -134,7 +135,7 @@ Friend Class EditLandUseScenario
                 .intWaterWetlands = chkWatWetlands.CheckState
 
                 For Each row As DataGridViewRow In dgvCoef.Rows
-                    Man.Pollutant = New XMLLUScenPollItem
+                    Man.Pollutant = New LandUseScenarioPollutantItem
                     .Pollutant.intID = row.Index + 1
                     .Pollutant.strPollName = row.Cells("Pollutant").Value
                     .Pollutant.intType1 = CDbl(row.Cells("Type1").Value)

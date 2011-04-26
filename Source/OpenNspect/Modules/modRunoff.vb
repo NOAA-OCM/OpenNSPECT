@@ -20,6 +20,7 @@ Imports System.Collections.Generic
 Imports MapWinGeoProc
 Imports MapWinGIS
 Imports System.Data.OleDb
+Imports OpenNspect.Xml
 
 Module modRunoff
     ' *************************************************************************************
@@ -59,7 +60,7 @@ Module modRunoff
 
     Public Function CreateRunoffGrid(ByRef strLCFileName As String, ByRef strLCCLassType As String, _
                                       ByRef cmdPrecip As OleDbCommand, ByRef strSoilsFileName As String, _
-                                      ByRef OutputItems As XmlOutputItems) As Boolean
+                                      ByRef OutputItems As OutputItems) As Boolean
         'This sub serves as a link between frmPrj and the actual calculation of Runoff
         'It establishes the Rasters being used
 
@@ -449,7 +450,7 @@ Module modRunoff
     ''' <param name="OutputItems">The output items.</param><returns></returns>
     Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As Grid, _
                                        ByRef pInLandCoverRaster As Grid, _
-                                       ByRef pInSoilsRaster As Grid, ByRef OutputItems As XmlOutputItems) _
+                                       ByRef pInSoilsRaster As Grid, ByRef OutputItems As OutputItems) _
         As Boolean
 
         Try

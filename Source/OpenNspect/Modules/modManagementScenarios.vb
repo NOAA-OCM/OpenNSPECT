@@ -17,6 +17,7 @@
 '               Added licensing and comments to code
 Imports MapWinGIS
 Imports System.Data.OleDb
+Imports OpenNspect.Xml
 
 Module modManagementScenarios
     ' *************************************************************************************
@@ -34,7 +35,7 @@ Module modManagementScenarios
     Private _pLandCoverRaster As Grid
     Public g_booLCChange As Boolean
 
-    Public Sub MgmtScenSetup(ByRef MgmtScens As XmlMgmtScenItems, ByRef strLCClass As String, _
+    Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, _
                               ByRef strLCFileName As String, ByRef strWorkspace As String)
         'Main Sub for setting everything up
         'MgmtScens: Xml wrapper for the management scenarios created by the user
@@ -71,7 +72,7 @@ Module modManagementScenarios
                         ShowProgress("Adding new landclass...", "Creating Management Scenario", 0, _
                                       CInt(MgmtScens.Count), CInt(i), g_frmProjectSetup)
                         If g_KeepRunning Then
-                            Dim mgmtitem As XmlMgmtScenItem = MgmtScens.Item(i)
+                            Dim mgmtitem As ManagementScenarioItem = MgmtScens.Item(i)
                             ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
                             booLandScen = True
                         Else
@@ -98,7 +99,7 @@ Module modManagementScenarios
 
     End Sub
 
-    Public Sub ReclassRaster(ByRef MgmtScen As XmlMgmtScenItem, ByVal strLCClass As String, _
+    Public Sub ReclassRaster(ByRef MgmtScen As ManagementScenarioItem, ByVal strLCClass As String, _
                               ByRef outputGrid As Grid)
         'We're passing over a single management scenarios in the form of the xml
         'class XmlmgmtScenItem, seems to be the easiest way to do this.

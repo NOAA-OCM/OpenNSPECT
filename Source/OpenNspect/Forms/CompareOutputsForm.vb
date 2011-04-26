@@ -17,6 +17,7 @@ Imports System.Windows.Forms
 Imports System.IO
 Imports LegendControl
 Imports MapWinGIS
+Imports OpenNspect.Xml
 
 Public Class CompareOutputsForm
     Private _SelectLyrPath As String
@@ -158,7 +159,7 @@ Public Class CompareOutputsForm
 
     Private Sub RefreshUsingProjectDirectory (ByRef RefreshBox As ListBox)
         Try
-            Dim prj As XmlPrjFile
+            Dim prj As ProjectFile
             Dim filesExist As Boolean
             Dim strFolder As String = g_nspectDocPath & "\projects"
             Dim ProjectsList As String() = Directory.GetFiles(strFolder)
@@ -167,7 +168,7 @@ Public Class CompareOutputsForm
             For i As Integer = 0 To ProjectsList.Length - 1
                 If Path.GetExtension(ProjectsList(i)) = ".xml" Then
                     Try
-                        prj = New XmlPrjFile
+                        prj = New ProjectFile
                         prj.Xml = ProjectsList(i)
                         If prj.OutputItems.Count > 0 Then
                             filesExist = True
@@ -206,13 +207,13 @@ Public Class CompareOutputsForm
                 .ShowDialog()
             End With
 
-            Dim prj As XmlPrjFile
+            Dim prj As ProjectFile
             Dim filesExist As Boolean
             Dim tmprast As Grid
-            Dim outitem As XmlOutputItem
+            Dim outitem As OutputItem
             If Len(dlgXmlOpen.FileName) > 0 Then
                 Try
-                    prj = New XmlPrjFile
+                    prj = New ProjectFile
                     prj.Xml = dlgXmlOpen.FileName
                     If prj.OutputItems.Count > 0 Then
                         filesExist = True
@@ -253,15 +254,15 @@ Public Class CompareOutputsForm
     End Sub
 
     Private Function GetListFromSelected(ByRef SelectCheckbox As CheckBox, _
-                                          ByRef SelectList As ListBox) As XmlOutputItems
+                                          ByRef SelectList As ListBox) As OutputItems
         Try
-            Dim tmpOutItems As New XmlOutputItems
-            Dim outitem As XmlOutputItem
+            Dim tmpOutItems As New OutputItems
+            Dim outitem As OutputItem
             Dim grpnum As Integer
             Dim strgrp As String
             Dim glyr As Layer
             Dim tmplyr As MapWindow.Interfaces.Layer
-            Dim prj As XmlPrjFile
+            Dim prj As ProjectFile
             Dim strFolder As String = g_nspectDocPath & "\projects"
 
             If SelectCheckbox.Checked Then
@@ -270,7 +271,7 @@ Public Class CompareOutputsForm
                 For i As Integer = 0 To g_MapWin.Layers.Groups(grpnum).LayerCount - 1
                     glyr = g_MapWin.Layers.Groups(grpnum).Item(i)
                     tmplyr = g_MapWin.Layers(glyr.Handle)
-                    outitem = New XmlOutputItem
+                    outitem = New OutputItem
                     outitem.strPath = tmplyr.FileName
                     outitem.strName = tmplyr.Name
                     outitem.strType = GetTypeFromPath(tmplyr.FileName, tmplyr.Name)
@@ -278,7 +279,7 @@ Public Class CompareOutputsForm
                 Next
             Else
                 Try
-                    prj = New XmlPrjFile
+                    prj = New ProjectFile
                     prj.Xml = strFolder + Path.DirectorySeparatorChar + SelectList.SelectedItem
                     tmpOutItems = prj.OutputItems
                 Catch ex As Exception
@@ -334,7 +335,7 @@ Public Class CompareOutputsForm
 
     Private Sub RunCompare()
         Try
-            Dim leftOutItems, rightOutItems As XmlOutputItems
+            Dim leftOutItems, rightOutItems As OutputItems
             Dim gleft, gright, compout, comppercout As Grid
             Dim gout As New Grid
             Dim outstring As String
