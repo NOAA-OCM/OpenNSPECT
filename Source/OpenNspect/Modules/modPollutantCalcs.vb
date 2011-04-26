@@ -50,10 +50,6 @@ Module modPollutantCalcs
     Private _WQValue As Single
     Private _FlowMax As Single
 
-    ' Constant used by the Error handler function - DO NOT REMOVE
-    Private _ParentHWND As Integer
-    ' Set this to get correct parenting of Error handler forms
-
     Private _picks() As String
 
     Public Function PollutantConcentrationSetup (ByRef clsPollutant As clsXMLPollutantItem, ByRef strLandClass As String, _
@@ -509,14 +505,11 @@ Module modPollutantCalcs
         Dim strWQVAlue As Object
 
         'Get the zone dataset from the first layer in ArcMap
-        Dim pMaxRaster As Grid = Nothing
+
         Dim pConRaster As Grid = Nothing
-        Dim pClipWQRaster As Grid = Nothing
         Dim pPermWQRaster As Grid = Nothing
-        Dim pWQRasterLayer As Grid = Nothing
         Dim dblConvertValue As Double
         Dim strOutWQ As String
-        Dim strExpression As String = ""
         Dim strMetadata As String
 
         Try

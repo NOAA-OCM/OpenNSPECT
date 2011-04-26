@@ -20,7 +20,7 @@ Imports Microsoft.Win32
     Public Class AboutForm
     Inherits Form
 
-    Private _IsPainted As Boolean = False
+    Private _IsPainted As Boolean
     Private _EntryAssemblyName As String
     Private _CallingAssemblyName As String
     Private _ExecutingAssemblyName As String

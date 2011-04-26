@@ -23,7 +23,7 @@ Imports MapWindow.Interfaces
 Imports MapWinGeoProc
 Imports MapWinGIS
 
-Module modUtil
+Module Utilities
     Public g_nspectPath As String
     Public g_nspectDocPath As String
     Public g_strWorkspace As String

@@ -54,9 +54,6 @@ Module modRunoff
     '# of Raining Days for Annual Precip
     Public g_intRunoffPrecipType As Short
     'Precip Event Type: 0=Annual; 1=Event
-    ' Variables used by the Error handler function - DO NOT REMOVE
-    Private _ParentHWND As Integer
-    ' Set this to get correct parenting of Error handler forms
 
     Private _picks()() As String
 

@@ -328,20 +328,19 @@
     <Compile Include="Forms\Advanced Settings\WaterQualityStandardsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\ErrorHandling.vb" />
     <Compile Include="Modules\Globals.vb">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modules\modErrorCodes.vb" />
     <Compile Include="Modules\modLanduse.vb" />
     <Compile Include="Modules\modMainRun.vb" />
-    <Compile Include="Modules\modMgmtScen.vb" />
-    <Compile Include="Modules\modMUSLE.vb" />
+    <Compile Include="Modules\modManagementScenarios.vb" />
+    <Compile Include="Modules\modMUSLESoilLossEquation.vb" />
     <Compile Include="Modules\modPollutantCalcs.vb" />
     <Compile Include="Modules\modProgDialog.vb" />
     <Compile Include="Modules\modRunoff.vb" />
     <Compile Include="Modules\modRusle.vb" />
-    <Compile Include="Modules\modUtil.vb" />
+    <Compile Include="Modules\Utilities.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>

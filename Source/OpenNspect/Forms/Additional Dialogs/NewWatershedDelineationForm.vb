@@ -203,7 +203,6 @@ Friend Class NewWatershedDelineationForm
                             _InputDEMPath = txtDEMFile.Text
                         End If
                     End If
-                Else
                 End If
             End If
 

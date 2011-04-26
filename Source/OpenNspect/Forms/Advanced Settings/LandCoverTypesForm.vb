@@ -193,7 +193,7 @@ Friend Class LandCoverTypesForm
             If intYesNo = MsgBoxResult.Yes Then
 
                 'Selection based on combo box
-                Dim strCCAP As String = "SELECT * From LCCLASSDEFAULTS"
+                Const strCCAP As String = "SELECT * From LCCLASSDEFAULTS"
                 Dim cmdCCAP As New DataHelper (strCCAP)
                 Dim datCCAP As OleDbDataReader = cmdCCAP.ExecuteReader()
 
