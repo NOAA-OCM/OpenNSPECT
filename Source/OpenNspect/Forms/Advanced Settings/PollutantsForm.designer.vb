@@ -1,4 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class PollutantsForm
+    Inherits OpenNspect.BaseDialogForm
 #Region "Windows Form Designer generated code "
     <System.Diagnostics.DebuggerNonUserCode()> Public Sub New()
         MyBase.New()
@@ -43,8 +44,6 @@
     Public WithEvents Label2 As System.Windows.Forms.Label
     Public WithEvents _SSTab1_TabPage1 As System.Windows.Forms.TabPage
     Public WithEvents SSTab1 As System.Windows.Forms.TabControl
-    Public WithEvents cmdSave As System.Windows.Forms.Button
-    Public WithEvents cmdQuit As System.Windows.Forms.Button
     Public WithEvents cboPollName As System.Windows.Forms.ComboBox
     Public WithEvents _Label1_0 As System.Windows.Forms.Label
     'NOTE: The following procedure is required by the Windows Form Designer
@@ -94,8 +93,6 @@
         Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PollID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.cmdSave = New System.Windows.Forms.Button()
-        Me.cmdQuit = New System.Windows.Forms.Button()
         Me.cboPollName = New System.Windows.Forms.ComboBox()
         Me._Label1_0 = New System.Windows.Forms.Label()
         Me.MainMenu1.SuspendLayout()
@@ -198,12 +195,11 @@
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
-        Me.SSTab1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
-        Me.SSTab1.Location = New System.Drawing.Point(13, 62)
+        Me.SSTab1.Location = New System.Drawing.Point(13, 58)
         Me.SSTab1.Name = "SSTab1"
         Me.SSTab1.SelectedIndex = 0
-        Me.SSTab1.Size = New System.Drawing.Size(566, 665)
+        Me.SSTab1.Size = New System.Drawing.Size(566, 617)
         Me.SSTab1.TabIndex = 4
         '
         '_SSTab1_TabPage0
@@ -220,7 +216,7 @@
         Me._SSTab1_TabPage0.Controls.Add(Me._Label1_5)
         Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
-        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(558, 639)
+        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(558, 591)
         Me._SSTab1_TabPage0.TabIndex = 0
         Me._SSTab1_TabPage0.Text = "Coefficients"
         '
@@ -231,9 +227,9 @@
         Me.dgvCoef.AllowUserToResizeColumns = False
         Me.dgvCoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn6, Me.DataGridViewTextBoxColumn7, Me.DataGridViewTextBoxColumn8})
-        Me.dgvCoef.Location = New System.Drawing.Point(14, 106)
+        Me.dgvCoef.Location = New System.Drawing.Point(14, 98)
         Me.dgvCoef.Name = "dgvCoef"
-        Me.dgvCoef.Size = New System.Drawing.Size(541, 530)
+        Me.dgvCoef.Size = New System.Drawing.Size(541, 492)
         Me.dgvCoef.TabIndex = 20
         '
         'DataGridViewTextBoxColumn1
@@ -304,127 +300,82 @@
         '
         '_Label1_6
         '
-        Me._Label1_6.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_6.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_6.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_6.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_6.Location = New System.Drawing.Point(18, 59)
+        Me._Label1_6.Location = New System.Drawing.Point(18, 55)
         Me._Label1_6.Name = "_Label1_6"
-        Me._Label1_6.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_6.Size = New System.Drawing.Size(74, 17)
+        Me._Label1_6.Size = New System.Drawing.Size(74, 16)
         Me._Label1_6.TabIndex = 9
         Me._Label1_6.Text = "Description:"
         '
         '_Label1_7
         '
-        Me._Label1_7.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_7.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_7.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_7.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_7.Location = New System.Drawing.Point(271, 34)
+        Me._Label1_7.Location = New System.Drawing.Point(271, 32)
         Me._Label1_7.Name = "_Label1_7"
-        Me._Label1_7.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_7.Size = New System.Drawing.Size(97, 17)
+        Me._Label1_7.Size = New System.Drawing.Size(97, 16)
         Me._Label1_7.TabIndex = 10
         Me._Label1_7.Text = "Land Cover Type:"
         '
         '_Label1_1
         '
-        Me._Label1_1.BackColor = System.Drawing.SystemColors.Control
         Me._Label1_1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label1_1.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_1.ForeColor = System.Drawing.Color.Black
-        Me._Label1_1.Location = New System.Drawing.Point(56, 86)
+        Me._Label1_1.Location = New System.Drawing.Point(56, 80)
         Me._Label1_1.Name = "_Label1_1"
-        Me._Label1_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_1.Size = New System.Drawing.Size(214, 17)
+        Me._Label1_1.Size = New System.Drawing.Size(214, 16)
         Me._Label1_1.TabIndex = 11
         Me._Label1_1.Text = "Class"
         Me._Label1_1.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         '_Label1_2
         '
-        Me._Label1_2.BackColor = System.Drawing.SystemColors.Control
         Me._Label1_2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label1_2.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_2.ForeColor = System.Drawing.Color.Black
-        Me._Label1_2.Location = New System.Drawing.Point(276, 86)
+        Me._Label1_2.Location = New System.Drawing.Point(276, 80)
         Me._Label1_2.Name = "_Label1_2"
-        Me._Label1_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_2.Size = New System.Drawing.Size(224, 17)
+        Me._Label1_2.Size = New System.Drawing.Size(224, 16)
         Me._Label1_2.TabIndex = 12
         Me._Label1_2.Text = "Coefficients (mg/L)"
         Me._Label1_2.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         '_Label1_3
         '
-        Me._Label1_3.BackColor = System.Drawing.SystemColors.Control
         Me._Label1_3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label1_3.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_3.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_3.Location = New System.Drawing.Point(14, 86)
+        Me._Label1_3.Location = New System.Drawing.Point(14, 80)
         Me._Label1_3.Name = "_Label1_3"
-        Me._Label1_3.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_3.Size = New System.Drawing.Size(36, 17)
+        Me._Label1_3.Size = New System.Drawing.Size(36, 16)
         Me._Label1_3.TabIndex = 13
         Me._Label1_3.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'cboCoeffSet
         '
-        Me.cboCoeffSet.BackColor = System.Drawing.SystemColors.Window
-        Me.cboCoeffSet.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboCoeffSet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboCoeffSet.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboCoeffSet.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboCoeffSet.Location = New System.Drawing.Point(100, 32)
+        Me.cboCoeffSet.Location = New System.Drawing.Point(100, 30)
         Me.cboCoeffSet.Name = "cboCoeffSet"
-        Me.cboCoeffSet.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboCoeffSet.Size = New System.Drawing.Size(147, 22)
+        Me.cboCoeffSet.Size = New System.Drawing.Size(147, 21)
         Me.cboCoeffSet.Sorted = True
         Me.cboCoeffSet.TabIndex = 5
         '
         'txtCoeffSetDesc
         '
         Me.txtCoeffSetDesc.AcceptsReturn = True
-        Me.txtCoeffSetDesc.BackColor = System.Drawing.SystemColors.Window
-        Me.txtCoeffSetDesc.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.txtCoeffSetDesc.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCoeffSetDesc.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtCoeffSetDesc.Location = New System.Drawing.Point(100, 60)
+        Me.txtCoeffSetDesc.Location = New System.Drawing.Point(100, 56)
         Me.txtCoeffSetDesc.MaxLength = 0
         Me.txtCoeffSetDesc.Name = "txtCoeffSetDesc"
-        Me.txtCoeffSetDesc.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtCoeffSetDesc.Size = New System.Drawing.Size(375, 20)
         Me.txtCoeffSetDesc.TabIndex = 6
         '
         'txtLCType
         '
         Me.txtLCType.AcceptsReturn = True
-        Me.txtLCType.BackColor = System.Drawing.SystemColors.Window
-        Me.txtLCType.Cursor = System.Windows.Forms.Cursors.IBeam
         Me.txtLCType.Enabled = False
-        Me.txtLCType.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtLCType.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtLCType.Location = New System.Drawing.Point(374, 32)
+        Me.txtLCType.Location = New System.Drawing.Point(374, 30)
         Me.txtLCType.MaxLength = 0
         Me.txtLCType.Name = "txtLCType"
-        Me.txtLCType.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtLCType.Size = New System.Drawing.Size(102, 20)
         Me.txtLCType.TabIndex = 7
         '
         '_Label1_5
         '
-        Me._Label1_5.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_5.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_5.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_5.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_5.Location = New System.Drawing.Point(17, 34)
+        Me._Label1_5.Location = New System.Drawing.Point(17, 32)
         Me._Label1_5.Name = "_Label1_5"
-        Me._Label1_5.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_5.Size = New System.Drawing.Size(97, 17)
+        Me._Label1_5.Size = New System.Drawing.Size(97, 16)
         Me._Label1_5.TabIndex = 8
         Me._Label1_5.Text = "Coefficient Set:"
         '
@@ -434,7 +385,7 @@
         Me._SSTab1_TabPage1.Controls.Add(Me.Label2)
         Me._SSTab1_TabPage1.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage1.Name = "_SSTab1_TabPage1"
-        Me._SSTab1_TabPage1.Size = New System.Drawing.Size(558, 639)
+        Me._SSTab1_TabPage1.Size = New System.Drawing.Size(558, 591)
         Me._SSTab1_TabPage1.TabIndex = 1
         Me._SSTab1_TabPage1.Text = "Water Quality Standards"
         '
@@ -445,9 +396,9 @@
         Me.dgvWaterQuality.AllowUserToResizeColumns = False
         Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColName, Me.Description, Me.Threshold, Me.PollID})
-        Me.dgvWaterQuality.Location = New System.Drawing.Point(22, 29)
+        Me.dgvWaterQuality.Location = New System.Drawing.Point(22, 27)
         Me.dgvWaterQuality.Name = "dgvWaterQuality"
-        Me.dgvWaterQuality.Size = New System.Drawing.Size(479, 312)
+        Me.dgvWaterQuality.Size = New System.Drawing.Size(479, 290)
         Me.dgvWaterQuality.TabIndex = 19
         '
         'ColName
@@ -482,97 +433,46 @@
         '
         'Label2
         '
-        Me.Label2.BackColor = System.Drawing.SystemColors.Control
-        Me.Label2.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Label2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Label2.Location = New System.Drawing.Point(19, 604)
+        Me.Label2.Location = New System.Drawing.Point(19, 561)
         Me.Label2.Name = "Label2"
-        Me.Label2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Label2.Size = New System.Drawing.Size(137, 17)
+        Me.Label2.Size = New System.Drawing.Size(137, 16)
         Me.Label2.TabIndex = 18
         Me.Label2.Text = "Threshold Units: ug/L"
         '
-        'cmdSave
-        '
-        Me.cmdSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdSave.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdSave.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdSave.Enabled = False
-        Me.cmdSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdSave.Location = New System.Drawing.Point(404, 735)
-        Me.cmdSave.Name = "cmdSave"
-        Me.cmdSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
-        Me.cmdSave.TabIndex = 2
-        Me.cmdSave.Text = "OK"
-        Me.cmdSave.UseVisualStyleBackColor = True
-        '
-        'cmdQuit
-        '
-        Me.cmdQuit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdQuit.BackColor = System.Drawing.SystemColors.Control
-        Me.cmdQuit.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmdQuit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdQuit.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.cmdQuit.Location = New System.Drawing.Point(510, 735)
-        Me.cmdQuit.Name = "cmdQuit"
-        Me.cmdQuit.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
-        Me.cmdQuit.TabIndex = 3
-        Me.cmdQuit.Text = "Cancel"
-        Me.cmdQuit.UseVisualStyleBackColor = True
-        '
         'cboPollName
         '
-        Me.cboPollName.BackColor = System.Drawing.SystemColors.Window
-        Me.cboPollName.Cursor = System.Windows.Forms.Cursors.Default
         Me.cboPollName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboPollName.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboPollName.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cboPollName.Location = New System.Drawing.Point(106, 34)
+        Me.cboPollName.Location = New System.Drawing.Point(106, 32)
         Me.cboPollName.Name = "cboPollName"
-        Me.cboPollName.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cboPollName.Size = New System.Drawing.Size(150, 22)
+        Me.cboPollName.Size = New System.Drawing.Size(150, 21)
         Me.cboPollName.TabIndex = 1
         '
         '_Label1_0
         '
-        Me._Label1_0.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_0.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_0.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_0.Location = New System.Drawing.Point(21, 35)
+        Me._Label1_0.Location = New System.Drawing.Point(21, 32)
         Me._Label1_0.Name = "_Label1_0"
-        Me._Label1_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_0.Size = New System.Drawing.Size(89, 17)
+        Me._Label1_0.Size = New System.Drawing.Size(89, 16)
         Me._Label1_0.TabIndex = 0
         Me._Label1_0.Text = "Pollutant Name:"
         '
-        'frmPollutants
+        'PollutantsForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(594, 772)
+        Me.ClientSize = New System.Drawing.Size(594, 717)
         Me.Controls.Add(Me.SSTab1)
-        Me.Controls.Add(Me.cmdSave)
-        Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me.cboPollName)
         Me.Controls.Add(Me._Label1_0)
         Me.Controls.Add(Me.MainMenu1)
-        Me.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(113, 127)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
-        Me.Name = "frmPollutants"
-        Me.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ShowInTaskbar = False
+        Me.Name = "PollutantsForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Pollutants"
+        Me.Controls.SetChildIndex(Me.MainMenu1, 0)
+        Me.Controls.SetChildIndex(Me._Label1_0, 0)
+        Me.Controls.SetChildIndex(Me.cboPollName, 0)
+        Me.Controls.SetChildIndex(Me.SSTab1, 0)
         Me.MainMenu1.ResumeLayout(False)
         Me.MainMenu1.PerformLayout()
         Me.SSTab1.ResumeLayout(False)

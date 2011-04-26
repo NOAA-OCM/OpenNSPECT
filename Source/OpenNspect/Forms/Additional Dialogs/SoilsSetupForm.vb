@@ -18,7 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class SoilsSetupForm
-    Inherits System.Windows.Forms.Form
 
     Const c_sModuleFileName As String = "frmSoilsSetup.vb"
 
@@ -61,33 +60,11 @@ Friend Class SoilsSetupForm
         End Try
     End Sub
 
-
-    Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Try
-            Dim intvbYesNo As Short
-
-            intvbYesNo = MsgBox("Do you want to save changes you made to soils setup?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
-
-            If intvbYesNo = MsgBoxResult.Yes Then
-                SaveSoils()
-            ElseIf intvbYesNo = MsgBoxResult.No Then
-                Close()
-            ElseIf intvbYesNo = MsgBoxResult.Cancel Then
-                Exit Sub
-            End If
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
+        SaveSoils()
+        MyBase.OK_Button_Click(sender, e)
     End Sub
 
-
-    Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
-        Try
-            SaveSoils()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
 #End Region
 
 #Region "Helper"

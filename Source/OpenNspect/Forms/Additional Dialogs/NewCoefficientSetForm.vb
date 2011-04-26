@@ -17,7 +17,6 @@
 '               Added licensing and comments to code
 
 Friend Class NewCoefficientSetForm
-    Inherits System.Windows.Forms.Form
 
     Private _frmPoll As PollutantsForm
     Private _frmNewPoll As NewPollutantForm
@@ -39,27 +38,16 @@ Friend Class NewCoefficientSetForm
     Private Sub txtCoeffSetName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCoeffSetName.TextChanged
         Try
             If Len(txtCoeffSetName.Text) > 0 Then
-                cmdOK.Enabled = True
+                OK_Button.Enabled = True
             Else
-                cmdOK.Enabled = False
+                OK_Button.Enabled = False
             End If
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
 
-
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Close()
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
             If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) Then
                 'uses code in frmPollutants to do the work
@@ -74,7 +62,7 @@ Friend Class NewCoefficientSetForm
                 Exit Sub
             End If
 
-            Close()
+            MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try

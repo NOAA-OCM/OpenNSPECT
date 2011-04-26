@@ -18,7 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class CopyWaterQualityStandardForm
-    Inherits System.Windows.Forms.Form
 
     Private _frmWQStd As WaterQualityStandardsForm
     Const c_sModuleFileName As String = "frmcopyWQStd.vb"
@@ -33,23 +32,10 @@ Friend Class CopyWaterQualityStandardForm
         End Try
     End Sub
 
-
-    Private Sub cmdCancel_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
-
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             Dim strStandard As String
-
             Dim strPollStandard As String
-
             Dim strCmd As String
             Dim strCmd2 As String
 
@@ -89,21 +75,15 @@ Friend Class CopyWaterQualityStandardForm
             End Using
 
             _frmWQStd.UpdateWQ(Trim(txtStdName.Text))
-            Close()
+            MyBase.OK_Button_Click(sender, e)
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
 
     Public Sub Init(ByRef frmWQ As WaterQualityStandardsForm)
-        Try
-            _frmWQStd = frmWQ
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+        _frmWQStd = frmWQ
     End Sub
-
 
 End Class

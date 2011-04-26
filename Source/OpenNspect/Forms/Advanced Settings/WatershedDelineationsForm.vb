@@ -18,7 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class WatershedDelineationsForm
-    Inherits System.Windows.Forms.Form
 
     Private Const c_sModuleFileName As String = "frmWatershedDelin.vb"
 
@@ -61,16 +60,6 @@ Friend Class WatershedDelineationsForm
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-    Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
 
     Private Sub mnuNewWSDelin_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewWSDelin.Click
         Try
@@ -155,6 +144,5 @@ Friend Class WatershedDelineationsForm
 #Region "Helper Functions"
 
 #End Region
-
 
 End Class

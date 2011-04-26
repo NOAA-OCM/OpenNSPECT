@@ -18,12 +18,9 @@
 
 Imports System.Data.OleDb
 Friend Class NewPrecipitationScenarioForm
-    Inherits System.Windows.Forms.Form
 
     Const c_sModuleFileName As String = "frmNewPrecip.vb"
 
-    Private _pInputPrecipDS As String
-    Private _boolChange As Boolean
     Private _frmPrj As MainForm
     Private _frmPrec As PrecipitationScenariosForm
 
@@ -110,42 +107,18 @@ Friend Class NewPrecipitationScenarioForm
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Dim intSave As Object
-
-            If _boolChange Then
-                intSave = MsgBox("You have made changes to this record, are you sure you want to quit?", MsgBoxStyle.YesNo, "Quit?")
-
-                If intSave = MsgBoxResult.Yes Then
-                    If Not _frmPrj Is Nothing Then
-                        _frmPrj.cboPrecipScen.SelectedIndex = 0
-                    End If
-                    Close()
-                ElseIf intSave = MsgBoxResult.No Then
-
-                    Exit Sub
-                End If
-            Else
-                If Not _frmPrj Is Nothing Then
-                    _frmPrj.cboPrecipScen.SelectedIndex = 0
-                End If
-                Close()
-            End If
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+    Protected Overrides Sub Cancel_Button_Click(sender As Object, e As System.EventArgs)
+        IsDirty = True
+        MyBase.Cancel_Button_Click(sender, e)
+        If Not _frmPrj Is Nothing Then
+            _frmPrj.cboPrecipScen.SelectedIndex = 0
+        End If
     End Sub
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
 
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
         Try
             Dim intType As Short
             Dim intRainingDays As Short
-
-
             Dim strCmdInsert As String
             If CheckParams() Then
                 'Process the time period
@@ -156,12 +129,8 @@ Friend Class NewPrecipitationScenarioForm
                     intRainingDays = 0
                 End If
 
-
                 'Compose the INSERT statement.
                 strCmdInsert = "INSERT INTO PrecipScenario " & "(Name, Description, PrecipFileName, PrecipGridUnits, PrecipUnits, Type, PrecipType, RainingDays) VALUES (" & "'" & Replace(CStr(txtPrecipName.Text), "'", "''") & "', " & "'" & Replace(CStr(txtDesc.Text), "'", "''") & "', " & "'" & Replace(txtPrecipFile.Text, "'", "''") & "', " & "" & cboGridUnits.SelectedIndex & ", " & "" & cboPrecipUnits.SelectedIndex & ", " & "" & intType & ", " & "" & cboPrecipType.SelectedIndex & ", " & "" & intRainingDays & ")"
-
-
-                Debug.Print(strCmdInsert)
 
                 If modUtil.UniqueName("PrecipScenario", txtPrecipName.Text) Then
                     'Execute the statement.
@@ -172,23 +141,17 @@ Friend Class NewPrecipitationScenarioForm
                     'Confirm
                     MsgBox(txtPrecipName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
 
-
-                    If Not _frmPrj Is Nothing Then
-                        _frmPrj.UpdatePrecip(txtPrecipName.Text)
-                        Close()
-                    End If
-
                     If Not _frmPrec Is Nothing Then
                         _frmPrec.UpdatePrecip(txtPrecipName.Text)
-                        Close()
                     End If
+
+                    MyBase.OK_Button_Click(sender, e)
 
                 Else
                     MsgBox("Name already in use.  Please choose a different one.", MsgBoxStyle.Critical, "Name In Use")
                     txtPrecipName.Focus()
                     Exit Sub
                 End If
-
 
             End If
         Catch ex As Exception

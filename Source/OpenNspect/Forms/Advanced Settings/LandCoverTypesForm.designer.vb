@@ -1,4 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class LandCoverTypesForm
+    Inherits OpenNspect.BaseDialogForm
 #Region "Windows Form Designer generated code "
     <System.Diagnostics.DebuggerNonUserCode()> Public Sub New()
         MyBase.New()
@@ -31,8 +32,6 @@
     Public dlgCMD1Open As System.Windows.Forms.OpenFileDialog
     Public dlgCMD1Save As System.Windows.Forms.SaveFileDialog
     Public WithEvents btnRestoreDefaults As System.Windows.Forms.Button
-    Public WithEvents btnCancel As System.Windows.Forms.Button
-    Public WithEvents btnSave As System.Windows.Forms.Button
     Public WithEvents txtLCTypeDesc As System.Windows.Forms.TextBox
     Public WithEvents cmbxLCType As System.Windows.Forms.ComboBox
     Public WithEvents _Label2_2 As System.Windows.Forms.Label
@@ -61,8 +60,6 @@
         Me.dlgCMD1Open = New System.Windows.Forms.OpenFileDialog()
         Me.dlgCMD1Save = New System.Windows.Forms.SaveFileDialog()
         Me.btnRestoreDefaults = New System.Windows.Forms.Button()
-        Me.btnCancel = New System.Windows.Forms.Button()
-        Me.btnSave = New System.Windows.Forms.Button()
         Me.txtLCTypeDesc = New System.Windows.Forms.TextBox()
         Me.cmbxLCType = New System.Windows.Forms.ComboBox()
         Me._Label2_2 = New System.Windows.Forms.Label()
@@ -172,145 +169,74 @@
         'btnRestoreDefaults
         '
         Me.btnRestoreDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnRestoreDefaults.BackColor = System.Drawing.SystemColors.Control
-        Me.btnRestoreDefaults.Cursor = System.Windows.Forms.Cursors.Default
         Me.btnRestoreDefaults.Enabled = False
-        Me.btnRestoreDefaults.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRestoreDefaults.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnRestoreDefaults.Location = New System.Drawing.Point(19, 535)
+        Me.btnRestoreDefaults.Location = New System.Drawing.Point(19, 501)
         Me.btnRestoreDefaults.Name = "btnRestoreDefaults"
-        Me.btnRestoreDefaults.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnRestoreDefaults.Size = New System.Drawing.Size(103, 25)
+        Me.btnRestoreDefaults.Size = New System.Drawing.Size(103, 23)
         Me.btnRestoreDefaults.TabIndex = 6
         Me.btnRestoreDefaults.Text = "Restore Defaults"
         Me.btnRestoreDefaults.UseVisualStyleBackColor = True
         '
-        'btnCancel
-        '
-        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnCancel.BackColor = System.Drawing.SystemColors.Control
-        Me.btnCancel.Cursor = System.Windows.Forms.Cursors.Default
-        Me.btnCancel.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnCancel.Location = New System.Drawing.Point(533, 535)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
-        Me.btnCancel.TabIndex = 5
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'btnSave
-        '
-        Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnSave.BackColor = System.Drawing.SystemColors.Control
-        Me.btnSave.Cursor = System.Windows.Forms.Cursors.Default
-        Me.btnSave.Enabled = False
-        Me.btnSave.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSave.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnSave.Location = New System.Drawing.Point(438, 535)
-        Me.btnSave.Name = "btnSave"
-        Me.btnSave.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnSave.Size = New System.Drawing.Size(75, 23)
-        Me.btnSave.TabIndex = 4
-        Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = True
-        '
         'txtLCTypeDesc
         '
         Me.txtLCTypeDesc.AcceptsReturn = True
-        Me.txtLCTypeDesc.BackColor = System.Drawing.SystemColors.Window
-        Me.txtLCTypeDesc.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.txtLCTypeDesc.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtLCTypeDesc.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.txtLCTypeDesc.Location = New System.Drawing.Point(124, 52)
+        Me.txtLCTypeDesc.Location = New System.Drawing.Point(124, 48)
         Me.txtLCTypeDesc.MaxLength = 0
         Me.txtLCTypeDesc.Name = "txtLCTypeDesc"
-        Me.txtLCTypeDesc.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.txtLCTypeDesc.Size = New System.Drawing.Size(482, 20)
         Me.txtLCTypeDesc.TabIndex = 2
         '
         'cmbxLCType
         '
-        Me.cmbxLCType.BackColor = System.Drawing.SystemColors.Window
-        Me.cmbxLCType.Cursor = System.Windows.Forms.Cursors.Default
-        Me.cmbxLCType.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbxLCType.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cmbxLCType.Location = New System.Drawing.Point(124, 26)
+        Me.cmbxLCType.Location = New System.Drawing.Point(124, 24)
         Me.cmbxLCType.Name = "cmbxLCType"
-        Me.cmbxLCType.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.cmbxLCType.Size = New System.Drawing.Size(149, 22)
+        Me.cmbxLCType.Size = New System.Drawing.Size(149, 21)
         Me.cmbxLCType.TabIndex = 0
         '
         '_Label2_2
         '
-        Me._Label2_2.BackColor = System.Drawing.SystemColors.Control
         Me._Label2_2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label2_2.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label2_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label2_2.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label2_2.Location = New System.Drawing.Point(451, 78)
+        Me._Label2_2.Location = New System.Drawing.Point(451, 72)
         Me._Label2_2.Name = "_Label2_2"
-        Me._Label2_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label2_2.Size = New System.Drawing.Size(160, 19)
+        Me._Label2_2.Size = New System.Drawing.Size(160, 18)
         Me._Label2_2.TabIndex = 9
         Me._Label2_2.Text = "RUSLE"
         Me._Label2_2.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         '_Label2_1
         '
-        Me._Label2_1.BackColor = System.Drawing.SystemColors.Control
         Me._Label2_1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label2_1.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label2_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label2_1.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label2_1.Location = New System.Drawing.Point(7, 78)
+        Me._Label2_1.Location = New System.Drawing.Point(7, 72)
         Me._Label2_1.Name = "_Label2_1"
-        Me._Label2_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label2_1.Size = New System.Drawing.Size(227, 19)
+        Me._Label2_1.Size = New System.Drawing.Size(227, 18)
         Me._Label2_1.TabIndex = 8
         Me._Label2_1.Text = "Classification"
         Me._Label2_1.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         '_Label2_0
         '
-        Me._Label2_0.BackColor = System.Drawing.SystemColors.Control
         Me._Label2_0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me._Label2_0.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label2_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label2_0.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label2_0.Location = New System.Drawing.Point(236, 78)
+        Me._Label2_0.Location = New System.Drawing.Point(236, 72)
         Me._Label2_0.Name = "_Label2_0"
-        Me._Label2_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label2_0.Size = New System.Drawing.Size(213, 19)
+        Me._Label2_0.Size = New System.Drawing.Size(213, 18)
         Me._Label2_0.TabIndex = 7
         Me._Label2_0.Text = "SCS Curve Numbers"
         Me._Label2_0.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         '_Label1_6
         '
-        Me._Label1_6.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_6.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_6.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_6.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_6.Location = New System.Drawing.Point(21, 51)
+        Me._Label1_6.Location = New System.Drawing.Point(21, 47)
         Me._Label1_6.Name = "_Label1_6"
-        Me._Label1_6.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_6.Size = New System.Drawing.Size(86, 17)
+        Me._Label1_6.Size = New System.Drawing.Size(86, 16)
         Me._Label1_6.TabIndex = 3
         Me._Label1_6.Text = "Description:"
         Me._Label1_6.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         '_Label1_7
         '
-        Me._Label1_7.BackColor = System.Drawing.SystemColors.Control
-        Me._Label1_7.Cursor = System.Windows.Forms.Cursors.Default
-        Me._Label1_7.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me._Label1_7.ForeColor = System.Drawing.SystemColors.ControlText
-        Me._Label1_7.Location = New System.Drawing.Point(16, 29)
+        Me._Label1_7.Location = New System.Drawing.Point(16, 27)
         Me._Label1_7.Name = "_Label1_7"
-        Me._Label1_7.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me._Label1_7.Size = New System.Drawing.Size(91, 17)
+        Me._Label1_7.Size = New System.Drawing.Size(91, 16)
         Me._Label1_7.TabIndex = 1
         Me._Label1_7.Text = "Land Cover Type:"
         Me._Label1_7.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -325,11 +251,11 @@
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvLCTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLCTypes.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colValue, Me.colNameCol, Me.colCNA, Me.colCNB, Me.colCNC, Me.colCND, Me.colCoverFactor, Me.colWetCheck, Me.colLCTYPEID, Me.colLCClassID})
-        Me.dgvLCTypes.Location = New System.Drawing.Point(7, 100)
+        Me.dgvLCTypes.Location = New System.Drawing.Point(7, 93)
         Me.dgvLCTypes.MultiSelect = False
         Me.dgvLCTypes.Name = "dgvLCTypes"
         Me.dgvLCTypes.ShowCellToolTips = False
-        Me.dgvLCTypes.Size = New System.Drawing.Size(596, 426)
+        Me.dgvLCTypes.Size = New System.Drawing.Size(596, 396)
         Me.dgvLCTypes.TabIndex = 15
         '
         'colValue
@@ -439,14 +365,11 @@
         '
         'LandCoverTypesForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(610, 572)
-        Me.Controls.Add(Me.dgvLCTypes)
-        Me.Controls.Add(Me.btnCancel)
+        Me.ClientSize = New System.Drawing.Size(610, 531)
         Me.Controls.Add(Me.btnRestoreDefaults)
-        Me.Controls.Add(Me.btnSave)
+        Me.Controls.Add(Me.dgvLCTypes)
         Me.Controls.Add(Me.txtLCTypeDesc)
         Me.Controls.Add(Me.cmbxLCType)
         Me.Controls.Add(Me._Label2_2)
@@ -455,17 +378,21 @@
         Me.Controls.Add(Me._Label1_6)
         Me.Controls.Add(Me._Label1_7)
         Me.Controls.Add(Me.MainMenu1)
-        Me.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(268, 71)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
         Me.Name = "LandCoverTypesForm"
-        Me.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Land Cover Types"
+        Me.Controls.SetChildIndex(Me.MainMenu1, 0)
+        Me.Controls.SetChildIndex(Me._Label1_7, 0)
+        Me.Controls.SetChildIndex(Me._Label1_6, 0)
+        Me.Controls.SetChildIndex(Me._Label2_0, 0)
+        Me.Controls.SetChildIndex(Me._Label2_1, 0)
+        Me.Controls.SetChildIndex(Me._Label2_2, 0)
+        Me.Controls.SetChildIndex(Me.cmbxLCType, 0)
+        Me.Controls.SetChildIndex(Me.txtLCTypeDesc, 0)
+        Me.Controls.SetChildIndex(Me.dgvLCTypes, 0)
+        Me.Controls.SetChildIndex(Me.btnRestoreDefaults, 0)
         Me.MainMenu1.ResumeLayout(False)
         Me.MainMenu1.PerformLayout()
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).EndInit()

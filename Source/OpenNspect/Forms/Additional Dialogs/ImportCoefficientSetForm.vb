@@ -18,7 +18,6 @@
 
 Imports System.Data.OleDb
 Friend Class ImportCoefficientSetForm
-    Inherits System.Windows.Forms.Form
 
     Const c_sModuleFileName As String = "frmImportCoeffSet.vb"
     Private _frmPoll As PollutantsForm
@@ -48,18 +47,7 @@ Friend Class ImportCoefficientSetForm
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-    Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub cmdOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOK.Click
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
         Try
             If modUtil.UniqueName("CoefficientSet", (txtCoeffSetName.Text)) Then
                 If ValidateCoeffTextFile(txtImpFile.Text, cboLCType.Text) Then
@@ -69,19 +57,14 @@ Friend Class ImportCoefficientSetForm
                 MsgBox("The name you have chosen is in use, please enter a different name.", MsgBoxStyle.Critical, "Name Detected")
                 txtCoeffSetName.Focus()
             End If
-            Close()
+            MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
 
-
     Public Sub Init(ByRef frmPoll As PollutantsForm)
-        Try
-            _frmPoll = frmPoll
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+        _frmPoll = frmPoll
     End Sub
 
     'Need to check the text file coming in from the import menu of the pollutant form.

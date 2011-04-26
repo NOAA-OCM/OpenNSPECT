@@ -19,7 +19,6 @@
 Imports System.Data.OleDb
 
 Friend Class WaterQualityStandardsForm
-    Inherits System.Windows.Forms.Form
 
     Dim _bolChange As Boolean = False
 
@@ -78,8 +77,7 @@ Friend Class WaterQualityStandardsForm
                 MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
             End If
 
-            _bolChange = False
-            OKEnable()
+            OK_Button.Enabled = False
 
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -89,35 +87,12 @@ Friend Class WaterQualityStandardsForm
 
     Private Sub txtWQStdDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtWQStdDesc.TextChanged
         Try
-            _bolChange = True
-            OKEnable()
+            OK_Button.Enabled = True
+
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
-
-
-    Private Sub cmdQuit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdQuit.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)     'True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
-        End Try
-    End Sub
-
-
-    Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
-        Try
-            If ValidateData() Then
-                UpdateData()
-                MsgBox("Data saved successfully.", MsgBoxStyle.Information, "Data Saved")
-            End If
-
-        Catch ex As Exception
-            MsgBox("Error updating Water Quality Standards: " & Err.Number & vbNewLine & Err.Description, MsgBoxStyle.Critical, "Error")
-        End Try
-    End Sub
-
 
     Private Sub mnuNewWQStd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewWQStd.Click
         Try
@@ -212,7 +187,6 @@ Friend Class WaterQualityStandardsForm
                 ExportStandard(dlgSave.FileName)
             End If
 
-
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)     'True, "mnuExpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
@@ -230,12 +204,7 @@ Friend Class WaterQualityStandardsForm
 
 
     Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
-        Try
-            _bolChange = True
-            OKEnable()
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+        OK_Button.Enabled = True
     End Sub
 #End Region
 
@@ -338,15 +307,18 @@ Friend Class WaterQualityStandardsForm
         End Try
     End Sub
 
-
-    Private Sub OKEnable()
-        Try
-            cmdSave.Enabled = _bolChange
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
 #End Region
 
+    Protected Overrides Sub OK_Button_Click(sender As System.Object, e As System.EventArgs)
+        Try
+            If ValidateData() Then
+                UpdateData()
+                MsgBox("Data saved successfully.", MsgBoxStyle.Information, "Data Saved")
+                MyBase.OK_Button_Click(sender, e)
+            End If
+
+        Catch ex As Exception
+            MsgBox("Error updating Water Quality Standards: " & Err.Number & vbNewLine & Err.Description, MsgBoxStyle.Critical, "Error")
+        End Try
+    End Sub
 End Class

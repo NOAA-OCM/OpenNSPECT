@@ -21,22 +21,13 @@ Imports System.Data.OleDb
 Imports System.Windows.Forms
 
 Friend Class LandCoverTypesForm
-    Inherits System.Windows.Forms.Form
 
     Private Const c_sModuleFileName As String = "frmLandCoverTypes.vb"
 
-    Private _intRow As Short 'Current Row
-    Private _intCol As Short 'Current Col.
     Private _intLCTypeID As Integer 'LCTypeID#
-    Private _intLCClassID As Integer
+
     Private _intCount As Short 'Number of rows in old GRID
-    Private _bolGridChanged As Boolean 'Flag for whether or not grid values have changed
-    Private _bolSaved As Boolean 'Flag for saved/not saved changes
-    Private _bolFirstLoad As Boolean 'Is initial Load event
     Private _bolBegin As Boolean
-    Private _strUndoText As String 'initial cell value used to track changes - defaults back on Esc
-    Private _strUndoDescrip As String 'same but for the Description
-    Private _intMouseButton As Short 'Integer for mouse button click - added to avoid right click change cell value problem
 
     Private _LCAdapter As OleDbDataAdapter
     Private _cBuilder As OleDbCommandBuilder
@@ -52,10 +43,7 @@ Friend Class LandCoverTypesForm
         Try
             _dbConn = g_DBConn
 
-            'Set the flags
-            _bolSaved = False 'We haven't saved
-            _bolGridChanged = False 'Nothing's changed
-            _bolFirstLoad = True 'It's the first load
+            IsDirty = False 'Nothing's changed
 
             'Initialize the Grid and populate the combobox
             modUtil.InitComboBox(cmbxLCType, "LCTYPE")
@@ -70,16 +58,16 @@ Friend Class LandCoverTypesForm
             'On the cbo Click to change to a new LandClassType, check if there's been changes, prompt to save
             Dim strSQLLCType As String
             Dim strSQLLCClass As String
-            If _bolGridChanged And _bolBegin Then
+            If IsDirty And _bolBegin Then
 
                 Dim intYesNo As MsgBoxResult = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNoTitle)
                 If intYesNo = MsgBoxResult.Yes Then
                     SaveToDB()
-                    _bolGridChanged = False
+                    IsDirty = False
                     CmdSaveEnabled()
                     cboLCType_SelectedIndexChanged(eventSender, eventArgs)
                 ElseIf intYesNo = MsgBoxResult.No Then
-                    _bolGridChanged = False
+                    IsDirty = False
                     CmdSaveEnabled()
                     cboLCType_SelectedIndexChanged(eventSender, eventArgs)
                 End If
@@ -161,49 +149,8 @@ Friend Class LandCoverTypesForm
             HandleError(c_sModuleFileName, ex)
         End Try
     End Sub
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As System.EventArgs)
 
-
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Try
-            If Not _bolSaved And _bolGridChanged Then
-
-                intYesNo = MsgBox("Do you want to save changes made to " & cmbxLCType.Text & "?", MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
-
-                If intYesNo = MsgBoxResult.Yes Then
-
-                    If ValidateGridValues() Then
-                        SaveToDB()
-                        MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Save Successful")
-                        _bolGridChanged = False
-                        _bolSaved = True
-                        _bolBegin = False
-                        Close()
-                    End If
-
-                ElseIf intYesNo = MsgBoxResult.No Then
-                    _bolBegin = False
-                    Close()
-
-                Else
-                    Exit Sub
-
-                End If
-            Else
-                SaveToDB()
-                MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Save Successful")
-                _bolGridChanged = False
-                _bolSaved = True
-                _bolBegin = False
-                Close()
-            End If
-
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
-    End Sub
-
-
-    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
             If ValidateGridValues() Then
                 SaveToDB()
@@ -211,11 +158,9 @@ Friend Class LandCoverTypesForm
 
                 MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Data Saved Successfully")
 
-                'Reset the flags
-                _bolGridChanged = False
-                _bolSaved = True
+                IsDirty = False
 
-                Close()
+                MyBase.OK_Button_Click(sender, e)
             End If
         Catch ex As Exception
             'TODO: Make sure this error functions
@@ -227,8 +172,6 @@ Friend Class LandCoverTypesForm
             MsgBox("There was an error saving changes: " + ex.Message, MsgBoxStyle.Critical, "Error Saving Changes")
         End Try
     End Sub
-
-
     Private Sub btnRestoreDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRestoreDefaults.Click
         'Restore Defaults Button - just read in NSPECT.LCCLASSDEFAULTS
 
@@ -261,7 +204,7 @@ Friend Class LandCoverTypesForm
                 Loop
                 datCCAP.Close()
 
-                _bolGridChanged = True
+                IsDirty = True
                 CmdSaveEnabled()
             End If
         Catch ex As Exception
@@ -309,7 +252,7 @@ Friend Class LandCoverTypesForm
                     MsgBox(cmbxLCType.Text & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
                     cmbxLCType.Items.Clear()
-                    _bolGridChanged = False
+                    IsDirty = False
                     modUtil.InitComboBox(cmbxLCType, "LCType")
                     Me.Refresh()
 
@@ -317,7 +260,7 @@ Friend Class LandCoverTypesForm
                     MsgBox("Please select a Land class", MsgBoxStyle.Critical, "No Land Class Selected")
                 End If
             ElseIf intAns = MsgBoxResult.No Then
-                _bolGridChanged = False
+                IsDirty = False
                 Exit Sub
             End If
         Catch ex As Exception
@@ -430,7 +373,7 @@ Friend Class LandCoverTypesForm
 
     Private Sub dgvLCTypes_CellEndEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvLCTypes.CellEndEdit
         Try
-            _bolGridChanged = True
+            IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -467,7 +410,7 @@ Friend Class LandCoverTypesForm
 
             Dim dr As DataRow = _dTable.NewRow()
             _dTable.Rows.Add(dr)
-            _bolGridChanged = True
+            IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
             HandleError(c_sModuleFileName, ex)
@@ -481,7 +424,7 @@ Friend Class LandCoverTypesForm
                 _dTable.Columns(1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
                 Dim dr As DataRow = _dTable.NewRow()
                 _dTable.Rows.InsertAt(dr, dgvLCTypes.CurrentRow.Index)
-                _bolGridChanged = True
+                IsDirty = True
                 CmdSaveEnabled()
             End If
         Catch ex As Exception
@@ -494,7 +437,7 @@ Friend Class LandCoverTypesForm
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
                 dgvLCTypes.Rows.Remove(dgvLCTypes.CurrentRow)
-                _bolGridChanged = True
+                IsDirty = True
                 CmdSaveEnabled()
             End If
         Catch ex As Exception
@@ -504,12 +447,7 @@ Friend Class LandCoverTypesForm
 
 
     Private Sub CmdSaveEnabled()
-        Try
-            btnSave.Enabled = _bolGridChanged
-
-        Catch ex As Exception
-            HandleError(c_sModuleFileName, ex)
-        End Try
+        OK_Button.Enabled = IsDirty
     End Sub
 
 
@@ -665,7 +603,7 @@ Friend Class LandCoverTypesForm
     Public Sub UpdateCombo(ByVal strName As String)
         Try
             cmbxLCType.Items.Clear()
-            _bolGridChanged = False
+            IsDirty = False
             modUtil.InitComboBox(cmbxLCType, "LCType")
             cmbxLCType.SelectedItem = strName
         Catch ex As Exception
