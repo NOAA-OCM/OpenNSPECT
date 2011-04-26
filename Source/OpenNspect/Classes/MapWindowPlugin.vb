@@ -41,6 +41,22 @@ Public Class MapWindowPlugin
 
 #End Region
 
+    Private ReadOnly Property ReferenceAssembly() As [Assembly]
+        Get
+            Return Me.GetType.Assembly
+        End Get
+    End Property
+
+    Private _file As FileVersionInfo
+    Private ReadOnly Property ReferenceFile() As FileVersionInfo
+        Get
+            If _file Is Nothing Then
+                _file = FileVersionInfo.GetVersionInfo(ReferenceAssembly.Location)
+            End If
+
+            Return _file
+        End Get
+    End Property
 #Region "Unused Plug-in Interface Elements"
 
     ''' <summary>
@@ -50,8 +66,8 @@ Public Class MapWindowPlugin
     ''' <param name="Location"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    <CLSCompliant (False)> _
-    Public Sub LegendDoubleClick (ByVal Handle As Integer, ByVal Location As ClickLocation, _
+    <CLSCompliant(False)> _
+    Public Sub LegendDoubleClick(ByVal Handle As Integer, ByVal Location As ClickLocation, _
                                   ByRef Handled As Boolean) Implements IPlugin.LegendDoubleClick
 
     End Sub
@@ -64,8 +80,8 @@ Public Class MapWindowPlugin
     ''' <param name="Location"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    <CLSCompliant (False)> _
-    Public Sub LegendMouseDown (ByVal Handle As Integer, ByVal Button As Integer, _
+    <CLSCompliant(False)> _
+    Public Sub LegendMouseDown(ByVal Handle As Integer, ByVal Button As Integer, _
                                 ByVal Location As ClickLocation, ByRef Handled As Boolean) _
         Implements IPlugin.LegendMouseDown
 
@@ -79,8 +95,8 @@ Public Class MapWindowPlugin
     ''' <param name="Location"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    <CLSCompliant (False)> _
-    Public Sub LegendMouseUp (ByVal Handle As Integer, ByVal Button As Integer, _
+    <CLSCompliant(False)> _
+    Public Sub LegendMouseUp(ByVal Handle As Integer, ByVal Button As Integer, _
                               ByVal Location As ClickLocation, ByRef Handled As Boolean) _
         Implements IPlugin.LegendMouseUp
 
@@ -92,7 +108,7 @@ Public Class MapWindowPlugin
     ''' <param name="Bounds"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub MapDragFinished (ByVal Bounds As Rectangle, ByRef Handled As Boolean) _
+    Public Sub MapDragFinished(ByVal Bounds As Rectangle, ByRef Handled As Boolean) _
         Implements IPlugin.MapDragFinished
 
     End Sub
@@ -106,7 +122,7 @@ Public Class MapWindowPlugin
     ''' <param name="y"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub MapMouseUp (ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
+    Public Sub MapMouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
                            ByRef Handled As Boolean) Implements IPlugin.MapMouseUp
 
     End Sub
@@ -117,7 +133,7 @@ Public Class MapWindowPlugin
     ''' <param name="msg"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub Message (ByVal msg As String, ByRef Handled As Boolean) Implements IPlugin.Message
+    Public Sub Message(ByVal msg As String, ByRef Handled As Boolean) Implements IPlugin.Message
 
     End Sub
 
@@ -127,7 +143,7 @@ Public Class MapWindowPlugin
     ''' <param name="ProjectFile"></param>
     ''' <param name="SettingsString"></param>
     ''' <remarks></remarks>
-    Public Sub ProjectSaving (ByVal ProjectFile As String, ByRef SettingsString As String) _
+    Public Sub ProjectSaving(ByVal ProjectFile As String, ByRef SettingsString As String) _
         Implements IPlugin.ProjectSaving
     End Sub
 
@@ -137,8 +153,8 @@ Public Class MapWindowPlugin
     ''' <param name="Handle"></param>
     ''' <param name="SelectInfo"></param>
     ''' <remarks></remarks>
-    <CLSCompliant (False)> _
-    Public Sub ShapesSelected (ByVal Handle As Integer, ByVal SelectInfo As SelectInfo) _
+    <CLSCompliant(False)> _
+    Public Sub ShapesSelected(ByVal Handle As Integer, ByVal SelectInfo As SelectInfo) _
         Implements IPlugin.ShapesSelected
 
     End Sub
@@ -148,7 +164,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <param name="Handle"></param>
     ''' <remarks></remarks>
-    Public Sub LayerSelected (ByVal Handle As Integer) Implements IPlugin.LayerSelected
+    Public Sub LayerSelected(ByVal Handle As Integer) Implements IPlugin.LayerSelected
 
     End Sub
 
@@ -158,7 +174,7 @@ Public Class MapWindowPlugin
     ''' <param name="ProjectFile"></param>
     ''' <param name="SettingsString"></param>
     ''' <remarks></remarks>
-    Public Sub ProjectLoading (ByVal ProjectFile As String, ByVal SettingsString As String) _
+    Public Sub ProjectLoading(ByVal ProjectFile As String, ByVal SettingsString As String) _
         Implements IPlugin.ProjectLoading
 
     End Sub
@@ -172,7 +188,7 @@ Public Class MapWindowPlugin
     ''' <param name="y"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub MapMouseDown (ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
+    Public Sub MapMouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
                              ByRef Handled As Boolean) Implements IPlugin.MapMouseDown
 
     End Sub
@@ -184,7 +200,7 @@ Public Class MapWindowPlugin
     ''' <param name="ScreenY"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub MapMouseMove (ByVal ScreenX As Integer, ByVal ScreenY As Integer, ByRef Handled As Boolean) _
+    Public Sub MapMouseMove(ByVal ScreenX As Integer, ByVal ScreenY As Integer, ByRef Handled As Boolean) _
         Implements IPlugin.MapMouseMove
 
     End Sub
@@ -194,7 +210,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <param name="Handle"></param>
     ''' <remarks></remarks>
-    Public Sub LayerRemoved (ByVal Handle As Integer) Implements IPlugin.LayerRemoved
+    Public Sub LayerRemoved(ByVal Handle As Integer) Implements IPlugin.LayerRemoved
 
     End Sub
 
@@ -203,8 +219,8 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <param name="Layers"></param>
     ''' <remarks></remarks>
-    <CLSCompliant (False)> _
-    Public Sub LayersAdded (ByVal Layers() As Layer) _
+    <CLSCompliant(False)> _
+    Public Sub LayersAdded(ByVal Layers() As Layer) _
         Implements IPlugin.LayersAdded
 
     End Sub
@@ -237,7 +253,7 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
-            Return "OpenNSPECT"
+            Return ReferenceFile.ProductName
         End Get
     End Property
 
@@ -249,8 +265,7 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public ReadOnly Property Description() As String Implements IPlugin.Description
         Get
-            Return _
-                "This plugin implements the Nonpoint-Source Pollution and Erosion Comparison Tool.  Primary developer: Allen Anselmo"
+            Return ReferenceFile.Comments
         End Get
     End Property
 
@@ -262,7 +277,7 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public ReadOnly Property Author() As String Implements IPlugin.Author
         Get
-            Return "MapWindow Development Team"
+            Return ReferenceFile.CompanyName
         End Get
     End Property
 
@@ -274,7 +289,7 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public ReadOnly Property Version() As String Implements IPlugin.Version
         Get
-            Return FileVersionInfo.GetVersionInfo (Me.GetType.Assembly.Location).FileVersion
+            Return ReferenceFile.FileVersion
         End Get
     End Property
 
@@ -286,20 +301,19 @@ Public Class MapWindowPlugin
     ''' <remarks></remarks>
     Public ReadOnly Property BuildDate() As String Implements IPlugin.BuildDate
         Get
-            Return File.GetLastWriteTime (Me.GetType.Assembly.Location)
+            Return File.GetLastWriteTime(ReferenceAssembly.Location)
         End Get
     End Property
 
     ''' <summary>
-    ''' 
+    ''' This property is obsolete.
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public ReadOnly Property SerialNumber() As String Implements IPlugin.SerialNumber
         Get
-            Return "O+CW7YC/96VDT+A"
-            ' This is matched to the author name in a serial number issuing program Dan ran.
+            Return String.Empty
         End Get
     End Property
 
@@ -313,13 +327,13 @@ Public Class MapWindowPlugin
     ''' <param name="MapWin"></param>
     ''' <param name="ParentHandle"></param>
     ''' <remarks></remarks>
-    <CLSCompliant (False)> _
-    Public Sub Initialize (ByVal MapWin As IMapWin, ByVal ParentHandle As Integer) _
+    <CLSCompliant(False)> _
+    Public Sub Initialize(ByVal MapWin As IMapWin, ByVal ParentHandle As Integer) _
         Implements IPlugin.Initialize
         g_MapWin = MapWin
         '  This sets global for use elsewhere in program
         g_handle = ParentHandle
-        g_StatusBar = g_MapWin.StatusBar.AddPanel ("", 2, 10, StatusBarPanelAutoSize.Spring)
+        g_StatusBar = g_MapWin.StatusBar.AddPanel("", 2, 10, StatusBarPanelAutoSize.Spring)
 
         AddMenus()
 
@@ -328,11 +342,11 @@ Public Class MapWindowPlugin
         ' Detects and sets the path to OpenNSPECT's application folder (installation directory)
         'nspectPath = My.Application.Info.DirectoryPath
 
-        If Right (nspectPath, 1) = "\" Then
-            nspectPath = Left (nspectPath, Len (nspectPath) - 1)
+        If Right(nspectPath, 1) = "\" Then
+            nspectPath = Left(nspectPath, Len(nspectPath) - 1)
         End If
-        If Right (nspectPath, 4) = "\bin" Then
-            nspectPath = Left (nspectPath, Len (nspectPath) - 4)
+        If Right(nspectPath, 4) = "\bin" Then
+            nspectPath = Left(nspectPath, Len(nspectPath) - 4)
         End If
 
         g_nspectPath = nspectPath
@@ -348,11 +362,11 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Terminate() Implements IPlugin.Terminate
-        g_MapWin.StatusBar.RemovePanel (g_StatusBar)
+        g_MapWin.StatusBar.RemovePanel(g_StatusBar)
 
         While (_addedMenus.Count > 0)
             Try
-                g_MapWin.Menus.Remove (_addedMenus.Pop().ToString())
+                g_MapWin.Menus.Remove(_addedMenus.Pop().ToString())
             Catch ex As Exception
 
             End Try
@@ -369,7 +383,7 @@ Public Class MapWindowPlugin
     ''' <param name="ItemName"></param>
     ''' <param name="Handled"></param>
     ''' <remarks></remarks>
-    Public Sub ItemClicked (ByVal ItemName As String, ByRef Handled As Boolean) _
+    Public Sub ItemClicked(ByVal ItemName As String, ByRef Handled As Boolean) _
         Implements IPlugin.ItemClicked
         Select Case ItemName
             Case mnuNspectAnalysis
@@ -406,36 +420,36 @@ Public Class MapWindowPlugin
     Private Sub AddMenus()
         Dim nil As Object = Nothing
         With g_MapWin.Menus
-            .AddMenu (mnuNspectMain, nil, "OpenNSPECT")
-            _addedMenus.Push (mnuNspectMain)
-            .AddMenu (mnuNspectAnalysis, mnuNspectMain, nil, "Run Analysis...")
-            _addedMenus.Push (mnuNspectAnalysis)
-            .AddMenu ("mnunspectsep0", mnuNspectMain, nil, "-")
-            _addedMenus.Push ("mnunspectsep0")
-            .AddMenu (mnuNspectCompare, mnuNspectMain, nil, "Compare Outputs...")
-            _addedMenus.Push (mnuNspectCompare)
-            .AddMenu ("mnunspectsep1", mnuNspectMain, nil, "-")
-            _addedMenus.Push ("mnunspectsep1")
-            .AddMenu (mnuNspectAdvSettings, mnuNspectMain, nil, "Advanced Settings")
-            _addedMenus.Push (mnuNspectAdvSettings)
-            .AddMenu (mnuNspectAdvLand, mnuNspectAdvSettings, nil, "Land Cover Types...")
-            _addedMenus.Push (mnuNspectAdvLand)
-            .AddMenu (mnuNspectAdvPolutants, mnuNspectAdvSettings, nil, "Pollutants...")
-            _addedMenus.Push (mnuNspectAdvPolutants)
-            .AddMenu (mnuNspectAdvWQ, mnuNspectAdvSettings, nil, "Water Quality Standards...")
-            _addedMenus.Push (mnuNspectAdvWQ)
-            .AddMenu (mnuNspectAdvPrecip, mnuNspectAdvSettings, nil, "Precipitation Scenarios...")
-            _addedMenus.Push (mnuNspectAdvPrecip)
-            .AddMenu (mnuNspectAdvWSDelin, mnuNspectAdvSettings, nil, "Watershed Delineations...")
-            _addedMenus.Push (mnuNspectAdvWSDelin)
-            .AddMenu (mnuNspectAdvSoils, mnuNspectAdvSettings, nil, "Soils...")
-            _addedMenus.Push (mnuNspectAdvSoils)
-            .AddMenu ("mnunspectsep2", mnuNspectMain, nil, "-")
-            _addedMenus.Push ("mnunspectsep2")
-            .AddMenu (mnuNspectHelp, mnuNspectMain, nil, "Help...")
-            _addedMenus.Push (mnuNspectHelp)
-            .AddMenu (mnuNspectAbout, mnuNspectMain, nil, "About...")
-            _addedMenus.Push (mnuNspectAbout)
+            .AddMenu(mnuNspectMain, nil, "OpenNSPECT")
+            _addedMenus.Push(mnuNspectMain)
+            .AddMenu(mnuNspectAnalysis, mnuNspectMain, nil, "Run Analysis...")
+            _addedMenus.Push(mnuNspectAnalysis)
+            .AddMenu("mnunspectsep0", mnuNspectMain, nil, "-")
+            _addedMenus.Push("mnunspectsep0")
+            .AddMenu(mnuNspectCompare, mnuNspectMain, nil, "Compare Outputs...")
+            _addedMenus.Push(mnuNspectCompare)
+            .AddMenu("mnunspectsep1", mnuNspectMain, nil, "-")
+            _addedMenus.Push("mnunspectsep1")
+            .AddMenu(mnuNspectAdvSettings, mnuNspectMain, nil, "Advanced Settings")
+            _addedMenus.Push(mnuNspectAdvSettings)
+            .AddMenu(mnuNspectAdvLand, mnuNspectAdvSettings, nil, "Land Cover Types...")
+            _addedMenus.Push(mnuNspectAdvLand)
+            .AddMenu(mnuNspectAdvPolutants, mnuNspectAdvSettings, nil, "Pollutants...")
+            _addedMenus.Push(mnuNspectAdvPolutants)
+            .AddMenu(mnuNspectAdvWQ, mnuNspectAdvSettings, nil, "Water Quality Standards...")
+            _addedMenus.Push(mnuNspectAdvWQ)
+            .AddMenu(mnuNspectAdvPrecip, mnuNspectAdvSettings, nil, "Precipitation Scenarios...")
+            _addedMenus.Push(mnuNspectAdvPrecip)
+            .AddMenu(mnuNspectAdvWSDelin, mnuNspectAdvSettings, nil, "Watershed Delineations...")
+            _addedMenus.Push(mnuNspectAdvWSDelin)
+            .AddMenu(mnuNspectAdvSoils, mnuNspectAdvSettings, nil, "Soils...")
+            _addedMenus.Push(mnuNspectAdvSoils)
+            .AddMenu("mnunspectsep2", mnuNspectMain, nil, "-")
+            _addedMenus.Push("mnunspectsep2")
+            .AddMenu(mnuNspectHelp, mnuNspectMain, nil, "Help...")
+            _addedMenus.Push(mnuNspectHelp)
+            .AddMenu(mnuNspectAbout, mnuNspectMain, nil, "About...")
+            _addedMenus.Push(mnuNspectAbout)
 
         End With
     End Sub
@@ -526,7 +540,7 @@ Public Class MapWindowPlugin
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub ShowHelpIntro()
-        Help.ShowHelp (Nothing, g_nspectPath & "\Help\nspect.chm", "Introduction.htm")
+        Help.ShowHelp(Nothing, g_nspectPath & "\Help\nspect.chm", "Introduction.htm")
     End Sub
 
 #End Region
@@ -540,4 +554,3 @@ Public Class MapWindowPlugin
         End Using
     End Sub
 End Class
-
