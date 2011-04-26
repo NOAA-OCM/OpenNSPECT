@@ -1,5 +1,5 @@
 '********************************************************************************************************
-'File Name: clsXMLPollutantItem.vb
+'File Name: XmlPollutantItem.vb
 'Description: Class for handling a pollutant item xml
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -17,14 +17,14 @@
 '               Added licensing and comments to code
 Imports System.Xml
 
-Public Class clsXMLPollutantItem
-    Inherits clsXMLBase
+Public Class XmlPollutantItem
+    Inherits XmlBase
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
-    ' *  clsXMLPollutantItem
+    ' *  XmlPollutantItem
     ' *************************************************************************************
-    ' *  Description: XML Wrapper for use a single pollutant in the frmPrj Pollutants Tab
+    ' *  Description: Xml Wrapper for use a single pollutant in the frmPrj Pollutants Tab
     ' *
     ' *  Called By:
     ' *************************************************************************************
@@ -44,7 +44,7 @@ Public Class clsXMLPollutantItem
     Private Const ELEMENT_CoeffSet As String = "CoeffSet"
     Private Const ELEMENT_Coeff As String = "Coeff"
     Private Const ELEMENT_Threshold As String = "Threshold"
-    Private Const ELEMENT_TypeDefXMLFile As String = "TypeDefXMLFile"
+    Private Const ELEMENT_TypeDefXmlFile As String = "TypeDefXmlFile"
 
     Public intID As Short
     Public intApply As Short
@@ -52,7 +52,7 @@ Public Class clsXMLPollutantItem
     Public strCoeffSet As String
     Public strCoeff As String
     Public intThreshold As Short
-    Public strTypeDefXMLFile As String
+    Public strTypeDefXmlFile As String
 
     Public ReadOnly Property NodeName() As String
         Get
@@ -63,9 +63,9 @@ Public Class clsXMLPollutantItem
         End Get
     End Property
 
-    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
-            'Return an XML DOM node that represents this class's properties. If a
+            'Return an Xml DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
             'child node of the parent.
 
@@ -75,35 +75,35 @@ Public Class clsXMLPollutantItem
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml ("<" & NODE_NAME & "/>")
+                dom.LoadXml("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement (NODE_NAME)
-                Parent.AppendChild (node)
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
             End If
 
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
-            NodeAppendAttribute (dom, node, ATTRIBUTE_ID, intID)
-            NodeAppendChildElement (dom, node, ELEMENT_Apply, intApply)
-            NodeAppendChildElement (dom, node, ELEMENT_PollName, strPollName)
-            NodeAppendChildElement (dom, node, ELEMENT_CoeffSet, strCoeffSet)
-            NodeAppendChildElement (dom, node, ELEMENT_Coeff, strCoeff)
-            NodeAppendChildElement (dom, node, ELEMENT_Threshold, intThreshold)
-            NodeAppendChildElement (dom, node, ELEMENT_TypeDefXMLFile, strTypeDefXMLFile)
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            NodeAppendAttribute(dom, node, ATTRIBUTE_ID, intID)
+            NodeAppendChildElement(dom, node, ELEMENT_Apply, intApply)
+            NodeAppendChildElement(dom, node, ELEMENT_PollName, strPollName)
+            NodeAppendChildElement(dom, node, ELEMENT_CoeffSet, strCoeffSet)
+            NodeAppendChildElement(dom, node, ELEMENT_Coeff, strCoeff)
+            NodeAppendChildElement(dom, node, ELEMENT_Threshold, intThreshold)
+            NodeAppendChildElement(dom, node, ELEMENT_TypeDefXmlFile, strTypeDefXmlFile)
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
 
             'Return the created node
             CreateNode = node
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode (ByRef node As XmlNode)
+    Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -111,16 +111,16 @@ Public Class clsXMLPollutantItem
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
 
-            intID = CShort (GetNodeText (node, "@" & ATTRIBUTE_ID))
-            intApply = CShort (GetNodeText (node, ELEMENT_Apply))
-            strPollName = GetNodeText (node, ELEMENT_PollName)
-            strCoeffSet = GetNodeText (node, ELEMENT_CoeffSet)
-            strCoeff = GetNodeText (node, ELEMENT_Coeff)
-            intThreshold = CShort (GetNodeText (node, ELEMENT_Threshold))
-            strTypeDefXMLFile = GetNodeText (node, ELEMENT_TypeDefXMLFile)
+            intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_ID))
+            intApply = CShort(GetNodeText(node, ELEMENT_Apply))
+            strPollName = GetNodeText(node, ELEMENT_PollName)
+            strCoeffSet = GetNodeText(node, ELEMENT_CoeffSet)
+            strCoeff = GetNodeText(node, ELEMENT_Coeff)
+            intThreshold = CShort(GetNodeText(node, ELEMENT_Threshold))
+            strTypeDefXmlFile = GetNodeText(node, ELEMENT_TypeDefXmlFile)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

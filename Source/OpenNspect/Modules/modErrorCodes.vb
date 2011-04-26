@@ -70,7 +70,7 @@ Module modErrorCodes
     Public Const MSG5 As String = "Open Analysis File"
     Public Const MSG6ShapeFile As String = "ESRI Shapefile (*.shp)|*.shp"
     Public Const MSG7 As String = ""
-    Public Const MSG8XMLFile As String = "XML File(*.xml)|*.xml"
+    Public Const MSG8XmlFile As String = "Xml File(*.xml)|*.xml"
 
     Public Sub DisplayError (ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
         MsgBox (String.Format ("{0}Row: {1}, Column: {2}", Error_Renamed, (i + 1), (j + 1)), MsgBoxStyle.Critical, _

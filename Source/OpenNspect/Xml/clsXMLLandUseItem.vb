@@ -1,5 +1,5 @@
 '********************************************************************************************************
-'File Name: clsXMLLandUseItem.vb
+'File Name: XmlLandUseItem.vb
 'Description: Class for handling land use item xml
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -17,14 +17,14 @@
 '               Added licensing and comments to code
 Imports System.Xml
 
-Public Class clsXMLLandUseItem
-    Inherits clsXMLBase
+Public Class XmlLandUseItem
+    Inherits XmlBase
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
-    ' *  clsXMLLandUseItem
+    ' *  XmlLandUseItem
     ' *************************************************************************************
-    ' *  Description: XML Wrapper for use a single landuse scenario item
+    ' *  Description: Xml Wrapper for use a single landuse scenario item
     ' *
     ' *  Called By:
     ' *************************************************************************************
@@ -41,12 +41,12 @@ Public Class clsXMLLandUseItem
     Private Const ATTRIBUTE_ID As String = "ID"
     Private Const ELEMENT_Apply As String = "Apply"
     Private Const ELEMENT_LUScenName As String = "LUScenName"
-    Private Const ELEMENT_LUScenXMLFile As String = "LUScenXMLFile"
+    Private Const ELEMENT_LUScenXmlFile As String = "LUScenXmlFile"
 
     Public intID As Short
     Public intApply As Short
     Public strLUScenName As String
-    Public strLUScenXMLFile As String
+    Public strLUScenXmlFile As String
 
     Public ReadOnly Property NodeName() As String
         Get
@@ -57,9 +57,9 @@ Public Class clsXMLLandUseItem
         End Get
     End Property
 
-    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
-            'Return an XML DOM node that represents this class's properties. If a
+            'Return an Xml DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
             'child node of the parent.
 
@@ -69,31 +69,31 @@ Public Class clsXMLLandUseItem
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml ("<" & NODE_NAME & "/>")
+                dom.LoadXml("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement (NODE_NAME)
-                Parent.AppendChild (node)
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
             End If
 
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
-            NodeAppendAttribute (dom, node, ATTRIBUTE_ID, intID)
-            NodeAppendChildElement (dom, node, ELEMENT_Apply, intApply)
-            NodeAppendChildElement (dom, node, ELEMENT_LUScenName, strLUScenName)
-            NodeAppendChildElement (dom, node, ELEMENT_LUScenXMLFile, strLUScenXMLFile)
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+            NodeAppendAttribute(dom, node, ATTRIBUTE_ID, intID)
+            NodeAppendChildElement(dom, node, ELEMENT_Apply, intApply)
+            NodeAppendChildElement(dom, node, ELEMENT_LUScenName, strLUScenName)
+            NodeAppendChildElement(dom, node, ELEMENT_LUScenXmlFile, strLUScenXmlFile)
 
             'Return the created node
             CreateNode = node
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode (ByRef node As XmlNode)
+    Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -101,13 +101,13 @@ Public Class clsXMLLandUseItem
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
 
-            intID = CShort (GetNodeText (node, "@" & ATTRIBUTE_ID))
-            intApply = CShort (GetNodeText (node, ELEMENT_Apply))
-            strLUScenName = GetNodeText (node, ELEMENT_LUScenName)
-            strLUScenXMLFile = GetNodeText (node, ELEMENT_LUScenXMLFile)
+            intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_ID))
+            intApply = CShort(GetNodeText(node, ELEMENT_Apply))
+            strLUScenName = GetNodeText(node, ELEMENT_LUScenName)
+            strLUScenXmlFile = GetNodeText(node, ELEMENT_LUScenXmlFile)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

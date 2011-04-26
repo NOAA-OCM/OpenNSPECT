@@ -49,7 +49,7 @@ Module modMUSLESoilLossEquation
     Private _pondpicks As String()
 
     Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, _
-                                ByRef strLandClass As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
+                                ByRef strLandClass As String, ByRef OutputItems As XmlOutputItems) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strSoilsDefName: Name of the Soils Definition being used
         'strKFactorFileName: K Factor FileName
@@ -125,18 +125,18 @@ Module modMUSLESoilLossEquation
         'Set up the header w/or without flow direction
         If booLocal = True Then
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
+                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
+                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
                         g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
-                        g_clsXMLPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
+                        g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
                         g_strLSFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
+                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
+                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
                         g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
-                        g_clsXMLPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
+                        g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
                         g_strLSFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & _
                         vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
@@ -379,7 +379,7 @@ Module modMUSLESoilLossEquation
     End Function
 
     Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, _
-                                ByRef OutputItems As clsXMLOutputItems) As Boolean
+                                ByRef OutputItems As XmlOutputItems) As Boolean
         'Incoming strings: strConStatment: the monster con statement
         'strConPondstatement: the con for the pond stuff
         'Calculates the MUSLE erosion model

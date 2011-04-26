@@ -21,7 +21,7 @@ Imports MapWindow.Interfaces
 Imports System.Data.OleDb
 
 Friend Class EditLandUseScenario
-    Private _clsManScen As clsXMLLUMangementScenario
+    Private _ManScen As XMLLUMangementScenario
     Private _strWQStd As String
     Private _frmPrj As MainForm
     Private _stopClose As Boolean
@@ -42,10 +42,10 @@ Friend Class EditLandUseScenario
 
             FillGrid()
 
-            _clsManScen = New clsXMLLUMangementScenario
+            _ManScen = New XMLLUMangementScenario
 
             If Len(g_strLUScenFileName) > 0 Then
-                _clsManScen.XML = g_strLUScenFileName
+                _ManScen.XML = g_strLUScenFileName
                 PopulateForm()
             Else
                 _txtLUCN_0.Text = "0"
@@ -73,7 +73,7 @@ Friend Class EditLandUseScenario
     Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Try
             If ValidateData() Then
-                CreateXMLFile()
+                CreateXmlFile()
                 MyBase.OK_Button_Click(sender, e)
             Else
                 _stopClose = True
@@ -115,11 +115,11 @@ Friend Class EditLandUseScenario
         End Try
     End Sub
 
-    Private Function CreateXMLFile() As String
+    Private Function CreateXmlFile() As String
         Try
-            Dim clsMan As New clsXMLLUMangementScenario
+            Dim Man As New XMLLUMangementScenario
 
-            With clsMan
+            With Man
 
                 .strLUScenName = Trim(txtLUName.Text)
                 .strLUScenLyrName = Trim(cboLULayer.Text)
@@ -134,24 +134,24 @@ Friend Class EditLandUseScenario
                 .intWaterWetlands = chkWatWetlands.CheckState
 
                 For Each row As DataGridViewRow In dgvCoef.Rows
-                    clsMan.clsPollutant = New clsXMLLUScenPollItem
-                    .clsPollutant.intID = row.Index + 1
-                    .clsPollutant.strPollName = row.Cells("Pollutant").Value
-                    .clsPollutant.intType1 = CDbl(row.Cells("Type1").Value)
-                    .clsPollutant.intType2 = CDbl(row.Cells("Type2").Value)
-                    .clsPollutant.intType3 = CDbl(row.Cells("Type3").Value)
-                    .clsPollutant.intType4 = CDbl(row.Cells("Type4").Value)
-                    .clsPollItems.Add(.clsPollutant)
+                    Man.Pollutant = New XMLLUScenPollItem
+                    .Pollutant.intID = row.Index + 1
+                    .Pollutant.strPollName = row.Cells("Pollutant").Value
+                    .Pollutant.intType1 = CDbl(row.Cells("Type1").Value)
+                    .Pollutant.intType2 = CDbl(row.Cells("Type2").Value)
+                    .Pollutant.intType3 = CDbl(row.Cells("Type3").Value)
+                    .Pollutant.intType4 = CDbl(row.Cells("Type4").Value)
+                    .PollItems.Add(.Pollutant)
 
                 Next
             End With
 
-            _frmPrj.SetLURow(CInt(g_intManScenRow), clsMan.strLUScenName, clsMan.XML)
-            CreateXMLFile = clsMan.XML
+            _frmPrj.SetLURow(CInt(g_intManScenRow), Man.strLUScenName, Man.XML)
+            CreateXmlFile = Man.XML
 
         Catch ex As Exception
             HandleError(ex)
-            CreateXMLFile = Nothing
+            CreateXmlFile = Nothing
         End Try
     End Function
 
@@ -262,8 +262,8 @@ Friend Class EditLandUseScenario
             Dim strLyrName As String
             Dim i As Short
 
-            strScenName = _clsManScen.strLUScenName
-            strLyrName = _clsManScen.strLUScenLyrName
+            strScenName = _ManScen.strLUScenName
+            strLyrName = _ManScen.strLUScenLyrName
 
             txtLUName.Text = strScenName
 
@@ -271,29 +271,29 @@ Friend Class EditLandUseScenario
                 cboLULayer.SelectedIndex = GetCboIndex(strLyrName, cboLULayer)
             End If
 
-            chkSelectedPolys.CheckState = _clsManScen.intLUScenSelectedPoly
+            chkSelectedPolys.CheckState = _ManScen.intLUScenSelectedPoly
 
-            _SelectLyrPath = GetLayerFilename(_clsManScen.strLUScenLyrName)
-            _SelectedShapes = _clsManScen.intLUScenSelectedPolyList
+            _SelectLyrPath = GetLayerFilename(_ManScen.strLUScenLyrName)
+            _SelectedShapes = _ManScen.intLUScenSelectedPolyList
             lblSelected.Text = _SelectedShapes.Count.ToString + " selected"
 
-            _txtLUCN_0.Text = CStr(_clsManScen.intSCSCurveA)
-            _txtLUCN_1.Text = CStr(_clsManScen.intSCSCurveB)
-            _txtLUCN_2.Text = CStr(_clsManScen.intSCSCurveC)
-            _txtLUCN_3.Text = CStr(_clsManScen.intSCSCurveD)
-            _txtLUCN_4.Text = CStr(_clsManScen.lngCoverFactor)
-            chkWatWetlands.CheckState = _clsManScen.intWaterWetlands
+            _txtLUCN_0.Text = CStr(_ManScen.intSCSCurveA)
+            _txtLUCN_1.Text = CStr(_ManScen.intSCSCurveB)
+            _txtLUCN_2.Text = CStr(_ManScen.intSCSCurveC)
+            _txtLUCN_3.Text = CStr(_ManScen.intSCSCurveD)
+            _txtLUCN_4.Text = CStr(_ManScen.lngCoverFactor)
+            chkWatWetlands.CheckState = _ManScen.intWaterWetlands
 
             dgvCoef.Rows.Clear()
             Dim idx As Integer
-            For i = 0 To _clsManScen.clsPollItems.Count - 1
+            For i = 0 To _ManScen.PollItems.Count - 1
                 With dgvCoef
                     idx = .Rows.Add()
-                    .Rows(idx).Cells("Pollutant").Value = _clsManScen.clsPollItems.Item(i).strpollname
-                    .Rows(idx).Cells("Type1").Value = _clsManScen.clsPollItems.Item(i).intType1
-                    .Rows(idx).Cells("Type2").Value = _clsManScen.clsPollItems.Item(i).intType2
-                    .Rows(idx).Cells("Type3").Value = _clsManScen.clsPollItems.Item(i).intType3
-                    .Rows(idx).Cells("Type4").Value = _clsManScen.clsPollItems.Item(i).intType4
+                    .Rows(idx).Cells("Pollutant").Value = _ManScen.PollItems.Item(i).strpollname
+                    .Rows(idx).Cells("Type1").Value = _ManScen.PollItems.Item(i).intType1
+                    .Rows(idx).Cells("Type2").Value = _ManScen.PollItems.Item(i).intType2
+                    .Rows(idx).Cells("Type3").Value = _ManScen.PollItems.Item(i).intType3
+                    .Rows(idx).Cells("Type4").Value = _ManScen.PollItems.Item(i).intType4
                 End With
             Next i
 

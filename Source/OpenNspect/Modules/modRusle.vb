@@ -52,7 +52,7 @@ Module modRusleSoilLossEquation
     Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, _
                                 ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, _
                                 ByRef strSDRFileName As String, ByRef strLandClass As String, _
-                                ByRef OutputItems As clsXMLOutputItems, Optional ByRef dblRFactorConstant As Double = 0) _
+                                ByRef OutputItems As XmlOutputItems, Optional ByRef dblRFactorConstant As Double = 0) _
         As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strNibbleFileName: FileName of the nibble GRID
@@ -150,21 +150,21 @@ Module modRusleSoilLossEquation
         'Set up the header w/or without flow direction
         If booLocal = True Then
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
+                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
+                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
                         g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
-                        g_clsXMLPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
+                        g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
                         g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & _
-                        g_clsXMLPrjFile.strRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
+                        g_XmlPrjFile.strRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_clsXMLPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_clsXMLPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
+                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
+                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
                         g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
-                        g_clsXMLPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
+                        g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
                         g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & _
-                        g_clsXMLPrjFile.strRainGridFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & _
+                        g_XmlPrjFile.strRainGridFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & _
                         g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
 
@@ -290,7 +290,7 @@ Module modRusleSoilLossEquation
         End Try
     End Function
 
-    Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As clsXMLOutputItems) As Boolean
+    Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As XmlOutputItems) As Boolean
 
         Dim pSoilLossAcres As Grid = Nothing
         'Soil Loss Acres

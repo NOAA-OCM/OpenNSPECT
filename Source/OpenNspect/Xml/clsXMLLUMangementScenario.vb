@@ -1,5 +1,5 @@
 '********************************************************************************************************
-'File Name: clsWrapperManScen.vb
+'File Name: WrapperManScen.vb
 'Description: A class to handle the management scenario xml
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -18,14 +18,14 @@
 Imports System.Collections.Generic
 Imports System.Xml
 
-Public Class clsXMLLUMangementScenario
-    Inherits clsXMLBase
+Public Class XmlLUMangementScenario
+    Inherits XmlBase
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
-    ' *  clsWrapperMain
+    ' *  WrapperMain
     ' *************************************************************************************
-    ' *  Description: XML Wrapper for use Management scenarios
+    ' *  Description: Xml Wrapper for use Management scenarios
     ' *
     ' *  Called By:
     ' *************************************************************************************
@@ -66,8 +66,8 @@ Public Class clsXMLLUMangementScenario
     Public lngCoverFactor As Double
     Public intWaterWetlands As Short
 
-    Public clsPollutant As clsXMLLUScenPollItem
-    Public clsPollItems As clsXMLLUScenPollItems
+    Public Pollutant As XmlLUScenPollItem
+    Public PollItems As XmlLUScenPollItems
 
     Public ReadOnly Property NodeName() As String
         Get
@@ -79,7 +79,7 @@ Public Class clsXMLLUMangementScenario
 
     Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
-            'Return an XML DOM node that represents this class's properties. If a
+            'Return an Xml DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
             'child node of the parent.
 
@@ -116,7 +116,7 @@ Public Class clsXMLLUMangementScenario
             NodeAppendChildElement(dom, node, NODE_CoverFactor, lngCoverFactor)
             NodeAppendChildElement(dom, node, NODE_WaterWetlands, intWaterWetlands)
 
-            clsPollItems.CreateNode(node)
+            PollItems.CreateNode(node)
 
             CreateNode = node
 
@@ -152,7 +152,7 @@ Public Class clsXMLLUMangementScenario
             lngCoverFactor = CDbl(GetNodeText(node, NODE_CoverFactor))
             intWaterWetlands = CShort(GetNodeText(node, NODE_WaterWetlands))
 
-            clsPollItems.LoadNode(node.SelectSingleNode(clsPollItems.NodeName))
+            PollItems.LoadNode(node.SelectSingleNode(PollItems.NodeName))
 
         Catch ex As Exception
             HandleError(ex)
@@ -161,8 +161,8 @@ Public Class clsXMLLUMangementScenario
 
     Public Sub New()
         Try
-            clsPollutant = New clsXMLLUScenPollItem
-            clsPollItems = New clsXMLLUScenPollItems
+            Pollutant = New XmlLUScenPollItem
+            PollItems = New XmlLUScenPollItems
 
         Catch ex As Exception
             HandleError(ex)

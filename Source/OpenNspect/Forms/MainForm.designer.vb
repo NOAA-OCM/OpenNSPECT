@@ -99,7 +99,7 @@
         Me.dgvLandUse = New System.Windows.Forms.DataGridView()
         Me.LUApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.LUScenario = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.LUScenarioXML = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.LUScenarioXml = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me._SSTab1_TabPage3 = New System.Windows.Forms.TabPage()
         Me.lblManageNote = New System.Windows.Forms.Label()
         Me.dgvManagementScen = New System.Windows.Forms.DataGridView()
@@ -817,7 +817,7 @@
         Me.dgvLandUse.AllowUserToDeleteRows = False
         Me.dgvLandUse.AllowUserToResizeColumns = False
         Me.dgvLandUse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvLandUse.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LUApply, Me.LUScenario, Me.LUScenarioXML})
+        Me.dgvLandUse.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LUApply, Me.LUScenario, Me.LUScenarioXml})
         Me.dgvLandUse.Location = New System.Drawing.Point(3, 3)
         Me.dgvLandUse.MultiSelect = False
         Me.dgvLandUse.Name = "dgvLandUse"
@@ -839,12 +839,12 @@
         Me.LUScenario.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.LUScenario.Width = 250
         '
-        'LUScenarioXML
+        'LUScenarioXml
         '
-        Me.LUScenarioXML.HeaderText = "LUScenarioXML"
-        Me.LUScenarioXML.Name = "LUScenarioXML"
-        Me.LUScenarioXML.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.LUScenarioXML.Visible = False
+        Me.LUScenarioXml.HeaderText = "LUScenarioXml"
+        Me.LUScenarioXml.Name = "LUScenarioXml"
+        Me.LUScenarioXml.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.LUScenarioXml.Visible = False
         '
         '_SSTab1_TabPage3
         '
@@ -1151,7 +1151,7 @@
     Friend WithEvents TypeDef As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LUApply As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents LUScenario As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents LUScenarioXML As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents LUScenarioXml As System.Windows.Forms.DataGridViewTextBoxColumn
     Private WithEvents txtbxRainGrid As System.Windows.Forms.TextBox
     Friend WithEvents lblSelected As System.Windows.Forms.Label
     Private WithEvents btnSelect As System.Windows.Forms.Button

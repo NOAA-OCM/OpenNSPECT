@@ -553,7 +553,7 @@ Friend Class LandCoverTypesForm
 
             'For i = 1 To grdLCClasses.Rows - 1
 
-            '    With clsLCClassData
+            '    With LCClassData
 
             '        .Value = CInt(grdLCClasses.get_TextMatrix(i, 1))
             '        .Name = grdLCClasses.get_TextMatrix(i, 2)

@@ -150,7 +150,7 @@
   <ItemGroup>
     <Compile Include="Xml\clsXMLLUMangementScenario.vb" />
     <Compile Include="Xml\clsXMLLUScenPollItem.vb" />
-    <Compile Include="Xml\clsXMLBase.vb" />
+    <Compile Include="Xml\XmlBase.vb" />
     <Compile Include="Xml\clsXMLCoeffTypeDef.vb" />
     <Compile Include="Xml\clsXMLLandUseItem.vb" />
     <Compile Include="Xml\clsXMLLandUseItems.vb" />

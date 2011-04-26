@@ -1,5 +1,5 @@
 '********************************************************************************************************
-'File Name: clsXMLPollutantItems.vb 
+'File Name: XmlPollutantItems.vb 
 'Description: Class for handling pollutant items xml
 '********************************************************************************************************
 'The contents of this file are subject to the Mozilla Public License Version 1.1 (the "License"); 
@@ -17,15 +17,15 @@
 '               Added licensing and comments to code
 Imports System.Xml
 
-Public Class clsXMLPollutantItems
-    Inherits clsXMLBase
+Public Class XmlPollutantItems
+    Inherits XmlBase
     Implements IEnumerable
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
-    ' *  clsXMLPollutantItems
+    ' *  XmlPollutantItems
     ' *************************************************************************************
-    ' *  Description: XML Wrapper for use a pollutants (the whole group) in the frmPrj Pollutants Tab
+    ' *  Description: Xml Wrapper for use a pollutants (the whole group) in the frmPrj Pollutants Tab
     ' *
     ' *  Called By:
     ' *************************************************************************************
@@ -60,13 +60,13 @@ Public Class clsXMLPollutantItems
         End Get
     End Property
 
-    Public Property Item (ByVal Index As Integer) As clsXMLPollutantItem
+    Public Property Item(ByVal Index As Integer) As XmlPollutantItem
         Get
             'Get the order item at the given index.
-            Item = m_colItems.Item (Index)
+            Item = m_colItems.Item(Index)
         End Get
-        Set (ByVal Value As clsXMLPollutantItem)
-            m_colItems.Add (Value)
+        Set(ByVal Value As XmlPollutantItem)
+            m_colItems.Add(Value)
         End Set
     End Property
 
@@ -75,14 +75,14 @@ Public Class clsXMLPollutantItems
         Try
             GetEnumerator = m_colItems.GetEnumerator
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             GetEnumerator = Nothing
         End Try
     End Function
 
-    Public Overrides Function CreateNode (Optional ByRef Parent As XmlNode = Nothing) As XmlNode
+    Public Overrides Function CreateNode(Optional ByRef Parent As XmlNode = Nothing) As XmlNode
         Try
-            'Return an XML DOM node that represents this class's properties. If a
+            'Return an Xml DOM node that represents this class's properties. If a
             'parent DOM node is passed in, then the returned node is also added as a
             'child node of the parent.
 
@@ -92,36 +92,36 @@ Public Class clsXMLPollutantItems
             'If no parent was passed in, then create a DOM and document element.
             If Parent Is Nothing Then
                 dom = New XmlDocument
-                dom.LoadXml ("<" & NODE_NAME & "/>")
+                dom.LoadXml("<" & NODE_NAME & "/>")
                 node = dom.DocumentElement
                 'Otherwise use passed-in parent.
             Else
                 dom = Parent.OwnerDocument
-                node = dom.CreateElement (NODE_NAME)
-                Parent.AppendChild (node)
+                node = dom.CreateElement(NODE_NAME)
+                Parent.AppendChild(node)
             End If
 
-            Dim clsMgmtScen As clsXMLPollutantItem
+            Dim MgmtScen As XmlPollutantItem
 
-            For Each clsMgmtScen In m_colItems
-                node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
-                clsMgmtScen.CreateNode (node)
-            Next clsMgmtScen
+            For Each MgmtScen In m_colItems
+                node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
+                MgmtScen.CreateNode(node)
+            Next MgmtScen
 
-            node.AppendChild (dom.CreateTextNode (vbNewLine & vbTab))
+            node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
 
-            clsMgmtScen = Nothing
+            MgmtScen = Nothing
 
             'Return the created node
             CreateNode = node
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
             CreateNode = Nothing
         End Try
     End Function
 
-    Public Overrides Sub LoadNode (ByRef node As XmlNode)
+    Public Overrides Sub LoadNode(ByRef node As XmlNode)
         Try
             'Set this class's properties based on the data found in the
             'given node.
@@ -129,22 +129,22 @@ Public Class clsXMLPollutantItems
             'Ensure that a valid node was passed in.
             If node Is Nothing Then Exit Sub
 
-            Dim clsMgmtScen As clsXMLPollutantItem
+            Dim MgmtScen As XmlPollutantItem
             Dim nodes As XmlNodeList
             Dim MgmtNode As XmlNode
 
-            clsMgmtScen = New clsXMLPollutantItem
+            MgmtScen = New XmlPollutantItem
             m_colItems = New ArrayList
 
-            nodes = node.SelectNodes (clsMgmtScen.NodeName)
+            nodes = node.SelectNodes(MgmtScen.NodeName)
             For Each MgmtNode In nodes
-                clsMgmtScen = New clsXMLPollutantItem
-                clsMgmtScen.LoadNode (MgmtNode)
-                m_colItems.Add (clsMgmtScen)
+                MgmtScen = New XmlPollutantItem
+                MgmtScen.LoadNode(MgmtNode)
+                m_colItems.Add(MgmtScen)
             Next MgmtNode
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -152,29 +152,29 @@ Public Class clsXMLPollutantItems
         Try
             m_colItems = New ArrayList
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub Add (ByVal MgmtScen As clsXMLPollutantItem)
+    Public Sub Add(ByVal MgmtScen As XmlPollutantItem)
         'Add a mgmt scen item.
         Try
 
-            m_colItems.Add (MgmtScen)
+            m_colItems.Add(MgmtScen)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub Remove (ByVal Index As Integer)
+    Public Sub Remove(ByVal Index As Integer)
         'Remove an order item.
         Try
 
-            m_colItems.Remove (Index)
+            m_colItems.Remove(Index)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
