@@ -156,7 +156,7 @@
         Me.cboWQStdName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWQStdName.Location = New System.Drawing.Point(97, 28)
         Me.cboWQStdName.Name = "cboWQStdName"
-        Me.cboWQStdName.Size = New System.Drawing.Size(160, 21)
+        Me.cboWQStdName.Size = New System.Drawing.Size(464, 21)
         Me.cboWQStdName.TabIndex = 0
         '
         'txtWQStdDesc
@@ -165,7 +165,7 @@
         Me.txtWQStdDesc.Location = New System.Drawing.Point(97, 54)
         Me.txtWQStdDesc.MaxLength = 100
         Me.txtWQStdDesc.Name = "txtWQStdDesc"
-        Me.txtWQStdDesc.Size = New System.Drawing.Size(286, 20)
+        Me.txtWQStdDesc.Size = New System.Drawing.Size(464, 20)
         Me.txtWQStdDesc.TabIndex = 1
         '
         '_Label1_1

@@ -117,7 +117,7 @@
         Me.txtSoilsKGrid.Location = New System.Drawing.Point(75, 80)
         Me.txtSoilsKGrid.MaxLength = 0
         Me.txtSoilsKGrid.Name = "txtSoilsKGrid"
-        Me.txtSoilsKGrid.Size = New System.Drawing.Size(423, 20)
+        Me.txtSoilsKGrid.Size = New System.Drawing.Size(421, 20)
         Me.txtSoilsKGrid.TabIndex = 5
         '
         'txtSoilsGrid
@@ -131,9 +131,10 @@
         '
         'cboSoils
         '
+        Me.cboSoils.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboSoils.Location = New System.Drawing.Point(76, 19)
         Me.cboSoils.Name = "cboSoils"
-        Me.cboSoils.Size = New System.Drawing.Size(372, 21)
+        Me.cboSoils.Size = New System.Drawing.Size(420, 21)
         Me.cboSoils.TabIndex = 3
         '
         'Label5

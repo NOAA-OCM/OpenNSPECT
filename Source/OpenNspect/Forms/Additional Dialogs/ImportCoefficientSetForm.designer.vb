@@ -46,7 +46,7 @@
         Me.cboLCType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLCType.Location = New System.Drawing.Point(162, 36)
         Me.cboLCType.Name = "cboLCType"
-        Me.cboLCType.Size = New System.Drawing.Size(147, 21)
+        Me.cboLCType.Size = New System.Drawing.Size(223, 21)
         Me.cboLCType.TabIndex = 1
         '
         'cmdBrowse
@@ -74,7 +74,7 @@
         Me.txtCoeffSetName.Location = New System.Drawing.Point(162, 11)
         Me.txtCoeffSetName.MaxLength = 0
         Me.txtCoeffSetName.Name = "txtCoeffSetName"
-        Me.txtCoeffSetName.Size = New System.Drawing.Size(143, 20)
+        Me.txtCoeffSetName.Size = New System.Drawing.Size(222, 20)
         Me.txtCoeffSetName.TabIndex = 0
         '
         '_Label1_5

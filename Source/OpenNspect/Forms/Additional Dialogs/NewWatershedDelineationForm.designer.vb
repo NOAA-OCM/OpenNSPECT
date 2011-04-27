@@ -87,7 +87,7 @@
         Me.cboDEMUnits.Items.AddRange(New Object() {"meters", "feet"})
         Me.cboDEMUnits.Location = New System.Drawing.Point(119, 92)
         Me.cboDEMUnits.Name = "cboDEMUnits"
-        Me.cboDEMUnits.Size = New System.Drawing.Size(152, 21)
+        Me.cboDEMUnits.Size = New System.Drawing.Size(270, 21)
         Me.cboDEMUnits.TabIndex = 2
         '
         'chkHydroCorr
@@ -115,7 +115,7 @@
         Me.txtWSDelinName.Location = New System.Drawing.Point(118, 19)
         Me.txtWSDelinName.MaxLength = 0
         Me.txtWSDelinName.Name = "txtWSDelinName"
-        Me.txtWSDelinName.Size = New System.Drawing.Size(134, 20)
+        Me.txtWSDelinName.Size = New System.Drawing.Size(271, 20)
         Me.txtWSDelinName.TabIndex = 0
         '
         'txtDEMFile
@@ -133,7 +133,7 @@
         Me.cboSubWSSize.Items.AddRange(New Object() {"small", "medium", "large"})
         Me.cboSubWSSize.Location = New System.Drawing.Point(119, 120)
         Me.cboSubWSSize.Name = "cboSubWSSize"
-        Me.cboSubWSSize.Size = New System.Drawing.Size(151, 21)
+        Me.cboSubWSSize.Size = New System.Drawing.Size(270, 21)
         Me.cboSubWSSize.TabIndex = 3
         '
         '_Label1_3
