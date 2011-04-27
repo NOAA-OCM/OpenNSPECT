@@ -27,7 +27,7 @@ Friend Class EditLandUseScenario
     Private _frmPrj As MainForm
     Private _stopClose As Boolean
     Private _SelectLyrPath As String
-    Private _SelectedShapes As List(Of Integer)
+    Private _SelectedShapes As List(Of Integer) = New List(Of Integer)
 
 #Region "Events"
 
@@ -97,7 +97,8 @@ Friend Class EditLandUseScenario
         Handles cboLULayer.MouseClick
         Try
             _SelectLyrPath = ""
-            _SelectedShapes.Clear()
+           _SelectedShapes.Clear()
+           
         Catch ex As Exception
             HandleError(ex)
         End Try
