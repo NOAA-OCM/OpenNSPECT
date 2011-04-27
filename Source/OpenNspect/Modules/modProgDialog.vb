@@ -30,12 +30,10 @@ Imports System.Windows.Forms
     ''' </summary>
     ''' <param name="message">what's it doing.</param>
     ''' <param name="title">Title of Dialog.</param>
-    ''' <param name="min">the Min value of the progress bar.</param>
     ''' <param name="max">the max value of the progress bar.</param>
     ''' <param name="value">current value of progress bar.</param>
     ''' <param name="Owner">The owner.</param>
-    Public Sub ShowProgress (ByRef message As String, ByRef title As String, ByRef min As Integer, ByRef max As Integer, _
-                             ByRef value As Integer, ByRef Owner As Form)
+    Public Sub ShowProgress(ByRef message As String, ByRef title As String, ByRef max As Integer, ByRef value As Integer, ByRef Owner As Form)
 
         Try
             'first time through, set things up
@@ -52,7 +50,8 @@ Imports System.Windows.Forms
                 .CancelEnabled = True
                 .Title = title
                 .Description = message
-                .MinRange = .MaxRange = max
+                .MinRange = 0
+                .MaxRange = max
                 .Progress = value
                 If Not .TimerEnabled Then
                     .TimerEnabled = True

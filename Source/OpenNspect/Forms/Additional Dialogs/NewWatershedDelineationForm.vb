@@ -365,7 +365,7 @@ Friend Class NewWatershedDelineationForm
 
             'STEP 1:  Fill the Surface
             'if hydrocorrect, then skip the Fill, just use the incoming DEM
-            ShowProgress ("Filling DEM...", strProgTitle, 0, 10, 1, Me)
+            ShowProgress("Filling DEM...", strProgTitle, 10, 1, Me)
             If chkHydroCorr.CheckState = 1 Then
                 pFillRaster = pSurfaceDatasetIn
                 _strFilledDEMFileName = pSurfaceDatasetIn.Filename
@@ -383,7 +383,7 @@ Friend Class NewWatershedDelineationForm
             'End if Fill
 
             'STEP 2: Flow Direction
-            ShowProgress ("Computing Flow Direction...", strProgTitle, 0, 10, 2, Me)
+            ShowProgress("Computing Flow Direction...", strProgTitle, 10, 2, Me)
 
             Dim mwDirFileName As String = OutPath + "mwflowdir" + g_OutputGridExt
             _strDirFileName = OutPath + "flowdir" + g_OutputGridExt
@@ -399,7 +399,7 @@ Friend Class NewWatershedDelineationForm
                 Dim tmphead As New GridHeader
                 tmphead.CopyFrom (pFlowDirRaster.Header)
                 pESRID8Flow.CreateNew (_strDirFileName, tmphead, GridDataType.FloatDataType, - 1)
-                Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls (AddressOf tauD8ToESRICellCalc)
+                Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls(AddressOf ConvertTauDEMToESRICell)
                 RasterMath (pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, _
                             tauD8ToESRIcalc)
                 pESRID8Flow.Header.NodataValue = - 1
@@ -410,7 +410,7 @@ Friend Class NewWatershedDelineationForm
             End If
 
             'STEP 3: Flow Accumulation
-            ShowProgress ("Computing Flow Accumulation...", strProgTitle, 0, 10, 3, Me)
+            ShowProgress("Computing Flow Accumulation...", strProgTitle, 10, 3, Me)
             _strAccumFileName = OutPath + "flowacc" + g_OutputGridExt
             If g_KeepRunning Then
                 ret = _
@@ -451,7 +451,7 @@ Friend Class NewWatershedDelineationForm
 
             '        'Step 5: Using Hydrology Op to create stream network
             _strStreamLayer = OutPath + "stream.shp"
-            ShowProgress ("Creating Stream Network...", strProgTitle, 0, 10, 4, Me)
+            ShowProgress("Creating Stream Network...", strProgTitle, 10, 4, Me)
             If g_KeepRunning Then
                 ret = Hydrology.DelinStreamGrids (pSurfaceDatasetIn.Filename, _
                                                   pFillRaster.Filename, _
@@ -478,19 +478,7 @@ Friend Class NewWatershedDelineationForm
                 Return False
             End If
 
-            'The 14th and 15th parameters of DelinStreamGrids are the 4th and 5th parameters of the old function DelinStreamsAndSubBasins, and you do need them.
-            '        'Step 6: Do WaterShed Op got moved into above step.
-            '_strWShedFileName = OutPath + "basinpoly.shp"
-            'modProgDialog.ProgDialog("Creating Watershed GRID...", strProgTitle, 0, 10, 5, Me)
-            'If modProgDialog.g_boolCancel Then
-
-            '    'HACK ret = MapWinGeoProc.Hydrology.DelinStreamsAndSubBasins(pFlowDirRaster.Filename, treedatout, coorddatout, _strStreamLayer, strWSGridOut, Nothing)
-            '    If ret <> 0 Then Return False
-            'Else
-            '    Return False
-            'End If
-
-            ShowProgress ("Creating Watershed Shape...", strProgTitle, 0, 10, 7, Me)
+            ShowProgress("Creating Watershed Shape...", strProgTitle, 10, 7, Me)
             If g_KeepRunning Then
                 ret = _
                     Hydrology.SubbasinsToShape (pFlowDirRaster.Filename, strWSGridOut, strWSSFOut, Nothing)
@@ -499,7 +487,7 @@ Friend Class NewWatershedDelineationForm
                 Return False
             End If
 
-            ShowProgress ("Removing Small Polygons...", strProgTitle, 0, 10, 9, Me)
+            ShowProgress("Removing Small Polygons...", strProgTitle, 10, 9, Me)
             If g_KeepRunning Then
                 pBasinFeatClass.Open (strWSSFOut)
 
@@ -682,535 +670,6 @@ Friend Class NewWatershedDelineationForm
             rastersf.Close()
         End Try
     End Function
-
-    'Private Function CalcLengthSlope(ByRef pDEMRaster As MapWinGIS.Grid, ByRef pFlowDirRaster As MapWinGIS.Grid, ByRef pAccumRaster As MapWinGIS.Grid, ByRef strUnits As String) As String
-    '    Try
-    '        '        'From the Delineate watershed, we are garnering the DEM, Flow Direction, flowaccum, environment and units
-    '        '        'to be used in this function
-    '        '        'Returns: Name of the LS File for use in the database table
-    '        '        On Error GoTo ErrHandler
-
-    '        '        'The rasters                                'Associated Steps
-    '        '        Dim pDEMOneCell As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 1: 1 Cell Buffer DEM
-    '        '        Dim pDEMTwoCell As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 2: 2 Cell Buffer DEM
-    '        '        Dim pFlowDir As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 3: Flow Direction
-    '        '        Dim pFlowDirBV As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 4: Pre Nibble Null
-    '        '        Dim pMask As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 4: Mask
-    '        '        Dim pNibble As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 4: Nibble
-    '        '        Dim pDownSlope As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 5: Down Slope
-    '        '        Dim pDownAngle As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 5a: Tweak down slope
-    '        '        Dim pRelativeSlope As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 6: Relative Slope
-    '        '        Dim pRelSlopeThreshold As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 7: Relative slope threshold
-    '        '        Dim pSlopeBreak As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 7a: Slope Break
-    '        '        Dim pFlowDirBreak As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 8: Flow Direction Break
-    '        '        Dim pWeight As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 9: Weight GRID
-    '        '        Dim pFlowLength As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 10: Flow Length
-    '        '        Dim pFlowLengthFt As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 11: Flow Length to Feet
-    '        '        Dim pSlopeExp As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 12: Slope Exponent
-    '        '        Dim pRusleLFactor As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 13: Rusle L Factor
-    '        '        Dim pRusleSFactor As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 14: Rusle S Factor
-    '        '        Dim pLSFactor As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 15: LS Factor
-    '        '        Dim pFinalLS As ESRI.ArcGIS.Geodatabase.IRaster 'STEP 15a: clippage
-    '        '        Dim strProgTitle As String
-
-    '        '        'Analysis Environment
-    '        '        Dim pDEMGeoDS As ESRI.ArcGIS.Geodatabase.IGeoDataset 'GeoDataset to get spat. ref
-    '        '        Dim pSpatRef As ESRI.ArcGIS.Geometry.ISpatialReference 'Spatial Reference
-
-    '        '        'Create Map Algebra Operator
-    '        '        Dim pMapAlgebraOp As ESRI.ArcGIS.SpatialAnalyst.IMapAlgebraOp 'Workhorse
-    '        '        'String to hold calculations
-    '        '        Dim strExpression As String
-
-    '        '        pDEMGeoDS = pDEMRaster
-    '        '        pSpatRef = pDEMGeoDS.SpatialReference
-
-    '        '        If Not modUtil.CheckSpatialAnalystLicense Then
-    '        '            MsgBox("No Spatial Analyst License Available.", MsgBoxStyle.Critical, "Pay Your Licensing Fee")
-    '        '            CalcLengthSlope = "ERROR"
-    '        '            Exit Function
-    '        '        End If
-
-    '        '        If pDEMRaster Is Nothing Or pFlowDirRaster Is Nothing Then
-    '        '            MsgBox("CaclLengthSlope Error.")
-    '        '            CalcLengthSlope = "ERROR"
-    '        '        End If
-
-    '        '        'Initialize the Map AlgebraOp, same thing as the Map Calculator
-    '        '        'All of the following steps use the same methodology.  They take a Raster, bind it
-    '        '        'to a symbol, in this case a string that represents them in some map calculation.
-    '        '        'You then simply use the MapAlgebraOp to execute the expression.
-
-    '        '        'Get a hold of the Spatial Reference of the DEM, and init MapAlgebra
-    '        '        pMapAlgebraOp = New ESRI.ArcGIS.SpatialAnalyst.RasterMapAlgebraOp
-
-    '        '        'Set the environment
-    '        '        pEnv = pMapAlgebraOp
-
-    '        '        strProgTitle = "Processing the LS GRID..."
-
-    '        '        'STEP 1: ----------------------------------------------------------------------
-    '        '        'Buffer the DEM by one cell
-    '        '        modProgDialog.ProgDialog("Creating one cell buffer...", strProgTitle, 0, 15, 1, (m_App.hwnd))
-
-    '        '        'UPGRADE_NOTE: Object pDEMOneCell may not be destroyed until it is garbage collected. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"'
-    '        '        pDEMOneCell = Nothing
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pDEMRaster. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pDEMRaster, "aml_fdem")
-    '        '            strExpression = "Con(isnull([aml_fdem]), focalmin([aml_fdem]), [aml_fdem])"
-
-    '        '            pDEMOneCell = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            pMapAlgebraOp.UnbindRaster("aml_fdem")
-
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-
-    '        '        'END STEP 1: ------------------------------------------------------------------
-
-    '        '        'STEP 2: ----------------------------------------------------------------------
-    '        '        'Buffer the DEM buffer by one more cell, that's 2
-    '        '        modProgDialog.ProgDialog("Creating two cell buffer...", strProgTitle, 0, 15, 2, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pDEMOneCell. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pDEMOneCell, "dem_b")
-    '        '            strExpression = "Con(isnull([dem_b]), focalmin([dem_b]), [dem_b])"
-
-    '        '            pDEMTwoCell = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            m_strDEM2BName = modUtil.MakePerminentGrid(pDEMTwoCell, (pWS.PathName), "dem2b")
-
-    '        '            pMapAlgebraOp.UnbindRaster("dem_b")
-
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 2: ------------------------------------------------------------------
-
-    '        '        'STEP 3: ----------------------------------------------------------------------
-    '        '        'Flow Direction
-
-    '        '        pFlowDir = pFlowDirRaster
-
-    '        '        'END STEP 3: ------------------------------------------------------------------
-
-    '        '        'STEP 3a: ---------------------------------------------------------------------
-    '        '        modProgDialog.ProgDialog("Creating mask...", strProgTitle, 0, 15, 3, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pDEMOneCell. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pDEMOneCell, "mask")
-    '        '            End With
-
-    '        '            'strExpression = "con(isnull([mask]),0,1)"
-    '        '            strExpression = "con([mask] >= 0, 1, 0)"
-
-    '        '            pMask = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            With pEnv
-    '        '                .Mask = pMask
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pEnv.OutWorkspace. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .OutWorkspace = pWS
-    '        '            End With
-
-    '        '            pEnv = pMapAlgebraOp
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-
-    '        '        'STEP 4: ----------------------------------------------------------------------
-    '        '        'Buffering Flow Direction and do the nibble to fill it in
-    '        '        'Needed in case there is outflow from the DEM grid.
-    '        '        'The following algorithms need to access the downslope DEM grid cell.
-    '        '        'We find this by nibbling the original flow direction grid instead of recalculating
-    '        '        'flow direction from the nibbled DEM because we want the elevation that is assumed
-    '        '        'to be downstream of the edge cell.  Using flow direction on the buffered DEM
-    '        '        'may not give that same result.
-    '        '        modProgDialog.ProgDialog("Buffering slope direction...", strProgTitle, 0, 15, 4, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pFlowDir. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pFlowDir, "fdr_b")
-    '        '            End With
-    '        '            strExpression = "con(isnull([fdr_b]),0,[fdr_b])"
-
-    '        '            pFlowDirBV = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            pMapAlgebraOp.UnbindRaster("fdr_b")
-
-    '        '            'Nibble
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pFlowDirBV. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pFlowDirBV, "fdr_bv")
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pMask. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pMask, "waia_reg")
-    '        '            strExpression = "nibble([fdr_bv],[waia_reg], dataonly)"
-
-    '        '            pNibble = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            'Get nibble's path for use in the database
-    '        '            m_strNibbleName = modUtil.MakePerminentGrid(pNibble, (pWS.PathName), "nibble")
-
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("fdr_bv")
-    '        '                .UnbindRaster("waia_reg")
-    '        '            End With
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 4: ------------------------------------------------------------------
-
-    '        '        'STEP 5: ----------------------------------------------------------------------
-    '        '        'Calculate Slope
-    '        '        'Actually this is calculating the SLOPE, in degrees, not the slope change.
-    '        '        'Note that ESRI's SLOPE command should not be used here.  That command fits
-    '        '        'a plane to the 3x3 grid surrounding the central point and assigns the central
-    '        '        'point the slope of that plane.  The algorithm used here calculates only the slope
-    '        '        'between the central point and it's immediate downstream neighbor.
-    '        '        'That is what is needed by RUSLE.
-
-    '        '        modProgDialog.ProgDialog("Calculating Slope change...", strProgTitle, 0, 15, 5, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pNibble. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pNibble, "fdrnib")
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pDEMTwoCell. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pDEMTwoCell, "dem_2b")
-    '        '            End With
-    '        '            strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), deg * atan(([dem_2b] - [dem_2b](1,0)) / (" & m_intCellSize & "))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), deg * atan(([dem_2b] - [dem_2b](1,1)) / (" & m_intCellSize & " * 1.4142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), deg * atan(([dem_2b] - [dem_2b](0,1)) / (" & m_intCellSize & "))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), deg * atan(([dem_2b] - [dem_2b](-1,1)) / (" & m_intCellSize & " * 1.4142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), deg * atan(([dem_2b] - [dem_2b](-1,0)) / (" & m_intCellSize & "))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), deg * atan(([dem_2b] - [dem_2b](-1,-1)) / (" & m_intCellSize & " * 1.4142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), deg * atan(([dem_2b] - [dem_2b](0,-1)) / (" & m_intCellSize & "))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), deg * atan(([dem_2b] - [dem_2b](1,-1)) / (" & m_intCellSize & " * 1.4142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), deg * atan(([dem_2b] - [dem_2b](1,0)) / (" & m_intCellSize & "))," & "0.1 )))))))))"
-
-    '        '            pDownSlope = pMapAlgebraOp.Execute(strExpression)
-    '        '            'Cleanup
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("fdrnib")
-    '        '                .UnbindRaster("dem_2b")
-    '        '            End With
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 5 ---------------------------------------------------------------------
-
-    '        '        'STEP 5a: -----------------------------------------------------------------------
-    '        '        'Tweak slope where it equals 0 to 0.1
-    '        '        'UPGRADE_WARNING: Couldn't resolve default property of object pDownSlope. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '        pMapAlgebraOp.BindRaster(pDownSlope, "dwnsltmp")
-    '        '        strExpression = "Con([dwnsltmp] le 0, 0.1,[dwnsltmp])"
-
-    '        '        pDownAngle = pMapAlgebraOp.Execute(strExpression)
-
-    '        '        pMapAlgebraOp.UnbindRaster("dwnsltmp")
-
-    '        '        'END STEP 5a: -------------------------------------------------------------------
-
-    '        '        'STEP 6: ------------------------------------------------------------------------
-    '        '        'Relative Slope Change
-    '        '        modProgDialog.ProgDialog("Calculating Relative Slope Change...", strProgTitle, 0, 15, 6, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pDownAngle. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pDownAngle, "dwnslangle")
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pNibble. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pNibble, "fdrnib")
-    '        '            End With
-    '        '            strExpression = "Con([fdrnib] == 1, ([dwnslangle] - [dwnslangle](1,0)) / [dwnslangle]," & "Con([fdrnib] == 2, ([dwnslangle] - [dwnslangle](1,1)) / [dwnslangle]," & "Con([fdrnib] == 4, ([dwnslangle] - [dwnslangle](0,1)) / [dwnslangle]," & "Con([fdrnib] == 8, ([dwnslangle] - [dwnslangle](-1,1)) / [dwnslangle]," & "Con([fdrnib] == 16, ([dwnslangle] - [dwnslangle](-1,0)) / [dwnslangle]," & "Con([fdrnib] == 32, ([dwnslangle] - [dwnslangle](-1,-1)) / [dwnslangle]," & "Con([fdrnib] == 64, ([dwnslangle] - [dwnslangle](0,-1)) / [dwnslangle]," & "Con([fdrnib] == 128, ([dwnslangle] - [dwnslangle](1,-1)) / [dwnslangle]," & "Con([fdrnib] == 255, ([dwnslangle] - [dwnslangle](1,0)) / [dwnslangle]," & "0.1 )))))))))"
-
-    '        '            pRelativeSlope = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("dwnslangle")
-    '        '                .UnbindRaster("fdrnib")
-    '        '            End With
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 6 -----------------------------------------------------------------------
-
-    '        '        'STEP 7: --------------------------------------------------------------------------
-    '        '        'Identify breakpoints: relative difference where slope angle exceeds threshold values
-    '        '        modProgDialog.ProgDialog("Identifying breakpoints...", strProgTitle, 0, 15, 7, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pDownAngle. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pDownAngle, "dwnslangle")
-    '        '            strExpression = "Con(([dwnslangle] gt 2.86240), 0.5, Con(([dwnslangle] le 2.86240), 0.7, 0.0 ))"
-
-    '        '            pRelSlopeThreshold = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            pMapAlgebraOp.UnbindRaster("dwnslangle")
-    '        '            'END STEP 7 -----------------------------------------------------------------------
-
-    '        '            'STEP 7a: -------------------------------------------------------------------------
-    '        '            'Slope break
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pRelSlopeThreshold. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pRelSlopeThreshold, "threshold")
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pRelativeSlope. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pRelativeSlope, "delslprel")
-    '        '            End With
-    '        '            strExpression = "Con(([delslprel] gt [threshold]), 1, 0 )"
-
-    '        '            pSlopeBreak = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("threshold")
-    '        '                .UnbindRaster("delslprel")
-    '        '            End With
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 7a -------------------------------------------------------------------------
-
-    '        '        'STEP 8 -------------------------------------------------------------------------------
-    '        '        'Create Modified Flow Direction GRID
-    '        '        modProgDialog.ProgDialog("Creating modified flow direction GRID...", strProgTitle, 0, 15, 8, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pSlopeBreak. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pSlopeBreak, "slopebreak")
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pFlowDir. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pFlowDir, "fdr")
-    '        '            End With
-    '        '            strExpression = "Con([slopebreak] eq 0, [fdr], 0)"
-
-    '        '            pFlowDirBreak = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("slopebreak")
-    '        '                .UnbindRaster("fdr")
-    '        '            End With
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 8: ----------------------------------------------------------------------
-
-    '        '        'STEP 9: --------------------------------------------------------------------------
-    '        '        'Create weight grid
-    '        '        modProgDialog.ProgDialog("Creating weight GRID...", strProgTitle, 0, 15, 9, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            'Dave's comments:
-    '        '            'This is an error.  In the original AML code, it is needed to correctly account for
-    '        '            'diagonal flow in the flow length calculation of step 10.  However, ArcMap already
-    '        '            'makes this correction.  There is another weighting function needed, however, to be
-    '        '            'consistent with the procedure used in the original AML code. That is what should replace this con.
-
-    '        '            'Removed 12/19/07
-    '        '            'pMapAlgebraOp.BindRaster pFlowDir, "fdr"
-    '        '            'strExpression = "Con([fdr] eq 2, 1.41421," & _
-    '        '            ''    "Con([fdr] eq 8, 1.41421," & _
-    '        '            ''    "Con([fdr] eq 32, 1.41421," & _
-    '        '            ''    "Con([fdr] eq 128, 1.41421," & _
-    '        '            ''    "1.0))))"
-    '        '            'End Remove
-
-    '        '            'Added 12/19/07
-    '        '            'pAccumRaster is passed over from delin watershed
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pAccumRaster. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pAccumRaster, "flowacc")
-    '        '            strExpression = "Con([flowacc] eq 0, 0.5,1.0)"
-
-    '        '            pWeight = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            pMapAlgebraOp.UnbindRaster("flowacc")
-    '        '            'End Added
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 9 -------------------------------------------------------------------------
-
-    '        '        'STEP 10: ---------------------------------------------------------------------------
-    '        '        'Flow Length GRID
-    '        '        modProgDialog.ProgDialog("Creating flow length GRID...", strProgTitle, 0, 15, 10, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pFlowDirBreak. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pFlowDirBreak, "fdrbrk")
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pWeight. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pWeight, "weight")
-    '        '            End With
-    '        '            strExpression = "FlowLength([fdrbrk], [weight], UPSTREAM)"
-
-    '        '            pFlowLength = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("fdrbrk")
-    '        '                .UnbindRaster("weight")
-    '        '            End With
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 10: -----------------------------------------------------------------------
-
-    '        '        'STEP 11: ---------------------------------------------------------------------------
-    '        '        'Convert Meters To Feet
-    '        '        'TODO: Check measure units, won't have to do if already in Feet
-    '        '        modProgDialog.ProgDialog("Checking measurement units...", strProgTitle, 0, 15, 11, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pFlowLength. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pFlowLength, "flowlen")
-    '        '            strExpression = "[flowlen] / 0.3048"
-
-    '        '            pFlowLengthFt = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            pMapAlgebraOp.UnbindRaster("flowlen")
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 11: -----------------------------------------------------------------------
-
-    '        '        'STEP 12: ---------------------------------------------------------------------------
-    '        '        'Calculate the slope length exponent value 'M'
-    '        '        modProgDialog.ProgDialog("Calculating slope length exponent value 'M'...", strProgTitle, 0, 15, 12, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pDownAngle. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pDownAngle, "dwnslangle")
-    '        '            strExpression = "Con(([dwnslangle] le 0.1), 0.01," & "Con(([dwnslangle] gt 0.1 and [dwnslangle] lt 0.2), 0.02," & "Con(([dwnslangle] ge 0.2 and [dwnslangle] lt 0.4), 0.04," & "Con(([dwnslangle] ge 0.4 and [dwnslangle] lt 0.85), 0.08," & "Con(([dwnslangle] ge 0.85 and [dwnslangle] lt 1.4), 0.14," & "Con(([dwnslangle] ge 1.4 and [dwnslangle] lt 2.0), 0.18," & "Con(([dwnslangle] ge 2.0 and [dwnslangle] lt 2.6), 0.22," & "Con(([dwnslangle] ge 2.6 and [dwnslangle] lt 3.1), 0.25," & "Con(([dwnslangle] ge 3.1 and [dwnslangle] lt 3.7), 0.28," & "Con(([dwnslangle] ge 3.7 and [dwnslangle] lt 5.2), 0.32," & "Con(([dwnslangle] ge 5.2 and [dwnslangle] lt 6.3), 0.35," & "Con(([dwnslangle] ge 6.3 and [dwnslangle] lt 7.4), 0.37," & "Con(([dwnslangle] ge 7.4 and [dwnslangle] lt 8.6), 0.40," & "Con(([dwnslangle] ge 8.6 and [dwnslangle] lt 10.3), 0.41," & "Con(([dwnslangle] ge 10.3 and [dwnslangle] lt 12.9), 0.44," & "Con(([dwnslangle] ge 12.9 and [dwnslangle] lt 15.7), 0.47," & "Con(([dwnslangle] ge 15.7 and [dwnslangle] lt 20.0), 0.49," & "Con(([dwnslangle] ge 20.0 and [dwnslangle] lt 25.8), 0.52," & "Con(([dwnslangle] ge 25.8 and [dwnslangle] lt 31.5), 0.54," & "Con(([dwnslangle] ge 31.5 and [dwnslangle] lt 37.2), 0.55," & "0.56))))))))))))))))))))"
-
-    '        '            pSlopeExp = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            pMapAlgebraOp.UnbindRaster("dwnslangle")
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 12: ------------------------------------------------------------------------
-
-    '        '        'STEP 13: ----------------------------------------------------------------------------
-    '        '        'Calculate the L-Factor
-    '        '        modProgDialog.ProgDialog("Calculating the L factor...", strProgTitle, 0, 15, 13, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pFlowLengthFt. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pFlowLengthFt, "flowlenft")
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pSlopeExp. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pSlopeExp, "new_slpexp")
-    '        '            End With
-    '        '            'This non-dimensionalizes flowlenft and, after raising the result to the power in new_slpexp, we have the L factor.
-    '        '            strExpression = "Pow(([flowlenft] / 72.6), [new_slpexp])"
-
-    '        '            pRusleLFactor = pMapAlgebraOp.Execute(strExpression)
-    '        '            'AddRasterLayer Application, pRusleLFactor, "RussleL"
-
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("flowlenft")
-    '        '                .UnbindRaster("new_slpexp")
-    '        '            End With
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 13: ------------------------------------------------------------------------
-
-    '        '        'STEP 14: ----------------------------------------------------------------------------
-    '        '        'Calculate the S-Factor
-    '        '        modProgDialog.ProgDialog("Creating flow length GRID...", strProgTitle, 0, 15, 14, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            'Here is the calculation for S, which is not, actually the slope,
-    '        '            'but IS a function of the slope between a cell and its immediate downstream neighbor.
-    '        '            'UPGRADE_WARNING: Couldn't resolve default property of object pDownAngle. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '            pMapAlgebraOp.BindRaster(pDownAngle, "dwnslangle")
-    '        '            strExpression = "Con([dwnslangle] ge 5.1428, 16.8 * (sin(([dwnslangle] - 0.5) div deg))," & "10.8 * (sin(([dwnslangle] + 0.03) div deg)))"
-
-    '        '            pRusleSFactor = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            pMapAlgebraOp.UnbindRaster("dwnslangle")
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-    '        '        'END STEP 14: -------------------------------------------------------------------------
-
-    '        '        'STEP 15: ----------------------------------------------------------------------------
-    '        '        'Calculate the LS Factor
-    '        '        modProgDialog.ProgDialog("Calculating the LS Factor...", strProgTitle, 0, 15, 15, (m_App.hwnd))
-
-    '        '        If modProgDialog.g_boolCancel Then
-
-    '        '            'quick math to clip this bugger
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pRusleSFactor. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pRusleSFactor, "Sfactor")
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pRusleLFactor. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pRusleLFactor, "Lfactor")
-    '        '            End With
-
-    '        '            strExpression = "[Sfactor] * [Lfactor]"
-
-    '        '            pLSFactor = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("Sfactor")
-    '        '                .UnbindRaster("Lfactor")
-    '        '            End With
-    '        '            'END STEP 15: -------------------------------------------------------------------------
-
-    '        '            'STEP 15a: ----------------------------------------------------------------------------
-    '        '            With pMapAlgebraOp
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pLSFactor. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pLSFactor, "LSFactor")
-    '        '                'UPGRADE_WARNING: Couldn't resolve default property of object pMask. Click for more: 'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"'
-    '        '                .BindRaster(pMask, "Mask")
-    '        '            End With
-
-    '        '            strExpression = "[LSFactor] * [Mask]"
-
-    '        '            pFinalLS = pMapAlgebraOp.Execute(strExpression)
-
-    '        '            With pMapAlgebraOp
-    '        '                .UnbindRaster("LSFactor")
-    '        '                .UnbindRaster("Mask")
-    '        '            End With
-    '        '        Else
-    '        '            GoTo ProgCancel
-    '        '        End If
-
-    '        '        CalcLengthSlope = modUtil.MakePerminentGrid(pLSFactor, (pWS.PathName), "LSGrid")
-
-    '    Catch ex As Exception
-    '        '        MsgBox(Err.Number & ": " & Err.Description)
-    '    Finally
-    '        modProgDialog.KillDialog()
-    '    End Try
-    'End Function
-
 #End Region
 
-#Region "Raster Calc"
-
-    Private Function maskCellCalc (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                   ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        Try
-            If Input1 > 0 Then
-                Return 1
-            Else
-                Return OutNull
-            End If
-        Catch ex As Exception
-            HandleError (ex)
-        End Try
-    End Function
-
-#End Region
 End Class

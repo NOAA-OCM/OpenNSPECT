@@ -69,8 +69,7 @@ Module modManagementScenarios
 
                 For i = 0 To MgmtScens.Count - 1
                     If MgmtScens.Item(i).intApply = 1 Then
-                        ShowProgress("Adding new landclass...", "Creating Management Scenario", 0, _
-                                      CInt(MgmtScens.Count), CInt(i), g_frmProjectSetup)
+                        ShowProgress("Adding new landclass...", "Creating Management Scenario", CInt(MgmtScens.Count), CInt(i), g_frmProjectSetup)
                         If g_KeepRunning Then
                             Dim mgmtitem As ManagementScenarioItem = MgmtScens.Item(i)
                             ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)

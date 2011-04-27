@@ -464,8 +464,7 @@ Module modRunoff
             Dim pPermAccumLocRunoffRaster As Grid = Nothing
             Dim strOutAccum As String
 
-            ShowProgress("Calculating maximum potential retention...", ProgressTitle, 0, 10, 3, _
-                          g_frmProjectSetup)
+            ShowProgress("Calculating maximum potential retention...", ProgressTitle, 10, 3, g_frmProjectSetup)
 
             If g_KeepRunning Then
                 'Calculate maxiumum potential retention
@@ -484,7 +483,7 @@ Module modRunoff
             End If
 
             If g_KeepRunning Then
-                ShowProgress("Calculating runoff...", ProgressTitle, 0, 10, 6, g_frmProjectSetup)
+                ShowProgress("Calculating runoff...", ProgressTitle, 10, 6, g_frmProjectSetup)
                 Dim AllRunOffCalc As New RasterMathCellCalcNulls(AddressOf AllRunoffCellCalc)
                 RasterMath(pSCS100Raster, pInRainRaster, g_pDEMRaster, Nothing, Nothing, pMetRunoffRaster, Nothing, _
                             False, AllRunOffCalc)
@@ -502,8 +501,7 @@ Module modRunoff
             End If
 
             If g_booLocalEffects Then
-                ShowProgress("Creating data layer for local effects...", ProgressTitle, 0, 10, 10, _
-                              g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", ProgressTitle, 10, 10, g_frmProjectSetup)
                 If g_KeepRunning Then
 
                     'STEP 12: Local Effects -------------------------------------------------
@@ -527,7 +525,7 @@ Module modRunoff
                 End If
             End If
 
-            ShowProgress("Creating flow accumulation...", ProgressTitle, 0, 10, 9, g_frmProjectSetup)
+            ShowProgress("Creating flow accumulation...", ProgressTitle, 10, 9, g_frmProjectSetup)
             If g_KeepRunning Then
                 'STEP 7: ------------------------------------------------------------------------------------
                 'Derive Accumulated Runoff
@@ -577,7 +575,7 @@ Module modRunoff
             End If
 
             'Add this then map as our runoff grid
-            ShowProgress("Creating Runoff Layer...", ProgressTitle, 0, 10, 10, g_frmProjectSetup)
+            ShowProgress("Creating Runoff Layer...", ProgressTitle, 10, 10, g_frmProjectSetup)
             If g_KeepRunning Then
                 'Get a unique name for accumulation GRID
                 strOutAccum = GetUniqueName("runoff", g_strWorkspace, g_FinalOutputGridExt)
@@ -745,11 +743,24 @@ Module modRunoff
         End If
     End Function
 
-    Public Function tauD8ToESRICellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
+    ''' <summary>
+    ''' Converts the tau DEM to ESRI cell. ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
+    ''' </summary>
+    ''' <param name="Input1">The input1.</param>
+    ''' <param name="Input1Null">The input1 null.</param>
+    ''' <param name="Input2">The input2.</param>
+    ''' <param name="Input2Null">The input2 null.</param>
+    ''' <param name="Input3">The input3.</param>
+    ''' <param name="Input3Null">The input3 null.</param>
+    ''' <param name="Input4">The input4.</param>
+    ''' <param name="Input4Null">The input4 null.</param>
+    ''' <param name="Input5">The input5.</param>
+    ''' <param name="Input5Null">The input5 null.</param>
+    ''' <param name="OutNull">The out null.</param><returns></returns>
+    Public Function ConvertTauDEMToESRICell(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
                                          ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
                                          ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
                                          ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-        'ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
         If Input1 = 1 Then
             Return 1
         ElseIf Input1 = 8 Then

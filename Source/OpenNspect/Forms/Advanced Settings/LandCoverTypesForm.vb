@@ -23,8 +23,7 @@ Imports System.IO
 
 Friend Class LandCoverTypesForm
     Private _intLCTypeID As Integer
-    'LCTypeID#
-
+  
     Private _intCount As Short
     'Number of rows in old GRID
     Private _bolBegin As Boolean
@@ -77,7 +76,7 @@ Friend Class LandCoverTypesForm
                 CheckCCAPDefault (cmbxLCType.Text)
 
                 'Selection based on combo box
-                strSQLLCType = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & cmbxLCType.Text & "'"
+                strSQLLCType = String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", cmbxLCType.Text)
 
                 'original
                 Dim LCTypeCmd As OleDbCommand = New OleDbCommand (strSQLLCType, _dbConn)
@@ -538,36 +537,6 @@ Friend Class LandCoverTypesForm
         End Try
     End Function
 
-    Private Sub AddDefaultValues()
-        Try
-            'Dim i As Short
-
-            'For i = 1 To grdLCClasses.Rows - 1
-
-            '    With LCClassData
-
-            '        .Value = CInt(grdLCClasses.get_TextMatrix(i, 1))
-            '        .Name = grdLCClasses.get_TextMatrix(i, 2)
-            '        .CNA = CSng(grdLCClasses.get_TextMatrix(i, 3))
-            '        .CNB = CSng(grdLCClasses.get_TextMatrix(i, 4))
-            '        .CNC = CSng(grdLCClasses.get_TextMatrix(i, 5))
-            '        .CND = CSng(grdLCClasses.get_TextMatrix(i, 6))
-            '        .CoverFactor = CSng(grdLCClasses.get_TextMatrix(i, 7))
-            '        .W_WL = CInt(grdLCClasses.get_TextMatrix(i, 8))
-            '        .LCTypeID = CInt(grdLCClasses.get_TextMatrix(i, 9))
-
-            '        .AddNew()
-
-            '    End With
-            'Next i
-
-            'ClearCheckBoxes(True, m_intCount)
-            'CreateCheckBoxes(True)
-
-        Catch ex As Exception
-            HandleError (ex)
-        End Try
-    End Sub
 
     Private Sub ExportLandCover (ByRef strFileName As String)
         Try
@@ -576,7 +545,7 @@ Friend Class LandCoverTypesForm
             Dim out As New StreamWriter (strFileName)
 
             'Write the name and descript.
-            out.WriteLine (cmbxLCType.Text + "," + txtLCTypeDesc.Text)
+            out.WriteLine(String.Format("{0},{1}", cmbxLCType.Text, txtLCTypeDesc.Text))
 
             'Write name of pollutant and threshold
             Dim dr As DataRow

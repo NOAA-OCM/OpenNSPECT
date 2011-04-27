@@ -329,7 +329,7 @@ Module modPollutantCalcs
         Dim strAccPoll As String
 
         Try
-            ShowProgress("Calculating Mass Volume...", strTitle, 0, 13, 2, g_frmProjectSetup)
+            ShowProgress("Calculating Mass Volume...", strTitle, 13, 2, g_frmProjectSetup)
             If g_KeepRunning Then
                 'STEP 2: MASS OF PHOSPHORUS PRODUCED BY EACH CELL -----------------------------------------
                 ReDim _picks(strConStatement.Split(",").Length)
@@ -345,8 +345,7 @@ Module modPollutantCalcs
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
 
-                ShowProgress("Creating data layer for local effects...", strTitle, 0, 13, 13, _
-                              g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", strTitle, 13, 13, g_frmProjectSetup)
                 If g_KeepRunning Then
 
                     strOutConc = GetUniqueName("locconc", g_strWorkspace, g_FinalOutputGridExt)
@@ -372,7 +371,7 @@ Module modPollutantCalcs
 
             End If
 
-            ShowProgress("Deriving accumulated pollutant...", strTitle, 0, 13, 3, g_frmProjectSetup)
+            ShowProgress("Deriving accumulated pollutant...", strTitle, 13, 3, g_frmProjectSetup)
             If g_KeepRunning Then
                 'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
 
@@ -423,7 +422,7 @@ Module modPollutantCalcs
             End If
 
             'STEP 3a: Added 7/26: ADD ACCUMULATED POLLUTANT TO GROUP LAYER-----------------------------------
-            ShowProgress("Creating accumlated pollutant layer...", strTitle, 0, 13, 4, g_frmProjectSetup)
+            ShowProgress("Creating accumlated pollutant layer...", strTitle, 13, 4, g_frmProjectSetup)
             If g_KeepRunning Then
                 strAccPoll = GetUniqueName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
                 'Added 7/23/04 to account for clip by selected polys functionality
@@ -440,7 +439,7 @@ Module modPollutantCalcs
             End If
             'END STEP 3a: ---------------------------------------------------------------------------------
 
-            ShowProgress("Calculating final concentration...", strTitle, 0, 13, 9, g_frmProjectSetup)
+            ShowProgress("Calculating final concentration...", strTitle, 13, 9, g_frmProjectSetup)
             If g_KeepRunning Then
                 Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
                 RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, _
@@ -448,7 +447,7 @@ Module modPollutantCalcs
             End If
 
             If g_KeepRunning Then
-                ShowProgress("Creating data layer...", strTitle, 0, 13, 11, g_frmProjectSetup)
+                ShowProgress("Creating data layer...", strTitle, 13, 11, g_frmProjectSetup)
 
                 strOutConc = GetUniqueName("conc", g_strWorkspace, g_FinalOutputGridExt)
 
@@ -465,7 +464,7 @@ Module modPollutantCalcs
                                     "Pollutant " & _strPollName & " Conc", -1, OutputItems)
             End If
 
-            ShowProgress("Comparing to water quality standard...", strTitle, 0, 13, 13, g_frmProjectSetup)
+            ShowProgress("Comparing to water quality standard...", strTitle, 13, 13, g_frmProjectSetup)
 
             If g_KeepRunning Then
                 If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster, OutputItems) Then
