@@ -35,22 +35,14 @@ Module modPollutantCalcs
     ' *       concentration calculations.
     ' *     * Sub CalcPollutantConcentration: The big workhorse. Contains all the map algebra that
     ' *       gets this turkey finished
-    ' *
-    ' *  Called By:  frmPrj
     ' *************************************************************************************
 
-    Private _strPollName As String
-    'Mod level variable for name of pollutant being used
-    Private _strWQName As String
-    'Mod level variable for name of water quality standard
-    Private _strColor As String
-    'Mod level variable holding the string of the pollutant color
-    Private _strPollCoeffMetadata As String
-    'Variable to hold coeffs for use in metadata
-
+    Private _PollutantName As String
+    Private _WaterQualityStandardName As String
+    Private _PollutantColor As String
+    Private _PollutantCoeffMetadata As String 'Variable to hold coeffs for use in metadata
     Private _WQValue As Single
     Private _FlowMax As Single
-
     Private _picks() As String
 
     Public Function PollutantConcentrationSetup(ByRef Pollutant As PollutantItem, ByRef strLandClass As String, _
@@ -69,10 +61,10 @@ Module modPollutantCalcs
             Dim strPollColor As String
 
             'Get the name of the pollutant
-            _strPollName = Pollutant.strPollName
+            _PollutantName = Pollutant.strPollName
 
             'Get the name of the Water Quality Standard
-            _strWQName = strWQName
+            _WaterQualityStandardName = strWQName
 
             'Figure out what coeff user wants
             Select Case Pollutant.strCoeff
@@ -112,17 +104,19 @@ Module modPollutantCalcs
 
                 Dim command As OleDbCommand = cmdType.GetCommand()
                 strConStatement = ConstructPickStatment(command, g_LandCoverRaster)
-                _strPollCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_booLocalEffects)
+                _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_booLocalEffects)
 
             End If
 
             'Find out the color of the pollutant
-            strPollColor = "Select Color from Pollutant where NAME LIKE '" & _strPollName & "'"
-            Dim cmdPollColor As New DataHelper(strPollColor)
-            Dim datapollcolor As OleDbDataReader = cmdPollColor.ExecuteReader()
-            datapollcolor.Read()
-            _strColor = CStr(datapollcolor("Color"))
-            datapollcolor.Close()
+            strPollColor = "Select Color from Pollutant where NAME LIKE '" & _PollutantName & "'"
+            Using cmdPollColor As New DataHelper(strPollColor)
+                Using datapollcolor As OleDbDataReader = cmdPollColor.ExecuteReader()
+                    datapollcolor.Read()
+                    _PollutantColor = CStr(datapollcolor("Color"))
+                    datapollcolor.Close()
+                End Using
+            End Using
 
             If CalcPollutantConcentration(strConStatement, OutputItems) Then
                 PollutantConcentrationSetup = True
@@ -164,7 +158,7 @@ Module modPollutantCalcs
         End If
 
         strConstructMetaData = vbTab & "Pollutant Coefficients:" & vbNewLine & vbTab & vbTab & "Pollutant: " & _
-                               _strPollName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & _
+                               _PollutantName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & _
                                vbTab & vbTab & _
                                "The following lists the landcover classes and associated coefficients used" & vbNewLine & _
                                vbTab & vbTab & "in the OpenNSPECT analysis run that created this dataset: " & vbNewLine
@@ -277,7 +271,7 @@ Module modPollutantCalcs
                             While dataType.Read()
                                 If mwTable.CellValue(FieldIndex, rowidx) = dataType("Value") Then
                                     booValueFound = True
-                                    strpick = strpick & ", " & CStr(dataType("CoeffType"))
+                                    strpick = String.Format("{0}, {1}", strpick, CStr(dataType("CoeffType")))
                                     rowidx = rowidx + 1
                                     Exit While
                                 Else
@@ -311,194 +305,162 @@ Module modPollutantCalcs
         End Try
     End Function
 
+    Private Sub CalcMassOfPhosperous(ByRef strConStatement As String, ByVal pMassVolumeRaster As Grid)
+        ReDim _picks(strConStatement.Split(",").Length)
+        _picks = strConStatement.Split(",")
+        Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
+        RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, _
+                    massvolcalc)
+    End Sub
+    Private Sub CreateLayerForLocalEffect(ByRef OutputItems As OutputItems, ByVal pMassVolumeRaster As Grid, ByVal outputFileNameOutConc As String)
+        Dim pPermMassVolumeRaster As Grid
+
+        'Added 7/23/04 to account for clip by selected polys functionality
+        If g_booSelectedPolys Then
+            pPermMassVolumeRaster = ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, outputFileNameOutConc)
+        Else
+            pPermMassVolumeRaster = ReturnPermanentRaster(pMassVolumeRaster, outputFileNameOutConc)
+        End If
+
+        g_dicMetadata.Add(_PollutantName & "Local Effects (mg)", _PollutantCoeffMetadata)
+
+        AddOutputGridLayer(pPermMassVolumeRaster, _PollutantColor, True, _PollutantName & " Local Effects (mg)", _
+                            String.Format("Pollutant {0} Local", _PollutantName), -1, OutputItems)
+
+    End Sub
+    Private Sub DeriveAccumulatedPollutant(ByVal pMassVolumeRaster As Grid, ByVal pAccumPollRaster As Grid)
+        'Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
+        Dim pTauD8Flow As Grid = Nothing
+
+        Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+        RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
+        pTauD8Flow.Header.NodataValue = -1
+
+        Dim strtmp1 As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(strtmp1)
+        strtmp1 = strtmp1 + g_TAUDEMGridExt
+        g_TempFilesToDel.Add(strtmp1)
+        DataManagement.DeleteGrid(strtmp1)
+        pTauD8Flow.Save(strtmp1)
+
+        Dim strtmp2 As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(strtmp2)
+        strtmp2 = strtmp2 + g_TAUDEMGridExt
+        g_TempFilesToDel.Add(strtmp2)
+        DataManagement.DeleteGrid(strtmp2)
+        pMassVolumeRaster.Save(strtmp2)
+
+        Dim strtmpout As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(strtmpout)
+        strtmpout = String.Format("{0}out{1}", strtmpout, g_TAUDEMGridExt)
+        g_TempFilesToDel.Add(strtmpout)
+        DataManagement.DeleteGrid(strtmpout)
+
+        'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
+        Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
+                                  Environment.ProcessorCount, Nothing)
+        'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
+        If result <> 0 Then
+            g_KeepRunning = False
+        End If
+        Dim tmpGrid As New Grid
+        tmpGrid.Open(strtmpout)
+
+        Dim multAccumcalc As New RasterMathCellCalc(AddressOf multAccumCellCalc)
+        RasterMath(tmpGrid, Nothing, Nothing, Nothing, Nothing, pAccumPollRaster, multAccumcalc)
+
+        pTauD8Flow.Close()
+        DataManagement.DeleteGrid(strtmp1)
+    End Sub
+    Private Sub AddAccumulatedPollutantToGroupLayer(ByRef OutputItems As OutputItems, ByVal pAccumPollRaster As Grid)
+        Dim strAccPoll As String = GetUniqueName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
+        'Added 7/23/04 to account for clip by selected polys functionality
+        Dim pPermAccPollRaster As Grid
+        If g_booSelectedPolys Then
+            pPermAccPollRaster = ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
+        Else
+            pPermAccPollRaster = ReturnPermanentRaster(pAccumPollRaster, strAccPoll)
+        End If
+
+        Dim layerName As String = String.Format("Accumulated {0} (kg)", _PollutantName)
+        g_dicMetadata.Add(layerName, _PollutantCoeffMetadata)
+
+        AddOutputGridLayer(pPermAccPollRaster, _PollutantColor, True, layerName, _
+                            String.Format("Pollutant {0} Accum", _PollutantName), -1, OutputItems)
+    End Sub
+    Private Sub CalcFinalConcentration(ByVal pMassVolumeRaster As Grid, ByVal pAccumPollRaster As Grid, ByVal pTotalPollConc0Raster As Grid)
+        Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
+        RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, _
+                    pTotalPollConc0Raster, Nothing, False, AllConCalc)
+    End Sub
+    Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByVal pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
+        outputFileNameOutConc = GetUniqueName("conc", g_strWorkspace, g_FinalOutputGridExt)
+        Dim pPermTotalConcRaster As Grid
+        If g_booSelectedPolys Then
+            pPermTotalConcRaster = ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, outputFileNameOutConc)
+        Else
+            pPermTotalConcRaster = ReturnPermanentRaster(pTotalPollConc0Raster, outputFileNameOutConc)
+        End If
+
+        g_dicMetadata.Add(_PollutantName & " Conc. (mg/L)", _PollutantCoeffMetadata)
+
+        AddOutputGridLayer(pPermTotalConcRaster, _PollutantColor, True, _PollutantName & " Conc. (mg/L)", _
+                            String.Format("Pollutant {0} Conc", _PollutantName), -1, OutputItems)
+    End Sub
     Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As OutputItems) _
-        As Boolean
+As Boolean
 
         Dim pMassVolumeRaster As Grid = Nothing
-        Dim pPermMassVolumeRaster As Grid = Nothing
         Dim pAccumPollRaster As Grid = Nothing
-        Dim pPermAccPollRaster As Grid = Nothing
-        Dim pPermTotalConcRaster As Grid = Nothing
         Dim pTotalPollConc0Raster As Grid = Nothing
-        'gets rid of no data...replace with 0
 
-        'String to hold calculations
-        Dim strTitle As String
-        strTitle = "Processing " & _strPollName & " Conc. Calculation..."
-        Dim strOutConc As String
-        Dim strAccPoll As String
+        Dim strTitle = String.Format("Processing {0} Conc. Calculation...", _PollutantName)
+        Dim outputFileNameOutConc = GetUniqueName("locconc", g_strWorkspace, g_FinalOutputGridExt)
 
         Try
+            If Not g_KeepRunning Then Return False
+
             ShowProgress("Calculating Mass Volume...", strTitle, 13, 2, g_frmProjectSetup)
-            If g_KeepRunning Then
-                'STEP 2: MASS OF PHOSPHORUS PRODUCED BY EACH CELL -----------------------------------------
-                ReDim _picks(strConStatement.Split(",").Length)
-                _picks = strConStatement.Split(",")
-                Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
-                RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, _
-                            massvolcalc)
+            CalcMassOfPhosperous(strConStatement, pMassVolumeRaster)
 
-                'END STEP 2: -------------------------------------------------------------------------------
-            End If
-
-            'LOCAL EFFECTS ONLY...
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
+                If Not g_KeepRunning Then Return False
 
                 ShowProgress("Creating data layer for local effects...", strTitle, 13, 13, g_frmProjectSetup)
-                If g_KeepRunning Then
-
-                    strOutConc = GetUniqueName("locconc", g_strWorkspace, g_FinalOutputGridExt)
-                    'Added 7/23/04 to account for clip by selected polys functionality
-                    If g_booSelectedPolys Then
-                        pPermMassVolumeRaster = _
-                            ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, strOutConc)
-                    Else
-                        pPermMassVolumeRaster = ReturnPermanentRaster(pMassVolumeRaster, strOutConc)
-                    End If
-
-                    g_dicMetadata.Add(_strPollName & "Local Effects (mg)", _strPollCoeffMetadata)
-
-                    AddOutputGridLayer(pPermMassVolumeRaster, _strColor, True, _strPollName & " Local Effects (mg)", _
-                                        "Pollutant " & _strPollName & " Local", -1, OutputItems)
-
-                    CalcPollutantConcentration = True
-
-                End If
-
-                CloseProgressDialog()
-                Exit Function
-
+                CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
             End If
 
+            If Not g_KeepRunning Then Return False
             ShowProgress("Deriving accumulated pollutant...", strTitle, 13, 3, g_frmProjectSetup)
-            If g_KeepRunning Then
-                'STEP 3: DERIVE ACCUMULATED POLLUTANT ------------------------------------------------------
+            DeriveAccumulatedPollutant(pMassVolumeRaster, pAccumPollRaster)
 
-                'Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
-                Dim pTauD8Flow As Grid = Nothing
-
-                Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
-                RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
-                pTauD8Flow.Header.NodataValue = -1
-
-                Dim strtmp1 As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp1)
-                strtmp1 = strtmp1 + g_TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp1)
-                DataManagement.DeleteGrid(strtmp1)
-                pTauD8Flow.Save(strtmp1)
-
-                Dim strtmp2 As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp2)
-                strtmp2 = strtmp2 + g_TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp2)
-                DataManagement.DeleteGrid(strtmp2)
-                pMassVolumeRaster.Save(strtmp2)
-
-                Dim strtmpout As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmpout)
-                strtmpout = strtmpout + "out" + g_TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmpout)
-                DataManagement.DeleteGrid(strtmpout)
-
-                'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
-                                          Environment.ProcessorCount, Nothing)
-                'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
-                If result <> 0 Then
-                    g_KeepRunning = False
-                End If
-                Dim tmpGrid As New Grid
-                tmpGrid.Open(strtmpout)
-
-                Dim multAccumcalc As New RasterMathCellCalc(AddressOf multAccumCellCalc)
-                RasterMath(tmpGrid, Nothing, Nothing, Nothing, Nothing, pAccumPollRaster, multAccumcalc)
-
-                pTauD8Flow.Close()
-                DataManagement.DeleteGrid(strtmp1)
-
-                'END STEP 3: ------------------------------------------------------------------------------
-            End If
-
-            'STEP 3a: Added 7/26: ADD ACCUMULATED POLLUTANT TO GROUP LAYER-----------------------------------
+            If Not g_KeepRunning Then Return False
             ShowProgress("Creating accumlated pollutant layer...", strTitle, 13, 4, g_frmProjectSetup)
-            If g_KeepRunning Then
-                strAccPoll = GetUniqueName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
-                'Added 7/23/04 to account for clip by selected polys functionality
-                If g_booSelectedPolys Then
-                    pPermAccPollRaster = ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
-                Else
-                    pPermAccPollRaster = ReturnPermanentRaster(pAccumPollRaster, strAccPoll)
-                End If
+            AddAccumulatedPollutantToGroupLayer(OutputItems, pAccumPollRaster)
 
-                g_dicMetadata.Add("Accumulated " & _strPollName & " (kg)", _strPollCoeffMetadata)
-
-                AddOutputGridLayer(pPermAccPollRaster, _strColor, True, "Accumulated " & _strPollName & " (kg)", _
-                                    "Pollutant " & _strPollName & " Accum", -1, OutputItems)
-            End If
-            'END STEP 3a: ---------------------------------------------------------------------------------
-
+            If Not g_KeepRunning Then Return False
             ShowProgress("Calculating final concentration...", strTitle, 13, 9, g_frmProjectSetup)
-            If g_KeepRunning Then
-                Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
-                RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, _
-                            pTotalPollConc0Raster, Nothing, False, AllConCalc)
-            End If
+            CalcFinalConcentration(pMassVolumeRaster, pAccumPollRaster, pTotalPollConc0Raster)
 
-            If g_KeepRunning Then
-                ShowProgress("Creating data layer...", strTitle, 13, 11, g_frmProjectSetup)
+            If Not g_KeepRunning Then Return False
+            ShowProgress("Creating data layer...", strTitle, 13, 11, g_frmProjectSetup)
+            CreateDataLayer(OutputItems, pTotalPollConc0Raster, outputFileNameOutConc)
 
-                strOutConc = GetUniqueName("conc", g_strWorkspace, g_FinalOutputGridExt)
-
-                If g_booSelectedPolys Then
-                    pPermTotalConcRaster = _
-                        ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, strOutConc)
-                Else
-                    pPermTotalConcRaster = ReturnPermanentRaster(pTotalPollConc0Raster, strOutConc)
-                End If
-
-                g_dicMetadata.Add(_strPollName & " Conc. (mg/L)", _strPollCoeffMetadata)
-
-                AddOutputGridLayer(pPermTotalConcRaster, _strColor, True, _strPollName & " Conc. (mg/L)", _
-                                    "Pollutant " & _strPollName & " Conc", -1, OutputItems)
-            End If
-
+            If Not g_KeepRunning Then Return False
             ShowProgress("Comparing to water quality standard...", strTitle, 13, 13, g_frmProjectSetup)
+            If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster, OutputItems) Then Return False
 
-            If g_KeepRunning Then
-                If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster, OutputItems) Then
-                    CalcPollutantConcentration = False
-                    Exit Function
-                End If
-            End If
-
-            'if we get to the end
-            CalcPollutantConcentration = True
-
-            CloseProgressDialog()
+            Return True
 
         Catch ex As Exception
-            If Err.Number = -2147217297 Then 'User cancelled operation
-                g_KeepRunning = False
-                CalcPollutantConcentration = False
-                Exit Function
-            ElseIf Err.Number = -2147467259 Then
-                MsgBox( _
-                        "ArcMap has reached the maximum number of GRIDs allowed in memory.  " & _
-                        "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
-                        "Maximum GRID Number Encountered")
-                g_KeepRunning = False
-                CloseProgressDialog()
-                CalcPollutantConcentration = False
-            Else
-                HandleError(ex)
-                'False, "CalcPollutantConcentration " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
-                g_KeepRunning = False
-                CloseProgressDialog()
-                CalcPollutantConcentration = False
-            End If
+            HandleError(ex)
+            g_KeepRunning = False
+            Return False
+        Finally
+            CloseProgressDialog()
         End Try
+
     End Function
 
     Private Function CompareWaterQuality(ByRef pWSFeatureClass As Shapefile, _
@@ -520,7 +482,7 @@ Module modPollutantCalcs
             'TODO: This seems useless on a singleband thing, otherwise, seems random. so skipping it.
             'pMaxRaster = pLocalOp.LocalStatistics(pPollutantRaster, ESRI.ArcGIS.GeoAnalyst.esriGeoAnalysisStatisticsEnum.esriGeoAnalysisStatsMaximum)
 
-            strWQVAlue = ReturnWQValue(_strPollName, _strWQName)
+            strWQVAlue = ReturnWQValue(_PollutantName, _WaterQualityStandardName)
 
             _WQValue = (CDbl(strWQVAlue)) / 1000
             _FlowMax = g_pFlowAccRaster.Maximum
@@ -537,14 +499,14 @@ Module modPollutantCalcs
                 pPermWQRaster = ReturnPermanentRaster(pConRaster, strOutWQ)
             End If
 
-            strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _strWQName & _
+            strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _WaterQualityStandardName & _
                           vbNewLine & vbTab & vbTab & "Standard: " & dblConvertValue & " mg/L"
-            g_dicMetadata.Add(_strPollName & " Standard: " & CStr(dblConvertValue) & " mg/L", _
-                               _strPollCoeffMetadata & strMetadata)
+            g_dicMetadata.Add(_PollutantName & " Standard: " & CStr(dblConvertValue) & " mg/L", _
+                               _PollutantCoeffMetadata & strMetadata)
 
-            AddOutputGridLayer(pPermWQRaster, _strWQName, False, _
-                                _strPollName & " Standard: " & CStr(dblConvertValue) & " mg/L", _
-                                "Pollutant " & _strPollName & " WQ", -1, OutputItems)
+            AddOutputGridLayer(pPermWQRaster, _WaterQualityStandardName, False, _
+                                _PollutantName & " Standard: " & CStr(dblConvertValue) & " mg/L", _
+                                "Pollutant " & _PollutantName & " WQ", -1, OutputItems)
 
             CompareWaterQuality = True
 

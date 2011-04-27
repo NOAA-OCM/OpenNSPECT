@@ -536,19 +536,19 @@ Module modRunoff
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp1)
-                strtmp1 = strtmp1 + g_TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp1)
-                DataManagement.DeleteGrid(strtmp1)
-                pTauD8Flow.Save(strtmp1)
+                Dim strtmp1FlowDir As String = Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp1FlowDir)
+                strtmp1FlowDir = strtmp1FlowDir + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp1FlowDir)
+                DataManagement.DeleteGrid(strtmp1FlowDir)
+                pTauD8Flow.Save(strtmp1FlowDir)
 
-                Dim strtmp2 As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp2)
-                strtmp2 = strtmp2 + g_TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp2)
-                DataManagement.DeleteGrid(strtmp2)
-                g_pMetRunoffRaster.Save(strtmp2)
+                Dim strtmp2MetRun As String = Path.GetTempFileName
+                g_TempFilesToDel.Add(strtmp2MetRun)
+                strtmp2MetRun = strtmp2MetRun + g_TAUDEMGridExt
+                g_TempFilesToDel.Add(strtmp2MetRun)
+                DataManagement.DeleteGrid(strtmp2MetRun)
+                g_pMetRunoffRaster.Save(strtmp2MetRun)
 
                 Dim strtmpout As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strtmpout)
@@ -557,9 +557,8 @@ Module modRunoff
                 DataManagement.DeleteGrid(strtmpout)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, Nothing, strtmpout, False, False, _
+                Dim result = Hydrology.WeightedAreaD8(strtmp1FlowDir, strtmp2MetRun, Nothing, strtmpout, False, False, _
                                           Environment.ProcessorCount, Nothing)
-                'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
                 If result <> 0 Then
                     g_KeepRunning = False
                 End If
@@ -567,7 +566,7 @@ Module modRunoff
                 pAccumRunoffRaster.Open(strtmpout)
 
                 pTauD8Flow.Close()
-                DataManagement.DeleteGrid(strtmp1)
+                DataManagement.DeleteGrid(strtmp1FlowDir)
 
                 'END STEP 7: ----------------------------------------------------------------------------------
             Else
