@@ -382,8 +382,7 @@ Module modLanduse
 
                 For i = 0 To LUScenItems.Count - 1
                     If LUScenItems.Item(i).intApply = 1 Then
-                        ShowProgress("Processing Landuse scenario...", "Landuse Scenario", 0, _
-                                      CInt(LUScenItems.Count), CInt(i), g_frmProjectSetup)
+                        ShowProgress("Processing Landuse scenario...", "Landuse Scenario", CInt(LUScenItems.Count), CInt(i), g_frmProjectSetup)
                         If g_KeepRunning Then
                             ReclassRaster(LUScenItems.Item(i), _strLCClass, pNewLandCoverRaster)
                             booLandScen = True

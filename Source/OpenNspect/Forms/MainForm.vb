@@ -1113,7 +1113,7 @@ Friend Class MainForm
             'Cleanup ------------------------------------------------------------------------------------------------------------
             'Go into workspace and rid it of all rasters
             CleanGlobals()
-            CleanupRasterFolder(_XmlPrjParams.strProjectWorkspace)
+
             g_MapWin.StatusBar.ProgressBarValue = 0
             System.Windows.Forms.Cursor.Current = Cursors.Default
 

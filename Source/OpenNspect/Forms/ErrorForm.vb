@@ -17,44 +17,38 @@ Imports System.Reflection
 Imports System.IO
 
 Public Class ErrorForm
-    Private ReadOnly m_exception As Exception
+    Private ReadOnly OriginalException As Exception
     Friend WithEvents lblErr As Label
     Friend WithEvents txtComments As TextBox
     Friend WithEvents btnCopy As Button
 
-    Public Sub New (ByVal ex As Exception)
+    Public Sub New(ByVal ex As Exception)
         MyBase.New()
-        Try
-            'This call is required by the Windows Form Designer.
-            InitializeComponent()
+        'This call is required by the Windows Form Designer.
+        InitializeComponent()
 
-            m_exception = ex
-        Catch ext As Exception
-            HandleError (ext)
-        End Try
+        OriginalException = ex
     End Sub
 
-    Private Sub cmdCopy_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdCopy.Click
+    Private Sub cmdCopy_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdCopy.Click
         Try
-            Clipboard.SetText (txtError.Text)
+            Clipboard.SetText(txtError.Text)
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub cmdClose_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdClose.Click
+    Private Sub cmdClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdClose.Click
         Close()
     End Sub
 
-    Private Sub frmErrorDialog_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmErrorDialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
-            txtError.Text = "OpenNSPECT (" + _
-                            File.GetLastWriteTime (Assembly.GetExecutingAssembly().Location) _
-                                .ToShortDateString() + ")" + vbCrLf + vbCrLf + m_exception.ToString()
-            ' + vbNewLine + vbNewLine + MapWinUtility.MiscUtils.GetDebugInfo()
+            txtError.Text = String.Format("OpenNSPECT ({0}){1}{1}{2}", File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location) _
+                                                            .ToShortDateString(), vbCrLf, OriginalException)
             txtError.SelectionStart = txtError.Text.Length
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

@@ -677,7 +677,7 @@ Module Utilities
             csbrk.ColoringType = ColoringType.Gradient
             csbrk.LowColor = Convert.ToUInt32(RGB(CInt(rFrom), CInt(gFrom), CInt(bFrom)))
             csbrk.HighColor = Convert.ToUInt32(RGB(CInt(rTo), CInt(gTo), CInt(bTo)))
-            csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
+            csbrk.Caption = String.Format("{0} - {1}", csbrk.LowValue, csbrk.HighValue)
             cs.InsertBreak(csbrk)
             csbrk = New GridColorBreak
             csbrk.LowValue = pRaster.Minimum + stdMult * stdDev
@@ -685,7 +685,7 @@ Module Utilities
             csbrk.ColoringType = ColoringType.Gradient
             csbrk.LowColor = Convert.ToUInt32(RGB(CInt(rTo), CInt(gTo), CInt(bTo)))
             csbrk.HighColor = Convert.ToUInt32(RGB(CInt(rFrom2), CInt(gFrom2), CInt(bFrom2)))
-            csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
+            csbrk.Caption = String.Format("{0} - {1}", csbrk.LowValue, csbrk.HighValue)
             cs.InsertBreak(csbrk)
             csbrk = New GridColorBreak
             csbrk.LowValue = pRaster.Maximum - stdMult * stdDev
@@ -693,7 +693,7 @@ Module Utilities
             csbrk.ColoringType = ColoringType.Gradient
             csbrk.LowColor = Convert.ToUInt32(RGB(CInt(rFrom2), CInt(gFrom2), CInt(bFrom2)))
             csbrk.HighColor = Convert.ToUInt32(RGB(CInt(rTo2), CInt(gTo2), CInt(bTo2)))
-            csbrk.Caption = csbrk.LowValue.ToString() + " - " + csbrk.HighValue.ToString()
+            csbrk.Caption = String.Format("{0} - {1}", csbrk.LowValue, csbrk.HighValue)
             cs.InsertBreak(csbrk)
             Return cs
         Catch ex As Exception
@@ -800,6 +800,8 @@ Module Utilities
                     gradientModel = MapWinGIS.GradientModel.Exponential
                 Case "Logorithmic"
                     gradientModel = MapWinGIS.GradientModel.Logorithmic
+                Case Else
+                    Throw New NotImplementedException
             End Select
 
             coloringType = MapWinGIS.ColoringType.Gradient
@@ -1093,40 +1095,7 @@ Module Utilities
         End Using
 
     End Function
-
-    Public Sub CleanupRasterFolder(ByRef strWorkspacePath As String)
-        Try
-            'Used to cleanup the User's workspace and avoid the dreaded -2147467259 error
-
-            'Dim pWorkspaceFactory As ESRI.ArcGIS.Geodatabase.IWorkspaceFactory
-            'Dim pWorkspace As ESRI.ArcGIS.Geodatabase.IWorkspace
-            'Dim pDataset As ESRI.ArcGIS.Geodatabase.IDataset
-            'Dim pEnumRasterDataset As ESRI.ArcGIS.Geodatabase.IEnumDataset
-            'Dim pEnv As ESRI.ArcGIS.GeoAnalyst.IRasterAnalysisEnvironment
-
-            'pWorkspaceFactory = New ESRI.ArcGIS.DataSourcesRaster.RasterWorkspaceFactory
-            'pWorkspace = pWorkspaceFactory.OpenFromFile(strWorkspacePath, 0)
-
-            'pEnumRasterDataset = pWorkspace.Datasets(ESRI.ArcGIS.Geodatabase.esriDatasetType.esriDTRasterDataset)
-            'pEnv = New ESRI.ArcGIS.GeoAnalyst.RasterAnalysis
-
-            'pDataset = pEnumRasterDataset.Next
-
-            'Do While Not pDataset Is Nothing
-            '    If InStr(1, pDataset.Name, pEnv.DefaultOutputRasterPrefix, CompareMethod.Text) > 0 Then
-            '        If pDataset.CanDelete Then
-            '            pDataset.Delete()
-            '        End If
-            '    End If
-            '    pDataset = pEnumRasterDataset.Next
-            'Loop
-
-        Catch ex As Exception
-            HandleError(ex)
-            'True, "CleanupRasterFolder " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-        End Try
-    End Sub
-
+    
     Public Sub CleanGlobals()
         Try
             'Sub to rid the world of stragling GRIDS, i.e. the ones established for global usse

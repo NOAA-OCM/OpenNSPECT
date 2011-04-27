@@ -142,21 +142,7 @@ Module modMUSLESoilLossEquation
                         vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
 
-        'Now report the C:Factor figures for the landcover
-        '    rsCFactor.MoveFirst
-        '
-        '    For i = 1 To rsCFactor.RecordCount
-        '        If i = 1 Then
-        '            strCFactor = vbTab & vbTab & rsCFactor!Name & ": " & rsCFactor!CoverFactor & vbNewLine
-        '        Else
-        '            strCFactor = strCFactor & vbTab & vbTab & rsCFactor!Name & ": " & rsCFactor!CoverFactor & vbNewLine
-        '        End If
-        '        rsCFactor.MoveNext
-        '    Next i
-
         CreateMetadata = strHeader
-        '& vbTab & "C-Factor values: " & vbNewLine & strCFactor
-
     End Function
 
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As Grid) As String
@@ -412,7 +398,7 @@ Module modMUSLESoilLossEquation
 
         Try
 
-            ShowProgress("Calculating Watershed Length...", strTitle, 0, 27, 2, g_frmProjectSetup)
+            ShowProgress("Calculating Watershed Length...", strTitle, 27, 2, g_frmProjectSetup)
             If g_KeepRunning Then
                 'STEP 2: ------------------------------------------------------------------------------------
                 'Calculate Watershed Length
@@ -481,7 +467,7 @@ Module modMUSLESoilLossEquation
                 'END STEP 3: -----------------------------------------------------------------------------------
             End If
 
-            ShowProgress("Calculating Mod Slope...", strTitle, 0, 27, 4, g_frmProjectSetup)
+            ShowProgress("Calculating Mod Slope...", strTitle, 27, 4, g_frmProjectSetup)
             If g_KeepRunning Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
@@ -505,7 +491,7 @@ Module modMUSLESoilLossEquation
                 'END STEP 4a ------------------------------------------------------------------------------------
             End If
 
-            ShowProgress("Calculating MUSLE...", strTitle, 0, 27, 18, g_frmProjectSetup)
+            ShowProgress("Calculating MUSLE...", strTitle, 27, 18, g_frmProjectSetup)
             If g_KeepRunning Then
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
                 RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, _
@@ -513,7 +499,7 @@ Module modMUSLESoilLossEquation
             End If
             'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, g_OutputGridExt))
 
-            ShowProgress("Calculating MUSLE...", strTitle, 0, 27, 22, g_frmProjectSetup)
+            ShowProgress("Calculating MUSLE...", strTitle, 27, 22, g_frmProjectSetup)
             If g_KeepRunning Then
                 ReDim _pondpicks(strConPondStatement.Split(",").Length)
                 _pondpicks = strConPondStatement.Split(",")
@@ -524,7 +510,7 @@ Module modMUSLESoilLossEquation
             End If
             'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, g_OutputGridExt))
 
-            ShowProgress("Calculating MUSLE...", strTitle, 0, 27, 25, g_frmProjectSetup)
+            ShowProgress("Calculating MUSLE...", strTitle, 27, 25, g_frmProjectSetup)
             If g_KeepRunning Then
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
@@ -542,8 +528,7 @@ Module modMUSLESoilLossEquation
 
             If g_booLocalEffects Then
 
-                ShowProgress("Creating data layer for local effects...", strTitle, 0, 27, 27, _
-                              g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", strTitle, 27, 27, g_frmProjectSetup)
                 If g_KeepRunning Then
 
                     strMUSLE = GetUniqueName("locmusle", g_strWorkspace, g_FinalOutputGridExt)
@@ -571,8 +556,7 @@ Module modMUSLESoilLossEquation
 
             End If
 
-            ShowProgress("Calculating the accumulated sediment...", strTitle, 0, 27, 23, _
-                          g_frmProjectSetup)
+            ShowProgress("Calculating the accumulated sediment...", strTitle, 27, 23, g_frmProjectSetup)
             If g_KeepRunning Then
                 Dim pTauD8Flow As Grid = Nothing
 
@@ -615,7 +599,7 @@ Module modMUSLESoilLossEquation
                 DataManagement.DeleteGrid(strtmp2)
             End If
 
-            ShowProgress("Adding Sediment Mass to Group Layer...", strTitle, 0, 27, 25, g_frmProjectSetup)
+            ShowProgress("Adding Sediment Mass to Group Layer...", strTitle, 27, 25, g_frmProjectSetup)
             If g_KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
@@ -708,107 +692,8 @@ Module modMUSLESoilLossEquation
             Return Input1
         End If
     End Function
-
-    'Private Function tmp1lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "Pow([cell_wslngft], 0.8)"
-    '    Return Math.Pow(Input1, 0.8)
-    'End Function
-
-    'Private Function tmp2lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "(1000 / [scsgrid100]) - 9"
-    '    If Input1 = 0 Then
-    '        Return OutNull
-    '    Else
-    '        Return (1000 / Input1) - 9
-    '    End If
-    'End Function
-
-    'Private Function tmp3lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "Pow([temp4], 0.7)"
-    '    Return Math.Pow(Input1, 0.7)
-    'End Function
-
-    'Private Function tmp4lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "Pow([modslope], 0.5)"
-    '    Return Math.Pow(Input1, 0.5)
-    'End Function
-
-    'Private Function lagCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "([temp3] * [temp5]) / (1900 * [temp6])"
-    '    If Input3 = 0 Then
-    '        Return OutNull
-    '    Else
-    '        Return (Input1 * Input2) / (1900 * Input3)
-    '    End If
-    'End Function
-
-    'Private Function tocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "[lag] / 0.6"
-    '    Return Input1 / 0.6
-    'End Function
-
-    'Private Function toctmpCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "Con([toc] lt 0.1, 0.1, [toc])"
-    '    If Input1 < 0.1 Then
-    '        Return 0.1
-    '    Else
-    '        Return Input1
-    '    End If
-    'End Function
-
-    'Private Function modtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "Con([temp7] gt 10, 10, [temp7])"
-    '    If Input1 > 10 Then
-    '        Return 10
-    '    Else
-    '        Return Input1
-    '    End If
-    'End Function
-
-    'Private Function abprecipCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "[abstract] / [rain]"
-    '    If Input2 = 0 Then
-    '        Return OutNull
-    '    Else
-    '        Return Input1 / Input2
-    '    End If
-    'End Function
-
-    'Private Function logtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "log10([modtoc])"
-    '    Return Math.Log10(Input1)
-    'End Function
-
-    'Private Function tmplogtocCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-    '    'strExpression = "Pow([logtoc], 2)"
-    '    Return Math.Pow(Input1, 2)
-    'End Function
-
-    Private Function c0CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCZero = "Con(([ip] le 0.10), 2.30550," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 2.23537," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 2.18219," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 2.10624," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.00303," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 1.87733," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 1.76312, 1.67889)))))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  2.30550," & "
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.20),
-        '    2.23537," & "
-        '    Con(
-        '      ([ip] ge 0.20 and [ip] lt 0.25),
-        '      2.18219," & "
-        '      Con(
-        '        ([ip] ge 0.25 and [ip] lt 0.30),
-        '        2.10624," & "
-        '        Con(
-        '          ([ip] ge 0.30 and [ip] lt 0.35),
-        '          2.00303," & "
-        '          Con(
-        '            ([ip] ge 0.35 and [ip] lt 0.40),
-        '            1.87733," & "
-        '            Con(
-        '              ([ip] ge 0.40 and [ip] lt 0.45),
-        '              1.76312,
-        '              1.67889)))))))
+    
+    Private Function c0CellCalc0(ByVal Input1 As Single) As Single
         If Input1 <= 0.1 Then
             Return 2.3055
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
@@ -829,22 +714,7 @@ Module modMUSLESoilLossEquation
 
     End Function
 
-    Private Function c0CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCZero = "Con(([ip] le 0.10), 2.03250," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 1.91978," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 1.83842," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 1.72657, 1.63417))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  2.03250," & "
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.20),
-        '    1.91978," & "
-        '    Con(
-        '      ([ip] ge 0.20 and [ip] lt 0.25),
-        '      1.83842," & "
-        '      Con(
-        '        ([ip] ge 0.25 and [ip] lt 0.30),
-        '        1.72657,
-        '        1.63417))))
+    Private Function c0CellCalc1(ByVal Input1 As Single) As Single
         If Input1 <= 0.1 Then
             Return 2.0325
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
@@ -858,26 +728,8 @@ Module modMUSLESoilLossEquation
         End If
     End Function
 
-    Private Function c0CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCZero = "Con(([ip] le 0.10), 2.55323," & "Con(([ip] gt 0.10 and [ip] lt 0.30), 2.46532," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.41896," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 2.36409," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 2.29238, 2.20282)))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  2.55323," & "
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.30),
-        '    2.46532," & "
-        '    Con(
-        '      ([ip] ge 0.30 and [ip] lt 0.35),
-        '      2.41896," & "
-        '      Con(
-        '        ([ip] ge 0.35 and [ip] lt 0.40),
-        '        2.36409," & "
-        '        Con(
-        '          ([ip] ge 0.40 and [ip] lt 0.45),
-        '          2.29238,
-        '          2.20282)))))
-        If Input1 <= 0.1 Then
+    Private Function c0CellCalc2(ByVal Input1 As Single) As Single
+       If Input1 <= 0.1 Then
             Return 2.55323
         ElseIf Input1 > 0.1 And Input1 < 0.3 Then
             Return 2.46532
@@ -892,26 +744,8 @@ Module modMUSLESoilLossEquation
         End If
     End Function
 
-    Private Function c0CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCZero = "Con(([ip] le 0.10), 2.47317," & "Con(([ip] ge 0.10 and [ip] lt 0.30), 2.39628," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 2.35477," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 2.30726," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 2.24876, 2.17772)))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  2.47317," & "
-        '  Con(
-        '    ([ip] ge 0.10 and [ip] lt 0.30),
-        '    2.39628," & "
-        '    Con(
-        '      ([ip] ge 0.30 and [ip] lt 0.35),
-        '      2.35477," & "
-        '      Con(
-        '        ([ip] ge 0.35 and [ip] lt 0.40),
-        '        2.30726," & "
-        '        Con(
-        '          ([ip] ge 0.40 and [ip] lt 0.45),
-        '          2.24876,
-        '          2.17772)))))
-        If Input1 <= 0.1 Then
+    Private Function c0CellCalc3(ByVal Input1 As Single) As Single
+      If Input1 <= 0.1 Then
             Return 2.47317
         ElseIf Input1 > 0.1 And Input1 < 0.3 Then
             Return 2.39628
@@ -926,31 +760,7 @@ Module modMUSLESoilLossEquation
         End If
     End Function
 
-    Private Function c1CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCone = "Con(([ip] le 0.10), -0.51429," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.50387," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.48488," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.45695," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.40769," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.32274," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.15644, -0.06930)))))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  -0.51429," & "
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.20),
-        '    -0.50387," & "
-        '    Con(
-        '      ([ip] ge 0.20 and [ip] lt 0.25),
-        '      -0.48488," & "
-        '      Con(
-        '        ([ip] ge 0.25 and [ip] lt 0.30),
-        '        -0.45695," & "
-        '        Con(
-        '          ([ip] ge 0.30 and [ip] lt 0.35),
-        '          -0.40769," & "
-        '          Con(
-        '            ([ip] ge 0.35 and [ip] lt 0.40),
-        '            -0.32274," & "
-        '            Con(
-        '              ([ip] ge 0.40 and [ip] lt 0.45),
-        '              -0.15644,
-        '              -0.06930)))))))
+    Private Function c1CellCalc0(ByVal Input1 As Single) As Single
         If Input1 <= 0.1 Then
             Return -0.51429
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
@@ -970,23 +780,8 @@ Module modMUSLESoilLossEquation
         End If
     End Function
 
-    Private Function c1CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCone = "Con(([ip] le 0.10), 2.03250," & "Con(([ip] gt 0.10 and [ip] lt 0.20), 1.91978," & "Con(([ip] ge 0.20 and [ip] lt 0.25), 1.83842," & "Con(([ip] ge 0.25 and [ip] lt 0.30), 1.72657, 1.63417))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  2.03250," & "
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.20),
-        '    1.91978," & "
-        '    Con(
-        '      ([ip] ge 0.20 and [ip] lt 0.25),
-        '      1.83842," & "
-        '      Con(
-        '        ([ip] ge 0.25 and [ip] lt 0.30),
-        '        1.72657,
-        '        1.63417))))
-        If Input1 <= 0.1 Then
+    Private Function c1CellCalc1(ByVal Input1 As Single) As Single
+      If Input1 <= 0.1 Then
             Return 2.0325
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
             Return 1.91978
@@ -999,22 +794,7 @@ Module modMUSLESoilLossEquation
         End If
     End Function
 
-    Private Function c1CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCone = "Con(([ip] le 0.10), -0.31583," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.28215," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.25543," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.19826, -0.09100))))"
-        'Con(
-        '  ([ip] le 0.10), 
-        '  -0.31583,
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.20), 
-        '    -0.28215,
-        '    Con(
-        '      ([ip] ge 0.20 and [ip] lt 0.25), 
-        '      -0.25543," & "
-        '      Con(
-        '        ([ip] ge 0.25 and [ip] lt 0.30), 
-        '        -0.19826, 
-        '        -0.09100))))
+    Private Function c1CellCalc2(ByVal Input1 As Single) As Single
         If Input1 <= 0.1 Then
             Return -0.31583
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
@@ -1029,26 +809,8 @@ Module modMUSLESoilLossEquation
 
     End Function
 
-    Private Function c1CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCone = "Con(([ip] le 0.10), -0.51848," & "Con(([ip] ge 0.10 and [ip] lt 0.30), -0.51202," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.49735," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.46541," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.41314, -0.36803)))))"
-        'Con(
-        '  ([ip] le 0.10), 
-        '  -0.51848," & "
-        '  Con(
-        '    ([ip] ge 0.10 and [ip] lt 0.30), 
-        '    -0.51202," & "
-        '    Con(
-        '      ([ip] ge 0.30 and [ip] lt 0.35), 
-        '      -0.49735," & "
-        '      Con(
-        '        ([ip] ge 0.35 and [ip] lt 0.40), 
-        '        -0.46541," & "
-        '        Con(
-        '          ([ip] ge 0.40 and [ip] lt 0.45), 
-        '          -0.41314, 
-        '          -0.36803)))))
-        If Input1 <= 0.1 Then
+    Private Function c1CellCalc3(ByVal Input1 As Single) As Single
+       If Input1 <= 0.1 Then
             Return -0.51848
         ElseIf Input1 > 0.1 And Input1 < 0.3 Then
             Return -0.51202
@@ -1064,32 +826,8 @@ Module modMUSLESoilLossEquation
 
     End Function
 
-    Private Function c2CellCalc0(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCTwo = "Con(([ip] le 0.10), -0.11750," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.08929," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.06589," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.02835," & "Con(([ip] ge 0.30 and [ip] lt 0.35), 0.01983," & "Con(([ip] ge 0.35 and [ip] lt 0.40), 0.05754," & "Con(([ip] ge 0.40 and [ip] lt 0.45), 0.00453, 0.00000)))))))"
-        'Con(
-        '  ([ip] le 0.10), 
-        '  -0.11750," & "
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.20), 
-        '    -0.08929," & "
-        '    Con(
-        '      ([ip] ge 0.20 and [ip] lt 0.25), 
-        '      -0.06589," & "
-        '      Con(
-        '        ([ip] ge 0.25 and [ip] lt 0.30), 
-        '        -0.02835," & "
-        '        Con(
-        '          ([ip] ge 0.30 and [ip] lt 0.35), 
-        '          0.01983," & "
-        '          Con(
-        '            ([ip] ge 0.35 and [ip] lt 0.40), 
-        '            0.05754," & "
-        '            Con(
-        '              ([ip] ge 0.40 and [ip] lt 0.45), 
-        '              0.00453, 
-        '              0.00000)))))))
-        If Input1 <= 0.1 Then
+    Private Function c2CellCalc0(ByVal Input1 As Single) As Single
+       If Input1 <= 0.1 Then
             Return -0.1175
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
             Return -0.08929
@@ -1109,23 +847,8 @@ Module modMUSLESoilLossEquation
 
     End Function
 
-    Private Function c2CellCalc1(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCTwo = "Con(([ip] le 0.10), -0.13748," & "Con(([ip] gt 0.10 and [ip] lt 0.20), -0.07020," & "Con(([ip] ge 0.20 and [ip] lt 0.25), -0.02597," & "Con(([ip] ge 0.25 and [ip] lt 0.30), -0.02633, -0.0))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  -0.13748," & "
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.20),
-        '    -0.07020," & "
-        '    Con(
-        '      ([ip] ge 0.20 and [ip] lt 0.25),
-        '      -0.02597," & "
-        '      Con(
-        '        ([ip] ge 0.25 and [ip] lt 0.30),
-        '        -0.02633,
-        '        -0.0))))
-        If Input1 <= 0.1 Then
+    Private Function c2CellCalc1(ByVal Input1 As Single) As Single
+     If Input1 <= 0.1 Then
             Return -0.13748
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
             Return -0.0702
@@ -1138,25 +861,8 @@ Module modMUSLESoilLossEquation
         End If
     End Function
 
-    Private Function c2CellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCTwo = "Con(([ip] le 0.10), -0.16403," & "Con(([ip] gt 0.10 and [ip] lt 0.30), -0.11657," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.08820," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.05621," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.02281, -0.01259)))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  -0.16403," & "
-        '  Con(
-        '    ([ip] gt 0.10 and [ip] lt 0.30),
-        '    -0.11657," & "
-        '    Con(
-        '      ([ip] ge 0.30 and [ip] lt 0.35),
-        '      -0.08820," & "
-        '      Con(
-        '        ([ip] ge 0.35 and [ip] lt 0.40),
-        '        -0.05621," & "
-        '        Con(
-        '          ([ip] ge 0.40 and [ip] lt 0.45),
-        '          -0.02281,
-        '          -0.01259)))))
+    Private Function c2CellCalc2(ByVal Input1 As Single) As Single
+
         If Input1 <= 0.1 Then
             Return -0.16403
         ElseIf Input1 > 0.1 And Input1 < 0.3 Then
@@ -1172,25 +878,7 @@ Module modMUSLESoilLossEquation
         End If
     End Function
 
-    Private Function c2CellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'm_strCTwo = "Con(([ip] le 0.10), -0.17083," & "Con(([ip] ge 0.10 and [ip] lt 0.30), -0.13245," & "Con(([ip] ge 0.30 and [ip] lt 0.35), -0.11985," & "Con(([ip] ge 0.35 and [ip] lt 0.40), -0.11094," & "Con(([ip] ge 0.40 and [ip] lt 0.45), -0.11508, -0.09525)))))"
-        'Con(
-        '  ([ip] le 0.10),
-        '  -0.17083," & "
-        '  Con(
-        '    ([ip] ge 0.10 and [ip] lt 0.30),
-        '    -0.13245," & "
-        '    Con(
-        '      ([ip] ge 0.30 and [ip] lt 0.35),
-        '      -0.11985," & "
-        '      Con(
-        '        ([ip] ge 0.35 and [ip] lt 0.40),
-        '        -0.11094," & "
-        '        Con(
-        '          ([ip] ge 0.40 and [ip] lt 0.45),
-        '          -0.11508,
-        '          -0.09525)))))
+    Private Function c2CellCalc3(ByVal Input1 As Single) As Single
         If Input1 <= 0.1 Then
             Return -0.17083
         ElseIf Input1 > 0.1 And Input1 < 0.3 Then
@@ -1205,8 +893,6 @@ Module modMUSLESoilLossEquation
             Return -0.09525
         End If
     End Function
-
-    'pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster
 
     Private Function AllMUSLECellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                        ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
@@ -1296,51 +982,33 @@ Module modMUSLESoilLossEquation
                     Else
                         Select Case g_intPrecipType
                             Case 0
-                                c0calc = c0CellCalc0(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                                c0calc = c0CellCalc0(abprecval)
+                                c1calc = c1CellCalc0(abprecval)
+                                c2calc = c2CellCalc0(abprecval)
                             Case 1
-                                c0calc = c0CellCalc1(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                                c0calc = c0CellCalc1(abprecval)
+                                c1calc = c1CellCalc1(abprecval)
+                                c2calc = c2CellCalc1(abprecval)
                             Case 2
-                                c0calc = c0CellCalc2(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                                c0calc = c0CellCalc2(abprecval)
+                                c1calc = c1CellCalc2(abprecval)
+                                c2calc = c2CellCalc2(abprecval)
                             Case 3
-                                c0calc = c0CellCalc3(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
-                        End Select
-
-                        Select Case g_intPrecipType
-                            Case 0
-                                c1calc = c1CellCalc0(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
-                            Case 1
-                                c1calc = c1CellCalc1(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
-                            Case 2
-                                c1calc = c1CellCalc2(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
-                            Case 3
-                                c1calc = c1CellCalc3(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
-                        End Select
-
-                        Select Case g_intPrecipType
-                            Case 0
-                                c2calc = c2CellCalc0(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
-                            Case 1
-                                c2calc = c2CellCalc1(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
-                            Case 2
-                                c2calc = c2CellCalc2(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
-                            Case 3
-                                c2calc = c2CellCalc3(abprecval, Nothing, Nothing, Nothing, Nothing, OutNull)
+                                c0calc = c0CellCalc3(abprecval)
+                                c1calc = c1CellCalc3(abprecval)
+                                c2calc = c2CellCalc3(abprecval)
                         End Select
                     End If
 
-                    'strExpression = "[czero] + ([cone] * [logtoc]) + ([ctwo] * [temp8])"
                     logquval = c0calc + (c1calc * logtocval) + (c2calc * logtoctmpval)
 
-                    'strExpression = "Pow(10, [logqu])"
                     Return Math.Pow(10, logquval)
                 End If
             End If
         End If
     End Function
 
-    'quval   g_LandCoverRaster    g_pDEMRaster  g_pMetRunoffRaster  g_KFactorRaster, g_pLSRaster
-
-    Private Function AllMUSLECellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+  Private Function AllMUSLECellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                         ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
         As Single
         Dim pondval, qpval, sqmival, afval, runoff_inches As Single
@@ -1372,9 +1040,7 @@ Module modMUSLESoilLossEquation
         Return Math.Pow((afval * qpval), _dblMUSLEExp)
 
     End Function
-
-    'hisytmpval   g_LandCoverRaster   g_KFactorRaster, g_pLSRaster
-
+    
     Private Function AllMUSLECellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                         ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
         As Single

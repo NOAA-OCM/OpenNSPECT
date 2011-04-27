@@ -24,8 +24,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
     Private _frmPrj As MainForm
     Private _strDEM2BFileName As String
     Private _strNibbleName As String
-    Private _dem_null As Double
-
+    
 #Region "Events"
 
     Private Sub cmdBrowseDEMFile_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
@@ -103,7 +102,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
     Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Dim strCmdInsert As String
 
-        ShowProgress("Validating input...", "Adding New Delineation...", 0, 3, 1, Me)
+        ShowProgress("Validating input...", "Adding New Delineation...", 3, 1, Me)
         If Not ValidateDataFormInput() Then
             CloseProgressDialog()
             Exit Sub
@@ -111,12 +110,10 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
         Try
             'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
-            'modProgDialog.ProgDialog("Creating 2 Cell Buffer and Nibble GRIDs...", "Adding New Delineation...", 0, 3, 2, 0)
-            'Return2BDEM(txtDEMFile.Text, txtFlowDir.Text)
             _strDEM2BFileName = txtDEMFile.Text
             _strNibbleName = txtFlowDir.Text
 
-            ShowProgress("Updating Database...", "Adding New Delineation...", 0, 3, 2, Me)
+            ShowProgress("Updating Database...", "Adding New Delineation...", 3, 2, Me)
 
             strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", _
                                CStr(txtWSDelinName.Text), _
@@ -182,8 +179,9 @@ Friend Class NewFromExistingWaterShedDelineationForm
                 Exit Function
             End If
 
-            If Not Directory.Exists(g_nspectPath & "\wsdelin\" & txtWSDelinName.Text) Then
-                Directory.CreateDirectory(g_nspectPath & "\wsdelin\" & txtWSDelinName.Text)
+            Dim dir As String = String.Format("{0}\wsdelin\{1}", g_nspectPath, txtWSDelinName.Text)
+            If Not Directory.Exists(dir) Then
+                Directory.CreateDirectory(dir)
             Else
                 MsgBox("Name in use.  Please select another.", MsgBoxStyle.Critical, "Choose New Name")
                 txtWSDelinName.Focus()
@@ -262,7 +260,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
                             Dim tmphead As New GridHeader
                             tmphead.CopyFrom(tmpFlow.Header)
                             pESRID8Flow.CreateNew(flowpath, tmphead, GridDataType.FloatDataType, -1)
-                            Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls(AddressOf tauD8ToESRICellCalc)
+                            Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls(AddressOf ConvertTauDEMToESRICell)
                             RasterMath(tmpFlow, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, _
                                         tauD8ToESRIcalc)
                             pESRID8Flow.Header.NodataValue = -1
@@ -351,140 +349,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
         End Try
     End Sub
 
-    Private Sub Return2BDEM(ByRef strDEMFileName As String, ByRef strFlowDirFileName As String)
-        Try
-            Dim pDEMOneCell As Grid = Nothing
-            Dim pDEMTwoCell As Grid = Nothing
-            Dim pDEMRaster As Grid = Nothing
-            Dim pFlowDir As Grid = Nothing
-            Dim pFlowDirBV As Grid = Nothing
-            Dim pNibble As Grid = Nothing
-            Dim pMask As Grid = Nothing
-            Dim intCellSize As Short
-
-            'pWorkspace = pRasterWorkspaceFactory.OpenFromFile(modUtil.g_nspectPath & "\wsdelin\" & txtWSDelinName.Text, 0)
-
-            pDEMRaster = ReturnRaster(strDEMFileName)
-            pFlowDir = ReturnRaster(strFlowDirFileName)
-            intCellSize = pDEMRaster.Header.dX
-            _dem_null = pDEMRaster.Header.NodataValue
-
-            'STEP 1: ----------------------------------------------------------------------
-            'Buffer the DEM by one cell
-            Dim demonecalc As New RasterMathCellCalcWindowNulls(AddressOf focalminGrowCellCalc)
-            RasterMathWindow(pDEMRaster, Nothing, Nothing, Nothing, Nothing, pDEMOneCell, Nothing, False, demonecalc)
-            'strExpression = "Con(isnull([aml_fdem]), focalmin([aml_fdem]), [aml_fdem])"
-
-            'END STEP 1: ------------------------------------------------------------------
-
-            'STEP 2: ----------------------------------------------------------------------
-            'Buffer the DEM buffer by one more cell
-            Dim demtwocalc As New RasterMathCellCalcWindowNulls(AddressOf focalminGrowCellCalc)
-            RasterMathWindow(pDEMOneCell, Nothing, Nothing, Nothing, Nothing, pDEMTwoCell, Nothing, False, demtwocalc)
-            'strExpression = "Con(isnull([dem_b]), focalmin([dem_b]), [dem_b])"
-
-            Dim fdronecalc As New RasterMathCellCalcWindowNulls(AddressOf focalminGrowCellCalc)
-            RasterMathWindow(pFlowDir, Nothing, Nothing, Nothing, Nothing, pFlowDirBV, Nothing, False, demonecalc)
-
-            Dim fdrtwocalc As New RasterMathCellCalcWindowNulls(AddressOf focalminGrowCellCalc)
-            RasterMathWindow(pFlowDirBV, Nothing, Nothing, Nothing, Nothing, pNibble, Nothing, False, demtwocalc)
-
-            ''STEP 3: ----------------------------------------------------------------------
-            'Dim maskcalc As New RasterMathCellCalcNulls(AddressOf maskCellCalc)
-            'RasterMath(pDEMTwoCell, Nothing, Nothing, Nothing, Nothing, pMask, Nothing, False, maskcalc)
-            ''strExpression = "con([mask] >= 0, 1, 0)"
-
-            ''STEP 4: ----------------------------------------------------------------------
-            'Dim flowdvcalc As New RasterMathCellCalcNulls(AddressOf flowdvCellCalc)
-            'RasterMath(pFlowDir, Nothing, Nothing, Nothing, Nothing, pFlowDirBV, Nothing, False, flowdvcalc)
-            ''strExpression = "con(isnull([fdr_b]),0,[fdr_b])"
-
-            ''Nibble
-            'Dim nibcalc As New RasterMathCellCalcWindowNulls(AddressOf nibCellCalc)
-            'RasterMathWindow(pFlowDirBV, pMask, Nothing, Nothing, Nothing, pNibble, Nothing, False, nibcalc)
-            ''strExpression = "nibble([fdr_bv],[waia_reg], dataonly)"
-
-            'Get nibble's path for use in the database
-            _strNibbleName = GetUniqueName("nibble", g_strWorkspace, g_OutputGridExt)
-            ReturnPermanentRaster(pNibble, _strNibbleName)
-            pNibble.Close()
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
-    End Sub
 
 #End Region
 
-#Region "Raster Math"
-
-    Private Function focalminGrowCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, _
-                                           ByRef InputBox2(,) As Single, ByVal Input2Null As Single, _
-                                           ByRef InputBox3(,) As Single, ByVal Input3Null As Single, _
-                                           ByRef InputBox4(,) As Single, ByVal Input4Null As Single, _
-                                           ByRef InputBox5(,) As Single, ByVal Input5Null As Single, _
-                                           ByVal OutNull As Single) As Single
-        Try
-            'strExpression = "Con(isnull([aml_fdem]), focalmin([aml_fdem]), [aml_fdem])"
-            'focal min is the minimum non-nodata value of each cell in the neighborhood
-            Dim minval As Single = Single.MaxValue
-            If InputBox1(1, 1) = Input1Null Then
-                For i As Integer = 0 To 2
-                    For j As Integer = 0 To 2
-                        If InputBox1(i, j) <> Input1Null Then
-                            If InputBox1(i, j) < minval Then
-                                minval = InputBox1(i, j)
-                            End If
-                        End If
-                    Next
-                Next
-
-                If minval = Single.MaxValue Then
-                    Return Input1Null
-                Else
-                    Return minval
-                End If
-            Else
-                Return InputBox1(1, 1)
-            End If
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
-    End Function
-
-    Private Function maskCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
-                                   ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
-                                   ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
-                                   ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-        Try
-            'strExpression = "con([mask] >= 0, 1, 0)"
-            If Input1 <> Input1Null Then
-                If Input1 >= 0 Then
-                    Return 1
-                Else
-                    Return 0
-                End If
-            Else
-                Return OutNull
-            End If
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
-    End Function
-
-    Private Function flowdvCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
-                                     ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
-                                     ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
-                                     ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-        Try
-            If Input1 = Input1Null Then
-                Return 0
-            Else
-                Return Input1
-            End If
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
-    End Function
-
-#End Region
 End Class

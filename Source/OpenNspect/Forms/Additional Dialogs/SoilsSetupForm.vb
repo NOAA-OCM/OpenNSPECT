@@ -248,8 +248,7 @@ Friend Class SoilsSetupForm
             pSoilsFeatClass.StartEditingTable()
             'Now calc the Values
             For i As Integer = 0 To pSoilsFeatClass.NumShapes - 1
-                ShowProgress ("Calculating soils values...", "Processing Soils", 0, _
-                              pSoilsFeatClass.NumShapes, lngValue, Me)
+                ShowProgress("Calculating soils values...", "Processing Soils", pSoilsFeatClass.NumShapes, lngValue, Me)
                 'Find the current value
                 If g_KeepRunning Then
                     strHydValue = pSoilsFeatClass.CellValue (lngHydFieldIndex, i)
@@ -300,7 +299,7 @@ Friend Class SoilsSetupForm
             'Group field as the value
 
             If g_KeepRunning Then
-                ShowProgress("Converting Soils Dataset...", "Processing Soils", 0, 2, 2, Me)
+                ShowProgress("Converting Soils Dataset...", "Processing Soils", 2, 2, Me)
 
                 strOutSoils = _
                     GetUniqueName("soils", Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
@@ -337,7 +336,7 @@ Friend Class SoilsSetupForm
                 Dim nc As Integer = head.NumberCols - 1
                 Dim nr As Integer = head.NumberRows - 1
                 For row As Integer = 0 To nr
-                    ShowProgress("Converting Soils Dataset...", "Processing Soils", 1, nr, row, Me)
+                    ShowProgress("Converting Soils Dataset...", "Processing Soils", nr, row, Me)
                     For col As Integer = 0 To nc
                         outSoils.CellToProj(col, row, x, y)
                         idx = soilsshp.PointInShapefile(x, y)

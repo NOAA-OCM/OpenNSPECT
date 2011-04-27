@@ -314,7 +314,7 @@ Module modRusleSoilLossEquation
         Dim strOutYield As String
 
         Try
-            ShowProgress("Solving RUSLE Equation...", strTitle, 0, 13, 3, g_frmProjectSetup)
+            ShowProgress("Solving RUSLE Equation...", strTitle, 13, 3, g_frmProjectSetup)
             If g_KeepRunning Then
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
                 ReDim _picks(strConStatement.Split(",").Length)
@@ -336,8 +336,7 @@ Module modRusleSoilLossEquation
             'BEGIN SDR CODE......
             '***********************************************
             If Len(Trim(_strSDRFileName)) = 0 Then
-                ShowProgress("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 0, 13, _
-                              5, g_frmProjectSetup)
+                ShowProgress("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 13, 5, g_frmProjectSetup)
                 If g_KeepRunning Then
                     'STEP 4: DAVE'S WACKY CALCULATION OF RELIEF-LENGTH RATIO FOR SEDIMENT DELIVERY RATIO-------
                     Dim pZSedcalc As New RasterMathCellCalcWindowNulls(AddressOf pZSedCellCalc)
@@ -350,8 +349,7 @@ Module modRusleSoilLossEquation
                     'END STEP 4: ------------------------------------------------------------------------------
                 End If
 
-                ShowProgress("Calculating Sediment Delivery Ratio...", strTitle, 0, 13, 6, _
-                              g_frmProjectSetup)
+                ShowProgress("Calculating Sediment Delivery Ratio...", strTitle, 13, 6, g_frmProjectSetup)
                 If g_KeepRunning Then
                     Dim AllSDRCalc As New RasterMathCellCalc(AddressOf AllSDRCellCalc)
                     RasterMath(g_pDEMRaster, pZSedDelRaster, g_pSCS100Raster, Nothing, Nothing, pSDRRaster, AllSDRCalc)
@@ -365,7 +363,7 @@ Module modRusleSoilLossEquation
             'END SDR CALC
             '********************************************************************
 
-            ShowProgress("Applying Sediment Delivery Ratio...", strTitle, 0, 13, 13, g_frmProjectSetup)
+            ShowProgress("Applying Sediment Delivery Ratio...", strTitle, 13, 13, g_frmProjectSetup)
             If g_KeepRunning Then
                 'STEP 11: sed_yield = [soil_loss_ac] * [sdr] -------------------------------------------------
                 Dim SedYieldcalc As New RasterMathCellCalc(AddressOf sedYieldCellCalc)
@@ -377,8 +375,7 @@ Module modRusleSoilLossEquation
             End If
 
             If g_booLocalEffects Then
-                ShowProgress("Creating data layer for local effects...", strTitle, 0, 13, 13, _
-                              g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", strTitle, 13, 13, g_frmProjectSetup)
                 If g_KeepRunning Then
 
                     'STEP 12: Local Effects -------------------------------------------------
@@ -406,7 +403,7 @@ Module modRusleSoilLossEquation
 
             End If
 
-            ShowProgress("Calculating Accumulated Sediment...", strTitle, 0, 13, 13, g_frmProjectSetup)
+            ShowProgress("Calculating Accumulated Sediment...", strTitle, 13, 13, g_frmProjectSetup)
             If g_KeepRunning Then
 
                 'STEP 12: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
@@ -455,8 +452,7 @@ Module modRusleSoilLossEquation
                 'END STEP 12: --------------------------------------------------------------------------------
             End If
 
-            ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 0, 13, _
-                          13, g_frmProjectSetup)
+            ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 13, 13, g_frmProjectSetup)
 
             If g_KeepRunning Then
                 strOutYield = GetUniqueName("RUSLE", g_strWorkspace, g_FinalOutputGridExt)
@@ -630,17 +626,7 @@ Module modRusleSoilLossEquation
         End If
 
     End Function
-
-    Private Function SDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                  ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
-        If Input1 > 1 Then
-            Return 1
-        Else
-            Return Input1
-        End If
-    End Function
-
+    
     Private Function AllSDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                      ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim kmval, daval, tmp3val, tmp4val, tmp5val, tmp6val As Single
@@ -652,22 +638,12 @@ Module modRusleSoilLossEquation
             kmval = 0
         End If
 
-        'strExpression = "Pow([cellarea_km], 2)"
         daval = Math.Pow(kmval, 2)
-
-        'strExpression = "Pow([da_sed_del], -0.0998)"
         tmp3val = Math.Pow(daval, -0.0998)
-
-        'strExpression = "Pow([zl_sed_del], 0.3629)"
         tmp4val = Math.Pow(Input2, 0.3629)
-
-        'strExpression = "Pow([scsgrid100], 5.444)"
         tmp5val = Math.Pow(Input3, 5.444)
-
-        'strExpression = "1.366 * (Pow(10, -11)) * [temp3] * [temp4] * [temp5]"
         tmp6val = 1.366 * Math.Pow(10, -11) * tmp3val * tmp4val * tmp5val
 
-        'strExpression = "Con(([temp6] gt 1), 1, [temp6])"
         If tmp6val > 1 Then
             Return 1
         Else
@@ -675,11 +651,11 @@ Module modRusleSoilLossEquation
         End If
     End Function
 
-    Private Function sedYieldCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+    Private Function sedYieldCellCalc(ByVal soilLossAC As Single, ByVal Sdr As Single, ByVal Input3 As Single, _
                                        ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
         As Single
         'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
-        Return Input1 * Input2 * 907.18474
+        Return soilLossAC * Sdr * 907.18474
     End Function
 
 #End Region
