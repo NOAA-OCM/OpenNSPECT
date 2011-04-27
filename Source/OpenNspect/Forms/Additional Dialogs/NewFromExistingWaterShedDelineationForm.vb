@@ -19,7 +19,7 @@ Imports System.Windows.Forms
 Imports System.IO
 Imports MapWinGIS
 
-Friend Class UserWaterShedDelineationForm
+Friend Class NewFromExistingWaterShedDelineationForm
     Private _frmWS As WatershedDelineationsForm
     Private _frmPrj As MainForm
     Private _strDEM2BFileName As String
