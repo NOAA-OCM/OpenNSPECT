@@ -70,7 +70,7 @@ Imports System.Windows.Forms
     ''' <summary>
     ''' Closes the dialog.
     ''' </summary>
-    Public Sub CloseDialog()
+    Public Sub CloseProgressDialog()
         If Not ProgressForm Is Nothing Then
             ProgressForm.TimerEnabled = False
             ProgressForm.Close()

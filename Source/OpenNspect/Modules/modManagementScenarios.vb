@@ -90,11 +90,11 @@ Module modManagementScenarios
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
 
-            CloseDialog()
+            CloseProgressDialog()
 
         Catch ex As Exception
             MsgBox("error in MSSetup " & Err.Number & ": " & Err.Description)
-            CloseDialog()
+            CloseProgressDialog()
         End Try
 
     End Sub

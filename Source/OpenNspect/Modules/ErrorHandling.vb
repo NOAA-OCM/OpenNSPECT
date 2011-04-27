@@ -17,7 +17,7 @@
 '               Added licensing and comments to code
 
 
-Module modErrorCodes
+Module ErrorHandling
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
@@ -72,17 +72,17 @@ Module modErrorCodes
     Public Const MSG7 As String = ""
     Public Const MSG8XmlFile As String = "Xml File(*.xml)|*.xml"
 
-    Public Sub DisplayError (ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
-        MsgBox (String.Format ("{0}Row: {1}, Column: {2}", Error_Renamed, (i + 1), (j + 1)), MsgBoxStyle.Critical, _
+    Public Sub DisplayError(ByRef Error_Renamed As String, ByRef i As Short, ByRef j As Short)
+        MsgBox(String.Format("{0}Row: {1}, Column: {2}", Error_Renamed, (i + 1), (j + 1)), MsgBoxStyle.Critical, _
                 "Warning")
     End Sub
 
-    Public Sub HandleError (ByRef ex As Exception)
+    Public Sub HandleError(ByRef ex As Exception)
         Try
-            Using errorBox As New ErrorForm (ex)
+            Using errorBox As New ErrorForm(ex)
                 errorBox.ShowDialog()
             End Using
-            Trace.TraceError (ex.Message)
+            Trace.TraceError(ex.Message)
         Catch ex2 As Exception
             ' // couldn't show the dialog.
         End Try
