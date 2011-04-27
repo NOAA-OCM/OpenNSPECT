@@ -40,10 +40,10 @@
         'txtLCType
         '
         Me.txtLCType.AcceptsReturn = True
-        Me.txtLCType.Location = New System.Drawing.Point(168, 16)
+        Me.txtLCType.Location = New System.Drawing.Point(164, 16)
         Me.txtLCType.MaxLength = 0
         Me.txtLCType.Name = "txtLCType"
-        Me.txtLCType.Size = New System.Drawing.Size(158, 20)
+        Me.txtLCType.Size = New System.Drawing.Size(163, 20)
         Me.txtLCType.TabIndex = 1
         '
         'txtImpFile
@@ -69,9 +69,9 @@
         '
         Me._Label1_5.Location = New System.Drawing.Point(13, 19)
         Me._Label1_5.Name = "_Label1_5"
-        Me._Label1_5.Size = New System.Drawing.Size(144, 16)
+        Me._Label1_5.Size = New System.Drawing.Size(126, 16)
         Me._Label1_5.TabIndex = 6
-        Me._Label1_5.Text = "New Land Cover Type Name:"
+        Me._Label1_5.Text = "Land Cover Type Name:"
         '
         '_Label1_0
         '

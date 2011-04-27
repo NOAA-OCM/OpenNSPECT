@@ -222,6 +222,7 @@
         '
         'cboSoilFieldsK
         '
+        Me.cboSoilFieldsK.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboSoilFieldsK.Location = New System.Drawing.Point(173, 77)
         Me.cboSoilFieldsK.Name = "cboSoilFieldsK"
         Me.cboSoilFieldsK.Size = New System.Drawing.Size(143, 21)
@@ -229,6 +230,7 @@
         '
         'cboSoilFields
         '
+        Me.cboSoilFields.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboSoilFields.Location = New System.Drawing.Point(173, 45)
         Me.cboSoilFields.Name = "cboSoilFields"
         Me.cboSoilFields.Size = New System.Drawing.Size(143, 21)

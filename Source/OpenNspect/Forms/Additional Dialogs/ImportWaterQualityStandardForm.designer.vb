@@ -62,7 +62,7 @@
         Me.txtStdName.Location = New System.Drawing.Point(123, 11)
         Me.txtStdName.MaxLength = 0
         Me.txtStdName.Name = "txtStdName"
-        Me.txtStdName.Size = New System.Drawing.Size(162, 20)
+        Me.txtStdName.Size = New System.Drawing.Size(200, 20)
         Me.txtStdName.TabIndex = 0
         '
         '_Label1_0

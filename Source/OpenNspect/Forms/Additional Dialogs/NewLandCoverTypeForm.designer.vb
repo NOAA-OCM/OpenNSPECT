@@ -72,7 +72,7 @@
         Me.txtLCType.Location = New System.Drawing.Point(121, 6)
         Me.txtLCType.MaxLength = 0
         Me.txtLCType.Name = "txtLCType"
-        Me.txtLCType.Size = New System.Drawing.Size(134, 20)
+        Me.txtLCType.Size = New System.Drawing.Size(373, 20)
         Me.txtLCType.TabIndex = 0
         '
         '_Label1_6

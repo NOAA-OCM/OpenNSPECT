@@ -148,15 +148,16 @@
         '
         'cboScenName
         '
+        Me.cboScenName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboScenName.Location = New System.Drawing.Point(139, 22)
         Me.cboScenName.Name = "cboScenName"
-        Me.cboScenName.Size = New System.Drawing.Size(143, 21)
+        Me.cboScenName.Size = New System.Drawing.Size(206, 21)
         Me.cboScenName.TabIndex = 18
         '
         'txtRainingDays
         '
         Me.txtRainingDays.AcceptsReturn = True
-        Me.txtRainingDays.Location = New System.Drawing.Point(366, 161)
+        Me.txtRainingDays.Location = New System.Drawing.Point(423, 160)
         Me.txtRainingDays.MaxLength = 0
         Me.txtRainingDays.Name = "txtRainingDays"
         Me.txtRainingDays.Size = New System.Drawing.Size(46, 20)
@@ -164,18 +165,20 @@
         '
         'cboTimePeriod
         '
+        Me.cboTimePeriod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTimePeriod.Items.AddRange(New Object() {"Annual", "Event"})
         Me.cboTimePeriod.Location = New System.Drawing.Point(139, 161)
         Me.cboTimePeriod.Name = "cboTimePeriod"
-        Me.cboTimePeriod.Size = New System.Drawing.Size(143, 21)
+        Me.cboTimePeriod.Size = New System.Drawing.Size(206, 21)
         Me.cboTimePeriod.TabIndex = 15
         '
         'cboPrecipType
         '
+        Me.cboPrecipType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPrecipType.Items.AddRange(New Object() {"Type I", "Type IA", "Type II", "Type III"})
         Me.cboPrecipType.Location = New System.Drawing.Point(139, 188)
         Me.cboPrecipType.Name = "cboPrecipType"
-        Me.cboPrecipType.Size = New System.Drawing.Size(143, 21)
+        Me.cboPrecipType.Size = New System.Drawing.Size(206, 21)
         Me.cboPrecipType.TabIndex = 8
         '
         'cmdBrowseFile
@@ -208,18 +211,20 @@
         '
         'cboGridUnits
         '
+        Me.cboGridUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboGridUnits.Items.AddRange(New Object() {"meters", "feet"})
         Me.cboGridUnits.Location = New System.Drawing.Point(139, 105)
         Me.cboGridUnits.Name = "cboGridUnits"
-        Me.cboGridUnits.Size = New System.Drawing.Size(142, 21)
+        Me.cboGridUnits.Size = New System.Drawing.Size(205, 21)
         Me.cboGridUnits.TabIndex = 3
         '
         'cboPrecipUnits
         '
+        Me.cboPrecipUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPrecipUnits.Items.AddRange(New Object() {"centimeters", "inches"})
         Me.cboPrecipUnits.Location = New System.Drawing.Point(139, 133)
         Me.cboPrecipUnits.Name = "cboPrecipUnits"
-        Me.cboPrecipUnits.Size = New System.Drawing.Size(143, 21)
+        Me.cboPrecipUnits.Size = New System.Drawing.Size(206, 21)
         Me.cboPrecipUnits.Sorted = True
         Me.cboPrecipUnits.TabIndex = 4
         '
@@ -234,7 +239,7 @@
         '
         'lblRainingDays
         '
-        Me.lblRainingDays.Location = New System.Drawing.Point(294, 162)
+        Me.lblRainingDays.Location = New System.Drawing.Point(351, 161)
         Me.lblRainingDays.Name = "lblRainingDays"
         Me.lblRainingDays.Size = New System.Drawing.Size(72, 19)
         Me.lblRainingDays.TabIndex = 16

@@ -443,7 +443,7 @@
         Me.cboPollName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPollName.Location = New System.Drawing.Point(106, 32)
         Me.cboPollName.Name = "cboPollName"
-        Me.cboPollName.Size = New System.Drawing.Size(150, 21)
+        Me.cboPollName.Size = New System.Drawing.Size(466, 21)
         Me.cboPollName.TabIndex = 1
         '
         '_Label1_0

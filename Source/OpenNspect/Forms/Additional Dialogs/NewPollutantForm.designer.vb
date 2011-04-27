@@ -116,7 +116,7 @@
         Me.txtPollutant.Location = New System.Drawing.Point(106, 24)
         Me.txtPollutant.MaxLength = 0
         Me.txtPollutant.Name = "txtPollutant"
-        Me.txtPollutant.Size = New System.Drawing.Size(134, 20)
+        Me.txtPollutant.Size = New System.Drawing.Size(460, 20)
         Me.txtPollutant.TabIndex = 0
         '
         'SSTab1

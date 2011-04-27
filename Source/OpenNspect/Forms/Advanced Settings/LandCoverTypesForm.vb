@@ -134,15 +134,6 @@ Friend Class LandCoverTypesForm
         End Try
     End Sub
 
-    Private Sub cmbxLCType_KeyDown (ByVal sender As Object, ByVal e As KeyEventArgs) _
-        Handles cmbxLCType.KeyDown
-        Try
-            e.SuppressKeyPress = True
-        Catch ex As Exception
-            HandleError (ex)
-        End Try
-    End Sub
-
     Private Sub txtLCTypeDesc_TextChanged (ByVal sender As Object, ByVal e As EventArgs) _
         Handles txtLCTypeDesc.TextChanged
         Try

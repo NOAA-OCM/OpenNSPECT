@@ -189,7 +189,7 @@
         '
         Me.cmbxLCType.Location = New System.Drawing.Point(124, 24)
         Me.cmbxLCType.Name = "cmbxLCType"
-        Me.cmbxLCType.Size = New System.Drawing.Size(149, 21)
+        Me.cmbxLCType.Size = New System.Drawing.Size(482, 21)
         Me.cmbxLCType.TabIndex = 0
         '
         '_Label2_2

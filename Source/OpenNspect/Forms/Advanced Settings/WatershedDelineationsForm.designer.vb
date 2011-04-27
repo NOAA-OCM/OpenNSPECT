@@ -165,24 +165,24 @@
         '
         'cboDEMUnits
         '
+        Me.cboDEMUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboDEMUnits.Enabled = False
         Me.cboDEMUnits.Items.AddRange(New Object() {"meters", "feet"})
         Me.cboDEMUnits.Location = New System.Drawing.Point(178, 62)
         Me.cboDEMUnits.Name = "cboDEMUnits"
-        Me.cboDEMUnits.Size = New System.Drawing.Size(202, 21)
+        Me.cboDEMUnits.Size = New System.Drawing.Size(388, 21)
         Me.cboDEMUnits.TabIndex = 16
-        Me.cboDEMUnits.Text = "Combo1"
         '
         'cboWSSize
         '
         Me.cboWSSize.CausesValidation = False
+        Me.cboWSSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWSSize.Enabled = False
         Me.cboWSSize.Items.AddRange(New Object() {"small", "medium", "large"})
         Me.cboWSSize.Location = New System.Drawing.Point(178, 106)
         Me.cboWSSize.Name = "cboWSSize"
         Me.cboWSSize.Size = New System.Drawing.Size(120, 21)
         Me.cboWSSize.TabIndex = 15
-        Me.cboWSSize.Text = "cboWSSize"
         '
         'chkHydroCorr
         '
@@ -230,7 +230,7 @@
         Me.cboWSDelin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWSDelin.Location = New System.Drawing.Point(178, 15)
         Me.cboWSDelin.Name = "cboWSDelin"
-        Me.cboWSDelin.Size = New System.Drawing.Size(202, 21)
+        Me.cboWSDelin.Size = New System.Drawing.Size(388, 21)
         Me.cboWSDelin.TabIndex = 3
         '
         'txtDEMFile
