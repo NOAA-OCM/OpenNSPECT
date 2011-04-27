@@ -398,7 +398,7 @@ Module modRusleSoilLossEquation
                                         -1, OutputItems)
 
                     CalcRUSLE = True
-                    CloseDialog()
+                    CloseProgressDialog()
 
                     Exit Function
 
@@ -438,8 +438,11 @@ Module modRusleSoilLossEquation
                 DataManagement.DeleteGrid(strtmpout)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
-                                          Environment.ProcessorCount, Nothing)
+                Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
+                                           Environment.ProcessorCount, Nothing)
+                If result <> 0 Then
+                    g_KeepRunning = False
+                End If
                 'strExpression = "flowaccumulation([flowdir], [sedyield], FLOAT)"
 
                 pTotalAccumSedRaster = New Grid
@@ -475,7 +478,7 @@ Module modRusleSoilLossEquation
 
             CalcRUSLE = True
 
-            CloseDialog()
+            CloseProgressDialog()
 
         Catch ex As Exception
 
@@ -488,13 +491,13 @@ Module modRusleSoilLossEquation
                         "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
                         "Maximum GRID Number Encountered")
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
                 CalcRUSLE = False
             Else
                 MsgBox("RUSLE Error: " & Err.Number & " on RUSLE Calculation")
                 MsgBox(Err.Number & ": " & Err.Description)
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
                 Cursor.Current = Cursors.Default
                 CalcRUSLE = False
             End If

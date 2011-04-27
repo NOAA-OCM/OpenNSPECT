@@ -278,13 +278,13 @@ Friend Class SoilsSetupForm
                                     "Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", _
                                     MsgBoxStyle.Critical, "Missing Values Detected")
                             CreateSoilsGrid = False
-                            CloseDialog()
+                            CloseProgressDialog()
                             Exit Function
                     End Select
                     lngValue = lngValue + 1
                 Else
                     'If they cancel, kill the dialog
-                    CloseDialog()
+                    CloseProgressDialog()
                     Exit Function
                 End If
             Next
@@ -293,40 +293,40 @@ Friend Class SoilsSetupForm
             pSoilsFeatClass.Close()
 
             'Close dialog
-            CloseDialog()
+            CloseProgressDialog()
 
             'STEP 2:
             'Now do the conversion: Convert soils layer to GRID using new
             'Group field as the value
 
             If g_KeepRunning Then
-                ShowProgress ("Converting Soils Dataset...", "Processing Soils", 0, 2, 2, Me)
+                ShowProgress("Converting Soils Dataset...", "Processing Soils", 0, 2, 2, Me)
 
                 strOutSoils = _
-                    GetUniqueName ("soils", Path.GetDirectoryName (strSoilsFileName), g_OutputGridExt)
+                    GetUniqueName("soils", Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
 
                 'Hand convert the soils shapefile to grids by creating new grids based on header of dem
                 Dim dem As New Grid
-                dem.Open (txtDEMFile.Text)
+                dem.Open(txtDEMFile.Text)
                 Dim head As New GridHeader
                 Dim headK As New GridHeader
-                head.CopyFrom (dem.Header)
-                headK.CopyFrom (dem.Header)
+                head.CopyFrom(dem.Header)
+                headK.CopyFrom(dem.Header)
                 dem.Close()
 
                 Dim soilsshp As New Shapefile
-                soilsshp.Open (strSoilsFileName)
+                soilsshp.Open(strSoilsFileName)
                 soilsshp.BeginPointInShapefile()
 
                 Dim outSoils As New Grid
                 Dim outSoilsK As New Grid
 
-                outSoils.CreateNew (strOutSoils, head, GridDataType.DoubleDataType, head.NodataValue)
+                outSoils.CreateNew(strOutSoils, head, GridDataType.DoubleDataType, head.NodataValue)
 
-                If Len (strKFactor) > 0 Then
+                If Len(strKFactor) > 0 Then
                     strOutKSoils = _
-                        GetUniqueName ("soilsk", Path.GetDirectoryName (strSoilsFileName), g_OutputGridExt)
-                    outSoilsK.CreateNew (strOutKSoils, headK, GridDataType.DoubleDataType, head.NodataValue)
+                        GetUniqueName("soilsk", Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
+                    outSoilsK.CreateNew(strOutKSoils, headK, GridDataType.DoubleDataType, head.NodataValue)
                 Else
                     strOutKSoils = ""
                 End If
@@ -337,14 +337,14 @@ Friend Class SoilsSetupForm
                 Dim nc As Integer = head.NumberCols - 1
                 Dim nr As Integer = head.NumberRows - 1
                 For row As Integer = 0 To nr
-                    ShowProgress ("Converting Soils Dataset...", "Processing Soils", 1, nr, row, Me)
+                    ShowProgress("Converting Soils Dataset...", "Processing Soils", 1, nr, row, Me)
                     For col As Integer = 0 To nc
-                        outSoils.CellToProj (col, row, x, y)
-                        idx = soilsshp.PointInShapefile (x, y)
-                        If idx <> - 1 Then
-                            outSoils.Value (col, row) = soilsshp.CellValue (lngNewHydFieldIndex, idx)
+                        outSoils.CellToProj(col, row, x, y)
+                        idx = soilsshp.PointInShapefile(x, y)
+                        If idx <> -1 Then
+                            outSoils.Value(col, row) = soilsshp.CellValue(lngNewHydFieldIndex, idx)
                             If strOutKSoils <> "" Then
-                                outSoilsK.Value (col, row) = soilsshp.CellValue (lngKFieldIndex, idx)
+                                outSoilsK.Value(col, row) = soilsshp.CellValue(lngKFieldIndex, idx)
                             End If
                         End If
                     Next
@@ -363,16 +363,16 @@ Friend Class SoilsSetupForm
                 'STEP 4:
                 'Now enter all into database
                 strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & _
-                         Replace (txtSoilsName.Text, "'", "''") & "', '" & Replace (strOutSoils, "'", "''") & "', '" & _
-                         Replace (strOutKSoils, "'", "''") & "', " & CDbl (txtMUSLEVal.Text) & ", " & _
-                         CDbl (txtMUSLEExp.Text) & ")"
-                Dim cmdIns As New DataHelper (strCmd)
+                         Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & _
+                         Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & _
+                         CDbl(txtMUSLEExp.Text) & ")"
+                Dim cmdIns As New DataHelper(strCmd)
                 cmdIns.ExecuteNonQuery()
 
-                CloseDialog()
+                CloseProgressDialog()
 
             Else
-                CloseDialog()
+                CloseProgressDialog()
             End If
 
             CreateSoilsGrid = True

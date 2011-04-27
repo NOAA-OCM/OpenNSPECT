@@ -137,7 +137,7 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    Private Function ConstructMetaData(ByRef cmdType As oledbcommand, ByRef strCoeffSet As String, _
+    Private Function ConstructMetaData(ByRef cmdType As OleDbCommand, ByRef strCoeffSet As String, _
                                         ByRef booLocal As Boolean) As String
         'Takes the rs and creates a string describing the pollutants and coefficients used in this run, will
         'later be added to the global dictionary
@@ -367,7 +367,7 @@ Module modPollutantCalcs
 
                 End If
 
-                CloseDialog()
+                CloseProgressDialog()
                 Exit Function
 
             End If
@@ -404,10 +404,12 @@ Module modPollutantCalcs
                 DataManagement.DeleteGrid(strtmpout)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
+                Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
                                           Environment.ProcessorCount, Nothing)
                 'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
-
+                If result <> 0 Then
+                    g_KeepRunning = False
+                End If
                 Dim tmpGrid As New Grid
                 tmpGrid.Open(strtmpout)
 
@@ -475,7 +477,7 @@ Module modPollutantCalcs
             'if we get to the end
             CalcPollutantConcentration = True
 
-            CloseDialog()
+            CloseProgressDialog()
 
         Catch ex As Exception
             If Err.Number = -2147217297 Then 'User cancelled operation
@@ -488,13 +490,13 @@ Module modPollutantCalcs
                         "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
                         "Maximum GRID Number Encountered")
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
                 CalcPollutantConcentration = False
             Else
                 HandleError(ex)
                 'False, "CalcPollutantConcentration " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
                 CalcPollutantConcentration = False
             End If
         End Try
@@ -555,67 +557,67 @@ Module modPollutantCalcs
                         "Maximum GRID Number Encountered")
                 CompareWaterQuality = False
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
             Else
                 HandleError(ex)
                 'False, "CompareWaterQuality " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, 0)
                 CompareWaterQuality = False
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
             End If
         End Try
     End Function
 
-    Private Function ReturnWQValue (ByRef strPollName As String, ByRef strWQstdName As String) As String
+    Private Function ReturnWQValue(ByRef strPollName As String, ByRef strWQstdName As String) As String
         Dim strPoll As String
         Dim strWQStd As String = ""
         ReturnWQValue = ""
         Try
 
             strPoll = "Select * from Pollutant where name like '" & strPollName & "'"
-            Dim cmdpoll As New DataHelper (strPoll)
+            Dim cmdpoll As New DataHelper(strPoll)
             Dim datapoll As OleDbDataReader = cmdpoll.ExecuteReader
             datapoll.Read()
             strWQStd = _
                 "SELECT * FROM WQCRITERIA INNER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & _
-                "WHERE WQCRITERIA.NAME Like '" & strWQstdName & "' AND POLL_WQCRITERIA.POLLID = " & datapoll ("POLLID")
+                "WHERE WQCRITERIA.NAME Like '" & strWQstdName & "' AND POLL_WQCRITERIA.POLLID = " & datapoll("POLLID")
             datapoll.Close()
 
-            Dim cmdWQ As New DataHelper (strWQStd)
+            Dim cmdWQ As New DataHelper(strWQStd)
             Dim datawq As OleDbDataReader = cmdWQ.ExecuteReader()
             datawq.Read()
-            ReturnWQValue = CStr (datawq ("Threshold"))
+            ReturnWQValue = CStr(datawq("Threshold"))
             datawq.Close()
         Catch ex As Exception
-            MsgBox ("Error in ADO pollutant part: " & Err.Number & vbNewLine & Err.Description & vbNewLine & strWQStd)
+            MsgBox("Error in ADO pollutant part: " & Err.Number & vbNewLine & Err.Description & vbNewLine & strWQStd)
         End Try
     End Function
 
 #Region "Raster Math"
 
-    Private Function massvolCellCalc (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+    Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                       ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim tmpval As Single
         'strexpression = pick([pLandSampleRaster], _picks)"
         For i As Integer = 0 To _picks.Length - 1
             If Input1 = i + 1 Then
-                tmpval = _picks (i)
+                tmpval = _picks(i)
                 Exit For
             End If
         Next
 
         'strExpression = "[met_runoff] * [pollmass]"
-        Return Input2*tmpval
+        Return Input2 * tmpval
     End Function
 
-    Private Function multAccumCellCalc (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+    Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                         ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
         As Single
         'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
-        Return Input1*0.000001
+        Return Input1 * 0.000001
     End Function
 
-    Private Function AllConCellCalc (ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
+    Private Function AllConCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
                                      ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
                                      ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
                                      ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -630,12 +632,12 @@ Module modPollutantCalcs
                 End If
             End If
         Else
-            Return (Input1 + (Input2/0.000001))/(Input3 + Input4)
+            Return (Input1 + (Input2 / 0.000001)) / (Input3 + Input4)
         End If
 
     End Function
 
-    Private Function concompCellCalc (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+    Private Function concompCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                       ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'This rather ugly expression was set up to check for meets/exceed water quality standards for
         'only the streams.  It takes the values of flowaccumulation from watershed delineation fame that
@@ -645,13 +647,13 @@ Module modPollutantCalcs
         'strExpression = "(Con([Max] gt _WQValue, 1, 2)) * (con([flowacc] > (_FlowMax * 0.01), 1))"
         If Input1 > _WQValue Then
             '(con([flowacc] > (" & CStr(modUtil.ReturnRasterMax(g_pFlowAccRaster)) & " * 0.01), 1))
-            If Input2 > (_FlowMax*0.01) Then
+            If Input2 > (_FlowMax * 0.01) Then
                 Return 1
             Else
                 Return OutNull
             End If
         Else
-            If Input2 > (_FlowMax*0.01) Then
+            If Input2 > (_FlowMax * 0.01) Then
                 Return 2
             Else
                 Return OutNull

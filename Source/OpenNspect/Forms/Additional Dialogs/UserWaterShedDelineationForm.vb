@@ -105,7 +105,7 @@ Friend Class UserWaterShedDelineationForm
 
         ShowProgress("Validating input...", "Adding New Delineation...", 0, 3, 1, Me)
         If Not ValidateDataFormInput() Then
-            CloseDialog()
+            CloseProgressDialog()
             Exit Sub
         End If
 
@@ -136,7 +136,7 @@ Friend Class UserWaterShedDelineationForm
             End Using
             System.Windows.Forms.Cursor.Current = Cursors.Default
 
-            CloseDialog()
+            CloseProgressDialog()
 
             'Confirm
             MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
@@ -154,7 +154,7 @@ Friend Class UserWaterShedDelineationForm
 
         Catch ex As Exception
             MsgBox("An error occurred while processing your Watershed Delineation.", MsgBoxStyle.Critical, "Error")
-            CloseDialog()
+            CloseProgressDialog()
         End Try
 
     End Sub

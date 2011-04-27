@@ -1126,7 +1126,7 @@ Friend Class MainForm
         Catch ex As Exception
             HandleError(ex)
         Finally
-            CloseDialog()
+            CloseProgressDialog()
             System.Windows.Forms.Cursor.Current = Cursors.Default
         End Try
 

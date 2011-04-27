@@ -522,7 +522,7 @@ Module modRunoff
                                         "Runoff Local", -1, OutputItems)
 
                     RunoffCalculation = True
-                    CloseDialog()
+                    CloseProgressDialog()
                     Exit Function
                 End If
             End If
@@ -559,10 +559,12 @@ Module modRunoff
                 DataManagement.DeleteGrid(strtmpout)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Hydrology.WeightedAreaD8(strtmp1, strtmp2, Nothing, strtmpout, False, False, _
+                Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, Nothing, strtmpout, False, False, _
                                           Environment.ProcessorCount, Nothing)
                 'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
-
+                If result <> 0 Then
+                    g_KeepRunning = False
+                End If
                 pAccumRunoffRaster = New Grid
                 pAccumRunoffRaster.Open(strtmpout)
 
@@ -601,7 +603,7 @@ Module modRunoff
 
             RunoffCalculation = True
 
-            CloseDialog()
+            CloseProgressDialog()
 
         Catch ex As Exception
             If Err.Number = -2147217297 Then 'User cancelled operation
@@ -613,12 +615,13 @@ Module modRunoff
                         "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
                         "Maximum GRID Number Encountered")
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
                 RunoffCalculation = False
             Else
                 MsgBox("Error: " & Err.Number & " on RunoffCalculation")
+                HandleError(ex)
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
                 RunoffCalculation = False
             End If
         End Try
@@ -626,38 +629,38 @@ Module modRunoff
 
 #Region "Raster Math"
 
-    Private Function SC100CellCalc (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+    Private Function SC100CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                     ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'pSCS100Raster = 100 * con([pHydSoilsRaster] == 1, pick([pLandSampleRaster], " & strPick(0) & "), con([pHydSoilsRaster] == 2, pick([pLandSampleRaster], " & strPick(1) & "), con([pHydSoilsRaster] == 3, pick([pLandSampleRaster], " & strPick(2) & "), con([pHydSoilsRaster] == 4, pick([pLandSampleRaster], " & strPick(3) & ")))))
 
         If Input1 = 1 Then
-            For i As Integer = 0 To _picks (0).Length - 1
+            For i As Integer = 0 To _picks(0).Length - 1
                 If Input2 = i + 1 Then
-                    Return 100*_picks (0) (i)
+                    Return 100 * _picks(0)(i)
                 End If
             Next
         ElseIf Input1 = 2 Then
-            For i As Integer = 0 To _picks (1).Length - 1
+            For i As Integer = 0 To _picks(1).Length - 1
                 If Input2 = i + 1 Then
-                    Return 100*_picks (1) (i)
+                    Return 100 * _picks(1)(i)
                 End If
             Next
         ElseIf Input1 = 3 Then
-            For i As Integer = 0 To _picks (2).Length - 1
+            For i As Integer = 0 To _picks(2).Length - 1
                 If Input2 = i + 1 Then
-                    Return 100*_picks (2) (i)
+                    Return 100 * _picks(2)(i)
                 End If
             Next
         ElseIf Input1 = 4 Then
-            For i As Integer = 0 To _picks (3).Length - 1
+            For i As Integer = 0 To _picks(3).Length - 1
                 If Input2 = i + 1 Then
-                    Return 100*_picks (3) (i)
+                    Return 100 * _picks(3)(i)
                 End If
             Next
         End If
     End Function
 
-    Private Function AllRunoffCellCalc (ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
+    Private Function AllRunoffCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
                                         ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
                                         ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
                                         ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -670,34 +673,34 @@ Module modRunoff
                 Return OutNull
             Else
                 If g_intRunoffPrecipType = 0 Then
-                    RetentionVal = ((1000.0/Input1) - 10)*g_intRainingDays
+                    RetentionVal = ((1000.0 / Input1) - 10) * g_intRainingDays
                 Else
-                    RetentionVal = ((1000.0/Input1) - 10)
+                    RetentionVal = ((1000.0 / Input1) - 10)
                 End If
 
-                AbstractVal = 0.2*RetentionVal
+                AbstractVal = 0.2 * RetentionVal
 
                 tmpVal = Input2 - AbstractVal
                 If tmpVal > 0 Then
-                    RunoffInches = Math.Pow (tmpVal, 2)/(tmpVal + RetentionVal)
+                    RunoffInches = Math.Pow(tmpVal, 2) / (tmpVal + RetentionVal)
                 Else
                     RunoffInches = 0
                 End If
 
                 If Input3 >= 0 Then
-                    AreaSquareMeters = Math.Pow (g_dblCellSize, 2)
+                    AreaSquareMeters = Math.Pow(g_dblCellSize, 2)
                 Else
                     AreaSquareMeters = 0
                 End If
 
-                Return RunoffInches*(AreaSquareMeters*10.76*144)*0.016387064
+                Return RunoffInches * (AreaSquareMeters * 10.76 * 144) * 0.016387064
 
             End If
         End If
 
     End Function
 
-    Private Function metRunoffNoNullCellCalc (ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
+    Private Function metRunoffNoNullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
                                               ByVal Input2Null As Single, ByVal Input3 As Single, _
                                               ByVal Input3Null As Single, ByVal Input4 As Single, _
                                               ByVal Input4Null As Single, ByVal Input5 As Single, _
@@ -714,7 +717,7 @@ Module modRunoff
         End If
     End Function
 
-    Public Function tauD8CellCalc (ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
+    Public Function tauD8CellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
                                    ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
                                    ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
                                    ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -736,13 +739,13 @@ Module modRunoff
         ElseIf Input1 = 128 Then
             Return 2
         ElseIf Input1 = Input1Null Then
-            Return - 1
+            Return -1
         Else
-            Return - 1
+            Return -1
         End If
     End Function
 
-    Public Function tauD8ToESRICellCalc (ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
+    Public Function tauD8ToESRICellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
                                          ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
                                          ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
                                          ByVal Input5Null As Single, ByVal OutNull As Single) As Single
@@ -764,9 +767,9 @@ Module modRunoff
         ElseIf Input1 = 2 Then
             Return 128
         ElseIf Input1 = Input1Null Then
-            Return - 1
+            Return -1
         Else
-            Return - 1
+            Return -1
         End If
     End Function
 

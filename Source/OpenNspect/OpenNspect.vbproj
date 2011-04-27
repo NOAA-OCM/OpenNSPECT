@@ -331,7 +331,7 @@
     <Compile Include="Modules\Globals.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modules\modErrorCodes.vb" />
+    <Compile Include="Modules\ErrorHandling.vb" />
     <Compile Include="Modules\modLanduse.vb" />
     <Compile Include="Modules\modMainRun.vb" />
     <Compile Include="Modules\modManagementScenarios.vb" />

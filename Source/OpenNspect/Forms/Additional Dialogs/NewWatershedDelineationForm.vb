@@ -571,7 +571,7 @@ Friend Class NewWatershedDelineationForm
                 DelineateWatershed = False
             End If
         Finally
-            CloseDialog()
+            CloseProgressDialog()
             pFlowDirRaster.Close()
             pAccumRaster.Close()
             pFillRaster.Close()

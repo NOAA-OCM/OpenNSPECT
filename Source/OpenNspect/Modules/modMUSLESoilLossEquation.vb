@@ -564,7 +564,7 @@ Module modMUSLESoilLossEquation
                                         OutputItems)
 
                     CalcMUSLE = True
-                    CloseDialog()
+                    CloseProgressDialog()
                     Exit Function
 
                 End If
@@ -639,7 +639,7 @@ Module modMUSLESoilLossEquation
 
             CalcMUSLE = True
 
-            CloseDialog()
+            CloseProgressDialog()
 
         Catch ex As Exception
             If Err.Number = -2147217297 Then 'S.A. constant for User cancelled operation
@@ -651,12 +651,12 @@ Module modMUSLESoilLossEquation
                         "Maximum GRID Number Encountered")
                 CalcMUSLE = False
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
             Else
                 MsgBox("MUSLE Error: " & Err.Number & " on MUSLE Calculation: ")
                 CalcMUSLE = False
                 g_KeepRunning = False
-                CloseDialog()
+                CloseProgressDialog()
             End If
         End Try
     End Function

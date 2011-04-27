@@ -400,7 +400,7 @@ Module modLanduse
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
 
-            CloseDialog()
+            CloseProgressDialog()
 
         Catch ex As Exception
             MsgBox("error in MSSetup ReclassLanduse" & Err.Number & ": " & Err.Description)

@@ -255,7 +255,7 @@ Imports Microsoft.Win32
                     Case "System.Diagnostics.DebuggableAttribute"
                         Value = CType (attrib, DebuggableAttribute).IsJITTrackingEnabled.ToString
                     Case "System.Reflection.AssemblyCompanyAttribute"
-                        Value = CType (attrib, AssemblyCompanyAttribute).Company.ToString
+                        Value = CType(attrib, AssemblyCompanyAttribute).Company
                     Case "System.Reflection.AssemblyConfigurationAttribute"
                         Value = CType (attrib, AssemblyConfigurationAttribute).Configuration.ToString
                     Case "System.Reflection.AssemblyCopyrightAttribute"
@@ -273,7 +273,7 @@ Imports Microsoft.Win32
                     Case "System.Reflection.AssemblyProductAttribute"
                         Value = CType (attrib, AssemblyProductAttribute).Product.ToString
                     Case "System.Reflection.AssemblyTrademarkAttribute"
-                        Value = CType (attrib, AssemblyTrademarkAttribute).Trademark.ToString
+                        Value = CType(attrib, AssemblyTrademarkAttribute).Trademark
                     Case "System.Reflection.AssemblyTitleAttribute"
                         Value = CType (attrib, AssemblyTitleAttribute).Title.ToString
                     Case "System.Resources.NeutralResourcesLanguageAttribute"
