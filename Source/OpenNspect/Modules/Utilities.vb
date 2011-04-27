@@ -40,7 +40,7 @@ Module Utilities
     'Intermediate and output extensions
     Public g_OutputGridExt As String = ".bgd"
     Public g_FinalOutputGridExt As String = ".tif"
-    Public g_TAUDEMGridExt As String = ".bgd"
+    Public g_TAUDEMGridExt As String = ".tif"
 
     Public g_TempFilesToDel As New List(Of String)
 
