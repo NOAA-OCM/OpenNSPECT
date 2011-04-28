@@ -30,8 +30,6 @@ Friend Class MainForm
     Private _XmlPrjParams As ProjectFile
     'xml doc that holds inputs
 
-    Private _bolFirstLoad As Boolean
-    'Is initial Load event
     Private _booExists As Boolean
     'Has file been saved
     Private _booAnnualPrecip As Boolean
@@ -49,15 +47,6 @@ Friend Class MainForm
     Private _intPollCount As Short
     'count for pollutant grid
 
-    'Font DPI API
-    Private Declare Function GetDC Lib "user32" (ByVal hwnd As Integer) As Integer
-    Private Declare Function ReleaseDC Lib "user32" (ByVal hwnd As Integer, ByVal hDC As Integer) As Integer
-    Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Integer, ByVal nIndex As Integer) As Integer
-
-    ' Win 32 Constant Declarations
-    Private Const LOGPIXELSX As Short = 88
-    'Logical pixels/inch in X
-
     Private arrAreaList As New ArrayList
     Private arrClassList As New ArrayList
 
@@ -68,6 +57,17 @@ Friend Class MainForm
 
 #Region "Events"
 
+    Private Sub GetMapWindowLayers()
+        Dim currLyr As Layer
+        For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+            currLyr = MapWindowPlugin.MapWindowInstance.Layers(i)
+            If currLyr.LayerType = eLayerType.Grid Then
+                cboLCLayer.Items.Add(currLyr.Name)
+            ElseIf currLyr.LayerType = eLayerType.PolygonShapefile Then
+                arrAreaList.Add(currLyr.Name)
+            End If
+        Next
+    End Sub
     ''' <summary>
     ''' Load form that initializes globals and various form elements
     ''' </summary>
@@ -77,47 +77,26 @@ Friend Class MainForm
     Private Sub frmProjectSetup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             g_cbMainForm = Me
-            SSTab1.SelectedIndex = 0
+            TabsForGrids.SelectedIndex = 0
 
-            _bolFirstLoad = True
-            'It's the first load
-            _booExists = False
+            InitComboBox(cboLandCoverType, "LCType")
 
-            'ComboBox::LandCover Type
-            InitComboBox(cboLCType, "LCType")
+            InitComboBox(cboPrecipitationScenarios, "PrecipScenario")
+            cboPrecipitationScenarios.Items.Add("New precipitation scenario...")
 
-            'ComboBox::Precipitation Scenarios
-            InitComboBox(cboPrecipScen, "PrecipScenario")
-            cboPrecipScen.Items.Insert(cboPrecipScen.Items.Count, "New precipitation scenario...")
+            InitComboBox(cboWaterShedDelineations, "WSDelineation")
+            cboWaterShedDelineations.Items.Add("New watershed delineation...")
 
-            'ComboBox::WaterShed Delineations
-            InitComboBox(cboWSDelin, "WSDelineation")
-            cboWSDelin.Items.Insert(cboWSDelin.Items.Count, "New watershed delineation...")
+            InitComboBox(cboWaterQualityCriteriaStd, "WQCriteria")
+            cboWaterQualityCriteriaStd.Items.Add("New water quality standard...")
 
-            'ComboBox::WaterQuality Criteria
-            InitComboBox(cboWQStd, "WQCriteria")
-            cboWQStd.Items.Insert(cboWQStd.Items.Count, "New water quality standard...")
-
-            cboLCLayer.Items.Clear()
-            arrAreaList.Clear()
-            Dim currLyr As Layer
-            For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
-                currLyr = MapWindowPlugin.MapWindowInstance.Layers(i)
-                If currLyr.LayerType = eLayerType.Grid Then
-                    cboLCLayer.Items.Add(currLyr.Name)
-                ElseIf currLyr.LayerType = eLayerType.PolygonShapefile Then
-                    arrAreaList.Add(currLyr.Name)
-                End If
-            Next
+            GetMapWindowLayers()
 
             'Soils, now a 'scenario', not just a datalayer
             InitComboBox(cboSoilsLayer, "Soils")
 
             'Fill LandClass
             FillCboLCCLass()
-
-            _intMgmtCount = 0
-            _intLUCount = 0
 
             'Initialize parameter file
             _XmlPrjParams = New ProjectFile
@@ -127,19 +106,17 @@ Friend Class MainForm
             chkCalcErosion_CheckStateChanged(Me, Nothing)
 
             'Add one blank management row
-            dgvManagementScen.Rows.Clear()
             dgvManagementScen.Rows.Add()
             PopulateManagement(0)
 
             'Test workspace persistence
-            If Len(g_strWorkspace) > 0 Then
+            If g_strWorkspace IsNot Nothing Then
                 txtOutputWS.Text = g_strWorkspace
             End If
 
             txtProjectName.Focus()
         Catch ex As Exception
             HandleError(ex)
-            'True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
 
     End Sub
@@ -193,7 +170,6 @@ Friend Class MainForm
             End Using
         Catch ex As Exception
             HandleError(ex)
-            'True, "cmdOpenWS_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -209,7 +185,6 @@ Friend Class MainForm
             cboLCUnits.SelectedIndex = GetRasterDistanceUnits(cboLCLayer.Text)
         Catch ex As Exception
             HandleError(ex)
-            'True, "cboLCLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -220,12 +195,11 @@ Friend Class MainForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub cboLCType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboLCType.SelectedIndexChanged
+        Handles cboLandCoverType.SelectedIndexChanged
         Try
             FillCboLCCLass()
         Catch ex As Exception
             HandleError(ex)
-            'True, "cboLCType_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -249,7 +223,6 @@ Friend Class MainForm
             End Using
         Catch ex As Exception
             HandleError(ex)
-            'True, "cboSoilsLayer_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -260,19 +233,19 @@ Friend Class MainForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub cboPrecipScen_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboPrecipScen.SelectedIndexChanged
+        Handles cboPrecipitationScenarios.SelectedIndexChanged
         Try
             'Have to change Erosion tab based on Annual/Event driven rain event
             Dim strEvent As String
 
             'If define, then open new window for new definition, else select from database
-            If cboPrecipScen.Text = "New precipitation scenario..." Then
+            If cboPrecipitationScenarios.Text = "New precipitation scenario..." Then
                 Using newPre As New NewPrecipitationScenarioForm()
                     newPre.Init(Me, Nothing)
                     newPre.ShowDialog()
                 End Using
             Else
-                strEvent = String.Format("SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '{0}'", cboPrecipScen.Text)
+                strEvent = String.Format("SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '{0}'", cboPrecipitationScenarios.Text)
                 Using eventCmd As New OleDbCommand(strEvent, g_DBConn)
                     Dim eventData As OleDbDataReader = eventCmd.ExecuteReader()
                     eventData.Read()
@@ -300,7 +273,6 @@ Friend Class MainForm
             End If
         Catch ex As Exception
             HandleError(ex)
-            'True, "cboPrecipScen_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -311,9 +283,9 @@ Friend Class MainForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub cboWSDelin_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboWSDelin.SelectedIndexChanged
+        Handles cboWaterShedDelineations.SelectedIndexChanged
         Try
-            If cboWSDelin.Text = "New watershed delineation..." Then
+            If cboWaterShedDelineations.Text = "New watershed delineation..." Then
 
                 g_boolNewWShed = True
 
@@ -325,7 +297,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'True, "cboWSDelin_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -336,9 +307,9 @@ Friend Class MainForm
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub cboWQStd_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboWQStd.SelectedIndexChanged
+        Handles cboWaterQualityCriteriaStd.SelectedIndexChanged
         Try
-            If cboWQStd.Text = "New water quality standard..." Then
+            If cboWaterQualityCriteriaStd.Text = "New water quality standard..." Then
                 Using fNewWQ As New NewWaterQualityStandardForm()
                     fNewWQ.Init(Nothing, Me)
                     fNewWQ.ShowDialog()
@@ -348,7 +319,6 @@ Friend Class MainForm
             End If
         Catch ex As Exception
             HandleError(ex)
-            'True, "cboWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -383,7 +353,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuNew_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -408,7 +377,6 @@ Friend Class MainForm
             SaveXmlFile()
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuSave_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -424,7 +392,6 @@ Friend Class MainForm
             SaveXmlFile()
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuSaveAs_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -454,7 +421,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuExit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -477,12 +443,15 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub optUseGRID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
         Handles optUseGRID.CheckedChanged
-        If sender.Checked Then
-            txtbxRainGrid.Enabled = optUseGRID.Checked
-            txtRainValue.Enabled = optUseValue.Checked
-        End If
+        otUseValue(sender)
     End Sub
 
+    Private Sub otUseValue(ByVal sender As Object)
+        If sender.Checked Then
+            txtRainValue.Enabled = optUseValue.Checked
+            txtbxRainGrid.Enabled = optUseGRID.Checked
+        End If
+    End Sub
     ''' <summary>
     ''' Handles showing the appropriate elements when the use value checkbox is used
     ''' </summary>
@@ -491,15 +460,7 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub optUseValue_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
         Handles optUseValue.CheckedChanged
-        If sender.Checked Then
-            Try
-                txtRainValue.Enabled = optUseValue.Checked
-                txtbxRainGrid.Enabled = optUseGRID.Checked
-            Catch ex As Exception
-                HandleError(ex)
-                'True, "optUseValue_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-            End Try
-        End If
+        otUseValue(sender)
     End Sub
 
     ''' <summary>
@@ -510,13 +471,9 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub chkSDR_CheckStateChanged(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
         Handles chkSDR.CheckStateChanged
-        If chkSDR.CheckState = 1 Then
-            txtSDRGRID.Enabled = True
-            cmdOpenSDR.Enabled = True
-        Else
-            txtSDRGRID.Enabled = False
-            cmdOpenSDR.Enabled = False
-        End If
+        Dim state As Boolean = chkSDR.CheckState = 1
+        txtSDRGRID.Enabled = state
+        cmdOpenSDR.Enabled = state
     End Sub
 
     ''' <summary>
@@ -545,19 +502,13 @@ Friend Class MainForm
     Private Sub chkCalcErosion_CheckStateChanged(ByVal eventSender As Object, _
                                                   ByVal eventArgs As EventArgs) _
         Handles chkCalcErosion.CheckStateChanged
-        Try
-            frameRainFall.Enabled = chkCalcErosion.CheckState
-            cboErodFactor.Enabled = chkCalcErosion.CheckState
-            lblErodFactor.Enabled = chkCalcErosion.CheckState
-            optUseGRID.Enabled = chkCalcErosion.CheckState
-            optUseValue.Enabled = True
-            'chkCalcErosion.Value
-            lblKFactor.Visible = chkCalcErosion.CheckState
-            Label7.Visible = chkCalcErosion.CheckState
-        Catch ex As Exception
-            HandleError(ex)
-            'True, "chkCalcErosion_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-        End Try
+        frameRainFall.Enabled = chkCalcErosion.CheckState
+        cboErodFactor.Enabled = chkCalcErosion.CheckState
+        lblErodFactor.Enabled = chkCalcErosion.CheckState
+        optUseGRID.Enabled = chkCalcErosion.CheckState
+        optUseValue.Enabled = True
+        lblKFactor.Visible = chkCalcErosion.CheckState
+        Label7.Visible = chkCalcErosion.CheckState
     End Sub
 
     ''' <summary>
@@ -684,7 +635,7 @@ Friend Class MainForm
             'Generate the scenario form
             Using newscen As New EditLandUseScenario()
                 With newscen
-                    .init(cboWQStd.Text, Me)
+                    .init(cboWaterQualityCriteriaStd.Text, Me)
                     .Text = "Add Land Use Scenario"
                     'If they cancel, then remove the added
                     If .ShowDialog() = System.Windows.Forms.DialogResult.Cancel Then
@@ -714,7 +665,7 @@ Friend Class MainForm
 
                 Using newscen As New EditLandUseScenario()
                     With newscen
-                        .init(cboWQStd.Text, Me)
+                        .init(cboWaterQualityCriteriaStd.Text, Me)
                         .Text = "Edit Land Use Scenario"
                         .ShowDialog()
                     End With
@@ -754,7 +705,6 @@ Friend Class MainForm
             End With
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuLUDelete_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
 
     End Sub
@@ -855,7 +805,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'True, "cmdQuit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1141,12 +1090,12 @@ Friend Class MainForm
 
             'LandClass stuff
             cboLCLayer.Items.Clear()
-            cboLCType.Items.Clear()
+            cboLandCoverType.Items.Clear()
 
             'DBase scens
-            cboPrecipScen.Items.Clear()
-            cboWSDelin.Items.Clear()
-            cboWQStd.Items.Clear()
+            cboPrecipitationScenarios.Items.Clear()
+            cboWaterShedDelineations.Items.Clear()
+            cboWaterQualityCriteriaStd.Items.Clear()
             cboSoilsLayer.Items.Clear()
 
             'Text
@@ -1249,7 +1198,7 @@ Friend Class MainForm
             strLCChanges = _
                 String.Format( _
                                "SELECT LCCLASS.Name as Name2, LCTYPE.LCTYPEID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", _
-                               cboLCType.Text)
+                               cboLandCoverType.Text)
             Using lcChangesCmd As New OleDbCommand(strLCChanges, g_DBConn)
                 Using lcChanges As OleDbDataReader = lcChangesCmd.ExecuteReader()
                     arrClassList.Clear()
@@ -1277,7 +1226,7 @@ Friend Class MainForm
             Dim strSQLWQStdPoll As String
 
             'Selection based on combo box
-            strSQLWQStd = String.Format("SELECT * FROM WQCRITERIA WHERE NAME LIKE '{0}'", cboWQStd.Text)
+            strSQLWQStd = String.Format("SELECT * FROM WQCRITERIA WHERE NAME LIKE '{0}'", cboWaterQualityCriteriaStd.Text)
             Using WQCritCmd As OleDbCommand = New OleDbCommand(strSQLWQStd, g_DBConn)
                 Dim dataWQCrit As OleDbDataReader = WQCritCmd.ExecuteReader()
 
@@ -1397,7 +1346,7 @@ Friend Class MainForm
                         End If
                     End If
                 Else
-                    _XmlPrjParams.strWaterShedDelin = cboWSDelin.Text
+                    _XmlPrjParams.strWaterShedDelin = cboWaterShedDelineations.Text
                     strCurrWShed = _
                         String.Format("Select * from WSDelineation where Name Like '{0}'", _
                                        _XmlPrjParams.strWaterShedDelin)
@@ -1514,8 +1463,8 @@ Friend Class MainForm
             cboLCUnits.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridUnits), cboLCUnits)
             cboLCUnits.Refresh()
 
-            cboLCType.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridType), cboLCType)
-            cboLCType.Refresh()
+            cboLandCoverType.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridType), cboLandCoverType)
+            cboLandCoverType.Refresh()
 
             'Step 2: Soils - same process, if in doc and map, OK, else send em looking
             If RasterExists(_XmlPrjParams.strSoilsHydFileName) Then
@@ -1528,16 +1477,16 @@ Friend Class MainForm
             End If
 
             'Step5: Precip Scenario
-            cboPrecipScen.SelectedIndex = GetCboIndex((_XmlPrjParams.strPrecipScenario), cboPrecipScen)
+            cboPrecipitationScenarios.SelectedIndex = GetCboIndex((_XmlPrjParams.strPrecipScenario), cboPrecipitationScenarios)
 
             'Step6: Watershed Delineation
-            cboWSDelin.SelectedIndex = GetCboIndex((_XmlPrjParams.strWaterShedDelin), cboWSDelin)
+            cboWaterShedDelineations.SelectedIndex = GetCboIndex((_XmlPrjParams.strWaterShedDelin), cboWaterShedDelineations)
 
             'Add the basinpoly to the map
             AddBasinpolyToMap()
 
             'Step7: Water Quality
-            cboWQStd.SelectedIndex = GetCboIndex((_XmlPrjParams.strWaterQuality), cboWQStd)
+            cboWaterQualityCriteriaStd.SelectedIndex = GetCboIndex((_XmlPrjParams.strWaterQuality), cboWaterQualityCriteriaStd)
 
             'Step8: LocalEffects/Selected Watersheds
             chkLocalEffects.CheckState = _XmlPrjParams.intLocalEffects
@@ -1726,7 +1675,7 @@ Friend Class MainForm
             End If
 
             'Reset to first tab
-            SSTab1.SelectedIndex = 0
+            TabsForGrids.SelectedIndex = 0
             _booExists = True
             System.Windows.Forms.Cursor.Current = Cursors.Default
 
@@ -1843,7 +1792,7 @@ Friend Class MainForm
             Dim ParamsPrj As New ProjectFile
             'Just a holder for the xml
 
-            SSTab1.SelectedIndex = 0
+            TabsForGrids.SelectedIndex = 0
 
             'First check Selected Watersheds
             If chkSelectedPolys.Enabled = True And chkSelectedPolys.CheckState = 1 Then
@@ -1900,14 +1849,14 @@ Friend Class MainForm
             End If
 
             'LC Type
-            If cboLCType.Text = "" Then
+            If cboLandCoverType.Text = "" Then
                 MsgBox("Please select a Land Class Type before continuing.", MsgBoxStyle.Information, _
                         "Select Land Class Type")
-                cboLCType.Focus()
+                cboLandCoverType.Focus()
                 ValidateData = False
                 Exit Function
             Else
-                ParamsPrj.strLCGridType = cboLCType.Text
+                ParamsPrj.strLCGridType = cboLandCoverType.Text
             End If
 
             'Soils - use definition to find datasets, if there use, if not tell the user
@@ -1935,11 +1884,11 @@ Friend Class MainForm
             'If the layer is in the map, get out, all is well- _strPrecipFile is established on the
             'PrecipCbo Click event
             If LayerInMap(SplitFileName(_strPrecipFile)) Then
-                ParamsPrj.strPrecipScenario = cboPrecipScen.Text
+                ParamsPrj.strPrecipScenario = cboPrecipitationScenarios.Text
             Else
                 'Check if you can add it, if so, all is well
                 If RasterExists(_strPrecipFile) Then
-                    ParamsPrj.strPrecipScenario = cboPrecipScen.Text
+                    ParamsPrj.strPrecipScenario = cboPrecipitationScenarios.Text
                 Else
                     'Can't find it...well, then send user to Browse
                     MsgBox(String.Format("Unable to find precip dataset: {0}.  Please Correct", _strPrecipFile), _
@@ -1950,17 +1899,17 @@ Friend Class MainForm
                         strUpdatePrecip = _
                             String.Format( _
                                            "UPDATE PrecipScenario SET precipScenario.PrecipFileName = '{0}'WHERE NAME = '{1}'", _
-                                           _strPrecipFile, cboPrecipScen.Text)
+                                           _strPrecipFile, cboPrecipitationScenarios.Text)
                         Using PreUpdCmd As OleDbCommand = New OleDbCommand(strUpdatePrecip, g_DBConn)
                             PreUpdCmd.ExecuteNonQuery()
                         End Using
 
                         'Now we can set the xmlParams
-                        ParamsPrj.strPrecipScenario = cboPrecipScen.Text
+                        ParamsPrj.strPrecipScenario = cboPrecipitationScenarios.Text
                         'modUtil.AddRasterLayerToMapFromFileName _strPrecipFile, m_pMap
                     Else
                         MsgBox("Invalid File.", MsgBoxStyle.Information, "Invalid File")
-                        cboPrecipScen.Focus()
+                        cboPrecipitationScenarios.Focus()
                         ValidateData = False
                     End If
                 End If
@@ -1968,7 +1917,7 @@ Friend Class MainForm
 
             'Go out to a separate function for this one...WaterShed
             If ValidateWaterShed() Then
-                ParamsPrj.strWaterShedDelin = cboWSDelin.Text
+                ParamsPrj.strWaterShedDelin = cboWaterShedDelineations.Text
             Else
                 MsgBox("There is a problems with the selected Watershed Delineation.", MsgBoxStyle.Information, _
                         "Watershed Delineation")
@@ -1977,8 +1926,8 @@ Friend Class MainForm
             End If
 
             'Water Quality
-            If Len(cboWQStd.Text) > 0 Then
-                ParamsPrj.strWaterQuality = cboWQStd.Text
+            If Len(cboWaterQualityCriteriaStd.Text) > 0 Then
+                ParamsPrj.strWaterQuality = cboWaterQualityCriteriaStd.Text
             Else
                 MsgBox("Please select a water quality standard.", MsgBoxStyle.Information, _
                         "Water Quality Standard Missing")
@@ -2004,7 +1953,7 @@ Friend Class MainForm
                 ParamsPrj.intSelectedPolys = 0
             End If
 
-            SSTab1.SelectedIndex = 1
+            TabsForGrids.SelectedIndex = 1
 
             'Erosion Tab
             'Calc Erosion checkbox
@@ -2034,7 +1983,7 @@ Friend Class MainForm
                             ParamsPrj.strRainGridFileName = txtbxRainGrid.Text
                         Else
                             MsgBox("Please choose a rainfall Grid.", MsgBoxStyle.Information, "Select Rainfall GRID")
-                            SSTab1.SelectedIndex = 1
+                            TabsForGrids.SelectedIndex = 1
                             ValidateData = False
                             Exit Function
 
@@ -2089,7 +2038,7 @@ Friend Class MainForm
 
             End If
 
-            SSTab1.SelectedIndex = 3
+            TabsForGrids.SelectedIndex = 3
             'Managment Scenarios
             If ValidateMgmtScenario() Then
                 Dim mgmtitem As ManagementScenarioItem
@@ -2114,7 +2063,7 @@ Friend Class MainForm
                 Exit Function
             End If
 
-            SSTab1.SelectedIndex = 0
+            TabsForGrids.SelectedIndex = 0
             'Pollutants
             If ValidatePollutants() Then
                 Dim pollitem As PollutantItem
@@ -2142,7 +2091,7 @@ Friend Class MainForm
                 Exit Function
             End If
 
-            SSTab1.SelectedIndex = 2
+            TabsForGrids.SelectedIndex = 2
             'Land Uses
             For Each row As DataGridViewRow In dgvLandUse.Rows
                 Dim luitem As LandUseItem
@@ -2164,7 +2113,7 @@ Friend Class MainForm
             HandleError(ex)
             'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         Finally
-            SSTab1.SelectedIndex = 0
+            TabsForGrids.SelectedIndex = 0
         End Try
     End Function
 
@@ -2225,7 +2174,7 @@ Friend Class MainForm
             booUpdate = False
 
             'Select record from current cbo Selection
-            strWShed = String.Format("SELECT * FROM WSDELINEATION WHERE NAME LIKE '{0}'", cboWSDelin.Text)
+            strWShed = String.Format("SELECT * FROM WSDELINEATION WHERE NAME LIKE '{0}'", cboWaterShedDelineations.Text)
             Using WSCmd As OleDbCommand = New OleDbCommand(strWShed, g_DBConn)
                 Using adWS As New OleDbDataAdapter(WSCmd)
                     Using buWS As New OleDbCommandBuilder(adWS)
@@ -2382,10 +2331,10 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Public Sub UpdatePrecip(ByVal strPrecName As String)
         Try
-            cboPrecipScen.Items.Clear()
-            InitComboBox(cboPrecipScen, "PrecipScenario")
-            cboPrecipScen.Items.Insert(cboPrecipScen.Items.Count, "New precipitation scenario...")
-            cboPrecipScen.SelectedIndex = GetCboIndex(strPrecName, cboPrecipScen)
+            cboPrecipitationScenarios.Items.Clear()
+            InitComboBox(cboPrecipitationScenarios, "PrecipScenario")
+            cboPrecipitationScenarios.Items.Insert(cboPrecipitationScenarios.Items.Count, "New precipitation scenario...")
+            cboPrecipitationScenarios.SelectedIndex = GetCboIndex(strPrecName, cboPrecipitationScenarios)
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -2398,10 +2347,10 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Public Sub UpdateWQ(ByVal strWQName As String)
         Try
-            cboWQStd.Items.Clear()
-            InitComboBox(cboWQStd, "WQCRITERIA")
-            cboWQStd.Items.Insert(cboWQStd.Items.Count, "Define a new water quality standard...")
-            cboWQStd.SelectedIndex = GetCboIndex(strWQName, cboWQStd)
+            cboWaterQualityCriteriaStd.Items.Clear()
+            InitComboBox(cboWaterQualityCriteriaStd, "WQCRITERIA")
+            cboWaterQualityCriteriaStd.Items.Insert(cboWaterQualityCriteriaStd.Items.Count, "Define a new water quality standard...")
+            cboWaterQualityCriteriaStd.SelectedIndex = GetCboIndex(strWQName, cboWaterQualityCriteriaStd)
         Catch ex As Exception
             HandleError(ex)
         End Try

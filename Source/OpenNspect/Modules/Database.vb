@@ -79,38 +79,33 @@ Module Database
         End Try
     End Function
 
-    Public Sub InitComboBox(ByRef cbo As ComboBox, ByRef strName As String)
+    ''' <summary>
+    ''' Loads the variety of comboboxes throught the project using combobox and name of table.
+    ''' </summary>
+    ''' <param name="cbo">The dropdown.</param>
+    ''' <param name="name">Name.</param>
+    Public Sub InitComboBox(ByRef cbo As ComboBox, ByRef name As String)
         Try
-            'Loads the variety of comboboxes throught the project using combobox and name of table
-            Dim rsNamesCmd As OleDbCommand
-            Dim rsNames As OleDbDataReader
-            Dim strSelectStatement As String
+            Dim strSelectStatement As String = String.Format("SELECT NAME FROM {0} ORDER BY NAME ASC", name)
 
-            strSelectStatement = "SELECT NAME FROM " & strName & " ORDER BY NAME ASC"
-
-            rsNamesCmd = New OleDbCommand(strSelectStatement, g_DBConn)
-
-            rsNames = rsNamesCmd.ExecuteReader()
-
-            If rsNames.HasRows Then
-                With cbo
-                    Do While rsNames.Read()
-                        .Items.Add(rsNames.Item("Name"))
-                    Loop
-                End With
-
-                cbo.SelectedIndex = 0
-            Else
-                MsgBox("Warning.  There are no records remaining.  Please add a new one.", MsgBoxStyle.Critical, _
-                        "Recordset Empty")
-                Return
-            End If
-
-            'Cleanup
-            rsNames.Close()
+            Using rsNamesCmd As OleDbCommand = New OleDbCommand(strSelectStatement, g_DBConn)
+                Using rsNames As OleDbDataReader = rsNamesCmd.ExecuteReader()
+                    If Not rsNames.HasRows Then
+                        MsgBox("Warning.  There are no records remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
+                        Return
+                    Else
+                        With cbo
+                            Do While rsNames.Read()
+                                .Items.Add(rsNames.Item("Name"))
+                            Loop
+                        End With
+                        ' Select the first item in the combo by default
+                        cbo.SelectedIndex = 0
+                    End If
+                End Using
+            End Using
         Catch ex As Exception
             HandleError(ex)
-            'True, "InitComboBox " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 End Module
