@@ -58,15 +58,20 @@ Module modRunoff
 
     Private _picks()() As String
 
-    Public Function CreateRunoffGrid(ByRef strLCFileName As String, ByRef strLCCLassType As String, _
-                                      ByRef cmdPrecip As OleDbCommand, ByRef strSoilsFileName As String, _
+    ''' <summary>
+    ''' Creates the runoff grid.
+    ''' This sub serves as a link between frmPrj and the actual calculation of Runoff
+    ''' It establishes the Rasters being used
+    ''' </summary>
+    ''' <param name="strLCFileName">Path to land class file.</param>
+    ''' <param name="strLCCLassType">type of landclass.</param>
+    ''' <param name="cmdPrecip">ADO recordset of precip scenario being used.</param>
+    ''' <param name="strSoilsFileName">Name of the STR soils file.</param>
+    ''' <param name="OutputItems">The output items.</param><returns></returns>
+    Public Function CreateRunoffGrid(ByRef strLCFileName As String, ByRef strLCCLassType As String,
+                                      ByRef cmdPrecip As OleDbCommand, ByRef strSoilsFileName As String,
                                       ByRef OutputItems As OutputItems) As Boolean
-        'This sub serves as a link between frmPrj and the actual calculation of Runoff
-        'It establishes the Rasters being used
 
-        'strLCFileName: Path to land class file
-        'strLCCLassType: type of landclass
-        'rsPrecip: ADO recordset of precip scenario being used
         Dim pRainFallRaster As Grid
         Dim pLandCoverRaster As Grid
         Dim pSoilsRaster As Grid
@@ -115,7 +120,6 @@ Module modRunoff
         End If
         dataPrecip.Close()
 
-        '------ 1.1.4 Change -----
         'if they select cm as incoming precip units, convert GRID
 
         'Get the Soils Raster
@@ -186,9 +190,9 @@ Module modRunoff
             Dim booValueFound As Boolean
 
             'STEP 1:  get the records from the database -----------------------------------------------
-            strRS = _
-                "SELECT LCCLASS.LCClassID, Value, LCCLASS.Name as Name2, LCCLASS.LCTypeID, [CN-A], [CN-B], [CN-C], [CN-D], CoverFactor, W_WL FROM LCCLASS " & _
-                "LEFT OUTER JOIN LCTYPE ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "Where LCTYPE.NAME = '" & strLandClass & _
+            strRS =
+                "SELECT LCCLASS.LCClassID, Value, LCCLASS.Name as Name2, LCCLASS.LCTypeID, [CN-A], [CN-B], [CN-C], [CN-D], CoverFactor, W_WL FROM LCCLASS " &
+                "LEFT OUTER JOIN LCTYPE ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "Where LCTYPE.NAME = '" & strLandClass &
                 "' ORDER BY LCCLASS.VALUE"
 
             Dim cmdLandClass As New DataHelper(strRS)
@@ -225,8 +229,8 @@ Module modRunoff
 
             Dim mwTable As New Table
             If Not TableExist Then
-                MsgBox( _
-                        "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
+                MsgBox(
+                        "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.",
                         MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
                 Exit Function
@@ -276,7 +280,7 @@ Module modRunoff
                             End If
                         End While
                         If booValueFound = False Then
-                            MsgBox( _
+                            MsgBox(
                                     "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                             ConstructPickStatment = Nothing
                             dataLandClass.Close()
@@ -380,7 +384,7 @@ Module modRunoff
         End If
     End Function
 
-    Private Function CreateMetadata(ByRef cmdLandClass As OleDbCommand, ByRef strLandClass As String, _
+    Private Function CreateMetadata(ByRef cmdLandClass As OleDbCommand, ByRef strLandClass As String,
                                      ByRef booLocal As Boolean) As String
         CreateMetadata = ""
         Try
@@ -388,43 +392,34 @@ Module modRunoff
             Dim strHeader As String
             Dim strLCHeader As String
             Dim strCoeffValues As String = ""
-
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " &
+                                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " &
+                                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " &
+                                        g_strPrecipFileName & vbNewLine
             If booLocal Then
-                strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                            g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                            g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
-                            g_strPrecipFileName & vbNewLine
+
             Else
-                strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                            g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                            g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
-                            g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & _
-                            g_strFlowDirFilename & vbNewLine
+                strHeader += vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
             End If
 
-            strLCHeader = vbTab & "Landcover parameters: " & vbNewLine & vbTab & vbTab & "Landcover type name: " & _
+            strLCHeader = vbTab & "Landcover parameters: " & vbNewLine & vbTab & vbTab & "Landcover type name: " &
                           strLandClass & vbNewLine & vbTab & vbTab & "Coefficients: " & vbNewLine
 
             Dim dataLandClass As OleDbDataReader = cmdLandClass.ExecuteReader()
 
             While dataLandClass.Read()
+                Dim info As String = vbTab & vbTab & vbTab & dataLandClass("Name2") & ":" & vbNewLine & vbTab & vbTab &
+                                                     vbTab & vbTab & "CN-A: " & CStr(dataLandClass("CN-A")) & vbNewLine & vbTab &
+                                                     vbTab & vbTab & vbTab & "CN-B: " & CStr(dataLandClass("CN-B")) & vbNewLine &
+                                                     vbTab & vbTab & vbTab & vbTab & "CN-C: " & CStr(dataLandClass("CN-C")) &
+                                                     vbNewLine & vbTab & vbTab & vbTab & vbTab & "CN-D: " &
+                                                     CStr(dataLandClass("CN-D")) & vbNewLine & vbTab & vbTab & vbTab & vbTab &
+                                                     "Cover factor: " & dataLandClass("CoverFactor") & vbNewLine
                 If i = 0 Then
-                    strCoeffValues = vbTab & vbTab & vbTab & dataLandClass("Name2") & ":" & vbNewLine & vbTab & vbTab & _
-                                     vbTab & vbTab & "CN-A: " & CStr(dataLandClass("CN-A")) & vbNewLine & vbTab & _
-                                     vbTab & vbTab & vbTab & "CN-B: " & CStr(dataLandClass("CN-B")) & vbNewLine & _
-                                     vbTab & vbTab & vbTab & vbTab & "CN-C: " & CStr(dataLandClass("CN-C")) & _
-                                     vbNewLine & vbTab & vbTab & vbTab & vbTab & "CN-D: " & _
-                                     CStr(dataLandClass("CN-D")) & vbNewLine & vbTab & vbTab & vbTab & vbTab & _
-                                     "Cover factor: " & dataLandClass("CoverFactor") & vbNewLine
+                    strCoeffValues = info
                     i = i + 1
                 Else
-                    strCoeffValues = strCoeffValues & vbTab & vbTab & vbTab & dataLandClass("Name2") & ":" & vbNewLine & _
-                                     vbTab & vbTab & vbTab & vbTab & "CN-A: " & CStr(dataLandClass("CN-A")) & _
-                                     vbNewLine & vbTab & vbTab & vbTab & vbTab & "CN-B: " & _
-                                     CStr(dataLandClass("CN-B")) & vbNewLine & vbTab & vbTab & vbTab & vbTab & _
-                                     "CN-C: " & CStr(dataLandClass("CN-C")) & vbNewLine & vbTab & vbTab & vbTab & _
-                                     vbTab & "CN-D: " & CStr(dataLandClass("CN-D")) & vbNewLine & vbTab & vbTab & _
-                                     vbTab & vbTab & "Cover factor: " & dataLandClass("CoverFactor") & vbNewLine
+                    strCoeffValues += info
                 End If
             End While
 
@@ -440,6 +435,112 @@ Module modRunoff
 
     Const ProgressTitle As String = "Processing Runoff Calculation..."
 
+    Private Sub CalculateMaxiumumPotentialRetention(ByRef strPick As String(), ByRef pInLandCoverRaster As Grid, ByRef pInSoilsRaster As Grid)
+        Dim pSCS100Raster As Grid = Nothing
+        Dim picksLength As Integer = strPick(0).Split(",").Length
+        ReDim _picks(strPick.Length - 1)
+        For i As Integer = 0 To strPick.Length - 1
+            ReDim _picks(i)(picksLength)
+            _picks(i) = strPick(i).Split(",")
+        Next
+        Dim sc100calc As New RasterMathCellCalc(AddressOf SC100CellCalc)
+        RasterMath(pInSoilsRaster, pInLandCoverRaster, Nothing, Nothing, Nothing, pSCS100Raster, sc100calc)
+        g_pSCS100Raster = pSCS100Raster
+    End Sub
+    Private Sub CalculateRunoff(ByRef pInRainRaster As Grid)
+        Dim AllRunOffCalc As New RasterMathCellCalcNulls(AddressOf AllRunoffCellCalc)
+        Dim pMetRunoffRaster As Grid = Nothing
+        RasterMath(g_pSCS100Raster, pInRainRaster, g_pDEMRaster, Nothing, Nothing, pMetRunoffRaster, Nothing,
+                                    False, AllRunOffCalc)
+
+        'Eliminate nulls: Added 1/28/07
+        Dim metRunoffNoNullcalc As New RasterMathCellCalcNulls(AddressOf metRunoffNoNullCellCalc)
+        Dim pMetRunoffNoNullRaster As Grid = Nothing
+        RasterMath(pMetRunoffRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pMetRunoffNoNullRaster, Nothing,
+                                    False, metRunoffNoNullcalc)
+
+        g_pMetRunoffRaster = pMetRunoffNoNullRaster
+        pMetRunoffRaster.Close()
+    End Sub
+    Private Function CreateDataLayerForLocalEffects(ByRef OutputItems As OutputItems) As String
+        Dim strOutAccum As String = GetUniqueName("locaccum", g_strWorkspace, g_FinalOutputGridExt)
+        'Added 7/23/04 to account for clip by selected polys functionality
+        Dim pPermAccumLocRunoffRaster As Grid = Nothing
+        If g_booSelectedPolys Then
+            pPermAccumLocRunoffRaster =
+                ClipBySelectedPoly(g_pMetRunoffRaster, g_pSelectedPolyClip, strOutAccum)
+        Else
+            pPermAccumLocRunoffRaster = ReturnPermanentRaster(g_pMetRunoffRaster, strOutAccum)
+        End If
+
+        g_dicMetadata.Add("Runoff Local Effects (L)", _strRunoffMetadata)
+
+        AddOutputGridLayer(pPermAccumLocRunoffRaster, "Blue", True, "Runoff Local Effects (L)",
+                            "Runoff Local", -1, OutputItems)
+        Return strOutAccum
+    End Function
+    Private Function DeriveAccumulatedRunoff() As Grid
+        Dim pAccumRunoffRaster As Grid = Nothing
+        Dim pTauD8Flow As Grid = Nothing
+
+        Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+        RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
+        pTauD8Flow.Header.NodataValue = -1
+
+        Dim strtmp1FlowDir As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(strtmp1FlowDir)
+        strtmp1FlowDir = strtmp1FlowDir + g_TAUDEMGridExt
+        g_TempFilesToDel.Add(strtmp1FlowDir)
+        DataManagement.DeleteGrid(strtmp1FlowDir)
+        pTauD8Flow.Save(strtmp1FlowDir)
+
+        Dim strtmp2MetRun As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(strtmp2MetRun)
+        strtmp2MetRun = strtmp2MetRun + g_TAUDEMGridExt
+        g_TempFilesToDel.Add(strtmp2MetRun)
+        DataManagement.DeleteGrid(strtmp2MetRun)
+        g_pMetRunoffRaster.Save(strtmp2MetRun)
+
+        Dim strtmpout As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(strtmpout)
+        strtmpout = String.Format("{0}out{1}", strtmpout, g_TAUDEMGridExt)
+        g_TempFilesToDel.Add(strtmpout)
+        DataManagement.DeleteGrid(strtmpout)
+
+        'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
+        Dim result = Hydrology.WeightedAreaD8(strtmp1FlowDir, strtmp2MetRun, Nothing, strtmpout, False, False,
+                                  Environment.ProcessorCount, Nothing)
+        If result <> 0 Then
+            g_KeepRunning = False
+        End If
+        pAccumRunoffRaster = New Grid
+        pAccumRunoffRaster.Open(strtmpout)
+
+        pTauD8Flow.Close()
+        DataManagement.DeleteGrid(strtmp1FlowDir)
+        Return pAccumRunoffRaster
+    End Function
+    Private Sub CreateRunoffGrid(ByRef OutputItems As OutputItems, ByVal pAccumRunoffRaster As Grid)
+        'Get a unique name for accumulation GRID
+        Dim strOutAccum = GetUniqueName("runoff", g_strWorkspace, g_FinalOutputGridExt)
+
+        'Clip to selected polys if chosen
+        Dim pPermAccumRunoffRaster As Grid = Nothing
+        If g_booSelectedPolys Then
+            pPermAccumRunoffRaster =
+                ClipBySelectedPoly(pAccumRunoffRaster, g_pSelectedPolyClip, strOutAccum)
+        Else
+            pPermAccumRunoffRaster = ReturnPermanentRaster(pAccumRunoffRaster, strOutAccum)
+        End If
+
+        AddOutputGridLayer(pPermAccumRunoffRaster, "Blue", True, "Accumulated Runoff (L)", "Runoff Accum", -1,
+                            OutputItems)
+
+        g_dicMetadata.Add("Accumulated Runoff (L)", _strRunoffMetadata)
+
+        'Global Runoff
+        g_pRunoffRaster = pAccumRunoffRaster
+    End Sub
     ''' <summary>
     ''' Runoffs the calculation.
     ''' </summary>
@@ -448,185 +549,49 @@ Module modRunoff
     ''' <param name="pInLandCoverRaster">landcover grid.</param>
     ''' <param name="pInSoilsRaster">soils grid.</param>
     ''' <param name="OutputItems">The output items.</param><returns></returns>
-    Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As Grid, _
-                                       ByRef pInLandCoverRaster As Grid, _
-                                       ByRef pInSoilsRaster As Grid, ByRef OutputItems As OutputItems) _
-        As Boolean
+    Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As Grid,
+                                       ByRef pInLandCoverRaster As Grid,
+                                       ByRef pInSoilsRaster As Grid, ByRef OutputItems As OutputItems) As Boolean
 
         Try
-            Dim pSCS100Raster As Grid = Nothing
-            'STEP 2: SCS * 100
-            Dim pMetRunoffRaster As Grid = Nothing
-            Dim pMetRunoffNoNullRaster As Grid = Nothing
-            'STEP 6a:  no nulls
-            Dim pAccumRunoffRaster As Grid = Nothing
-            Dim pPermAccumRunoffRaster As Grid = Nothing
-            Dim pPermAccumLocRunoffRaster As Grid = Nothing
-            Dim strOutAccum As String
-
+            If Not g_KeepRunning Then Return False
             ShowProgress("Calculating maximum potential retention...", ProgressTitle, 10, 3, g_frmProjectSetup)
+            CalculateMaxiumumPotentialRetention(strPick, pInLandCoverRaster, pInSoilsRaster)
 
-            If g_KeepRunning Then
-                'Calculate maxiumum potential retention
+            If Not g_KeepRunning Then Return False
+            ShowProgress("Calculating runoff...", ProgressTitle, 10, 6, g_frmProjectSetup)
+            CalculateRunoff(pInRainRaster)
 
-                Dim picksLength As Integer = strPick(0).Split(",").Length
-                ReDim _picks(strPick.Length - 1)
-                For i As Integer = 0 To strPick.Length - 1
-                    ReDim _picks(i)(picksLength)
-                    _picks(i) = strPick(i).Split(",")
-                Next
-                Dim sc100calc As New RasterMathCellCalc(AddressOf SC100CellCalc)
-                RasterMath(pInSoilsRaster, pInLandCoverRaster, Nothing, Nothing, Nothing, pSCS100Raster, sc100calc)
-                g_pSCS100Raster = pSCS100Raster
-            Else
-                Exit Function
-            End If
-
-            If g_KeepRunning Then
-                ShowProgress("Calculating runoff...", ProgressTitle, 10, 6, g_frmProjectSetup)
-                Dim AllRunOffCalc As New RasterMathCellCalcNulls(AddressOf AllRunoffCellCalc)
-                RasterMath(pSCS100Raster, pInRainRaster, g_pDEMRaster, Nothing, Nothing, pMetRunoffRaster, Nothing, _
-                            False, AllRunOffCalc)
-
-                'STEP 6a: -------------------------------------------------------------------------------------
-                'Eliminate nulls: Added 1/28/07
-                Dim metRunoffNoNullcalc As New RasterMathCellCalcNulls(AddressOf metRunoffNoNullCellCalc)
-                RasterMath(pMetRunoffRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pMetRunoffNoNullRaster, Nothing, _
-                            False, metRunoffNoNullcalc)
-
-                g_pMetRunoffRaster = pMetRunoffNoNullRaster
-                pMetRunoffRaster.Close()
-            Else
-                Exit Function
-            End If
 
             If g_booLocalEffects Then
+                If Not g_KeepRunning Then Return False
                 ShowProgress("Creating data layer for local effects...", ProgressTitle, 10, 10, g_frmProjectSetup)
-                If g_KeepRunning Then
-
-                    'STEP 12: Local Effects -------------------------------------------------
-                    strOutAccum = GetUniqueName("locaccum", g_strWorkspace, g_FinalOutputGridExt)
-                    'Added 7/23/04 to account for clip by selected polys functionality
-                    If g_booSelectedPolys Then
-                        pPermAccumLocRunoffRaster = _
-                            ClipBySelectedPoly(g_pMetRunoffRaster, g_pSelectedPolyClip, strOutAccum)
-                    Else
-                        pPermAccumLocRunoffRaster = ReturnPermanentRaster(g_pMetRunoffRaster, strOutAccum)
-                    End If
-
-                    g_dicMetadata.Add("Runoff Local Effects (L)", _strRunoffMetadata)
-
-                    AddOutputGridLayer(pPermAccumLocRunoffRaster, "Blue", True, "Runoff Local Effects (L)", _
-                                        "Runoff Local", -1, OutputItems)
-
-                    RunoffCalculation = True
-                    CloseProgressDialog()
-                    Exit Function
-                End If
+                CreateDataLayerForLocalEffects(OutputItems)
             End If
 
+            If Not g_KeepRunning Then Return False
             ShowProgress("Creating flow accumulation...", ProgressTitle, 10, 9, g_frmProjectSetup)
-            If g_KeepRunning Then
-                'STEP 7: ------------------------------------------------------------------------------------
-                'Derive Accumulated Runoff
+            Dim pAccumRunoffRaster As Grid = DeriveAccumulatedRunoff()
 
-                Dim pTauD8Flow As Grid = Nothing
-
-                Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
-                RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
-                pTauD8Flow.Header.NodataValue = -1
-
-                Dim strtmp1FlowDir As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp1FlowDir)
-                strtmp1FlowDir = strtmp1FlowDir + g_TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp1FlowDir)
-                DataManagement.DeleteGrid(strtmp1FlowDir)
-                pTauD8Flow.Save(strtmp1FlowDir)
-
-                Dim strtmp2MetRun As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp2MetRun)
-                strtmp2MetRun = strtmp2MetRun + g_TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp2MetRun)
-                DataManagement.DeleteGrid(strtmp2MetRun)
-                g_pMetRunoffRaster.Save(strtmp2MetRun)
-
-                Dim strtmpout As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmpout)
-                strtmpout = String.Format("{0}out{1}", strtmpout, g_TAUDEMGridExt)
-                g_TempFilesToDel.Add(strtmpout)
-                DataManagement.DeleteGrid(strtmpout)
-
-                'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Dim result = Hydrology.WeightedAreaD8(strtmp1FlowDir, strtmp2MetRun, Nothing, strtmpout, False, False, _
-                                          Environment.ProcessorCount, Nothing)
-                If result <> 0 Then
-                    g_KeepRunning = False
-                End If
-                pAccumRunoffRaster = New Grid
-                pAccumRunoffRaster.Open(strtmpout)
-
-                pTauD8Flow.Close()
-                DataManagement.DeleteGrid(strtmp1FlowDir)
-
-                'END STEP 7: ----------------------------------------------------------------------------------
-            Else
-                Exit Function
-            End If
-
+            If Not g_KeepRunning Then Return False
             'Add this then map as our runoff grid
             ShowProgress("Creating Runoff Layer...", ProgressTitle, 10, 10, g_frmProjectSetup)
-            If g_KeepRunning Then
-                'Get a unique name for accumulation GRID
-                strOutAccum = GetUniqueName("runoff", g_strWorkspace, g_FinalOutputGridExt)
+            CreateRunoffGrid(OutputItems, pAccumRunoffRaster)
 
-                'Clip to selected polys if chosen
-                If g_booSelectedPolys Then
-                    pPermAccumRunoffRaster = _
-                        ClipBySelectedPoly(pAccumRunoffRaster, g_pSelectedPolyClip, strOutAccum)
-                Else
-                    pPermAccumRunoffRaster = ReturnPermanentRaster(pAccumRunoffRaster, strOutAccum)
-                End If
-
-                AddOutputGridLayer(pPermAccumRunoffRaster, "Blue", True, "Accumulated Runoff (L)", "Runoff Accum", -1, _
-                                    OutputItems)
-
-                g_dicMetadata.Add("Accumulated Runoff (L)", _strRunoffMetadata)
-
-                'Global Runoff
-                g_pRunoffRaster = pAccumRunoffRaster
-            Else
-                Exit Function
-            End If
-
-            RunoffCalculation = True
-
-            CloseProgressDialog()
+            Return True
 
         Catch ex As Exception
-            If Err.Number = -2147217297 Then 'User cancelled operation
-                g_KeepRunning = False
-                RunoffCalculation = False
-            ElseIf Err.Number = -2147467259 Then
-                MsgBox( _
-                        "ArcMap has reached the maximum number of GRIDs allowed in memory.  " & _
-                        "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
-                        "Maximum GRID Number Encountered")
-                g_KeepRunning = False
-                CloseProgressDialog()
-                RunoffCalculation = False
-            Else
-                MsgBox("Error: " & Err.Number & " on RunoffCalculation")
-                HandleError(ex)
-                g_KeepRunning = False
-                CloseProgressDialog()
-                RunoffCalculation = False
-            End If
+            HandleError(ex)
+            g_KeepRunning = False
+            Return False
+        Finally
+            CloseProgressDialog()
         End Try
     End Function
 
 #Region "Raster Math"
 
-    Private Function SC100CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
+    Private Function SC100CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single,
                                     ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'pSCS100Raster = 100 * con([pHydSoilsRaster] == 1, pick([pLandSampleRaster], " & strPick(0) & "), con([pHydSoilsRaster] == 2, pick([pLandSampleRaster], " & strPick(1) & "), con([pHydSoilsRaster] == 3, pick([pLandSampleRaster], " & strPick(2) & "), con([pHydSoilsRaster] == 4, pick([pLandSampleRaster], " & strPick(3) & ")))))
 
@@ -657,9 +622,9 @@ Module modRunoff
         End If
     End Function
 
-    Private Function AllRunoffCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
-                                        ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
-                                        ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
+    Private Function AllRunoffCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single,
+                                        ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single,
+                                        ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single,
                                         ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         Dim tmpVal, RetentionVal, AbstractVal, RunoffInches, AreaSquareMeters As Single
 
@@ -697,10 +662,10 @@ Module modRunoff
 
     End Function
 
-    Private Function metRunoffNoNullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
-                                              ByVal Input2Null As Single, ByVal Input3 As Single, _
-                                              ByVal Input3Null As Single, ByVal Input4 As Single, _
-                                              ByVal Input4Null As Single, ByVal Input5 As Single, _
+    Private Function metRunoffNoNullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single,
+                                              ByVal Input2Null As Single, ByVal Input3 As Single,
+                                              ByVal Input3Null As Single, ByVal Input4 As Single,
+                                              ByVal Input4Null As Single, ByVal Input5 As Single,
                                               ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(IsNull([runoffgrid]),0,[runoffgrid])"
         If Input1 <> Input1Null Then
@@ -714,9 +679,9 @@ Module modRunoff
         End If
     End Function
 
-    Public Function tauD8CellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
-                                   ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
-                                   ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
+    Public Function tauD8CellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single,
+                                   ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single,
+                                   ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single,
                                    ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
         If Input1 = 1 Then
@@ -756,9 +721,9 @@ Module modRunoff
     ''' <param name="Input5">The input5.</param>
     ''' <param name="Input5Null">The input5 null.</param>
     ''' <param name="OutNull">The out null.</param><returns></returns>
-    Public Function ConvertTauDEMToESRICell(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
-                                         ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
-                                         ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
+    Public Function ConvertTauDEMToESRICell(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single,
+                                         ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single,
+                                         ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single,
                                          ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         If Input1 = 1 Then
             Return 1
