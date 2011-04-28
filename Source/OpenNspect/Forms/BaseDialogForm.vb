@@ -28,7 +28,7 @@ Public Class BaseDialogForm
         Handles Cancel_Button.Click
 
         If _isDirty AndAlso Not ConfirmCancel() Then
-            Exit Sub
+            Return
         End If
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel

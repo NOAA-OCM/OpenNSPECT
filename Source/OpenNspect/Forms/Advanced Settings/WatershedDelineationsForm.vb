@@ -126,7 +126,7 @@ Friend Class WatershedDelineationsForm
                     Me.Refresh()
 
                 ElseIf intAns = MsgBoxResult.No Then
-                    Exit Sub
+                    Return
                 End If
             Else
                 MsgBox ("Please select a watershed delineation", MsgBoxStyle.Critical, "No Scenario Selected")

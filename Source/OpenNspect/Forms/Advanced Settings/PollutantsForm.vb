@@ -347,7 +347,7 @@ Friend Class PollutantsForm
             If intAns = MsgBoxResult.Yes Then
                 DeletePollutant (cboPollName.Text)
             Else
-                Exit Sub
+                Return
             End If
         Catch ex As Exception
             HandleError (ex)

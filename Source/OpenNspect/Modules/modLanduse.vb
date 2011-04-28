@@ -361,7 +361,7 @@ Module modLanduse
                 If RasterExists(strLCFileName) Then
                     _pLandCoverRaster = ReturnRaster(strLCFileName)
                 Else
-                    Exit Sub
+                    Return
                 End If
             Else
                 _pLandCoverRaster = g_LandCoverRaster
@@ -487,7 +487,7 @@ Module modLanduse
             strLCDeleteName = dictNames.Item(strLCTypeName)
 
             If Len(strLCDeleteName) = 0 Then
-                Exit Sub
+                Return
             End If
 
             Dim strLCTypeDelete As String

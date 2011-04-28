@@ -55,7 +55,7 @@ Friend Class CopyWaterQualityStandardForm
                                 End Using
                             Else
                                 MsgBox (Err4, MsgBoxStyle.Critical, "Enter Unique Name")
-                                Exit Sub
+                                Return
                             End If
                             Using _
                                 cmdNewStandard As _

@@ -91,7 +91,7 @@ Friend Class SoilsForm
                     Me.Refresh()
 
                 ElseIf intAns = MsgBoxResult.No Then
-                    Exit Sub
+                    Return
                 End If
             Else
                 MsgBox ("Please select a Soils Setup", MsgBoxStyle.Critical, "No Soils Setup Selected")

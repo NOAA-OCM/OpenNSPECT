@@ -132,7 +132,7 @@ Namespace Xml
                 'Set this class's properties based on the data found in the
                 'given node.
                 'Ensure that a valid node was passed in.
-                If node Is Nothing Then Exit Sub
+                If node Is Nothing Then Return
 
                 strTDLyrName = GetNodeText(node, NODE_TDLyrName)
                 strTDLyrFileName = GetNodeText(node, NODE_TDLyrFileName)

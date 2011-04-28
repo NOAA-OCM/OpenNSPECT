@@ -42,7 +42,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
                     MsgBox( _
                             "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
                             MsgBoxStyle.Exclamation, "No Project Information Detected")
-                    Exit Sub
+                    Return
                 Else
                     If strProj.ToLower.Contains("units=m") Then
                         cboDEMUnits.SelectedIndex = 0
@@ -105,7 +105,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
         ShowProgress("Validating input...", "Adding New Delineation...", 3, 1, Me)
         If Not ValidateDataFormInput() Then
             CloseProgressDialog()
-            Exit Sub
+            Return
         End If
 
         Try
@@ -340,7 +340,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
                     MsgBox( _
                             "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
                             MsgBoxStyle.Exclamation, "No Project Information Detected")
-                    Exit Sub
+                    Return
                 End If
             End If
         Catch ex As Exception

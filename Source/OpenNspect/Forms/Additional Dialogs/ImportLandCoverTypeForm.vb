@@ -90,22 +90,22 @@ Friend Class ImportLandCoverTypeForm
                             If strname = "" Then
                                 MsgBox ("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
                                 txtLCType.Focus()
-                                Exit Sub
+                                Return
                             Else
                                 'Name Check, if cool perform
-                                If UniqueName ("LCTYPE", txtLCType.Text) Then
+                                If UniqueName("LCTYPE", txtLCType.Text) Then
                                     Dim _
                                         strCmd As String = _
-                                            String.Format ("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
-                                                           Replace (txtLCType.Text, "'", "''"), _
-                                                           Replace (strDesc, "'", "''"))
-                                    Using cmdIns As New DataHelper (strCmd)
+                                            String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
+                                                           Replace(txtLCType.Text, "'", "''"), _
+                                                           Replace(strDesc, "'", "''"))
+                                    Using cmdIns As New DataHelper(strCmd)
                                         cmdIns.ExecuteNonQuery()
                                     End Using
                                 Else
-                                    MsgBox ("The name you have chosen is already in use.  Please select another.", _
+                                    MsgBox("The name you have chosen is already in use.  Please select another.", _
                                             MsgBoxStyle.Critical, "Select Unique Name")
-                                    Exit Sub
+                                    Return
                                 End If
                                 'End unique name check
                             End If

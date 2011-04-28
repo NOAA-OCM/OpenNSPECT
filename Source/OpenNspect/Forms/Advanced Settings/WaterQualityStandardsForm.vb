@@ -146,7 +146,7 @@ Friend Class WaterQualityStandardsForm
                     Me.Refresh()
 
                 ElseIf intAns = MsgBoxResult.No Then
-                    Exit Sub
+                    Return
                 End If
             Else
                 MsgBox("Please select a water quality standard", MsgBoxStyle.Critical, "No Standard Selected")

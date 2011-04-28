@@ -87,7 +87,7 @@ Namespace Xml
                 'given node.
 
                 'Ensure that a valid node was passed in.
-                If node Is Nothing Then Exit Sub
+                If node Is Nothing Then Return
 
                 strPath = GetNodeText(node, ELEMENT_OutputPath)
                 strName = GetNodeText(node, ELEMENT_OutputName)

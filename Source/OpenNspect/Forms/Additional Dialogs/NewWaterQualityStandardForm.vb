@@ -70,26 +70,26 @@ Friend Class NewWaterQualityStandardForm
             If Len (strName) = 0 Then
                 MsgBox ("Please enter a name for the water quality standard.", MsgBoxStyle.Critical, "Empty Name Field")
                 txtWQStdName.Focus()
-                Exit Sub
+                Return
             Else
                 'Name Check
-                If UniqueName ("WQCRITERIA", (txtWQStdName.Text)) Then
+                If UniqueName("WQCRITERIA", (txtWQStdName.Text)) Then
                     'Value check
                     If CheckThreshValues() Then
                         strCmd = _
-                            String.Format ("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
-                                           Replace (txtWQStdName.Text, "'", "''"), Replace (strDescript, "'", "''"))
-                        Using cmdInsert As New DataHelper (strCmd)
+                            String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
+                                           Replace(txtWQStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
+                        Using cmdInsert As New DataHelper(strCmd)
                             cmdInsert.ExecuteNonQuery()
                         End Using
                     Else
-                        MsgBox ("Threshold values must be numeric.", MsgBoxStyle.Critical, "Check Threshold Value")
-                        Exit Sub
+                        MsgBox("Threshold values must be numeric.", MsgBoxStyle.Critical, "Check Threshold Value")
+                        Return
                     End If
                 Else
-                    MsgBox ("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, _
+                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, _
                             "Select Unique Name")
-                    Exit Sub
+                    Return
                 End If
             End If
 
