@@ -543,26 +543,26 @@ Module modRunoff
                                        ByRef pInSoilsRaster As Grid, ByRef OutputItems As OutputItems) As Boolean
 
         Try
-            ShowProgress("Calculating maximum potential retention...", ProgressTitle, 10, 3, g_frmProjectSetup)
+            ShowProgress("Calculating maximum potential retention...", ProgressTitle, 10, 3, g_MainForm)
             CalculateMaxiumumPotentialRetention(strPick, pInLandCoverRaster, pInSoilsRaster)
 
             If Not g_KeepRunning Then Return False
-            ShowProgress("Calculating runoff...", ProgressTitle, 10, 6, g_frmProjectSetup)
+            ShowProgress("Calculating runoff...", ProgressTitle, 10, 6, g_MainForm)
             CalculateRunoff(pInRainRaster)
 
             If g_booLocalEffects Then
                 If Not g_KeepRunning Then Return False
-                ShowProgress("Creating data layer for local effects...", ProgressTitle, 10, 7, g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", ProgressTitle, 10, 7, g_MainForm)
                 CreateDataLayerForLocalEffects(OutputItems)
             End If
 
             If Not g_KeepRunning Then Return False
-            ShowProgress("Creating flow accumulation...", ProgressTitle, 10, 9, g_frmProjectSetup)
+            ShowProgress("Creating flow accumulation...", ProgressTitle, 10, 9, g_MainForm)
             Dim pAccumRunoffRaster As Grid = DeriveAccumulatedRunoff()
 
             If Not g_KeepRunning Then Return False
             'Add this then map as our runoff grid
-            ShowProgress("Creating Runoff Layer...", ProgressTitle, 10, 10, g_frmProjectSetup)
+            ShowProgress("Creating Runoff Layer...", ProgressTitle, 10, 10, g_MainForm)
             CreateRunoffGrid(OutputItems, pAccumRunoffRaster)
 
             Return True

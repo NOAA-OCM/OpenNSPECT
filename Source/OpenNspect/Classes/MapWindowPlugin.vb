@@ -38,7 +38,7 @@ Public Class MapWindowPlugin
 #Region "Private Variables"
 
     'Used for removing items on terminate
-    Private _MenuItems As New Stack()
+    Private ReadOnly _MenuItems As New Stack()
 
 #End Region
 
@@ -224,15 +224,12 @@ Public Class MapWindowPlugin
         g_nspectPath = nspectPath
         g_nspectDocPath = nspectPath
 
-        'Initialize the database connection
         InitializeDBConnection()
-
     End Sub
 
+
     Public Sub Terminate() Implements IPlugin.Terminate
-        For Each item As String In _MenuItems
-            MapWindowInstance.Menus.Remove(item)
-        Next
+        RemoveMenus()
     End Sub
 
 #End Region
@@ -262,12 +259,19 @@ Public Class MapWindowPlugin
                 ShowHelpIntro()
             Case mnuNspectAbout
                 ShowAboutForm()
+            Case Else
+                Throw New NotImplementedException("The developer hasn't implemented that menu item.")
         End Select
     End Sub
 
 #End Region
 
 #Region "   Menu/Toolbar Items"
+    Private Sub RemoveMenus()
+        For Each item As String In _MenuItems
+            MapWindowInstance.Menus.Remove(item)
+        Next
+    End Sub
 
     Private Sub AddMenus()
         With MapWindowInstance.Menus
@@ -309,8 +313,8 @@ Public Class MapWindowPlugin
 #Region "   Itemclicked Items"
 
     Private Sub ShowAnalysisForm()
-        g_frmProjectSetup = New MainForm
-        g_frmProjectSetup.ShowDialog()
+        g_MainForm = New MainForm
+        g_MainForm.ShowDialog()
     End Sub
 
     Private Shared Sub ShowCompareOutputsForm()
@@ -364,8 +368,7 @@ Public Class MapWindowPlugin
 #End Region
 
     Private Shared Sub ShowAboutForm()
-        Using form = New AboutForm()
-            form.AppEntryAssembly = Assembly.GetExecutingAssembly
+        Using form = New AboutForm() With {.AppEntryAssembly = Assembly.GetExecutingAssembly}
             form.ShowDialog()
         End Using
     End Sub

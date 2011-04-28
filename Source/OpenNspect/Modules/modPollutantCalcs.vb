@@ -409,35 +409,35 @@ As Boolean
         Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_strWorkspace, g_FinalOutputGridExt)
 
         Try
-            ShowProgress("Calculating Mass Volume...", strTitle, 13, 1, g_frmProjectSetup)
+            ShowProgress("Calculating Mass Volume...", strTitle, 13, 1, g_MainForm)
             CalcMassOfPhosperous(strConStatement, pMassVolumeRaster)
 
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
                 If Not g_KeepRunning Then Return False
 
-                ShowProgress("Creating data layer for local effects...", strTitle, 13, 2, g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", strTitle, 13, 2, g_MainForm)
                 CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
             End If
 
             If Not g_KeepRunning Then Return False
-            ShowProgress("Deriving accumulated pollutant...", strTitle, 13, 3, g_frmProjectSetup)
+            ShowProgress("Deriving accumulated pollutant...", strTitle, 13, 3, g_MainForm)
             DeriveAccumulatedPollutant(pMassVolumeRaster, pAccumPollRaster)
 
             If Not g_KeepRunning Then Return False
-            ShowProgress("Creating accumlated pollutant layer...", strTitle, 13, 4, g_frmProjectSetup)
+            ShowProgress("Creating accumlated pollutant layer...", strTitle, 13, 4, g_MainForm)
             AddAccumulatedPollutantToGroupLayer(OutputItems, pAccumPollRaster)
 
             If Not g_KeepRunning Then Return False
-            ShowProgress("Calculating final concentration...", strTitle, 13, 9, g_frmProjectSetup)
+            ShowProgress("Calculating final concentration...", strTitle, 13, 9, g_MainForm)
             CalcFinalConcentration(pMassVolumeRaster, pAccumPollRaster, pTotalPollConc0Raster)
 
             If Not g_KeepRunning Then Return False
-            ShowProgress("Creating data layer...", strTitle, 13, 11, g_frmProjectSetup)
+            ShowProgress("Creating data layer...", strTitle, 13, 11, g_MainForm)
             CreateDataLayer(OutputItems, pTotalPollConc0Raster, outputFileNameOutConc)
 
             If Not g_KeepRunning Then Return False
-            ShowProgress("Comparing to water quality standard...", strTitle, 13, 13, g_frmProjectSetup)
+            ShowProgress("Comparing to water quality standard...", strTitle, 13, 13, g_MainForm)
             If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster, OutputItems) Then Return False
 
             Return True

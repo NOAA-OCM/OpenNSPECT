@@ -377,7 +377,7 @@ Module modMUSLESoilLossEquation
 
         Try
 
-            ShowProgress("Calculating Watershed Length...", strTitle, 27, 2, g_frmProjectSetup)
+            ShowProgress("Calculating Watershed Length...", strTitle, 27, 2, g_MainForm)
             If g_KeepRunning Then
                 'STEP 2: ------------------------------------------------------------------------------------
                 'Calculate Watershed Length
@@ -446,7 +446,7 @@ Module modMUSLESoilLossEquation
                 'END STEP 3: -----------------------------------------------------------------------------------
             End If
 
-            ShowProgress("Calculating Mod Slope...", strTitle, 27, 4, g_frmProjectSetup)
+            ShowProgress("Calculating Mod Slope...", strTitle, 27, 4, g_MainForm)
             If g_KeepRunning Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
@@ -470,7 +470,7 @@ Module modMUSLESoilLossEquation
                 'END STEP 4a ------------------------------------------------------------------------------------
             End If
 
-            ShowProgress("Calculating MUSLE...", strTitle, 27, 18, g_frmProjectSetup)
+            ShowProgress("Calculating MUSLE...", strTitle, 27, 18, g_MainForm)
             If g_KeepRunning Then
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
                 RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, _
@@ -478,7 +478,7 @@ Module modMUSLESoilLossEquation
             End If
             'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, g_OutputGridExt))
 
-            ShowProgress("Calculating MUSLE...", strTitle, 27, 22, g_frmProjectSetup)
+            ShowProgress("Calculating MUSLE...", strTitle, 27, 22, g_MainForm)
             If g_KeepRunning Then
                 ReDim _pondpicks(strConPondStatement.Split(",").Length)
                 _pondpicks = strConPondStatement.Split(",")
@@ -489,7 +489,7 @@ Module modMUSLESoilLossEquation
             End If
             'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, g_OutputGridExt))
 
-            ShowProgress("Calculating MUSLE...", strTitle, 27, 25, g_frmProjectSetup)
+            ShowProgress("Calculating MUSLE...", strTitle, 27, 25, g_MainForm)
             If g_KeepRunning Then
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
@@ -507,7 +507,7 @@ Module modMUSLESoilLossEquation
 
             If g_booLocalEffects Then
 
-                ShowProgress("Creating data layer for local effects...", strTitle, 27, 27, g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", strTitle, 27, 27, g_MainForm)
                 If g_KeepRunning Then
 
                     strMUSLE = GetUniqueFileName("locmusle", g_strWorkspace, g_FinalOutputGridExt)
@@ -535,7 +535,7 @@ Module modMUSLESoilLossEquation
 
             End If
 
-            ShowProgress("Calculating the accumulated sediment...", strTitle, 27, 23, g_frmProjectSetup)
+            ShowProgress("Calculating the accumulated sediment...", strTitle, 27, 23, g_MainForm)
             If g_KeepRunning Then
                 Dim pTauD8Flow As Grid = Nothing
 
@@ -578,7 +578,7 @@ Module modMUSLESoilLossEquation
                 DataManagement.DeleteGrid(strtmp2)
             End If
 
-            ShowProgress("Adding Sediment Mass to Group Layer...", strTitle, 27, 25, g_frmProjectSetup)
+            ShowProgress("Adding Sediment Mass to Group Layer...", strTitle, 27, 25, g_MainForm)
             If g_KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
