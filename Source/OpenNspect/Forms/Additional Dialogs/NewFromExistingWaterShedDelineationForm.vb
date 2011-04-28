@@ -24,7 +24,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
     Private _frmPrj As MainForm
     Private _strDEM2BFileName As String
     Private _strNibbleName As String
-    
+
 #Region "Events"
 
     Private Sub cmdBrowseDEMFile_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
@@ -260,9 +260,8 @@ Friend Class NewFromExistingWaterShedDelineationForm
                             Dim tmphead As New GridHeader
                             tmphead.CopyFrom(tmpFlow.Header)
                             pESRID8Flow.CreateNew(flowpath, tmphead, GridDataType.FloatDataType, -1)
-                            Dim tauD8ToESRIcalc As New RasterMathCellCalcNulls(AddressOf ConvertTauDEMToESRICell)
                             RasterMath(tmpFlow, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, _
-                                        tauD8ToESRIcalc)
+                                        GetConverterToEsriFromTauDem())
                             pESRID8Flow.Header.NodataValue = -1
                             pESRID8Flow.Save(flowpath)
                             pESRID8Flow.Close()

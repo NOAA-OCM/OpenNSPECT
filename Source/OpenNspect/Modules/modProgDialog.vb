@@ -21,7 +21,7 @@ Imports System.Windows.Forms
 ''' Code for handling progress dialog throughout OpenNSPECT
 ''' </summary>
 ''' <remarks></remarks>
-    Module modProgDialog
+Module modProgDialog
     Private ProgressForm As ProgressForm
     Public g_KeepRunning As Boolean
 
@@ -42,7 +42,7 @@ Imports System.Windows.Forms
                 ProgressForm = New ProgressForm
                 ProgressForm.Show()
                 If Not Owner Is Nothing Then
-                    Owner.AddOwnedForm (ProgressForm)
+                    Owner.AddOwnedForm(ProgressForm)
                 End If
             End If
 
@@ -61,7 +61,7 @@ Imports System.Windows.Forms
             Application.DoEvents()
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
 
     End Sub
