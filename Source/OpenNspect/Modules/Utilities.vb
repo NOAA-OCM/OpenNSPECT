@@ -139,7 +139,7 @@ Module Utilities
             Else
                 MsgBox("Warning.  There are no records remaining.  Please add a new one.", MsgBoxStyle.Critical, _
                         "Recordset Empty")
-                Exit Sub
+                Return
             End If
 
             'Cleanup

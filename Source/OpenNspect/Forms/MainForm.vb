@@ -385,13 +385,13 @@ Friend Class MainForm
                     'Calling the load directly just reinitializes everything after it's been cleared out.
                     frmProjectSetup_Load(Me, New EventArgs())
                 Else
-                    Exit Sub
+                    Return
                 End If
             ElseIf intvbYesNo = MsgBoxResult.No Then
                 ClearForm()
                 frmProjectSetup_Load(Me, New EventArgs())
             ElseIf intvbYesNo = MsgBoxResult.Cancel Then
-                Exit Sub
+                Return
             End If
 
         Catch ex As Exception
@@ -462,7 +462,7 @@ Friend Class MainForm
             ElseIf intvbYesNo = MsgBoxResult.No Then
                 Close()
             ElseIf intvbYesNo = MsgBoxResult.Cancel Then
-                Exit Sub
+                Return
             End If
 
         Catch ex As Exception
@@ -868,7 +868,7 @@ Friend Class MainForm
             ElseIf intvbYesNo = MsgBoxResult.No Then
                 Close()
             ElseIf intvbYesNo = MsgBoxResult.Cancel Then
-                Exit Sub
+                Return
             End If
 
         Catch ex As Exception
@@ -912,7 +912,7 @@ Friend Class MainForm
                     If res = MsgBoxResult.Yes Then
                         g_MapWin.Layers.Groups.Remove(g_pGroupLayer)
                     ElseIf res = MsgBoxResult.Cancel Then
-                        Exit Sub
+                        Return
                     End If
                 End If
             End If
@@ -1024,7 +1024,7 @@ Friend Class MainForm
                     Not _
                     CreateRunoffGrid(_XmlPrjParams.strLCGridFileName, strLCType, cmdPrecip.GetCommand(), _
                                       _XmlPrjParams.strSoilsHydFileName, _XmlPrjParams.OutputItems) Then
-                    Exit Sub
+                    Return
                 End If
             End Using
             'END STEP 9: -----------------------------------------------------------------------------------------------------
@@ -1040,7 +1040,7 @@ Friend Class MainForm
                         PollutantConcentrationSetup(pollitem, _XmlPrjParams.strLCGridType, _
                                                      _XmlPrjParams.strWaterQuality, _
                                                      _XmlPrjParams.OutputItems) Then
-                        Exit Sub
+                        Return
                     End If
                 End If
             Next i
@@ -1059,7 +1059,7 @@ Friend Class MainForm
                                         _XmlPrjParams.strRainGridFileName, _XmlPrjParams.strSoilsKFileName, _
                                         _XmlPrjParams.strSDRGridFileName, _XmlPrjParams.strLCGridType, _
                                         _XmlPrjParams.OutputItems) Then
-                            Exit Sub
+                            Return
                         End If
                     ElseIf _XmlPrjParams.intRainConstBool Then
                         If _
@@ -1068,7 +1068,7 @@ Friend Class MainForm
                                         _XmlPrjParams.strRainGridFileName, _XmlPrjParams.strSoilsKFileName, _
                                         _XmlPrjParams.strSDRGridFileName, _XmlPrjParams.strLCGridType, _
                                         _XmlPrjParams.OutputItems, _XmlPrjParams.dblRainConstValue) Then
-                            Exit Sub
+                            Return
                         End If
                     End If
                 Else 'If event (1) then False, ergo MUSLE
@@ -1076,7 +1076,7 @@ Friend Class MainForm
                         Not _
                         MUSLESetup(_XmlPrjParams.strSoilsDefName, _XmlPrjParams.strSoilsKFileName, _
                                     _XmlPrjParams.strLCGridType, _XmlPrjParams.OutputItems) Then
-                        Exit Sub
+                        Return
                     End If
                 End If
             End If
@@ -1115,7 +1115,7 @@ Friend Class MainForm
 
             Close()
 
-            Exit Sub
+            Return
         Catch ex As Exception
             HandleError(ex)
         Finally
@@ -1221,7 +1221,7 @@ Friend Class MainForm
                     'Populate from the local Xml params
                     FillForm()
                 Else
-                    Exit Sub
+                    Return
                 End If
             End Using
 
@@ -1244,7 +1244,7 @@ Friend Class MainForm
                 _XmlPrjParams.Xml = _strFileName
                 FillForm()
             Else
-                Exit Sub
+                Return
             End If
 
             'Pop this string with the incoming name, if they change, we'll prompt to 'save as'.
@@ -1520,10 +1520,10 @@ Friend Class MainForm
                                 cboLCLayer.SelectedIndex = 0
                             End If
                         Else
-                            Exit Sub
+                            Return
                         End If
                     Else
-                        Exit Sub
+                        Return
                     End If
                 End If
 
@@ -1542,7 +1542,7 @@ Friend Class MainForm
             Else
                 MsgBox("Could not find soils dataset.  Please correct the soils definition in the Advanced Settings.", _
                         MsgBoxStyle.Critical, "Dataset Missing")
-                Exit Sub
+                Return
             End If
 
             'Step5: Precip Scenario
@@ -1628,7 +1628,7 @@ Friend Class MainForm
                             End If
                         End Using
                     Else
-                        Exit Sub
+                        Return
                     End If
                 Else
                     txtbxRainGrid.Text = _XmlPrjParams.strRainGridFileName
@@ -1730,7 +1730,7 @@ Friend Class MainForm
                                             _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
                                     End If
                                 Else
-                                    Exit Sub
+                                    Return
                                 End If
                             End If
                         End If

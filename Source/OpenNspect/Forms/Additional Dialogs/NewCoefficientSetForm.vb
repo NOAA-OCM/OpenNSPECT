@@ -56,7 +56,7 @@ Friend Class NewCoefficientSetForm
                 Close()
             Else
                 MsgBox (Err2, MsgBoxStyle.Critical, "Coefficient set name already in use.  Please enter new name")
-                Exit Sub
+                Return
             End If
 
             MyBase.OK_Button_Click (sender, e)

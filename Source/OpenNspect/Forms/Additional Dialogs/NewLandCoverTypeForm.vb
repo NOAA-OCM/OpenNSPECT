@@ -112,7 +112,7 @@ Friend Class NewLandCoverTypeForm
                 Else
                     MsgBox ("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, _
                             "Select Unique Name")
-                    Exit Sub
+                    Return
                 End If
                 'End unique name check
 

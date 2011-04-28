@@ -98,7 +98,7 @@ Namespace Xml
             'given node.
 
             'Ensure that a valid node was passed in.
-            If node Is Nothing Then Exit Sub
+            If node Is Nothing Then Return
 
             intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_ID))
             intApply = CShort(GetNodeText(node, ELEMENT_Apply))

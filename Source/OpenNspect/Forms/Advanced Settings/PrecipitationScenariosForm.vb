@@ -95,7 +95,7 @@ Friend Class PrecipitationScenariosForm
             _pInputPrecipDS = AddInputFromGxBrowserText(txtPrecipFile, "Choose Precipitation GRID")
 
             If _pInputPrecipDS Is Nothing Then
-                Exit Sub
+                Return
             Else
 
                 pPrecipRasterDataset = _pInputPrecipDS
@@ -106,7 +106,7 @@ Friend Class PrecipitationScenariosForm
                             "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
                             MsgBoxStyle.Exclamation, "No Project Information Detected")
                     txtPrecipFile.Text = ""
-                    Exit Sub
+                    Return
 
                 Else
                     If strProj.ToLower.Contains("units=m") Then
@@ -254,7 +254,7 @@ Friend Class PrecipitationScenariosForm
                     Me.Refresh()
 
                 ElseIf intAns = MsgBoxResult.No Then
-                    Exit Sub
+                    Return
                 End If
             Else
                 MsgBox("Please select a Precipitation Scenario", MsgBoxStyle.Critical, "No Scenario Selected")

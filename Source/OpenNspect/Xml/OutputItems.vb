@@ -113,7 +113,7 @@ Namespace Xml
                 'given node.
 
                 'Ensure that a valid node was passed in.
-                If node Is Nothing Then Exit Sub
+                If node Is Nothing Then Return
 
                 Dim Output As OutputItem
                 Dim nodes As XmlNodeList

@@ -111,7 +111,7 @@ Friend Class NewWatershedDelineationForm
                     MsgBox( _
                             "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
                             MsgBoxStyle.Exclamation, "No Project Information Detected")
-                    Exit Sub
+                    Return
                 Else
                     If strProj.ToLower.Contains("units=m") Then
                         cboDEMUnits.SelectedIndex = 0
@@ -198,14 +198,14 @@ Friend Class NewWatershedDelineationForm
 
                 MsgBox("The File you have choosen does not exist.", MsgBoxStyle.Critical, "File Not Found")
                 txtDEMFile.Focus()
-                Exit Sub
+                Return
             End If
 
             Dim pRasterDataset As New Grid
             If Not pRasterDataset.Open(_InputDEMPath) Then
                 MsgBox("The File you have choosen is not a raster.", MsgBoxStyle.Critical, "File Not Raster")
                 txtDEMFile.Focus()
-                Exit Sub
+                Return
             End If
 
             Dim outpath As String
@@ -215,7 +215,7 @@ Friend Class NewWatershedDelineationForm
             Else
                 MsgBox("Name in use.  Please select another.", MsgBoxStyle.Critical, "Choose New Name")
                 txtWSDelinName.Focus()
-                Exit Sub
+                Return
             End If
 
             'Give the call; if successful insert new record
@@ -254,7 +254,7 @@ Friend Class NewWatershedDelineationForm
                     _frmWS.Close()
                 End If
             Else
-                Exit Sub
+                Return
             End If
 
         Catch ex As Exception

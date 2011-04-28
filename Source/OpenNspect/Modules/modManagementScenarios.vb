@@ -53,7 +53,7 @@ Module modManagementScenarios
             If RasterExists(strLCFileName) Then
                 _pLandCoverRaster = ReturnRaster(strLCFileName)
             Else
-                Exit Sub
+                Return
             End If
 
             strOutLandCover = GetUniqueName("landcover", g_strWorkspace, g_OutputGridExt)

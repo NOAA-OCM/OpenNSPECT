@@ -246,7 +246,7 @@ Public Class CompareOutputsForm
                             MsgBoxStyle.Exclamation, "Project File Not Valid")
                 End Try
             Else
-                Exit Sub
+                Return
             End If
         Catch ex As Exception
             HandleError(ex)

@@ -250,7 +250,7 @@ Namespace Xml
                 'given node.
 
                 'Ensure that a valid node was passed in.
-                If node Is Nothing Then Exit Sub
+                If node Is Nothing Then Return
 
                 strProjectName = GetNodeText(node, NODE_PRJNAME)
                 strProjectWorkspace = GetNodeText(node, NODE_PRJWORKSPACE)

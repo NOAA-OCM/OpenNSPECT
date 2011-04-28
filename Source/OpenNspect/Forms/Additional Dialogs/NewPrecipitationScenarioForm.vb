@@ -78,16 +78,16 @@ Friend Class NewPrecipitationScenarioForm
                             MsgBox ( _
                                     "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
                                     MsgBoxStyle.Exclamation, "No Project Information Detected")
-                            Exit Sub
+                            Return
                         End If
                     End If
                     If proj = "" Then
-                        MsgBox ( _
+                        MsgBox( _
                                 "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
                                 MsgBoxStyle.Exclamation, "No Project Information Detected")
-                        Exit Sub
+                        Return
                     Else
-                        If proj.Contains ("units=m") Then
+                        If proj.Contains("units=m") Then
                             cboGridUnits.SelectedIndex = 0
                         Else
                             cboGridUnits.SelectedIndex = 1
@@ -98,11 +98,11 @@ Friend Class NewPrecipitationScenarioForm
             End If
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub cboTimePeriod_SelectedIndexChanged (ByVal sender As Object, ByVal e As EventArgs) _
+    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
         Handles cboTimePeriod.SelectedIndexChanged
         Try
             If cboTimePeriod.SelectedIndex = 0 Then
@@ -113,19 +113,19 @@ Friend Class NewPrecipitationScenarioForm
                 txtRainingDays.Visible = False
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Protected Overrides Sub Cancel_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub Cancel_Button_Click(sender As Object, e As EventArgs)
         IsDirty = True
-        MyBase.Cancel_Button_Click (sender, e)
+        MyBase.Cancel_Button_Click(sender, e)
         If Not _frmPrj Is Nothing Then
             _frmPrj.cboPrecipScen.SelectedIndex = 0
         End If
     End Sub
 
-    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
 
         Try
             Dim intType As Short
@@ -135,7 +135,7 @@ Friend Class NewPrecipitationScenarioForm
                 'Process the time period
                 intType = cboTimePeriod.SelectedIndex
                 If intType = 0 Then
-                    intRainingDays = CShort (txtRainingDays.Text)
+                    intRainingDays = CShort(txtRainingDays.Text)
                 Else
                     intRainingDays = 0
                 End If
@@ -143,36 +143,36 @@ Friend Class NewPrecipitationScenarioForm
                 'Compose the INSERT statement.
                 strCmdInsert = "INSERT INTO PrecipScenario " & _
                                "(Name, Description, PrecipFileName, PrecipGridUnits, PrecipUnits, Type, PrecipType, RainingDays) VALUES (" & _
-                               "'" & Replace (CStr (txtPrecipName.Text), "'", "''") & "', " & "'" & _
-                               Replace (CStr (txtDesc.Text), "'", "''") & "', " & "'" & _
-                               Replace (txtPrecipFile.Text, "'", "''") & "', " & "" & cboGridUnits.SelectedIndex & ", " & _
+                               "'" & Replace(CStr(txtPrecipName.Text), "'", "''") & "', " & "'" & _
+                               Replace(CStr(txtDesc.Text), "'", "''") & "', " & "'" & _
+                               Replace(txtPrecipFile.Text, "'", "''") & "', " & "" & cboGridUnits.SelectedIndex & ", " & _
                                "" & cboPrecipUnits.SelectedIndex & ", " & "" & intType & ", " & "" & _
                                cboPrecipType.SelectedIndex & ", " & "" & intRainingDays & ")"
 
-                If UniqueName ("PrecipScenario", txtPrecipName.Text) Then
+                If UniqueName("PrecipScenario", txtPrecipName.Text) Then
                     'Execute the statement.
 
-                    Dim cmdInsert As New DataHelper (strCmdInsert)
+                    Dim cmdInsert As New DataHelper(strCmdInsert)
                     cmdInsert.ExecuteNonQuery()
 
                     'Confirm
-                    MsgBox (txtPrecipName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
+                    MsgBox(txtPrecipName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
 
                     If Not _frmPrec Is Nothing Then
-                        _frmPrec.UpdatePrecip (txtPrecipName.Text)
+                        _frmPrec.UpdatePrecip(txtPrecipName.Text)
                     End If
 
-                    MyBase.OK_Button_Click (sender, e)
+                    MyBase.OK_Button_Click(sender, e)
 
                 Else
-                    MsgBox ("Name already in use.  Please choose a different one.", MsgBoxStyle.Critical, "Name In Use")
+                    MsgBox("Name already in use.  Please choose a different one.", MsgBoxStyle.Critical, "Name In Use")
                     txtPrecipName.Focus()
-                    Exit Sub
+                    Return
                 End If
 
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 

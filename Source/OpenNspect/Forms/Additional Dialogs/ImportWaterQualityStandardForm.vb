@@ -61,20 +61,20 @@ Friend Class ImportWaterQualityStandardForm
                         If strName = "" Then
                             MsgBox ("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
                             txtStdName.Focus()
-                            Exit Sub
+                            Return
                         Else
                             strCmd = _
-                                String.Format ("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
-                                               Replace (txtStdName.Text, "'", "''"), Replace (strDescript, "'", "''"))
+                                String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
+                                               Replace(txtStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
                             'Name Check
-                            If UniqueName ("WQCRITERIA", (txtStdName.Text)) Then
-                                Using cmdIns As New DataHelper (strCmd)
+                            If UniqueName("WQCRITERIA", (txtStdName.Text)) Then
+                                Using cmdIns As New DataHelper(strCmd)
                                     cmdIns.ExecuteNonQuery()
                                 End Using
                             Else
-                                MsgBox ("The name you have chosen is already in use.  Please select another.", _
+                                MsgBox("The name you have chosen is already in use.  Please select another.", _
                                         MsgBoxStyle.Critical, "Select Unique Name")
-                                Exit Sub
+                                Return
                             End If
                         End If
                     Else

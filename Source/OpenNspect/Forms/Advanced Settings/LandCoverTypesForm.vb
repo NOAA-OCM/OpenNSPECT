@@ -162,14 +162,14 @@ Friend Class LandCoverTypesForm
                         "The data values entered exceed the allowable precision of the database." & vbNewLine & _
                         "Data must not contain more than 4 values to the right of the decimal place." & vbNewLine & _
                         "Please correct your inputs before saving.", MsgBoxStyle.Information, "Precision Error")
-                Exit Sub
+                Return
             End If
 
-            MsgBox ("There was an error saving changes: " + ex.Message, MsgBoxStyle.Critical, "Error Saving Changes")
+            MsgBox("There was an error saving changes: " + ex.Message, MsgBoxStyle.Critical, "Error Saving Changes")
         End Try
     End Sub
 
-    Private Sub btnRestoreDefaults_Click (ByVal sender As Object, ByVal e As EventArgs) _
+    Private Sub btnRestoreDefaults_Click(ByVal sender As Object, ByVal e As EventArgs) _
         Handles btnRestoreDefaults.Click
         'Restore Defaults Button - just read in NSPECT.LCCLASSDEFAULTS
 
@@ -177,26 +177,26 @@ Friend Class LandCoverTypesForm
             'Dim strCCAP As String
 
             'Check to make sure that's what they want
-            intYesNo = MsgBox (strDefault, MsgBoxStyle.YesNo, strDefaultTitle)
+            intYesNo = MsgBox(strDefault, MsgBoxStyle.YesNo, strDefaultTitle)
 
             'Dim i As Short
             If intYesNo = MsgBoxResult.Yes Then
 
                 'Selection based on combo box
                 Const strCCAP As String = "SELECT * From LCCLASSDEFAULTS"
-                Dim cmdCCAP As New DataHelper (strCCAP)
+                Dim cmdCCAP As New DataHelper(strCCAP)
                 Dim datCCAP As OleDbDataReader = cmdCCAP.ExecuteReader()
 
                 Dim idx As Integer = 0
                 Do While datCCAP.Read()
-                    _dTable.Rows (idx).Item (0) = datCCAP.Item ("Value")
-                    _dTable.Rows (idx).Item (1) = datCCAP.Item ("Name")
-                    _dTable.Rows (idx).Item (2) = datCCAP.Item ("CN-A")
-                    _dTable.Rows (idx).Item (3) = datCCAP.Item ("CN-B")
-                    _dTable.Rows (idx).Item (4) = datCCAP.Item ("CN-C")
-                    _dTable.Rows (idx).Item (5) = datCCAP.Item ("CN-D")
-                    _dTable.Rows (idx).Item (6) = datCCAP.Item ("CoverFactor")
-                    _dTable.Rows (idx).Item (7) = datCCAP.Item ("W_WL")
+                    _dTable.Rows(idx).Item(0) = datCCAP.Item("Value")
+                    _dTable.Rows(idx).Item(1) = datCCAP.Item("Name")
+                    _dTable.Rows(idx).Item(2) = datCCAP.Item("CN-A")
+                    _dTable.Rows(idx).Item(3) = datCCAP.Item("CN-B")
+                    _dTable.Rows(idx).Item(4) = datCCAP.Item("CN-C")
+                    _dTable.Rows(idx).Item(5) = datCCAP.Item("CN-D")
+                    _dTable.Rows(idx).Item(6) = datCCAP.Item("CoverFactor")
+                    _dTable.Rows(idx).Item(7) = datCCAP.Item("W_WL")
 
                     idx = idx + 1
                 Loop
@@ -206,27 +206,27 @@ Friend Class LandCoverTypesForm
                 CmdSaveEnabled()
             End If
         Catch ex As Exception
-            MsgBox ("There was an error loading the default CCAP data.", MsgBoxStyle.Critical, "Error Loading Data")
+            MsgBox("There was an error loading the default CCAP data.", MsgBoxStyle.Critical, "Error Loading Data")
         End Try
     End Sub
 
-    Private Sub mnuNewLCType_Click (ByVal sender As Object, ByVal e As EventArgs) _
+    Private Sub mnuNewLCType_Click(ByVal sender As Object, ByVal e As EventArgs) _
         Handles mnuNewLCType.Click
         Try
             Dim newLC As New NewLandCoverTypeForm
-            newLC.Init (Me)
+            newLC.Init(Me)
             newLC.ShowDialog()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub mnuDelLCType_Click (ByVal sender As Object, ByVal e As EventArgs) _
+    Private Sub mnuDelLCType_Click(ByVal sender As Object, ByVal e As EventArgs) _
         Handles mnuDelLCType.Click
         Try
             Dim intAns As Short
             intAns = _
-                MsgBox ( _
+                MsgBox( _
                         "Are you sure you want to delete the land cover type '" & cmbxLCType.Text & _
                         "' and all associated Coefficient Sets?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, _
                         "Confirm Delete")
@@ -234,7 +234,7 @@ Friend Class LandCoverTypesForm
             Dim strLCTypeDelete As String
             If intAns = MsgBoxResult.Yes Then
                 strLCTypeDelete = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & cmbxLCType.Text & "'"
-                Dim cmdLCType As New DataHelper (strLCTypeDelete)
+                Dim cmdLCType As New DataHelper(strLCTypeDelete)
                 Dim datLC As OleDbDataReader = cmdLCType.ExecuteReader()
                 datLC.Read()
 
@@ -243,29 +243,29 @@ Friend Class LandCoverTypesForm
 
                     'code to handle response
 
-                    Dim cmdDel As New DataHelper ("Delete * FROM LCCLASS WHERE LCTYPEID =" & datLC ("LCTypeID"))
+                    Dim cmdDel As New DataHelper("Delete * FROM LCCLASS WHERE LCTYPEID =" & datLC("LCTypeID"))
                     cmdDel.ExecuteNonQuery()
 
                     strLCTypeDelete = "Delete * FROM LCTYPE WHERE NAME LIKE '" & cmbxLCType.Text & "'"
-                    Dim cmdDel2 = New OleDbCommand (strLCTypeDelete, g_DBConn)
+                    Dim cmdDel2 = New OleDbCommand(strLCTypeDelete, g_DBConn)
                     cmdDel2.ExecuteNonQuery()
 
-                    MsgBox (cmbxLCType.Text & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
+                    MsgBox(cmbxLCType.Text & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
                     cmbxLCType.Items.Clear()
                     IsDirty = False
-                    InitComboBox (cmbxLCType, "LCType")
+                    InitComboBox(cmbxLCType, "LCType")
                     Me.Refresh()
 
                 Else
-                    MsgBox ("Please select a Land class", MsgBoxStyle.Critical, "No Land Class Selected")
+                    MsgBox("Please select a Land class", MsgBoxStyle.Critical, "No Land Class Selected")
                 End If
             ElseIf intAns = MsgBoxResult.No Then
                 IsDirty = False
-                Exit Sub
+                Return
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
