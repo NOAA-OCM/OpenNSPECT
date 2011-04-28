@@ -281,17 +281,17 @@
         Me.Frame6.Name = "Frame6"
         Me.Frame6.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame6.Size = New System.Drawing.Size(174, 54)
-        Me.Frame6.TabIndex = 58
+        Me.Frame6.TabIndex = 6
         Me.Frame6.TabStop = False
         Me.Frame6.Text = "Water Quality Standard "
         '
-        'cboWQStd
+        'cboWaterQualityCriteriaStd
         '
         Me.cboWaterQualityCriteriaStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWaterQualityCriteriaStd.Location = New System.Drawing.Point(46, 20)
-        Me.cboWaterQualityCriteriaStd.Name = "cboWQStd"
+        Me.cboWaterQualityCriteriaStd.Name = "cboWaterQualityCriteriaStd"
         Me.cboWaterQualityCriteriaStd.Size = New System.Drawing.Size(110, 21)
-        Me.cboWaterQualityCriteriaStd.TabIndex = 59
+        Me.cboWaterQualityCriteriaStd.TabIndex = 0
         '
         '_Label1_6
         '
@@ -309,17 +309,17 @@
         Me.Frame5.Name = "Frame5"
         Me.Frame5.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame5.Size = New System.Drawing.Size(214, 54)
-        Me.Frame5.TabIndex = 55
+        Me.Frame5.TabIndex = 5
         Me.Frame5.TabStop = False
         Me.Frame5.Text = "Watershed Delineation "
         '
-        'cboWSDelin
+        'cboWaterShedDelineations
         '
         Me.cboWaterShedDelineations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboWaterShedDelineations.Location = New System.Drawing.Point(46, 20)
-        Me.cboWaterShedDelineations.Name = "cboWSDelin"
+        Me.cboWaterShedDelineations.Name = "cboWaterShedDelineations"
         Me.cboWaterShedDelineations.Size = New System.Drawing.Size(141, 21)
-        Me.cboWaterShedDelineations.TabIndex = 56
+        Me.cboWaterShedDelineations.TabIndex = 0
         '
         '_Label1_3
         '
@@ -337,17 +337,17 @@
         Me.Frame4.Name = "Frame4"
         Me.Frame4.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame4.Size = New System.Drawing.Size(223, 54)
-        Me.Frame4.TabIndex = 52
+        Me.Frame4.TabIndex = 4
         Me.Frame4.TabStop = False
         Me.Frame4.Text = "Precipitation Scenario  "
         '
-        'cboPrecipScen
+        'cboPrecipitationScenarios
         '
         Me.cboPrecipitationScenarios.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboPrecipitationScenarios.Location = New System.Drawing.Point(54, 20)
-        Me.cboPrecipitationScenarios.Name = "cboPrecipScen"
+        Me.cboPrecipitationScenarios.Name = "cboPrecipitationScenarios"
         Me.cboPrecipitationScenarios.Size = New System.Drawing.Size(149, 21)
-        Me.cboPrecipitationScenarios.TabIndex = 53
+        Me.cboPrecipitationScenarios.TabIndex = 0
         '
         '_Label1_7
         '
@@ -367,7 +367,7 @@
         Me.frm_raintype.Name = "frm_raintype"
         Me.frm_raintype.Padding = New System.Windows.Forms.Padding(0)
         Me.frm_raintype.Size = New System.Drawing.Size(175, 105)
-        Me.frm_raintype.TabIndex = 50
+        Me.frm_raintype.TabIndex = 3
         Me.frm_raintype.TabStop = False
         Me.frm_raintype.Text = "Miscellaneous "
         '
@@ -386,7 +386,7 @@
         Me.btnSelect.Location = New System.Drawing.Point(7, 45)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.Size = New System.Drawing.Size(75, 23)
-        Me.btnSelect.TabIndex = 67
+        Me.btnSelect.TabIndex = 0
         Me.btnSelect.TabStop = False
         Me.btnSelect.Text = "Select"
         Me.btnSelect.UseVisualStyleBackColor = True
@@ -423,7 +423,7 @@
         Me.txtOutputWS.MaxLength = 0
         Me.txtOutputWS.Name = "txtOutputWS"
         Me.txtOutputWS.Size = New System.Drawing.Size(192, 20)
-        Me.txtOutputWS.TabIndex = 39
+        Me.txtOutputWS.TabIndex = 1
         '
         'txtProjectName
         '
@@ -460,7 +460,7 @@
         Me.Frame1.Name = "Frame1"
         Me.Frame1.Padding = New System.Windows.Forms.Padding(0)
         Me.Frame1.Size = New System.Drawing.Size(214, 105)
-        Me.Frame1.TabIndex = 9
+        Me.Frame1.TabIndex = 2
         Me.Frame1.TabStop = False
         Me.Frame1.Text = "Soils"
         '
@@ -470,7 +470,7 @@
         Me.cboSoilsLayer.Location = New System.Drawing.Point(46, 25)
         Me.cboSoilsLayer.Name = "cboSoilsLayer"
         Me.cboSoilsLayer.Size = New System.Drawing.Size(141, 21)
-        Me.cboSoilsLayer.TabIndex = 11
+        Me.cboSoilsLayer.TabIndex = 0
         '
         'Label6
         '
@@ -507,7 +507,7 @@
         Me.fraLC.Name = "fraLC"
         Me.fraLC.Padding = New System.Windows.Forms.Padding(0)
         Me.fraLC.Size = New System.Drawing.Size(226, 105)
-        Me.fraLC.TabIndex = 5
+        Me.fraLC.TabIndex = 1
         Me.fraLC.TabStop = False
         Me.fraLC.Text = "Land Cover"
         '
@@ -521,11 +521,11 @@
         Me.cboLCUnits.Size = New System.Drawing.Size(149, 21)
         Me.cboLCUnits.TabIndex = 1
         '
-        'cboLCType
+        'cboLandCoverType
         '
         Me.cboLandCoverType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLandCoverType.Location = New System.Drawing.Point(55, 72)
-        Me.cboLandCoverType.Name = "cboLCType"
+        Me.cboLandCoverType.Name = "cboLandCoverType"
         Me.cboLandCoverType.Size = New System.Drawing.Size(149, 21)
         Me.cboLandCoverType.TabIndex = 2
         '
@@ -564,7 +564,7 @@
         Me.TabsForGrids.Name = "TabsForGrids"
         Me.TabsForGrids.SelectedIndex = 3
         Me.TabsForGrids.Size = New System.Drawing.Size(618, 194)
-        Me.TabsForGrids.TabIndex = 12
+        Me.TabsForGrids.TabIndex = 7
         '
         '_SSTab1_TabPage0
         '
@@ -587,7 +587,7 @@
         Me.dgvPollutants.Name = "dgvPollutants"
         Me.dgvPollutants.ShowEditingIcon = False
         Me.dgvPollutants.Size = New System.Drawing.Size(600, 156)
-        Me.dgvPollutants.TabIndex = 98
+        Me.dgvPollutants.TabIndex = 0
         '
         'PollApply
         '
@@ -906,8 +906,7 @@
         Me.cmdRun.Location = New System.Drawing.Point(459, 437)
         Me.cmdRun.Name = "cmdRun"
         Me.cmdRun.Size = New System.Drawing.Size(75, 23)
-        Me.cmdRun.TabIndex = 3
-        Me.cmdRun.TabStop = False
+        Me.cmdRun.TabIndex = 8
         Me.cmdRun.Text = "Run"
         Me.cmdRun.UseVisualStyleBackColor = True
         '
@@ -917,8 +916,7 @@
         Me.cmdQuit.Location = New System.Drawing.Point(562, 437)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
-        Me.cmdQuit.TabIndex = 4
-        Me.cmdQuit.TabStop = False
+        Me.cmdQuit.TabIndex = 9
         Me.cmdQuit.Text = "Cancel"
         Me.cmdQuit.UseVisualStyleBackColor = True
         '
