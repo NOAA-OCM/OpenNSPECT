@@ -36,12 +36,6 @@ Friend Class MainForm
     Private _strPrecipFile As String
     Private _strOpenFileName As String
 
-    Private _intMgmtCount As Short
-    'Count for management scenarios
-    Private _intLUCount As Short
-    'Count for Land Use grid
-    Private _intPollCount As Short
-    'count for pollutant grid
 
     Private arrAreaList As New ArrayList
     Private arrClassList As New ArrayList
@@ -1375,6 +1369,8 @@ Friend Class MainForm
     End Sub
 
     Private Function GetPollutantsIdx() As Integer
+        Dim _intPollCount As Short
+        'count for pollutant grid
         _intPollCount = _XmlPrjParams.PollItems.Count
         Dim idx As Integer
         Dim strPollName As String
@@ -1405,6 +1401,246 @@ Friend Class MainForm
         Return idx
     End Function
 
+    Private Function LoadLandCoverGrid() As Boolean
+
+        'Check to see if the LC cover is in the map, if so, set the combobox
+        If LayerLoadedInMap(_XmlPrjParams.strLCGridName) Then
+            cboLCLayer.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridName), cboLCLayer)
+            cboLCLayer.Refresh()
+        Else
+            If AddRasterLayerToMapFromFileName(_XmlPrjParams.strLCGridFileName) Then
+
+                With cboLCLayer
+                    .Items.Add(_XmlPrjParams.strLCGridName)
+                    .Refresh()
+                    .SelectedIndex = GetCboIndex(_XmlPrjParams.strLCGridName, cboLCLayer)
+                End With
+
+            Else
+                Dim browseForDataSet As Short = MsgBox(String.Format( _
+                                                               "Could not find the Land Cover dataset: {0}.  Would you like to browse for it?", _
+                                                               _XmlPrjParams.strLCGridFileName), MsgBoxStyle.YesNo, _
+                                                "Cannot Locate Dataset")
+                If browseForDataSet = MsgBoxResult.Yes Then
+                    _XmlPrjParams.strLCGridFileName = AddInputFromGxBrowser("Raster")
+                    If _XmlPrjParams.strLCGridFileName <> "" Then
+                        If AddRasterLayerToMapFromFileName(_XmlPrjParams.strLCGridFileName) Then
+                            cboLCLayer.SelectedIndex = 0
+                        End If
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return False
+                End If
+            End If
+
+        End If
+
+        cboLCUnits.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridUnits), cboLCUnits)
+        cboLCUnits.Refresh()
+
+        cboLandCoverType.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridType), cboLandCoverType)
+        cboLandCoverType.Refresh()
+
+        Return True
+    End Function
+    Private Function LoadSoils() As Boolean
+        If RasterExists(_XmlPrjParams.strSoilsHydFileName) Then
+            cboSoilsLayer.SelectedIndex = GetCboIndex((_XmlPrjParams.strSoilsDefName), cboSoilsLayer)
+            cboSoilsLayer.Refresh()
+            Return True
+        Else
+            MsgBox("Could not find soils dataset.  Please correct the soils definition in the Advanced Settings.", _
+                    MsgBoxStyle.Critical, "Dataset Missing")
+            Return False
+        End If
+    End Function
+    Private Sub LoadWatersheds()
+        chkLocalEffects.CheckState = _XmlPrjParams.intLocalEffects
+        chkSelectedPolys.CheckState = _XmlPrjParams.intSelectedPolys
+
+        If chkSelectedPolys.CheckState = 1 Then
+            '1st see if it's in the map
+            Dim strSelected As String = _XmlPrjParams.strSelectedPolyFileName
+            If Path.GetExtension(strSelected) <> ".shp" Then
+                strSelected = strSelected + ".shp"
+            End If
+            _SelectLyrPath = strSelected
+            _SelectedShapes = _XmlPrjParams.intSelectedPolyList
+            lblSelected.Text = _SelectedShapes.Count.ToString + " selected"
+
+            If Not LayerInMapByFileName(strSelected) Then
+                'Not there then add it
+                If AddFeatureLayerToMapFromFileName(strSelected, _XmlPrjParams.strSelectedPolyLyrName) Then
+                    arrAreaList.Add(_XmlPrjParams.strSelectedPolyLyrName)
+                Else
+                    'Can't find it, then send em searching
+                    Dim browseForData = _
+                        MsgBox( _
+                                String.Format( _
+                                               "Could not find the Selected Polygons file used to limit extent: {0}.  Would you like to browse for it? ", _
+                                               strSelected), MsgBoxStyle.YesNo, "Cannot Locate Dataset")
+                    If browseForData = MsgBoxResult.Yes Then
+                        'if they want to look for it then give em the browser
+                        _XmlPrjParams.strSelectedPolyFileName = AddInputFromGxBrowser("Feature")
+                        'if they actually find something, throw it in the map
+                        If Len(_XmlPrjParams.strSelectedPolyFileName) > 0 Then
+                            If AddFeatureLayerToMapFromFileName(_XmlPrjParams.strSelectedPolyFileName) Then
+                                arrAreaList.Add(SplitFileName(_XmlPrjParams.strSelectedPolyFileName))
+
+                            End If
+                        End If
+                    Else
+                        _XmlPrjParams.intSelectedPolys = 0
+                        chkSelectedPolys.CheckState = CheckState.Unchecked
+                    End If
+                End If
+            End If
+        End If
+    End Sub
+    Private Function LoadErosion() As Boolean
+        If _XmlPrjParams.intCalcErosion = 1 Then
+            chkCalcErosion.CheckState = CheckState.Checked
+        Else
+            chkCalcErosion.CheckState = CheckState.Unchecked
+        End If
+
+        'Step: Erosion Tab - Precip
+        'Either they use the GRID
+        optUseGRID.Checked = _XmlPrjParams.intRainGridBool
+        If optUseGRID.Checked Then
+            If RasterExists(_XmlPrjParams.strRainGridFileName) Then
+                Dim browseForData = _
+                      MsgBox( _
+                              String.Format("Could not find Rainfall GRID: {0}.  Would you like to browse for it?", _
+                                             _XmlPrjParams.strRainGridFileName), MsgBoxStyle.YesNo, _
+                              "Cannot Locate Dataset")
+                If browseForData = MsgBoxResult.Yes Then
+                    Dim g As New Grid
+                    Using dlgOpen As New OpenFileDialog()
+                        dlgOpen.Title = "Choose Rainfall Factor GRID"
+                        dlgOpen.Filter = g.CdlgFilter
+                        If dlgOpen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+                            txtbxRainGrid.Text = dlgOpen.FileName
+                            _XmlPrjParams.strRainGridFileName = dlgOpen.FileName
+                        End If
+                    End Using
+                Else
+                    Return False
+                End If
+            Else
+                txtbxRainGrid.Text = _XmlPrjParams.strRainGridFileName
+            End If
+        End If
+
+        'Or they use a constant value
+        optUseValue.Checked = _XmlPrjParams.intRainConstBool
+
+        If optUseValue.Checked Then
+            txtRainValue.Text = CStr(_XmlPrjParams.dblRainConstValue)
+        End If
+
+        'SDR GRID
+        'If Not _XmlPrjParams.intUseOwnSDR Is Nothing Then
+        If _XmlPrjParams.intUseOwnSDR = 1 Then
+            chkSDR.CheckState = CheckState.Checked
+            txtSDRGRID.Text = _XmlPrjParams.strLCGridFileName
+        Else
+            chkSDR.CheckState = CheckState.Unchecked
+            txtSDRGRID.Text = _XmlPrjParams.strSDRGridFileName
+        End If
+        'End If
+
+        Return True
+    End Function
+    Private Sub LoadLandUses(ByRef idx As Integer)
+        Dim landUsesCount As Short = _XmlPrjParams.LUItems.Count
+
+        If landUsesCount > 0 Then
+            dgvLandUse.Rows.Clear()
+            For i = 0 To landUsesCount - 1
+                With dgvLandUse
+                    idx = .Rows.Add()
+                    .Rows(idx).Cells("LUApply").Value = _XmlPrjParams.LUItems.Item(i).intApply
+                    .Rows(idx).Cells("LUScenario").Value = _XmlPrjParams.LUItems.Item(i).strLUScenName
+                    .Rows(idx).Cells("LUScenarioXml").Value = _XmlPrjParams.LUItems.Item(i).strLUScenXmlFile
+                End With
+            Next i
+        End If
+    End Sub
+    Private Function LoadManagementScenarios(ByVal idx As Integer) As Boolean
+        Dim scenarioCount As Short = _XmlPrjParams.MgmtScenHolder.Count
+
+        If scenarioCount > 0 Then
+            dgvManagementScen.Rows.Clear()
+            For i = 0 To scenarioCount - 1
+                With dgvManagementScen
+                    idx = .Rows.Add()
+
+                    If LayerLoadedInMap(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName) Then
+                        PopulateManagement(idx)
+                        .Rows(idx).Cells("ManageApply").Value = _XmlPrjParams.MgmtScenHolder.Item(i).intApply
+                        .Rows(idx).Cells("ChangeAreaLayer").Value = _
+                            _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
+                        .Rows(idx).Cells("ChangeToClass").Value = _
+                            _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
+                    Else
+                        If _
+                            AddFeatureLayerToMapFromFileName( _
+                                                              _XmlPrjParams.MgmtScenHolder.Item(i). _
+                                                                 strAreaFileName) Then
+                            arrAreaList.Add(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName)
+
+                            PopulateManagement(idx)
+                            .Rows(idx).Cells("ManageApply").Value = _
+                                _XmlPrjParams.MgmtScenHolder.Item(i).intApply
+                            .Rows(idx).Cells("ChangeAreaLayer").Value = _
+                                _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
+                            .Rows(idx).Cells("ChangeToClass").Value = _
+                                _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
+                        Else
+                            Dim browseForData = MsgBox( _
+                                        String.Format( _
+                                                       "Could not find Management Sceario Area Layer: {0}.  Would you like to browse for it?", _
+                                                       _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName), _
+                                        MsgBoxStyle.YesNo, _
+                                        "Cannot Locate Dataset:" & _
+                                        _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName)
+                            If browseForData = MsgBoxResult.Yes Then
+                                _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName = _
+                                    AddInputFromGxBrowser("Feature")
+                                If _
+                                    AddFeatureLayerToMapFromFileName( _
+                                                                      _XmlPrjParams.MgmtScenHolder.Item( _
+                                                                                                            i) _
+                                                                         .strAreaFileName) Then
+                                    arrAreaList.Add(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName)
+
+                                    PopulateManagement(idx)
+                                    .Rows(idx).Cells("ManageApply").Value = _
+                                        _XmlPrjParams.MgmtScenHolder.Item(i).intApply
+                                    .Rows(idx).Cells("ChangeAreaLayer").Value = _
+                                        _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
+                                    .Rows(idx).Cells("ChangeToClass").Value = _
+                                        _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
+                                End If
+                            Else
+                                Return False
+                            End If
+                        End If
+                    End If
+                End With
+            Next i
+        Else
+            'Clear and add new row to catch new area files and such
+            dgvManagementScen.Rows.Clear()
+            dgvManagementScen.Rows.Add()
+            PopulateManagement(0)
+        End If
+
+        Return True
+    End Function
     ''' <summary>
     ''' Populates the form from the currently loaded xml project
     ''' </summary>
@@ -1416,258 +1652,17 @@ Friend Class MainForm
             txtProjectName.Text = _XmlPrjParams.strProjectName
             txtOutputWS.Text = _XmlPrjParams.strProjectWorkspace
 
-            'Step 1:  LandCoverGrid
-            'Check to see if the LC cover is in the map, if so, set the combobox
-            Dim intYesNo As Short
-            If LayerLoadedInMap((_XmlPrjParams.strLCGridName)) Then
-                cboLCLayer.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridName), cboLCLayer)
-                cboLCLayer.Refresh()
-            Else
-                If AddRasterLayerToMapFromFileName(_XmlPrjParams.strLCGridFileName) Then
-
-                    With cboLCLayer
-                        .Items.Add(_XmlPrjParams.strLCGridName)
-                        .Refresh()
-                        .SelectedIndex = GetCboIndex(_XmlPrjParams.strLCGridName, cboLCLayer)
-                    End With
-
-                Else
-                    intYesNo = _
-                        MsgBox( _
-                                String.Format( _
-                                               "Could not find the Land Cover dataset: {0}.  Would you like to browse for it?", _
-                                               _XmlPrjParams.strLCGridFileName), MsgBoxStyle.YesNo, _
-                                "Cannot Locate Dataset")
-                    If intYesNo = MsgBoxResult.Yes Then
-                        _XmlPrjParams.strLCGridFileName = AddInputFromGxBrowser("Raster")
-                        If _XmlPrjParams.strLCGridFileName <> "" Then
-                            If AddRasterLayerToMapFromFileName(_XmlPrjParams.strLCGridFileName) Then
-                                cboLCLayer.SelectedIndex = 0
-                            End If
-                        Else
-                            Return
-                        End If
-                    Else
-                        Return
-                    End If
-                End If
-
-            End If
-
-            cboLCUnits.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridUnits), cboLCUnits)
-            cboLCUnits.Refresh()
-
-            cboLandCoverType.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridType), cboLandCoverType)
-            cboLandCoverType.Refresh()
-
-            'Step 2: Soils - same process, if in doc and map, OK, else send em looking
-            If RasterExists(_XmlPrjParams.strSoilsHydFileName) Then
-                cboSoilsLayer.SelectedIndex = GetCboIndex((_XmlPrjParams.strSoilsDefName), cboSoilsLayer)
-                cboSoilsLayer.Refresh()
-            Else
-                MsgBox("Could not find soils dataset.  Please correct the soils definition in the Advanced Settings.", _
-                        MsgBoxStyle.Critical, "Dataset Missing")
-                Return
-            End If
-
-            'Step5: Precip Scenario
+            If Not LoadLandCoverGrid() Then Return
+            If Not LoadSoils() Then Return
             cboPrecipitationScenarios.SelectedIndex = GetCboIndex((_XmlPrjParams.strPrecipScenario), cboPrecipitationScenarios)
-
-            'Step6: Watershed Delineation
             cboWaterShedDelineations.SelectedIndex = GetCboIndex((_XmlPrjParams.strWaterShedDelin), cboWaterShedDelineations)
-
-            'Add the basinpoly to the map
             AddBasinpolyToMap()
-
-            'Step7: Water Quality
             cboWaterQualityCriteriaStd.SelectedIndex = GetCboIndex((_XmlPrjParams.strWaterQuality), cboWaterQualityCriteriaStd)
-
-            'Step8: LocalEffects/Selected Watersheds
-            chkLocalEffects.CheckState = _XmlPrjParams.intLocalEffects
-            chkSelectedPolys.CheckState = _XmlPrjParams.intSelectedPolys
-
-            If chkSelectedPolys.CheckState = 1 Then
-                '1st see if it's in the map
-                Dim strSelected As String = _XmlPrjParams.strSelectedPolyFileName
-                If Path.GetExtension(strSelected) <> ".shp" Then
-                    strSelected = strSelected + ".shp"
-                End If
-                _SelectLyrPath = strSelected
-                _SelectedShapes = _XmlPrjParams.intSelectedPolyList
-                lblSelected.Text = _SelectedShapes.Count.ToString + " selected"
-
-                If Not LayerInMapByFileName(strSelected) Then
-                    'Not there then add it
-                    If AddFeatureLayerToMapFromFileName(strSelected, _XmlPrjParams.strSelectedPolyLyrName) Then
-                        arrAreaList.Add(_XmlPrjParams.strSelectedPolyLyrName)
-                    Else
-                        'Can't find it, then send em searching
-                        Dim intYesNo2 = _
-                            MsgBox( _
-                                    String.Format( _
-                                                   "Could not find the Selected Polygons file used to limit extent: {0}.  Would you like to browse for it? ", _
-                                                   strSelected), MsgBoxStyle.YesNo, "Cannot Locate Dataset")
-                        If intYesNo2 = MsgBoxResult.Yes Then
-                            'if they want to look for it then give em the browser
-                            _XmlPrjParams.strSelectedPolyFileName = AddInputFromGxBrowser("Feature")
-                            'if they actually find something, throw it in the map
-                            If Len(_XmlPrjParams.strSelectedPolyFileName) > 0 Then
-                                If AddFeatureLayerToMapFromFileName(_XmlPrjParams.strSelectedPolyFileName) Then
-                                    arrAreaList.Add(SplitFileName(_XmlPrjParams.strSelectedPolyFileName))
-
-                                End If
-                            End If
-                        Else
-                            _XmlPrjParams.intSelectedPolys = 0
-                            chkSelectedPolys.CheckState = CheckState.Unchecked
-                        End If
-                    End If
-                End If
-            End If
-
-            'Step: Erosion Tab - Calc Erosion, Erosion Attribute
-            If _XmlPrjParams.intCalcErosion = 1 Then
-                chkCalcErosion.CheckState = CheckState.Checked
-            Else
-                chkCalcErosion.CheckState = CheckState.Unchecked
-            End If
-
-            'Step: Erosion Tab - Precip
-            'Either they use the GRID
-            optUseGRID.Checked = _XmlPrjParams.intRainGridBool
-            If optUseGRID.Checked Then
-                If RasterExists(_XmlPrjParams.strRainGridFileName) Then
-                    Dim intYesNo3 = _
-                          MsgBox( _
-                                  String.Format("Could not find Rainfall GRID: {0}.  Would you like to browse for it?", _
-                                                 _XmlPrjParams.strRainGridFileName), MsgBoxStyle.YesNo, _
-                                  "Cannot Locate Dataset")
-                    If intYesNo3 = MsgBoxResult.Yes Then
-                        Dim g As New Grid
-                        Using dlgOpen As New OpenFileDialog()
-                            dlgOpen.Title = "Choose Rainfall Factor GRID"
-                            dlgOpen.Filter = g.CdlgFilter
-                            If dlgOpen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
-                                txtbxRainGrid.Text = dlgOpen.FileName
-                                _XmlPrjParams.strRainGridFileName = dlgOpen.FileName
-                            End If
-                        End Using
-                    Else
-                        Return
-                    End If
-                Else
-                    txtbxRainGrid.Text = _XmlPrjParams.strRainGridFileName
-                End If
-            End If
-
-            'Or they use a constant value
-            optUseValue.Checked = _XmlPrjParams.intRainConstBool
-
-            If optUseValue.Checked Then
-                txtRainValue.Text = CStr(_XmlPrjParams.dblRainConstValue)
-            End If
-
-            'SDR GRID
-            'If Not _XmlPrjParams.intUseOwnSDR Is Nothing Then
-            'On Error GoTo VersionProblem
-            If _XmlPrjParams.intUseOwnSDR = 1 Then
-                chkSDR.CheckState = CheckState.Checked
-                txtSDRGRID.Text = _XmlPrjParams.strLCGridFileName
-            Else
-                chkSDR.CheckState = CheckState.Unchecked
-                txtSDRGRID.Text = _XmlPrjParams.strSDRGridFileName
-            End If
-            'End If
-
-            'Step Pollutants
+            LoadWatersheds()
+            If Not LoadErosion() Then Return
             Dim idx As Integer = GetPollutantsIdx()
-
-            'Step - Land Uses
-            _intLUCount = _XmlPrjParams.LUItems.Count
-
-            Dim i As Integer
-            If _intLUCount > 0 Then
-                dgvLandUse.Rows.Clear()
-                For i = 0 To _intLUCount - 1
-                    With dgvLandUse
-                        idx = .Rows.Add()
-                        .Rows(idx).Cells("LUApply").Value = _XmlPrjParams.LUItems.Item(i).intApply
-                        .Rows(idx).Cells("LUScenario").Value = _XmlPrjParams.LUItems.Item(i).strLUScenName
-                        .Rows(idx).Cells("LUScenarioXml").Value = _XmlPrjParams.LUItems.Item(i).strLUScenXmlFile
-                    End With
-                Next i
-            End If
-
-            'Step Management Scenarios
-            _intMgmtCount = _XmlPrjParams.MgmtScenHolder.Count
-
-            If _intMgmtCount > 0 Then
-                dgvManagementScen.Rows.Clear()
-                For i = 0 To _intMgmtCount - 1
-                    With dgvManagementScen
-                        idx = .Rows.Add()
-
-                        If LayerLoadedInMap(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName) Then
-                            PopulateManagement(idx)
-                            .Rows(idx).Cells("ManageApply").Value = _XmlPrjParams.MgmtScenHolder.Item(i).intApply
-                            .Rows(idx).Cells("ChangeAreaLayer").Value = _
-                                _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
-                            .Rows(idx).Cells("ChangeToClass").Value = _
-                                _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
-                        Else
-                            If _
-                                AddFeatureLayerToMapFromFileName( _
-                                                                  _XmlPrjParams.MgmtScenHolder.Item(i). _
-                                                                     strAreaFileName) Then
-                                arrAreaList.Add(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName)
-
-                                PopulateManagement(idx)
-                                .Rows(idx).Cells("ManageApply").Value = _
-                                    _XmlPrjParams.MgmtScenHolder.Item(i).intApply
-                                .Rows(idx).Cells("ChangeAreaLayer").Value = _
-                                    _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
-                                .Rows(idx).Cells("ChangeToClass").Value = _
-                                    _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
-                            Else
-                                intYesNo = _
-                                    MsgBox( _
-                                            String.Format( _
-                                                           "Could not find Management Sceario Area Layer: {0}.  Would you like to browse for it?", _
-                                                           _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName), _
-                                            MsgBoxStyle.YesNo, _
-                                            "Cannot Locate Dataset:" & _
-                                            _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName)
-                                If intYesNo = MsgBoxResult.Yes Then
-                                    _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName = _
-                                        AddInputFromGxBrowser("Feature")
-                                    If _
-                                        AddFeatureLayerToMapFromFileName( _
-                                                                          _XmlPrjParams.MgmtScenHolder.Item( _
-                                                                                                                i) _
-                                                                             .strAreaFileName) Then
-                                        arrAreaList.Add(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName)
-
-                                        PopulateManagement(idx)
-                                        .Rows(idx).Cells("ManageApply").Value = _
-                                            _XmlPrjParams.MgmtScenHolder.Item(i).intApply
-                                        .Rows(idx).Cells("ChangeAreaLayer").Value = _
-                                            _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
-                                        .Rows(idx).Cells("ChangeToClass").Value = _
-                                            _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
-                                    End If
-                                Else
-                                    Return
-                                End If
-                            End If
-                        End If
-                    End With
-                Next i
-            Else
-                'Clear and add new row to catch new area files and such
-                dgvManagementScen.Rows.Clear()
-                dgvManagementScen.Rows.Add()
-                PopulateManagement(0)
-            End If
+            LoadLandUses(idx)
+            LoadManagementScenarios(idx)
 
             'Reset to first tab
             TabsForGrids.SelectedIndex = 0
@@ -1676,7 +1671,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'False, "FillForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 

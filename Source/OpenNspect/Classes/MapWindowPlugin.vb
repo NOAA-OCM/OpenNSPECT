@@ -260,7 +260,7 @@ Public Class MapWindowPlugin
             Case mnuNspectAbout
                 ShowAboutForm()
             Case Else
-                Throw New NotImplementedException("The developer hasn't implemented that menu item.")
+                ' igonore clicks on seperators and unimplemented members
         End Select
     End Sub
 
