@@ -178,9 +178,9 @@ Module Utilities
     End Function
 
     Public Function GetRasterDistanceUnits(ByRef strLayerName As String) As Short
-        For i As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-            If g_MapWin.Layers(i).Name = strLayerName Then
-                Dim proj As String = g_MapWin.Layers(i).Projection
+        For i As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
+            If MapWindowPlugin.MapwindowInstance.Layers(i).Name = strLayerName Then
+                Dim proj As String = MapWindowPlugin.MapwindowInstance.Layers(i).Projection
                 If proj <> "" Then
                     If proj.Contains("units=m") Then
                         Return 0
@@ -219,8 +219,8 @@ Module Utilities
     Public Function LayerInMap(ByRef strName As String) As Boolean
         Try
 
-            For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                Dim pLayer As Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
+            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
+                Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
                 If pLayer.Name = strName Then
                     LayerInMap = True
                     Exit Function
@@ -236,8 +236,8 @@ Module Utilities
 
     Public Function LayerInMapByFileName(ByRef strName As String) As Boolean
 
-        For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-            Dim pLayer As Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
+        For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
+            Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
 
             If Trim(LCase(pLayer.FileName)) <> Trim(LCase(strName)) Then
                 LayerInMapByFileName = False
@@ -251,8 +251,8 @@ Module Utilities
     Public Function GetLayerIndex(ByRef strLayerName As String) As Integer
         GetLayerIndex = -1
         Try
-            For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                Dim pLayer As Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
+            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
+                Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
 
                 If Trim(LCase(pLayer.Name)) = Trim(LCase(strLayerName)) Then
                     GetLayerIndex = lngLyrIndex
@@ -268,8 +268,8 @@ Module Utilities
     Public Function GetLayerIndexByFilename(ByRef strLayerFileName As String) As Integer
         GetLayerIndexByFilename = -1
         Try
-            For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                Dim pLayer As Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
+            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
+                Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
 
                 If Trim(LCase(pLayer.FileName)) = Trim(LCase(strLayerFileName)) Then
                     GetLayerIndexByFilename = lngLyrIndex
@@ -285,8 +285,8 @@ Module Utilities
     Public Function GetLayerFilename(ByRef strLayerName As String) As String
         GetLayerFilename = ""
         Try
-            For lngLyrIndex As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                Dim pLayer As Layer = g_MapWin.Layers(g_MapWin.Layers.GetHandle(lngLyrIndex))
+            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
+                Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
 
                 If Trim(LCase(pLayer.Name)) = Trim(LCase(strLayerName)) Then
                     GetLayerFilename = pLayer.FileName
@@ -308,9 +308,9 @@ Module Utilities
         Try
 
             If Path.GetExtension(strName) <> "" Then
-                g_MapWin.Layers.Add(strName)
+                MapWindowPlugin.MapwindowInstance.Layers.Add(strName)
             Else
-                g_MapWin.Layers.Add(strName + "\sta.adf")
+                MapWindowPlugin.MapwindowInstance.Layers.Add(strName + "\sta.adf")
             End If
             Return True
         Catch ex As Exception
@@ -731,7 +731,7 @@ Module Utilities
         DataManagement.DeleteGrid(strtmp1)
         pGridToClip.Save()
         pGridToClip.Save(strtmp1)
-        pGridToClip.Header.Projection = g_MapWin.Project.ProjectProjection
+        pGridToClip.Header.Projection = MapWindowPlugin.MapwindowInstance.Project.ProjectProjection
 
         SpatialOperations.ClipGridWithPolygon(strtmp1, pSelectedPolyClip, outputFileName)
 
@@ -956,7 +956,7 @@ Module Utilities
             myShapeFile.Open(SelectLyrPath)
 
             'Determine if shape is polygon, line, or point
-            sLayerType = LCase(g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).LayerType.ToString)
+            sLayerType = LCase(MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.CurrentLayer).LayerType.ToString)
             If InStr(sLayerType, "line", CompareMethod.Text) > 0 Then
                 ShapefileType = ShpfileType.SHP_POLYLINE
             ElseIf InStr(sLayerType, "polygon", CompareMethod.Text) > 0 Then
@@ -970,7 +970,7 @@ Module Utilities
             'Create the new shapefile
             newShapefile = New Shapefile
             newShapefile.CreateNew(sFileName, ShapefileType)
-            newShapefile.Projection = g_MapWin.Project.ProjectProjection
+            newShapefile.Projection = MapWindowPlugin.MapwindowInstance.Project.ProjectProjection
 
             'The new shapefile has no fields at this point
             For iFieldCnt = 0 To myShapeFile.NumFields - 1
@@ -1018,7 +1018,7 @@ Module Utilities
             cs = ReturnUniqueRasterRenderer(outRast, ColorString)
         End If
 
-        Dim lyr As Layer = g_MapWin.Layers.Add(outRast, cs, LayerName)
+        Dim lyr As Layer = MapWindowPlugin.MapwindowInstance.Layers.Add(outRast, cs, LayerName)
         lyr.Visible = False
         If OutputGroup <> -1 Then
             lyr.MoveTo(0, OutputGroup)

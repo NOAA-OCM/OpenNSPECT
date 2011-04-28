@@ -35,9 +35,9 @@ Friend Class EditLandUseScenario
         Try
             g_luscen = Me
             cboLULayer.Items.Clear()
-            For i As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                If g_MapWin.Layers(i).LayerType = eLayerType.PolygonShapefile Then
-                    cboLULayer.Items.Add(g_MapWin.Layers(i).Name)
+            For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+                If MapWindowPlugin.MapWindowInstance.Layers(i).LayerType = eLayerType.PolygonShapefile Then
+                    cboLULayer.Items.Add(MapWindowPlugin.MapWindowInstance.Layers(i).Name)
                 End If
             Next
 
@@ -46,7 +46,7 @@ Friend Class EditLandUseScenario
             _ManScen = New LandUseMangementScenario
 
             If Len(g_strLUScenFileName) > 0 Then
-                _ManScen.XML = g_strLUScenFileName
+                _ManScen.Xml = g_strLUScenFileName
                 PopulateForm()
             Else
                 _txtLUCN_0.Text = "0"
@@ -97,8 +97,8 @@ Friend Class EditLandUseScenario
         Handles cboLULayer.MouseClick
         Try
             _SelectLyrPath = ""
-           _SelectedShapes.Clear()
-           
+            _SelectedShapes.Clear()
+
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -148,8 +148,8 @@ Friend Class EditLandUseScenario
                 Next
             End With
 
-            _frmPrj.SetLURow(CInt(g_intManScenRow), Man.strLUScenName, Man.XML)
-            CreateXmlFile = Man.XML
+            _frmPrj.SetLURow(CInt(g_intManScenRow), Man.strLUScenName, Man.Xml)
+            CreateXmlFile = Man.Xml
 
         Catch ex As Exception
             HandleError(ex)
@@ -349,23 +349,23 @@ Friend Class EditLandUseScenario
 
     Public Sub SetSelectedShape()
         Try
-            If g_MapWin.Layers.CurrentLayer <> -1 And g_MapWin.View.SelectedShapes.NumSelected > 0 Then
+            If MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer <> -1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 Then
                 chkSelectedPolys.Checked = True
                 cboLULayer.Items.Clear()
-                For i As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                    If g_MapWin.Layers(i).LayerType = eLayerType.PolygonShapefile Then
-                        cboLULayer.Items.Add(g_MapWin.Layers(i).Name)
+                For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+                    If MapWindowPlugin.MapWindowInstance.Layers(i).LayerType = eLayerType.PolygonShapefile Then
+                        cboLULayer.Items.Add(MapWindowPlugin.MapWindowInstance.Layers(i).Name)
                     End If
                 Next
                 cboLULayer.SelectedIndex = _
-                    GetCboIndex(g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).Name, cboLULayer)
+                    GetCboIndex(MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).Name, cboLULayer)
 
-                _SelectLyrPath = g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).FileName
+                _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).FileName
                 _SelectedShapes = New List(Of Integer)
-                For i As Integer = 0 To g_MapWin.View.SelectedShapes.NumSelected - 1
-                    _SelectedShapes.Add(g_MapWin.View.SelectedShapes(i).ShapeIndex)
+                For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected - 1
+                    _SelectedShapes.Add(MapWindowPlugin.MapWindowInstance.View.SelectedShapes(i).ShapeIndex)
                 Next
-                lblSelected.Text = g_MapWin.View.SelectedShapes.NumSelected.ToString + " selected"
+                lblSelected.Text = MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected.ToString + " selected"
             End If
         Catch ex As Exception
             HandleError(ex)

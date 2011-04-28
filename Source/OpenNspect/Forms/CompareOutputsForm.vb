@@ -101,63 +101,63 @@ Public Class CompareOutputsForm
 
     Public Sub SetSelectedShape()
         Try
-            If g_MapWin.Layers.CurrentLayer <> - 1 And g_MapWin.View.SelectedShapes.NumSelected > 0 Then
+            If MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer <> -1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 Then
                 chkSelectedPolys.Checked = True
-                _SelectLyrPath = g_MapWin.Layers (g_MapWin.Layers.CurrentLayer).FileName
+                _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).FileName
                 _SelectedShapes = New List(Of Integer)
-                For i As Integer = 0 To g_MapWin.View.SelectedShapes.NumSelected - 1
-                    _SelectedShapes.Add (g_MapWin.View.SelectedShapes (i).ShapeIndex)
+                For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected - 1
+                    _SelectedShapes.Add(MapWindowPlugin.MapWindowInstance.View.SelectedShapes(i).ShapeIndex)
                 Next
-                lblSelected.Text = g_MapWin.View.SelectedShapes.NumSelected.ToString + " selected"
+                lblSelected.Text = MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected.ToString + " selected"
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Private Sub RefreshLeft()
         Try
             If chkbxLeftUseLegend.Checked Then
-                RefreshUsingLegend (lstbxLeft)
+                RefreshUsingLegend(lstbxLeft)
             Else
-                RefreshUsingProjectDirectory (lstbxLeft)
+                RefreshUsingProjectDirectory(lstbxLeft)
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Private Sub RefreshRight()
         Try
             If chkbxRightUseLegend.Checked Then
-                RefreshUsingLegend (lstbxRight)
+                RefreshUsingLegend(lstbxRight)
             Else
-                RefreshUsingProjectDirectory (lstbxRight)
+                RefreshUsingProjectDirectory(lstbxRight)
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub RefreshUsingLegend (ByRef RefreshBox As ListBox)
+    Private Sub RefreshUsingLegend(ByRef RefreshBox As ListBox)
         Try
             Dim glyr As Layer
             Dim lyr As MapWindow.Interfaces.Layer
             RefreshBox.Items.Clear()
 
-            For i As Integer = 0 To g_MapWin.Layers.Groups.Count - 1
-                glyr = g_MapWin.Layers.Groups (i).Item (0)
-                lyr = g_MapWin.Layers (glyr.Handle)
-                If GetTypeFromPath (lyr.FileName, lyr.Name) <> "" Then
-                    RefreshBox.Items.Add (g_MapWin.Layers.Groups (i).Text + " (Position: " + i.ToString + ")")
+            For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.Groups.Count - 1
+                glyr = MapWindowPlugin.MapWindowInstance.Layers.Groups(i).Item(0)
+                lyr = MapWindowPlugin.MapWindowInstance.Layers(glyr.Handle)
+                If GetTypeFromPath(lyr.FileName, lyr.Name) <> "" Then
+                    RefreshBox.Items.Add(MapWindowPlugin.MapWindowInstance.Layers.Groups(i).Text + " (Position: " + i.ToString + ")")
                 End If
             Next
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub RefreshUsingProjectDirectory (ByRef RefreshBox As ListBox)
+    Private Sub RefreshUsingProjectDirectory(ByRef RefreshBox As ListBox)
         Try
             Dim prj As ProjectFile
             Dim filesExist As Boolean
@@ -225,7 +225,7 @@ Public Class CompareOutputsForm
                             End If
                         Next
                         If filesExist Then
-                            Dim tmpgrp As Integer = g_MapWin.Layers.Groups.Add(prj.strProjectName)
+                            Dim tmpgrp As Integer = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add(prj.strProjectName)
                             For j As Integer = 0 To prj.OutputItems.Count - 1
                                 outitem = prj.OutputItems.Item(j)
                                 tmprast = New Grid
@@ -268,9 +268,9 @@ Public Class CompareOutputsForm
             If SelectCheckbox.Checked Then
                 strgrp = SelectList.SelectedItem
                 grpnum = strgrp.Substring(strgrp.LastIndexOf(" ")).Replace(")", "")
-                For i As Integer = 0 To g_MapWin.Layers.Groups(grpnum).LayerCount - 1
-                    glyr = g_MapWin.Layers.Groups(grpnum).Item(i)
-                    tmplyr = g_MapWin.Layers(glyr.Handle)
+                For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.Groups(grpnum).LayerCount - 1
+                    glyr = MapWindowPlugin.MapWindowInstance.Layers.Groups(grpnum).Item(i)
+                    tmplyr = MapWindowPlugin.MapWindowInstance.Layers(glyr.Handle)
                     outitem = New OutputItem
                     outitem.strPath = tmplyr.FileName
                     outitem.strName = tmplyr.Name
@@ -363,7 +363,7 @@ Public Class CompareOutputsForm
                                 gright.Open(rightOutItems.Item(j).strPath)
 
                                 If outgrpnum = -1 Then
-                                    outgrpnum = g_MapWin.Layers.Groups.Add("Compare Outputs")
+                                    outgrpnum = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add("Compare Outputs")
                                 End If
                                 If g_strWorkspace = "" Then
                                     g_strWorkspace = g_nspectDocPath & "\workspace"

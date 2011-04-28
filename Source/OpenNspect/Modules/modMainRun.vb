@@ -128,10 +128,10 @@ Module modMainRun
 
         If g_booSelectedPolys Then
             pMaskGeoDataset = ReturnAnalysisMask (SelectedPath, SelectedShapes, strWS)
-            g_MapWin.View.Extents = pMaskGeoDataset.Extents
+            MapWindowPlugin.MapWindowInstance.View.Extents = pMaskGeoDataset.Extents
         Else
             pMaskGeoDataset = Nothing
-            g_MapWin.View.ZoomToMaxExtents()
+            MapWindowPlugin.MapWindowInstance.View.ZoomToMaxExtents()
         End If
 
         'STEP 3: With the Rasterdataset set, get its properties
