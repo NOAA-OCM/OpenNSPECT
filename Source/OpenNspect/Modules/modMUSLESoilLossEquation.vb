@@ -510,7 +510,7 @@ Module modMUSLESoilLossEquation
                 ShowProgress("Creating data layer for local effects...", strTitle, 27, 27, g_frmProjectSetup)
                 If g_KeepRunning Then
 
-                    strMUSLE = GetUniqueName("locmusle", g_strWorkspace, g_FinalOutputGridExt)
+                    strMUSLE = GetUniqueFileName("locmusle", g_strWorkspace, g_FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
                         pPermMUSLERaster = _
@@ -582,7 +582,7 @@ Module modMUSLESoilLossEquation
             If g_KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
-                strMUSLE = GetUniqueName("MUSLEmass", g_strWorkspace, g_FinalOutputGridExt)
+                strMUSLE = GetUniqueFileName("MUSLEmass", g_strWorkspace, g_FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
