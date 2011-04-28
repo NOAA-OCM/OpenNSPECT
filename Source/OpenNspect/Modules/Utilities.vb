@@ -16,7 +16,6 @@
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
 Imports System.Collections.Generic
-Imports System.Data.OleDb
 Imports System.Windows.Forms
 Imports System.IO
 Imports MapWindow.Interfaces
@@ -44,13 +43,6 @@ Module Utilities
 
     Public g_TempFilesToDel As New List(Of String)
 
-    'Database Variables
-    Public g_DBConn As OleDbConnection
-    'Connection
-    Public g_strConn As String
-    'Connection String
-    Public g_boolConnected As Boolean
-    'Bool: connected
 
     Public g_boolAddCoeff As Boolean
     Public g_boolCopyCoeff As Boolean
@@ -87,68 +79,7 @@ Module Utilities
     Public g_frmProjectSetup As Form
     'Function for connection to NSPECT.mdb: fires on dll load
 
-    Public Sub DBConnection()
-        Try
-            If Not g_boolConnected Then
-                'TODO: check for location of file and prompt if not found
-                g_strConn = String.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0}\nspect.mdb", g_nspectPath)
 
-                g_DBConn = New OleDbConnection(g_strConn)
-
-                g_DBConn.Open()
-
-                g_boolConnected = True
-
-            End If
-
-        Catch ex As Exception
-            MsgBox( _
-                    Err.Number & Err.Description & _
-                    " Error connecting to database: " & _
-                    g_strConn, MsgBoxStyle.Critical, "Error Connecting")
-
-        End Try
-    End Sub
-
-    Public Sub InitComboBox(ByRef cbo As ComboBox, ByRef strName As String)
-        Try
-            'Loads the variety of comboboxes throught the project using combobox and name of table
-            Dim rsNamesCmd As OleDbCommand
-            Dim rsNames As OleDbDataReader
-            Dim strSelectStatement As String
-
-            strSelectStatement = "SELECT NAME FROM " & strName & " ORDER BY NAME ASC"
-
-            'Check thrown in to make sure g_ADOconn is something, in v9.1 we started having problems.
-            If Not g_boolConnected Then
-                DBConnection()
-            End If
-
-            rsNamesCmd = New OleDbCommand(strSelectStatement, g_DBConn)
-
-            rsNames = rsNamesCmd.ExecuteReader()
-
-            If rsNames.HasRows Then
-                With cbo
-                    Do While rsNames.Read()
-                        .Items.Add(rsNames.Item("Name"))
-                    Loop
-                End With
-
-                cbo.SelectedIndex = 0
-            Else
-                MsgBox("Warning.  There are no records remaining.  Please add a new one.", MsgBoxStyle.Critical, _
-                        "Recordset Empty")
-                Return
-            End If
-
-            'Cleanup
-            rsNames.Close()
-        Catch ex As Exception
-            HandleError(ex)
-            'True, "InitComboBox " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-        End Try
-    End Sub
 
     'Returns a filename given for example C:\temp\dataset returns dataset
 
@@ -178,9 +109,9 @@ Module Utilities
     End Function
 
     Public Function GetRasterDistanceUnits(ByRef strLayerName As String) As Short
-        For i As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
-            If MapWindowPlugin.MapwindowInstance.Layers(i).Name = strLayerName Then
-                Dim proj As String = MapWindowPlugin.MapwindowInstance.Layers(i).Projection
+        For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+            If MapWindowPlugin.MapWindowInstance.Layers(i).Name = strLayerName Then
+                Dim proj As String = MapWindowPlugin.MapWindowInstance.Layers(i).Projection
                 If proj <> "" Then
                     If proj.Contains("units=m") Then
                         Return 0
@@ -219,8 +150,8 @@ Module Utilities
     Public Function LayerInMap(ByRef strName As String) As Boolean
         Try
 
-            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
-                Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
+            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+                Dim pLayer As Layer = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(lngLyrIndex))
                 If pLayer.Name = strName Then
                     LayerInMap = True
                     Exit Function
@@ -236,8 +167,8 @@ Module Utilities
 
     Public Function LayerInMapByFileName(ByRef strName As String) As Boolean
 
-        For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
-            Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
+        For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+            Dim pLayer As Layer = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(lngLyrIndex))
 
             If Trim(LCase(pLayer.FileName)) <> Trim(LCase(strName)) Then
                 LayerInMapByFileName = False
@@ -251,8 +182,8 @@ Module Utilities
     Public Function GetLayerIndex(ByRef strLayerName As String) As Integer
         GetLayerIndex = -1
         Try
-            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
-                Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
+            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+                Dim pLayer As Layer = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(lngLyrIndex))
 
                 If Trim(LCase(pLayer.Name)) = Trim(LCase(strLayerName)) Then
                     GetLayerIndex = lngLyrIndex
@@ -268,8 +199,8 @@ Module Utilities
     Public Function GetLayerIndexByFilename(ByRef strLayerFileName As String) As Integer
         GetLayerIndexByFilename = -1
         Try
-            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
-                Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
+            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+                Dim pLayer As Layer = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(lngLyrIndex))
 
                 If Trim(LCase(pLayer.FileName)) = Trim(LCase(strLayerFileName)) Then
                     GetLayerIndexByFilename = lngLyrIndex
@@ -285,8 +216,8 @@ Module Utilities
     Public Function GetLayerFilename(ByRef strLayerName As String) As String
         GetLayerFilename = ""
         Try
-            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapwindowInstance.Layers.NumLayers - 1
-                Dim pLayer As Layer = MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.GetHandle(lngLyrIndex))
+            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+                Dim pLayer As Layer = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(lngLyrIndex))
 
                 If Trim(LCase(pLayer.Name)) = Trim(LCase(strLayerName)) Then
                     GetLayerFilename = pLayer.FileName
@@ -308,9 +239,9 @@ Module Utilities
         Try
 
             If Path.GetExtension(strName) <> "" Then
-                MapWindowPlugin.MapwindowInstance.Layers.Add(strName)
+                MapWindowPlugin.MapWindowInstance.Layers.Add(strName)
             Else
-                MapWindowPlugin.MapwindowInstance.Layers.Add(strName + "\sta.adf")
+                MapWindowPlugin.MapWindowInstance.Layers.Add(strName + "\sta.adf")
             End If
             Return True
         Catch ex As Exception
@@ -731,7 +662,7 @@ Module Utilities
         DataManagement.DeleteGrid(strtmp1)
         pGridToClip.Save()
         pGridToClip.Save(strtmp1)
-        pGridToClip.Header.Projection = MapWindowPlugin.MapwindowInstance.Project.ProjectProjection
+        pGridToClip.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection
 
         SpatialOperations.ClipGridWithPolygon(strtmp1, pSelectedPolyClip, outputFileName)
 
@@ -850,90 +781,6 @@ Module Utilities
         End Try
     End Sub
 
-    Public Function UniqueName(ByRef strTableName As String, ByRef strName As String) As Boolean
-        Try
-
-            Dim strCmdText As String
-
-            strCmdText = "SELECT * FROM " & strTableName & " WHERE NAME LIKE '" & strName & "'"
-            Using cmdName As New DataHelper(strCmdText)
-                Dim datName As OleDbDataReader = cmdName.ExecuteReader()
-                If datName.HasRows Then
-                    UniqueName = False
-                Else
-                    UniqueName = True
-                End If
-                datName.Close()
-            End Using
-        Catch ex As Exception
-            HandleError(ex)
-            'True, "UniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-        End Try
-    End Function
-
-    'Tests name inputs to insure unique values for databases
-
-    Public Function CreateUniqueName(ByRef strTableName As String, ByRef strName As String) As String
-        CreateUniqueName = ""
-        Try
-            Dim strCmdText As String
-            Dim sCurrNum As String
-            Dim strCurrNameRecord As String
-            strCmdText = "SELECT * FROM " & strTableName
-            '& " WHERE NAME LIKE '" & strName & "'"
-            Dim cmd As New DataHelper(strCmdText)
-            Dim data As OleDbDataReader = cmd.ExecuteReader
-            sCurrNum = "0"
-
-            While data.Read()
-                strCurrNameRecord = CStr(data("Name"))
-                If InStr(1, strCurrNameRecord, strName, 1) > 0 Then
-                    If IsNumeric(Right(strCurrNameRecord, 2)) Then
-                        If (CShort(Right(strCurrNameRecord, 2)) > CShort(sCurrNum)) Then
-                            sCurrNum = Right(strCurrNameRecord, 2)
-                        Else
-                            Exit While
-                        End If
-                    Else
-                        If IsNumeric(Right(strCurrNameRecord, 1)) Then
-                            If (CShort(Right(strCurrNameRecord, 1)) > CShort(sCurrNum)) Then
-                                sCurrNum = Right(strCurrNameRecord, 1)
-                            End If
-                        End If
-                    End If
-                End If
-            End While
-
-            If sCurrNum = "0" Then
-                CreateUniqueName = strName & "1"
-            Else
-                CreateUniqueName = strName & CStr(CShort(sCurrNum) + 1)
-            End If
-
-            data.Close()
-
-        Catch ex As Exception
-            HandleError(ex)
-            'True, "CreateUniqueName " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-        End Try
-    End Function
-
-    Public Function GetUniqueName(ByRef Name As String, ByRef folderPath As String, ByVal Extension As String) _
-        As String
-        Dim i As Integer = 0
-        Dim nameAttempt As String
-
-        Do
-            i = i + 1
-            nameAttempt = folderPath + Path.DirectorySeparatorChar + Name + i.ToString + Extension
-        Loop While File.Exists(nameAttempt) And i < 1000
-
-        If i < 1000 Then
-            GetUniqueName = nameAttempt
-        Else
-            GetUniqueName = ""
-        End If
-    End Function
 
     Public Function ExportSelectedFeatures(ByVal SelectLyrPath As String, _
                                             ByRef SelectedShapes As List(Of Integer)) As String
@@ -956,7 +803,7 @@ Module Utilities
             myShapeFile.Open(SelectLyrPath)
 
             'Determine if shape is polygon, line, or point
-            sLayerType = LCase(MapWindowPlugin.MapwindowInstance.Layers(MapWindowPlugin.MapwindowInstance.Layers.CurrentLayer).LayerType.ToString)
+            sLayerType = LCase(MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).LayerType.ToString)
             If InStr(sLayerType, "line", CompareMethod.Text) > 0 Then
                 ShapefileType = ShpfileType.SHP_POLYLINE
             ElseIf InStr(sLayerType, "polygon", CompareMethod.Text) > 0 Then
@@ -965,12 +812,12 @@ Module Utilities
                 ShapefileType = ShpfileType.SHP_POINT
             End If
 
-            sFileName = GetUniqueName("selpoly", g_strWorkspace, ".shp")
+            sFileName = GetUniqueFileName("selpoly", g_strWorkspace, ".shp")
 
             'Create the new shapefile
             newShapefile = New Shapefile
             newShapefile.CreateNew(sFileName, ShapefileType)
-            newShapefile.Projection = MapWindowPlugin.MapwindowInstance.Project.ProjectProjection
+            newShapefile.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection
 
             'The new shapefile has no fields at this point
             For iFieldCnt = 0 To myShapeFile.NumFields - 1
@@ -1018,7 +865,7 @@ Module Utilities
             cs = ReturnUniqueRasterRenderer(outRast, ColorString)
         End If
 
-        Dim lyr As Layer = MapWindowPlugin.MapwindowInstance.Layers.Add(outRast, cs, LayerName)
+        Dim lyr As Layer = MapWindowPlugin.MapWindowInstance.Layers.Add(outRast, cs, LayerName)
         lyr.Visible = False
         If OutputGroup <> -1 Then
             lyr.MoveTo(0, OutputGroup)
@@ -1156,6 +1003,22 @@ Module Utilities
          ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, _
          ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, _
          ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+    Public Function GetUniqueFileName(ByRef Name As String, ByRef folderPath As String, ByVal Extension As String) _
+    As String
+        Dim i As Integer = 0
+        Dim nameAttempt As String
+
+        Do
+            i = i + 1
+            nameAttempt = folderPath + Path.DirectorySeparatorChar + Name + i.ToString + Extension
+        Loop While File.Exists(nameAttempt) And i < 1000
+
+        If i < 1000 Then
+            GetUniqueFileName = nameAttempt
+        Else
+            GetUniqueFileName = ""
+        End If
+    End Function
 
     Public Sub RasterMathWindow(ByRef InputGrid1 As Grid, ByRef InputGrid2 As Grid, _
                                  ByRef Inputgrid3 As Grid, ByRef Inputgrid4 As Grid, _

@@ -369,7 +369,7 @@ Module modRusleSoilLossEquation
 
                     'STEP 12: Local Effects -------------------------------------------------
 
-                    strOutYield = GetUniqueName("locrusle", g_strWorkspace, g_FinalOutputGridExt)
+                    strOutYield = GetUniqueFileName("locrusle", g_strWorkspace, g_FinalOutputGridExt)
                     If g_booSelectedPolys Then
                         pPermRUSLELocRaster = _
                             ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
@@ -444,7 +444,7 @@ Module modRusleSoilLossEquation
             ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 13, 13, g_frmProjectSetup)
 
             If g_KeepRunning Then
-                strOutYield = GetUniqueName("RUSLE", g_strWorkspace, g_FinalOutputGridExt)
+                strOutYield = GetUniqueFileName("RUSLE", g_strWorkspace, g_FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then

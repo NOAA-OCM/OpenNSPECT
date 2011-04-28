@@ -38,7 +38,7 @@ Public Class MapWindowPlugin
 #Region "Private Variables"
 
     'Used for removing items on terminate
-    Private _addedMenus As New Stack()
+    Private _MenuItems As New Stack()
 
 #End Region
 
@@ -200,6 +200,11 @@ Public Class MapWindowPlugin
     <CLSCompliant(False)> _
     Public Sub Initialize(ByVal MapWin As IMapWin, ByVal ParentHandle As Integer) _
         Implements IPlugin.Initialize
+
+        If MapWin Is Nothing Then
+            Throw New ArgumentNullException("MapWin", "MapWin is nothing.")
+        End If
+
         _mapwindowInstance = MapWin
 
         VerifyMapWindowVersion()
@@ -207,38 +212,27 @@ Public Class MapWindowPlugin
         AddMenus()
 
         Dim nspectPath As String = "C:\NSPECT\"
-
-        If Not Directory.Exists(nspectPath) Then
-            MessageBox.Show("{0} is not a valid directory. You need to reinstall the plugin.", nspectPath)
-        End If
-
         ' Detects and sets the path to OpenNSPECT's application folder (installation directory)
         'nspectPath = My.Application.Info.DirectoryPath
 
-        If Right(nspectPath, 1) = "\" Then
-            nspectPath = Left(nspectPath, Len(nspectPath) - 1)
+        If Not Directory.Exists(nspectPath) Then
+            MessageBox.Show("{0} is not a valid directory. You need to reinstall the plugin or relocate your data files to this location.", nspectPath)
         End If
-        If Right(nspectPath, 4) = "\bin" Then
-            nspectPath = Left(nspectPath, Len(nspectPath) - 4)
-        End If
+
+        nspectPath = nspectPath.TrimEnd("\")
 
         g_nspectPath = nspectPath
         g_nspectDocPath = nspectPath
 
         'Initialize the database connection
-        DBConnection()
+        InitializeDBConnection()
 
     End Sub
 
     Public Sub Terminate() Implements IPlugin.Terminate
-
-        While (_addedMenus.Count > 0)
-            Try
-                mapwindowInstance.Menus.Remove(_addedMenus.Pop().ToString())
-            Catch ex As Exception
-
-            End Try
-        End While
+        For Each item As String In _MenuItems
+            MapWindowInstance.Menus.Remove(item)
+        Next
     End Sub
 
 #End Region
@@ -276,39 +270,39 @@ Public Class MapWindowPlugin
 #Region "   Menu/Toolbar Items"
 
     Private Sub AddMenus()
-        Dim nil As Object = Nothing
-        With mapwindowInstance.Menus
-            .AddMenu(mnuNspectMain, nil, "OpenNSPECT")
-            _addedMenus.Push(mnuNspectMain)
-            .AddMenu(mnuNspectAnalysis, mnuNspectMain, nil, "Run Analysis...")
-            _addedMenus.Push(mnuNspectAnalysis)
-            .AddMenu("mnunspectsep0", mnuNspectMain, nil, "-")
-            _addedMenus.Push("mnunspectsep0")
-            .AddMenu(mnuNspectCompare, mnuNspectMain, nil, "Compare Outputs...")
-            _addedMenus.Push(mnuNspectCompare)
-            .AddMenu("mnunspectsep1", mnuNspectMain, nil, "-")
-            _addedMenus.Push("mnunspectsep1")
-            .AddMenu(mnuNspectAdvSettings, mnuNspectMain, nil, "Advanced Settings")
-            _addedMenus.Push(mnuNspectAdvSettings)
-            .AddMenu(mnuNspectAdvLand, mnuNspectAdvSettings, nil, "Land Cover Types...")
-            _addedMenus.Push(mnuNspectAdvLand)
-            .AddMenu(mnuNspectAdvPolutants, mnuNspectAdvSettings, nil, "Pollutants...")
-            _addedMenus.Push(mnuNspectAdvPolutants)
-            .AddMenu(mnuNspectAdvWQ, mnuNspectAdvSettings, nil, "Water Quality Standards...")
-            _addedMenus.Push(mnuNspectAdvWQ)
-            .AddMenu(mnuNspectAdvPrecip, mnuNspectAdvSettings, nil, "Precipitation Scenarios...")
-            _addedMenus.Push(mnuNspectAdvPrecip)
-            .AddMenu(mnuNspectAdvWSDelin, mnuNspectAdvSettings, nil, "Watershed Delineations...")
-            _addedMenus.Push(mnuNspectAdvWSDelin)
-            .AddMenu(mnuNspectAdvSoils, mnuNspectAdvSettings, nil, "Soils...")
-            _addedMenus.Push(mnuNspectAdvSoils)
-            .AddMenu("mnunspectsep2", mnuNspectMain, nil, "-")
-            _addedMenus.Push("mnunspectsep2")
-            .AddMenu(mnuNspectHelp, mnuNspectMain, nil, "Help...")
-            _addedMenus.Push(mnuNspectHelp)
-            .AddMenu(mnuNspectAbout, mnuNspectMain, nil, "About...")
-            _addedMenus.Push(mnuNspectAbout)
+        With MapWindowInstance.Menus
+            .AddMenu(mnuNspectMain, Nothing, Nothing, "OpenNSPECT")
+            _MenuItems.Push(mnuNspectMain)
+            .AddMenu(mnuNspectAnalysis, mnuNspectMain, Nothing, "Run Analysis...")
+            _MenuItems.Push(mnuNspectAnalysis)
+            .AddMenu("mnunspectsep0", mnuNspectMain, Nothing, "-")
+            _MenuItems.Push("mnunspectsep0")
+            .AddMenu(mnuNspectCompare, mnuNspectMain, Nothing, "Compare Outputs...")
+            _MenuItems.Push(mnuNspectCompare)
+            .AddMenu("mnunspectsep1", mnuNspectMain, Nothing, "-")
+            _MenuItems.Push("mnunspectsep1")
 
+            .AddMenu(mnuNspectAdvSettings, mnuNspectMain, Nothing, "Advanced Settings")
+            _MenuItems.Push(mnuNspectAdvSettings)
+            .AddMenu(mnuNspectAdvLand, mnuNspectAdvSettings, Nothing, "Land Cover Types...")
+            _MenuItems.Push(mnuNspectAdvLand)
+            .AddMenu(mnuNspectAdvPolutants, mnuNspectAdvSettings, Nothing, "Pollutants...")
+            _MenuItems.Push(mnuNspectAdvPolutants)
+            .AddMenu(mnuNspectAdvWQ, mnuNspectAdvSettings, Nothing, "Water Quality Standards...")
+            _MenuItems.Push(mnuNspectAdvWQ)
+            .AddMenu(mnuNspectAdvPrecip, mnuNspectAdvSettings, Nothing, "Precipitation Scenarios...")
+            _MenuItems.Push(mnuNspectAdvPrecip)
+            .AddMenu(mnuNspectAdvWSDelin, mnuNspectAdvSettings, Nothing, "Watershed Delineations...")
+            _MenuItems.Push(mnuNspectAdvWSDelin)
+
+            .AddMenu(mnuNspectAdvSoils, mnuNspectAdvSettings, Nothing, "Soils...")
+            _MenuItems.Push(mnuNspectAdvSoils)
+            .AddMenu("mnunspectsep2", mnuNspectMain, Nothing, "-")
+            _MenuItems.Push("mnunspectsep2")
+            .AddMenu(mnuNspectHelp, mnuNspectMain, Nothing, "Help...")
+            _MenuItems.Push(mnuNspectHelp)
+            .AddMenu(mnuNspectAbout, mnuNspectMain, Nothing, "About...")
+            _MenuItems.Push(mnuNspectAbout)
         End With
     End Sub
 

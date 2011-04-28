@@ -302,7 +302,7 @@ Friend Class SoilsSetupForm
                 ShowProgress("Converting Soils Dataset...", "Processing Soils", 2, 2, Me)
 
                 strOutSoils = _
-                    GetUniqueName("soils", Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
+                    GetUniqueFileName("soils", Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
 
                 'Hand convert the soils shapefile to grids by creating new grids based on header of dem
                 Dim dem As New Grid
@@ -324,7 +324,7 @@ Friend Class SoilsSetupForm
 
                 If Len(strKFactor) > 0 Then
                     strOutKSoils = _
-                        GetUniqueName("soilsk", Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
+                        GetUniqueFileName("soilsk", Path.GetDirectoryName(strSoilsFileName), g_OutputGridExt)
                     outSoilsK.CreateNew(strOutKSoils, headK, GridDataType.DoubleDataType, head.NodataValue)
                 Else
                     strOutKSoils = ""

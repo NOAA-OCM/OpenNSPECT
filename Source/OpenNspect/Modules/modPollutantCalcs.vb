@@ -364,7 +364,7 @@ Module modPollutantCalcs
         DataManagement.DeleteGrid(strtmp1)
     End Sub
     Private Sub AddAccumulatedPollutantToGroupLayer(ByRef OutputItems As OutputItems, ByVal pAccumPollRaster As Grid)
-        Dim strAccPoll As String = GetUniqueName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
+        Dim strAccPoll As String = GetUniqueFileName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccPollRaster As Grid
         If g_booSelectedPolys Then
@@ -385,7 +385,7 @@ Module modPollutantCalcs
                     pTotalPollConc0Raster, Nothing, False, AllConCalc)
     End Sub
     Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByVal pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
-        outputFileNameOutConc = GetUniqueName("conc", g_strWorkspace, g_FinalOutputGridExt)
+        outputFileNameOutConc = GetUniqueFileName("conc", g_strWorkspace, g_FinalOutputGridExt)
         Dim pPermTotalConcRaster As Grid
         If g_booSelectedPolys Then
             pPermTotalConcRaster = ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, outputFileNameOutConc)
@@ -406,7 +406,7 @@ As Boolean
         Dim pTotalPollConc0Raster As Grid = Nothing
 
         Dim strTitle = String.Format("Processing {0} Conc. Calculation...", _PollutantName)
-        Dim outputFileNameOutConc = GetUniqueName("locconc", g_strWorkspace, g_FinalOutputGridExt)
+        Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_strWorkspace, g_FinalOutputGridExt)
 
         Try
             ShowProgress("Calculating Mass Volume...", strTitle, 13, 1, g_frmProjectSetup)
@@ -479,7 +479,7 @@ As Boolean
             Dim concalc As New RasterMathCellCalc(AddressOf concompCellCalc)
             RasterMath(pPollutantRaster, g_pFlowAccRaster, Nothing, Nothing, Nothing, pConRaster, concalc)
 
-            strOutWQ = GetUniqueName("wq", g_strWorkspace, g_FinalOutputGridExt)
+            strOutWQ = GetUniqueFileName("wq", g_strWorkspace, g_FinalOutputGridExt)
 
             'Clip if selectedpolys
             If g_booSelectedPolys Then

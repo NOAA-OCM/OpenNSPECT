@@ -56,7 +56,7 @@ Module modManagementScenarios
                 Return
             End If
 
-            strOutLandCover = GetUniqueName("landcover", g_strWorkspace, g_OutputGridExt)
+            strOutLandCover = GetUniqueFileName("landcover", g_strWorkspace, g_OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
