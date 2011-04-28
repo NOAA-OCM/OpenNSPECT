@@ -1406,13 +1406,11 @@ Friend Class MainForm
         'Check to see if the LC cover is in the map, if so, set the combobox
         If LayerLoadedInMap(_XmlPrjParams.strLCGridName) Then
             cboLCLayer.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strLCGridName), cboLCLayer)
-            cboLCLayer.Refresh()
         Else
             If AddRasterLayerToMapFromFileName(_XmlPrjParams.strLCGridFileName) Then
 
                 With cboLCLayer
                     .Items.Add(_XmlPrjParams.strLCGridName)
-                    .Refresh()
                     .SelectedIndex = GetIndexOfEntry(_XmlPrjParams.strLCGridName, cboLCLayer)
                 End With
 
@@ -1438,17 +1436,13 @@ Friend Class MainForm
         End If
 
         cboLCUnits.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strLCGridUnits), cboLCUnits)
-        cboLCUnits.Refresh()
-
         cboLandCoverType.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strLCGridType), cboLandCoverType)
-        cboLandCoverType.Refresh()
 
         Return True
     End Function
     Private Function LoadSoils() As Boolean
         If RasterExists(_XmlPrjParams.strSoilsHydFileName) Then
             cboSoilsLayer.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strSoilsDefName), cboSoilsLayer)
-            cboSoilsLayer.Refresh()
             Return True
         Else
             MsgBox("Could not find soils dataset.  Please correct the soils definition in the Advanced Settings.", _

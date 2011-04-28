@@ -49,9 +49,6 @@ Friend Class NewFromExistingWaterShedDelineationForm
                     Else
                         cboDEMUnits.SelectedIndex = 1
                     End If
-
-                    cboDEMUnits.Refresh()
-
                 End If
 
             End If

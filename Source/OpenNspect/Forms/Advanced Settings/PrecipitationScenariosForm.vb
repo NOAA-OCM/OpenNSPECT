@@ -114,8 +114,6 @@ Friend Class PrecipitationScenariosForm
                     Else
                         cboPrecipUnits.SelectedIndex = 1
                     End If
-
-                    cboPrecipUnits.Refresh()
                 End If
 
             End If

@@ -118,9 +118,6 @@ Friend Class NewWatershedDelineationForm
                     Else
                         cboDEMUnits.SelectedIndex = 1
                     End If
-
-                    cboDEMUnits.Refresh()
-
                 End If
 
                 _InputDEMPath = pDEMRasterDataset.Filename
