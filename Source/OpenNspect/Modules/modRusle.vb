@@ -410,7 +410,7 @@ Module modRusleSoilLossEquation
 
                 Dim pTauD8Flow As Grid = Nothing
 
-                Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+                Dim tauD8calc = GetConverterToTauDemFromEsri()
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
@@ -626,7 +626,7 @@ Module modRusleSoilLossEquation
         End If
 
     End Function
-    
+
     Private Function AllSDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
                                      ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim kmval, daval, tmp3val, tmp4val, tmp5val, tmp6val As Single

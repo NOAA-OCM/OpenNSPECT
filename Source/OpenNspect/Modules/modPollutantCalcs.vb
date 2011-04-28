@@ -332,7 +332,7 @@ Module modPollutantCalcs
         'Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
         Dim pTauD8Flow As Grid = Nothing
 
-        Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+        Dim tauD8calc = GetConverterToTauDemFromEsri()
         RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
         pTauD8Flow.Header.NodataValue = -1
 

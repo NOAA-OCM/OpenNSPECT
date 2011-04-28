@@ -483,7 +483,7 @@ Module modRunoff
         Dim pAccumRunoffRaster As Grid = Nothing
         Dim pTauD8Flow As Grid = Nothing
 
-        Dim tauD8calc As New RasterMathCellCalcNulls(AddressOf tauD8CellCalc)
+        Dim tauD8calc = GetConverterToTauDemFromEsri()
         RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
         pTauD8Flow.Header.NodataValue = -1
 
@@ -677,74 +677,7 @@ Module modRunoff
         End If
     End Function
 
-    Public Function tauD8CellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single,
-                                   ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single,
-                                   ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single,
-                                   ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-        'ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
-        If Input1 = 1 Then
-            Return 1
-        ElseIf Input1 = 2 Then
-            Return 8
-        ElseIf Input1 = 4 Then
-            Return 7
-        ElseIf Input1 = 8 Then
-            Return 6
-        ElseIf Input1 = 16 Then
-            Return 5
-        ElseIf Input1 = 32 Then
-            Return 4
-        ElseIf Input1 = 64 Then
-            Return 3
-        ElseIf Input1 = 128 Then
-            Return 2
-        ElseIf Input1 = Input1Null Then
-            Return -1
-        Else
-            Return -1
-        End If
-    End Function
 
-    ''' <summary>
-    ''' Converts the tau DEM to ESRI cell. ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
-    ''' </summary>
-    ''' <param name="Input1">The input1.</param>
-    ''' <param name="Input1Null">The input1 null.</param>
-    ''' <param name="Input2">The input2.</param>
-    ''' <param name="Input2Null">The input2 null.</param>
-    ''' <param name="Input3">The input3.</param>
-    ''' <param name="Input3Null">The input3 null.</param>
-    ''' <param name="Input4">The input4.</param>
-    ''' <param name="Input4Null">The input4 null.</param>
-    ''' <param name="Input5">The input5.</param>
-    ''' <param name="Input5Null">The input5 null.</param>
-    ''' <param name="OutNull">The out null.</param><returns></returns>
-    Public Function ConvertTauDEMToESRICell(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single,
-                                         ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single,
-                                         ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single,
-                                         ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-        If Input1 = 1 Then
-            Return 1
-        ElseIf Input1 = 8 Then
-            Return 2
-        ElseIf Input1 = 7 Then
-            Return 4
-        ElseIf Input1 = 6 Then
-            Return 8
-        ElseIf Input1 = 5 Then
-            Return 16
-        ElseIf Input1 = 4 Then
-            Return 32
-        ElseIf Input1 = 3 Then
-            Return 64
-        ElseIf Input1 = 2 Then
-            Return 128
-        ElseIf Input1 = Input1Null Then
-            Return -1
-        Else
-            Return -1
-        End If
-    End Function
 
 #End Region
 End Module
