@@ -72,31 +72,26 @@ Module modRunoff
                                       ByRef cmdPrecip As OleDbCommand, ByRef strSoilsFileName As String,
                                       ByRef OutputItems As OutputItems) As Boolean
 
-        Dim pRainFallRaster As Grid
-        Dim pLandCoverRaster As Grid
-        Dim pSoilsRaster As Grid
-        Dim strError As Object
-
         'Get the LandCover Raster
         'if no management scenarios were applied then g_landcoverRaster will be nothing
+        Dim strError As Object
         If g_LandCoverRaster Is Nothing Then
             If RasterExists(strLCFileName) Then
                 g_LandCoverRaster = ReturnRaster(strLCFileName)
-                pLandCoverRaster = g_LandCoverRaster
             Else
                 strError = strLCFileName
                 MsgBox("Error: The following dataset is missing: " & strError, MsgBoxStyle.Critical, "Missing Data")
                 Return False
             End If
-        Else
-            pLandCoverRaster = g_LandCoverRaster
         End If
+
 
         Dim dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
         dataPrecip.Read()
 
         'Get the Precip Raster
         If RasterExists(dataPrecip("PrecipFileName")) Then
+            Dim pRainFallRaster As Grid
             pRainFallRaster = ReturnRaster(dataPrecip("PrecipFileName"))
 
             'If in cm, then convert to a GRID in inches.
@@ -123,6 +118,7 @@ Module modRunoff
         'if they select cm as incoming precip units, convert GRID
 
         'Get the Soils Raster
+        Dim pSoilsRaster As Grid
         If RasterExists(strSoilsFileName) Then
             pSoilsRaster = ReturnRaster(strSoilsFileName)
         Else
@@ -133,21 +129,14 @@ Module modRunoff
 
         'Now construct the Pick Statement
         Dim strPick() As String = Nothing
-        strPick = ConstructPickStatment(strLCCLassType, pLandCoverRaster)
+        strPick = ConstructPickStatment(strLCCLassType, g_LandCoverRaster)
 
         If strPick Is Nothing Then
-            Exit Function
+            Return False
         End If
 
         'Call the Runoff Calculation using the string and rasters
-        If RunoffCalculation(strPick, g_pPrecipRaster, pLandCoverRaster, pSoilsRaster, OutputItems) Then
-            CreateRunoffGrid = True
-        Else
-            CreateRunoffGrid = False
-            Exit Function
-        End If
-
-        CreateRunoffGrid = True
+        Return RunoffCalculation(strPick, g_pPrecipRaster, g_LandCoverRaster, pSoilsRaster, OutputItems)
 
     End Function
 
@@ -206,7 +195,7 @@ Module modRunoff
 
             'Get the max value
             dblMaxValue = pLCRaster.Maximum
-
+            'TODO: it looks like some of this code is almost copied, refactor it.
             Dim tablepath As String = ""
             'Get the raster table
             Dim lcPath As String = pLCRaster.Filename
@@ -591,7 +580,6 @@ Module modRunoff
 
     Private Function SC100CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single,
                                     ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
-        'pSCS100Raster = 100 * con([pHydSoilsRaster] == 1, pick([pLandSampleRaster], " & strPick(0) & "), con([pHydSoilsRaster] == 2, pick([pLandSampleRaster], " & strPick(1) & "), con([pHydSoilsRaster] == 3, pick([pLandSampleRaster], " & strPick(2) & "), con([pHydSoilsRaster] == 4, pick([pLandSampleRaster], " & strPick(3) & ")))))
 
         If Input1 = 1 Then
             For i As Integer = 0 To _picks(0).Length - 1
@@ -660,14 +648,13 @@ Module modRunoff
 
     End Function
 
-    Private Function metRunoffNoNullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single,
+    Private Function metRunoffNoNullCellCalc(ByVal runnOffGrid As Single, ByVal Input1Null As Single, ByVal Input2 As Single,
                                               ByVal Input2Null As Single, ByVal Input3 As Single,
                                               ByVal Input3Null As Single, ByVal Input4 As Single,
                                               ByVal Input4Null As Single, ByVal Input5 As Single,
                                               ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-        'strExpression = "Con(IsNull([runoffgrid]),0,[runoffgrid])"
-        If Input1 <> Input1Null Then
-            Return Input1
+        If runnOffGrid <> Input1Null Then
+            Return runnOffGrid
         Else
             If Input2 >= 0 Then
                 Return 0
@@ -676,8 +663,6 @@ Module modRunoff
             End If
         End If
     End Function
-
-
 
 #End Region
 End Module
