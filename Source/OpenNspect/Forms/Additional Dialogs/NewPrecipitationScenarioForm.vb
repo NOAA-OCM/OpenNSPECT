@@ -121,7 +121,7 @@ Friend Class NewPrecipitationScenarioForm
         IsDirty = True
         MyBase.Cancel_Button_Click(sender, e)
         If Not _frmPrj Is Nothing Then
-            _frmPrj.cboPrecipScen.SelectedIndex = 0
+            _frmPrj.cboPrecipitationScenarios.SelectedIndex = 0
         End If
     End Sub
 

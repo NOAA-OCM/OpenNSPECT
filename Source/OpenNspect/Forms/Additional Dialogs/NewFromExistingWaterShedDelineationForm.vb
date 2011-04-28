@@ -140,9 +140,9 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
             If g_boolNewWShed Then
                 'frmPrj.Show
-                _frmPrj.cboWSDelin.Items.Clear()
-                InitComboBox((_frmPrj.cboWSDelin), "WSDelineation")
-                _frmPrj.cboWSDelin.SelectedIndex = GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWSDelin))
+                _frmPrj.cboWaterShedDelineations.Items.Clear()
+                InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
+                _frmPrj.cboWaterShedDelineations.SelectedIndex = GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
                 MyBase.OK_Button_Click(sender, e)
             Else
                 MyBase.OK_Button_Click(sender, e)

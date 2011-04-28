@@ -42,13 +42,13 @@
         Me.mnuBigHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGeneralHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.Frame6 = New System.Windows.Forms.GroupBox()
-        Me.cboWQStd = New System.Windows.Forms.ComboBox()
+        Me.cboWaterQualityCriteriaStd = New System.Windows.Forms.ComboBox()
         Me._Label1_6 = New System.Windows.Forms.Label()
         Me.Frame5 = New System.Windows.Forms.GroupBox()
-        Me.cboWSDelin = New System.Windows.Forms.ComboBox()
+        Me.cboWaterShedDelineations = New System.Windows.Forms.ComboBox()
         Me._Label1_3 = New System.Windows.Forms.Label()
         Me.Frame4 = New System.Windows.Forms.GroupBox()
-        Me.cboPrecipScen = New System.Windows.Forms.ComboBox()
+        Me.cboPrecipitationScenarios = New System.Windows.Forms.ComboBox()
         Me._Label1_7 = New System.Windows.Forms.Label()
         Me.frm_raintype = New System.Windows.Forms.GroupBox()
         Me.lblSelected = New System.Windows.Forms.Label()
@@ -66,11 +66,11 @@
         Me.Label2 = New System.Windows.Forms.Label()
         Me.fraLC = New System.Windows.Forms.GroupBox()
         Me.cboLCUnits = New System.Windows.Forms.ComboBox()
-        Me.cboLCType = New System.Windows.Forms.ComboBox()
+        Me.cboLandCoverType = New System.Windows.Forms.ComboBox()
         Me._Label1_5 = New System.Windows.Forms.Label()
         Me._Label1_0 = New System.Windows.Forms.Label()
         Me._Label1_2 = New System.Windows.Forms.Label()
-        Me.SSTab1 = New System.Windows.Forms.TabControl()
+        Me.TabsForGrids = New System.Windows.Forms.TabControl()
         Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage()
         Me.dgvPollutants = New System.Windows.Forms.DataGridView()
         Me.PollApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
@@ -108,7 +108,6 @@
         Me.ChangeToClass = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.cmdRun = New System.Windows.Forms.Button()
         Me.cmdQuit = New System.Windows.Forms.Button()
-        Me._chkIgnore_0 = New System.Windows.Forms.CheckBox()
         Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox()
         Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox()
         Me.cnxtmnuLandUse = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -127,7 +126,7 @@
         Me.Frame3.SuspendLayout()
         Me.Frame1.SuspendLayout()
         Me.fraLC.SuspendLayout()
-        Me.SSTab1.SuspendLayout()
+        Me.TabsForGrids.SuspendLayout()
         Me._SSTab1_TabPage0.SuspendLayout()
         CType(Me.dgvPollutants, System.ComponentModel.ISupportInitialize).BeginInit()
         Me._SSTab1_TabPage1.SuspendLayout()
@@ -276,7 +275,7 @@
         '
         'Frame6
         '
-        Me.Frame6.Controls.Add(Me.cboWQStd)
+        Me.Frame6.Controls.Add(Me.cboWaterQualityCriteriaStd)
         Me.Frame6.Controls.Add(Me._Label1_6)
         Me.Frame6.Location = New System.Drawing.Point(461, 178)
         Me.Frame6.Name = "Frame6"
@@ -288,11 +287,11 @@
         '
         'cboWQStd
         '
-        Me.cboWQStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboWQStd.Location = New System.Drawing.Point(46, 20)
-        Me.cboWQStd.Name = "cboWQStd"
-        Me.cboWQStd.Size = New System.Drawing.Size(110, 21)
-        Me.cboWQStd.TabIndex = 59
+        Me.cboWaterQualityCriteriaStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboWaterQualityCriteriaStd.Location = New System.Drawing.Point(46, 20)
+        Me.cboWaterQualityCriteriaStd.Name = "cboWQStd"
+        Me.cboWaterQualityCriteriaStd.Size = New System.Drawing.Size(110, 21)
+        Me.cboWaterQualityCriteriaStd.TabIndex = 59
         '
         '_Label1_6
         '
@@ -304,7 +303,7 @@
         '
         'Frame5
         '
-        Me.Frame5.Controls.Add(Me.cboWSDelin)
+        Me.Frame5.Controls.Add(Me.cboWaterShedDelineations)
         Me.Frame5.Controls.Add(Me._Label1_3)
         Me.Frame5.Location = New System.Drawing.Point(240, 178)
         Me.Frame5.Name = "Frame5"
@@ -316,11 +315,11 @@
         '
         'cboWSDelin
         '
-        Me.cboWSDelin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboWSDelin.Location = New System.Drawing.Point(46, 20)
-        Me.cboWSDelin.Name = "cboWSDelin"
-        Me.cboWSDelin.Size = New System.Drawing.Size(141, 21)
-        Me.cboWSDelin.TabIndex = 56
+        Me.cboWaterShedDelineations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboWaterShedDelineations.Location = New System.Drawing.Point(46, 20)
+        Me.cboWaterShedDelineations.Name = "cboWSDelin"
+        Me.cboWaterShedDelineations.Size = New System.Drawing.Size(141, 21)
+        Me.cboWaterShedDelineations.TabIndex = 56
         '
         '_Label1_3
         '
@@ -332,7 +331,7 @@
         '
         'Frame4
         '
-        Me.Frame4.Controls.Add(Me.cboPrecipScen)
+        Me.Frame4.Controls.Add(Me.cboPrecipitationScenarios)
         Me.Frame4.Controls.Add(Me._Label1_7)
         Me.Frame4.Location = New System.Drawing.Point(10, 178)
         Me.Frame4.Name = "Frame4"
@@ -344,11 +343,11 @@
         '
         'cboPrecipScen
         '
-        Me.cboPrecipScen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboPrecipScen.Location = New System.Drawing.Point(54, 20)
-        Me.cboPrecipScen.Name = "cboPrecipScen"
-        Me.cboPrecipScen.Size = New System.Drawing.Size(149, 21)
-        Me.cboPrecipScen.TabIndex = 53
+        Me.cboPrecipitationScenarios.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboPrecipitationScenarios.Location = New System.Drawing.Point(54, 20)
+        Me.cboPrecipitationScenarios.Name = "cboPrecipScen"
+        Me.cboPrecipitationScenarios.Size = New System.Drawing.Size(149, 21)
+        Me.cboPrecipitationScenarios.TabIndex = 53
         '
         '_Label1_7
         '
@@ -500,7 +499,7 @@
         '
         Me.fraLC.Controls.Add(Me.cboLCUnits)
         Me.fraLC.Controls.Add(Me.cboLCLayer)
-        Me.fraLC.Controls.Add(Me.cboLCType)
+        Me.fraLC.Controls.Add(Me.cboLandCoverType)
         Me.fraLC.Controls.Add(Me._Label1_5)
         Me.fraLC.Controls.Add(Me._Label1_0)
         Me.fraLC.Controls.Add(Me._Label1_2)
@@ -524,11 +523,11 @@
         '
         'cboLCType
         '
-        Me.cboLCType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboLCType.Location = New System.Drawing.Point(55, 72)
-        Me.cboLCType.Name = "cboLCType"
-        Me.cboLCType.Size = New System.Drawing.Size(149, 21)
-        Me.cboLCType.TabIndex = 2
+        Me.cboLandCoverType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboLandCoverType.Location = New System.Drawing.Point(55, 72)
+        Me.cboLandCoverType.Name = "cboLCType"
+        Me.cboLandCoverType.Size = New System.Drawing.Size(149, 21)
+        Me.cboLandCoverType.TabIndex = 2
         '
         '_Label1_5
         '
@@ -554,18 +553,18 @@
         Me._Label1_2.TabIndex = 6
         Me._Label1_2.Text = "Type:"
         '
-        'SSTab1
+        'TabsForGrids
         '
-        Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
-        Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
-        Me.SSTab1.Controls.Add(Me._SSTab1_TabPage2)
-        Me.SSTab1.Controls.Add(Me._SSTab1_TabPage3)
-        Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
-        Me.SSTab1.Location = New System.Drawing.Point(16, 238)
-        Me.SSTab1.Name = "SSTab1"
-        Me.SSTab1.SelectedIndex = 3
-        Me.SSTab1.Size = New System.Drawing.Size(618, 194)
-        Me.SSTab1.TabIndex = 12
+        Me.TabsForGrids.Controls.Add(Me._SSTab1_TabPage0)
+        Me.TabsForGrids.Controls.Add(Me._SSTab1_TabPage1)
+        Me.TabsForGrids.Controls.Add(Me._SSTab1_TabPage2)
+        Me.TabsForGrids.Controls.Add(Me._SSTab1_TabPage3)
+        Me.TabsForGrids.ItemSize = New System.Drawing.Size(42, 18)
+        Me.TabsForGrids.Location = New System.Drawing.Point(16, 238)
+        Me.TabsForGrids.Name = "TabsForGrids"
+        Me.TabsForGrids.SelectedIndex = 3
+        Me.TabsForGrids.Size = New System.Drawing.Size(618, 194)
+        Me.TabsForGrids.TabIndex = 12
         '
         '_SSTab1_TabPage0
         '
@@ -923,17 +922,6 @@
         Me.cmdQuit.Text = "Cancel"
         Me.cmdQuit.UseVisualStyleBackColor = True
         '
-        '_chkIgnore_0
-        '
-        Me._chkIgnore_0.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me._chkIgnore_0.Location = New System.Drawing.Point(77, 356)
-        Me._chkIgnore_0.Name = "_chkIgnore_0"
-        Me._chkIgnore_0.Size = New System.Drawing.Size(15, 12)
-        Me._chkIgnore_0.TabIndex = 30
-        Me._chkIgnore_0.Text = "Check2"
-        Me._chkIgnore_0.UseVisualStyleBackColor = True
-        Me._chkIgnore_0.Visible = False
-        '
         '_chkIgnoreMgmt_0
         '
         Me._chkIgnoreMgmt_0.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -1015,9 +1003,8 @@
         Me.Controls.Add(Me.Frame3)
         Me.Controls.Add(Me.Frame1)
         Me.Controls.Add(Me.fraLC)
-        Me.Controls.Add(Me.SSTab1)
         Me.Controls.Add(Me.cmdRun)
-        Me.Controls.Add(Me._chkIgnore_0)
+        Me.Controls.Add(Me.TabsForGrids)
         Me.Controls.Add(Me._chkIgnoreMgmt_0)
         Me.Controls.Add(Me.cmdQuit)
         Me.Controls.Add(Me._chkIgnoreLU_0)
@@ -1039,7 +1026,7 @@
         Me.Frame3.PerformLayout()
         Me.Frame1.ResumeLayout(False)
         Me.fraLC.ResumeLayout(False)
-        Me.SSTab1.ResumeLayout(False)
+        Me.TabsForGrids.ResumeLayout(False)
         Me._SSTab1_TabPage0.ResumeLayout(False)
         CType(Me.dgvPollutants, System.ComponentModel.ISupportInitialize).EndInit()
         Me._SSTab1_TabPage1.ResumeLayout(False)
@@ -1066,10 +1053,9 @@
     Private WithEvents Frame3 As System.Windows.Forms.GroupBox
     Private WithEvents Frame1 As System.Windows.Forms.GroupBox
     Private WithEvents fraLC As System.Windows.Forms.GroupBox
-    Private WithEvents SSTab1 As System.Windows.Forms.TabControl
+    Private WithEvents TabsForGrids As System.Windows.Forms.TabControl
     Private WithEvents cmdRun As System.Windows.Forms.Button
     Private WithEvents cmdQuit As System.Windows.Forms.Button
-    Private WithEvents _chkIgnore_0 As System.Windows.Forms.CheckBox
     Private WithEvents _chkIgnoreMgmt_0 As System.Windows.Forms.CheckBox
     Private WithEvents _chkIgnoreLU_0 As System.Windows.Forms.CheckBox
     Private WithEvents ToolTip1 As System.Windows.Forms.ToolTip
@@ -1100,7 +1086,7 @@
     Private WithEvents Label2 As System.Windows.Forms.Label
     Private WithEvents cboLCUnits As System.Windows.Forms.ComboBox
     Private WithEvents cboLCLayer As System.Windows.Forms.ComboBox
-    Private WithEvents cboLCType As System.Windows.Forms.ComboBox
+    Private WithEvents cboLandCoverType As System.Windows.Forms.ComboBox
     Private WithEvents _Label1_5 As System.Windows.Forms.Label
     Private WithEvents _Label1_0 As System.Windows.Forms.Label
     Private WithEvents _Label1_2 As System.Windows.Forms.Label
@@ -1139,9 +1125,9 @@
     Friend WithEvents ChangeToClass As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblManageNote As System.Windows.Forms.Label
-    Friend WithEvents cboWQStd As System.Windows.Forms.ComboBox
-    Friend WithEvents cboWSDelin As System.Windows.Forms.ComboBox
-    Friend WithEvents cboPrecipScen As System.Windows.Forms.ComboBox
+    Friend WithEvents cboWaterQualityCriteriaStd As System.Windows.Forms.ComboBox
+    Friend WithEvents cboWaterShedDelineations As System.Windows.Forms.ComboBox
+    Friend WithEvents cboPrecipitationScenarios As System.Windows.Forms.ComboBox
     Private WithEvents btnOpenRainfallFactorGrid As System.Windows.Forms.Button
     Friend WithEvents PollApply As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents PollutantName As System.Windows.Forms.DataGridViewTextBoxColumn

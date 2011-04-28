@@ -122,7 +122,7 @@ Friend Class NewWaterQualityStandardForm
         IsDirty = True
         MyBase.Cancel_Button_Click (sender, e)
         If Not _frmPrj Is Nothing Then
-            _frmPrj.cboWQStd.SelectedIndex = 0
+            _frmPrj.cboWaterQualityCriteriaStd.SelectedIndex = 0
         End If
     End Sub
 

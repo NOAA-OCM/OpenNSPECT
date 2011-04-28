@@ -245,9 +245,9 @@ Friend Class NewWatershedDelineationForm
                 If g_boolNewWShed Then
                     'frmPrj.Show
                     _frmPrj.Visible = True
-                    _frmPrj.cboWSDelin.Items.Clear()
-                    InitComboBox((_frmPrj.cboWSDelin), "WSDelineation")
-                    _frmPrj.cboWSDelin.SelectedIndex = GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWSDelin))
+                    _frmPrj.cboWaterShedDelineations.Items.Clear()
+                    InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
+                    _frmPrj.cboWaterShedDelineations.SelectedIndex = GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
                     MyBase.OK_Button_Click(sender, e)
                 Else
                     MyBase.OK_Button_Click(sender, e)
@@ -265,7 +265,7 @@ Friend Class NewWatershedDelineationForm
 
     Protected Overrides Sub Cancel_Button_Click(sender As Object, e As EventArgs)
         If Not _frmPrj Is Nothing Then
-            _frmPrj.cboPrecipScen.SelectedIndex = 0
+            _frmPrj.cboPrecipitationScenarios.SelectedIndex = 0
         End If
         MyBase.Cancel_Button_Click(sender, e)
     End Sub

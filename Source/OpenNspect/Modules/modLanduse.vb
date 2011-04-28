@@ -517,7 +517,6 @@ Module modLanduse
 
         Catch ex As Exception
             HandleError(ex)
-            'True, "Cleanup " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 End Module

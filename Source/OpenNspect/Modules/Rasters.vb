@@ -254,8 +254,7 @@ Module Rasters
             cs.InsertBreak(csbrk)
             Return cs
         Catch ex As Exception
-            MsgBox(ex.Message)
-            'HandleError(c_sModuleFileName, ex)     'True, "ReturnRasterStretchColorRampRender " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
+            HandleError(ex)
         End Try
     End Function
 

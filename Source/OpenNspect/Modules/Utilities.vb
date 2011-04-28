@@ -142,7 +142,6 @@ Module Utilities
             Next i
         Catch ex As Exception
             HandleError(ex)
-            'True, "GetCboIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -160,7 +159,6 @@ Module Utilities
             Next
         Catch ex As Exception
             HandleError(ex)
-            'True, "LayerInMap " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -191,7 +189,6 @@ Module Utilities
             Next
         Catch ex As Exception
             HandleError(ex)
-            'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -208,7 +205,6 @@ Module Utilities
             Next
         Catch ex As Exception
             HandleError(ex)
-            'True, "GetLayerIndex " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -230,7 +226,6 @@ Module Utilities
             Next
         Catch ex As Exception
             HandleError(ex)
-            'True, "GetLayerFilename " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -553,7 +548,6 @@ Module Utilities
             Return coloringscheme
         Catch ex As Exception
             HandleError(ex)
-            'True, "MakeContinuousRamp " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
             Return Nothing
         End Try
     End Function
@@ -607,7 +601,6 @@ Module Utilities
 
         Catch ex As Exception
             HandleError(ex)
-            'True, "ReturnHSVColorString " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -648,7 +641,6 @@ Module Utilities
             End If
         Catch ex As Exception
             HandleError(ex)
-            'True, "CheckSpatialReference " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -776,7 +768,6 @@ Module Utilities
             Next
         Catch ex As Exception
             HandleError(ex)
-            'True, "CleanGlobals " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
