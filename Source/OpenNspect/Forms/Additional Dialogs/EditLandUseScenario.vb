@@ -177,7 +177,7 @@ Friend Class EditLandUseScenario
                 ValidateData = False
                 Exit Function
             Else
-                If Not LayerInMap(cboLULayer.Text) Then
+                If Not LayerLoadedInMap(cboLULayer.Text) Then
                     MsgBox("The layer you have choosen is not in the current map frame.", MsgBoxStyle.Critical, _
                             "Layer Not Found")
                     ValidateData = False
@@ -269,7 +269,7 @@ Friend Class EditLandUseScenario
 
             txtLUName.Text = strScenName
 
-            If LayerInMap(strLyrName) Then
+            If LayerLoadedInMap(strLyrName) Then
                 cboLULayer.SelectedIndex = GetCboIndex(strLyrName, cboLULayer)
             End If
 

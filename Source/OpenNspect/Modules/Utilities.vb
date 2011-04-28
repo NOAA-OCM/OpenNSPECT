@@ -28,7 +28,7 @@ Module Utilities
     Public g_nspectDocPath As String
     Public g_strWorkspace As String
 
-    Public g_CurrentProjectPath As String
+
 
     Public g_cbMainForm As MainForm
     Public g_MainForm As Form
@@ -145,18 +145,15 @@ Module Utilities
         End Try
     End Function
 
-    Public Function LayerInMap(ByRef strName As String) As Boolean
+    Public Function LayerLoadedInMap(ByRef layerName As String) As Boolean
         Try
-
-            For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
-                Dim pLayer As Layer = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(lngLyrIndex))
-                If pLayer.Name = strName Then
-                    LayerInMap = True
-                    Exit Function
-                Else
-                    LayerInMap = False
+            For Each layer As Layer In MapWindowPlugin.MapWindowInstance.Layers
+                If layer.Name = layerName Then
+                    Return True
                 End If
             Next
+
+            Return False
         Catch ex As Exception
             HandleError(ex)
         End Try

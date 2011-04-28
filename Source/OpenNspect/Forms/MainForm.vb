@@ -28,15 +28,11 @@ Friend Class MainForm
 #Region "Class Vars"
 
     Private _XmlPrjParams As ProjectFile
-    'xml doc that holds inputs
+    ' xml doc that holds inputs
 
-    Private _booExists As Boolean
-    'Has file been saved
-    Private _booAnnualPrecip As Boolean
-    'Is the precip scenario annual, if so = TRUE
-
-    Private _strFileName As String
-    'Name of Open doc
+    Private _isFileSaved As Boolean
+    Private _IsAnnualPrecipScenario As Boolean
+    Private _currentFileName As String
     Private _strPrecipFile As String
     Private _strOpenFileName As String
 
@@ -52,7 +48,7 @@ Friend Class MainForm
 
     Private _SelectLyrPath As String
     Private _SelectedShapes As List(Of Integer)
-
+    Private _CurrentProjectPath As String
 #End Region
 
 #Region "Events"
@@ -256,14 +252,14 @@ Friend Class MainForm
                             frmSDR.Visible = True
                             frameRainFall.Visible = True
                             chkCalcErosion.Text = "Calculate Erosion for Annual Type Precipitation Scenario"
-                            _booAnnualPrecip = True
+                            _IsAnnualPrecipScenario = True
                             'Set flag
                         Case "1"
                             'Event
                             frmSDR.Visible = False
                             frameRainFall.Visible = False
                             chkCalcErosion.Text = "Calculate Erosion for Event Type Precipitation Scenario"
-                            _booAnnualPrecip = False
+                            _IsAnnualPrecipScenario = False
                             'Set flag
                     End Select
 
@@ -388,7 +384,7 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub mnuSaveAs_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuSaveAs.Click
         Try
-            _booExists = False
+            _isFileSaved = False
             SaveXmlFile()
         Catch ex As Exception
             HandleError(ex)
@@ -982,7 +978,7 @@ Friend Class MainForm
             Dim dataWS As OleDbDataReader = cmdWS.ExecuteReader
             dataWS.Read()
             If _XmlPrjParams.intCalcErosion = 1 Then
-                If _booAnnualPrecip Then 'If Annual (0) then TRUE, ergo RUSLE
+                If _IsAnnualPrecipScenario Then 'If Annual (0) then TRUE, ergo RUSLE
                     If _XmlPrjParams.intRainGridBool Then
                         If _
                             Not _
@@ -1042,7 +1038,7 @@ Friend Class MainForm
             MapWindowPlugin.MapWindowInstance.StatusBar.ProgressBarValue = 0
 
             'Save xml to ensure outputs are saved
-            _XmlPrjParams.SaveFile(_strFileName)
+            _XmlPrjParams.SaveFile(_currentFileName)
 
             Close()
 
@@ -1131,24 +1127,24 @@ Friend Class MainForm
         Try
 
             'browse...get output filename
-            Dim strFolder As String = g_nspectDocPath & "\projects"
-            If Not Directory.Exists(strFolder) Then
-                MkDir(strFolder)
+            Dim initialDirectory As String = g_nspectDocPath & "\projects"
+            If Not Directory.Exists(initialDirectory) Then
+                MkDir(initialDirectory)
             End If
             Using dlgXmlOpen As New OpenFileDialog()
                 With dlgXmlOpen
                     .Filter = MSG8XmlFile
-                    .InitialDirectory = strFolder
+                    .InitialDirectory = initialDirectory
                     .Title = "Open OpenNSPECT Project File"
                     .FilterIndex = 1
                     .ShowDialog()
                 End With
 
                 If Len(dlgXmlOpen.FileName) > 0 Then
-                    _strFileName = Trim(dlgXmlOpen.FileName)
-                    g_CurrentProjectPath = _strFileName
+                    _currentFileName = Trim(dlgXmlOpen.FileName)
+                    _CurrentProjectPath = _currentFileName
                     'Xml Class autopopulates when passed a file
-                    _XmlPrjParams.Xml = _strFileName
+                    _XmlPrjParams.Xml = _currentFileName
                     'Populate from the local Xml params
                     FillForm()
                 Else
@@ -1170,9 +1166,9 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub LoadPreviousXmlFile()
         Try
-            If Len(g_CurrentProjectPath) > 0 Then
-                _strFileName = Trim(g_CurrentProjectPath)
-                _XmlPrjParams.Xml = _strFileName
+            If Len(_CurrentProjectPath) > 0 Then
+                _currentFileName = Trim(_CurrentProjectPath)
+                _XmlPrjParams.Xml = _currentFileName
                 FillForm()
             Else
                 Return
@@ -1415,9 +1411,6 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub FillForm()
         Try
-            Dim i As Integer
-            Dim intYesNo As Short
-
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor
 
             txtProjectName.Text = _XmlPrjParams.strProjectName
@@ -1425,7 +1418,8 @@ Friend Class MainForm
 
             'Step 1:  LandCoverGrid
             'Check to see if the LC cover is in the map, if so, set the combobox
-            If LayerInMap((_XmlPrjParams.strLCGridName)) Then
+            Dim intYesNo As Short
+            If LayerLoadedInMap((_XmlPrjParams.strLCGridName)) Then
                 cboLCLayer.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridName), cboLCLayer)
                 cboLCLayer.Refresh()
             Else
@@ -1508,12 +1502,12 @@ Friend Class MainForm
                         arrAreaList.Add(_XmlPrjParams.strSelectedPolyLyrName)
                     Else
                         'Can't find it, then send em searching
-                        intYesNo = _
+                        Dim intYesNo2 = _
                             MsgBox( _
                                     String.Format( _
                                                    "Could not find the Selected Polygons file used to limit extent: {0}.  Would you like to browse for it? ", _
                                                    strSelected), MsgBoxStyle.YesNo, "Cannot Locate Dataset")
-                        If intYesNo = MsgBoxResult.Yes Then
+                        If intYesNo2 = MsgBoxResult.Yes Then
                             'if they want to look for it then give em the browser
                             _XmlPrjParams.strSelectedPolyFileName = AddInputFromGxBrowser("Feature")
                             'if they actually find something, throw it in the map
@@ -1543,12 +1537,12 @@ Friend Class MainForm
             optUseGRID.Checked = _XmlPrjParams.intRainGridBool
             If optUseGRID.Checked Then
                 If RasterExists(_XmlPrjParams.strRainGridFileName) Then
-                    intYesNo = _
-                        MsgBox( _
-                                String.Format("Could not find Rainfall GRID: {0}.  Would you like to browse for it?", _
-                                               _XmlPrjParams.strRainGridFileName), MsgBoxStyle.YesNo, _
-                                "Cannot Locate Dataset")
-                    If intYesNo = MsgBoxResult.Yes Then
+                    Dim intYesNo3 = _
+                          MsgBox( _
+                                  String.Format("Could not find Rainfall GRID: {0}.  Would you like to browse for it?", _
+                                                 _XmlPrjParams.strRainGridFileName), MsgBoxStyle.YesNo, _
+                                  "Cannot Locate Dataset")
+                    If intYesNo3 = MsgBoxResult.Yes Then
                         Dim g As New Grid
                         Using dlgOpen As New OpenFileDialog()
                             dlgOpen.Title = "Choose Rainfall Factor GRID"
@@ -1591,6 +1585,7 @@ Friend Class MainForm
             'Step - Land Uses
             _intLUCount = _XmlPrjParams.LUItems.Count
 
+            Dim i As Integer
             If _intLUCount > 0 Then
                 dgvLandUse.Rows.Clear()
                 For i = 0 To _intLUCount - 1
@@ -1612,7 +1607,7 @@ Friend Class MainForm
                     With dgvManagementScen
                         idx = .Rows.Add()
 
-                        If LayerInMap(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName) Then
+                        If LayerLoadedInMap(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName) Then
                             PopulateManagement(idx)
                             .Rows(idx).Cells("ManageApply").Value = _XmlPrjParams.MgmtScenHolder.Item(i).intApply
                             .Rows(idx).Cells("ChangeAreaLayer").Value = _
@@ -1676,7 +1671,7 @@ Friend Class MainForm
 
             'Reset to first tab
             TabsForGrids.SelectedIndex = 0
-            _booExists = True
+            _isFileSaved = True
             System.Windows.Forms.Cursor.Current = Cursors.Default
 
         Catch ex As Exception
@@ -1704,7 +1699,7 @@ Friend Class MainForm
                     Exit Function
                 End If
                 'If it does not already exist, open Save As... dialog
-                If Not _booExists Then
+                If Not _isFileSaved Then
                     With dlgXml
                         .Filter = MSG8XmlFile
                         .Title = "Save Project File As..."
@@ -1714,9 +1709,9 @@ Friend Class MainForm
                     End With
                     'check to make sure filename length is greater than zeros
                     If Len(dlgXml.FileName) > 0 Then
-                        _strFileName = Trim(dlgXml.FileName)
-                        _booExists = True
-                        _XmlPrjParams.SaveFile(_strFileName)
+                        _currentFileName = Trim(dlgXml.FileName)
+                        _isFileSaved = True
+                        _XmlPrjParams.SaveFile(_currentFileName)
                         SaveXmlFile = True
                     Else
                         SaveXmlFile = False
@@ -1742,25 +1737,25 @@ Friend Class MainForm
                             End With
                             'check to make sure filename length is greater than zeros
                             If Len(dlgXml.FileName) > 0 Then
-                                _strFileName = Trim(dlgXml.FileName)
-                                _booExists = True
-                                _XmlPrjParams.SaveFile(_strFileName)
+                                _currentFileName = Trim(dlgXml.FileName)
+                                _isFileSaved = True
+                                _XmlPrjParams.SaveFile(_currentFileName)
                                 SaveXmlFile = True
                             Else
                                 SaveXmlFile = False
                                 Exit Function
                             End If
                         ElseIf intvbYesNo = MsgBoxResult.No Then
-                            _XmlPrjParams.SaveFile(_strFileName)
-                            _booExists = True
+                            _XmlPrjParams.SaveFile(_currentFileName)
+                            _isFileSaved = True
                             SaveXmlFile = True
                         Else
                             SaveXmlFile = False
                             Exit Function
                         End If
                     Else
-                        _XmlPrjParams.SaveFile(_strFileName)
-                        _booExists = True
+                        _XmlPrjParams.SaveFile(_currentFileName)
+                        _isFileSaved = True
                         SaveXmlFile = True
                     End If
                 End If
@@ -1836,7 +1831,7 @@ Friend Class MainForm
                 ValidateData = False
                 Exit Function
             Else
-                If LayerInMap(cboLCLayer.Text) Then
+                If LayerLoadedInMap(cboLCLayer.Text) Then
                     ParamsPrj.strLCGridName = cboLCLayer.Text
                     ParamsPrj.strLCGridFileName = GetLayerFilename(cboLCLayer.Text)
                     ParamsPrj.strLCGridUnits = CStr(cboLCUnits.SelectedIndex)
@@ -1883,7 +1878,7 @@ Friend Class MainForm
             'PrecipScenario
             'If the layer is in the map, get out, all is well- _strPrecipFile is established on the
             'PrecipCbo Click event
-            If LayerInMap(SplitFileName(_strPrecipFile)) Then
+            If LayerLoadedInMap(SplitFileName(_strPrecipFile)) Then
                 ParamsPrj.strPrecipScenario = cboPrecipitationScenarios.Text
             Else
                 'Check if you can add it, if so, all is well
@@ -2283,7 +2278,7 @@ Friend Class MainForm
             For Each row As DataGridViewRow In dgvManagementScen.Rows
                 If row.Cells("ManageApply").FormattedValue <> False Then
                     If Len(row.Cells("ChangeAreaLayer").Value) > 0 Then
-                        If Not LayerInMap(row.Cells("ChangeAreaLayer").Value) Then
+                        If Not LayerLoadedInMap(row.Cells("ChangeAreaLayer").Value) Then
                             ValidateMgmtScenario = False
                             Exit Function
                         End If
