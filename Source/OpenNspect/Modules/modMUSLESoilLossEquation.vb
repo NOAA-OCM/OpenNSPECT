@@ -150,36 +150,25 @@ Module modMUSLESoilLossEquation
         'and the Land Class Raster.  Returns a string
         ConstructPickStatment = ""
         Try
-            Dim TableExist As Boolean
             Dim FieldIndex As Short
             Dim booValueFound As Boolean
             Dim i As Short
             Dim maxVal As Integer = pLCRaster.Maximum
-
+            'TODO: it looks like some of this code is copied, refactor it.
             Dim tablepath As String = ""
             'Get the raster table
             Dim lcPath As String = pLCRaster.Filename
             If Path.GetFileName(lcPath) = "sta.adf" Then
                 tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
-                If File.Exists(tablepath) Then
-
-                    TableExist = True
-                Else
-                    TableExist = False
-                End If
             Else
                 tablepath = Path.ChangeExtension(lcPath, ".dbf")
-                If File.Exists(tablepath) Then
-                    TableExist = True
-                Else
-                    TableExist = False
-                End If
             End If
+            Dim TableExists As Boolean = File.Exists(tablepath)
 
             Dim strpick As String = ""
 
             Dim mwTable As New Table
-            If Not TableExist Then
+            If Not TableExists Then
                 MsgBox( _
                         "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
                         MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
@@ -257,33 +246,23 @@ Module modMUSLESoilLossEquation
         'Looks like: con(([nu_lulc] eq 16), 0, con((nu_lulc eq 17), 0...
         ConstructPondPickStatement = ""
 
-        Dim TableExist As Boolean
         Dim FieldIndex As Short
         Dim booValueFound As Boolean
         Dim i As Short
 
         Dim maxVal As Integer = pLCRaster.Maximum
         Dim nodata As Single = pLCRaster.Header.NodataValue
-
+        'TODO: it looks like some of this code is copied, refactor it.
         Dim tablepath As String = ""
         'Get the raster table
         Dim lcPath As String = pLCRaster.Filename
         If Path.GetFileName(lcPath) = "sta.adf" Then
             tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
-            If File.Exists(tablepath) Then
-
-                TableExist = True
-            Else
-                TableExist = False
-            End If
         Else
             tablepath = Path.ChangeExtension(lcPath, ".dbf")
-            If File.Exists(tablepath) Then
-                TableExist = True
-            Else
-                TableExist = False
-            End If
         End If
+        Dim TableExist As Boolean = File.Exists(tablepath)
+
 
         Dim strpick As String = ""
 

@@ -185,31 +185,22 @@ Module modPollutantCalcs
 
         ConstructPickStatment = ""
         Try
-            Dim TableExist As Boolean
             Dim FieldIndex As Short
             Dim booValueFound As Boolean
             Dim i As Short
             Dim maxVal As Integer = pLCRaster.Maximum
 
+            'TODO: it looks like some of this code is copied, refactor it.
             Dim tablepath As String = ""
             'Get the raster table
             Dim lcPath As String = pLCRaster.Filename
             If Path.GetFileName(lcPath) = "sta.adf" Then
                 tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
-                If File.Exists(tablepath) Then
-
-                    TableExist = True
-                Else
-                    TableExist = False
-                End If
             Else
                 tablepath = Path.ChangeExtension(lcPath, ".dbf")
-                If File.Exists(tablepath) Then
-                    TableExist = True
-                Else
-                    TableExist = False
-                End If
             End If
+            Dim TableExist As Boolean = File.Exists(tablepath)
+
 
             Dim strpick As String = ""
 

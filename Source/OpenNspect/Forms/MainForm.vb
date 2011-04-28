@@ -154,6 +154,7 @@ Friend Class MainForm
             HandleError(ex)
             'True, "Form_Load " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
+
     End Sub
 
     ''' <summary>
@@ -879,29 +880,24 @@ Friend Class MainForm
     ''' <summary>
     ''' The workhorse of NSPECT. Automates the entire process of the nspect processing
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub cmdRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdRun.Click
+    Private Sub RunAnalysis()
         Try
             Dim strWaterShed As String
             'Connection string
             Dim strPrecip As String
             'Connection String
 
-            Dim booLUItems As Boolean
+            Dim AreThereLandUseItems As Boolean
             'Are there Landuse Scenarios???
             Dim dictPollutants As New Dictionary(Of String, String)
             'Dict to hold all pollutants
             Dim i As Integer
-            'Dim strProjectInfo As String 'String that will hold contents of prj file for inclusion in metatdata
 
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor
 
             'STEP 1: Save file, populate xml params: -------------------------------------------------------------------------
             If Not SaveXmlFile() Then
-                System.Windows.Forms.Cursor.Current = Cursors.Default
-                Exit Sub
+                Return
             End If
 
             'Handles whether to overwrite existing groups of the same name or to generate a new group for outputs
@@ -969,12 +965,12 @@ Friend Class MainForm
             'STEP 6: Landuses sent off to modLanduse for processing -----------------------------------------------------
             For i = 0 To _XmlPrjParams.LUItems.Count - 1
                 If _XmlPrjParams.LUItems.Item(i).intApply = 1 Then
-                    booLUItems = True
+                    AreThereLandUseItems = True
                     Begin(_XmlPrjParams.strLCGridType, _XmlPrjParams.LUItems, dictPollutants, _
                            _XmlPrjParams.strLCGridFileName)
                     Exit For
                 Else
-                    booLUItems = False
+                    AreThereLandUseItems = False
                 End If
             Next i
             'END STEP 6: ---------------------------------------------------------------------------------------------------------
@@ -982,8 +978,7 @@ Friend Class MainForm
             'STEP 7: ---------------------------------------------------------------------------------------------------------
             'Obtain Watershed values
 
-            strWaterShed = _
-                String.Format("Select * from WSDelineation Where Name like '{0}'", _XmlPrjParams.strWaterShedDelin)
+            strWaterShed = String.Format("Select * from WSDelineation Where Name like '{0}'", _XmlPrjParams.strWaterShedDelin)
             Dim cmdWS As New DataHelper(strWaterShed)
 
             'END STEP 7: -----------------------------------------------------------------------------------------------------
@@ -1002,8 +997,7 @@ Friend Class MainForm
                     MsgBox( _
                             "Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", _
                             MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
-                    System.Windows.Forms.Cursor.Current = Cursors.Default
-                    Exit Sub
+                    Return
                 End If
             End If
 
@@ -1021,7 +1015,7 @@ Friend Class MainForm
                 End Using
                 'If there has been a land use added, then a new LCType has been created, hence we get it from g_strLCTypename
                 Dim strLCType As String
-                If booLUItems Then
+                If AreThereLandUseItems Then
                     strLCType = g_strLCTypeName
                 Else
                     strLCType = _XmlPrjParams.strLCGridType
@@ -1093,7 +1087,7 @@ Friend Class MainForm
             'g_DictTempNames holds the names of all temporary landuses and/or coefficient sets created during the Landuse scenario
             'portion of our program, for example CCAP1, or NitSet1.  We now must eliminate them from the database if they exist.
             If g_DictTempNames.Count > 0 Then
-                If booLUItems Then
+                If AreThereLandUseItems Then
                     Cleanup(g_DictTempNames, (_XmlPrjParams.PollItems), (_XmlPrjParams.strLCGridType))
                 End If
             End If
@@ -1115,7 +1109,6 @@ Friend Class MainForm
             CleanGlobals()
 
             g_MapWin.StatusBar.ProgressBarValue = 0
-            System.Windows.Forms.Cursor.Current = Cursors.Default
 
             'Save xml to ensure outputs are saved
             _XmlPrjParams.SaveFile(_strFileName)
@@ -1129,7 +1122,10 @@ Friend Class MainForm
             CloseProgressDialog()
             System.Windows.Forms.Cursor.Current = Cursors.Default
         End Try
+    End Sub
 
+    Private Sub cmdRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdRun.Click
+        RunAnalysis()
     End Sub
 
 #End Region
@@ -1540,9 +1536,7 @@ Friend Class MainForm
             cboLCType.Refresh()
 
             'Step 2: Soils - same process, if in doc and map, OK, else send em looking
-            If _
-                File.Exists(_XmlPrjParams.strSoilsHydFileName) Or _
-                File.Exists(_XmlPrjParams.strSoilsHydFileName + "\sta.adf") Then
+            If RasterExists(_XmlPrjParams.strSoilsHydFileName) Then
                 cboSoilsLayer.SelectedIndex = GetCboIndex((_XmlPrjParams.strSoilsDefName), cboSoilsLayer)
                 cboSoilsLayer.Refresh()
             Else
@@ -1617,9 +1611,7 @@ Friend Class MainForm
             'Either they use the GRID
             optUseGRID.Checked = _XmlPrjParams.intRainGridBool
             If optUseGRID.Checked Then
-                If _
-                    Not File.Exists(_XmlPrjParams.strRainGridFileName) And _
-                    Not File.Exists(_XmlPrjParams.strRainGridFileName + "\sta.adf") Then
+                If RasterExists(_XmlPrjParams.strRainGridFileName) Then
                     intYesNo = _
                         MsgBox( _
                                 String.Format("Could not find Rainfall GRID: {0}.  Would you like to browse for it?", _

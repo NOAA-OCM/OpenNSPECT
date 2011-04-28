@@ -190,23 +190,12 @@ Friend Class NewWatershedDelineationForm
         Try
             If _InputDEMPath = "" Then
                 If txtDEMFile.Text <> "" Then
-                    If Directory.Exists(txtDEMFile.Text) Then
-                        If File.Exists(txtDEMFile.Text + "sta.adf") Then
-                            _InputDEMPath = txtDEMFile.Text + "sta.adf"
-                        Else
-                            If File.Exists(txtDEMFile.Text + Path.DirectorySeparatorChar + "sta.adf") Then
-                                _InputDEMPath = txtDEMFile.Text + Path.DirectorySeparatorChar + "sta.adf"
-                            End If
-                        End If
-                    Else
-                        If File.Exists(txtDEMFile.Text) Then
-                            _InputDEMPath = txtDEMFile.Text
-                        End If
+                    Dim path = GetRasterFullPath(txtDEMFile.Text)
+                    If File.Exists(path) Then
+                        _InputDEMPath = path
                     End If
                 End If
-            End If
 
-            If _InputDEMPath = "" Then
                 MsgBox("The File you have choosen does not exist.", MsgBoxStyle.Critical, "File Not Found")
                 txtDEMFile.Focus()
                 Exit Sub
@@ -220,8 +209,8 @@ Friend Class NewWatershedDelineationForm
             End If
 
             Dim outpath As String
-            If Not Directory.Exists(g_nspectPath + "\wsdelin\" + txtWSDelinName.Text) Then
-                outpath = g_nspectPath + "\wsdelin\" + txtWSDelinName.Text + "\"
+            If Not Directory.Exists(String.Format("{0}\wsdelin\{1}", g_nspectPath, txtWSDelinName.Text)) Then
+                outpath = String.Format("{0}\wsdelin\{1}\", g_nspectPath, txtWSDelinName.Text)
                 Directory.CreateDirectory(outpath)
             Else
                 MsgBox("Name in use.  Please select another.", MsgBoxStyle.Critical, "Choose New Name")
