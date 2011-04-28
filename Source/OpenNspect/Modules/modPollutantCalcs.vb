@@ -418,16 +418,14 @@ As Boolean
         Dim outputFileNameOutConc = GetUniqueName("locconc", g_strWorkspace, g_FinalOutputGridExt)
 
         Try
-            If Not g_KeepRunning Then Return False
-
-            ShowProgress("Calculating Mass Volume...", strTitle, 13, 2, g_frmProjectSetup)
+            ShowProgress("Calculating Mass Volume...", strTitle, 13, 1, g_frmProjectSetup)
             CalcMassOfPhosperous(strConStatement, pMassVolumeRaster)
 
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
                 If Not g_KeepRunning Then Return False
 
-                ShowProgress("Creating data layer for local effects...", strTitle, 13, 13, g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", strTitle, 13, 2, g_frmProjectSetup)
                 CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
             End If
 
