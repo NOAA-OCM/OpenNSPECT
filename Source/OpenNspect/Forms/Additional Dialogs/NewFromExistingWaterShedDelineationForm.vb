@@ -142,7 +142,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
                 'frmPrj.Show
                 _frmPrj.cboWaterShedDelineations.Items.Clear()
                 InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
-                _frmPrj.cboWaterShedDelineations.SelectedIndex = GetCboIndex((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
+                _frmPrj.cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
                 MyBase.OK_Button_Click(sender, e)
             Else
                 MyBase.OK_Button_Click(sender, e)

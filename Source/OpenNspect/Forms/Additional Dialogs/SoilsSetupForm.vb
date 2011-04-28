@@ -86,7 +86,7 @@ Friend Class SoilsSetupForm
                     If _frmSoil.Visible Then
                         _frmSoil.cboSoils.Items.Clear()
                         InitComboBox(_frmSoil.cboSoils, "Soils")
-                        _frmSoil.cboSoils.SelectedIndex = GetCboIndex(txtSoilsName.Text, _frmSoil.cboSoils)
+                        _frmSoil.cboSoils.SelectedIndex = GetIndexOfEntry(txtSoilsName.Text, _frmSoil.cboSoils)
                         Close()
                     End If
                 Else

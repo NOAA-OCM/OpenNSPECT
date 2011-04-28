@@ -128,21 +128,8 @@ Module Utilities
         Return -1
     End Function
 
-    'General Function used to simply get the index of combobox entries
-
-    Public Function GetCboIndex(ByRef strList As String, ByRef cbo As ComboBox) As Short
-        Try
-            Dim i As Short
-            i = 0
-
-            For i = 0 To cbo.Items.Count - 1
-                If cbo.Items(i) = strList Then
-                    GetCboIndex = i
-                End If
-            Next i
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
+    Public Function GetIndexOfEntry(ByRef strList As String, ByRef cbo As ComboBox) As Short
+        Return cbo.Items.IndexOf(strList)
     End Function
 
     Public Function LayerLoadedInMap(ByRef layerName As String) As Boolean

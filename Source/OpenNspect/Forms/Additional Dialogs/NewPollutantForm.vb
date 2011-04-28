@@ -342,7 +342,7 @@ Friend Class NewPollutantForm
 
             _frmPoll.cboPollName.Items.Clear()
             InitComboBox (_frmPoll.cboPollName, "Pollutant")
-            _frmPoll.cboPollName.SelectedIndex = GetCboIndex ((txtPollutant.Text), _frmPoll.cboPollName)
+            _frmPoll.cboPollName.SelectedIndex = GetIndexOfEntry((txtPollutant.Text), _frmPoll.cboPollName)
 
             UpdateValues = True
         Catch ex As Exception

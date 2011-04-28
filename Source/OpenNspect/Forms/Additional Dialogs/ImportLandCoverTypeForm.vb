@@ -130,7 +130,7 @@ Friend Class ImportLandCoverTypeForm
                     End While
                     _parent.cmbxLCType.Items.Clear()
                     InitComboBox (_parent.cmbxLCType, "LCTYPE")
-                    _parent.cmbxLCType.SelectedIndex = GetCboIndex (strname, _parent.cmbxLCType)
+                    _parent.cmbxLCType.SelectedIndex = GetIndexOfEntry(strname, _parent.cmbxLCType)
                     read.Close()
                 End Using
                 MyBase.OK_Button_Click (sender, e)

@@ -270,7 +270,7 @@ Friend Class EditLandUseScenario
             txtLUName.Text = strScenName
 
             If LayerLoadedInMap(strLyrName) Then
-                cboLULayer.SelectedIndex = GetCboIndex(strLyrName, cboLULayer)
+                cboLULayer.SelectedIndex = GetIndexOfEntry(strLyrName, cboLULayer)
             End If
 
             chkSelectedPolys.CheckState = _ManScen.intLUScenSelectedPoly
@@ -358,7 +358,7 @@ Friend Class EditLandUseScenario
                     End If
                 Next
                 cboLULayer.SelectedIndex = _
-                    GetCboIndex(MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).Name, cboLULayer)
+                    GetIndexOfEntry(MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).Name, cboLULayer)
 
                 _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).FileName
                 _SelectedShapes = New List(Of Integer)

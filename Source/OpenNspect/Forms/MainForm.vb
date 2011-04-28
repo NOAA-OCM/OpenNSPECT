@@ -30,7 +30,7 @@ Friend Class MainForm
     Private _XmlPrjParams As ProjectFile
     ' xml doc that holds inputs
 
-    Private _isFileSaved As Boolean
+    Private _isFileOnDisk As Boolean
     Private _IsAnnualPrecipScenario As Boolean
     Private _currentFileName As String
     Private _strPrecipFile As String
@@ -378,7 +378,7 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub mnuSaveAs_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuSaveAs.Click
         Try
-            _isFileSaved = False
+            _isFileOnDisk = False
             SaveXmlFile()
         Catch ex As Exception
             HandleError(ex)
@@ -1405,7 +1405,7 @@ Friend Class MainForm
 
         'Check to see if the LC cover is in the map, if so, set the combobox
         If LayerLoadedInMap(_XmlPrjParams.strLCGridName) Then
-            cboLCLayer.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridName), cboLCLayer)
+            cboLCLayer.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strLCGridName), cboLCLayer)
             cboLCLayer.Refresh()
         Else
             If AddRasterLayerToMapFromFileName(_XmlPrjParams.strLCGridFileName) Then
@@ -1413,7 +1413,7 @@ Friend Class MainForm
                 With cboLCLayer
                     .Items.Add(_XmlPrjParams.strLCGridName)
                     .Refresh()
-                    .SelectedIndex = GetCboIndex(_XmlPrjParams.strLCGridName, cboLCLayer)
+                    .SelectedIndex = GetIndexOfEntry(_XmlPrjParams.strLCGridName, cboLCLayer)
                 End With
 
             Else
@@ -1437,17 +1437,17 @@ Friend Class MainForm
 
         End If
 
-        cboLCUnits.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridUnits), cboLCUnits)
+        cboLCUnits.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strLCGridUnits), cboLCUnits)
         cboLCUnits.Refresh()
 
-        cboLandCoverType.SelectedIndex = GetCboIndex((_XmlPrjParams.strLCGridType), cboLandCoverType)
+        cboLandCoverType.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strLCGridType), cboLandCoverType)
         cboLandCoverType.Refresh()
 
         Return True
     End Function
     Private Function LoadSoils() As Boolean
         If RasterExists(_XmlPrjParams.strSoilsHydFileName) Then
-            cboSoilsLayer.SelectedIndex = GetCboIndex((_XmlPrjParams.strSoilsDefName), cboSoilsLayer)
+            cboSoilsLayer.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strSoilsDefName), cboSoilsLayer)
             cboSoilsLayer.Refresh()
             Return True
         Else
@@ -1654,10 +1654,10 @@ Friend Class MainForm
 
             If Not LoadLandCoverGrid() Then Return
             If Not LoadSoils() Then Return
-            cboPrecipitationScenarios.SelectedIndex = GetCboIndex((_XmlPrjParams.strPrecipScenario), cboPrecipitationScenarios)
-            cboWaterShedDelineations.SelectedIndex = GetCboIndex((_XmlPrjParams.strWaterShedDelin), cboWaterShedDelineations)
+            cboPrecipitationScenarios.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strPrecipScenario), cboPrecipitationScenarios)
+            cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strWaterShedDelin), cboWaterShedDelineations)
             AddBasinpolyToMap()
-            cboWaterQualityCriteriaStd.SelectedIndex = GetCboIndex((_XmlPrjParams.strWaterQuality), cboWaterQualityCriteriaStd)
+            cboWaterQualityCriteriaStd.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strWaterQuality), cboWaterQualityCriteriaStd)
             LoadWatersheds()
             If Not LoadErosion() Then Return
             Dim idx As Integer = GetPollutantsIdx()
@@ -1666,7 +1666,7 @@ Friend Class MainForm
 
             'Reset to first tab
             TabsForGrids.SelectedIndex = 0
-            _isFileSaved = True
+            _isFileOnDisk = True
             System.Windows.Forms.Cursor.Current = Cursors.Default
 
         Catch ex As Exception
@@ -1693,7 +1693,7 @@ Friend Class MainForm
                     Exit Function
                 End If
                 'If it does not already exist, open Save As... dialog
-                If Not _isFileSaved Then
+                If Not _isFileOnDisk Then
                     With dlgXml
                         .Filter = MSG8XmlFile
                         .Title = "Save Project File As..."
@@ -1704,7 +1704,7 @@ Friend Class MainForm
                     'check to make sure filename length is greater than zeros
                     If Len(dlgXml.FileName) > 0 Then
                         _currentFileName = Trim(dlgXml.FileName)
-                        _isFileSaved = True
+                        _isFileOnDisk = True
                         _XmlPrjParams.SaveFile(_currentFileName)
                         SaveXmlFile = True
                     Else
@@ -1732,7 +1732,7 @@ Friend Class MainForm
                             'check to make sure filename length is greater than zeros
                             If Len(dlgXml.FileName) > 0 Then
                                 _currentFileName = Trim(dlgXml.FileName)
-                                _isFileSaved = True
+                                _isFileOnDisk = True
                                 _XmlPrjParams.SaveFile(_currentFileName)
                                 SaveXmlFile = True
                             Else
@@ -1741,7 +1741,7 @@ Friend Class MainForm
                             End If
                         ElseIf intvbYesNo = MsgBoxResult.No Then
                             _XmlPrjParams.SaveFile(_currentFileName)
-                            _isFileSaved = True
+                            _isFileOnDisk = True
                             SaveXmlFile = True
                         Else
                             SaveXmlFile = False
@@ -1749,7 +1749,7 @@ Friend Class MainForm
                         End If
                     Else
                         _XmlPrjParams.SaveFile(_currentFileName)
-                        _isFileSaved = True
+                        _isFileOnDisk = True
                         SaveXmlFile = True
                     End If
                 End If
@@ -2323,7 +2323,7 @@ Friend Class MainForm
             cboPrecipitationScenarios.Items.Clear()
             InitComboBox(cboPrecipitationScenarios, "PrecipScenario")
             cboPrecipitationScenarios.Items.Insert(cboPrecipitationScenarios.Items.Count, "New precipitation scenario...")
-            cboPrecipitationScenarios.SelectedIndex = GetCboIndex(strPrecName, cboPrecipitationScenarios)
+            cboPrecipitationScenarios.SelectedIndex = GetIndexOfEntry(strPrecName, cboPrecipitationScenarios)
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -2339,7 +2339,7 @@ Friend Class MainForm
             cboWaterQualityCriteriaStd.Items.Clear()
             InitComboBox(cboWaterQualityCriteriaStd, "WQCRITERIA")
             cboWaterQualityCriteriaStd.Items.Insert(cboWaterQualityCriteriaStd.Items.Count, "Define a new water quality standard...")
-            cboWaterQualityCriteriaStd.SelectedIndex = GetCboIndex(strWQName, cboWaterQualityCriteriaStd)
+            cboWaterQualityCriteriaStd.SelectedIndex = GetIndexOfEntry(strWQName, cboWaterQualityCriteriaStd)
         Catch ex As Exception
             HandleError(ex)
         End Try

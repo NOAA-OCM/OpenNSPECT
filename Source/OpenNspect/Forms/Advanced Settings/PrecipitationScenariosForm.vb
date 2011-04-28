@@ -349,7 +349,7 @@ Friend Class PrecipitationScenariosForm
         Try
             cboScenName.Items.Clear()
             InitComboBox(cboScenName, "PrecipScenario")
-            cboScenName.SelectedIndex = GetCboIndex(strPrecName, cboScenName)
+            cboScenName.SelectedIndex = GetIndexOfEntry(strPrecName, cboScenName)
         Catch ex As Exception
             HandleError(ex)
         End Try
