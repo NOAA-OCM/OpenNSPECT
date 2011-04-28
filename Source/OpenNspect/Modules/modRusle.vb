@@ -303,7 +303,7 @@ Module modRusleSoilLossEquation
         Dim strOutYield As String
 
         Try
-            ShowProgress("Solving RUSLE Equation...", strTitle, 13, 3, g_frmProjectSetup)
+            ShowProgress("Solving RUSLE Equation...", strTitle, 13, 3, g_MainForm)
             If g_KeepRunning Then
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
                 ReDim _picks(strConStatement.Split(",").Length)
@@ -325,7 +325,7 @@ Module modRusleSoilLossEquation
             'BEGIN SDR CODE......
             '***********************************************
             If Len(Trim(_strSDRFileName)) = 0 Then
-                ShowProgress("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 13, 5, g_frmProjectSetup)
+                ShowProgress("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 13, 5, g_MainForm)
                 If g_KeepRunning Then
                     'STEP 4: DAVE'S WACKY CALCULATION OF RELIEF-LENGTH RATIO FOR SEDIMENT DELIVERY RATIO-------
                     Dim pZSedcalc As New RasterMathCellCalcWindowNulls(AddressOf pZSedCellCalc)
@@ -338,7 +338,7 @@ Module modRusleSoilLossEquation
                     'END STEP 4: ------------------------------------------------------------------------------
                 End If
 
-                ShowProgress("Calculating Sediment Delivery Ratio...", strTitle, 13, 6, g_frmProjectSetup)
+                ShowProgress("Calculating Sediment Delivery Ratio...", strTitle, 13, 6, g_MainForm)
                 If g_KeepRunning Then
                     Dim AllSDRCalc As New RasterMathCellCalc(AddressOf AllSDRCellCalc)
                     RasterMath(g_pDEMRaster, pZSedDelRaster, g_pSCS100Raster, Nothing, Nothing, pSDRRaster, AllSDRCalc)
@@ -352,7 +352,7 @@ Module modRusleSoilLossEquation
             'END SDR CALC
             '********************************************************************
 
-            ShowProgress("Applying Sediment Delivery Ratio...", strTitle, 13, 13, g_frmProjectSetup)
+            ShowProgress("Applying Sediment Delivery Ratio...", strTitle, 13, 13, g_MainForm)
             If g_KeepRunning Then
                 'STEP 11: sed_yield = [soil_loss_ac] * [sdr] -------------------------------------------------
                 Dim SedYieldcalc As New RasterMathCellCalc(AddressOf sedYieldCellCalc)
@@ -364,7 +364,7 @@ Module modRusleSoilLossEquation
             End If
 
             If g_booLocalEffects Then
-                ShowProgress("Creating data layer for local effects...", strTitle, 13, 13, g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", strTitle, 13, 13, g_MainForm)
                 If g_KeepRunning Then
 
                     'STEP 12: Local Effects -------------------------------------------------
@@ -392,7 +392,7 @@ Module modRusleSoilLossEquation
 
             End If
 
-            ShowProgress("Calculating Accumulated Sediment...", strTitle, 13, 13, g_frmProjectSetup)
+            ShowProgress("Calculating Accumulated Sediment...", strTitle, 13, 13, g_MainForm)
             If g_KeepRunning Then
 
                 'STEP 12: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
@@ -441,7 +441,7 @@ Module modRusleSoilLossEquation
                 'END STEP 12: --------------------------------------------------------------------------------
             End If
 
-            ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 13, 13, g_frmProjectSetup)
+            ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 13, 13, g_MainForm)
 
             If g_KeepRunning Then
                 strOutYield = GetUniqueFileName("RUSLE", g_strWorkspace, g_FinalOutputGridExt)

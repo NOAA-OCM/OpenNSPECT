@@ -78,19 +78,6 @@ Friend Class MainForm
         Try
             g_cbMainForm = Me
             SSTab1.SelectedIndex = 0
-            'Check the DPI setting: This was put in place because the alignment of the checkboxes will be
-            'messed up if DPI settings are anything other than Normal
-            Dim lngMapDC As Integer
-            Dim lngDPI As Integer
-            lngMapDC = GetDC(Me.Handle.ToInt32)
-            lngDPI = GetDeviceCaps(lngMapDC, LOGPIXELSX)
-            ReleaseDC(Me.Handle.ToInt32, lngMapDC)
-
-            If lngDPI <> 96 Then
-                MsgBox( _
-                        "Warning: OpenNSPECT requires your font size to be 96 DPI." & vbNewLine & _
-                        "Some controls may appear out of alignment on this form.", MsgBoxStyle.Critical, "Warning!")
-            End If
 
             _bolFirstLoad = True
             'It's the first load
@@ -491,13 +478,8 @@ Friend Class MainForm
     Private Sub optUseGRID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
         Handles optUseGRID.CheckedChanged
         If sender.Checked Then
-            Try
-                txtbxRainGrid.Enabled = optUseGRID.Checked
-                txtRainValue.Enabled = optUseValue.Checked
-            Catch ex As Exception
-                HandleError(ex)
-                'True, "optUseGRID_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
-            End Try
+            txtbxRainGrid.Enabled = optUseGRID.Checked
+            txtRainValue.Enabled = optUseValue.Checked
         End If
     End Sub
 

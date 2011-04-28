@@ -18,50 +18,47 @@ Imports MapWinGIS
 Public Class SelectionModeForm
     Private stopclose As Boolean
 
+    Private Shared Sub SetFormsVisibility(visible As Boolean)
+        If Not g_cbMainForm Is Nothing Then g_cbMainForm.Visible = visible
+        If Not g_comp Is Nothing Then g_comp.Visible = visible
+        If Not g_luscen Is Nothing Then g_luscen.Visible = visible
+    End Sub
     Public Sub InitializeAndShow()
         Try
             Me.Show()
 
             MapWindowPlugin.MapWindowInstance.View.CursorMode = tkCursorMode.cmSelection
 
-            If Not g_cbMainForm Is Nothing Then g_cbMainForm.Visible = False
-            If Not g_comp Is Nothing Then g_comp.Visible = False
-            If Not g_luscen Is Nothing Then g_luscen.Visible = False
+            SetFormsVisibility(False)
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub frmSelectShapes_FormClosed (ByVal sender As Object, _
+    Private Sub frmSelectShapes_FormClosed(ByVal sender As Object, _
                                             ByVal e As FormClosedEventArgs) _
         Handles MyBase.FormClosed
         If Not g_cbMainForm Is Nothing Then g_cbMainForm.SetSelectedShape()
         If Not g_comp Is Nothing Then g_comp.SetSelectedShape()
         If Not g_luscen Is Nothing Then g_luscen.SetSelectedShape()
-        Me.Hide()
-        If Not g_cbMainForm Is Nothing Then g_cbMainForm.Visible = True
-        If Not g_comp Is Nothing Then g_comp.Visible = True
-        If Not g_luscen Is Nothing Then g_luscen.Visible = True
+
+        SetFormsVisibility(True)
     End Sub
 
-    Private Sub btnDone_Click (ByVal sender As Object, ByVal e As EventArgs) Handles btnDone.Click
-        Try
-            Close()
-        Catch ex As Exception
-            HandleError (ex)
-        End Try
+    Private Sub btnDone_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDone.Click
+        Close()
     End Sub
 
-    Public Sub disableDone (ByVal disable As Boolean)
+    Public Sub disableDone(ByVal disable As Boolean)
         Try
             stopclose = disable
             btnDone.Enabled = Not disable
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub frmSelectShape_FormClosing (ByVal sender As Object, _
+    Private Sub frmSelectShape_FormClosing(ByVal sender As Object, _
                                             ByVal e As FormClosingEventArgs) _
         Handles MyBase.FormClosing
         Try
@@ -69,7 +66,7 @@ Public Class SelectionModeForm
                 e.Cancel = True
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

@@ -31,6 +31,8 @@ Module Utilities
     Public g_CurrentProjectPath As String
 
     Public g_cbMainForm As MainForm
+    Public g_MainForm As Form
+
     Public g_comp As CompareOutputsForm
     Public g_luscen As EditLandUseScenario
 
@@ -75,9 +77,6 @@ Module Utilities
     'Coeff Row Number
     Public g_strCoeffCalc As String
     'if the Calc option is chosen, hold results in string
-
-    Public g_frmProjectSetup As Form
-    'Function for connection to NSPECT.mdb: fires on dll load
 
 
 
