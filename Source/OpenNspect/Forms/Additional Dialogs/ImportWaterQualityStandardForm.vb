@@ -89,7 +89,7 @@ Friend Class ImportWaterQualityStandardForm
             'Cleanup
             _frmWQ.cboWQStdName.Items.Clear()
             InitComboBox (_frmWQ.cboWQStdName, "WQCRITERIA")
-            _frmWQ.cboWQStdName.SelectedIndex = GetCboIndex ((txtStdName.Text), _frmWQ.cboWQStdName)
+            _frmWQ.cboWQStdName.SelectedIndex = GetIndexOfEntry((txtStdName.Text), _frmWQ.cboWQStdName)
             MyBase.OK_Button_Click (sender, e)
         Catch ex As Exception
             HandleError (ex)

@@ -297,7 +297,7 @@ Friend Class WaterQualityStandardsForm
         Try
             cboWQStdName.Items.Clear()
             InitComboBox(cboWQStdName, "WQCRITERIA")
-            cboWQStdName.SelectedIndex = GetCboIndex(strWQName, cboWQStdName)
+            cboWQStdName.SelectedIndex = GetIndexOfEntry(strWQName, cboWQStdName)
         Catch ex As Exception
             HandleError(ex)
         End Try

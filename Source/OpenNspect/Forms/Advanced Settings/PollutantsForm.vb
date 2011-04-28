@@ -683,17 +683,17 @@ Friend Class PollutantsForm
             cboCoeffSet.Items.Add (strCoeffName)
 
             'Call the function to set everything to newly added Coefficient.
-            cboCoeffSet.SelectedIndex = GetCboIndex (strCoeffName, cboCoeffSet)
+            cboCoeffSet.SelectedIndex = GetIndexOfEntry(strCoeffName, cboCoeffSet)
 
-            txtLCType.Text = datalctype ("Name")
+            txtLCType.Text = datalctype("Name")
             datalctype.Close()
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub CopyCoefficient (ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
+    Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
             'the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
@@ -708,39 +708,39 @@ Friend Class PollutantsForm
 
             strCopySet = "SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = " & _
                          "COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffSet & "'"
-            Dim cmdCopySet As New DataHelper (strCopySet)
+            Dim cmdCopySet As New DataHelper(strCopySet)
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
             dataCopySet.Read()
 
             'INSERT: new Coefficient set taking the PollID and LCType ID from rsCopySet
             strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & _
-                           Replace (strNewCoeffName, "'", "''") & "'," & dataCopySet ("POLLID") & "," & _
-                           dataCopySet ("LCTypeID") & ")"
+                           Replace(strNewCoeffName, "'", "''") & "'," & dataCopySet("POLLID") & "," & _
+                           dataCopySet("LCTypeID") & ")"
 
             'First need to add the coefficient set to that table
-            Dim cmdInsLCType As New DataHelper (strNewLcType)
+            Dim cmdInsLCType As New DataHelper(strNewLcType)
             cmdInsLCType.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
             'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
             strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & _
                             strNewCoeffName & "'"
-            Dim cmdNewCoefID As New DataHelper (strNewCoeffID)
+            Dim cmdNewCoefID As New DataHelper(strNewCoeffID)
             Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
             dataNewCoeffID.Read()
-            intCoeffSetID = dataNewCoeffID ("CoeffSetID")
+            intCoeffSetID = dataNewCoeffID("CoeffSetID")
             dataNewCoeffID.Close()
 
             'Now loopy loo to populate values.
             Dim strNewCoeff1 As String
             strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim cmdNewCoef As New DataHelper (strNewCoeff1)
+            Dim cmdNewCoef As New DataHelper(strNewCoeff1)
             Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
-            Dim cbuilder As New OleDbCommandBuilder (adaptNewCoeff)
+            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
             cbuilder.QuotePrefix = "["
             cbuilder.QuoteSuffix = "]"
             Dim dt As New DataTable
-            adaptNewCoeff.Fill (dt)
+            adaptNewCoeff.Fill(dt)
 
             'Clear things and set the rows to recordcount + 1, remember 1st row fixed
             'dgvCoef.Rows.Clear()
@@ -748,47 +748,47 @@ Friend Class PollutantsForm
             'Actually add the records to the new set
             Do
                 Dim row As DataRow = dt.NewRow()
-                row ("Coeff1") = dataCopySet ("Coeff1")
-                row ("Coeff2") = dataCopySet ("Coeff2")
-                row ("Coeff3") = dataCopySet ("Coeff3")
-                row ("Coeff4") = dataCopySet ("Coeff4")
-                row ("CoeffSetID") = intCoeffSetID
-                row ("LCClassID") = dataCopySet ("LCClassID")
-                dt.Rows.Add (row)
+                row("Coeff1") = dataCopySet("Coeff1")
+                row("Coeff2") = dataCopySet("Coeff2")
+                row("Coeff3") = dataCopySet("Coeff3")
+                row("Coeff4") = dataCopySet("Coeff4")
+                row("CoeffSetID") = intCoeffSetID
+                row("LCClassID") = dataCopySet("LCClassID")
+                dt.Rows.Add(row)
             Loop While dataCopySet.Read()
-            adaptNewCoeff.Update (dt)
+            adaptNewCoeff.Update(dt)
             dataCopySet.Close()
 
             'Set up everything to look good
-            cboPollName_SelectedIndexChanged (cboPollName, New EventArgs())
-            cboCoeffSet.SelectedIndex = GetCboIndex (strNewCoeffName, cboCoeffSet)
+            cboPollName_SelectedIndexChanged(cboPollName, New EventArgs())
+            cboCoeffSet.SelectedIndex = GetIndexOfEntry(strNewCoeffName, cboCoeffSet)
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     'Exports your current standard and pollutants to text or csv.
 
-    Private Sub ExportCoeffSet (ByRef strFileName As String)
+    Private Sub ExportCoeffSet(ByRef strFileName As String)
         Try
-            Dim out As New StreamWriter (strFileName)
+            Dim out As New StreamWriter(strFileName)
 
             'Write name of pollutant and threshold
             For i As Integer = 0 To dgvCoef.Rows.Count - 1
-                out.WriteLine ( _
-                               dgvCoef.Rows (i).Cells (0).Value.ToString & "," & _
-                               dgvCoef.Rows (i).Cells (2).Value.ToString & "," & _
-                               dgvCoef.Rows (i).Cells (3).Value.ToString & "," & _
-                               dgvCoef.Rows (i).Cells (4).Value.ToString & "," & _
-                               dgvCoef.Rows (i).Cells (5).Value.ToString)
+                out.WriteLine( _
+                               dgvCoef.Rows(i).Cells(0).Value.ToString & "," & _
+                               dgvCoef.Rows(i).Cells(2).Value.ToString & "," & _
+                               dgvCoef.Rows(i).Cells(3).Value.ToString & "," & _
+                               dgvCoef.Rows(i).Cells(4).Value.ToString & "," & _
+                               dgvCoef.Rows(i).Cells(5).Value.ToString)
             Next i
             out.Close()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub UpdateCoeffSet (ByRef cmdCoeff As OleDbCommand, ByRef strCoeffName As String, ByRef strFileName As String)
+    Public Sub UpdateCoeffSet(ByRef cmdCoeff As OleDbCommand, ByRef strCoeffName As String, ByRef strFileName As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
             'the name, m_intPollID as the PollID, and m_intLCTYPEID as the LCTypeID.  The last two are
@@ -810,37 +810,37 @@ Friend Class PollutantsForm
             Dim dataCoeff As OleDbDataReader = cmdCoeff.ExecuteReader()
             dataCoeff.Read()
             strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & _
-                           Replace (strCoeffName, "'", "''") & "'," & _intPollID & "," & dataCoeff ("LCTypeID") & ")"
+                           Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & dataCoeff("LCTypeID") & ")"
             dataCoeff.Close()
 
             'First need to add the coefficient set to that table
-            Dim cmdInsCoef As New DataHelper (strNewLcType)
+            Dim cmdInsCoef As New DataHelper(strNewLcType)
             cmdInsCoef.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
             'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
             strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & _
                             "'"
-            Dim cmdNewCoefID As New DataHelper (strNewCoeffID)
+            Dim cmdNewCoefID As New DataHelper(strNewCoeffID)
             Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
             dataNewCoeffID.Read()
-            intCoeffSetID = dataNewCoeffID ("CoeffSetID")
+            intCoeffSetID = dataNewCoeffID("CoeffSetID")
             dataNewCoeffID.Close()
 
             'Now turn attention to the TextFile...to get the users coefficient values
-            Dim read As New StreamReader (strFileName)
+            Dim read As New StreamReader(strFileName)
             intLine = 0
 
             'Now loopy loo to populate values.
             Dim strNewCoeff1 As String
             strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim cmdNewCoef As New DataHelper (strNewCoeff1)
+            Dim cmdNewCoef As New DataHelper(strNewCoeff1)
             Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
-            Dim cbuilder As New OleDbCommandBuilder (adaptNewCoeff)
+            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
             cbuilder.QuotePrefix = "["
             cbuilder.QuoteSuffix = "]"
             Dim dt As New DataTable
-            adaptNewCoeff.Fill (dt)
+            adaptNewCoeff.Fill(dt)
 
             i = 0
 
@@ -850,43 +850,43 @@ Friend Class PollutantsForm
 
                 strLine = read.ReadLine
                 'Value exits??
-                strValue = CShort (Split (strLine, ",") (0))
+                strValue = CShort(Split(strLine, ",")(0))
 
                 dataCoeff = cmdCoeff.ExecuteReader()
                 While dataCoeff.Read()
-                    If dataCoeff ("Value") = strValue Then
+                    If dataCoeff("Value") = strValue Then
                         Dim row As DataRow = dt.NewRow()
-                        row ("Coeff1") = Split (strLine, ",") (1)
-                        row ("Coeff2") = Split (strLine, ",") (2)
-                        row ("Coeff3") = Split (strLine, ",") (3)
-                        row ("Coeff4") = Split (strLine, ",") (4)
-                        row ("CoeffSetID") = intCoeffSetID
-                        row ("LCClassID") = dataCoeff ("LCClassID")
-                        dt.Rows.Add (row)
+                        row("Coeff1") = Split(strLine, ",")(1)
+                        row("Coeff2") = Split(strLine, ",")(2)
+                        row("Coeff3") = Split(strLine, ",")(3)
+                        row("Coeff4") = Split(strLine, ",")(4)
+                        row("CoeffSetID") = intCoeffSetID
+                        row("LCClassID") = dataCoeff("LCClassID")
+                        dt.Rows.Add(row)
 
                         Dim drow As DataRow = _dtCoeff.NewRow()
-                        drow (0) = strValue
-                        drow (1) = dataCoeff ("Name")
-                        drow (2) = Split (strLine, ",") (1)
-                        drow (3) = Split (strLine, ",") (2)
-                        drow (4) = Split (strLine, ",") (3)
-                        drow (5) = Split (strLine, ",") (4)
-                        drow (6) = intCoeffSetID
-                        drow (7) = row ("coeffID")
+                        drow(0) = strValue
+                        drow(1) = dataCoeff("Name")
+                        drow(2) = Split(strLine, ",")(1)
+                        drow(3) = Split(strLine, ",")(2)
+                        drow(4) = Split(strLine, ",")(3)
+                        drow(5) = Split(strLine, ",")(4)
+                        drow(6) = intCoeffSetID
+                        drow(7) = row("coeffID")
                     End If
                 End While
-                adaptNewCoeff.Update (dt)
+                adaptNewCoeff.Update(dt)
                 dataCoeff.Close()
             Loop
 
             cboCoeffSet.Items.Clear()
             Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
             While coef.Read()
-                cboCoeffSet.Items.Add (coef ("Name"))
+                cboCoeffSet.Items.Add(coef("Name"))
             End While
-            cboCoeffSet.SelectedIndex = GetCboIndex (strCoeffName, cboCoeffSet)
+            cboCoeffSet.SelectedIndex = GetIndexOfEntry(strCoeffName, cboCoeffSet)
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
