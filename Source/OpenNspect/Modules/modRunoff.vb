@@ -554,7 +554,6 @@ Module modRunoff
                                        ByRef pInSoilsRaster As Grid, ByRef OutputItems As OutputItems) As Boolean
 
         Try
-            If Not g_KeepRunning Then Return False
             ShowProgress("Calculating maximum potential retention...", ProgressTitle, 10, 3, g_frmProjectSetup)
             CalculateMaxiumumPotentialRetention(strPick, pInLandCoverRaster, pInSoilsRaster)
 
@@ -562,10 +561,9 @@ Module modRunoff
             ShowProgress("Calculating runoff...", ProgressTitle, 10, 6, g_frmProjectSetup)
             CalculateRunoff(pInRainRaster)
 
-
             If g_booLocalEffects Then
                 If Not g_KeepRunning Then Return False
-                ShowProgress("Creating data layer for local effects...", ProgressTitle, 10, 10, g_frmProjectSetup)
+                ShowProgress("Creating data layer for local effects...", ProgressTitle, 10, 7, g_frmProjectSetup)
                 CreateDataLayerForLocalEffects(OutputItems)
             End If
 
