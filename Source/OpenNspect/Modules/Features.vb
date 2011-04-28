@@ -35,9 +35,9 @@ Module Features
 
             If File.Exists(path) Then
                 If strLyrName <> "" Then
-                    g_MapWin.Layers.Add(pathOrDirectory, strLyrName)
+                    MapWindowPlugin.MapWindowInstance.Layers.Add(pathOrDirectory, strLyrName)
                 Else
-                    g_MapWin.Layers.Add(pathOrDirectory)
+                    MapWindowPlugin.MapWindowInstance.Layers.Add(pathOrDirectory)
                 End If
             Else
                 Return False

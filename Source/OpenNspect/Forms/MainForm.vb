@@ -114,8 +114,8 @@ Friend Class MainForm
             cboLCLayer.Items.Clear()
             arrAreaList.Clear()
             Dim currLyr As Layer
-            For i As Integer = 0 To g_MapWin.Layers.NumLayers - 1
-                currLyr = g_MapWin.Layers(i)
+            For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+                currLyr = MapWindowPlugin.MapWindowInstance.Layers(i)
                 If currLyr.LayerType = eLayerType.Grid Then
                     cboLCLayer.Items.Add(currLyr.Name)
                 ElseIf currLyr.LayerType = eLayerType.PolygonShapefile Then
@@ -902,7 +902,7 @@ Friend Class MainForm
 
             'Handles whether to overwrite existing groups of the same name or to generate a new group for outputs
             If g_pGroupLayer <> -1 Then
-                If g_MapWin.Layers.Groups.ItemByHandle(g_pGroupLayer).Text = _XmlPrjParams.strProjectName Then
+                If MapWindowPlugin.MapWindowInstance.Layers.Groups.ItemByHandle(g_pGroupLayer).Text = _XmlPrjParams.strProjectName Then
                     Dim _
                         res As MsgBoxResult = _
                             MsgBox( _
@@ -910,14 +910,14 @@ Friend Class MainForm
                                                    _XmlPrjParams.strProjectName), MsgBoxStyle.YesNoCancel, _
                                     "Replace Results?")
                     If res = MsgBoxResult.Yes Then
-                        g_MapWin.Layers.Groups.Remove(g_pGroupLayer)
+                        MapWindowPlugin.MapWindowInstance.Layers.Groups.Remove(g_pGroupLayer)
                     ElseIf res = MsgBoxResult.Cancel Then
                         Return
                     End If
                 End If
             End If
 
-            g_pGroupLayer = g_MapWin.Layers.Groups.Add(_XmlPrjParams.strProjectName)
+            g_pGroupLayer = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add(_XmlPrjParams.strProjectName)
 
             'Init your global dictionary to hold the metadata records as well as the global xml prj file
             g_dicMetadata = New Dictionary(Of String, String)
@@ -1108,7 +1108,7 @@ Friend Class MainForm
             'Go into workspace and rid it of all rasters
             CleanGlobals()
 
-            g_MapWin.StatusBar.ProgressBarValue = 0
+            MapWindowPlugin.MapWindowInstance.StatusBar.ProgressBarValue = 0
 
             'Save xml to ensure outputs are saved
             _XmlPrjParams.SaveFile(_strFileName)
@@ -1138,14 +1138,14 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Public Sub SetSelectedShape()
         'Uses the current layer and cycles the select shapes, populating a list of shape index values
-        If g_MapWin.Layers.CurrentLayer <> -1 And g_MapWin.View.SelectedShapes.NumSelected > 0 Then
+        If MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer <> -1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 Then
             chkSelectedPolys.Checked = True
-            _SelectLyrPath = g_MapWin.Layers(g_MapWin.Layers.CurrentLayer).FileName
+            _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).FileName
             _SelectedShapes = New List(Of Integer)
-            For i As Integer = 0 To g_MapWin.View.SelectedShapes.NumSelected - 1
-                _SelectedShapes.Add(g_MapWin.View.SelectedShapes(i).ShapeIndex)
+            For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected - 1
+                _SelectedShapes.Add(MapWindowPlugin.MapWindowInstance.View.SelectedShapes(i).ShapeIndex)
             Next
-            lblSelected.Text = g_MapWin.View.SelectedShapes.NumSelected.ToString + " selected"
+            lblSelected.Text = MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected.ToString + " selected"
         End If
     End Sub
 
@@ -2013,7 +2013,7 @@ Friend Class MainForm
                 ParamsPrj.strSelectedPolyFileName = _SelectLyrPath
                 Dim tmpidx As Integer = GetLayerIndexByFilename(_SelectLyrPath)
                 If tmpidx <> -1 Then
-                    ParamsPrj.strSelectedPolyLyrName = g_MapWin.Layers(tmpidx).Name
+                    ParamsPrj.strSelectedPolyLyrName = MapWindowPlugin.MapWindowInstance.Layers(tmpidx).Name
                 Else
                     ParamsPrj.strSelectedPolyLyrName = ""
                 End If

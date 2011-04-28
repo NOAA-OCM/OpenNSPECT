@@ -439,9 +439,9 @@ Module modLanduse
         Dim sfIndex As Long = GetLayerIndex(LUItemDetails.strLUScenLyrName)
         Dim shape As MapWinGIS.Shape
         If _
-            LUItemDetails.intLUScenSelectedPoly = 1 And g_MapWin.View.SelectedShapes.NumSelected > 0 And _
+            LUItemDetails.intLUScenSelectedPoly = 1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 And _
             sfIndex <> -1 Then
-            'Dim lyr As Layer = g_MapWin.Layers (sfIndex)
+            'Dim lyr As Layer = MapWindowPlugin.MapwindowInstance.Layers (sfIndex)
             Dim exportPath As String = _
                     ExportSelectedFeatures(LUItemDetails.strLUScenFileName, _
                                             LUItemDetails.intLUScenSelectedPolyList)

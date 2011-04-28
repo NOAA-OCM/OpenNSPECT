@@ -20,6 +20,7 @@ Imports System.Reflection
 
 Public Class MapWindowPlugin
     Implements IPlugin
+    Private Shared _mapwindowInstance As IMapWin
 
     Private Const mnuNspectMain As String = "mnunspectMainMenu"
     Private Const mnuNspectAnalysis As String = "mnunspectAnalysis"
@@ -41,6 +42,11 @@ Public Class MapWindowPlugin
 
 #End Region
 
+    Public Shared ReadOnly Property MapWindowInstance() As IMapWin
+        Get
+            Return _mapwindowInstance
+        End Get
+    End Property
     Private ReadOnly Property ReferenceAssembly() As [Assembly]
         Get
             Return Me.GetType.Assembly
@@ -194,10 +200,7 @@ Public Class MapWindowPlugin
     <CLSCompliant(False)> _
     Public Sub Initialize(ByVal MapWin As IMapWin, ByVal ParentHandle As Integer) _
         Implements IPlugin.Initialize
-        g_MapWin = MapWin
-        '  This sets global for use elsewhere in program
-        g_handle = ParentHandle
-        g_StatusBar = g_MapWin.StatusBar.AddPanel("", 2, 10, StatusBarPanelAutoSize.Spring)
+        _mapwindowInstance = MapWin
 
         VerifyMapWindowVersion()
 
@@ -228,11 +231,10 @@ Public Class MapWindowPlugin
     End Sub
 
     Public Sub Terminate() Implements IPlugin.Terminate
-        g_MapWin.StatusBar.RemovePanel(g_StatusBar)
 
         While (_addedMenus.Count > 0)
             Try
-                g_MapWin.Menus.Remove(_addedMenus.Pop().ToString())
+                mapwindowInstance.Menus.Remove(_addedMenus.Pop().ToString())
             Catch ex As Exception
 
             End Try
@@ -275,7 +277,7 @@ Public Class MapWindowPlugin
 
     Private Sub AddMenus()
         Dim nil As Object = Nothing
-        With g_MapWin.Menus
+        With mapwindowInstance.Menus
             .AddMenu(mnuNspectMain, nil, "OpenNSPECT")
             _addedMenus.Push(mnuNspectMain)
             .AddMenu(mnuNspectAnalysis, mnuNspectMain, nil, "Run Analysis...")

@@ -35,7 +35,7 @@ Module Rasters
         As Grid
         pRaster.Save()
         pRaster.Save(sOutputName)
-        pRaster.Header.Projection = g_MapWin.Project.ProjectProjection
+        pRaster.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection
 
         Dim tmpraster As New Grid
         tmpraster.Open(sOutputName)

@@ -65,11 +65,11 @@ Friend Class NewWatershedDelineationForm
             Next i
 
             cboStreamLayer.Items.Clear()
-            For i = 0 To g_MapWin.Layers.NumLayers - 1
+            For i = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
                 If _
-                    g_MapWin.Layers(g_MapWin.Layers.GetHandle(i)).LayerType = _
+                    MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(i)).LayerType = _
                     eLayerType.LineShapefile Then
-                    cboStreamLayer.Items.Add(g_MapWin.Layers(g_MapWin.Layers.GetHandle(i)).Name)
+                    cboStreamLayer.Items.Add(MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(i)).Name)
                 End If
             Next
         Catch ex As Exception

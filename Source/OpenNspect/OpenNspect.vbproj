@@ -331,9 +331,6 @@
     <Compile Include="Forms\Advanced Settings\WaterQualityStandardsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Modules\Globals.vb">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Modules\ErrorHandling.vb" />
     <Compile Include="Modules\modLanduse.vb" />
     <Compile Include="Modules\modMainRun.vb" />

@@ -22,7 +22,7 @@ Public Class SelectionModeForm
         Try
             Me.Show()
 
-            g_MapWin.View.CursorMode = tkCursorMode.cmSelection
+            MapWindowPlugin.MapWindowInstance.View.CursorMode = tkCursorMode.cmSelection
 
             If Not g_cbMainForm Is Nothing Then g_cbMainForm.Visible = False
             If Not g_comp Is Nothing Then g_comp.Visible = False
