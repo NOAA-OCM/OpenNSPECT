@@ -25,8 +25,7 @@ Friend Class SoilsSetupForm
 
 #Region "Events"
 
-    Private Sub cmdDEMBrowse_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cmdDEMBrowse.Click
+    Private Sub cmdDEMBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDEMBrowse.Click
         Try
             'Browse for DEM
             Dim pDEMRasterDataset As Grid
@@ -35,7 +34,7 @@ Friend Class SoilsSetupForm
             If Not pDEMRasterDataset Is Nothing Then
                 _pRasterProps = pDEMRasterDataset
             Else
-                MsgBox ("The Raster Dataset you have chosen is invalid.", MsgBoxStyle.Critical, "DEM Error")
+                MsgBox("The Raster Dataset you have chosen is invalid.", MsgBoxStyle.Critical, "DEM Error")
                 Return
             End If
         Catch ex As Exception
@@ -43,13 +42,10 @@ Friend Class SoilsSetupForm
         End Try
     End Sub
 
-    Private Sub cmdBrowseFile_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cmdBrowseFile.Click
+    Private Sub cmdBrowseFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowseFile.Click
         Try
             'browse...get output filename
-            Using _
-                dlgOpen As _
-                    New OpenFileDialog() With {.Filter = MSG6ShapeFile, .Title = "Open Soils Dataset"}
+            Using dlgOpen As New OpenFileDialog() With {.Filter = MSG6ShapeFile, .Title = "Open Soils Dataset"}
                 If dlgOpen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                     txtSoilsDS.Text = Trim(dlgOpen.FileName)
                     PopulateCbo()
@@ -107,8 +103,7 @@ Friend Class SoilsSetupForm
                 If UniqueName("Soils", (txtSoilsName.Text)) Then
                     ValidateData = True
                 Else
-                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, _
-                            "Select Unique Name")
+                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
                     ValidateData = False
                     txtSoilsName.Focus()
                     Exit Function
@@ -152,8 +147,7 @@ Friend Class SoilsSetupForm
                 If IsNumeric(CDbl(txtMUSLEVal.Text)) Then
                     ValidateData = True
                 Else
-                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, _
-                            "Numeric Values Only")
+                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, "Numeric Values Only")
                     ValidateData = False
                 End If
             Else
@@ -166,8 +160,7 @@ Friend Class SoilsSetupForm
                 If IsNumeric(CDbl(txtMUSLEExp.Text)) Then
                     ValidateData = True
                 Else
-                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, _
-                            "Numeric Values Only")
+                    MsgBox("Please enter a numeric value for the MUSLE equation.", MsgBoxStyle.Critical, "Numeric Values Only")
                     ValidateData = False
                 End If
             Else
@@ -181,8 +174,7 @@ Friend Class SoilsSetupForm
         End Try
     End Function
 
-    Private Function CreateSoilsGrid(ByRef strSoilsFileName As String, ByRef strHydFieldName As String, _
-                                      Optional ByRef strKFactor As String = "") As Boolean
+    Private Function CreateSoilsGrid(ByRef strSoilsFileName As String, ByRef strHydFieldName As String, Optional ByRef strKFactor As String = "") As Boolean
         'Incoming:
         'strSoilsFileName: string of soils file name path
         'strHydFieldName: string of hydrologic group attribute
@@ -273,9 +265,7 @@ Friend Class SoilsSetupForm
                         Case "A/D"
                             pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
                         Case ""
-                            MsgBox( _
-                                    "Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", _
-                                    MsgBoxStyle.Critical, "Missing Values Detected")
+                            MsgBox("Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", MsgBoxStyle.Critical, "Missing Values Detected")
                             CreateSoilsGrid = False
                             CloseProgressDialog()
                             Exit Function
@@ -301,8 +291,7 @@ Friend Class SoilsSetupForm
             If g_KeepRunning Then
                 ShowProgress("Converting Soils Dataset...", "Processing Soils", 2, 2, Me)
 
-                strOutSoils = _
-                    GetUniqueFileName("soils", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
+                strOutSoils = GetUniqueFileName("soils", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
 
                 'Hand convert the soils shapefile to grids by creating new grids based on header of dem
                 Dim dem As New Grid
@@ -323,8 +312,7 @@ Friend Class SoilsSetupForm
                 outSoils.CreateNew(strOutSoils, head, GridDataType.DoubleDataType, head.NodataValue)
 
                 If Len(strKFactor) > 0 Then
-                    strOutKSoils = _
-                        GetUniqueFileName("soilsk", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
+                    strOutKSoils = GetUniqueFileName("soilsk", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
                     outSoilsK.CreateNew(strOutKSoils, headK, GridDataType.DoubleDataType, head.NodataValue)
                 Else
                     strOutKSoils = ""
@@ -361,10 +349,7 @@ Friend Class SoilsSetupForm
                 soilsshp.Close()
                 'STEP 4:
                 'Now enter all into database
-                strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & _
-                         Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & _
-                         Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & _
-                         CDbl(txtMUSLEExp.Text) & ")"
+                strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & CDbl(txtMUSLEExp.Text) & ")"
                 Dim cmdIns As New DataHelper(strCmd)
                 cmdIns.ExecuteNonQuery()
 

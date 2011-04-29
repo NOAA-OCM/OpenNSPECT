@@ -51,65 +51,62 @@ Friend Class LandCoverTypesForm
         End Try
     End Sub
 
-    Private Sub cboLCType_SelectedIndexChanged (ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
-        Handles cmbxLCType.SelectedIndexChanged
+    Private Sub cboLCType_SelectedIndexChanged(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles cmbxLCType.SelectedIndexChanged
         Try
             'On the cbo Click to change to a new LandClassType, check if there's been changes, prompt to save
             Dim strSQLLCType As String
             Dim strSQLLCClass As String
             If IsDirty And _bolBegin Then
 
-                Dim intYesNo As MsgBoxResult = MsgBox (strYesNo, MsgBoxStyle.YesNo, strYesNoTitle)
+                Dim intYesNo As MsgBoxResult = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNoTitle)
                 If intYesNo = MsgBoxResult.Yes Then
                     SaveToDB()
                     IsDirty = False
                     CmdSaveEnabled()
-                    cboLCType_SelectedIndexChanged (eventSender, eventArgs)
+                    cboLCType_SelectedIndexChanged(eventSender, eventArgs)
                 ElseIf intYesNo = MsgBoxResult.No Then
                     IsDirty = False
                     CmdSaveEnabled()
-                    cboLCType_SelectedIndexChanged (eventSender, eventArgs)
+                    cboLCType_SelectedIndexChanged(eventSender, eventArgs)
                 End If
 
             Else
                 _intCount = dgvLCTypes.RowCount
-                CheckCCAPDefault (cmbxLCType.Text)
+                CheckCCAPDefault(cmbxLCType.Text)
 
                 'Selection based on combo box
                 strSQLLCType = String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", cmbxLCType.Text)
 
                 'original
-                Dim LCTypeCmd As OleDbCommand = New OleDbCommand (strSQLLCType, _dbConn)
+                Dim LCTypeCmd As OleDbCommand = New OleDbCommand(strSQLLCType, _dbConn)
                 Dim dataLCType As OleDbDataReader = LCTypeCmd.ExecuteReader()
 
                 If dataLCType.HasRows Then
                     dataLCType.Read()
 
-                    txtLCTypeDesc.Text = dataLCType.Item ("Description")
+                    txtLCTypeDesc.Text = dataLCType.Item("Description")
 
-                    _intLCTypeID = dataLCType.Item ("LCTypeID")
+                    _intLCTypeID = dataLCType.Item("LCTypeID")
 
-                    strSQLLCClass = "SELECT LCCLASS.Value, LCCLASS.Name, LCCLASS.[CN-A], LCCLASS.[CN-B]," & _
-                                    " LCCLASS.[CN-C], LCCLASS.[CN-D], LCCLASS.CoverFactor, LCCLASS.W_WL, LCCLASS.LCTYPEID, LCCLASS.LCCLASSID FROM LCCLASS WHERE" & _
-                                    " LCTYPEID = " & dataLCType.Item ("LCTypeID") & " ORDER BY LCCLass.Value"
-                    Dim LCClassCmd As OleDbCommand = New OleDbCommand (strSQLLCClass, _dbConn)
-                    _LCAdapter = New OleDbDataAdapter (LCClassCmd)
-                    _cBuilder = New OleDbCommandBuilder (_LCAdapter)
+                    strSQLLCClass = "SELECT LCCLASS.Value, LCCLASS.Name, LCCLASS.[CN-A], LCCLASS.[CN-B]," & " LCCLASS.[CN-C], LCCLASS.[CN-D], LCCLASS.CoverFactor, LCCLASS.W_WL, LCCLASS.LCTYPEID, LCCLASS.LCCLASSID FROM LCCLASS WHERE" & " LCTYPEID = " & dataLCType.Item("LCTypeID") & " ORDER BY LCCLass.Value"
+                    Dim LCClassCmd As OleDbCommand = New OleDbCommand(strSQLLCClass, _dbConn)
+                    _LCAdapter = New OleDbDataAdapter(LCClassCmd)
+                    _cBuilder = New OleDbCommandBuilder(_LCAdapter)
                     _cBuilder.QuotePrefix = "["
                     _cBuilder.QuoteSuffix = "]"
                     _dTable = New DataTable
 
-                    _LCAdapter.Fill (_dTable)
+                    _LCAdapter.Fill(_dTable)
 
-                    _dTable.Columns (0).DefaultValue = "0"
-                    _dTable.Columns (1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
-                    _dTable.Columns (2).DefaultValue = "0"
-                    _dTable.Columns (3).DefaultValue = "0"
-                    _dTable.Columns (4).DefaultValue = "0"
-                    _dTable.Columns (5).DefaultValue = "0"
-                    _dTable.Columns (6).DefaultValue = "0"
-                    _dTable.Columns (7).DefaultValue = "0"
-                    _dTable.Columns (8).DefaultValue = _intLCTypeID
+                    _dTable.Columns(0).DefaultValue = "0"
+                    _dTable.Columns(1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
+                    _dTable.Columns(2).DefaultValue = "0"
+                    _dTable.Columns(3).DefaultValue = "0"
+                    _dTable.Columns(4).DefaultValue = "0"
+                    _dTable.Columns(5).DefaultValue = "0"
+                    _dTable.Columns(6).DefaultValue = "0"
+                    _dTable.Columns(7).DefaultValue = "0"
+                    _dTable.Columns(8).DefaultValue = _intLCTypeID
                     '_dTable.Columns(9).DefaultValue = _intLCClassID
 
                     _bSource = New BindingSource
@@ -120,8 +117,7 @@ Friend Class LandCoverTypesForm
                         _bolBegin = True
                     End If
                 Else
-                    MsgBox ("Warning: There are no records remaining.  Please add a new one.", MsgBoxStyle.Critical, _
-                            "Recordset Empty")
+                    MsgBox("Warning: There are no records remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
                 End If
             End If
 
@@ -129,39 +125,35 @@ Friend Class LandCoverTypesForm
                 _bolBegin = True
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub txtLCTypeDesc_TextChanged (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles txtLCTypeDesc.TextChanged
+    Private Sub txtLCTypeDesc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtLCTypeDesc.TextChanged
         Try
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
 
         Try
             If ValidateGridValues() Then
                 SaveToDB()
                 _bolBegin = False
 
-                MsgBox ("Data saved successfully.", MsgBoxStyle.OkOnly, "Data Saved Successfully")
+                MsgBox("Data saved successfully.", MsgBoxStyle.OkOnly, "Data Saved Successfully")
 
                 IsDirty = False
 
-                MyBase.OK_Button_Click (sender, e)
+                MyBase.OK_Button_Click(sender, e)
             End If
         Catch ex As Exception
             'TODO: Make sure this error functions
-            If Err.Number = - 2147221504 Then
-                MsgBox ( _
-                        "The data values entered exceed the allowable precision of the database." & vbNewLine & _
-                        "Data must not contain more than 4 values to the right of the decimal place." & vbNewLine & _
-                        "Please correct your inputs before saving.", MsgBoxStyle.Information, "Precision Error")
+            If Err.Number = -2147221504 Then
+                MsgBox("The data values entered exceed the allowable precision of the database." & vbNewLine & "Data must not contain more than 4 values to the right of the decimal place." & vbNewLine & "Please correct your inputs before saving.", MsgBoxStyle.Information, "Precision Error")
                 Return
             End If
 
@@ -169,8 +161,7 @@ Friend Class LandCoverTypesForm
         End Try
     End Sub
 
-    Private Sub btnRestoreDefaults_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles btnRestoreDefaults.Click
+    Private Sub btnRestoreDefaults_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRestoreDefaults.Click
         'Restore Defaults Button - just read in NSPECT.LCCLASSDEFAULTS
 
         Try
@@ -210,8 +201,7 @@ Friend Class LandCoverTypesForm
         End Try
     End Sub
 
-    Private Sub mnuNewLCType_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuNewLCType.Click
+    Private Sub mnuNewLCType_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuNewLCType.Click
         Try
             Dim newLC As New NewLandCoverTypeForm
             newLC.Init(Me)
@@ -221,15 +211,10 @@ Friend Class LandCoverTypesForm
         End Try
     End Sub
 
-    Private Sub mnuDelLCType_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuDelLCType.Click
+    Private Sub mnuDelLCType_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuDelLCType.Click
         Try
             Dim intAns As Short
-            intAns = _
-                MsgBox( _
-                        "Are you sure you want to delete the land cover type '" & cmbxLCType.Text & _
-                        "' and all associated Coefficient Sets?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, _
-                        "Confirm Delete")
+            intAns = MsgBox("Are you sure you want to delete the land cover type '" & cmbxLCType.Text & "' and all associated Coefficient Sets?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
 
             Dim strLCTypeDelete As String
             If intAns = MsgBoxResult.Yes Then
@@ -269,126 +254,112 @@ Friend Class LandCoverTypesForm
         End Try
     End Sub
 
-    Private Sub mnuImpLCType_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuImpLCType.Click
+    Private Sub mnuImpLCType_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuImpLCType.Click
         Try
             Dim impLC As New ImportLandCoverTypeForm
-            impLC.Init (Me)
+            impLC.Init(Me)
             impLC.ShowDialog()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub mnuExpLCType_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuExpLCType.Click
+    Private Sub mnuExpLCType_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuExpLCType.Click
         Try
             Dim dlgsave As New SaveFileDialog
-            dlgsave.Filter = Replace (MSG1TextFile, "<name>", "Land Cover Type")
-            dlgsave.Title = Replace (MSG3, "<name>", "Land Cover Type")
+            dlgsave.Filter = Replace(MSG1TextFile, "<name>", "Land Cover Type")
+            dlgsave.Title = Replace(MSG3, "<name>", "Land Cover Type")
             dlgsave.DefaultExt = ".txt"
 
             If dlgsave.ShowDialog = System.Windows.Forms.DialogResult.OK Then
-                ExportLandCover (dlgsave.FileName)
+                ExportLandCover(dlgsave.FileName)
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub mnuAppend_Click (ByVal sender As Object, ByVal e As EventArgs) Handles mnuAppend.Click
+    Private Sub mnuAppend_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuAppend.Click
         Try
             AddRow()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub mnuInsertRow_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuInsertRow.Click
+    Private Sub mnuInsertRow_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuInsertRow.Click
         Try
             InsertRow()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub mnuDeleteRow_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuDeleteRow.Click
+    Private Sub mnuDeleteRow_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuDeleteRow.Click
         Try
             DeleteRow()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub mnuLCHelp_Click (ByVal sender As Object, ByVal e As EventArgs) Handles mnuLCHelp.Click
+    Private Sub mnuLCHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuLCHelp.Click
         Try
-            Help.ShowHelp (Me, g_nspectPath & "\Help\nspect.chm", "land_cover.htm")
+            Help.ShowHelp(Me, g_nspectPath & "\Help\nspect.chm", "land_cover.htm")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub dgvLCTypes_MouseClick (ByVal sender As Object, ByVal e As MouseEventArgs) _
-        Handles dgvLCTypes.MouseClick
+    Private Sub dgvLCTypes_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles dgvLCTypes.MouseClick
         Try
             If e.Button = System.Windows.Forms.MouseButtons.Right Then
-                cntxmnuGrid.Show (dgvLCTypes, New Point (e.X, e.Y))
+                cntxmnuGrid.Show(dgvLCTypes, New Point(e.X, e.Y))
             End If
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub AddRowToolStripMenuItem_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles AddRowToolStripMenuItem.Click
+    Private Sub AddRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddRowToolStripMenuItem.Click
         Try
             AddRow()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub InsertRowToolStripMenuItem_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles InsertRowToolStripMenuItem.Click
+    Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles InsertRowToolStripMenuItem.Click
         Try
             InsertRow()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub DeleteRowToolStripMenuItem_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles DeleteRowToolStripMenuItem.Click
+    Private Sub DeleteRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles DeleteRowToolStripMenuItem.Click
         Try
             DeleteRow()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub dgvLCTypes_CellEndEdit (ByVal sender As Object, _
-                                        ByVal e As DataGridViewCellEventArgs) _
-        Handles dgvLCTypes.CellEndEdit
+    Private Sub dgvLCTypes_CellEndEdit(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvLCTypes.CellEndEdit
         Try
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub dgvLCTypes_DataError (ByVal sender As Object, _
-                                      ByVal e As DataGridViewDataErrorEventArgs) _
-        Handles dgvLCTypes.DataError
+    Private Sub dgvLCTypes_DataError(ByVal sender As Object, ByVal e As DataGridViewDataErrorEventArgs) Handles dgvLCTypes.DataError
         Try
-            MsgBox ( _
-                    "Please enter a valid number in the cell on row " + (e.RowIndex + 1).ToString + " and column " + _
-                    (e.ColumnIndex + 1).ToString + ".", MsgBoxStyle.Exclamation, "Data Error")
+            MsgBox("Please enter a valid number in the cell on row " + (e.RowIndex + 1).ToString + " and column " + (e.ColumnIndex + 1).ToString + ".", MsgBoxStyle.Exclamation, "Data Error")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -399,49 +370,49 @@ Friend Class LandCoverTypesForm
     Private Sub SaveToDB()
         Try
             _bSource.EndEdit()
-            _LCAdapter.Update (_dTable)
+            _LCAdapter.Update(_dTable)
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Private Sub AddRow()
         Try
-            _dTable.Columns (0).DefaultValue = _dTable.Rows.Count + 1
-            _dTable.Columns (1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
+            _dTable.Columns(0).DefaultValue = _dTable.Rows.Count + 1
+            _dTable.Columns(1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
 
             Dim dr As DataRow = _dTable.NewRow()
-            _dTable.Rows.Add (dr)
+            _dTable.Rows.Add(dr)
             IsDirty = True
             CmdSaveEnabled()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Private Sub InsertRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
-                _dTable.Columns (1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
+                _dTable.Columns(1).DefaultValue = "Landclass" + (_dTable.Rows.Count + 1).ToString
                 Dim dr As DataRow = _dTable.NewRow()
-                _dTable.Rows.InsertAt (dr, dgvLCTypes.CurrentRow.Index)
+                _dTable.Rows.InsertAt(dr, dgvLCTypes.CurrentRow.Index)
                 IsDirty = True
                 CmdSaveEnabled()
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Private Sub DeleteRow()
         Try
             If Not dgvLCTypes.CurrentRow Is Nothing Then
-                dgvLCTypes.Rows.Remove (dgvLCTypes.CurrentRow)
+                dgvLCTypes.Rows.Remove(dgvLCTypes.CurrentRow)
                 IsDirty = True
                 CmdSaveEnabled()
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -449,24 +420,24 @@ Friend Class LandCoverTypesForm
         OK_Button.Enabled = IsDirty
     End Sub
 
-    Private Sub CheckCCAPDefault (ByRef strName As String)
+    Private Sub CheckCCAPDefault(ByRef strName As String)
         Try
             If strName = "CCAP" Then
                 btnRestoreDefaults.Enabled = True
                 mnuDelLCType.Enabled = False
                 mnuEdit.Enabled = False
                 cntxmnuGrid.Enabled = False
-                ToolTip1.SetToolTip (dgvLCTypes, "")
+                ToolTip1.SetToolTip(dgvLCTypes, "")
             Else
                 btnRestoreDefaults.Enabled = False
                 mnuDelLCType.Enabled = True
                 mnuEdit.Enabled = True
                 cntxmnuGrid.Enabled = True
-                ToolTip1.SetToolTip (dgvLCTypes, "Right click to add, delete, or insert a row")
+                ToolTip1.SetToolTip(dgvLCTypes, "Right click to add, delete, or insert a row")
             End If
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -482,23 +453,23 @@ Friend Class LandCoverTypesForm
             Dim val As Object
 
             For i As Integer = 0 To _dTable.Rows.Count - 1
-                If _dTable.Rows (i).RowState <> DataRowState.Deleted Then
-                    dr = _dTable.Rows (i)
+                If _dTable.Rows(i).RowState <> DataRowState.Deleted Then
+                    dr = _dTable.Rows(i)
                     For j As Integer = 0 To _dTable.Columns.Count - 1
-                        val = dr.Item (j)
+                        val = dr.Item(j)
                         Select Case j
                             Case 0
-                                If Not IsNumeric (val) Then
-                                    DisplayError (Err1, i, j)
+                                If Not IsNumeric(val) Then
+                                    DisplayError(Err1, i, j)
                                     ValidateGridValues = False
                                     Exit Function
                                 Else
                                     For k As Integer = 0 To _dTable.Rows.Count - 1
-                                        If _dTable.Rows (k).RowState <> DataRowState.Deleted Then
-                                            dr2 = _dTable.Rows (k)
+                                        If _dTable.Rows(k).RowState <> DataRowState.Deleted Then
+                                            dr2 = _dTable.Rows(k)
                                             If k <> i Then 'Don't want to compare value to itself
-                                                If val = dr2.Item (j) Then
-                                                    DisplayError (Err2, i, j)
+                                                If val = dr2.Item(j) Then
+                                                    DisplayError(Err2, i, j)
                                                     ValidateGridValues = False
                                                     Exit Function
                                                 End If
@@ -508,21 +479,21 @@ Friend Class LandCoverTypesForm
                                 End If
 
                             Case 1
-                                If IsNumeric (val) Then
-                                    DisplayError (Err1, i, j)
+                                If IsNumeric(val) Then
+                                    DisplayError(Err1, i, j)
                                     ValidateGridValues = False
                                     Exit Function
                                 End If
 
                             Case 2, 3, 4, 5
-                                If Not IsNumeric (val) Or ((val < 0) Or (val > 1)) Or (Len (val.ToString) > 6) Then
-                                    DisplayError (Err1, i, j)
+                                If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 6) Then
+                                    DisplayError(Err1, i, j)
                                     ValidateGridValues = False
                                     Exit Function
                                 End If
                             Case 6
-                                If Not IsNumeric (val) Or ((val < 0) Or (val > 1)) Or (Len (val.ToString) > 5) Then
-                                    DisplayError (Err3, i, j)
+                                If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 5) Then
+                                    DisplayError(Err3, i, j)
                                     ValidateGridValues = False
                                     Exit Function
                                 End If
@@ -533,16 +504,16 @@ Friend Class LandCoverTypesForm
 
             ValidateGridValues = True
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Function
 
 
-    Private Sub ExportLandCover (ByRef strFileName As String)
+    Private Sub ExportLandCover(ByRef strFileName As String)
         Try
             'Exports your current LCType/LCClasses to text or csv.
 
-            Dim out As New StreamWriter (strFileName)
+            Dim out As New StreamWriter(strFileName)
 
             'Write the name and descript.
             out.WriteLine(String.Format("{0},{1}", cmbxLCType.Text, txtLCTypeDesc.Text))
@@ -550,30 +521,27 @@ Friend Class LandCoverTypesForm
             'Write name of pollutant and threshold
             Dim dr As DataRow
             For i As Integer = 0 To _dTable.Rows.Count - 1
-                If _dTable.Rows (i).RowState <> DataRowState.Deleted Then
-                    dr = _dTable.Rows (i)
-                    out.WriteLine ( _
-                                   dr (0).ToString + "," + dr (1).ToString + "," + dr (2).ToString + "," + _
-                                   dr (3).ToString + "," + dr (4).ToString + "," + dr (5).ToString + "," + _
-                                   dr (6).ToString + "," + dr (7).ToString)
+                If _dTable.Rows(i).RowState <> DataRowState.Deleted Then
+                    dr = _dTable.Rows(i)
+                    out.WriteLine(dr(0).ToString + "," + dr(1).ToString + "," + dr(2).ToString + "," + dr(3).ToString + "," + dr(4).ToString + "," + dr(5).ToString + "," + dr(6).ToString + "," + dr(7).ToString)
                 End If
             Next
 
             out.Close()
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub UpdateCombo (ByVal strName As String)
+    Public Sub UpdateCombo(ByVal strName As String)
         Try
             cmbxLCType.Items.Clear()
             IsDirty = False
-            InitComboBox (cmbxLCType, "LCType")
+            InitComboBox(cmbxLCType, "LCType")
             cmbxLCType.SelectedItem = strName
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 

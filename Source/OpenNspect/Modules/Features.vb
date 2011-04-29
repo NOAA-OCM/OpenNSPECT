@@ -28,8 +28,7 @@ Module Features
 
     End Function
 
-    Public Function AddFeatureLayerToMapFromFileName(ByRef pathOrDirectory As String, Optional ByRef strLyrName As String = "") _
-        As Boolean
+    Public Function AddFeatureLayerToMapFromFileName(ByRef pathOrDirectory As String, Optional ByRef strLyrName As String = "") As Boolean
         Try
             Dim path = GetFeatureFullPath(pathOrDirectory)
 

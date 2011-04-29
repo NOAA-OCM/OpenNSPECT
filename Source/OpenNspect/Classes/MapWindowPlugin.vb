@@ -65,33 +65,23 @@ Public Class MapWindowPlugin
     End Property
 #Region "Unused Plug-in Interface Elements"
 
-    <CLSCompliant(False)> _
-    Public Sub LegendDoubleClick(ByVal Handle As Integer, ByVal Location As ClickLocation, _
-                                  ByRef Handled As Boolean) Implements IPlugin.LegendDoubleClick
+    <CLSCompliant(False)> Public Sub LegendDoubleClick(ByVal Handle As Integer, ByVal Location As ClickLocation, ByRef Handled As Boolean) Implements IPlugin.LegendDoubleClick
 
     End Sub
 
-    <CLSCompliant(False)> _
-    Public Sub LegendMouseDown(ByVal Handle As Integer, ByVal Button As Integer, _
-                                ByVal Location As ClickLocation, ByRef Handled As Boolean) _
-        Implements IPlugin.LegendMouseDown
+    <CLSCompliant(False)> Public Sub LegendMouseDown(ByVal Handle As Integer, ByVal Button As Integer, ByVal Location As ClickLocation, ByRef Handled As Boolean) Implements IPlugin.LegendMouseDown
 
     End Sub
 
-    <CLSCompliant(False)> _
-    Public Sub LegendMouseUp(ByVal Handle As Integer, ByVal Button As Integer, _
-                              ByVal Location As ClickLocation, ByRef Handled As Boolean) _
-        Implements IPlugin.LegendMouseUp
+    <CLSCompliant(False)> Public Sub LegendMouseUp(ByVal Handle As Integer, ByVal Button As Integer, ByVal Location As ClickLocation, ByRef Handled As Boolean) Implements IPlugin.LegendMouseUp
 
     End Sub
 
-    Public Sub MapDragFinished(ByVal Bounds As Rectangle, ByRef Handled As Boolean) _
-        Implements IPlugin.MapDragFinished
+    Public Sub MapDragFinished(ByVal Bounds As Rectangle, ByRef Handled As Boolean) Implements IPlugin.MapDragFinished
 
     End Sub
 
-    Public Sub MapMouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
-                           ByRef Handled As Boolean) Implements IPlugin.MapMouseUp
+    Public Sub MapMouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, ByRef Handled As Boolean) Implements IPlugin.MapMouseUp
 
     End Sub
 
@@ -99,13 +89,10 @@ Public Class MapWindowPlugin
 
     End Sub
 
-    Public Sub ProjectSaving(ByVal ProjectFile As String, ByRef SettingsString As String) _
-        Implements IPlugin.ProjectSaving
+    Public Sub ProjectSaving(ByVal ProjectFile As String, ByRef SettingsString As String) Implements IPlugin.ProjectSaving
     End Sub
 
-    <CLSCompliant(False)> _
-    Public Sub ShapesSelected(ByVal Handle As Integer, ByVal SelectInfo As SelectInfo) _
-        Implements IPlugin.ShapesSelected
+    <CLSCompliant(False)> Public Sub ShapesSelected(ByVal Handle As Integer, ByVal SelectInfo As SelectInfo) Implements IPlugin.ShapesSelected
 
     End Sub
 
@@ -113,18 +100,15 @@ Public Class MapWindowPlugin
 
     End Sub
 
-    Public Sub ProjectLoading(ByVal ProjectFile As String, ByVal SettingsString As String) _
-        Implements IPlugin.ProjectLoading
+    Public Sub ProjectLoading(ByVal ProjectFile As String, ByVal SettingsString As String) Implements IPlugin.ProjectLoading
 
     End Sub
 
-    Public Sub MapMouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, _
-                             ByRef Handled As Boolean) Implements IPlugin.MapMouseDown
+    Public Sub MapMouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Integer, ByVal y As Integer, ByRef Handled As Boolean) Implements IPlugin.MapMouseDown
 
     End Sub
 
-    Public Sub MapMouseMove(ByVal ScreenX As Integer, ByVal ScreenY As Integer, ByRef Handled As Boolean) _
-        Implements IPlugin.MapMouseMove
+    Public Sub MapMouseMove(ByVal ScreenX As Integer, ByVal ScreenY As Integer, ByRef Handled As Boolean) Implements IPlugin.MapMouseMove
 
     End Sub
 
@@ -132,9 +116,7 @@ Public Class MapWindowPlugin
 
     End Sub
 
-    <CLSCompliant(False)> _
-    Public Sub LayersAdded(ByVal Layers() As Layer) _
-        Implements IPlugin.LayersAdded
+    <CLSCompliant(False)> Public Sub LayersAdded(ByVal Layers() As Layer) Implements IPlugin.LayersAdded
 
     End Sub
 
@@ -197,9 +179,7 @@ Public Class MapWindowPlugin
     End Sub
 #Region "Start and Stop Methods"
 
-    <CLSCompliant(False)> _
-    Public Sub Initialize(ByVal MapWin As IMapWin, ByVal ParentHandle As Integer) _
-        Implements IPlugin.Initialize
+    <CLSCompliant(False)> Public Sub Initialize(ByVal MapWin As IMapWin, ByVal ParentHandle As Integer) Implements IPlugin.Initialize
 
         If MapWin Is Nothing Then
             Throw New ArgumentNullException("MapWin", "MapWin is nothing.")
@@ -236,8 +216,7 @@ Public Class MapWindowPlugin
 
 #Region "Used Interface Methods"
 
-    Public Sub ItemClicked(ByVal ItemName As String, ByRef Handled As Boolean) _
-        Implements IPlugin.ItemClicked
+    Public Sub ItemClicked(ByVal ItemName As String, ByRef Handled As Boolean) Implements IPlugin.ItemClicked
         Select Case ItemName
             Case mnuNspectAnalysis
                 ShowAnalysisForm()

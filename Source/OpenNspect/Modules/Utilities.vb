@@ -118,9 +118,7 @@ Module Utilities
                         Return 1
                     End If
                 Else
-                    MsgBox( _
-                            "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
-                            MsgBoxStyle.Exclamation, "No Project Information Detected")
+                    MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
                     Return -1
                 End If
             End If
@@ -257,8 +255,7 @@ Module Utilities
         Return ""
     End Function
 
-    Public Function AddInputFromGxBrowserText(ByRef txtInput As TextBox, ByRef strTitle As String) _
-        As Grid
+    Public Function AddInputFromGxBrowserText(ByRef txtInput As TextBox, ByRef strTitle As String) As Grid
         AddInputFromGxBrowserText = Nothing
         Try
             Using dlgOpen As New OpenFileDialog()
@@ -274,16 +271,14 @@ Module Utilities
                 End If
             End Using
         Catch ex As Exception
-            MsgBox("The file you have choosen is not a valid GRID dataset.  Please select another.", _
-                    MsgBoxStyle.Critical, "Invalid Data Type")
+            MsgBox("The file you have choosen is not a valid GRID dataset.  Please select another.", MsgBoxStyle.Critical, "Invalid Data Type")
         End Try
 
     End Function
 
 
 
-    Public Function ReturnContinuousRampColorCS(ByRef grd As Grid, ByRef strColor As String) _
-        As GridColorScheme
+    Public Function ReturnContinuousRampColorCS(ByRef grd As Grid, ByRef strColor As String) As GridColorScheme
         'Based on the Mapwindow Grid Coloring Scheme Editor MakeContinuousRamp function
         Dim arr(), val As Object, i, j As Integer
         Dim ht As New Hashtable
@@ -425,11 +420,7 @@ Module Utilities
                 bStep = (eB - sB) / brkArr.Length
 
                 'This must be double.parse(convert.tostring) for handling of sbyte values - cdm 11/13/2005
-                startVal = _
-                    CInt( _
-                        IIf( _
-                             Double.Parse(Convert.ToString(grd.Header.NodataValue)) = _
-                             Double.Parse(Convert.ToString(brkArr(0))), 1, 0))
+                startVal = CInt(IIf(Double.Parse(Convert.ToString(grd.Header.NodataValue)) = Double.Parse(Convert.ToString(brkArr(0))), 1, 0))
                 'startVal = CInt(IIf(CDbl(grd.Header.NodataValue) = CDbl(brkArr(0)), 1, 0))
                 For i = startVal To brkArr.Length - 1
                     brk = New GridColorBreak
@@ -457,11 +448,7 @@ Module Utilities
                 bStep = (eB - sB) / numBreaks
 
                 Dim min As Double, max As Double, range As Double
-                startVal = _
-                    CInt( _
-                        IIf( _
-                             Double.Parse(Convert.ToString(grd.Header.NodataValue)) = _
-                             Double.Parse(Convert.ToString(arr(0))), 1, 0))
+                startVal = CInt(IIf(Double.Parse(Convert.ToString(grd.Header.NodataValue)) = Double.Parse(Convert.ToString(arr(0))), 1, 0))
 
                 min = Double.Parse(Convert.ToString(arr(startVal)))
                 max = Double.Parse(Convert.ToString(arr(arr.Length() - 1)))
@@ -536,8 +523,7 @@ Module Utilities
         End Try
     End Function
 
-    Public Function ReturnUniqueRasterRenderer(ByRef pRaster As Grid, ByRef strStandardName As String) _
-        As Object
+    Public Function ReturnUniqueRasterRenderer(ByRef pRaster As Grid, ByRef strStandardName As String) As Object
         Try
             'Create two colors, red, green
             'pColorRed.RGB = System.Convert.ToUInt32(RGB(214, 71, 0))
@@ -597,15 +583,8 @@ Module Utilities
                     Return strprj
                 Else
                     If Path.GetFileName(pRasGeoDataset.Filename) = "sta.adf" Then
-                        If _
-                            File.Exists( _
-                                         Path.GetDirectoryName(pRasGeoDataset.Filename) + _
-                                         Path.DirectorySeparatorChar + "prj.adf") Then
-                            Dim _
-                                infile As _
-                                    New StreamReader( _
-                                                      Path.GetDirectoryName(pRasGeoDataset.Filename) + _
-                                                      Path.DirectorySeparatorChar + "prj.adf")
+                        If File.Exists(Path.GetDirectoryName(pRasGeoDataset.Filename) + Path.DirectorySeparatorChar + "prj.adf") Then
+                            Dim infile As New StreamReader(Path.GetDirectoryName(pRasGeoDataset.Filename) + Path.DirectorySeparatorChar + "prj.adf")
                             'TODO: Temporary measure that allows at least units to be recognized
                             If infile.ReadToEnd.Contains("METERS") Then
                                 Return "units=m"
@@ -628,8 +607,7 @@ Module Utilities
         End Try
     End Function
 
-    Public Function ClipBySelectedPoly(ByRef pGridToClip As Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, _
-                                        ByVal outputFileName As String) As Grid
+    Public Function ClipBySelectedPoly(ByRef pGridToClip As Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As Grid
         Dim strtmp1 As String = Path.GetTempFileName
         g_TempFilesToDel.Add(strtmp1)
         strtmp1 = strtmp1 + OutputGridExt
@@ -673,8 +651,7 @@ Module Utilities
 
     End Function
 
-    Public Function ExportSelectedFeatures(ByVal SelectLyrPath As String, _
-                                            ByRef SelectedShapes As List(Of Integer)) As String
+    Public Function ExportSelectedFeatures(ByVal SelectLyrPath As String, ByRef SelectedShapes As List(Of Integer)) As String
         ' Modified from http://www.mapwindow.org/wiki/index.php/MapWinGIS:SampleCode-VB_Net:ExportSelectedShapes
         Dim Result As Boolean
 
@@ -731,8 +708,7 @@ Module Utilities
 
                 'Populate the aspatial data
                 For iFieldCnt = 0 To myShapeFile.NumFields - 1
-                    newShapefile.EditCellValue(iFieldCnt, iShapeHandle, _
-                                                myShapeFile.CellValue(iFieldCnt, SelectedShapes(i)))
+                    newShapefile.EditCellValue(iFieldCnt, iShapeHandle, myShapeFile.CellValue(iFieldCnt, SelectedShapes(i)))
                 Next iFieldCnt
             Next i
 
@@ -746,10 +722,7 @@ Module Utilities
 
     End Function
 
-    Public Function AddOutputGridLayer(ByRef outRast As Grid, ByVal ColorString As String, _
-                                        ByVal UseStretch As Boolean, ByVal LayerName As String, _
-                                        ByVal OutputType As String, ByVal OutputGroup As Integer, _
-                                        ByRef OutputItems As OutputItems) As Boolean
+    Public Function AddOutputGridLayer(ByRef outRast As Grid, ByVal ColorString As String, ByVal UseStretch As Boolean, ByVal LayerName As String, ByVal OutputType As String, ByVal OutputGroup As Integer, ByRef OutputItems As OutputItems) As Boolean
         Dim cs As GridColorScheme
         If UseStretch = True Then
             cs = ReturnRasterStretchColorRampCS(outRast, ColorString)
@@ -776,20 +749,11 @@ Module Utilities
         End If
     End Function
 
-    Public Delegate Function RasterMathCellCalc _
-        (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, _
-         ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Public Delegate Function RasterMathCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
 
-    Public Delegate Function RasterMathCellCalcNulls _
-        (ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, _
-         ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, _
-         ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+    Public Delegate Function RasterMathCellCalcNulls(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
 
-    Public Sub RasterMath(ByRef InputGrid1 As Grid, ByRef InputGrid2 As Grid, _
-                           ByRef Inputgrid3 As Grid, ByRef Inputgrid4 As Grid, _
-                           ByRef Inputgrid5 As Grid, ByRef outputGrid As Grid, _
-                           ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, _
-                           Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
+    Public Sub RasterMath(ByRef InputGrid1 As Grid, ByRef InputGrid2 As Grid, ByRef Inputgrid3 As Grid, ByRef Inputgrid4 As Grid, ByRef Inputgrid5 As Grid, ByRef outputGrid As Grid, ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
 
 
         Dim nodata1, nodata2, nodata3, nodata4, nodata5 As Single
@@ -831,19 +795,13 @@ Module Utilities
 
             For col As Integer = 0 To ncol
                 If checkNullFirst Then
-                    If _
-                        rowvals1(col) = nodata1 OrElse rowvals2(col) = nodata2 OrElse rowvals3(col) = nodata3 OrElse _
-                        rowvals4(col) = nodata4 OrElse rowvals5(col) = nodata5 Then
+                    If rowvals1(col) = nodata1 OrElse rowvals2(col) = nodata2 OrElse rowvals3(col) = nodata3 OrElse rowvals4(col) = nodata4 OrElse rowvals5(col) = nodata5 Then
                         rowvalsout(col) = nodataout
                     Else
-                        rowvalsout(col) = _
-                            CellCalc.Invoke(rowvals1(col), rowvals2(col), rowvals3(col), rowvals4(col), _
-                                             rowvals5(col), nodataout)
+                        rowvalsout(col) = CellCalc.Invoke(rowvals1(col), rowvals2(col), rowvals3(col), rowvals4(col), rowvals5(col), nodataout)
                     End If
                 Else
-                    rowvalsout(col) = _
-                        CellCalcNull.Invoke(rowvals1(col), nodata1, rowvals2(col), nodata2, rowvals3(col), nodata3, _
-                                             rowvals4(col), nodata4, rowvals5(col), nodata5, nodataout)
+                    rowvalsout(col) = CellCalcNull.Invoke(rowvals1(col), nodata1, rowvals2(col), nodata2, rowvals3(col), nodata3, rowvals4(col), nodata4, rowvals5(col), nodata5, nodataout)
                 End If
             Next
 
@@ -851,17 +809,10 @@ Module Utilities
         Next
     End Sub
 
-    Public Delegate Function RasterMathCellCalcWindow _
-        (ByRef InputBox1(,) As Single, ByRef InputBox2(,) As Single, ByRef InputBox3(,) As Single, _
-         ByRef InputBox4(,) As Single, ByRef InputBox5(,) As Single, ByVal OutNull As Single) As Single
+    Public Delegate Function RasterMathCellCalcWindow(ByRef InputBox1(,) As Single, ByRef InputBox2(,) As Single, ByRef InputBox3(,) As Single, ByRef InputBox4(,) As Single, ByRef InputBox5(,) As Single, ByVal OutNull As Single) As Single
 
-    Public Delegate Function RasterMathCellCalcWindowNulls _
-        (ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, _
-         ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, _
-         ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, _
-         ByVal Input5Null As Single, ByVal OutNull As Single) As Single
-    Public Function GetUniqueFileName(ByRef Name As String, ByRef folderPath As String, ByVal Extension As String) _
-    As String
+    Public Delegate Function RasterMathCellCalcWindowNulls(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+    Public Function GetUniqueFileName(ByRef Name As String, ByRef folderPath As String, ByVal Extension As String) As String
         Dim i As Integer = 0
         Dim nameAttempt As String
 
@@ -877,12 +828,7 @@ Module Utilities
         End If
     End Function
 
-    Public Sub RasterMathWindow(ByRef InputGrid1 As Grid, ByRef InputGrid2 As Grid, _
-                                 ByRef Inputgrid3 As Grid, ByRef Inputgrid4 As Grid, _
-                                 ByRef Inputgrid5 As Grid, ByRef Outputgrid As Grid, _
-                                 ByRef CellCalcWindow As RasterMathCellCalcWindow, _
-                                 Optional ByVal checkNullFirst As Boolean = True, _
-                                 Optional ByRef CellCalcWindowNull As RasterMathCellCalcWindowNulls = Nothing)
+    Public Sub RasterMathWindow(ByRef InputGrid1 As Grid, ByRef InputGrid2 As Grid, ByRef Inputgrid3 As Grid, ByRef Inputgrid4 As Grid, ByRef Inputgrid5 As Grid, ByRef Outputgrid As Grid, ByRef CellCalcWindow As RasterMathCellCalcWindow, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcWindowNull As RasterMathCellCalcWindowNulls = Nothing)
         Dim head1, head2, head3, head4, head5, headnew As GridHeader
         Dim ncol As Integer
         Dim nrow As Integer
@@ -1109,32 +1055,13 @@ Module Utilities
                 End If
 
                 If checkNullFirst Then
-                    If _
-                        InputBox1(0, 0) = nodata1 OrElse InputBox1(0, 1) = nodata1 OrElse InputBox1(0, 2) = nodata1 OrElse _
-                        InputBox2(0, 0) = nodata2 OrElse InputBox2(0, 1) = nodata2 OrElse InputBox2(0, 2) = nodata2 OrElse _
-                        InputBox3(0, 0) = nodata3 OrElse InputBox3(0, 1) = nodata3 OrElse InputBox3(0, 2) = nodata3 OrElse _
-                        InputBox4(0, 0) = nodata4 OrElse InputBox4(0, 1) = nodata4 OrElse InputBox4(0, 2) = nodata4 OrElse _
-                        InputBox5(0, 0) = nodata5 OrElse InputBox5(0, 1) = nodata5 OrElse InputBox5(0, 2) = nodata5 OrElse _
-                        InputBox1(1, 0) = nodata1 OrElse InputBox1(1, 1) = nodata1 OrElse InputBox1(1, 2) = nodata1 OrElse _
-                        InputBox2(1, 0) = nodata2 OrElse InputBox2(1, 1) = nodata2 OrElse InputBox2(1, 2) = nodata2 OrElse _
-                        InputBox3(1, 0) = nodata3 OrElse InputBox3(1, 1) = nodata3 OrElse InputBox3(1, 2) = nodata3 OrElse _
-                        InputBox4(1, 0) = nodata4 OrElse InputBox4(1, 1) = nodata4 OrElse InputBox4(1, 2) = nodata4 OrElse _
-                        InputBox5(1, 0) = nodata5 OrElse InputBox5(1, 1) = nodata5 OrElse InputBox5(1, 2) = nodata5 OrElse _
-                        InputBox1(2, 0) = nodata1 OrElse InputBox1(2, 1) = nodata1 OrElse InputBox1(2, 2) = nodata1 OrElse _
-                        InputBox2(2, 0) = nodata2 OrElse InputBox2(2, 1) = nodata2 OrElse InputBox2(2, 2) = nodata2 OrElse _
-                        InputBox3(2, 0) = nodata3 OrElse InputBox3(2, 1) = nodata3 OrElse InputBox3(2, 2) = nodata3 OrElse _
-                        InputBox4(2, 0) = nodata4 OrElse InputBox4(2, 1) = nodata4 OrElse InputBox4(2, 2) = nodata4 OrElse _
-                        InputBox5(2, 0) = nodata5 OrElse InputBox5(2, 1) = nodata5 OrElse InputBox5(2, 2) = nodata5 _
-                        Then
+                    If InputBox1(0, 0) = nodata1 OrElse InputBox1(0, 1) = nodata1 OrElse InputBox1(0, 2) = nodata1 OrElse InputBox2(0, 0) = nodata2 OrElse InputBox2(0, 1) = nodata2 OrElse InputBox2(0, 2) = nodata2 OrElse InputBox3(0, 0) = nodata3 OrElse InputBox3(0, 1) = nodata3 OrElse InputBox3(0, 2) = nodata3 OrElse InputBox4(0, 0) = nodata4 OrElse InputBox4(0, 1) = nodata4 OrElse InputBox4(0, 2) = nodata4 OrElse InputBox5(0, 0) = nodata5 OrElse InputBox5(0, 1) = nodata5 OrElse InputBox5(0, 2) = nodata5 OrElse InputBox1(1, 0) = nodata1 OrElse InputBox1(1, 1) = nodata1 OrElse InputBox1(1, 2) = nodata1 OrElse InputBox2(1, 0) = nodata2 OrElse InputBox2(1, 1) = nodata2 OrElse InputBox2(1, 2) = nodata2 OrElse InputBox3(1, 0) = nodata3 OrElse InputBox3(1, 1) = nodata3 OrElse InputBox3(1, 2) = nodata3 OrElse InputBox4(1, 0) = nodata4 OrElse InputBox4(1, 1) = nodata4 OrElse InputBox4(1, 2) = nodata4 OrElse InputBox5(1, 0) = nodata5 OrElse InputBox5(1, 1) = nodata5 OrElse InputBox5(1, 2) = nodata5 OrElse InputBox1(2, 0) = nodata1 OrElse InputBox1(2, 1) = nodata1 OrElse InputBox1(2, 2) = nodata1 OrElse InputBox2(2, 0) = nodata2 OrElse InputBox2(2, 1) = nodata2 OrElse InputBox2(2, 2) = nodata2 OrElse InputBox3(2, 0) = nodata3 OrElse InputBox3(2, 1) = nodata3 OrElse InputBox3(2, 2) = nodata3 OrElse InputBox4(2, 0) = nodata4 OrElse InputBox4(2, 1) = nodata4 OrElse InputBox4(2, 2) = nodata4 OrElse InputBox5(2, 0) = nodata5 OrElse InputBox5(2, 1) = nodata5 OrElse InputBox5(2, 2) = nodata5 Then
                         rowvalsout(col) = nodataout
                     Else
-                        rowvalsout(col) = _
-                            CellCalcWindow.Invoke(InputBox1, InputBox2, InputBox3, InputBox4, InputBox5, nodataout)
+                        rowvalsout(col) = CellCalcWindow.Invoke(InputBox1, InputBox2, InputBox3, InputBox4, InputBox5, nodataout)
                     End If
                 Else
-                    rowvalsout(col) = _
-                        CellCalcWindowNull.Invoke(InputBox1, nodata1, InputBox2, nodata2, InputBox3, nodata3, InputBox4, _
-                                                   nodata4, InputBox5, nodata5, nodataout)
+                    rowvalsout(col) = CellCalcWindowNull.Invoke(InputBox1, nodata1, InputBox2, nodata2, InputBox3, nodata3, InputBox4, nodata4, InputBox5, nodata5, nodataout)
                 End If
             Next
 

@@ -18,14 +18,12 @@ Public Class BaseDialogForm
         End Set
     End Property
 
-    Protected Overridable Sub OK_Button_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles OK_Button.Click
+    Protected Overridable Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Protected Overridable Sub Cancel_Button_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles Cancel_Button.Click
+    Protected Overridable Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
 
         If _isDirty AndAlso Not ConfirmCancel() Then
             Return
@@ -36,8 +34,6 @@ Public Class BaseDialogForm
     End Sub
 
     Public Function ConfirmCancel() As Boolean
-        Return _
-            MsgBoxResult.Yes = _
-            MsgBox ("Are you sure you want to cancel, losing unsaved changes?", MsgBoxStyle.YesNo, "Discard Changes?")
+        Return MsgBoxResult.Yes = MsgBox("Are you sure you want to cancel, losing unsaved changes?", MsgBoxStyle.YesNo, "Discard Changes?")
     End Function
 End Class

@@ -53,24 +53,23 @@ Friend Class ImportCoefficientSetForm
                     _frmPoll.UpdateCoeffSet (_cmdCoeff, txtCoeffSetName.Text, txtImpFile.Text)
                 End If
             Else
-                MsgBox ("The name you have chosen is in use, please enter a different name.", MsgBoxStyle.Critical, _
-                        "Name Detected")
+                MsgBox("The name you have chosen is in use, please enter a different name.", MsgBoxStyle.Critical, "Name Detected")
                 txtCoeffSetName.Focus()
             End If
-            MyBase.OK_Button_Click (sender, e)
+            MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub Init (ByRef frmPoll As PollutantsForm)
+    Public Sub Init(ByRef frmPoll As PollutantsForm)
         _frmPoll = frmPoll
     End Sub
 
     'Need to check the text file coming in from the import menu of the pollutant form.
     'Bringing the Text File itself, and the name of the LCType as picked by John User
 
-    Private Function ValidateCoeffTextFile (ByRef strFileName As String, ByRef strLCTypeName As String) As Boolean
+    Private Function ValidateCoeffTextFile(ByRef strFileName As String, ByRef strLCTypeName As String) As Boolean
         Try
 
             Dim strLine As String
@@ -86,13 +85,10 @@ Friend Class ImportCoefficientSetForm
             'compare that to the number of lines in the text file, and the [Value] field to
             'make sure both jive.  If not, bark at them...ruff, ruff
 
-            strLCTypeNum = _
-                String.Format ( _
-                               "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", _
-                               strLCTypeName)
-            Dim cmdLCType As New DataHelper (strLCTypeNum)
-            If File.Exists (strFileName) Then
-                Using read As New StreamReader (strFileName)
+            strLCTypeNum = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", strLCTypeName)
+            Dim cmdLCType As New DataHelper(strLCTypeNum)
+            If File.Exists(strFileName) Then
+                Using read As New StreamReader(strFileName)
 
                     intLine = 0
 
@@ -101,32 +97,27 @@ Friend Class ImportCoefficientSetForm
 
                         strLine = read.ReadLine
                         'Value exits??
-                        strValue = Split (strLine, ",") (0)
+                        strValue = Split(strLine, ",")(0)
 
                         j = 0
 
                         dataLCType = cmdLCType.ExecuteReader()
                         While dataLCType.Read()
-                            If dataLCType ("Value") = strValue Then
+                            If dataLCType("Value") = strValue Then
                                 j = j + 1
                             End If
                         End While
                         dataLCType.Close()
 
                         If j = 0 Then
-                            MsgBox ( _
-                                    "There is a value in your text file that does not exist in the Land Class Type: '" & _
-                                    strLCTypeName & "' Please check your text file in line: " & intLine + 1, _
-                                    MsgBoxStyle.OkOnly, "Data Import Error")
+                            MsgBox("There is a value in your text file that does not exist in the Land Class Type: '" & strLCTypeName & "' Please check your text file in line: " & intLine + 1, MsgBoxStyle.OkOnly, "Data Import Error")
                         ElseIf j > 1 Then
-                            MsgBox ( _
-                                    "There are records in your text file that contain the same value.  Please check line " & _
-                                    intLine, MsgBoxStyle.Critical, "Multiple values found")
+                            MsgBox("There are records in your text file that contain the same value.  Please check line " & intLine, MsgBoxStyle.Critical, "Multiple values found")
                         ElseIf j = 1 Then
                             ValidateCoeffTextFile = True
                         End If
                         intLine = intLine + 1
-                        Debug.WriteLine (intLine)
+                        Debug.WriteLine(intLine)
 
                     Loop
 
@@ -141,16 +132,12 @@ Friend Class ImportCoefficientSetForm
                     If iRows = intLine Then
                         ValidateCoeffTextFile = True
                     Else
-                        MsgBox ( _
-                                String.Format ( _
-                                               "The number of records in your import file do not match the number of records in the Landclass '{0}'.  Your file should contain {1} records.", _
-                                               strLCTypeName, iRows), MsgBoxStyle.Critical, "Error Importing File")
+                        MsgBox(String.Format("The number of records in your import file do not match the number of records in the Landclass '{0}'.  Your file should contain {1} records.", strLCTypeName, iRows), MsgBoxStyle.Critical, "Error Importing File")
                     End If
                 End Using
 
             Else
-                MsgBox ("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, _
-                        "File Not Found")
+                MsgBox("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, "File Not Found")
                 'Cleanup
             End If
 
@@ -159,7 +146,7 @@ Friend Class ImportCoefficientSetForm
             End If
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Function
 End Class

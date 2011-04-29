@@ -30,16 +30,15 @@ Friend Class NewCoefficientSetForm
         End Try
     End Sub
 
-    Private Sub txtCoeffSetName_TextChanged (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles txtCoeffSetName.TextChanged
+    Private Sub txtCoeffSetName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtCoeffSetName.TextChanged
         Try
-            If Len (txtCoeffSetName.Text) > 0 Then
+            If Len(txtCoeffSetName.Text) > 0 Then
                 OK_Button.Enabled = True
             Else
                 OK_Button.Enabled = False
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 

@@ -92,8 +92,7 @@ Public Class ProgressForm
         g_KeepRunning = False
     End Sub
 
-    Private Sub tmrEventDriver_Tick(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles tmrEventDriver.Tick
+    Private Sub tmrEventDriver_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrEventDriver.Tick
 
         Application.DoEvents()
     End Sub

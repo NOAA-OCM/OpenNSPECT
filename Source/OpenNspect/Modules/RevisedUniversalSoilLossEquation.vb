@@ -50,11 +50,7 @@ Module RevisedUniversalSoilLossEquation
     'If user provides own SDR GRid, store path here
     Private _picks As String()
 
-    Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, _
-                                ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, _
-                                ByRef strSDRFileName As String, ByRef strLandClass As String, _
-                                ByRef OutputItems As OutputItems, Optional ByRef dblRFactorConstant As Double = 0) _
-        As Boolean
+    Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, ByRef OutputItems As OutputItems, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strNibbleFileName: FileName of the nibble GRID
         'strDEMTwoCellFileName: FileName of the two cell buffered DEM
@@ -114,9 +110,7 @@ Module RevisedUniversalSoilLossEquation
             strTempLCType = strLandClass
         End If
 
-        strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & _
-                       "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & _
-                       strTempLCType & "' ORDER BY LCCLASS.VALUE"
+        strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
         Dim cmdCov As New DataHelper(strCovFactor)
 
         If Len(strError) > 0 Then
@@ -150,23 +144,10 @@ Module RevisedUniversalSoilLossEquation
 
         'Set up the header w/or without flow direction
         If booLocal = True Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
-                        g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
-                        g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
-                        g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & _
-                        g_XmlPrjFile.strRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.strRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
-                        g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
-                        g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
-                        g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & _
-                        g_XmlPrjFile.strRainGridFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & _
-                        g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.strRainGridFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
 
         'Now report the C:Factor figures for the landcover
@@ -210,9 +191,7 @@ Module RevisedUniversalSoilLossEquation
 
             Dim mwTable As New Table
             If Not TableExist Then
-                MsgBox( _
-                        "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
-                        MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+                MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
                 Return ""
             Else
@@ -230,8 +209,7 @@ Module RevisedUniversalSoilLossEquation
                 Dim rowidx As Integer = 0
                 Dim dataType As OleDbDataReader
                 For i = 1 To maxVal
-                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then _
-'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
+                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         dataType = cmdType.ExecuteReader
 
                         booValueFound = False
@@ -250,8 +228,7 @@ Module RevisedUniversalSoilLossEquation
                             End If
                         End While
                         If booValueFound = False Then
-                            MsgBox( _
-                                    "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                             ConstructPickStatment = Nothing
                             dataType.Close()
                             mwTable.Close()
@@ -310,12 +287,10 @@ Module RevisedUniversalSoilLossEquation
                 _picks = strConStatement.Split(",")
                 Dim AllSoilLossCalc As New RasterMathCellCalc(AddressOf AllSoilLossCellCalc)
                 If Not _booUsingConstantValue Then 'If not using a constant
-                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, g_RFactorRaster, Nothing, _
-                                pSoilLossAcres, AllSoilLossCalc)
+                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, g_RFactorRaster, Nothing, pSoilLossAcres, AllSoilLossCalc)
                     'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
                 Else 'if using a constant
-                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, Nothing, Nothing, pSoilLossAcres, _
-                                AllSoilLossCalc)
+                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, Nothing, Nothing, pSoilLossAcres, AllSoilLossCalc)
                     'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]"
                 End If
                 'END STEP 2: -------------------------------------------------------------------------------
@@ -331,8 +306,7 @@ Module RevisedUniversalSoilLossEquation
                     Dim pZSedcalc As New RasterMathCellCalcWindowNulls(AddressOf pZSedCellCalc)
                     'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
                     'RasterMathWindow(g_NibbleRaster, g_DEMTwoCellRaster, Nothing, Nothing, Nothing, pZSedDelRaster, Nothing, False, pZSedcalc)
-                    RasterMathWindow(g_pFlowDirRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pZSedDelRaster, Nothing, _
-                                      False, pZSedcalc)
+                    RasterMathWindow(g_pFlowDirRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pZSedDelRaster, Nothing, False, pZSedcalc)
                     'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
 
                     'END STEP 4: ------------------------------------------------------------------------------
@@ -371,8 +345,7 @@ Module RevisedUniversalSoilLossEquation
 
                     strOutYield = GetUniqueFileName("locrusle", g_strWorkspace, FinalOutputGridExt)
                     If g_booSelectedPolys Then
-                        pPermRUSLELocRaster = _
-                            ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
+                        pPermRUSLELocRaster = ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
                     Else
                         pPermRUSLELocRaster = ReturnPermanentRaster(pSedYieldRaster, strOutYield)
                     End If
@@ -380,8 +353,7 @@ Module RevisedUniversalSoilLossEquation
                     'Metadata
                     g_dicMetadata.Add("Sediment Local Effects (mg)", _strRusleMetadata)
 
-                    AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", _
-                                        -1, OutputItems)
+                    AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
 
                     CalcRUSLE = True
                     CloseProgressDialog()
@@ -424,8 +396,7 @@ Module RevisedUniversalSoilLossEquation
                 DataManagement.DeleteGrid(strtmpout)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
-                                           Environment.ProcessorCount, Nothing)
+                Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
                 If result <> 0 Then
                     g_KeepRunning = False
                 End If
@@ -448,8 +419,7 @@ Module RevisedUniversalSoilLossEquation
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
-                    pPermAccumSedRaster = _
-                        ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, strOutYield)
+                    pPermAccumSedRaster = ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, strOutYield)
                 Else
                     pPermAccumSedRaster = ReturnPermanentRaster(pTotalAccumSedRaster, strOutYield)
                 End If
@@ -457,8 +427,7 @@ Module RevisedUniversalSoilLossEquation
                 'Metadata
                 g_dicMetadata.Add("Accumulated Sediment (kg)", _strRusleMetadata)
 
-                AddOutputGridLayer(pPermAccumSedRaster, "Brown", True, "Accumulated Sediment (kg)", "RUSLE Accum", -1, _
-                                    OutputItems)
+                AddOutputGridLayer(pPermAccumSedRaster, "Brown", True, "Accumulated Sediment (kg)", "RUSLE Accum", -1, OutputItems)
             End If
 
             CalcRUSLE = True
@@ -471,10 +440,7 @@ Module RevisedUniversalSoilLossEquation
                 g_KeepRunning = False
                 CalcRUSLE = False
             ElseIf Err.Number = -2147467259 Then
-                MsgBox( _
-                        "ArcMap has reached the maximum number of GRIDs allowed in memory.  " & _
-                        "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
-                        "Maximum GRID Number Encountered")
+                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 g_KeepRunning = False
                 CloseProgressDialog()
                 CalcRUSLE = False
@@ -492,9 +458,7 @@ Module RevisedUniversalSoilLossEquation
 
 #Region "Raster Math"
 
-    Private Function AllSoilLossCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                          ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
-        As Single
+    Private Function AllSoilLossCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim tmpval As Single
         For i As Integer = 0 To _picks.Length - 1
             If Input3 = i + 1 Then
@@ -513,12 +477,7 @@ Module RevisedUniversalSoilLossEquation
 
     End Function
 
-    Private Function pZSedCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, _
-                                    ByRef InputBox2(,) As Single, ByVal Input2Null As Single, _
-                                    ByRef InputBox3(,) As Single, ByVal Input3Null As Single, _
-                                    ByRef InputBox4(,) As Single, ByVal Input4Null As Single, _
-                                    ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) _
-        As Single
+    Private Function pZSedCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
 
         If InputBox1(1, 1) <> Input1Null Then
@@ -616,8 +575,7 @@ Module RevisedUniversalSoilLossEquation
 
     End Function
 
-    Private Function AllSDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                     ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function AllSDRCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim kmval, daval, tmp3val, tmp4val, tmp5val, tmp6val As Single
 
         'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
@@ -640,9 +598,7 @@ Module RevisedUniversalSoilLossEquation
         End If
     End Function
 
-    Private Function sedYieldCellCalc(ByVal soilLossAC As Single, ByVal Sdr As Single, ByVal Input3 As Single, _
-                                       ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
-        As Single
+    Private Function sedYieldCellCalc(ByVal soilLossAC As Single, ByVal Sdr As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
         Return soilLossAC * Sdr * 907.18474
     End Function

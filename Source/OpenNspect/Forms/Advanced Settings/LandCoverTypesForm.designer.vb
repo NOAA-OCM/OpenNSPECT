@@ -245,9 +245,7 @@
         Me.dgvLCTypes.AllowUserToAddRows = False
         Me.dgvLCTypes.AllowUserToDeleteRows = False
         Me.dgvLCTypes.AllowUserToResizeColumns = False
-        Me.dgvLCTypes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgvLCTypes.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvLCTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLCTypes.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colValue, Me.colNameCol, Me.colCNA, Me.colCNB, Me.colCNC, Me.colCND, Me.colCoverFactor, Me.colWetCheck, Me.colLCTYPEID, Me.colLCClassID})
         Me.dgvLCTypes.Location = New System.Drawing.Point(7, 93)

@@ -42,8 +42,7 @@ Module Rasters
         Return tmpraster
     End Function
 
-    Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As Grid, ByRef strColor As String) _
-        As GridColorScheme
+    Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As Grid, ByRef strColor As String) As GridColorScheme
         ReturnRasterStretchColorRampCS = Nothing
         Try
             Dim rTo, bTo, gTo, rFrom, bFrom, gFrom, rTo2, bTo2, gTo2, rFrom2, bFrom2, gFrom2 As Integer
@@ -210,8 +209,7 @@ Module Rasters
             For row As Integer = 0 To nr
                 pRaster.GetRow(row, rowvals(0))
                 For col As Integer = 0 To nc
-                    If rowvals(col) <> nodata And rowvals(col) < Double.MaxValue And rowvals(col) > Double.MinValue _
-                        Then
+                    If rowvals(col) <> nodata And rowvals(col) < Double.MaxValue And rowvals(col) > Double.MinValue Then
                         total = total + rowvals(col)
                         sqrtotal = sqrtotal + (rowvals(col) * rowvals(col))
                         count = count + 1

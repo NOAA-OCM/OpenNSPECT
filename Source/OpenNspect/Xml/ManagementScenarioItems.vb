@@ -72,8 +72,7 @@ Namespace Xml
             End Set
         End Property
 
-        Public Function GetEnumerator() As IEnumerator _
-            Implements IEnumerable.GetEnumerator
+        Public Function GetEnumerator() As IEnumerator Implements IEnumerable.GetEnumerator
             GetEnumerator = m_colItems.GetEnumerator
         End Function
 

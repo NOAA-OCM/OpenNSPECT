@@ -35,9 +35,7 @@ Public Class SelectionModeForm
         End Try
     End Sub
 
-    Private Sub frmSelectShapes_FormClosed(ByVal sender As Object, _
-                                            ByVal e As FormClosedEventArgs) _
-        Handles MyBase.FormClosed
+    Private Sub frmSelectShapes_FormClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs) Handles MyBase.FormClosed
         If Not g_cbMainForm Is Nothing Then g_cbMainForm.SetSelectedShape()
         If Not g_comp Is Nothing Then g_comp.SetSelectedShape()
         If Not g_luscen Is Nothing Then g_luscen.SetSelectedShape()
@@ -58,9 +56,7 @@ Public Class SelectionModeForm
         End Try
     End Sub
 
-    Private Sub frmSelectShape_FormClosing(ByVal sender As Object, _
-                                            ByVal e As FormClosingEventArgs) _
-        Handles MyBase.FormClosing
+    Private Sub frmSelectShape_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
         Try
             If stopclose Then
                 e.Cancel = True

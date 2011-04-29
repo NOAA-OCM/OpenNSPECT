@@ -1,5 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class CopyCoefficientSetForm
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class CopyCoefficientSetForm
     Inherits OpenNspect.BaseDialogForm
 #Region "Windows Form Designer generated code "
     <System.Diagnostics.DebuggerNonUserCode()> Public Sub New()

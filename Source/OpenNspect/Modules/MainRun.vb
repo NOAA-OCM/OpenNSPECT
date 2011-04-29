@@ -88,8 +88,7 @@ Module MainRun
     ''' <param name="cmdWShed">the recordset of the selected ws delineation...used to get paths to datasets.</param>
     ''' <param name="SelectedPath">selection layer, usually a watershed selection.</param>
     ''' <param name="SelectedShapes">The selected shapes.</param>
-    Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", _
-                                     Optional ByRef SelectedShapes As List(Of Integer) = Nothing)
+    Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", Optional ByRef SelectedShapes As List(Of Integer) = Nothing)
 
         Dim strError As String
         Dim dataWshed As OleDbDataReader = cmdWShed.ExecuteReader()
@@ -168,9 +167,7 @@ Module MainRun
 
     End Sub
 
-    Private Function ReturnAnalysisMask(ByVal SelectedPath As String, _
-                                         ByRef SelectedShapes As List(Of Integer), _
-                                         ByRef strBasinFeatClass As String) As Shapefile
+    Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As List(Of Integer), ByRef strBasinFeatClass As String) As Shapefile
         'Incoming
         'pLayer: Layer user has chosen as being the one from which the selected polys will come
         'pMap: current map

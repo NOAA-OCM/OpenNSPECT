@@ -235,8 +235,7 @@ Module Runoff
                 'Loop through and get all values
                 For i = 1 To dblMaxValue
 
-                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then _
-'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
+                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         'MK a new reader was created each time this loop ran, but I couldn't see why as it was passed the same query.
                         booValueFound = False
                         While dataLandClass.Read()
@@ -497,8 +496,7 @@ Module Runoff
                 End If
             End If
             Try ' CWG ChangeGridFormat can fail with a memory violation on ESRI grids
-                If Not MapWinGeoProc.DataManagement.ChangeGridFormat( _
-                 gridpath, tifFilePath, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.FloatDataType, 1.0F) Then
+                If Not MapWinGeoProc.DataManagement.ChangeGridFormat(gridpath, tifFilePath, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.FloatDataType, 1.0F) Then
                     MsgBox("Failed to convert grid " & gridpath & " to GeoTiff.  Try using GIS Tools")
                     Return False
                 End If

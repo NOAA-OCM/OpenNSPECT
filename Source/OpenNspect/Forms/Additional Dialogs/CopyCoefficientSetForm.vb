@@ -21,8 +21,7 @@ Friend Class CopyCoefficientSetForm
     Private _frmPoll As PollutantsForm
     Private _frmNewPoll As NewPollutantForm
 
-    Public Sub Init (ByRef cmdCoeffSet As OleDbCommand, ByRef frmPoll As PollutantsForm, _
-                     ByRef frmNewPoll As NewPollutantForm)
+    Public Sub Init(ByRef cmdCoeffSet As OleDbCommand, ByRef frmPoll As PollutantsForm, ByRef frmNewPoll As NewPollutantForm)
         Try
             'The form is passed a recordest containing the names of all coefficient sets, allows for
             'easier populating
@@ -30,7 +29,7 @@ Friend Class CopyCoefficientSetForm
             If Not cmdCoeffSet Is Nothing Then
                 Dim dataCoeff As OleDbDataReader = cmdCoeffSet.ExecuteReader()
                 While dataCoeff.Read()
-                    cboCoeffSet.Items.Add (dataCoeff ("Name"))
+                    cboCoeffSet.Items.Add(dataCoeff("Name"))
                 End While
                 dataCoeff.Close()
             End If
@@ -38,30 +37,29 @@ Friend Class CopyCoefficientSetForm
             _frmPoll = frmPoll
             _frmNewPoll = frmNewPoll
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Try
-            If UniqueName ("CoefficientSet", (txtCoeffSetName.Text)) And Trim (txtCoeffSetName.Text) <> "" Then
+            If UniqueName("CoefficientSet", (txtCoeffSetName.Text)) And Trim(txtCoeffSetName.Text) <> "" Then
                 If g_boolCopyCoeff Then
-                    _frmPoll.CopyCoefficient (txtCoeffSetName.Text, cboCoeffSet.Text)
+                    _frmPoll.CopyCoefficient(txtCoeffSetName.Text, cboCoeffSet.Text)
                 Else
-                    _frmNewPoll.CopyCoefficient (txtCoeffSetName.Text, cboCoeffSet.Text)
+                    _frmNewPoll.CopyCoefficient(txtCoeffSetName.Text, cboCoeffSet.Text)
                 End If
-                MyBase.OK_Button_Click (sender, e)
+                MyBase.OK_Button_Click(sender, e)
             Else
-                MsgBox ("The name you have choosen for coefficient set is already in use.  Please pick another.", _
-                        MsgBoxStyle.Critical, "Name In Use")
+                MsgBox("The name you have choosen for coefficient set is already in use.  Please pick another.", MsgBoxStyle.Critical, "Name In Use")
                 With txtCoeffSetName
                     .SelectionStart = 0
-                    .SelectionLength = Len (txtCoeffSetName.Text)
+                    .SelectionLength = Len(txtCoeffSetName.Text)
                     .Focus()
                 End With
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class
