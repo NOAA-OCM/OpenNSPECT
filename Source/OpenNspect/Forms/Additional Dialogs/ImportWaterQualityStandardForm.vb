@@ -18,24 +18,25 @@
 Imports System.Windows.Forms
 Imports System.IO
 Imports System.Data.OleDb
+Imports Alias1 = System.Windows.Forms
 
 Friend Class ImportWaterQualityStandardForm
     Private _frmWQ As WaterQualityStandardsForm
     Private _strFileName As String
 
-    Private Sub cmdBrowse_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowse.Click
+    Private Sub cmdBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowse.Click
         Try
             'browse...get output filename
             Using dlgOpen As New OpenFileDialog() With {.Filter = MSG1TextFile, .Title = MSG2}
-                If dlgOpen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
-                    txtImpFile.Text = Trim (dlgOpen.FileName)
+                If dlgOpen.ShowDialog = Alias1.DialogResult.OK Then
+                    txtImpFile.Text = Trim(dlgOpen.FileName)
                     _strFileName = txtImpFile.Text
                     OK_Button.Enabled = True
                 End If
             End Using
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 

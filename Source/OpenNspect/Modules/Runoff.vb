@@ -481,33 +481,6 @@ Module Runoff
         Return file
     End Function
 
-    Public Function CheckGridIsTif(ByRef gridpath As String) As Boolean
-        If Not System.IO.Path.GetExtension(gridpath) = ".tif" Then
-            Dim tifFilePath As String
-            If IO.Path.GetFileName(gridpath) = "sta.adf" Then
-                Dim outPath As String = IO.Path.GetDirectoryName(gridpath)
-                tifFilePath = outPath & "\" & IO.Path.GetFileName(outPath) & ".tif"
-            Else
-                tifFilePath = System.IO.Path.ChangeExtension(gridpath, ".tif")
-            End If
-            If System.IO.File.Exists(tifFilePath) Then
-                If MsgBox(tifFilePath & " already exists.  Overwrite it?", MsgBoxStyle.YesNo) = MsgBoxResult.No Then
-                    Return False
-                End If
-            End If
-            Try ' CWG ChangeGridFormat can fail with a memory violation on ESRI grids
-                If Not MapWinGeoProc.DataManagement.ChangeGridFormat(gridpath, tifFilePath, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.FloatDataType, 1.0F) Then
-                    MsgBox("Failed to convert grid " & gridpath & " to GeoTiff.  Try using GIS Tools")
-                    Return False
-                End If
-            Catch
-                MsgBox("Failed to convert grid " & gridpath & " to GeoTiff.  Try using GIS Tools")
-                Return False
-            End Try
-            gridpath = tifFilePath
-        End If
-        Return True
-    End Function
     Private Function DeriveAccumulatedRunoff() As Grid
         Dim tauD8calc = GetConverterToTauDemFromEsri()
         Dim pTauD8Flow As Grid = Nothing

@@ -311,17 +311,6 @@ Friend Class LandCoverTypesForm
         End Try
     End Sub
 
-    Private Sub dgvLCTypes_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles dgvLCTypes.MouseClick
-        Try
-            If e.Button = System.Windows.Forms.MouseButtons.Right Then
-                cntxmnuGrid.Show(dgvLCTypes, New Point(e.X, e.Y))
-            End If
-
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
-    End Sub
-
     Private Sub AddRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddRowToolStripMenuItem.Click
         Try
             AddRow()

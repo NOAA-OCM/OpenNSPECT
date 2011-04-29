@@ -401,7 +401,7 @@
         Me.Frame3.Location = New System.Drawing.Point(9, 25)
         Me.Frame3.Name = "Frame3"
         Me.Frame3.Padding = New System.Windows.Forms.Padding(0)
-        Me.Frame3.Size = New System.Drawing.Size(625, 38)
+        Me.Frame3.Size = New System.Drawing.Size(625, 37)
         Me.Frame3.TabIndex = 0
         Me.Frame3.TabStop = False
         Me.Frame3.Text = "Project Information "
@@ -817,6 +817,7 @@
         Me.dgvLandUse.AllowUserToResizeColumns = False
         Me.dgvLandUse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLandUse.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.LUApply, Me.LUScenario, Me.LUScenarioXml})
+        Me.dgvLandUse.ContextMenuStrip = Me.cnxtmnuLandUse
         Me.dgvLandUse.Location = New System.Drawing.Point(3, 3)
         Me.dgvLandUse.MultiSelect = False
         Me.dgvLandUse.Name = "dgvLandUse"
@@ -871,6 +872,7 @@
         Me.dgvManagementScen.AllowUserToResizeColumns = False
         Me.dgvManagementScen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvManagementScen.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ManageApply, Me.ChangeAreaLayer, Me.ChangeToClass})
+        Me.dgvManagementScen.ContextMenuStrip = Me.cnxtmnuManagement
         Me.dgvManagementScen.Location = New System.Drawing.Point(2, 3)
         Me.dgvManagementScen.MultiSelect = False
         Me.dgvManagementScen.Name = "dgvManagementScen"

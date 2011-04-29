@@ -541,8 +541,6 @@ Friend Class MainForm
     Private Sub dgvLandUse_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles dgvLandUse.MouseClick
         'limit to right click
         If e.Button = System.Windows.Forms.MouseButtons.Right Then
-            'show the context menu
-            cnxtmnuLandUse.Show(dgvLandUse, New Point(e.X, e.Y))
             If Not dgvLandUse.CurrentRow Is Nothing Then
                 'Enable or disable the edit scenario menu items, though they aren't currently used
                 If dgvLandUse.CurrentRow.Cells("LUApply").FormattedValue Or dgvLandUse.CurrentRow.Cells("LUScenario").Value <> "" Then
@@ -560,17 +558,6 @@ Friend Class MainForm
         End If
     End Sub
 
-    ''' <summary>
-    ''' Handle right click of the Management Scenarios table
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub dgvManagementScen_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles dgvManagementScen.MouseClick
-        If e.Button = System.Windows.Forms.MouseButtons.Right Then
-            cnxtmnuManagement.Show(dgvManagementScen, New Point(e.X, e.Y))
-        End If
-    End Sub
 
     ''' <summary>
     ''' Used to add a scenario to the table
@@ -580,11 +567,8 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub AddScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddScenarioToolStripMenuItem.Click
         Try
-
             Dim intRow As Short = dgvLandUse.Rows.Add()
-
             g_intManScenRow = intRow.ToString
-
             g_strLUScenFileName = ""
 
             'Generate the scenario form
