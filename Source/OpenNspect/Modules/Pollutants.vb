@@ -481,19 +481,19 @@ Module Pollutants
         Dim strWQStd As String = ""
         ReturnWQValue = ""
         Try
-
-            strPoll = "Select * from Pollutant where name like '" & strPollName & "'"
-            Dim cmdpoll As New DataHelper(strPoll)
-            Dim datapoll As OleDbDataReader = cmdpoll.ExecuteReader
-            datapoll.Read()
-            strWQStd = "SELECT * FROM WQCRITERIA INNER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "WHERE WQCRITERIA.NAME Like '" & strWQstdName & "' AND POLL_WQCRITERIA.POLLID = " & datapoll("POLLID")
-            datapoll.Close()
-
-            Dim cmdWQ As New DataHelper(strWQStd)
-            Dim datawq As OleDbDataReader = cmdWQ.ExecuteReader()
-            datawq.Read()
-            ReturnWQValue = CStr(datawq("Threshold"))
-            datawq.Close()
+            strPoll = String.Format("Select * from Pollutant where name like '{0}'", strPollName)
+            Using cmdpoll As New DataHelper(strPoll)
+                Dim datapoll As OleDbDataReader = cmdpoll.ExecuteReader
+                datapoll.Read()
+                strWQStd = String.Format("SELECT * FROM WQCRITERIA INNER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID WHERE WQCRITERIA.NAME Like '{0}' AND POLL_WQCRITERIA.POLLID = {1}", strWQstdName, datapoll("POLLID"))
+                datapoll.Close()
+                Using cmdWQ As New DataHelper(strWQStd)
+                    Dim datawq As OleDbDataReader = cmdWQ.ExecuteReader()
+                    datawq.Read()
+                    ReturnWQValue = CStr(datawq("Threshold"))
+                    datawq.Close()
+                End Using
+            End Using
         Catch ex As Exception
             MsgBox("Error in ADO pollutant part: " & Err.Number & vbNewLine & Err.Description & vbNewLine & strWQStd)
         End Try

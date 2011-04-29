@@ -297,6 +297,10 @@ Module Runoff
         Dim mwTable As New Table
 
         Dim result As Boolean = mwTable.CreateNew(tablepath)
+        If Not result Then
+            Throw New ArgumentException("Could not create new table.")
+        End If
+
         mwTable.StartEditingTable()
         Dim valfield As New Field()
         valfield.Name = "VALUE"
