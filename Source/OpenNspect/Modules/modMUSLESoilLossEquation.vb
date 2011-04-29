@@ -543,7 +543,7 @@ Module modMUSLESoilLossEquation
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = Path.GetTempFileName
+                Dim strtmp1 As String = Path.GetTempFileName()
                 g_TempFilesToDel.Add(strtmp1)
                 strtmp1 = strtmp1 + g_TAUDEMGridExt
                 g_TempFilesToDel.Add(strtmp1)
