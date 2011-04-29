@@ -20,17 +20,16 @@ Imports System.Data.OleDb
 Friend Class CopyWaterQualityStandardForm
     Private _frmWQStd As WaterQualityStandardsForm
 
-    Private Sub frmCopyWQStd_Load (ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
-        Handles MyBase.Load
+    Private Sub frmCopyWQStd_Load(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles MyBase.Load
         Try
-            InitComboBox (cboStdName, "WQCRITERIA")
+            InitComboBox(cboStdName, "WQCRITERIA")
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Try
             Dim strStandard As String
             Dim strPollStandard As String
@@ -38,39 +37,29 @@ Friend Class CopyWaterQualityStandardForm
             Dim strCmd2 As String
 
             'Get the WQ stand info
-            strStandard = String.Format ("SELECT * FROM WQCriteria WHERE NAME LIKE '{0}'", cboStdName.Text)
-            Using cmdstd As New DataHelper (strStandard)
+            strStandard = String.Format("SELECT * FROM WQCriteria WHERE NAME LIKE '{0}'", cboStdName.Text)
+            Using cmdstd As New DataHelper(strStandard)
                 Using datastd As OleDbDataReader = cmdstd.ExecuteReader()
                     datastd.Read()
                     'Get the related pollutant/thresholds
-                    strPollStandard = "SELECT * FROM POLL_WQCRITERIA WHERE WQCRITID =" & datastd ("WQCRITID").ToString
-                    Using datahelper As New DataHelper (strPollStandard)
+                    strPollStandard = "SELECT * FROM POLL_WQCRITERIA WHERE WQCRITID =" & datastd("WQCRITID").ToString
+                    Using datahelper As New DataHelper(strPollStandard)
                         Using datapoll = datahelper.ExecuteReader()
-                            strCmd = _
-                                String.Format ("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
-                                               Replace (Trim (txtStdName.Text), "'", "''"), datastd ("Description"))
-                            If UniqueName ("WQCRITERIA", Trim (txtStdName.Text)) Then
-                                Using cmdIns As New DataHelper (strCmd)
+                            strCmd = String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(Trim(txtStdName.Text), "'", "''"), datastd("Description"))
+                            If UniqueName("WQCRITERIA", Trim(txtStdName.Text)) Then
+                                Using cmdIns As New DataHelper(strCmd)
                                     cmdIns.ExecuteNonQuery()
                                 End Using
                             Else
-                                MsgBox (Err4, MsgBoxStyle.Critical, "Enter Unique Name")
+                                MsgBox(Err4, MsgBoxStyle.Critical, "Enter Unique Name")
                                 Return
                             End If
-                            Using _
-                                cmdNewStandard As _
-                                    New DataHelper ( _
-                                                    String.Format ("Select * from WQCRITERIA WHERE NAME LIKE '{0}'", _
-                                                                   Trim (txtStdName.Text)))
+                            Using cmdNewStandard As New DataHelper(String.Format("Select * from WQCRITERIA WHERE NAME LIKE '{0}'", Trim(txtStdName.Text)))
                                 Using datanewstd As OleDbDataReader = cmdNewStandard.ExecuteReader()
                                     datanewstd.Read()
                                     While datapoll.Read()
-                                        strCmd2 = _
-                                            String.Format ( _
-                                                           "INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES ({0}, {1}, {2})", _
-                                                           datapoll ("POLLID"), datanewstd ("WQCRITID"), _
-                                                           datapoll ("Threshold"))
-                                        Using cmdIns2 As New DataHelper (strCmd2)
+                                        strCmd2 = String.Format("INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES ({0}, {1}, {2})", datapoll("POLLID"), datanewstd("WQCRITID"), datapoll("Threshold"))
+                                        Using cmdIns2 As New DataHelper(strCmd2)
                                             cmdIns2.ExecuteNonQuery()
                                         End Using
                                     End While
@@ -82,11 +71,11 @@ Friend Class CopyWaterQualityStandardForm
                 End Using
             End Using
 
-            _frmWQStd.UpdateWQ (Trim (txtStdName.Text))
-            MyBase.OK_Button_Click (sender, e)
+            _frmWQStd.UpdateWQ(Trim(txtStdName.Text))
+            MyBase.OK_Button_Click(sender, e)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 

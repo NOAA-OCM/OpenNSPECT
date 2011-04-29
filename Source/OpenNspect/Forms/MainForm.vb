@@ -132,8 +132,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub txtProjectName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles txtProjectName.TextChanged
+    Private Sub txtProjectName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtProjectName.TextChanged
         UpdateFormTitle(txtProjectName.Text)
     End Sub
 
@@ -170,8 +169,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub cboLCLayer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboLCLayer.SelectedIndexChanged
+    Private Sub cboLCLayer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboLCLayer.SelectedIndexChanged
         Try
             cboLCUnits.SelectedIndex = GetRasterDistanceUnits(cboLCLayer.Text)
         Catch ex As Exception
@@ -185,8 +183,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub cboLCType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboLandCoverType.SelectedIndexChanged
+    Private Sub cboLCType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboLandCoverType.SelectedIndexChanged
         Try
             FillCboLCCLass()
         Catch ex As Exception
@@ -200,8 +197,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub cboSoilsLayer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboSoilsLayer.SelectedIndexChanged
+    Private Sub cboSoilsLayer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboSoilsLayer.SelectedIndexChanged
         Try
             'Execute a selection query
             Dim strSelect As String = String.Format("SELECT * FROM Soils WHERE NAME LIKE '{0}'", cboSoilsLayer.Text)
@@ -223,8 +219,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub cboPrecipScen_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboPrecipitationScenarios.SelectedIndexChanged
+    Private Sub cboPrecipScen_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPrecipitationScenarios.SelectedIndexChanged
         Try
             'Have to change Erosion tab based on Annual/Event driven rain event
             Dim strEvent As String
@@ -273,8 +268,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub cboWSDelin_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboWaterShedDelineations.SelectedIndexChanged
+    Private Sub cboWSDelin_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboWaterShedDelineations.SelectedIndexChanged
         Try
             If cboWaterShedDelineations.Text = "New watershed delineation..." Then
 
@@ -297,8 +291,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub cboWQStd_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboWaterQualityCriteriaStd.SelectedIndexChanged
+    Private Sub cboWQStd_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboWaterQualityCriteriaStd.SelectedIndexChanged
         Try
             If cboWaterQualityCriteriaStd.Text = "New water quality standard..." Then
                 Using fNewWQ As New NewWaterQualityStandardForm()
@@ -323,9 +316,7 @@ Friend Class MainForm
         Try
             Dim intvbYesNo As Short
 
-            intvbYesNo = _
-                MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), _
-                        MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
+            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
             'Make sure they save current before it's lost forever if they want to
             If intvbYesNo = MsgBoxResult.Yes Then
                 If SaveXmlFile() Then
@@ -396,9 +387,7 @@ Friend Class MainForm
         Try
             Dim intvbYesNo As Short
 
-            intvbYesNo = _
-                MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), _
-                        MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
+            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
 
             If intvbYesNo = MsgBoxResult.Yes Then
                 If SaveXmlFile() Then
@@ -421,8 +410,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub mnuGeneralHelp_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuGeneralHelp.Click
+    Private Sub mnuGeneralHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuGeneralHelp.Click
         Help.ShowHelp(Me, g_nspectPath & "\Help\nspect.chm", "project_setup.htm")
     End Sub
 
@@ -432,8 +420,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub optUseGRID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles optUseGRID.CheckedChanged
+    Private Sub optUseGRID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles optUseGRID.CheckedChanged
         otUseValue(sender)
     End Sub
 
@@ -449,8 +436,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub optUseValue_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles optUseValue.CheckedChanged
+    Private Sub optUseValue_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles optUseValue.CheckedChanged
         otUseValue(sender)
     End Sub
 
@@ -460,8 +446,7 @@ Friend Class MainForm
     ''' <param name="eventSender"></param>
     ''' <param name="eventArgs"></param>
     ''' <remarks></remarks>
-    Private Sub chkSDR_CheckStateChanged(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
-        Handles chkSDR.CheckStateChanged
+    Private Sub chkSDR_CheckStateChanged(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles chkSDR.CheckStateChanged
         Dim state As Boolean = chkSDR.CheckState = 1
         txtSDRGRID.Enabled = state
         cmdOpenSDR.Enabled = state
@@ -490,9 +475,7 @@ Friend Class MainForm
     ''' <param name="eventSender"></param>
     ''' <param name="eventArgs"></param>
     ''' <remarks></remarks>
-    Private Sub chkCalcErosion_CheckStateChanged(ByVal eventSender As Object, _
-                                                  ByVal eventArgs As EventArgs) _
-        Handles chkCalcErosion.CheckStateChanged
+    Private Sub chkCalcErosion_CheckStateChanged(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles chkCalcErosion.CheckStateChanged
         frameRainFall.Enabled = chkCalcErosion.CheckState
         cboErodFactor.Enabled = chkCalcErosion.CheckState
         lblErodFactor.Enabled = chkCalcErosion.CheckState
@@ -508,8 +491,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnOpenRainfallFactorGrid_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles btnOpenRainfallFactorGrid.Click
+    Private Sub btnOpenRainfallFactorGrid_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOpenRainfallFactorGrid.Click
         Dim g As New Grid
         Using dlgOpen As New OpenFileDialog()
             dlgOpen.Title = "Choose Rainfall Factor GRID"
@@ -526,12 +508,8 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub dgvPollutants_DataError(ByVal sender As Object, _
-                                         ByVal e As DataGridViewDataErrorEventArgs) _
-        Handles dgvPollutants.DataError
-        MsgBox( _
-                String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, _
-                               e.ColumnIndex + 1))
+    Private Sub dgvPollutants_DataError(ByVal sender As Object, ByVal e As DataGridViewDataErrorEventArgs) Handles dgvPollutants.DataError
+        MsgBox(String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, e.ColumnIndex + 1))
     End Sub
 
     ''' <summary>
@@ -540,12 +518,8 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub dgvLandUse_DataError(ByVal sender As Object, _
-                                      ByVal e As DataGridViewDataErrorEventArgs) _
-        Handles dgvLandUse.DataError
-        MsgBox( _
-                String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, _
-                               e.ColumnIndex + 1))
+    Private Sub dgvLandUse_DataError(ByVal sender As Object, ByVal e As DataGridViewDataErrorEventArgs) Handles dgvLandUse.DataError
+        MsgBox(String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, e.ColumnIndex + 1))
     End Sub
 
     ''' <summary>
@@ -554,12 +528,8 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub dgvManagementScen_DataError(ByVal sender As Object, _
-                                             ByVal e As DataGridViewDataErrorEventArgs) _
-        Handles dgvManagementScen.DataError
-        MsgBox( _
-                String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, _
-                               e.ColumnIndex + 1))
+    Private Sub dgvManagementScen_DataError(ByVal sender As Object, ByVal e As DataGridViewDataErrorEventArgs) Handles dgvManagementScen.DataError
+        MsgBox(String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, e.ColumnIndex + 1))
     End Sub
 
     ''' <summary>
@@ -568,17 +538,14 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub dgvLandUse_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
-        Handles dgvLandUse.MouseClick
+    Private Sub dgvLandUse_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles dgvLandUse.MouseClick
         'limit to right click
         If e.Button = System.Windows.Forms.MouseButtons.Right Then
             'show the context menu
             cnxtmnuLandUse.Show(dgvLandUse, New Point(e.X, e.Y))
             If Not dgvLandUse.CurrentRow Is Nothing Then
                 'Enable or disable the edit scenario menu items, though they aren't currently used
-                If _
-                    dgvLandUse.CurrentRow.Cells("LUApply").FormattedValue Or _
-                    dgvLandUse.CurrentRow.Cells("LUScenario").Value <> "" Then
+                If dgvLandUse.CurrentRow.Cells("LUApply").FormattedValue Or dgvLandUse.CurrentRow.Cells("LUScenario").Value <> "" Then
                     EditScenarioToolStripMenuItem.Enabled = True
                 Else
                     EditScenarioToolStripMenuItem.Enabled = False
@@ -599,9 +566,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub dgvManagementScen_MouseClick(ByVal sender As Object, _
-                                              ByVal e As MouseEventArgs) _
-        Handles dgvManagementScen.MouseClick
+    Private Sub dgvManagementScen_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles dgvManagementScen.MouseClick
         If e.Button = System.Windows.Forms.MouseButtons.Right Then
             cnxtmnuManagement.Show(dgvManagementScen, New Point(e.X, e.Y))
         End If
@@ -613,8 +578,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub AddScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles AddScenarioToolStripMenuItem.Click
+    Private Sub AddScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddScenarioToolStripMenuItem.Click
         Try
 
             Dim intRow As Short = dgvLandUse.Rows.Add()
@@ -647,8 +611,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub EditScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles EditScenarioToolStripMenuItem.Click
+    Private Sub EditScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles EditScenarioToolStripMenuItem.Click
         Try
             If Not dgvLandUse.CurrentRow Is Nothing Then
                 g_intManScenRow = dgvLandUse.CurrentRow.Index.ToString
@@ -676,17 +639,12 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub DeleteScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles DeleteScenarioToolStripMenuItem.Click
+    Private Sub DeleteScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles DeleteScenarioToolStripMenuItem.Click
         Try
             With dgvLandUse
                 If Not .CurrentRow Is Nothing Then
                     If .CurrentRow.Cells("LUApply").FormattedValue Or .CurrentRow.Cells("LUScenario").Value <> "" Then
-                        If _
-                            MsgBox( _
-                                    String.Format("There is data in Row {0}. Would you still like to delete it?", _
-                                                   .CurrentRow.Index + 1), MsgBoxStyle.YesNo, "Delete Row") = _
-                            MsgBoxResult.Yes Then
+                        If MsgBox(String.Format("There is data in Row {0}. Would you still like to delete it?", .CurrentRow.Index + 1), MsgBoxStyle.YesNo, "Delete Row") = MsgBoxResult.Yes Then
                             .Rows.Remove(.CurrentRow)
                         End If
                     Else
@@ -706,8 +664,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub AppendRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles AppendRowToolStripMenuItem.Click
+    Private Sub AppendRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AppendRowToolStripMenuItem.Click
         Dim idx As Integer = dgvManagementScen.Rows.Add()
         PopulateManagement(idx)
     End Sub
@@ -718,8 +675,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles InsertRowToolStripMenuItem.Click
+    Private Sub InsertRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles InsertRowToolStripMenuItem.Click
         If Not dgvManagementScen.CurrentRow Is Nothing Then
             Dim idx As Integer = dgvManagementScen.CurrentRow.Index
             dgvManagementScen.Rows.Insert(idx, 1)
@@ -733,17 +689,12 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub DeleteCurrentRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles DeleteCurrentRowToolStripMenuItem.Click
+    Private Sub DeleteCurrentRowToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles DeleteCurrentRowToolStripMenuItem.Click
         With dgvManagementScen
             If Not .CurrentRow Is Nothing Then
                 Dim idx As Integer = .CurrentRow.Index
-                If _
-                    .Rows(idx).Cells("ManageApply").Value Or .Rows(idx).Cells("ChangeAreaLayer").Value <> "" Or _
-                    .Rows(idx).Cells("ChangeToClass").Value <> "" Then
-                    If _
-                        MsgBox(String.Format("There is data in Row {0}. Would you still like to delete it?", idx + 1), _
-                                MsgBoxStyle.YesNo, "Delete Row") = MsgBoxResult.Yes Then
+                If .Rows(idx).Cells("ManageApply").Value Or .Rows(idx).Cells("ChangeAreaLayer").Value <> "" Or .Rows(idx).Cells("ChangeToClass").Value <> "" Then
+                    If MsgBox(String.Format("There is data in Row {0}. Would you still like to delete it?", idx + 1), MsgBoxStyle.YesNo, "Delete Row") = MsgBoxResult.Yes Then
                         .Rows.Remove(.CurrentRow)
                     End If
                 Else
@@ -779,9 +730,7 @@ Friend Class MainForm
         Try
             Dim intvbYesNo As Short
 
-            intvbYesNo = _
-                MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), _
-                        MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
+            intvbYesNo = MsgBox(String.Format("Do you want to save changes you made to {0}?", Me.Text), MsgBoxStyle.YesNoCancel + MsgBoxStyle.Exclamation, "OpenNSPECT")
 
             'Make sure to let them save before it's lost if they choose to
             If intvbYesNo = MsgBoxResult.Yes Then
@@ -812,12 +761,7 @@ Friend Class MainForm
             'Handles whether to overwrite existing groups of the same name or to generate a new group for outputs
             If g_pGroupLayer <> -1 Then
                 If MapWindowPlugin.MapWindowInstance.Layers.Groups.ItemByHandle(g_pGroupLayer).Text = _XmlPrjParams.strProjectName Then
-                    Dim _
-                        res As MsgBoxResult = _
-                            MsgBox( _
-                                    String.Format("Would you like to overwrite the last results group named {0}?", _
-                                                   _XmlPrjParams.strProjectName), MsgBoxStyle.YesNoCancel, _
-                                    "Replace Results?")
+                    Dim res As MsgBoxResult = MsgBox(String.Format("Would you like to overwrite the last results group named {0}?", _XmlPrjParams.strProjectName), MsgBoxStyle.YesNoCancel, "Replace Results?")
                     If res = MsgBoxResult.Yes Then
                         MapWindowPlugin.MapWindowInstance.Layers.Groups.Remove(g_pGroupLayer)
                     ElseIf res = MsgBoxResult.Cancel Then
@@ -855,8 +799,7 @@ Friend Class MainForm
             'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
             'If they're using, we send them over to modMgmtScen to implement
             If _XmlPrjParams.MgmtScenHolder.Count > 0 Then
-                MgmtScenSetup(_XmlPrjParams.MgmtScenHolder, _XmlPrjParams.strLCGridType, _
-                               _XmlPrjParams.strLCGridFileName, _XmlPrjParams.strProjectWorkspace)
+                MgmtScenSetup(_XmlPrjParams.MgmtScenHolder, _XmlPrjParams.strLCGridType, _XmlPrjParams.strLCGridFileName, _XmlPrjParams.strProjectWorkspace)
             End If
             'END STEP 4: ---------------------------------------------------------------------------------------------------------
 
@@ -867,8 +810,7 @@ Friend Class MainForm
             Dim i As Integer
             For i = 0 To _XmlPrjParams.PollItems.Count - 1
                 If _XmlPrjParams.PollItems.Item(i).intApply = 1 Then
-                    dictPollutants.Add(_XmlPrjParams.PollItems.Item(i).strPollName, _
-                                        _XmlPrjParams.PollItems.Item(i).strCoeffSet)
+                    dictPollutants.Add(_XmlPrjParams.PollItems.Item(i).strPollName, _XmlPrjParams.PollItems.Item(i).strCoeffSet)
                 End If
             Next i
             'END STEP 5: ---------------------------------------------------------------------------------------------------------
@@ -878,8 +820,7 @@ Friend Class MainForm
             For i = 0 To _XmlPrjParams.LUItems.Count - 1
                 If _XmlPrjParams.LUItems.Item(i).intApply = 1 Then
                     AreThereLandUseScenarioItems = True
-                    Begin(_XmlPrjParams.strLCGridType, _XmlPrjParams.LUItems, dictPollutants, _
-                           _XmlPrjParams.strLCGridFileName)
+                    Begin(_XmlPrjParams.strLCGridType, _XmlPrjParams.LUItems, dictPollutants, _XmlPrjParams.strLCGridFileName)
                     Exit For
                 Else
                     AreThereLandUseScenarioItems = False
@@ -906,9 +847,7 @@ Friend Class MainForm
             'Added 1/08/2007 to account for non-adjacent polygons
             If _XmlPrjParams.intSelectedPolys = 1 Then
                 If CheckMultiPartPolygon(g_pSelectedPolyClip) Then
-                    MsgBox( _
-                            "Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", _
-                            MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
+                    MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
                     Return
                 End If
             End If
@@ -931,10 +870,7 @@ Friend Class MainForm
                 Else
                     strLCType = _XmlPrjParams.strLCGridType
                 End If
-                If _
-                    Not _
-                    CreateRunoffGrid(_XmlPrjParams.strLCGridFileName, strLCType, cmdPrecip.GetCommand(), _
-                                      _XmlPrjParams.strSoilsHydFileName, _XmlPrjParams.OutputItems) Then
+                If Not CreateRunoffGrid(_XmlPrjParams.strLCGridFileName, strLCType, cmdPrecip.GetCommand(), _XmlPrjParams.strSoilsHydFileName, _XmlPrjParams.OutputItems) Then
                     Return
                 End If
             End Using
@@ -946,11 +882,7 @@ Friend Class MainForm
                 If _XmlPrjParams.PollItems.Item(i).intApply = 1 Then
                     'If user is NOT ignoring the pollutant then send the whole item over along with LCType
                     Dim pollitem As PollutantItem = _XmlPrjParams.PollItems.Item(i)
-                    If _
-                        Not _
-                        PollutantConcentrationSetup(pollitem, _XmlPrjParams.strLCGridType, _
-                                                     _XmlPrjParams.strWaterQuality, _
-                                                     _XmlPrjParams.OutputItems) Then
+                    If Not PollutantConcentrationSetup(pollitem, _XmlPrjParams.strLCGridType, _XmlPrjParams.strWaterQuality, _XmlPrjParams.OutputItems) Then
                         Return
                     End If
                 End If
@@ -964,29 +896,16 @@ Friend Class MainForm
             If _XmlPrjParams.intCalcErosion = 1 Then
                 If _IsAnnualPrecipScenario Then 'If Annual (0) then TRUE, ergo RUSLE
                     If _XmlPrjParams.intRainGridBool Then
-                        If _
-                            Not _
-                            RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _
-                                        _XmlPrjParams.strRainGridFileName, _XmlPrjParams.strSoilsKFileName, _
-                                        _XmlPrjParams.strSDRGridFileName, _XmlPrjParams.strLCGridType, _
-                                        _XmlPrjParams.OutputItems) Then
+                        If Not RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XmlPrjParams.strRainGridFileName, _XmlPrjParams.strSoilsKFileName, _XmlPrjParams.strSDRGridFileName, _XmlPrjParams.strLCGridType, _XmlPrjParams.OutputItems) Then
                             Return
                         End If
                     ElseIf _XmlPrjParams.intRainConstBool Then
-                        If _
-                            Not _
-                            RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _
-                                        _XmlPrjParams.strRainGridFileName, _XmlPrjParams.strSoilsKFileName, _
-                                        _XmlPrjParams.strSDRGridFileName, _XmlPrjParams.strLCGridType, _
-                                        _XmlPrjParams.OutputItems, _XmlPrjParams.dblRainConstValue) Then
+                        If Not RUSLESetup(dataWS.Item("NibbleFileName"), dataWS.Item("dem2bfilename"), _XmlPrjParams.strRainGridFileName, _XmlPrjParams.strSoilsKFileName, _XmlPrjParams.strSDRGridFileName, _XmlPrjParams.strLCGridType, _XmlPrjParams.OutputItems, _XmlPrjParams.dblRainConstValue) Then
                             Return
                         End If
                     End If
                 Else 'If event (1) then False, ergo MUSLE
-                    If _
-                        Not _
-                        MUSLESetup(_XmlPrjParams.strSoilsDefName, _XmlPrjParams.strSoilsKFileName, _
-                                    _XmlPrjParams.strLCGridType, _XmlPrjParams.OutputItems) Then
+                    If Not MUSLESetup(_XmlPrjParams.strSoilsDefName, _XmlPrjParams.strSoilsKFileName, _XmlPrjParams.strLCGridType, _XmlPrjParams.OutputItems) Then
                         Return
                     End If
                 End If
@@ -1101,7 +1020,7 @@ Friend Class MainForm
                 DataManagement.DeleteShapefile(file)
                 DataManagement.TryDelete(file)
             Next
-           
+
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -1246,10 +1165,7 @@ Friend Class MainForm
             Dim strLCChanges As String
             Dim i As Short
 
-            strLCChanges = _
-                String.Format( _
-                               "SELECT LCCLASS.Name as Name2, LCTYPE.LCTYPEID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", _
-                               cboLandCoverType.Text)
+            strLCChanges = String.Format("SELECT LCCLASS.Name as Name2, LCTYPE.LCTYPEID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", cboLandCoverType.Text)
             Using lcChangesCmd As New OleDbCommand(strLCChanges, g_DBConn)
                 Using lcChanges As OleDbDataReader = lcChangesCmd.ExecuteReader()
                     arrClassList.Clear()
@@ -1283,10 +1199,7 @@ Friend Class MainForm
 
                 If dataWQCrit.HasRows Then
                     dataWQCrit.Read()
-                    strSQLWQStdPoll = _
-                        String.Format( _
-                                       "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD FROM POLL_WQCRITERIA INNER JOIN POLLUTANT ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = {0}", _
-                                       dataWQCrit.Item("WQCRITID"))
+                    strSQLWQStdPoll = String.Format("SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD FROM POLL_WQCRITERIA INNER JOIN POLLUTANT ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = {0}", dataWQCrit.Item("WQCRITID"))
                     Using WQStdCmd As OleDbCommand = New OleDbCommand(strSQLWQStdPoll, g_DBConn)
                         Using WQStdAdapter As OleDbDataAdapter = New OleDbDataAdapter(WQStdCmd)
                             Using PollutantsTable As New DataTable()
@@ -1306,8 +1219,7 @@ Friend Class MainForm
                         End Using
                     End Using
                 Else
-                    MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", _
-                            MsgBoxStyle.Critical, "Recordset Empty")
+                    MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
                 End If
             End Using
 
@@ -1325,11 +1237,7 @@ Friend Class MainForm
     ''' <remarks></remarks>
     Private Sub PopulateCoefType(ByVal strPollutantName As String, ByVal rowidx As Integer)
         Try
-            Dim _
-                strSelectCoeff As String = _
-                    String.Format( _
-                                   "SELECT POLLUTANT.POLLID, POLLUTANT.NAME, COEFFICIENTSET.NAME AS NAME2 FROM POLLUTANT INNER JOIN COEFFICIENTSET ON POLLUTANT.POLLID = COEFFICIENTSET.POLLID Where POLLUTANT.NAME LIKE '{0}'", _
-                                   strPollutantName)
+            Dim strSelectCoeff As String = String.Format("SELECT POLLUTANT.POLLID, POLLUTANT.NAME, COEFFICIENTSET.NAME AS NAME2 FROM POLLUTANT INNER JOIN COEFFICIENTSET ON POLLUTANT.POLLID = COEFFICIENTSET.POLLID Where POLLUTANT.NAME LIKE '{0}'", strPollutantName)
             Using coefCmd As New OleDbCommand(strSelectCoeff, g_DBConn)
                 Dim coefData As OleDbDataReader = coefCmd.ExecuteReader()
                 Dim cell As DataGridViewComboBoxCell = dgvPollutants.Rows(rowidx).Cells("CoefSet")
@@ -1367,9 +1275,7 @@ Friend Class MainForm
     End Sub
 
     Private Sub AddBasinpolyToMap()
-        Dim _
-            strCurrWShed As String = _
-                String.Format("Select * from WSDelineation where Name Like '{0}'", _XmlPrjParams.strWaterShedDelin)
+        Dim strCurrWShed As String = String.Format("Select * from WSDelineation where Name Like '{0}'", _XmlPrjParams.strWaterShedDelin)
         ' TODO: remove lngCurrWshedPolyIndex as it is not used.
         Dim lngCurrWshedPolyIndex As Integer
         Using WSCmd As OleDbCommand = New OleDbCommand(strCurrWShed, g_DBConn)
@@ -1382,25 +1288,16 @@ Friend Class MainForm
                         strBasin = strBasin + ".shp"
                     End If
                     If Not LayerInMapByFileName(strBasin) Then
-                        If _
-                            AddFeatureLayerToMapFromFileName(strBasin, _
-                                                              String.Format("{0} Drainage Basins", _
-                                                                             wsData.Item("Name"))) Then
-                            lngCurrWshedPolyIndex = _
-                                GetLayerIndex(String.Format("{0} Drainage Basins", wsData.Item("Name")))
+                        If AddFeatureLayerToMapFromFileName(strBasin, String.Format("{0} Drainage Basins", wsData.Item("Name"))) Then
+                            lngCurrWshedPolyIndex = GetLayerIndex(String.Format("{0} Drainage Basins", wsData.Item("Name")))
                             arrAreaList.Add(String.Format("{0} Drainage Basins", wsData.Item("Name")))
                         Else
-                            MsgBox( _
-                                    String.Format( _
-                                                   "Could not find watershed layer: {0} .  Please add the watershed layer to the map.", _
-                                                   wsData.Item("wsfilename")), MsgBoxStyle.Critical, "File Not Found")
+                            MsgBox(String.Format("Could not find watershed layer: {0} .  Please add the watershed layer to the map.", wsData.Item("wsfilename")), MsgBoxStyle.Critical, "File Not Found")
                         End If
                     End If
                 Else
                     _XmlPrjParams.strWaterShedDelin = cboWaterShedDelineations.Text
-                    strCurrWShed = _
-                        String.Format("Select * from WSDelineation where Name Like '{0}'", _
-                                       _XmlPrjParams.strWaterShedDelin)
+                    strCurrWShed = String.Format("Select * from WSDelineation where Name Like '{0}'", _XmlPrjParams.strWaterShedDelin)
                     Using WSCmd2 = New OleDbCommand(strCurrWShed, g_DBConn)
                         Dim wsData2 = WSCmd2.ExecuteReader()
                         wsData2.Read()
@@ -1415,11 +1312,7 @@ Friend Class MainForm
                                     lngCurrWshedPolyIndex = GetLayerIndex(basinName)
                                     arrAreaList.Add(String.Format("{0} Drainage Basins", wsData2.Item("Name")))
                                 Else
-                                    MsgBox( _
-                                            String.Format( _
-                                                           "Could not find watershed layer: {0} .  Please add the watershed layer to the map.", _
-                                                           wsData.Item("wsfilename")), MsgBoxStyle.Critical, _
-                                            "File Not Found")
+                                    MsgBox(String.Format("Could not find watershed layer: {0} .  Please add the watershed layer to the map.", wsData.Item("wsfilename")), MsgBoxStyle.Critical, "File Not Found")
                                 End If
                             End If
                         End If
@@ -1449,8 +1342,7 @@ Friend Class MainForm
                     .Rows(idx).Cells("Threshold").Value = CStr(_XmlPrjParams.PollItems.Item(i).intThreshold)
 
                     If Len(_XmlPrjParams.PollItems.Item(i).strTypeDefXmlFile) > 0 Then
-                        .Rows(idx).Cells("TypeDef").Value = _
-                            CStr(_XmlPrjParams.PollItems.Item(i).strTypeDefXmlFile)
+                        .Rows(idx).Cells("TypeDef").Value = CStr(_XmlPrjParams.PollItems.Item(i).strTypeDefXmlFile)
                     End If
                 End With
             Next i
@@ -1473,10 +1365,7 @@ Friend Class MainForm
                 End With
 
             Else
-                Dim browseForDataSet As Short = MsgBox(String.Format( _
-                                                               "Could not find the Land Cover dataset: {0}.  Would you like to browse for it?", _
-                                                               _XmlPrjParams.strLCGridFileName), MsgBoxStyle.YesNo, _
-                                                "Cannot Locate Dataset")
+                Dim browseForDataSet As Short = MsgBox(String.Format("Could not find the Land Cover dataset: {0}.  Would you like to browse for it?", _XmlPrjParams.strLCGridFileName), MsgBoxStyle.YesNo, "Cannot Locate Dataset")
                 If browseForDataSet = MsgBoxResult.Yes Then
                     _XmlPrjParams.strLCGridFileName = AddInputFromGxBrowser("Raster")
                     If _XmlPrjParams.strLCGridFileName <> "" Then
@@ -1503,8 +1392,7 @@ Friend Class MainForm
             cboSoilsLayer.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.strSoilsDefName), cboSoilsLayer)
             Return True
         Else
-            MsgBox("Could not find soils dataset.  Please correct the soils definition in the Advanced Settings.", _
-                    MsgBoxStyle.Critical, "Dataset Missing")
+            MsgBox("Could not find soils dataset.  Please correct the soils definition in the Advanced Settings.", MsgBoxStyle.Critical, "Dataset Missing")
             Return False
         End If
     End Function
@@ -1528,11 +1416,7 @@ Friend Class MainForm
                     arrAreaList.Add(_XmlPrjParams.strSelectedPolyLyrName)
                 Else
                     'Can't find it, then send em searching
-                    Dim browseForData = _
-                        MsgBox( _
-                                String.Format( _
-                                               "Could not find the Selected Polygons file used to limit extent: {0}.  Would you like to browse for it? ", _
-                                               strSelected), MsgBoxStyle.YesNo, "Cannot Locate Dataset")
+                    Dim browseForData = MsgBox(String.Format("Could not find the Selected Polygons file used to limit extent: {0}.  Would you like to browse for it? ", strSelected), MsgBoxStyle.YesNo, "Cannot Locate Dataset")
                     If browseForData = MsgBoxResult.Yes Then
                         'if they want to look for it then give em the browser
                         _XmlPrjParams.strSelectedPolyFileName = AddInputFromGxBrowser("Feature")
@@ -1563,11 +1447,7 @@ Friend Class MainForm
         optUseGRID.Checked = _XmlPrjParams.intRainGridBool
         If optUseGRID.Checked Then
             If RasterExists(_XmlPrjParams.strRainGridFileName) Then
-                Dim browseForData = _
-                      MsgBox( _
-                              String.Format("Could not find Rainfall GRID: {0}.  Would you like to browse for it?", _
-                                             _XmlPrjParams.strRainGridFileName), MsgBoxStyle.YesNo, _
-                              "Cannot Locate Dataset")
+                Dim browseForData = MsgBox(String.Format("Could not find Rainfall GRID: {0}.  Would you like to browse for it?", _XmlPrjParams.strRainGridFileName), MsgBoxStyle.YesNo, "Cannot Locate Dataset")
                 If browseForData = MsgBoxResult.Yes Then
                     Dim g As New Grid
                     Using dlgOpen As New OpenFileDialog()
@@ -1633,49 +1513,27 @@ Friend Class MainForm
                     If LayerLoadedInMap(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName) Then
                         PopulateManagement(idx)
                         .Rows(idx).Cells("ManageApply").Value = _XmlPrjParams.MgmtScenHolder.Item(i).intApply
-                        .Rows(idx).Cells("ChangeAreaLayer").Value = _
-                            _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
-                        .Rows(idx).Cells("ChangeToClass").Value = _
-                            _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
+                        .Rows(idx).Cells("ChangeAreaLayer").Value = _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
+                        .Rows(idx).Cells("ChangeToClass").Value = _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
                     Else
-                        If _
-                            AddFeatureLayerToMapFromFileName( _
-                                                              _XmlPrjParams.MgmtScenHolder.Item(i). _
-                                                                 strAreaFileName) Then
+                        If AddFeatureLayerToMapFromFileName(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName) Then
                             arrAreaList.Add(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName)
 
                             PopulateManagement(idx)
-                            .Rows(idx).Cells("ManageApply").Value = _
-                                _XmlPrjParams.MgmtScenHolder.Item(i).intApply
-                            .Rows(idx).Cells("ChangeAreaLayer").Value = _
-                                _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
-                            .Rows(idx).Cells("ChangeToClass").Value = _
-                                _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
+                            .Rows(idx).Cells("ManageApply").Value = _XmlPrjParams.MgmtScenHolder.Item(i).intApply
+                            .Rows(idx).Cells("ChangeAreaLayer").Value = _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
+                            .Rows(idx).Cells("ChangeToClass").Value = _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
                         Else
-                            Dim browseForData = MsgBox( _
-                                        String.Format( _
-                                                       "Could not find Management Sceario Area Layer: {0}.  Would you like to browse for it?", _
-                                                       _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName), _
-                                        MsgBoxStyle.YesNo, _
-                                        "Cannot Locate Dataset:" & _
-                                        _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName)
+                            Dim browseForData = MsgBox(String.Format("Could not find Management Sceario Area Layer: {0}.  Would you like to browse for it?", _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName), MsgBoxStyle.YesNo, "Cannot Locate Dataset:" & _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName)
                             If browseForData = MsgBoxResult.Yes Then
-                                _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName = _
-                                    AddInputFromGxBrowser("Feature")
-                                If _
-                                    AddFeatureLayerToMapFromFileName( _
-                                                                      _XmlPrjParams.MgmtScenHolder.Item( _
-                                                                                                            i) _
-                                                                         .strAreaFileName) Then
+                                _XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName = AddInputFromGxBrowser("Feature")
+                                If AddFeatureLayerToMapFromFileName(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaFileName) Then
                                     arrAreaList.Add(_XmlPrjParams.MgmtScenHolder.Item(i).strAreaName)
 
                                     PopulateManagement(idx)
-                                    .Rows(idx).Cells("ManageApply").Value = _
-                                        _XmlPrjParams.MgmtScenHolder.Item(i).intApply
-                                    .Rows(idx).Cells("ChangeAreaLayer").Value = _
-                                        _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
-                                    .Rows(idx).Cells("ChangeToClass").Value = _
-                                        _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
+                                    .Rows(idx).Cells("ManageApply").Value = _XmlPrjParams.MgmtScenHolder.Item(i).intApply
+                                    .Rows(idx).Cells("ChangeAreaLayer").Value = _XmlPrjParams.MgmtScenHolder.Item(i).strAreaName
+                                    .Rows(idx).Cells("ChangeToClass").Value = _XmlPrjParams.MgmtScenHolder.Item(i).strChangeToClass
                                 End If
                             Else
                                 Return False
@@ -1766,12 +1624,7 @@ Friend Class MainForm
                 Else
                     'Now check to see if the name changed
                     If _strOpenFileName <> txtProjectName.Text Then
-                        intvbYesNo = _
-                            MsgBox( _
-                                    String.Format( _
-                                                   "You have changed the name of this project.  Would you like to save your settings as a new file?{0}{1}Yes{1} -    Save as new OpenNSPECT project file{0}{1}No{1} -    Save changes to current OpenNSPECT project file{0}{1}Cancel{1} -    Return to the project window", _
-                                                   vbNewLine, vbTab), MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel, _
-                                    "OpenNSPECT")
+                        intvbYesNo = MsgBox(String.Format("You have changed the name of this project.  Would you like to save your settings as a new file?{0}{1}Yes{1} -    Save as new OpenNSPECT project file{0}{1}No{1} -    Save changes to current OpenNSPECT project file{0}{1}Cancel{1} -    Return to the project window", vbNewLine, vbTab), MsgBoxStyle.Question + MsgBoxStyle.YesNoCancel, "OpenNSPECT")
                         If intvbYesNo = MsgBoxResult.Yes Then
                             With dlgXml
                                 .Filter = MSG8XmlFile
@@ -1836,8 +1689,7 @@ Friend Class MainForm
                         ValidateData = True
                     End If
                 Else
-                    MsgBox("You have chosen 'Selected watersheds only'.  Please select watersheds.", _
-                            MsgBoxStyle.Critical, "No Selected Features Found")
+                    MsgBox("You have chosen 'Selected watersheds only'.  Please select watersheds.", MsgBoxStyle.Critical, "No Selected Features Found")
                     ValidateData = False
                     Exit Function
                 End If
@@ -1865,8 +1717,7 @@ Friend Class MainForm
 
             'LandCover
             If cboLCLayer.Text = "" Then
-                MsgBox("Please select a Land Cover layer before continuing.", MsgBoxStyle.Information, _
-                        "Select Land Cover Layer")
+                MsgBox("Please select a Land Cover layer before continuing.", MsgBoxStyle.Information, "Select Land Cover Layer")
                 cboLCLayer.Focus()
                 ValidateData = False
                 Exit Function
@@ -1876,8 +1727,7 @@ Friend Class MainForm
                     ParamsPrj.strLCGridFileName = GetLayerFilename(cboLCLayer.Text)
                     ParamsPrj.strLCGridUnits = CStr(cboLCUnits.SelectedIndex)
                 Else
-                    MsgBox("The Land Cover layer you have choosen is not in the current map frame.", _
-                            MsgBoxStyle.Information, "Layer Not Found")
+                    MsgBox("The Land Cover layer you have choosen is not in the current map frame.", MsgBoxStyle.Information, "Layer Not Found")
                     ValidateData = False
                     Exit Function
                 End If
@@ -1885,8 +1735,7 @@ Friend Class MainForm
 
             'LC Type
             If cboLandCoverType.Text = "" Then
-                MsgBox("Please select a Land Class Type before continuing.", MsgBoxStyle.Information, _
-                        "Select Land Class Type")
+                MsgBox("Please select a Land Class Type before continuing.", MsgBoxStyle.Information, "Select Land Class Type")
                 cboLandCoverType.Focus()
                 ValidateData = False
                 Exit Function
@@ -1896,8 +1745,7 @@ Friend Class MainForm
 
             'Soils - use definition to find datasets, if there use, if not tell the user
             If cboSoilsLayer.Text = "" Then
-                MsgBox("Please select a Soils definition before continuing.", MsgBoxStyle.Information, _
-                        "Select Soils Layer")
+                MsgBox("Please select a Soils definition before continuing.", MsgBoxStyle.Information, "Select Soils Layer")
                 cboSoilsLayer.Focus()
                 ValidateData = False
                 Exit Function
@@ -1906,10 +1754,7 @@ Friend Class MainForm
                     ParamsPrj.strSoilsDefName = cboSoilsLayer.Text
                     ParamsPrj.strSoilsHydFileName = lblSoilsHyd.Text
                 Else
-                    MsgBox( _
-                            String.Format( _
-                                           "The hydrologic soils layer {0} you have selected is missing.  Please check you soils definition.", _
-                                           lblSoilsHyd.Text), MsgBoxStyle.Information, "Soils Layer Not Found")
+                    MsgBox(String.Format("The hydrologic soils layer {0} you have selected is missing.  Please check you soils definition.", lblSoilsHyd.Text), MsgBoxStyle.Information, "Soils Layer Not Found")
                     ValidateData = False
                     Exit Function
                 End If
@@ -1926,15 +1771,11 @@ Friend Class MainForm
                     ParamsPrj.strPrecipScenario = cboPrecipitationScenarios.Text
                 Else
                     'Can't find it...well, then send user to Browse
-                    MsgBox(String.Format("Unable to find precip dataset: {0}.  Please Correct", _strPrecipFile), _
-                            MsgBoxStyle.Information, "Cannot Find Dataset")
+                    MsgBox(String.Format("Unable to find precip dataset: {0}.  Please Correct", _strPrecipFile), MsgBoxStyle.Information, "Cannot Find Dataset")
                     _strPrecipFile = BrowseForFileName("Raster")
                     'If new one found, then we must update DataBase
                     If Len(_strPrecipFile) > 0 Then
-                        strUpdatePrecip = _
-                            String.Format( _
-                                           "UPDATE PrecipScenario SET precipScenario.PrecipFileName = '{0}'WHERE NAME = '{1}'", _
-                                           _strPrecipFile, cboPrecipitationScenarios.Text)
+                        strUpdatePrecip = String.Format("UPDATE PrecipScenario SET precipScenario.PrecipFileName = '{0}'WHERE NAME = '{1}'", _strPrecipFile, cboPrecipitationScenarios.Text)
                         Using PreUpdCmd As OleDbCommand = New OleDbCommand(strUpdatePrecip, g_DBConn)
                             PreUpdCmd.ExecuteNonQuery()
                         End Using
@@ -1954,8 +1795,7 @@ Friend Class MainForm
             If ValidateWaterShed() Then
                 ParamsPrj.strWaterShedDelin = cboWaterShedDelineations.Text
             Else
-                MsgBox("There is a problems with the selected Watershed Delineation.", MsgBoxStyle.Information, _
-                        "Watershed Delineation")
+                MsgBox("There is a problems with the selected Watershed Delineation.", MsgBoxStyle.Information, "Watershed Delineation")
                 ValidateData = False
                 Exit Function
             End If
@@ -1964,8 +1804,7 @@ Friend Class MainForm
             If Len(cboWaterQualityCriteriaStd.Text) > 0 Then
                 ParamsPrj.strWaterQuality = cboWaterQualityCriteriaStd.Text
             Else
-                MsgBox("Please select a water quality standard.", MsgBoxStyle.Information, _
-                        "Water Quality Standard Missing")
+                MsgBox("Please select a water quality standard.", MsgBoxStyle.Information, "Water Quality Standard Missing")
                 ValidateData = False
                 Exit Function
             End If
@@ -1998,10 +1837,7 @@ Friend Class MainForm
                 If RasterExists((lblKFactor.Text)) Then
                     ParamsPrj.strSoilsKFileName = lblKFactor.Text
                 Else
-                    MsgBox( _
-                            String.Format( _
-                                           "The K Factor soils dataset {0} you have selected is missing.  Please check your soils definition.", _
-                                           lblSoilsHyd.Text), MsgBoxStyle.Information, "Soils K Factor Not Found")
+                    MsgBox(String.Format("The K Factor soils dataset {0} you have selected is missing.  Please check your soils definition.", lblSoilsHyd.Text), MsgBoxStyle.Information, "Soils K Factor Not Found")
                     ValidateData = False
                     Exit Function
                 End If
@@ -2031,8 +1867,7 @@ Friend Class MainForm
                             txtRainValue.Focus()
                         Else
                             If CDbl(txtRainValue.Text) < 0 Then
-                                MsgBox("Positive values only please for rainfall values.", MsgBoxStyle.Information, _
-                                        "Postive Values Only")
+                                MsgBox("Positive values only please for rainfall values.", MsgBoxStyle.Information, "Postive Values Only")
                                 txtRainValue.Focus()
                             Else
                                 ParamsPrj.intRainConstBool = 1
@@ -2056,8 +1891,7 @@ Friend Class MainForm
                             ParamsPrj.intUseOwnSDR = 1
                             ParamsPrj.strSDRGridFileName = txtSDRGRID.Text
                         Else
-                            MsgBox(String.Format("SDR GRID {0} not found.", txtSDRGRID.Text), MsgBoxStyle.Information, _
-                                    "SDR GRID Not Found")
+                            MsgBox(String.Format("SDR GRID {0} not found.", txtSDRGRID.Text), MsgBoxStyle.Information, "SDR GRID Not Found")
                             ValidateData = False
                             Exit Function
                         End If
@@ -2163,18 +1997,12 @@ Friend Class MainForm
             For Each row As DataGridViewRow In dgvPollutants.Rows
                 If row.Cells("PollApply").FormattedValue = True Then
                     If Len(row.Cells("CoefSet").Value) = 0 Then
-                        MsgBox( _
-                                "Please select a coefficient set for pollutant: " & _
-                                row.Cells("PollutantName").Value.ToString, MsgBoxStyle.Critical, _
-                                "Coefficient Set Missing")
+                        MsgBox("Please select a coefficient set for pollutant: " & row.Cells("PollutantName").Value.ToString, MsgBoxStyle.Critical, "Coefficient Set Missing")
                         ValidatePollutants = False
                         Exit Function
                     Else
                         If Len(row.Cells("WhichCoeff").Value) = 0 Then
-                            MsgBox( _
-                                    "Please select a coefficient for pollutant: " & _
-                                    row.Cells("PollutantName").Value.ToString, MsgBoxStyle.Critical, _
-                                    "Coefficient Missing")
+                            MsgBox("Please select a coefficient for pollutant: " & row.Cells("PollutantName").Value.ToString, MsgBoxStyle.Critical, "Coefficient Missing")
                             ValidatePollutants = False
                             Exit Function
                         Else
@@ -2221,8 +2049,7 @@ Friend Class MainForm
                         'Check to make sure all datasets exist, if not
                         'DEM
                         If Not RasterExists(dtWS.Rows(0)("DEMFileName")) Then
-                            MsgBox(String.Format("Unable to locate DEM dataset: {0}.", dtWS.Rows(0)("DEMFileName")), _
-                                    MsgBoxStyle.Critical, "Missing Dataset")
+                            MsgBox(String.Format("Unable to locate DEM dataset: {0}.", dtWS.Rows(0)("DEMFileName")), MsgBoxStyle.Critical, "Missing Dataset")
                             strDEM = BrowseForFileName("Raster")
                             If Len(strDEM) > 0 Then
                                 dtWS.Rows(0)("DEMFileName") = strDEM
@@ -2234,10 +2061,7 @@ Friend Class MainForm
                             End If
                             'WaterShed Delineation
                         ElseIf Not FeatureExists(dtWS.Rows(0)("wsfilename")) Then
-                            MsgBox( _
-                                    String.Format("Unable to locate Watershed dataset: {0}.", _
-                                                   dtWS.Rows(0)("wsfilename")), MsgBoxStyle.Critical, _
-                                    "Missing Dataset")
+                            MsgBox(String.Format("Unable to locate Watershed dataset: {0}.", dtWS.Rows(0)("wsfilename")), MsgBoxStyle.Critical, "Missing Dataset")
                             strWShed = BrowseForFileName("Feature")
                             If Len(strWShed) > 0 Then
                                 dtWS.Rows(0)("wsfilename") = strWShed
@@ -2248,12 +2072,8 @@ Friend Class MainForm
                             End If
                             'Flow Direction
                         ElseIf Not RasterExists(dtWS.Rows(0)("FlowDirFileName")) Then
-                            MsgBox( _
-                                    String.Format("Unable to locate Flow Direction GRID: {0}.", _
-                                                   dtWS.Rows(0)("FlowDirFileName")), MsgBoxStyle.Critical, _
-                                    "Missing Dataset")
-                            strFlowDirFileName = _
-                                BrowseForFileName("Raster")
+                            MsgBox(String.Format("Unable to locate Flow Direction GRID: {0}.", dtWS.Rows(0)("FlowDirFileName")), MsgBoxStyle.Critical, "Missing Dataset")
+                            strFlowDirFileName = BrowseForFileName("Raster")
                             If Len(strFlowDirFileName) > 0 Then
                                 dtWS.Rows(0)("FlowDirFileName") = strFlowDirFileName
                                 booUpdate = True
@@ -2263,12 +2083,8 @@ Friend Class MainForm
                             End If
                             'Flow Accumulation
                         ElseIf Not RasterExists(dtWS.Rows(0)("FlowAccumFileName")) Then
-                            MsgBox( _
-                                    String.Format("Unable to locate Flow Accumulation GRID: {0}.", _
-                                                   dtWS.Rows(0)("FlowAccumFileName")), MsgBoxStyle.Critical, _
-                                    "Missing Dataset")
-                            strFlowAccumFileName = _
-                                BrowseForFileName("Raster")
+                            MsgBox(String.Format("Unable to locate Flow Accumulation GRID: {0}.", dtWS.Rows(0)("FlowAccumFileName")), MsgBoxStyle.Critical, "Missing Dataset")
+                            strFlowAccumFileName = BrowseForFileName("Raster")
                             If Len(strFlowAccumFileName) > 0 Then
                                 dtWS.Rows(0)("FlowAccumFileName") = strFlowAccumFileName
                                 booUpdate = True
@@ -2279,12 +2095,8 @@ Friend Class MainForm
                             'Check for non-hydro correct GRIDS
                         ElseIf dtWS.Rows(0)("HydroCorrected") = 0 Then
                             If Not RasterExists(dtWS.Rows(0)("FilledDEMFileName")) Then
-                                MsgBox( _
-                                        String.Format("Unable to locate the Filled DEM: {0}.", _
-                                                       dtWS.Rows(0)("FilledDEMFileName")), MsgBoxStyle.Critical, _
-                                        "Missing Dataset")
-                                strFilledDEMFileName = _
-                                    BrowseForFileName("Raster")
+                                MsgBox(String.Format("Unable to locate the Filled DEM: {0}.", dtWS.Rows(0)("FilledDEMFileName")), MsgBoxStyle.Critical, "Missing Dataset")
+                                strFilledDEMFileName = BrowseForFileName("Raster")
                                 If Len(strFilledDEMFileName) > 0 Then
                                     dtWS.Rows(0)("FilledDEMFileName") = strFilledDEMFileName
                                     booUpdate = True
@@ -2325,8 +2137,7 @@ Friend Class MainForm
                     End If
 
                     If row.Cells("ChangeToClass").Value = "" Then
-                        MsgBox("Please select a land class in row " + (row.Index + 1).ToString, MsgBoxStyle.Critical, _
-                                "Missing Value")
+                        MsgBox("Please select a land class in row " + (row.Index + 1).ToString, MsgBoxStyle.Critical, "Missing Value")
                         ValidateMgmtScenario = False
                         Exit Function
                     End If

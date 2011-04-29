@@ -26,30 +26,27 @@ Friend Class NewPrecipitationScenarioForm
 
 #Region "Events"
 
-    Private Sub txtPrecipName_TextChanged (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles txtPrecipName.TextChanged
+    Private Sub txtPrecipName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtPrecipName.TextChanged
         Try
-            txtPrecipName.Text = Replace (txtPrecipName.Text, "'", "")
+            txtPrecipName.Text = Replace(txtPrecipName.Text, "'", "")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub txtDesc_Validating (ByVal sender As Object, ByVal e As CancelEventArgs) _
-        Handles txtDesc.Validating
+    Private Sub txtDesc_Validating(ByVal sender As Object, ByVal e As CancelEventArgs) Handles txtDesc.Validating
         Try
             Dim Cancel As Boolean = e.Cancel
 
-            txtDesc.Text = Replace (txtDesc.Text, "'", "")
+            txtDesc.Text = Replace(txtDesc.Text, "'", "")
 
             e.Cancel = Cancel
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub cmdBrowseFile_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cmdBrowseFile.Click
+    Private Sub cmdBrowseFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowseFile.Click
         Try
             Dim dlgOpen As New OpenFileDialog
 
@@ -58,33 +55,22 @@ Friend Class NewPrecipitationScenarioForm
             dlgOpen.Filter = g.CdlgFilter
 
             If dlgOpen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
-                If g.Open (dlgOpen.FileName) Then
+                If g.Open(dlgOpen.FileName) Then
                     txtPrecipFile.Text = dlgOpen.FileName
                     Dim proj As String = g.Header.Projection
-                    If Path.GetFileName (dlgOpen.FileName) = "sta.adf" Then
-                        If _
-                            File.Exists ( _
-                                         Path.GetDirectoryName (dlgOpen.FileName) + Path.DirectorySeparatorChar + _
-                                         "prj.adf") Then
-                            Dim _
-                                infile As _
-                                    New StreamReader ( _
-                                                      Path.GetDirectoryName (dlgOpen.FileName) + _
-                                                      Path.DirectorySeparatorChar + "prj.adf")
-                            If infile.ReadToEnd.Contains ("METERS") Then
+                    If Path.GetFileName(dlgOpen.FileName) = "sta.adf" Then
+                        If File.Exists(Path.GetDirectoryName(dlgOpen.FileName) + Path.DirectorySeparatorChar + "prj.adf") Then
+                            Dim infile As New StreamReader(Path.GetDirectoryName(dlgOpen.FileName) + Path.DirectorySeparatorChar + "prj.adf")
+                            If infile.ReadToEnd.Contains("METERS") Then
                                 proj = "units=m"
                             End If
                         Else
-                            MsgBox ( _
-                                    "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
-                                    MsgBoxStyle.Exclamation, "No Project Information Detected")
+                            MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
                             Return
                         End If
                     End If
                     If proj = "" Then
-                        MsgBox( _
-                                "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
-                                MsgBoxStyle.Exclamation, "No Project Information Detected")
+                        MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
                         Return
                     Else
                         If proj.Contains("units=m") Then
@@ -102,8 +88,7 @@ Friend Class NewPrecipitationScenarioForm
         End Try
     End Sub
 
-    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboTimePeriod.SelectedIndexChanged
+    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboTimePeriod.SelectedIndexChanged
         Try
             If cboTimePeriod.SelectedIndex = 0 Then
                 lblRainingDays.Visible = True
@@ -141,13 +126,7 @@ Friend Class NewPrecipitationScenarioForm
                 End If
 
                 'Compose the INSERT statement.
-                strCmdInsert = "INSERT INTO PrecipScenario " & _
-                               "(Name, Description, PrecipFileName, PrecipGridUnits, PrecipUnits, Type, PrecipType, RainingDays) VALUES (" & _
-                               "'" & Replace(CStr(txtPrecipName.Text), "'", "''") & "', " & "'" & _
-                               Replace(CStr(txtDesc.Text), "'", "''") & "', " & "'" & _
-                               Replace(txtPrecipFile.Text, "'", "''") & "', " & "" & cboGridUnits.SelectedIndex & ", " & _
-                               "" & cboPrecipUnits.SelectedIndex & ", " & "" & intType & ", " & "" & _
-                               cboPrecipType.SelectedIndex & ", " & "" & intRainingDays & ")"
+                strCmdInsert = "INSERT INTO PrecipScenario " & "(Name, Description, PrecipFileName, PrecipGridUnits, PrecipUnits, Type, PrecipType, RainingDays) VALUES (" & "'" & Replace(CStr(txtPrecipName.Text), "'", "''") & "', " & "'" & Replace(CStr(txtDesc.Text), "'", "''") & "', " & "'" & Replace(txtPrecipFile.Text, "'", "''") & "', " & "" & cboGridUnits.SelectedIndex & ", " & "" & cboPrecipUnits.SelectedIndex & ", " & "" & intType & ", " & "" & cboPrecipType.SelectedIndex & ", " & "" & intRainingDays & ")"
 
                 If UniqueName("PrecipScenario", txtPrecipName.Text) Then
                     'Execute the statement.
@@ -180,64 +159,63 @@ Friend Class NewPrecipitationScenarioForm
 
 #Region "Helper Functions"
 
-    Public Sub Init (ByRef frmPrj As MainForm, ByRef frmPrec As PrecipitationScenariosForm)
+    Public Sub Init(ByRef frmPrj As MainForm, ByRef frmPrec As PrecipitationScenariosForm)
         Try
             _frmPrj = frmPrj
             _frmPrec = frmPrec
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Private Function CheckParams() As Boolean
         Try
             'Check the inputs of the form, before saving
-            If Len (txtDesc.Text) = 0 Then
-                MsgBox ("Please enter a description for this scenario", MsgBoxStyle.Critical, "Description Missing")
+            If Len(txtDesc.Text) = 0 Then
+                MsgBox("Please enter a description for this scenario", MsgBoxStyle.Critical, "Description Missing")
                 txtDesc.Focus()
                 CheckParams = False
                 Exit Function
             End If
 
             If txtPrecipFile.Text = " " Or txtPrecipFile.Text = "" Then
-                MsgBox ("Please select a valid precipitation GRID before saving.", MsgBoxStyle.Critical, "GRID Missing")
+                MsgBox("Please select a valid precipitation GRID before saving.", MsgBoxStyle.Critical, "GRID Missing")
                 txtPrecipFile.Focus()
                 CheckParams = False
                 Exit Function
             End If
 
             If cboGridUnits.Text = "" Then
-                MsgBox ("Please select GRID units.", MsgBoxStyle.Critical, "Units Missing")
+                MsgBox("Please select GRID units.", MsgBoxStyle.Critical, "Units Missing")
                 cboGridUnits.Focus()
                 CheckParams = False
                 Exit Function
             End If
 
             If cboPrecipUnits.Text = "" Then
-                MsgBox ("Please select precipitation units.", MsgBoxStyle.Critical, "Units Missing")
+                MsgBox("Please select precipitation units.", MsgBoxStyle.Critical, "Units Missing")
                 cboPrecipUnits.Focus()
                 CheckParams = False
                 Exit Function
             End If
 
-            If Len (cboPrecipType.Text) = 0 Then
-                MsgBox ("Please select a Precipitation Type.", MsgBoxStyle.Critical, "Precipitation Type Missing")
+            If Len(cboPrecipType.Text) = 0 Then
+                MsgBox("Please select a Precipitation Type.", MsgBoxStyle.Critical, "Precipitation Type Missing")
                 cboPrecipType.Focus()
                 CheckParams = False
                 Exit Function
             End If
 
-            If Len (cboTimePeriod.Text) = 0 Then
-                MsgBox ("Please select a Time Period.", MsgBoxStyle.Critical, "Precipitation Time Period Missing")
+            If Len(cboTimePeriod.Text) = 0 Then
+                MsgBox("Please select a Time Period.", MsgBoxStyle.Critical, "Precipitation Time Period Missing")
                 cboTimePeriod.Focus()
                 CheckParams = False
                 Exit Function
             End If
 
             If cboTimePeriod.SelectedIndex = 0 Then
-                If Not IsNumeric (txtRainingDays.Text) Or Len (txtRainingDays.Text) = 0 Then
-                    MsgBox ("Please enter a numeric value for Raining Days.", MsgBoxStyle.Critical, _
-                            "Raining Days Value Incorrect")
+                If Not IsNumeric(txtRainingDays.Text) Or Len(txtRainingDays.Text) = 0 Then
+                    MsgBox("Please enter a numeric value for Raining Days.", MsgBoxStyle.Critical, "Raining Days Value Incorrect")
                     txtRainingDays.Focus()
                     CheckParams = False
                     Exit Function
@@ -248,7 +226,7 @@ Friend Class NewPrecipitationScenarioForm
             CheckParams = True
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Function
 

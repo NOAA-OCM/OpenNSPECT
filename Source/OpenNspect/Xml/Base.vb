@@ -62,8 +62,7 @@ Namespace Xml
             End Try
         End Function
 
-        Public Sub NodeAppendAttribute(ByVal dom As XmlDocument, ByVal node As XmlNode, ByVal strName As String, _
-                                       ByVal varValue As Object)
+        Public Sub NodeAppendAttribute(ByVal dom As XmlDocument, ByVal node As XmlNode, ByVal strName As String, ByVal varValue As Object)
             Try
                 'The NodeAppendAttribute subroutine creates an attribute having the given
                 'name and value, and adds it to the given node's Attributes collection.
@@ -81,8 +80,7 @@ Namespace Xml
             End Try
         End Sub
 
-        Public Sub NodeAppendChildElement(ByVal dom As XmlDocument, ByVal node As XmlNode, ByVal Name As String, _
-                                          ByVal Value As Object)
+        Public Sub NodeAppendChildElement(ByVal dom As XmlDocument, ByVal node As XmlNode, ByVal Name As String, ByVal Value As Object)
             Try
                 'The NodeAppendChildElement subroutine creates an element having the given
                 'name and value, and adds the element as a child of the given node.
@@ -111,8 +109,7 @@ Namespace Xml
         ''' <param name="Parent">The parent.</param>
         ''' <param name="ChildName">Name of the child.</param>
         ''' <param name="NodeTextType">Type of the node text.</param><returns></returns>
-        Public Function GetNodeText(ByRef Parent As XmlNode, ByRef ChildName As String, _
-                                    Optional ByRef NodeTextType As String = "") As String
+        Public Function GetNodeText(ByRef Parent As XmlNode, ByRef ChildName As String, Optional ByRef NodeTextType As String = "") As String
 
             Try
                 If Parent Is Nothing Or Parent.SelectSingleNode(ChildName) Is Nothing Then

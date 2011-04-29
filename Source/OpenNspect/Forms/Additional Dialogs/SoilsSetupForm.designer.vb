@@ -83,8 +83,7 @@
         Me.txtSoilsName.Name = "txtSoilsName"
         Me.txtSoilsName.Size = New System.Drawing.Size(212, 20)
         Me.txtSoilsName.TabIndex = 0
-        Me.ToolTip1.SetToolTip(Me.txtSoilsName, "Choose the filled DEM you are using.  This will provide Spatial Analyst with the " & _
-        "proper analysis environment.")
+        Me.ToolTip1.SetToolTip(Me.txtSoilsName, "Choose the filled DEM you are using.  This will provide Spatial Analyst with the " & "proper analysis environment.")
         '
         'txtDEMFile
         '
@@ -94,8 +93,7 @@
         Me.txtDEMFile.Name = "txtDEMFile"
         Me.txtDEMFile.Size = New System.Drawing.Size(212, 20)
         Me.txtDEMFile.TabIndex = 1
-        Me.ToolTip1.SetToolTip(Me.txtDEMFile, "Choose the filled DEM you are using.  This will provide Spatial Analyst with the " & _
-        "proper analysis environment.")
+        Me.ToolTip1.SetToolTip(Me.txtDEMFile, "Choose the filled DEM you are using.  This will provide Spatial Analyst with the " & "proper analysis environment.")
         '
         'Frame2
         '
@@ -142,8 +140,7 @@
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(305, 49)
         Me.Label12.TabIndex = 24
-        Me.Label12.Text = "Warning: Q and qp are calculated in English units (acre-feet and cubic feet per s" & _
-    "econd respectively). ""a"" and ""b"" must be derived accordingly."
+        Me.Label12.Text = "Warning: Q and qp are calculated in English units (acre-feet and cubic feet per s" & "econd respectively). ""a"" and ""b"" must be derived accordingly."
         '
         'Label7
         '

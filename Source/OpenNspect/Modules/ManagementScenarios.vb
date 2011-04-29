@@ -35,8 +35,7 @@ Module ManagementScenarios
     Private _pLandCoverRaster As Grid
     Public g_booLCChange As Boolean
 
-    Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, _
-                              ByRef strLCFileName As String, ByRef strWorkspace As String)
+    Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, ByRef strLCFileName As String, ByRef strWorkspace As String)
         'Main Sub for setting everything up
         'MgmtScens: Xml wrapper for the management scenarios created by the user
         'strLCClass: Name of the LandCover being used, CCAP
@@ -98,8 +97,7 @@ Module ManagementScenarios
 
     End Sub
 
-    Public Sub ReclassRaster(ByRef MgmtScen As ManagementScenarioItem, ByVal strLCClass As String, _
-                              ByRef outputGrid As Grid)
+    Public Sub ReclassRaster(ByRef MgmtScen As ManagementScenarioItem, ByVal strLCClass As String, ByRef outputGrid As Grid)
         'We're passing over a single management scenarios in the form of the xml
         'class XmlmgmtScenItem, seems to be the easiest way to do this.
         Dim strSelect As String
@@ -109,9 +107,7 @@ Module ManagementScenarios
 
         'Open the landclass Value Value 
         'This is the value user's landclass will change to
-        strSelect = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & _
-                    "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & _
-                    strLCClass & "' AND LCCLASS.NAME LIKE '" & MgmtScen.strChangeToClass & "'"
+        strSelect = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strLCClass & "' AND LCCLASS.NAME LIKE '" & MgmtScen.strChangeToClass & "'"
         Dim cmdLCVal As New OleDbCommand(strSelect, g_DBConn)
         Dim readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
         readLCVal.Read()

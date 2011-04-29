@@ -48,27 +48,26 @@ Friend Class NewWaterQualityStandardForm
         End Try
     End Sub
 
-    Private Sub txtWQStdName_TextChanged (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles txtWQStdName.TextChanged
+    Private Sub txtWQStdName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtWQStdName.TextChanged
         Try
-            txtWQStdName.Text = Replace (txtWQStdName.Text, "'", "")
+            txtWQStdName.Text = Replace(txtWQStdName.Text, "'", "")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Try
             Dim strName As String
             Dim strDescript As String
             Dim strCmd As String
 
             'Get rid of possible apostrophes
-            strName = Replace (Trim (txtWQStdName.Text), "'", "''")
-            strDescript = Trim (txtWQStdDesc.Text)
+            strName = Replace(Trim(txtWQStdName.Text), "'", "''")
+            strDescript = Trim(txtWQStdDesc.Text)
 
-            If Len (strName) = 0 Then
-                MsgBox ("Please enter a name for the water quality standard.", MsgBoxStyle.Critical, "Empty Name Field")
+            If Len(strName) = 0 Then
+                MsgBox("Please enter a name for the water quality standard.", MsgBoxStyle.Critical, "Empty Name Field")
                 txtWQStdName.Focus()
                 Return
             Else
@@ -76,9 +75,7 @@ Friend Class NewWaterQualityStandardForm
                 If UniqueName("WQCRITERIA", (txtWQStdName.Text)) Then
                     'Value check
                     If CheckThreshValues() Then
-                        strCmd = _
-                            String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
-                                           Replace(txtWQStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
+                        strCmd = String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(txtWQStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
                         Using cmdInsert As New DataHelper(strCmd)
                             cmdInsert.ExecuteNonQuery()
                         End Using
@@ -87,8 +84,7 @@ Friend Class NewWaterQualityStandardForm
                         Return
                     End If
                 Else
-                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, _
-                            "Select Unique Name")
+                    MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
                     Return
                 End If
             End If
@@ -98,37 +94,35 @@ Friend Class NewWaterQualityStandardForm
             i = 0
 
             For Each row As DataGridViewRow In dgvWaterQuality.Rows
-                PollutantAdd (txtWQStdName.Text, row.Cells ("Pollutant").Value, row.Cells ("Threshold").Value)
+                PollutantAdd(txtWQStdName.Text, row.Cells("Pollutant").Value, row.Cells("Threshold").Value)
             Next
 
-            MsgBox (txtWQStdName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
+            MsgBox(txtWQStdName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
 
             'Clean up stuff
             If Not _frmWQStd Is Nothing Then
-                _frmWQStd.UpdateWQ (txtWQStdName.Text)
+                _frmWQStd.UpdateWQ(txtWQStdName.Text)
             ElseIf Not _frmPrj Is Nothing Then
-                _frmPrj.UpdateWQ (txtWQStdName.Text)
+                _frmPrj.UpdateWQ(txtWQStdName.Text)
             End If
 
-            MyBase.OK_Button_Click (sender, e)
+            MyBase.OK_Button_Click(sender, e)
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
 
     End Sub
 
-    Protected Overrides Sub Cancel_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub Cancel_Button_Click(sender As Object, e As EventArgs)
         IsDirty = True
-        MyBase.Cancel_Button_Click (sender, e)
+        MyBase.Cancel_Button_Click(sender, e)
         If Not _frmPrj Is Nothing Then
             _frmPrj.cboWaterQualityCriteriaStd.SelectedIndex = 0
         End If
     End Sub
 
-    Private Sub dgvWaterQuality_CellValueChanged (ByVal sender As Object, _
-                                                  ByVal e As DataGridViewCellEventArgs) _
-        Handles dgvWaterQuality.CellValueChanged
+    Private Sub dgvWaterQuality_CellValueChanged(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvWaterQuality.CellValueChanged
 
         OK_Button.Enabled = True
     End Sub
@@ -137,19 +131,19 @@ Friend Class NewWaterQualityStandardForm
 
 #Region "Helper Functions"
 
-    Public Sub Init (ByRef frmWQStd As WaterQualityStandardsForm, ByRef frmPrj As MainForm)
+    Public Sub Init(ByRef frmWQStd As WaterQualityStandardsForm, ByRef frmPrj As MainForm)
         Try
             _frmWQStd = frmWQStd
             _frmPrj = frmPrj
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Private Function CheckThreshValues() As Boolean
         Try
             For Each row As DataGridViewRow In dgvWaterQuality.Rows
-                If IsNumeric (row.Cells ("Threshold").Value) Or row.Cells ("Threshold").Value = "" Then
+                If IsNumeric(row.Cells("Threshold").Value) Or row.Cells("Threshold").Value = "" Then
                     CheckThreshValues = True
                 Else
                     CheckThreshValues = False
@@ -157,11 +151,11 @@ Friend Class NewWaterQualityStandardForm
                 End If
             Next
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Function
 
-    Private Sub PollutantAdd (ByRef strName As String, ByRef strPoll As String, ByRef intThresh As String)
+    Private Sub PollutantAdd(ByRef strName As String, ByRef strPoll As String, ByRef intThresh As String)
         Try
             Dim strPollAdd As String
             Dim strPollDetails As String
@@ -169,33 +163,28 @@ Friend Class NewWaterQualityStandardForm
 
             'Get the WQCriteria values using the name
             strPollAdd = "SELECT * FROM WQCriteria WHERE NAME = " & "'" & strName & "'"
-            Using cmdPollAdd As New DataHelper (strPollAdd)
+            Using cmdPollAdd As New DataHelper(strPollAdd)
                 Dim datPollAdd As OleDbDataReader = cmdPollAdd.ExecuteReader()
                 datPollAdd.Read()
 
                 'Get the pollutant particulars
                 strPollDetails = "SELECT * FROM POLLUTANT WHERE NAME =" & "'" & strPoll & "'"
-                Using cmdPollDetails As New DataHelper (strPollDetails)
+                Using cmdPollDetails As New DataHelper(strPollDetails)
                     Dim datPollDetails As OleDbDataReader = cmdPollDetails.ExecuteReader()
                     datPollDetails.Read()
-                    If Trim (intThresh) = "" Then
-                        strCmdInsert = _
-                            String.Format ("INSERT INTO POLL_WQCRITERIA (PollID,WQCritID) VALUES ('{0}', '{1}')", _
-                                           datPollDetails.Item ("POLLID"), datPollAdd.Item ("WQCRITID"))
+                    If Trim(intThresh) = "" Then
+                        strCmdInsert = String.Format("INSERT INTO POLL_WQCRITERIA (PollID,WQCritID) VALUES ('{0}', '{1}')", datPollDetails.Item("POLLID"), datPollAdd.Item("WQCRITID"))
                     Else
-                        strCmdInsert = _
-                            String.Format ( _
-                                           "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('{0}', '{1}', {2})", _
-                                           datPollDetails.Item ("POLLID"), datPollAdd.Item ("WQCRITID"), intThresh)
+                        strCmdInsert = String.Format("INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('{0}', '{1}', {2})", datPollDetails.Item("POLLID"), datPollAdd.Item("WQCRITID"), intThresh)
                     End If
-                    Using cmdInsert As New DataHelper (strCmdInsert)
+                    Using cmdInsert As New DataHelper(strCmdInsert)
                         cmdInsert.ExecuteNonQuery()
                     End Using
                 End Using
             End Using
 
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 

@@ -1,10 +1,8 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class AboutForm
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class AboutForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    <System.Diagnostics.DebuggerNonUserCode()> Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -96,8 +94,7 @@ Partial Class AboutForm
         '
         'AppTitleLabel
         '
-        Me.AppTitleLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AppTitleLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AppTitleLabel.Location = New System.Drawing.Point(60, 8)
         Me.AppTitleLabel.Name = "AppTitleLabel"
         Me.AppTitleLabel.Size = New System.Drawing.Size(326, 16)
@@ -106,8 +103,7 @@ Partial Class AboutForm
         '
         'GroupBox1
         '
-        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox1.Location = New System.Drawing.Point(8, 48)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(378, 2)
@@ -117,8 +113,7 @@ Partial Class AboutForm
         '
         'AppDescriptionLabel
         '
-        Me.AppDescriptionLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AppDescriptionLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AppDescriptionLabel.Location = New System.Drawing.Point(60, 28)
         Me.AppDescriptionLabel.Name = "AppDescriptionLabel"
         Me.AppDescriptionLabel.Size = New System.Drawing.Size(326, 16)
@@ -127,8 +122,7 @@ Partial Class AboutForm
         '
         'AppVersionLabel
         '
-        Me.AppVersionLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AppVersionLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AppVersionLabel.Location = New System.Drawing.Point(8, 60)
         Me.AppVersionLabel.Name = "AppVersionLabel"
         Me.AppVersionLabel.Size = New System.Drawing.Size(378, 16)
@@ -137,8 +131,7 @@ Partial Class AboutForm
         '
         'AppCopyrightLabel
         '
-        Me.AppCopyrightLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AppCopyrightLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AppCopyrightLabel.Location = New System.Drawing.Point(8, 100)
         Me.AppCopyrightLabel.Name = "AppCopyrightLabel"
         Me.AppCopyrightLabel.Size = New System.Drawing.Size(378, 16)
@@ -157,8 +150,7 @@ Partial Class AboutForm
         '
         'AppDateLabel
         '
-        Me.AppDateLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AppDateLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AppDateLabel.Location = New System.Drawing.Point(8, 80)
         Me.AppDateLabel.Name = "AppDateLabel"
         Me.AppDateLabel.Size = New System.Drawing.Size(378, 16)
@@ -184,9 +176,7 @@ Partial Class AboutForm
         '
         'MoreRichTextBox
         '
-        Me.MoreRichTextBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MoreRichTextBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MoreRichTextBox.Location = New System.Drawing.Point(8, 124)
         Me.MoreRichTextBox.Name = "MoreRichTextBox"
         Me.MoreRichTextBox.ReadOnly = True
@@ -197,9 +187,7 @@ Partial Class AboutForm
         '
         'TabPanelDetails
         '
-        Me.TabPanelDetails.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TabPanelDetails.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabPanelDetails.Controls.Add(Me.TabPageApplication)
         Me.TabPanelDetails.Controls.Add(Me.TabPageAssemblies)
         Me.TabPanelDetails.Controls.Add(Me.TabPageAssemblyDetails)

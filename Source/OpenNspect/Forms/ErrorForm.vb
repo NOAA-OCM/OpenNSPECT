@@ -44,8 +44,7 @@ Public Class ErrorForm
 
     Private Sub frmErrorDialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
-            txtError.Text = String.Format("OpenNSPECT ({0}){1}{1}{2}", File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location) _
-                                                            .ToShortDateString(), vbCrLf, OriginalException)
+            txtError.Text = String.Format("OpenNSPECT ({0}){1}{1}{2}", File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location).ToShortDateString(), vbCrLf, OriginalException)
             txtError.SelectionStart = txtError.Text.Length
         Catch ex As Exception
             HandleError(ex)

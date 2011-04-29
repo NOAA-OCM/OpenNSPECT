@@ -63,48 +63,45 @@ Friend Class ImportWaterQualityStandardForm
                             txtStdName.Focus()
                             Return
                         Else
-                            strCmd = _
-                                String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", _
-                                               Replace(txtStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
+                            strCmd = String.Format("INSERT INTO WQCRITERIA (NAME,DESCRIPTION) VALUES ('{0}', '{1}')", Replace(txtStdName.Text, "'", "''"), Replace(strDescript, "'", "''"))
                             'Name Check
                             If UniqueName("WQCRITERIA", (txtStdName.Text)) Then
                                 Using cmdIns As New DataHelper(strCmd)
                                     cmdIns.ExecuteNonQuery()
                                 End Using
                             Else
-                                MsgBox("The name you have chosen is already in use.  Please select another.", _
-                                        MsgBoxStyle.Critical, "Select Unique Name")
+                                MsgBox("The name you have chosen is already in use.  Please select another.", MsgBoxStyle.Critical, "Select Unique Name")
                                 Return
                             End If
                         End If
                     Else
-                        strPoll = Split (strLine, ",") (0)
-                        strThresh = Split (strLine, ",") (1)
+                        strPoll = Split(strLine, ",")(0)
+                        strThresh = Split(strLine, ",")(1)
                         'Insert the pollutant/threshold value into POLL_WQCRITERIA
-                        PollutantAdd (strName, strPoll, strThresh)
+                        PollutantAdd(strName, strPoll, strThresh)
                     End If
                 Loop
             End Using
 
             'Cleanup
             _frmWQ.cboWQStdName.Items.Clear()
-            InitComboBox (_frmWQ.cboWQStdName, "WQCRITERIA")
+            InitComboBox(_frmWQ.cboWQStdName, "WQCRITERIA")
             _frmWQ.cboWQStdName.SelectedIndex = GetIndexOfEntry((txtStdName.Text), _frmWQ.cboWQStdName)
-            MyBase.OK_Button_Click (sender, e)
+            MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Public Sub Init (ByRef frmWQ As WaterQualityStandardsForm)
+    Public Sub Init(ByRef frmWQ As WaterQualityStandardsForm)
         Try
             _frmWQ = frmWQ
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub PollutantAdd (ByRef strName As String, ByRef strPoll As String, ByRef strThresh As String)
+    Private Sub PollutantAdd(ByRef strName As String, ByRef strPoll As String, ByRef strThresh As String)
         Try
 
             Dim strPollAdd As String
@@ -113,25 +110,24 @@ Friend Class ImportWaterQualityStandardForm
 
             'Get the WQCriteria values using the name
             strPollAdd = "SELECT * FROM WQCriteria WHERE NAME = " & "'" & strName & "'"
-            Dim cmdPollAdd As New DataHelper (strPollAdd)
+            Dim cmdPollAdd As New DataHelper(strPollAdd)
             Dim datapolladd As OleDbDataReader = cmdPollAdd.ExecuteReader
             datapolladd.Read()
 
             'Get the pollutant particulars
             strPollDetails = "SELECT * FROM POLLUTANT WHERE NAME =" & "'" & strPoll & "'"
-            Dim cmdPollDet As New DataHelper (strPollDetails)
+            Dim cmdPollDet As New DataHelper(strPollDetails)
             Dim datapolldet As OleDbDataReader = cmdPollDet.ExecuteReader
             datapolldet.Read()
 
-            strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('" & datapolldet ("POLLID") & _
-                           "', '" & datapolladd ("WQCRITID") & "'," & strThresh & ")"
-            Dim cmdIns As New DataHelper (strCmdInsert)
+            strCmdInsert = "INSERT INTO POLL_WQCRITERIA (PollID,WQCritID,Threshold) VALUES ('" & datapolldet("POLLID") & "', '" & datapolladd("WQCRITID") & "'," & strThresh & ")"
+            Dim cmdIns As New DataHelper(strCmdInsert)
             cmdIns.ExecuteNonQuery()
 
             datapolladd.Close()
             datapolldet.Close()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

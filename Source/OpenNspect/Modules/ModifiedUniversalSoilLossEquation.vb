@@ -49,8 +49,7 @@ Module ModifiedUniversalSoilLossEquation
     Private _picks As String()
     Private _pondpicks As String()
 
-    Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, _
-                                ByRef strLandClass As String, ByRef OutputItems As OutputItems) As Boolean
+    Public Function MUSLESetup(ByRef strSoilsDefName As String, ByRef strKfactorFileName As String, ByRef strLandClass As String, ByRef OutputItems As OutputItems) As Boolean
         'Sub takes incoming parameters from the project file and then parses them out
         'strSoilsDefName: Name of the Soils Definition being used
         'strKFactorFileName: K Factor FileName
@@ -90,9 +89,7 @@ Module ModifiedUniversalSoilLossEquation
         End If
 
         'Get the landclasses of type strLandClass
-        strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & _
-                       "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & _
-                       strTempLCType & "' ORDER BY LCCLASS.VALUE"
+        strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
         Dim cmdCovfact As New DataHelper(strCovFactor)
 
         _strMusleMetadata = CreateMetadata(g_booLocalEffects)
@@ -125,21 +122,10 @@ Module ModifiedUniversalSoilLossEquation
 
         'Set up the header w/or without flow direction
         If booLocal = True Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
-                        g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
-                        g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
-                        g_strLSFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
-                        g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & _
-                        g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & _
-                        g_strLSFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & _
-                        vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
 
         CreateMetadata = strHeader
@@ -169,9 +155,7 @@ Module ModifiedUniversalSoilLossEquation
 
             Dim mwTable As New Table
             If Not TableExists Then
-                MsgBox( _
-                        "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
-                        MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+                MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
                 Return ""
             Else
@@ -189,8 +173,7 @@ Module ModifiedUniversalSoilLossEquation
                 Dim rowidx As Integer = 0
                 Dim dataType As OleDbDataReader
                 For i = 1 To maxVal
-                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then _
-'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
+                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         dataType = cmdType.ExecuteReader
 
                         booValueFound = False
@@ -209,8 +192,7 @@ Module ModifiedUniversalSoilLossEquation
                             End If
                         End While
                         If booValueFound = False Then
-                            MsgBox( _
-                                    "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                             ConstructPickStatment = Nothing
                             dataType.Close()
                             mwTable.Close()
@@ -239,8 +221,7 @@ Module ModifiedUniversalSoilLossEquation
         End Try
     End Function
 
-    Private Function ConstructPondPickStatement(ByRef cmdCF As OleDbCommand, ByRef pLCRaster As Grid) _
-        As String
+    Private Function ConstructPondPickStatement(ByRef cmdCF As OleDbCommand, ByRef pLCRaster As Grid) As String
         'Creates the Con Statement used in the Pond Factor GRID
         'Returns: String
         'Looks like: con(([nu_lulc] eq 16), 0, con((nu_lulc eq 17), 0...
@@ -268,9 +249,7 @@ Module ModifiedUniversalSoilLossEquation
 
         Dim mwTable As New Table
         If Not TableExist Then
-            MsgBox( _
-                    "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
-                    MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+            MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
             Return ""
         Else
@@ -288,23 +267,20 @@ Module ModifiedUniversalSoilLossEquation
             Dim rowidx As Integer = 0
             Dim dataCF As OleDbDataReader
             For i = 1 To maxVal
-                If (mwTable.CellValue(FieldIndex, rowidx) = i) Then _
-'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
+                If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                     dataCF = cmdCF.ExecuteReader
 
                     booValueFound = False
                     While dataCF.Read()
                         If mwTable.CellValue(FieldIndex, rowidx) = dataCF("Value") Then
                             booValueFound = True
-                            If dataCF("W_WL") = 0 Then _
-'Means the current landclass is NOT Water or Wetland, therefore gets a 1
+                            If dataCF("W_WL") = 0 Then 'Means the current landclass is NOT Water or Wetland, therefore gets a 1
                                 If strpick = "" Then
                                     strpick = "1"
                                 Else
                                     strpick = strpick & ", " & "1"
                                 End If
-                            ElseIf dataCF("W_WL") = 1 Then _
-'Means the current landclass is Water or Wetland, therefore gets a 0
+                            ElseIf dataCF("W_WL") = 1 Then 'Means the current landclass is Water or Wetland, therefore gets a 0
                                 If strpick = "" Then
                                     strpick = "0"
                                 Else
@@ -318,8 +294,7 @@ Module ModifiedUniversalSoilLossEquation
                         End If
                     End While
                     If booValueFound = False Then
-                        MsgBox( _
-                                "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                        MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                         ConstructPondPickStatement = Nothing
                         dataCF.Close()
                         mwTable.Close()
@@ -344,8 +319,7 @@ Module ModifiedUniversalSoilLossEquation
 
     End Function
 
-    Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, _
-                                ByRef OutputItems As OutputItems) As Boolean
+    Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, ByRef OutputItems As OutputItems) As Boolean
         'Incoming strings: strConStatment: the monster con statement
         'strConPondstatement: the con for the pond stuff
         'Calculates the MUSLE erosion model
@@ -414,8 +388,7 @@ Module ModifiedUniversalSoilLossEquation
                 DataManagement.DeleteGrid(strStrahlOut)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, _
-                                      Environment.ProcessorCount, Nothing)
+                Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, Environment.ProcessorCount, Nothing)
                 'strExpression = "flowlength([flowdir], [weight], upstream)"
 
                 pTauD8Flow.Close()
@@ -470,8 +443,7 @@ Module ModifiedUniversalSoilLossEquation
             ShowProgress("Calculating MUSLE...", strTitle, 27, 18, g_MainForm)
             If g_KeepRunning Then
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
-                RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, _
-                            pQuRaster, AllMUSLECalc)
+                RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, pQuRaster, AllMUSLECalc)
             End If
             'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, g_OutputGridExt))
 
@@ -480,8 +452,7 @@ Module ModifiedUniversalSoilLossEquation
                 ReDim _pondpicks(strConPondStatement.Split(",").Length)
                 _pondpicks = strConPondStatement.Split(",")
                 Dim AllMUSLECalc2 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc2)
-                RasterMath(pQuRaster, g_LandCoverRaster, g_pDEMRaster, g_pMetRunoffRaster, Nothing, pHISYTempRaster, _
-                            AllMUSLECalc2)
+                RasterMath(pQuRaster, g_LandCoverRaster, g_pDEMRaster, g_pMetRunoffRaster, Nothing, pHISYTempRaster, AllMUSLECalc2)
                 pQuRaster.Close()
             End If
             'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, g_OutputGridExt))
@@ -491,16 +462,14 @@ Module ModifiedUniversalSoilLossEquation
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
                 Dim AllMUSLECalc3 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc3)
-                RasterMath(pHISYTempRaster, g_LandCoverRaster, g_KFactorRaster, g_pLSRaster, Nothing, pHISYMGRaster, _
-                            AllMUSLECalc3)
+                RasterMath(pHISYTempRaster, g_LandCoverRaster, g_KFactorRaster, g_pLSRaster, Nothing, pHISYMGRaster, AllMUSLECalc3)
                 pHISYTempRaster.Close()
             End If
             'modUtil.ReturnPermanentRaster(pHISYMGRaster, modUtil.GetUniqueName("hisymg", g_strWorkspace, g_OutputGridExt))
 
             Dim pHISYMGRasterNoNull As Grid = Nothing
             Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
-            RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, _
-                        hisymgrnonullcalc)
+            RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, hisymgrnonullcalc)
 
             If g_booLocalEffects Then
 
@@ -510,8 +479,7 @@ Module ModifiedUniversalSoilLossEquation
                     strMUSLE = GetUniqueFileName("locmusle", g_strWorkspace, FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
-                        pPermMUSLERaster = _
-                            ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
+                        pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
                         'pPermMUSLERaster = modUtil.ClipBySelectedPoly(pHISYMGRaster, g_pSelectedPolyClip, strMUSLE)
                     Else
                         pPermMUSLERaster = ReturnPermanentRaster(pHISYMGRasterNoNull, strMUSLE)
@@ -521,8 +489,7 @@ Module ModifiedUniversalSoilLossEquation
                     'metadata time
                     g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
 
-                    AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, _
-                                        OutputItems)
+                    AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
 
                     CalcMUSLE = True
                     CloseProgressDialog()
@@ -562,8 +529,7 @@ Module ModifiedUniversalSoilLossEquation
                 DataManagement.DeleteGrid(strtmpout)
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
-                                          Environment.ProcessorCount, Nothing)
+                Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
                 'strExpression = "FlowAccumulation([flowdir], [pHISYMGRaster], FLOAT)"
 
                 pTotSedMassHIRaster = New Grid
@@ -583,8 +549,7 @@ Module ModifiedUniversalSoilLossEquation
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
-                    pPermTotSedConcHIraster = _
-                        ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, strMUSLE)
+                    pPermTotSedConcHIraster = ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, strMUSLE)
                 Else
                     pPermTotSedConcHIraster = ReturnPermanentRaster(pTotSedMassHIRaster, strMUSLE)
                 End If
@@ -592,8 +557,7 @@ Module ModifiedUniversalSoilLossEquation
                 'Metadata:
                 g_dicMetadata.Add("MUSLE Sediment Mass (kg)", _strMusleMetadata)
 
-                AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (kg)", "MUSLE Accum", _
-                                    -1, OutputItems)
+                AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (kg)", "MUSLE Accum", -1, OutputItems)
 
             End If
 
@@ -605,10 +569,7 @@ Module ModifiedUniversalSoilLossEquation
             If Err.Number = -2147217297 Then 'S.A. constant for User cancelled operation
                 g_KeepRunning = False
             ElseIf Err.Number = -2147467259 Then 'S.A. constant for crappy ESRI stupid GRID error
-                MsgBox( _
-                        "ArcMap has reached the maximum number of GRIDs allowed in memory.  " & _
-                        "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
-                        "Maximum GRID Number Encountered")
+                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 CalcMUSLE = False
                 g_KeepRunning = False
                 CloseProgressDialog()
@@ -652,15 +613,12 @@ Module ModifiedUniversalSoilLossEquation
     '    Return Input1 / g_dblCellSize
     'End Function
 
-    Private Function wslengthCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                       ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
-        As Single
+    Private Function wslengthCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([cell_wslength] * 3.28084)"
         Return Input1 * 3.28084
     End Function
 
-    Private Function slpmodCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                     ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function slpmodCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con([slopepr] eq 0, 0.1, [slopepr])"
         If Input1 = 0 Then
             Return 0.1
@@ -668,7 +626,7 @@ Module ModifiedUniversalSoilLossEquation
             Return Input1
         End If
     End Function
-    
+
     Private Function c0CellCalc0(ByVal Input1 As Single) As Single
         If Input1 <= 0.1 Then
             Return 2.3055
@@ -705,7 +663,7 @@ Module ModifiedUniversalSoilLossEquation
     End Function
 
     Private Function c0CellCalc2(ByVal Input1 As Single) As Single
-       If Input1 <= 0.1 Then
+        If Input1 <= 0.1 Then
             Return 2.55323
         ElseIf Input1 > 0.1 And Input1 < 0.3 Then
             Return 2.46532
@@ -721,7 +679,7 @@ Module ModifiedUniversalSoilLossEquation
     End Function
 
     Private Function c0CellCalc3(ByVal Input1 As Single) As Single
-      If Input1 <= 0.1 Then
+        If Input1 <= 0.1 Then
             Return 2.47317
         ElseIf Input1 > 0.1 And Input1 < 0.3 Then
             Return 2.39628
@@ -757,7 +715,7 @@ Module ModifiedUniversalSoilLossEquation
     End Function
 
     Private Function c1CellCalc1(ByVal Input1 As Single) As Single
-      If Input1 <= 0.1 Then
+        If Input1 <= 0.1 Then
             Return 2.0325
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
             Return 1.91978
@@ -786,7 +744,7 @@ Module ModifiedUniversalSoilLossEquation
     End Function
 
     Private Function c1CellCalc3(ByVal Input1 As Single) As Single
-       If Input1 <= 0.1 Then
+        If Input1 <= 0.1 Then
             Return -0.51848
         ElseIf Input1 > 0.1 And Input1 < 0.3 Then
             Return -0.51202
@@ -803,7 +761,7 @@ Module ModifiedUniversalSoilLossEquation
     End Function
 
     Private Function c2CellCalc0(ByVal Input1 As Single) As Single
-       If Input1 <= 0.1 Then
+        If Input1 <= 0.1 Then
             Return -0.1175
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
             Return -0.08929
@@ -824,7 +782,7 @@ Module ModifiedUniversalSoilLossEquation
     End Function
 
     Private Function c2CellCalc1(ByVal Input1 As Single) As Single
-     If Input1 <= 0.1 Then
+        If Input1 <= 0.1 Then
             Return -0.13748
         ElseIf Input1 > 0.1 And Input1 < 0.2 Then
             Return -0.0702
@@ -870,26 +828,8 @@ Module ModifiedUniversalSoilLossEquation
         End If
     End Function
 
-    Private Function AllMUSLECellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                       ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
-        As Single
-        Dim tmp1val, _
-            tmp2val, _
-            tmp3val, _
-            tmp4val, _
-            lagval, _
-            tocval, _
-            toctmpval, _
-            modtocval, _
-            logtocval, _
-            logtoctmpval, _
-            RetentionVal, _
-            AbstractVal, _
-            abprecval, _
-            c0calc, _
-            c1calc, _
-            c2calc, _
-            logquval As Single
+    Private Function AllMUSLECellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        Dim tmp1val, tmp2val, tmp3val, tmp4val, lagval, tocval, toctmpval, modtocval, logtocval, logtoctmpval, RetentionVal, AbstractVal, abprecval, c0calc, c1calc, c2calc, logquval As Single
 
         'strExpression = "Pow([cell_wslngft], 0.8)"
         tmp1val = Math.Pow(Input1, 0.8)
@@ -984,9 +924,7 @@ Module ModifiedUniversalSoilLossEquation
         End If
     End Function
 
-  Private Function AllMUSLECellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                        ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
-        As Single
+    Private Function AllMUSLECellCalc2(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim pondval, qpval, sqmival, afval, runoff_inches As Single
 
         For i As Integer = 0 To _pondpicks.Length - 1
@@ -1016,10 +954,8 @@ Module ModifiedUniversalSoilLossEquation
         Return Math.Pow((afval * qpval), _dblMUSLEExp)
 
     End Function
-    
-    Private Function AllMUSLECellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                        ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
-        As Single
+
+    Private Function AllMUSLECellCalc3(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim cfactval, hisyval As Single
 
         For i As Integer = 0 To _picks.Length - 1
@@ -1037,10 +973,7 @@ Module ModifiedUniversalSoilLossEquation
 
     End Function
 
-    Function hisymgrnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
-                                    ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
-                                    ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
-                                    ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+    Function hisymgrnonullCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         If Input1 <> Input1Null Then
             Return Input1
         Else

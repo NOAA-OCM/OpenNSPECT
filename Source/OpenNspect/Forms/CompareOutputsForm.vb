@@ -35,63 +35,60 @@ Public Class CompareOutputsForm
         End Try
     End Sub
 
-    Private Sub chkbxLeftUseLegend_CheckedChanged (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles chkbxLeftUseLegend.CheckedChanged
+    Private Sub chkbxLeftUseLegend_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkbxLeftUseLegend.CheckedChanged
         Try
             RefreshLeft()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub chkbxRightUseLegend_CheckedChanged (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles chkbxRightUseLegend.CheckedChanged
+    Private Sub chkbxRightUseLegend_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkbxRightUseLegend.CheckedChanged
         Try
             RefreshRight()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub mnuitmAddToLegend_Click (ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuitmAddToLegend.Click
+    Private Sub mnuitmAddToLegend_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuitmAddToLegend.Click
         Try
             AddToLegendFromProj()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub mnuitmExit_Click (ByVal sender As Object, ByVal e As EventArgs) Handles mnuitmExit.Click
+    Private Sub mnuitmExit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuitmExit.Click
         Try
             Close()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub cmdQuit_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdQuit.Click
+    Private Sub cmdQuit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdQuit.Click
         Try
             Close()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub cmdRun_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdRun.Click
+    Private Sub cmdRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdRun.Click
         Try
             RunCompare()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub btnSelect_Click (ByVal sender As Object, ByVal e As EventArgs) Handles btnSelect.Click
+    Private Sub btnSelect_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSelect.Click
         Try
             Dim selectfrm As New SelectionModeForm
             selectfrm.InitializeAndShow()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -230,20 +227,16 @@ Public Class CompareOutputsForm
                                 outitem = prj.OutputItems.Item(j)
                                 tmprast = New Grid
                                 tmprast.Open(outitem.strPath)
-                                AddOutputGridLayer(tmprast, outitem.strColor, outitem.booUseStretch, outitem.strName, _
-                                                    "", tmpgrp, Nothing)
+                                AddOutputGridLayer(tmprast, outitem.strColor, outitem.booUseStretch, outitem.strName, "", tmpgrp, Nothing)
                             Next
                             RefreshLeft()
                             RefreshRight()
                         Else
-                            MsgBox("The outputs associated with that project file cannot be found.", _
-                                    MsgBoxStyle.Exclamation, "Missing Output Files")
+                            MsgBox("The outputs associated with that project file cannot be found.", MsgBoxStyle.Exclamation, "Missing Output Files")
                         End If
                     End If
                 Catch ex As Exception
-                    MsgBox( _
-                            "That project file doesn't seem to be valid. Please make sure you select a valid NSPECT project file.", _
-                            MsgBoxStyle.Exclamation, "Project File Not Valid")
+                    MsgBox("That project file doesn't seem to be valid. Please make sure you select a valid NSPECT project file.", MsgBoxStyle.Exclamation, "Project File Not Valid")
                 End Try
             Else
                 Return
@@ -253,8 +246,7 @@ Public Class CompareOutputsForm
         End Try
     End Sub
 
-    Private Function GetListFromSelected(ByRef SelectCheckbox As CheckBox, _
-                                          ByRef SelectList As ListBox) As OutputItems
+    Private Function GetListFromSelected(ByRef SelectCheckbox As CheckBox, ByRef SelectList As ListBox) As OutputItems
         Try
             Dim tmpOutItems As New OutputItems
             Dim outitem As OutputItem
@@ -283,8 +275,7 @@ Public Class CompareOutputsForm
                     prj.Xml = strFolder + Path.DirectorySeparatorChar + SelectList.SelectedItem
                     tmpOutItems = prj.OutputItems
                 Catch ex As Exception
-                    MsgBox("The item selected in the left list does not seem to be a valid project file.", _
-                            MsgBoxStyle.Exclamation, "Compare Error")
+                    MsgBox("The item selected in the left list does not seem to be a valid project file.", MsgBoxStyle.Exclamation, "Compare Error")
                 End Try
             End If
 
@@ -369,8 +360,7 @@ Public Class CompareOutputsForm
                                     g_strWorkspace = g_nspectDocPath & "\workspace"
                                 End If
 
-                                Dim strSelectedExportPath As String = _
-                                        ExportSelectedFeatures(_SelectLyrPath, _SelectedShapes)
+                                Dim strSelectedExportPath As String = ExportSelectedFeatures(_SelectLyrPath, _SelectedShapes)
                                 Dim pSelectedPolyClip As Shape = ReturnSelectGeometry(strSelectedExportPath)
 
                                 'Straight left minus right comparison
@@ -383,9 +373,7 @@ Public Class CompareOutputsForm
                                 Else
                                     compout = ReturnPermanentRaster(gout, outstring)
                                 End If
-                                AddOutputGridLayer(compout, "Blue", True, _
-                                                    leftOutItems.Item(i).strType + " Direct Comparison", "", outgrpnum, _
-                                                    Nothing)
+                                AddOutputGridLayer(compout, "Blue", True, leftOutItems.Item(i).strType + " Direct Comparison", "", outgrpnum, Nothing)
 
                                 Dim percchangecalc As New RasterMathCellCalc(AddressOf PercChangeCellCalc)
                                 RasterMath(gleft, gright, Nothing, Nothing, Nothing, gout, percchangecalc)
@@ -396,9 +384,7 @@ Public Class CompareOutputsForm
                                 Else
                                     comppercout = ReturnPermanentRaster(gout, outstring)
                                 End If
-                                AddOutputGridLayer(comppercout, "Brown", True, _
-                                                    leftOutItems.Item(i).strType + " Percentage Change", "", outgrpnum, _
-                                                    Nothing)
+                                AddOutputGridLayer(comppercout, "Brown", True, leftOutItems.Item(i).strType + " Percentage Change", "", outgrpnum, Nothing)
 
                                 Exit For
                             End If
@@ -406,12 +392,10 @@ Public Class CompareOutputsForm
                     Next
                     Close()
                 Else
-                    MsgBox("The two datasets selected cannot be compared due to misaligned grids.", _
-                            MsgBoxStyle.Exclamation, "Compare Error")
+                    MsgBox("The two datasets selected cannot be compared due to misaligned grids.", MsgBoxStyle.Exclamation, "Compare Error")
                 End If
             Else
-                MsgBox("Please select an output set from both lists to compare.", MsgBoxStyle.Exclamation, _
-                        "Compare Error")
+                MsgBox("Please select an output set from both lists to compare.", MsgBoxStyle.Exclamation, "Compare Error")
             End If
         Catch ex As Exception
             HandleError(ex)
@@ -422,26 +406,23 @@ Public Class CompareOutputsForm
 
 #Region "Raster Math"
 
-    Private Function CompareCellCalc (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                      ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function CompareCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Try
             Return Input1 - Input2
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Function
 
-    Private Function PercChangeCellCalc (ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                         ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
-        As Single
+    Private Function PercChangeCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Try
             If Input2 <> 0 Then
-                Return (100*(Input1 - Input2))/Input2
+                Return (100 * (Input1 - Input2)) / Input2
             Else
                 Return OutNull
             End If
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Function
 

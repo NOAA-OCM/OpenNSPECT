@@ -38,8 +38,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub cboScenName_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboScenName.SelectedIndexChanged
+    Private Sub cboScenName_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboScenName.SelectedIndexChanged
         Try
             Dim strSQLPrecip As String
             strSQLPrecip = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
@@ -67,8 +66,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub txtDesc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles txtDesc.TextChanged
+    Private Sub txtDesc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtDesc.TextChanged
         Try
             MakeDirty()
             txtDesc.Text = Replace(txtDesc.Text, "'", "")
@@ -77,8 +75,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub txtPrecipFile_TextChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles txtPrecipFile.TextChanged
+    Private Sub txtPrecipFile_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtPrecipFile.TextChanged
         Try
             MakeDirty()
         Catch ex As Exception
@@ -86,8 +83,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub cmdBrowseFile_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cmdBrowseFile.Click
+    Private Sub cmdBrowseFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowseFile.Click
         Try
             Dim pPrecipRasterDataset As Grid
             Dim strProj As String
@@ -102,9 +98,7 @@ Friend Class PrecipitationScenariosForm
                 strProj = CheckSpatialReference(pPrecipRasterDataset)
                 If strProj = "" Then
 
-                    MsgBox( _
-                            "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
-                            MsgBoxStyle.Exclamation, "No Project Information Detected")
+                    MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
                     txtPrecipFile.Text = ""
                     Return
 
@@ -123,8 +117,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboGridUnits.SelectedIndexChanged
+    Private Sub cboGridUnits_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboGridUnits.SelectedIndexChanged
         Try
             MakeDirty()
         Catch ex As Exception
@@ -132,8 +125,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboPrecipUnits.SelectedIndexChanged
+    Private Sub cboPrecipUnits_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPrecipUnits.SelectedIndexChanged
         Try
             MakeDirty()
         Catch ex As Exception
@@ -141,8 +133,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboTimePeriod.SelectedIndexChanged
+    Private Sub cboTimePeriod_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboTimePeriod.SelectedIndexChanged
         Try
             If cboTimePeriod.SelectedIndex = 0 Then
                 lblRainingDays.Visible = True
@@ -157,8 +148,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub txtRainingDays_TextChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles txtRainingDays.TextChanged
+    Private Sub txtRainingDays_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtRainingDays.TextChanged
         Try
             MakeDirty()
 
@@ -167,8 +157,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles cboPrecipType.SelectedIndexChanged
+    Private Sub cboPrecipType_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPrecipType.SelectedIndexChanged
         Try
             If Not _boolLoad Then
                 MakeDirty()
@@ -207,8 +196,7 @@ Friend Class PrecipitationScenariosForm
         IsDirty = False
     End Sub
 
-    Private Sub mnuNewPrecip_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuNewPrecip.Click
+    Private Sub mnuNewPrecip_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuNewPrecip.Click
         Try
             Dim newpre As New NewPrecipitationScenarioForm
             newpre.Init(Nothing, Me)
@@ -218,8 +206,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub mnuDelPrecip_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuDelPrecip.Click
+    Private Sub mnuDelPrecip_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuDelPrecip.Click
         Try
             Dim intAns As Object
             Dim strSQLPrecipDel As String
@@ -228,10 +215,7 @@ Friend Class PrecipitationScenariosForm
             strSQLPrecipDel = "DELETE FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
 
             If Not (cboScenName.Text = "") Then
-                intAns = _
-                    MsgBox( _
-                            "Are you sure you want to delete the precipitation scenario '" & cboScenName.SelectedItem & _
-                            "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
+                intAns = MsgBox("Are you sure you want to delete the precipitation scenario '" & cboScenName.SelectedItem & "'?", MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, "Confirm Delete")
                 'code to handle response
                 If intAns = MsgBoxResult.Yes Then
                     'Set up a delete rs and get rid of it
@@ -262,8 +246,7 @@ Friend Class PrecipitationScenariosForm
         End Try
     End Sub
 
-    Private Sub mnuPrecipHelp_Click(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles mnuPrecipHelp.Click
+    Private Sub mnuPrecipHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuPrecipHelp.Click
         Try
             Help.ShowHelp(Me, g_nspectPath & "\Help\nspect.chm", "precip.htm")
         Catch ex As Exception
@@ -322,8 +305,7 @@ Friend Class PrecipitationScenariosForm
 
             If cboTimePeriod.SelectedIndex = 0 Then
                 If Not IsNumeric(txtRainingDays.Text) Or Len(txtRainingDays.Text) = 0 Then
-                    MsgBox("Please enter a numeric value for Raining Days.", MsgBoxStyle.Critical, _
-                            "Raining Days Value Incorrect")
+                    MsgBox("Please enter a numeric value for Raining Days.", MsgBoxStyle.Critical, "Raining Days Value Incorrect")
                     txtRainingDays.Focus()
                     CheckParams = False
                     Exit Function

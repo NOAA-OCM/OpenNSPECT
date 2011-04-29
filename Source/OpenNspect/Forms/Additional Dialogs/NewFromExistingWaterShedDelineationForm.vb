@@ -27,8 +27,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
 #Region "Events"
 
-    Private Sub cmdBrowseDEMFile_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
-        Handles cmdBrowseDEMFile.Click
+    Private Sub cmdBrowseDEMFile_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles cmdBrowseDEMFile.Click
         Try
             'ReturnGRIDPath txtDEMFile, "Select DEM GRID"
 
@@ -39,9 +38,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
                 'Get the spatial reference
                 Dim strProj As String = CheckSpatialReference(pDEMRasterDataset)
                 If strProj = "" Then
-                    MsgBox( _
-                            "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
-                            MsgBoxStyle.Exclamation, "No Project Information Detected")
+                    MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
                     Return
                 Else
                     If strProj.ToLower.Contains("units=m") Then
@@ -57,8 +54,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
         End Try
     End Sub
 
-    Private Sub cmdBrowseFlowAcc_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
-        Handles cmdBrowseFlowAcc.Click
+    Private Sub cmdBrowseFlowAcc_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles cmdBrowseFlowAcc.Click
         Try
             ReturnGRIDPath(txtFlowAcc, "Select Flow Accumulation GRID")
 
@@ -67,8 +63,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
         End Try
     End Sub
 
-    Private Sub cmdBrowseFlowDir_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
-        Handles cmdBrowseFlowDir.Click
+    Private Sub cmdBrowseFlowDir_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles cmdBrowseFlowDir.Click
         Try
             ReturnGRIDPath(txtFlowDir, "Select Flow Direction GRID")
 
@@ -77,8 +72,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
         End Try
     End Sub
 
-    Private Sub cmdBrowseLS_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
-        Handles cmdBrowseLS.Click
+    Private Sub cmdBrowseLS_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles cmdBrowseLS.Click
         Try
             ReturnGRIDPath(txtLS, "Select Length-Slope GRID")
 
@@ -87,8 +81,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
         End Try
     End Sub
 
-    Private Sub cmdBrowseWS_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) _
-        Handles cmdBrowseWS.Click
+    Private Sub cmdBrowseWS_Click(ByVal eventSender As Object, ByVal eventArgs As EventArgs) Handles cmdBrowseWS.Click
         Try
             txtWaterSheds.Text = BrowseForFileName("Feature")
         Catch ex As Exception
@@ -112,17 +105,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
             ShowProgress("Updating Database...", "Adding New Delineation...", 3, 2, Me)
 
-            strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", _
-                               CStr(txtWSDelinName.Text), _
-                               CStr(txtDEMFile.Text), _
-                               cboDEMUnits.SelectedIndex, _
-                               txtFlowDir.Text, _
-                               txtFlowAcc.Text, _
-                               txtDEMFile.Text, _
-                               txtWaterSheds.Text, _
-                               txtLS.Text, _
-                               _strNibbleName, _
-                               _strDEM2BFileName)
+            strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text, _strNibbleName, _strDEM2BFileName)
 
             'Execute the statement.
             Using cmdIns As New DataHelper(strCmdInsert)
@@ -203,15 +186,13 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
             'check flowacc
             If Len(Trim(txtFlowAcc.Text)) = 0 Then
-                MsgBox("Please select a Flow Accumulation Grid for your watershed delineation.", _
-                        MsgBoxStyle.Information, "Flow Accumulation Grid Missing")
+                MsgBox("Please select a Flow Accumulation Grid for your watershed delineation.", MsgBoxStyle.Information, "Flow Accumulation Grid Missing")
                 txtFlowAcc.Focus()
                 ValidateDataFormInput = False
                 Exit Function
             Else
                 If Not (RasterExists((txtFlowAcc.Text))) Then
-                    MsgBox("The Flow Accumulation file selected does not appear to be valid.", MsgBoxStyle.Information, _
-                            "Invalid Dataset")
+                    MsgBox("The Flow Accumulation file selected does not appear to be valid.", MsgBoxStyle.Information, "Invalid Dataset")
                     txtFlowAcc.Focus()
                     ValidateDataFormInput = False
                     Exit Function
@@ -220,15 +201,13 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
             'Check flowdir
             If Len(Trim(txtFlowDir.Text)) = 0 Then
-                MsgBox("Please select a Flow Direction Grid for your watershed delineation.", MsgBoxStyle.Information, _
-                        "Flow Direction Grid Missing")
+                MsgBox("Please select a Flow Direction Grid for your watershed delineation.", MsgBoxStyle.Information, "Flow Direction Grid Missing")
                 txtFlowDir.Focus()
                 ValidateDataFormInput = False
                 Exit Function
             Else
                 If Not (RasterExists(txtFlowDir.Text)) Then
-                    MsgBox("The Flow Direction file selected does not appear to be valid.", MsgBoxStyle.Information, _
-                            "Invalid Dataset")
+                    MsgBox("The Flow Direction file selected does not appear to be valid.", MsgBoxStyle.Information, "Invalid Dataset")
                     txtFlowDir.Focus()
                     ValidateDataFormInput = False
                     Exit Function
@@ -239,35 +218,26 @@ Friend Class NewFromExistingWaterShedDelineationForm
                     If tmpFlow.Maximum > 8 Then
                         tmpFlow.Close()
                     Else
-                        Dim _
-                            tmpres As DialogResult = _
-                                MsgBox( _
-                                        "The Flow Direction file selected does not seem to be an ESRI format flow direction grid. If this file is in TAUDEM format, click Yes to convert it to ESRI format. If you believe this file is ESRI format already, click No to override this error. Otherwise, click cancel to abort the process.", _
-                                        MsgBoxStyle.YesNoCancel, "Flow Direction File Error")
+                        Dim tmpres As DialogResult = MsgBox("The Flow Direction file selected does not seem to be an ESRI format flow direction grid. If this file is in TAUDEM format, click Yes to convert it to ESRI format. If you believe this file is ESRI format already, click No to override this error. Otherwise, click cancel to abort the process.", MsgBoxStyle.YesNoCancel, "Flow Direction File Error")
                         If tmpres = System.Windows.Forms.DialogResult.Yes Then
                             Dim flowpath As String
                             If Path.GetFileName(txtFlowDir.Text) = "sta.adf" Then
                                 flowpath = Path.GetDirectoryName(txtFlowDir.Text) + "_esri" + OutputGridExt
                             Else
-                                flowpath = Path.GetDirectoryName(txtFlowDir.Text) + Path.DirectorySeparatorChar + _
-                                           Path.GetFileNameWithoutExtension(txtFlowDir.Text) + "_esri" + _
-                                           OutputGridExt
+                                flowpath = Path.GetDirectoryName(txtFlowDir.Text) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(txtFlowDir.Text) + "_esri" + OutputGridExt
                             End If
                             Dim pESRID8Flow As New Grid
                             Dim tmphead As New GridHeader
                             tmphead.CopyFrom(tmpFlow.Header)
                             pESRID8Flow.CreateNew(flowpath, tmphead, GridDataType.FloatDataType, -1)
-                            RasterMath(tmpFlow, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, _
-                                        GetConverterToEsriFromTauDem())
+                            RasterMath(tmpFlow, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, GetConverterToEsriFromTauDem())
                             pESRID8Flow.Header.NodataValue = -1
                             pESRID8Flow.Save(flowpath)
                             pESRID8Flow.Close()
                             txtFlowDir.Text = flowpath
                             tmpFlow.Close()
                             If Not (RasterExists(txtFlowDir.Text)) Then
-                                MsgBox( _
-                                        "The created Flow Direction file does not appear to be valid. Aborting the process.", _
-                                        MsgBoxStyle.Information, "Invalid Dataset")
+                                MsgBox("The created Flow Direction file does not appear to be valid. Aborting the process.", MsgBoxStyle.Information, "Invalid Dataset")
                                 txtFlowDir.Focus()
                                 ValidateDataFormInput = False
                                 Exit Function
@@ -286,15 +256,13 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
             'Check LS
             If Len(Trim(txtLS.Text)) = 0 Then
-                MsgBox("Please select a Length-slope Grid for your watershed delineation.", MsgBoxStyle.Information, _
-                        "Length Slope Grid Missing")
+                MsgBox("Please select a Length-slope Grid for your watershed delineation.", MsgBoxStyle.Information, "Length Slope Grid Missing")
                 txtLS.Focus()
                 ValidateDataFormInput = False
                 Exit Function
             Else
                 If Not (RasterExists((txtLS.Text))) Then
-                    MsgBox("The Length-slope file selected does not appear to be valid.", MsgBoxStyle.Information, _
-                            "Invalid Dataset")
+                    MsgBox("The Length-slope file selected does not appear to be valid.", MsgBoxStyle.Information, "Invalid Dataset")
                     txtLS.Focus()
                     ValidateDataFormInput = False
                     Exit Function
@@ -303,15 +271,13 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
             'Check watersheds
             If Len(Trim(txtWaterSheds.Text)) = 0 Then
-                MsgBox("Please select a watershed shapefile for your watershed delineation.", MsgBoxStyle.Information, _
-                        "Watershed Shapefile Missing")
+                MsgBox("Please select a watershed shapefile for your watershed delineation.", MsgBoxStyle.Information, "Watershed Shapefile Missing")
                 txtWaterSheds.Focus()
                 ValidateDataFormInput = False
                 Exit Function
             Else
                 If Not (FeatureExists((txtWaterSheds.Text))) Then
-                    MsgBox("The watersheds file selected does not appear to be valid.", MsgBoxStyle.Information, _
-                            "Invalid Dataset")
+                    MsgBox("The watersheds file selected does not appear to be valid.", MsgBoxStyle.Information, "Invalid Dataset")
                     txtWaterSheds.Focus()
                     ValidateDataFormInput = False
                     Exit Function
@@ -334,9 +300,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
             If Not pDEMRasterDataset Is Nothing Then
                 'Get the spatial reference
                 If CheckSpatialReference(pDEMRasterDataset) Is Nothing Then
-                    MsgBox( _
-                            "The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", _
-                            MsgBoxStyle.Exclamation, "No Project Information Detected")
+                    MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
                     Return
                 End If
             End If

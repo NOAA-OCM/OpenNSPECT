@@ -14,10 +14,7 @@ Module Database
             End If
 
         Catch ex As Exception
-            MsgBox( _
-                    Err.Number & Err.Description & _
-                    " Error connecting to database: " & _
-                    connectionString, MsgBoxStyle.Critical, "Error Connecting")
+            MsgBox(Err.Number & Err.Description & " Error connecting to database: " & connectionString, MsgBoxStyle.Critical, "Error Connecting")
 
         End Try
     End Sub

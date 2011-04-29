@@ -45,9 +45,7 @@ Module Pollutants
     Private _FlowMax As Single
     Private _picks() As String
 
-    Public Function PollutantConcentrationSetup(ByRef Pollutant As PollutantItem, ByRef strLandClass As String, _
-                                                 ByRef strWQName As String, ByRef OutputItems As OutputItems) _
-        As Boolean
+    Public Function PollutantConcentrationSetup(ByRef Pollutant As PollutantItem, ByRef strLandClass As String, ByRef strWQName As String, ByRef OutputItems As OutputItems) As Boolean
         'Sub takes incoming parameters (in the form of a pollutant item) from the project file
         'and then parses them out
         Try
@@ -95,10 +93,7 @@ Module Pollutants
                 Dim cmdPoll As New DataHelper(strPoll)
                 Dim dataPoll As OleDbDataReader = cmdPoll.ExecuteReader()
                 dataPoll.Read()
-                strType = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT." & strField & _
-                          " As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & _
-                          "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & _
-                          "WHERE COEFFICIENT.COEFFSETID = " & dataPoll("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
+                strType = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT." & strField & " As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & "WHERE COEFFICIENT.COEFFSETID = " & dataPoll("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
                 dataPoll.Close()
                 Dim cmdType As New DataHelper(strType)
 
@@ -131,8 +126,7 @@ Module Pollutants
         End Try
     End Function
 
-    Private Function ConstructMetaData(ByRef cmdType As OleDbCommand, ByRef strCoeffSet As String, _
-                                        ByRef booLocal As Boolean) As String
+    Private Function ConstructMetaData(ByRef cmdType As OleDbCommand, ByRef strCoeffSet As String, ByRef booLocal As Boolean) As String
         'Takes the rs and creates a string describing the pollutants and coefficients used in this run, will
         'later be added to the global dictionary
 
@@ -142,35 +136,20 @@ Module Pollutants
         Dim i As Short
 
         If booLocal Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Landcover grid type: " & _
-                        g_XmlPrjFile.strLCGridType & vbNewLine & vbTab & vbTab & "Landcover grid units: " & _
-                        g_XmlPrjFile.strLCGridUnits & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
-                        g_strPrecipFileName & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Landcover grid type: " & g_XmlPrjFile.strLCGridType & vbNewLine & vbTab & vbTab & "Landcover grid units: " & g_XmlPrjFile.strLCGridUnits & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine
 
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & _
-                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & _
-                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & _
-                        g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & _
-                        vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
         End If
 
-        strConstructMetaData = vbTab & "Pollutant Coefficients:" & vbNewLine & vbTab & vbTab & "Pollutant: " & _
-                               _PollutantName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & _
-                               vbTab & vbTab & _
-                               "The following lists the landcover classes and associated coefficients used" & vbNewLine & _
-                               vbTab & vbTab & "in the OpenNSPECT analysis run that created this dataset: " & vbNewLine
+        strConstructMetaData = vbTab & "Pollutant Coefficients:" & vbNewLine & vbTab & vbTab & "Pollutant: " & _PollutantName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & vbTab & vbTab & "The following lists the landcover classes and associated coefficients used" & vbNewLine & vbTab & vbTab & "in the OpenNSPECT analysis run that created this dataset: " & vbNewLine
 
         Dim dataType As OleDbDataReader = cmdType.ExecuteReader()
         While dataType.Read()
             If i = 1 Then
-                strLandClassCoeff = vbTab & vbTab & vbTab & dataType("Name") & ": " & dataType("CoeffType") & _
-                                    vbNewLine
+                strLandClassCoeff = vbTab & vbTab & vbTab & dataType("Name") & ": " & dataType("CoeffType") & vbNewLine
             Else
-                strLandClassCoeff = strLandClassCoeff & vbTab & vbTab & vbTab & dataType("Name") & ": " & _
-                                    dataType("CoeffType") & vbNewLine
+                strLandClassCoeff = strLandClassCoeff & vbTab & vbTab & vbTab & dataType("Name") & ": " & dataType("CoeffType") & vbNewLine
             End If
         End While
         dataType.Close()
@@ -206,9 +185,7 @@ Module Pollutants
 
             Dim mwTable As New Table
             If Not TableExist Then
-                MsgBox( _
-                        "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", _
-                        MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+                MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
                 Return ""
             Else
@@ -242,8 +219,7 @@ Module Pollutants
                                 End If
                             End While
                             If booValueFound = False Then
-                                MsgBox( _
-                                        "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                                MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                                 ConstructPickStatment = Nothing
                                 dataType.Close()
                                 mwTable.Close()
@@ -254,8 +230,7 @@ Module Pollutants
                             strpick = "0"
                         End If
                     Else
-                        If (mwTable.CellValue(FieldIndex, rowidx) = i) Then _
-'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
+                        If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                             dataType = cmdType.ExecuteReader
 
                             booValueFound = False
@@ -270,8 +245,7 @@ Module Pollutants
                                 End If
                             End While
                             If booValueFound = False Then
-                                MsgBox( _
-                                        "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                                MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                                 ConstructPickStatment = Nothing
                                 dataType.Close()
                                 mwTable.Close()
@@ -300,8 +274,7 @@ Module Pollutants
         ReDim _picks(strConStatement.Split(",").Length)
         _picks = strConStatement.Split(",")
         Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
-        RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, _
-                    massvolcalc)
+        RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
     End Sub
     Private Sub CreateLayerForLocalEffect(ByRef OutputItems As OutputItems, ByVal pMassVolumeRaster As Grid, ByVal outputFileNameOutConc As String)
         Dim pPermMassVolumeRaster As Grid
@@ -315,8 +288,7 @@ Module Pollutants
 
         g_dicMetadata.Add(_PollutantName & "Local Effects (mg)", _PollutantCoeffMetadata)
 
-        AddOutputGridLayer(pPermMassVolumeRaster, _PollutantColor, True, _PollutantName & " Local Effects (mg)", _
-                            String.Format("Pollutant {0} Local", _PollutantName), -1, OutputItems)
+        AddOutputGridLayer(pPermMassVolumeRaster, _PollutantColor, True, _PollutantName & " Local Effects (mg)", String.Format("Pollutant {0} Local", _PollutantName), -1, OutputItems)
 
     End Sub
     Private Sub DeriveAccumulatedPollutant(ByVal pMassVolumeRaster As Grid, ByRef pAccumPollRaster As Grid)
@@ -348,8 +320,7 @@ Module Pollutants
         DataManagement.DeleteGrid(strtmpout)
 
         'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-        Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, _
-                                  Environment.ProcessorCount, Nothing)
+        Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
         'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
         If result <> 0 Then
             g_KeepRunning = False
@@ -376,13 +347,11 @@ Module Pollutants
         Dim layerName As String = String.Format("Accumulated {0} (kg)", _PollutantName)
         g_dicMetadata.Add(layerName, _PollutantCoeffMetadata)
 
-        AddOutputGridLayer(pPermAccPollRaster, _PollutantColor, True, layerName, _
-                            String.Format("Pollutant {0} Accum", _PollutantName), -1, OutputItems)
+        AddOutputGridLayer(pPermAccPollRaster, _PollutantColor, True, layerName, String.Format("Pollutant {0} Accum", _PollutantName), -1, OutputItems)
     End Sub
     Private Sub CalcFinalConcentration(ByVal pMassVolumeRaster As Grid, ByVal pAccumPollRaster As Grid, ByRef pTotalPollConc0Raster As Grid)
         Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
-        RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, _
-                    pTotalPollConc0Raster, Nothing, False, AllConCalc)
+        RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, pTotalPollConc0Raster, Nothing, False, AllConCalc)
     End Sub
     Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByVal pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
         outputFileNameOutConc = GetUniqueFileName("conc", g_strWorkspace, FinalOutputGridExt)
@@ -395,11 +364,9 @@ Module Pollutants
 
         g_dicMetadata.Add(_PollutantName & " Conc. (mg/L)", _PollutantCoeffMetadata)
 
-        AddOutputGridLayer(pPermTotalConcRaster, _PollutantColor, True, _PollutantName & " Conc. (mg/L)", _
-                            String.Format("Pollutant {0} Conc", _PollutantName), -1, OutputItems)
+        AddOutputGridLayer(pPermTotalConcRaster, _PollutantColor, True, _PollutantName & " Conc. (mg/L)", String.Format("Pollutant {0} Conc", _PollutantName), -1, OutputItems)
     End Sub
-    Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As OutputItems) _
-As Boolean
+    Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As OutputItems) As Boolean
 
         Dim pMassVolumeRaster As Grid = Nothing
         Dim pAccumPollRaster As Grid = Nothing
@@ -452,9 +419,7 @@ As Boolean
 
     End Function
 
-    Private Function CompareWaterQuality(ByRef pWSFeatureClass As Shapefile, _
-                                          ByRef pPollutantRaster As Grid, _
-                                          ByRef OutputItems As OutputItems) As Boolean
+    Private Function CompareWaterQuality(ByRef pWSFeatureClass As Shapefile, ByRef pPollutantRaster As Grid, ByRef OutputItems As OutputItems) As Boolean
         Dim strWQVAlue As Object
 
         'Get the zone dataset from the first layer in ArcMap
@@ -488,23 +453,16 @@ As Boolean
                 pPermWQRaster = ReturnPermanentRaster(pConRaster, strOutWQ)
             End If
 
-            strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _WaterQualityStandardName & _
-                          vbNewLine & vbTab & vbTab & "Standard: " & dblConvertValue & " mg/L"
-            g_dicMetadata.Add(_PollutantName & " Standard: " & CStr(dblConvertValue) & " mg/L", _
-                               _PollutantCoeffMetadata & strMetadata)
+            strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _WaterQualityStandardName & vbNewLine & vbTab & vbTab & "Standard: " & dblConvertValue & " mg/L"
+            g_dicMetadata.Add(_PollutantName & " Standard: " & CStr(dblConvertValue) & " mg/L", _PollutantCoeffMetadata & strMetadata)
 
-            AddOutputGridLayer(pPermWQRaster, _WaterQualityStandardName, False, _
-                                _PollutantName & " Standard: " & CStr(dblConvertValue) & " mg/L", _
-                                "Pollutant " & _PollutantName & " WQ", -1, OutputItems)
+            AddOutputGridLayer(pPermWQRaster, _WaterQualityStandardName, False, _PollutantName & " Standard: " & CStr(dblConvertValue) & " mg/L", "Pollutant " & _PollutantName & " WQ", -1, OutputItems)
 
             CompareWaterQuality = True
 
         Catch ex As Exception
             If Err.Number = -2147467259 Then
-                MsgBox( _
-                        "ArcMap has reached the maximum number of GRIDs allowed in memory.  " & _
-                        "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, _
-                        "Maximum GRID Number Encountered")
+                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
                 CompareWaterQuality = False
                 g_KeepRunning = False
                 CloseProgressDialog()
@@ -528,9 +486,7 @@ As Boolean
             Dim cmdpoll As New DataHelper(strPoll)
             Dim datapoll As OleDbDataReader = cmdpoll.ExecuteReader
             datapoll.Read()
-            strWQStd = _
-                "SELECT * FROM WQCRITERIA INNER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & _
-                "WHERE WQCRITERIA.NAME Like '" & strWQstdName & "' AND POLL_WQCRITERIA.POLLID = " & datapoll("POLLID")
+            strWQStd = "SELECT * FROM WQCRITERIA INNER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "WHERE WQCRITERIA.NAME Like '" & strWQstdName & "' AND POLL_WQCRITERIA.POLLID = " & datapoll("POLLID")
             datapoll.Close()
 
             Dim cmdWQ As New DataHelper(strWQStd)
@@ -545,8 +501,7 @@ As Boolean
 
 #Region "Raster Math"
 
-    Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                      ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim tmpval As Single
         'strexpression = pick([pLandSampleRaster], _picks)"
         For i As Integer = 0 To _picks.Length - 1
@@ -560,17 +515,12 @@ As Boolean
         Return Input2 * tmpval
     End Function
 
-    Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                        ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) _
-        As Single
+    Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
         Return Input1 * 0.000001
     End Function
 
-    Private Function AllConCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, _
-                                     ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, _
-                                     ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, _
-                                     ByVal Input5Null As Single, ByVal OutNull As Single) As Single
+    Private Function AllConCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         If Input1 = Input1Null Or Input2 = Input2Null Or Input3 = Input3Null Or Input4 = Input4Null Then
             If Input5 = Input5Null Then
                 Return OutNull
@@ -587,8 +537,7 @@ As Boolean
 
     End Function
 
-    Private Function concompCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, _
-                                      ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+    Private Function concompCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'This rather ugly expression was set up to check for meets/exceed water quality standards for
         'only the streams.  It takes the values of flowaccumulation from watershed delineation fame that
         'exceed values of greater than 1%.  Then multiplies the result (all cells representing streams) times
