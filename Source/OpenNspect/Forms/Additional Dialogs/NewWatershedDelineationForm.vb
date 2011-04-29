@@ -233,8 +233,9 @@ Friend Class NewWatershedDelineationForm
                                              _strNibbleName & "', " & "'" & _strDEM2BName & "')"
 
                 'Execute the statement.
-                Dim insCmd As New DataHelper(strCmdInsert)
-                insCmd.ExecuteNonQuery()
+                Using insCmd As New DataHelper(strCmdInsert)
+                    insCmd.ExecuteNonQuery()
+                End Using
 
                 'Confirm
                 MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
@@ -465,8 +466,9 @@ Friend Class NewWatershedDelineationForm
 
             ShowProgress("Creating Watershed Shape...", strProgTitle, 10, 7, Me)
             If g_KeepRunning Then
-                ret = _
-                    Hydrology.SubbasinsToShape(pFlowDirRaster.Filename, strWSGridOut, strWSSFOut, Nothing)
+                Dim file = pFlowDirRaster.Filename
+                pFlowDirRaster.Close()
+                ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
                 If ret <> 0 Then Return False
             Else
                 Return False
@@ -505,7 +507,7 @@ Friend Class NewWatershedDelineationForm
 
             tmpfile = _strDirFileName
             _strDirFileName = OutPath + "flowdir" + FinalOutputGridExt
-            pFlowDirRaster.Close()
+
             pFlowDirRaster = New Grid
             pFlowDirRaster.Open(tmpfile)
             pFlowDirRaster.Header.Projection = proj
