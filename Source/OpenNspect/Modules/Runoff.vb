@@ -443,7 +443,7 @@ Module Runoff
         pMetRunoffRaster.Close()
     End Sub
     Private Function CreateDataLayerForLocalEffects(ByRef OutputItems As OutputItems) As String
-        Dim strOutAccum As String = GetUniqueFileName("locaccum", g_strWorkspace, g_FinalOutputGridExt)
+        Dim strOutAccum As String = GetUniqueFileName("locaccum", g_strWorkspace, FinalOutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccumLocRunoffRaster As Grid = Nothing
         If g_booSelectedPolys Then
@@ -459,11 +459,23 @@ Module Runoff
                             "Runoff Local", -1, OutputItems)
         Return strOutAccum
     End Function
-    Private Function GetTempFileName() As String
+    'todo:refactor
+    Public Function GetTempFileNameTAUDEMGridExt() As String
         Dim file As String = Path.GetTempFileName
         g_TempFilesToDel.Add(file)
         ' Things don't get saved correctly if they don't have the right file extension
-        file = Path.ChangeExtension(file, g_TAUDEMGridExt)
+        file = Path.ChangeExtension(file, TAUDEMGridExt)
+        g_TempFilesToDel.Add(file)
+        'TODO: I would not think this file nor related ones should exist
+        DataManagement.DeleteGrid(file)
+        Return file
+    End Function
+    'todo:refactor
+    Public Function GetTempFileNameOutputGridExt() As String
+        Dim file As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(file)
+        ' Things don't get saved correctly if they don't have the right file extension
+        file = Path.ChangeExtension(file, OutputGridExt)
         g_TempFilesToDel.Add(file)
         'TODO: I would not think this file nor related ones should exist
         DataManagement.DeleteGrid(file)
@@ -504,15 +516,15 @@ Module Runoff
         RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
         pTauD8Flow.Header.NodataValue = -1
 
-        Dim flowFile As String = GetTempFileName()
+        Dim flowFile As String = GetTempFileNameTAUDEMGridExt()
         If Not pTauD8Flow.Save(flowFile) Then Return Nothing
 
-        Dim metRunoffFile As String = GetTempFileName()
+        Dim metRunoffFile As String = GetTempFileNameTAUDEMGridExt()
         If Not g_pMetRunoffRaster.Save(metRunoffFile) Then Return Nothing
 
         Dim outFile As String = Path.GetTempFileName
         g_TempFilesToDel.Add(outFile)
-        outFile = String.Format("{0}out{1}", outFile, g_TAUDEMGridExt)
+        outFile = String.Format("{0}out{1}", outFile, TAUDEMGridExt)
         g_TempFilesToDel.Add(outFile)
         DataManagement.DeleteGrid(outFile)
 
@@ -529,7 +541,7 @@ Module Runoff
     End Function
     Private Sub CreateRunoffGrid(ByRef OutputItems As OutputItems, ByVal pAccumRunoffRaster As Grid)
         'Get a unique name for accumulation GRID
-        Dim strOutAccum = GetUniqueFileName("runoff", g_strWorkspace, g_FinalOutputGridExt)
+        Dim strOutAccum = GetUniqueFileName("runoff", g_strWorkspace, FinalOutputGridExt)
 
         'Clip to selected polys if chosen
         Dim pPermAccumRunoffRaster As Grid = Nothing

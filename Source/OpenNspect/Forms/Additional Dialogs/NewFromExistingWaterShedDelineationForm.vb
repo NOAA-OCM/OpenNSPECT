@@ -247,11 +247,11 @@ Friend Class NewFromExistingWaterShedDelineationForm
                         If tmpres = System.Windows.Forms.DialogResult.Yes Then
                             Dim flowpath As String
                             If Path.GetFileName(txtFlowDir.Text) = "sta.adf" Then
-                                flowpath = Path.GetDirectoryName(txtFlowDir.Text) + "_esri" + g_OutputGridExt
+                                flowpath = Path.GetDirectoryName(txtFlowDir.Text) + "_esri" + OutputGridExt
                             Else
                                 flowpath = Path.GetDirectoryName(txtFlowDir.Text) + Path.DirectorySeparatorChar + _
                                            Path.GetFileNameWithoutExtension(txtFlowDir.Text) + "_esri" + _
-                                           g_OutputGridExt
+                                           OutputGridExt
                             End If
                             Dim pESRID8Flow As New Grid
                             Dim tmphead As New GridHeader

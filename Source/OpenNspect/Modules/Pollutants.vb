@@ -329,21 +329,21 @@ Module Pollutants
 
         Dim strtmp1 As String = Path.GetTempFileName
         g_TempFilesToDel.Add(strtmp1)
-        strtmp1 = strtmp1 + g_TAUDEMGridExt
+        strtmp1 = strtmp1 + TAUDEMGridExt
         g_TempFilesToDel.Add(strtmp1)
         DataManagement.DeleteGrid(strtmp1)
         pTauD8Flow.Save(strtmp1)
 
         Dim strtmp2 As String = Path.GetTempFileName
         g_TempFilesToDel.Add(strtmp2)
-        strtmp2 = strtmp2 + g_TAUDEMGridExt
+        strtmp2 = strtmp2 + TAUDEMGridExt
         g_TempFilesToDel.Add(strtmp2)
         DataManagement.DeleteGrid(strtmp2)
         pMassVolumeRaster.Save(strtmp2)
 
         Dim strtmpout As String = Path.GetTempFileName
         g_TempFilesToDel.Add(strtmpout)
-        strtmpout = String.Format("{0}out{1}", strtmpout, g_TAUDEMGridExt)
+        strtmpout = String.Format("{0}out{1}", strtmpout, TAUDEMGridExt)
         g_TempFilesToDel.Add(strtmpout)
         DataManagement.DeleteGrid(strtmpout)
 
@@ -364,7 +364,7 @@ Module Pollutants
         DataManagement.DeleteGrid(strtmp1)
     End Sub
     Private Sub AddAccumulatedPollutantToGroupLayer(ByRef OutputItems As OutputItems, ByRef pAccumPollRaster As Grid)
-        Dim strAccPoll As String = GetUniqueFileName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
+        Dim strAccPoll As String = GetUniqueFileName("accpoll", g_strWorkspace, FinalOutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccPollRaster As Grid
         If g_booSelectedPolys Then
@@ -385,7 +385,7 @@ Module Pollutants
                     pTotalPollConc0Raster, Nothing, False, AllConCalc)
     End Sub
     Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByVal pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
-        outputFileNameOutConc = GetUniqueFileName("conc", g_strWorkspace, g_FinalOutputGridExt)
+        outputFileNameOutConc = GetUniqueFileName("conc", g_strWorkspace, FinalOutputGridExt)
         Dim pPermTotalConcRaster As Grid
         If g_booSelectedPolys Then
             pPermTotalConcRaster = ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, outputFileNameOutConc)
@@ -406,7 +406,7 @@ As Boolean
         Dim pTotalPollConc0Raster As Grid = Nothing
 
         Dim strTitle = String.Format("Processing {0} Conc. Calculation...", _PollutantName)
-        Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_strWorkspace, g_FinalOutputGridExt)
+        Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_strWorkspace, FinalOutputGridExt)
 
         Try
             ShowProgress("Calculating Mass Volume...", strTitle, 13, 1, g_MainForm)
@@ -479,7 +479,7 @@ As Boolean
             Dim concalc As New RasterMathCellCalc(AddressOf concompCellCalc)
             RasterMath(pPollutantRaster, g_pFlowAccRaster, Nothing, Nothing, Nothing, pConRaster, concalc)
 
-            strOutWQ = GetUniqueFileName("wq", g_strWorkspace, g_FinalOutputGridExt)
+            strOutWQ = GetUniqueFileName("wq", g_strWorkspace, FinalOutputGridExt)
 
             'Clip if selectedpolys
             If g_booSelectedPolys Then

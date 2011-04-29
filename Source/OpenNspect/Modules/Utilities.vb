@@ -39,9 +39,9 @@ Module Utilities
     Public g_strSelectedExportPath As String = ""
 
     'Intermediate and output extensions
-    Public Const g_OutputGridExt As String = ".tif"
-    Public Const g_FinalOutputGridExt As String = ".tif"
-    Public Const g_TAUDEMGridExt As String = ".tif"
+    Public Const OutputGridExt As String = ".tif"
+    Public Const FinalOutputGridExt As String = ".tif"
+    Public Const TAUDEMGridExt As String = ".tif"
 
     Public g_TempFilesToDel As New List(Of String)
 
@@ -632,7 +632,7 @@ Module Utilities
                                         ByVal outputFileName As String) As Grid
         Dim strtmp1 As String = Path.GetTempFileName
         g_TempFilesToDel.Add(strtmp1)
-        strtmp1 = strtmp1 + g_OutputGridExt
+        strtmp1 = strtmp1 + OutputGridExt
         g_TempFilesToDel.Add(strtmp1)
         DataManagement.DeleteGrid(strtmp1)
         pGridToClip.Save()
@@ -792,10 +792,7 @@ Module Utilities
 
         Dim nodata1, nodata2, nodata3, nodata4, nodata5 As Single
 
-        Dim tmppath As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(tmppath)
-        tmppath = Path.ChangeExtension(tmppath, g_OutputGridExt)
-        g_TempFilesToDel.Add(tmppath)
+        Dim tmppath As String = GetTempFileNameOutputGridExt()
 
         Dim nodataout As Single = -9999.0
 
@@ -892,7 +889,7 @@ Module Utilities
         Dim InputBox1(3, 3), InputBox2(3, 3), InputBox3(3, 3), InputBox4(3, 3), InputBox5(3, 3) As Single
         Dim tmppath As String = Path.GetTempFileName
         g_TempFilesToDel.Add(tmppath)
-        tmppath = tmppath + g_OutputGridExt
+        tmppath = tmppath + OutputGridExt
         g_TempFilesToDel.Add(tmppath)
 
         nodataout = -9999.0

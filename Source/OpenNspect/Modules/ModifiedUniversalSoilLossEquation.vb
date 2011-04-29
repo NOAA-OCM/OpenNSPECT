@@ -390,26 +390,26 @@ Module ModifiedUniversalSoilLossEquation
 
                 Dim strtmp1 As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strtmp1)
-                strtmp1 = strtmp1 + g_TAUDEMGridExt
+                strtmp1 = strtmp1 + TAUDEMGridExt
                 g_TempFilesToDel.Add(strtmp1)
                 DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
                 Dim strLongestOut As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strLongestOut)
-                strLongestOut = strLongestOut + "out" + g_TAUDEMGridExt
+                strLongestOut = strLongestOut + "out" + TAUDEMGridExt
                 g_TempFilesToDel.Add(strLongestOut)
                 DataManagement.DeleteGrid(strLongestOut)
 
                 Dim strTotalOut As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strTotalOut)
-                strTotalOut = strTotalOut + "out" + g_TAUDEMGridExt
+                strTotalOut = strTotalOut + "out" + TAUDEMGridExt
                 g_TempFilesToDel.Add(strTotalOut)
                 DataManagement.DeleteGrid(strTotalOut)
 
                 Dim strStrahlOut As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strStrahlOut)
-                strStrahlOut = strStrahlOut + "out" + g_TAUDEMGridExt
+                strStrahlOut = strStrahlOut + "out" + TAUDEMGridExt
                 g_TempFilesToDel.Add(strStrahlOut)
                 DataManagement.DeleteGrid(strStrahlOut)
 
@@ -450,11 +450,8 @@ Module ModifiedUniversalSoilLossEquation
             If g_KeepRunning Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
-                Dim strtmpslpout As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmpslpout)
-                strtmpslpout = strtmpslpout + g_OutputGridExt
-                g_TempFilesToDel.Add(strtmpslpout)
-                DataManagement.DeleteGrid(strtmpslpout)
+                Dim strtmpslpout As String = GetTempFileNameOutputGridExt()
+
                 TerrainAnalysis.Slope2(g_pDEMRaster.Filename, 1, strtmpslpout, True, Nothing)
                 'strExpression = "slope([dem], percentrise)"
 
@@ -510,7 +507,7 @@ Module ModifiedUniversalSoilLossEquation
                 ShowProgress("Creating data layer for local effects...", strTitle, 27, 27, g_MainForm)
                 If g_KeepRunning Then
 
-                    strMUSLE = GetUniqueFileName("locmusle", g_strWorkspace, g_FinalOutputGridExt)
+                    strMUSLE = GetUniqueFileName("locmusle", g_strWorkspace, FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
                         pPermMUSLERaster = _
@@ -545,14 +542,14 @@ Module ModifiedUniversalSoilLossEquation
 
                 Dim strtmp1 As String = Path.GetTempFileName()
                 g_TempFilesToDel.Add(strtmp1)
-                strtmp1 = strtmp1 + g_TAUDEMGridExt
+                strtmp1 = strtmp1 + TAUDEMGridExt
                 g_TempFilesToDel.Add(strtmp1)
                 DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
                 Dim strtmp2 As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strtmp2)
-                strtmp2 = strtmp2 + g_TAUDEMGridExt
+                strtmp2 = strtmp2 + TAUDEMGridExt
                 g_TempFilesToDel.Add(strtmp2)
                 DataManagement.DeleteGrid(strtmp2)
                 pHISYMGRasterNoNull.Save(strtmp2)
@@ -560,7 +557,7 @@ Module ModifiedUniversalSoilLossEquation
 
                 Dim strtmpout As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strtmpout)
-                strtmpout = strtmpout + "out" + g_TAUDEMGridExt
+                strtmpout = strtmpout + "out" + TAUDEMGridExt
                 g_TempFilesToDel.Add(strtmpout)
                 DataManagement.DeleteGrid(strtmpout)
 
@@ -582,7 +579,7 @@ Module ModifiedUniversalSoilLossEquation
             If g_KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
-                strMUSLE = GetUniqueFileName("MUSLEmass", g_strWorkspace, g_FinalOutputGridExt)
+                strMUSLE = GetUniqueFileName("MUSLEmass", g_strWorkspace, FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then
