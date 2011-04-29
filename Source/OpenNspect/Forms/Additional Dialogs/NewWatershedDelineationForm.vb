@@ -359,7 +359,7 @@ Friend Class NewWatershedDelineationForm
                 'Call to ProgDialog to use throughout process: keep user informed.
 
                 If g_KeepRunning Then
-                    _strFilledDEMFileName = OutPath + "demfill" + g_OutputGridExt
+                    _strFilledDEMFileName = OutPath + "demfill" + OutputGridExt
                     Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
                     pFillRaster.Open(_strFilledDEMFileName)
                 Else
@@ -371,9 +371,9 @@ Friend Class NewWatershedDelineationForm
             'STEP 2: Flow Direction
             ShowProgress("Computing Flow Direction...", strProgTitle, 10, 2, Me)
 
-            Dim mwDirFileName As String = OutPath + "mwflowdir" + g_OutputGridExt
-            _strDirFileName = OutPath + "flowdir" + g_OutputGridExt
-            Dim strSlpFileName As String = OutPath + "slope" + g_OutputGridExt
+            Dim mwDirFileName As String = OutPath + "mwflowdir" + OutputGridExt
+            _strDirFileName = OutPath + "flowdir" + OutputGridExt
+            Dim strSlpFileName As String = OutPath + "slope" + OutputGridExt
             If g_KeepRunning Then
                 ret = _
                     Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, _
@@ -396,7 +396,7 @@ Friend Class NewWatershedDelineationForm
 
             'STEP 3: Flow Accumulation
             ShowProgress("Computing Flow Accumulation...", strProgTitle, 10, 3, Me)
-            _strAccumFileName = OutPath + "flowacc" + g_OutputGridExt
+            _strAccumFileName = OutPath + "flowacc" + OutputGridExt
             If g_KeepRunning Then
                 ret = _
                     Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, _
@@ -424,14 +424,14 @@ Friend Class NewWatershedDelineationForm
                     dblSubShedSize = dblMax * _dblLarge
             End Select
 
-            strahlordout = OutPath + "strahlord" + g_OutputGridExt
-            longestupslopeout = OutPath + "longestupslope" + g_OutputGridExt
-            totalupslopeout = OutPath + "totalupslope" + g_OutputGridExt
-            streamgridout = OutPath + "streamgrid" + g_OutputGridExt
-            streamordout = OutPath + "streamord" + g_OutputGridExt
+            strahlordout = OutPath + "strahlord" + OutputGridExt
+            longestupslopeout = OutPath + "longestupslope" + OutputGridExt
+            totalupslopeout = OutPath + "totalupslope" + OutputGridExt
+            streamgridout = OutPath + "streamgrid" + OutputGridExt
+            streamordout = OutPath + "streamord" + OutputGridExt
             treedatout = OutPath + "tree.dat"
             coorddatout = OutPath + "coord.dat"
-            strWSGridOut = OutPath + "wsgrid" + g_OutputGridExt
+            strWSGridOut = OutPath + "wsgrid" + OutputGridExt
             strWSSFOut = OutPath + "ws.shp"
 
             '        'Step 5: Using Hydrology Op to create stream network
@@ -485,7 +485,7 @@ Friend Class NewWatershedDelineationForm
             Dim proj As String = pOutputFeatClass.Projection
             Dim tmpfile As String
             tmpfile = _strFilledDEMFileName
-            _strFilledDEMFileName = OutPath + "demfill" + g_FinalOutputGridExt
+            _strFilledDEMFileName = OutPath + "demfill" + FinalOutputGridExt
             pFillRaster.Close()
             pFillRaster = New Grid
             pFillRaster.Open(tmpfile)
@@ -495,7 +495,7 @@ Friend Class NewWatershedDelineationForm
             File.Delete(tmpfile)
 
             tmpfile = strSlpFileName
-            strSlpFileName = OutPath + "slope" + g_FinalOutputGridExt
+            strSlpFileName = OutPath + "slope" + FinalOutputGridExt
             Dim pslope As New Grid
             pslope.Open(tmpfile)
             pslope.Header.Projection = proj
@@ -504,7 +504,7 @@ Friend Class NewWatershedDelineationForm
             File.Delete(tmpfile)
 
             tmpfile = _strDirFileName
-            _strDirFileName = OutPath + "flowdir" + g_FinalOutputGridExt
+            _strDirFileName = OutPath + "flowdir" + FinalOutputGridExt
             pFlowDirRaster.Close()
             pFlowDirRaster = New Grid
             pFlowDirRaster.Open(tmpfile)
@@ -514,7 +514,7 @@ Friend Class NewWatershedDelineationForm
             File.Delete(tmpfile)
 
             tmpfile = _strAccumFileName
-            _strAccumFileName = OutPath + "flowacc" + g_FinalOutputGridExt
+            _strAccumFileName = OutPath + "flowacc" + FinalOutputGridExt
             pAccumRaster.Close()
             pAccumRaster = New Grid
             pAccumRaster.Open(tmpfile)
@@ -525,7 +525,7 @@ Friend Class NewWatershedDelineationForm
 
             'With all of that done, now go get the name of the LS Grid while actually computing said LS Grid
             '_strLSFileName = CalcLengthSlope(pFillRaster, pFlowDirRaster, pAccumRaster, pEnv, "0", pWorkspace)
-            _strLSFileName = OutPath + "lsgrid" + g_FinalOutputGridExt
+            _strLSFileName = OutPath + "lsgrid" + FinalOutputGridExt
             Dim g As New Grid
             g.Open(longestupslopeout)
             g.Save(_strLSFileName)

@@ -369,7 +369,7 @@ Module RevisedUniversalSoilLossEquation
 
                     'STEP 12: Local Effects -------------------------------------------------
 
-                    strOutYield = GetUniqueFileName("locrusle", g_strWorkspace, g_FinalOutputGridExt)
+                    strOutYield = GetUniqueFileName("locrusle", g_strWorkspace, FinalOutputGridExt)
                     If g_booSelectedPolys Then
                         pPermRUSLELocRaster = _
                             ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
@@ -405,21 +405,21 @@ Module RevisedUniversalSoilLossEquation
 
                 Dim strtmp1 As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strtmp1)
-                strtmp1 = strtmp1 + g_TAUDEMGridExt
+                strtmp1 = strtmp1 + TAUDEMGridExt
                 g_TempFilesToDel.Add(strtmp1)
                 DataManagement.DeleteGrid(strtmp1)
                 pTauD8Flow.Save(strtmp1)
 
                 Dim strtmp2 As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strtmp2)
-                strtmp2 = strtmp2 + g_TAUDEMGridExt
+                strtmp2 = strtmp2 + TAUDEMGridExt
                 g_TempFilesToDel.Add(strtmp2)
                 DataManagement.DeleteGrid(strtmp2)
                 pSedYieldRaster.Save(strtmp2)
 
                 Dim strtmpout As String = Path.GetTempFileName
                 g_TempFilesToDel.Add(strtmpout)
-                strtmpout = strtmpout + "out" + g_TAUDEMGridExt
+                strtmpout = strtmpout + "out" + TAUDEMGridExt
                 g_TempFilesToDel.Add(strtmpout)
                 DataManagement.DeleteGrid(strtmpout)
 
@@ -444,7 +444,7 @@ Module RevisedUniversalSoilLossEquation
             ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 13, 13, g_MainForm)
 
             If g_KeepRunning Then
-                strOutYield = GetUniqueFileName("RUSLE", g_strWorkspace, g_FinalOutputGridExt)
+                strOutYield = GetUniqueFileName("RUSLE", g_strWorkspace, FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then

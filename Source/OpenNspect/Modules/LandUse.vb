@@ -369,7 +369,7 @@ Module LandUse
 
             Dim booLandScen As Boolean
             Dim pNewLandCoverRaster As New Grid
-            strOutLandCover = GetUniqueFileName("landcover", g_strWorkspace, g_OutputGridExt)
+            strOutLandCover = GetUniqueFileName("landcover", g_strWorkspace, OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
