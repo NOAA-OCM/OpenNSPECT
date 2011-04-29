@@ -522,39 +522,36 @@ Module Utilities
             Return Nothing
         End Try
     End Function
+    ''' <summary>
+    ''' Generates two color representation of the grid or feature layer
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function ReturnUniqueRasterRenderer() As Object
+        'Create two colors, red, green
+        Dim red As UInteger = Convert.ToUInt32(RGB(214, 71, 0))
+        Dim green As UInteger = Convert.ToUInt32(RGB(56, 168, 0))
 
-    Public Function ReturnUniqueRasterRenderer(ByRef pRaster As Grid, ByRef strStandardName As String) As Object
-        Try
-            'Create two colors, red, green
-            'pColorRed.RGB = System.Convert.ToUInt32(RGB(214, 71, 0))
-            'pColorGreen.RGB = System.Convert.ToUInt32(RGB(56, 168, 0))
+        Dim colorBreak1 As New GridColorBreak
+        colorBreak1.Caption = "Exceeds Standard"
+        colorBreak1.ColoringType = ColoringType.Gradient
+        colorBreak1.HighValue = 1
+        colorBreak1.LowValue = 1
+        colorBreak1.HighColor = red
+        colorBreak1.LowColor = red
 
-            Dim cs As New GridColorScheme
-            Dim csb1 As New GridColorBreak
-            Dim csb2 As New GridColorBreak
+        Dim colorBreak2 As New GridColorBreak
+        colorBreak2.Caption = "Below Standard"
+        colorBreak2.ColoringType = ColoringType.Gradient
+        colorBreak2.HighValue = 2
+        colorBreak2.LowValue = 2
+        colorBreak2.HighColor = green
+        colorBreak2.LowColor = green
 
-            csb1.Caption = "Exceeds Standard"
-            csb1.ColoringType = ColoringType.Gradient
-            csb1.HighValue = 1
-            csb1.LowValue = 1
-            csb1.HighColor = Convert.ToUInt32(RGB(214, 71, 0))
-            csb1.LowColor = Convert.ToUInt32(RGB(214, 71, 0))
+        Dim cs As New GridColorScheme
+        cs.InsertBreak(colorBreak1)
+        cs.InsertBreak(colorBreak2)
 
-            csb2.Caption = "Below Standard"
-            csb2.ColoringType = ColoringType.Gradient
-            csb2.HighValue = 2
-            csb2.LowValue = 2
-            csb2.HighColor = Convert.ToUInt32(RGB(56, 168, 0))
-            csb2.LowColor = Convert.ToUInt32(RGB(56, 168, 0))
-
-            cs.InsertBreak(csb1)
-            cs.InsertBreak(csb2)
-
-            Return cs
-        Catch ex As Exception
-            MsgBox(Err.Description)
-            Return Nothing
-        End Try
+        Return cs
     End Function
 
     Public Function ReturnHSVColorString() As String
@@ -728,7 +725,7 @@ Module Utilities
             cs = ReturnRasterStretchColorRampCS(outRast, ColorString)
             'Dim cs As MapWinGIS.GridColorScheme = ReturnContinuousRampColorCS(pPermAccumLocRunoffRaster, "Blue")
         Else
-            cs = ReturnUniqueRasterRenderer(outRast, ColorString)
+            cs = ReturnUniqueRasterRenderer()
         End If
 
         Dim lyr As Layer = MapWindowPlugin.MapWindowInstance.Layers.Add(outRast, cs, LayerName)
