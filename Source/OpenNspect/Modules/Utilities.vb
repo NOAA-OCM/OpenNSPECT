@@ -687,7 +687,9 @@ Module Utilities
 
         ExportSelectedFeatures = Nothing
         'First check to see if any features have been selected
-        If SelectedShapes.Count <= 0 Then Exit Function
+        If SelectedShapes Is Nothing OrElse SelectedShapes.Count = 0 Then
+            Exit Function
+        End If
 
         Try
             myShapeFile = New Shapefile
