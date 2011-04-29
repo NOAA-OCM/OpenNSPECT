@@ -136,14 +136,14 @@ Module RevisedUniversalSoilLossEquation
 
     End Function
 
-    Private Function CreateMetadata(ByRef booLocal As Boolean) As String
+    Private Function CreateMetadata(ByRef localEffects As Boolean) As String
 
         Dim strHeader As String
         'Dim i As Integer
         'Dim strCFactor As String
 
         'Set up the header w/or without flow direction
-        If booLocal = True Then
+        If localEffects = True Then
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.strSoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.strRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else

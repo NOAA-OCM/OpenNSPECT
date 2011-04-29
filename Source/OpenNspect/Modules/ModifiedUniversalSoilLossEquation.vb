@@ -480,10 +480,8 @@ Module ModifiedUniversalSoilLossEquation
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
                         pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
-                        'pPermMUSLERaster = modUtil.ClipBySelectedPoly(pHISYMGRaster, g_pSelectedPolyClip, strMUSLE)
                     Else
                         pPermMUSLERaster = ReturnPermanentRaster(pHISYMGRasterNoNull, strMUSLE)
-                        'pPermMUSLERaster = modUtil.ReturnPermanentRaster(pHISYMGRaster, strMUSLE)
                     End If
 
                     'metadata time
