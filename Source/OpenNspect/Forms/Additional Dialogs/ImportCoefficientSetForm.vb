@@ -38,7 +38,7 @@ Friend Class ImportCoefficientSetForm
                 dlgOpen.Filter = MSG1TextFile
                 dlgOpen.Title = MSG2
                 If dlgOpen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
-                    txtImpFile.Text = Trim (dlgOpen.FileName)
+                    txtImpFile.Text = Trim(dlgOpen.FileName)
                 End If
             End Using
         Catch ex As Exception

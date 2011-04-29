@@ -39,6 +39,10 @@
         Me._Label2_2 = New System.Windows.Forms.Label()
         Me._Label1_7 = New System.Windows.Forms.Label()
         Me.dgvLCTypes = New System.Windows.Forms.DataGridView()
+        Me.cntxmnuGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Value = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.NameCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.CNA = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -49,10 +53,6 @@
         Me.WetCheck = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.LCTYPEID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.LCClassID = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.cntxmnuGrid = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AddRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DeleteRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         CType(Me.dgvLCTypes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cntxmnuGrid.SuspendLayout()
         Me.SuspendLayout()
@@ -130,10 +130,35 @@
         Me.dgvLCTypes.AllowUserToResizeColumns = False
         Me.dgvLCTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLCTypes.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Value, Me.NameCol, Me.CNA, Me.CNB, Me.CNC, Me.CND, Me.CoverFactor, Me.WetCheck, Me.LCTYPEID, Me.LCClassID})
+        Me.dgvLCTypes.ContextMenuStrip = Me.cntxmnuGrid
         Me.dgvLCTypes.Location = New System.Drawing.Point(10, 79)
         Me.dgvLCTypes.Name = "dgvLCTypes"
         Me.dgvLCTypes.Size = New System.Drawing.Size(582, 215)
         Me.dgvLCTypes.TabIndex = 16
+        '
+        'cntxmnuGrid
+        '
+        Me.cntxmnuGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteRowToolStripMenuItem})
+        Me.cntxmnuGrid.Name = "ContextMenuStrip1"
+        Me.cntxmnuGrid.Size = New System.Drawing.Size(134, 70)
+        '
+        'AddRowToolStripMenuItem
+        '
+        Me.AddRowToolStripMenuItem.Name = "AddRowToolStripMenuItem"
+        Me.AddRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.AddRowToolStripMenuItem.Text = "Add Row"
+        '
+        'InsertRowToolStripMenuItem
+        '
+        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
+        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
+        '
+        'DeleteRowToolStripMenuItem
+        '
+        Me.DeleteRowToolStripMenuItem.Name = "DeleteRowToolStripMenuItem"
+        Me.DeleteRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
+        Me.DeleteRowToolStripMenuItem.Text = "Delete Row"
         '
         'Value
         '
@@ -198,7 +223,7 @@
         Me.WetCheck.HeaderText = "Wet"
         Me.WetCheck.Name = "WetCheck"
         Me.WetCheck.TrueValue = "1"
-        Me.WetCheck.Width = 25
+        Me.WetCheck.Width = 35
         '
         'LCTYPEID
         '
@@ -215,30 +240,6 @@
         Me.LCClassID.Name = "LCClassID"
         Me.LCClassID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.LCClassID.Visible = False
-        '
-        'cntxmnuGrid
-        '
-        Me.cntxmnuGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteRowToolStripMenuItem})
-        Me.cntxmnuGrid.Name = "ContextMenuStrip1"
-        Me.cntxmnuGrid.Size = New System.Drawing.Size(134, 70)
-        '
-        'AddRowToolStripMenuItem
-        '
-        Me.AddRowToolStripMenuItem.Name = "AddRowToolStripMenuItem"
-        Me.AddRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
-        Me.AddRowToolStripMenuItem.Text = "Add Row"
-        '
-        'InsertRowToolStripMenuItem
-        '
-        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
-        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
-        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
-        '
-        'DeleteRowToolStripMenuItem
-        '
-        Me.DeleteRowToolStripMenuItem.Name = "DeleteRowToolStripMenuItem"
-        Me.DeleteRowToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
-        Me.DeleteRowToolStripMenuItem.Text = "Delete Row"
         '
         'NewLandCoverTypeForm
         '
