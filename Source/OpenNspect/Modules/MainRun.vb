@@ -21,7 +21,7 @@ Imports MapWinGIS
 Imports System.Data.OleDb
 Imports OpenNspect.Xml
 
-Module modMainRun
+Module MainRun
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov

@@ -22,7 +22,7 @@ Imports MapWinGIS
 Imports System.Data.OleDb
 Imports OpenNspect.Xml
 
-Module modRusleSoilLossEquation
+Module RevisedUniversalSoilLossEquation
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
@@ -195,7 +195,7 @@ Module modRusleSoilLossEquation
             Dim booValueFound As Boolean
             Dim i As Short
             Dim maxVal As Integer = pLCRaster.Maximum
-             'TODO: it looks like some of this code is copied, refactor it.
+            'TODO: it looks like some of this code is copied, refactor it.
             Dim tablepath As String = ""
             'Get the raster table
             Dim lcPath As String = pLCRaster.Filename
