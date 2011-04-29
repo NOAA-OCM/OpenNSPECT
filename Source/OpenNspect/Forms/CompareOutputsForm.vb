@@ -369,8 +369,7 @@ Public Class CompareOutputsForm
                                     g_strWorkspace = g_nspectDocPath & "\workspace"
                                 End If
 
-                                Dim _
-                                    strSelectedExportPath As String = _
+                                Dim strSelectedExportPath As String = _
                                         ExportSelectedFeatures(_SelectLyrPath, _SelectedShapes)
                                 Dim pSelectedPolyClip As Shape = ReturnSelectGeometry(strSelectedExportPath)
 
