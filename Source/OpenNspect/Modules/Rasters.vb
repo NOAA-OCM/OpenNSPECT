@@ -31,8 +31,8 @@ Module Rasters
         Return Nothing
     End Function
 
-    Public Function ReturnPermanentRaster(ByRef pRaster As Grid, ByRef sOutputName As String) _
-        As Grid
+    Public Function ReturnPermanentRaster(ByRef pRaster As Grid, ByRef sOutputName As String) As Grid
+
         pRaster.Save()
         pRaster.Save(sOutputName)
         pRaster.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection

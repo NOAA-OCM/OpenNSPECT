@@ -296,7 +296,7 @@ Module modPollutantCalcs
         End Try
     End Function
 
-    Private Sub CalcMassOfPhosperous(ByRef strConStatement As String, ByVal pMassVolumeRaster As Grid)
+    Private Sub CalcMassOfPhosperous(ByRef strConStatement As String, ByRef pMassVolumeRaster As Grid)
         ReDim _picks(strConStatement.Split(",").Length)
         _picks = strConStatement.Split(",")
         Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
@@ -319,7 +319,7 @@ Module modPollutantCalcs
                             String.Format("Pollutant {0} Local", _PollutantName), -1, OutputItems)
 
     End Sub
-    Private Sub DeriveAccumulatedPollutant(ByVal pMassVolumeRaster As Grid, ByVal pAccumPollRaster As Grid)
+    Private Sub DeriveAccumulatedPollutant(ByVal pMassVolumeRaster As Grid, ByRef pAccumPollRaster As Grid)
         'Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
         Dim pTauD8Flow As Grid = Nothing
 
@@ -363,7 +363,7 @@ Module modPollutantCalcs
         pTauD8Flow.Close()
         DataManagement.DeleteGrid(strtmp1)
     End Sub
-    Private Sub AddAccumulatedPollutantToGroupLayer(ByRef OutputItems As OutputItems, ByVal pAccumPollRaster As Grid)
+    Private Sub AddAccumulatedPollutantToGroupLayer(ByRef OutputItems As OutputItems, ByRef pAccumPollRaster As Grid)
         Dim strAccPoll As String = GetUniqueFileName("accpoll", g_strWorkspace, g_FinalOutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccPollRaster As Grid
@@ -379,7 +379,7 @@ Module modPollutantCalcs
         AddOutputGridLayer(pPermAccPollRaster, _PollutantColor, True, layerName, _
                             String.Format("Pollutant {0} Accum", _PollutantName), -1, OutputItems)
     End Sub
-    Private Sub CalcFinalConcentration(ByVal pMassVolumeRaster As Grid, ByVal pAccumPollRaster As Grid, ByVal pTotalPollConc0Raster As Grid)
+    Private Sub CalcFinalConcentration(ByVal pMassVolumeRaster As Grid, ByVal pAccumPollRaster As Grid, ByRef pTotalPollConc0Raster As Grid)
         Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
         RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, _
                     pTotalPollConc0Raster, Nothing, False, AllConCalc)

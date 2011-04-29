@@ -85,35 +85,27 @@ Module modRunoff
             End If
         End If
 
-
-        Dim dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
-        dataPrecip.Read()
-
-        'Get the Precip Raster
-        If RasterExists(dataPrecip("PrecipFileName")) Then
-            Dim pRainFallRaster As Grid
-            pRainFallRaster = ReturnRaster(dataPrecip("PrecipFileName"))
-
-            'If in cm, then convert to a GRID in inches.
-            If dataPrecip("PrecipUnits") = 0 Then
-                g_pPrecipRaster = ConvertRainGridCMToInches(pRainFallRaster)
-            Else 'if already in inches then just use this one.
-                g_pPrecipRaster = pRainFallRaster
-                'Global Precip
+        Using dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
+            dataPrecip.Read()
+            'Get the Precip Raster
+            If RasterExists(dataPrecip("PrecipFileName")) Then
+                Dim pRainFallRaster As Grid = ReturnRaster(dataPrecip("PrecipFileName"))
+                'If in cm, then convert to a GRID in inches.
+                If dataPrecip("PrecipUnits") = 0 Then
+                    g_pPrecipRaster = ConvertRainGridCMToInches(pRainFallRaster)
+                Else
+                    'if already in inches then just use this one.
+                    g_pPrecipRaster = pRainFallRaster
+                End If
+                g_strPrecipFileName = dataPrecip("PrecipFileName")
+                g_intRunoffPrecipType = dataPrecip("Type")
+                g_intRainingDays = dataPrecip("RainingDays")
+            Else
+                strError = strLCFileName
+                MsgBox("Error: The following dataset is missing: " & strError, MsgBoxStyle.Critical, "Missing Data")
+                Return False
             End If
-
-            g_strPrecipFileName = dataPrecip("PrecipFileName")
-            g_intRunoffPrecipType = dataPrecip("Type")
-            'Set the mod level precip type
-            g_intRainingDays = dataPrecip("RainingDays")
-            'Set the mod level rainingdays
-        Else
-            strError = strLCFileName
-            dataPrecip.Close()
-            MsgBox("Error: The following dataset is missing: " & strError, MsgBoxStyle.Critical, "Missing Data")
-            Return False
-        End If
-        dataPrecip.Close()
+        End Using
 
         'if they select cm as incoming precip units, convert GRID
 
@@ -128,8 +120,7 @@ Module modRunoff
         End If
 
         'Now construct the Pick Statement
-        Dim strPick() As String = Nothing
-        strPick = ConstructPickStatment(strLCCLassType, g_LandCoverRaster)
+        Dim strPick() As String = ConstructPickStatment(strLCCLassType, g_LandCoverRaster)
 
         If strPick Is Nothing Then
             Return False
@@ -425,14 +416,14 @@ Module modRunoff
     Const ProgressTitle As String = "Processing Runoff Calculation..."
 
     Private Sub CalculateMaxiumumPotentialRetention(ByRef strPick As String(), ByRef pInLandCoverRaster As Grid, ByRef pInSoilsRaster As Grid)
-        Dim pSCS100Raster As Grid = Nothing
-        Dim picksLength As Integer = strPick(0).Split(",").Length
         ReDim _picks(strPick.Length - 1)
+        Dim picksLength As Integer = strPick(0).Split(",").Length
         For i As Integer = 0 To strPick.Length - 1
             ReDim _picks(i)(picksLength)
             _picks(i) = strPick(i).Split(",")
         Next
         Dim sc100calc As New RasterMathCellCalc(AddressOf SC100CellCalc)
+        Dim pSCS100Raster As Grid = Nothing
         RasterMath(pInSoilsRaster, pInLandCoverRaster, Nothing, Nothing, Nothing, pSCS100Raster, sc100calc)
         g_pSCS100Raster = pSCS100Raster
     End Sub
@@ -468,45 +459,72 @@ Module modRunoff
                             "Runoff Local", -1, OutputItems)
         Return strOutAccum
     End Function
-    Private Function DeriveAccumulatedRunoff() As Grid
-        Dim pAccumRunoffRaster As Grid = Nothing
-        Dim pTauD8Flow As Grid = Nothing
+    Private Function GetTempFileName() As String
+        Dim file As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(file)
+        ' Things don't get saved correctly if they don't have the right file extension
+        file = Path.ChangeExtension(file, g_TAUDEMGridExt)
+        g_TempFilesToDel.Add(file)
+        'TODO: I would not think this file nor related ones should exist
+        DataManagement.DeleteGrid(file)
+        Return file
+    End Function
 
+    Public Function CheckGridIsTif(ByRef gridpath As String) As Boolean
+        If Not System.IO.Path.GetExtension(gridpath) = ".tif" Then
+            Dim tifFilePath As String
+            If IO.Path.GetFileName(gridpath) = "sta.adf" Then
+                Dim outPath As String = IO.Path.GetDirectoryName(gridpath)
+                tifFilePath = outPath & "\" & IO.Path.GetFileName(outPath) & ".tif"
+            Else
+                tifFilePath = System.IO.Path.ChangeExtension(gridpath, ".tif")
+            End If
+            If System.IO.File.Exists(tifFilePath) Then
+                If MsgBox(tifFilePath & " already exists.  Overwrite it?", MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                    Return False
+                End If
+            End If
+            Try ' CWG ChangeGridFormat can fail with a memory violation on ESRI grids
+                If Not MapWinGeoProc.DataManagement.ChangeGridFormat( _
+                 gridpath, tifFilePath, MapWinGIS.GridFileType.UseExtension, MapWinGIS.GridDataType.FloatDataType, 1.0F) Then
+                    MsgBox("Failed to convert grid " & gridpath & " to GeoTiff.  Try using GIS Tools")
+                    Return False
+                End If
+            Catch
+                MsgBox("Failed to convert grid " & gridpath & " to GeoTiff.  Try using GIS Tools")
+                Return False
+            End Try
+            gridpath = tifFilePath
+        End If
+        Return True
+    End Function
+    Private Function DeriveAccumulatedRunoff() As Grid
         Dim tauD8calc = GetConverterToTauDemFromEsri()
+        Dim pTauD8Flow As Grid = Nothing
         RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
         pTauD8Flow.Header.NodataValue = -1
 
-        Dim strtmp1FlowDir As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(strtmp1FlowDir)
-        strtmp1FlowDir = strtmp1FlowDir + g_TAUDEMGridExt
-        g_TempFilesToDel.Add(strtmp1FlowDir)
-        DataManagement.DeleteGrid(strtmp1FlowDir)
-        pTauD8Flow.Save(strtmp1FlowDir)
+        Dim flowFile As String = GetTempFileName()
+        If Not pTauD8Flow.Save(flowFile) Then Return Nothing
 
-        Dim strtmp2MetRun As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(strtmp2MetRun)
-        strtmp2MetRun = strtmp2MetRun + g_TAUDEMGridExt
-        g_TempFilesToDel.Add(strtmp2MetRun)
-        DataManagement.DeleteGrid(strtmp2MetRun)
-        g_pMetRunoffRaster.Save(strtmp2MetRun)
+        Dim metRunoffFile As String = GetTempFileName()
+        If Not g_pMetRunoffRaster.Save(metRunoffFile) Then Return Nothing
 
-        Dim strtmpout As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(strtmpout)
-        strtmpout = String.Format("{0}out{1}", strtmpout, g_TAUDEMGridExt)
-        g_TempFilesToDel.Add(strtmpout)
-        DataManagement.DeleteGrid(strtmpout)
+        Dim outFile As String = Path.GetTempFileName
+        g_TempFilesToDel.Add(outFile)
+        outFile = String.Format("{0}out{1}", outFile, g_TAUDEMGridExt)
+        g_TempFilesToDel.Add(outFile)
+        DataManagement.DeleteGrid(outFile)
 
         'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-        Dim result = Hydrology.WeightedAreaD8(strtmp1FlowDir, strtmp2MetRun, Nothing, strtmpout, False, False,
+        Dim result = Hydrology.WeightedAreaD8(flowFile, metRunoffFile, Nothing, outFile, False, False,
                                   Environment.ProcessorCount, Nothing)
         If result <> 0 Then
             g_KeepRunning = False
         End If
-        pAccumRunoffRaster = New Grid
-        pAccumRunoffRaster.Open(strtmpout)
+        Dim pAccumRunoffRaster As Grid = New Grid
+        pAccumRunoffRaster.Open(outFile)
 
-        pTauD8Flow.Close()
-        DataManagement.DeleteGrid(strtmp1FlowDir)
         Return pAccumRunoffRaster
     End Function
     Private Sub CreateRunoffGrid(ByRef OutputItems As OutputItems, ByVal pAccumRunoffRaster As Grid)
@@ -533,18 +551,18 @@ Module modRunoff
     ''' <summary>
     ''' Runoffs the calculation.
     ''' </summary>
-    ''' <param name="strPick">our friend the dynamic pick statemnt.</param>
+    ''' <param name="picks">our friend the dynamic pick statemnt.</param>
     ''' <param name="pInRainRaster">the precip grid.</param>
     ''' <param name="pInLandCoverRaster">landcover grid.</param>
     ''' <param name="pInSoilsRaster">soils grid.</param>
     ''' <param name="OutputItems">The output items.</param><returns></returns>
-    Public Function RunoffCalculation(ByRef strPick As String(), ByRef pInRainRaster As Grid,
+    Public Function RunoffCalculation(ByRef picks As String(), ByRef pInRainRaster As Grid,
                                        ByRef pInLandCoverRaster As Grid,
                                        ByRef pInSoilsRaster As Grid, ByRef OutputItems As OutputItems) As Boolean
 
         Try
             ShowProgress("Calculating maximum potential retention...", ProgressTitle, 10, 3, g_MainForm)
-            CalculateMaxiumumPotentialRetention(strPick, pInLandCoverRaster, pInSoilsRaster)
+            CalculateMaxiumumPotentialRetention(picks, pInLandCoverRaster, pInSoilsRaster)
 
             If Not g_KeepRunning Then Return False
             ShowProgress("Calculating runoff...", ProgressTitle, 10, 6, g_MainForm)

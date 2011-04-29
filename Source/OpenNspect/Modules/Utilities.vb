@@ -39,9 +39,9 @@ Module Utilities
     Public g_strSelectedExportPath As String = ""
 
     'Intermediate and output extensions
-    Public g_OutputGridExt As String = ".bgd"
-    Public g_FinalOutputGridExt As String = ".tif"
-    Public g_TAUDEMGridExt As String = ".tif"
+    Public Const g_OutputGridExt As String = ".tif"
+    Public Const g_FinalOutputGridExt As String = ".tif"
+    Public Const g_TAUDEMGridExt As String = ".tif"
 
     Public g_TempFilesToDel As New List(Of String)
 
@@ -673,89 +673,6 @@ Module Utilities
 
     End Function
 
-    Public Sub CleanGlobals()
-        Try
-            'Sub to rid the world of stragling GRIDS, i.e. the ones established for global usse
-
-            'Had an 'elegant' solution using an Iarray to hold global rasters, but that didn't seem to do the
-            'job, so we have to manually set each and everyone to nothing
-
-            If Not g_pSCS100Raster Is Nothing Then
-                g_pSCS100Raster.Close()
-                g_pSCS100Raster = Nothing
-            End If
-
-            If Not g_pMetRunoffRaster Is Nothing Then
-                g_pMetRunoffRaster.Close()
-                g_pMetRunoffRaster = Nothing
-            End If
-
-            If Not g_pRunoffRaster Is Nothing Then
-                g_pRunoffRaster.Close()
-                g_pRunoffRaster = Nothing
-            End If
-
-            If Not g_pDEMRaster Is Nothing Then
-                g_pDEMRaster.Close()
-                g_pDEMRaster = Nothing
-            End If
-
-            If Not g_pFlowAccRaster Is Nothing Then
-                g_pFlowAccRaster.Close()
-                g_pFlowAccRaster = Nothing
-            End If
-
-            If Not g_pFlowDirRaster Is Nothing Then
-                g_pFlowDirRaster.Close()
-                g_pFlowDirRaster = Nothing
-            End If
-
-            If Not g_pLSRaster Is Nothing Then
-                g_pLSRaster.Close()
-                g_pLSRaster = Nothing
-            End If
-
-            If Not g_pWaterShedFeatClass Is Nothing Then
-                g_pWaterShedFeatClass.Close()
-                g_pWaterShedFeatClass = Nothing
-            End If
-
-            If Not g_KFactorRaster Is Nothing Then
-                g_KFactorRaster.Close()
-                g_KFactorRaster = Nothing
-            End If
-
-            If Not g_pPrecipRaster Is Nothing Then
-                g_pPrecipRaster.Close()
-                g_pPrecipRaster = Nothing
-            End If
-
-            If Not g_LandCoverRaster Is Nothing Then
-                g_LandCoverRaster.Close()
-                g_LandCoverRaster = Nothing
-            End If
-
-            If Not g_pSelectedPolyClip Is Nothing Then
-                g_pSelectedPolyClip = Nothing
-            End If
-
-            For i As Integer = 0 To g_TempFilesToDel.Count - 1
-                If File.Exists(g_TempFilesToDel(i)) Then
-                    DataManagement.DeleteGrid(g_TempFilesToDel(i))
-                    If File.Exists(g_TempFilesToDel(i)) Then
-                        DataManagement.DeleteShapefile(g_TempFilesToDel(i))
-                        If File.Exists(g_TempFilesToDel(i)) Then
-                            File.Delete(g_TempFilesToDel(i))
-                        End If
-                    End If
-                End If
-            Next
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
-    End Sub
-
-
     Public Function ExportSelectedFeatures(ByVal SelectLyrPath As String, _
                                             ByRef SelectedShapes As List(Of Integer)) As String
         ' Modified from http://www.mapwindow.org/wiki/index.php/MapWinGIS:SampleCode-VB_Net:ExportSelectedShapes
@@ -847,13 +764,13 @@ Module Utilities
             lyr.MoveTo(0, g_pGroupLayer)
         End If
         If Not OutputItems Is Nothing Then
-            Dim OutItem As New OutputItem
-            OutItem.strPath = outRast.Filename
-            OutItem.strName = LayerName
-            OutItem.strType = OutputType
-            OutItem.strColor = ColorString
-            OutItem.booUseStretch = UseStretch
-            OutputItems.Add(OutItem)
+            Dim item As New OutputItem
+            item.strPath = outRast.Filename
+            item.strName = LayerName
+            item.strType = OutputType
+            item.strColor = ColorString
+            item.booUseStretch = UseStretch
+            OutputItems.Add(item)
         End If
     End Function
 
@@ -868,83 +785,50 @@ Module Utilities
 
     Public Sub RasterMath(ByRef InputGrid1 As Grid, ByRef InputGrid2 As Grid, _
                            ByRef Inputgrid3 As Grid, ByRef Inputgrid4 As Grid, _
-                           ByRef Inputgrid5 As Grid, ByRef Outputgrid As Grid, _
+                           ByRef Inputgrid5 As Grid, ByRef outputGrid As Grid, _
                            ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, _
                            Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
-        Dim head1, head2, head3, head4, head5, headnew As GridHeader
-        Dim ncol As Integer
-        Dim nrow As Integer
-        Dim nodata1, nodata2, nodata3, nodata4, nodata5, nodataout As Single
-        Dim rowvals1(), rowvals2(), rowvals3(), rowvals4(), rowvals5(), rowvalsout() As Single
+
+
+        Dim nodata1, nodata2, nodata3, nodata4, nodata5 As Single
+
         Dim tmppath As String = Path.GetTempFileName
         g_TempFilesToDel.Add(tmppath)
-        tmppath = tmppath + g_OutputGridExt
+        tmppath = Path.ChangeExtension(tmppath, g_OutputGridExt)
         g_TempFilesToDel.Add(tmppath)
-        nodataout = -9999.0
 
-        head1 = InputGrid1.Header
-        headnew = New GridHeader
-        headnew.CopyFrom(head1)
-        headnew.NodataValue = nodataout
-        Outputgrid = New Grid()
-        Outputgrid.CreateNew(tmppath, headnew, GridDataType.FloatDataType, headnew.NodataValue)
-        Outputgrid.Header.Projection = head1.Projection
-        ncol = head1.NumberCols - 1
-        nrow = head1.NumberRows - 1
-        nodata1 = head1.NodataValue
-        If Not InputGrid2 Is Nothing Then
-            head2 = InputGrid2.Header
-            nodata2 = head2.NodataValue
-        Else
-            nodata2 = nodata1
-        End If
-        If Not Inputgrid3 Is Nothing Then
-            head3 = Inputgrid3.Header
-            nodata3 = head3.NodataValue
-        Else
-            nodata3 = nodata1
-        End If
-        If Not Inputgrid4 Is Nothing Then
-            head4 = Inputgrid4.Header
-            nodata4 = head4.NodataValue
-        Else
-            nodata4 = nodata1
-        End If
-        If Not Inputgrid5 Is Nothing Then
-            head5 = Inputgrid5.Header
-            nodata5 = head5.NodataValue
-        Else
-            nodata5 = nodata1
-        End If
-        ReDim rowvals1(ncol)
-        ReDim rowvals2(ncol)
-        ReDim rowvals3(ncol)
-        ReDim rowvals4(ncol)
-        ReDim rowvals5(ncol)
-        ReDim rowvalsout(ncol)
+        Dim nodataout As Single = -9999.0
 
+        Dim grid1Header As GridHeader = InputGrid1.Header
+        Dim outputHeader As GridHeader = New GridHeader
+        outputHeader.CopyFrom(grid1Header)
+        outputHeader.NodataValue = nodataout
+        outputGrid = New Grid()
+        outputGrid.CreateNew(tmppath, outputHeader, GridDataType.FloatDataType, outputHeader.NodataValue)
+        outputGrid.Header.Projection = grid1Header.Projection
+        nodata1 = grid1Header.NodataValue
+        nodata2 = If(InputGrid2 Is Nothing, nodata1, InputGrid2.Header.NodataValue)
+        nodata3 = If(Inputgrid3 Is Nothing, nodata1, Inputgrid3.Header.NodataValue)
+        nodata4 = If(Inputgrid4 Is Nothing, nodata1, Inputgrid4.Header.NodataValue)
+        nodata5 = If(Inputgrid5 Is Nothing, nodata1, Inputgrid5.Header.NodataValue)
+
+        Dim ncol As Integer = grid1Header.NumberCols - 1
+        Dim rowvals1(ncol) As Single
+        Dim rowvals2(ncol) As Single
+        Dim rowvals3(ncol) As Single
+        Dim rowvals4(ncol) As Single
+        Dim rowvals5(ncol) As Single
+        Dim rowvalsout(ncol) As Single
+
+        Dim nrow As Integer = grid1Header.NumberRows - 1
         For row As Integer = 0 To nrow
             InputGrid1.GetRow(row, rowvals1(0))
-            If Not InputGrid2 Is Nothing Then
-                InputGrid2.GetRow(row, rowvals2(0))
-            Else
-                InputGrid1.GetRow(row, rowvals2(0))
-            End If
-            If Not Inputgrid3 Is Nothing Then
-                Inputgrid3.GetRow(row, rowvals3(0))
-            Else
-                InputGrid1.GetRow(row, rowvals3(0))
-            End If
-            If Not Inputgrid4 Is Nothing Then
-                Inputgrid4.GetRow(row, rowvals4(0))
-            Else
-                InputGrid1.GetRow(row, rowvals4(0))
-            End If
-            If Not Inputgrid5 Is Nothing Then
-                Inputgrid5.GetRow(row, rowvals5(0))
-            Else
-                InputGrid1.GetRow(row, rowvals5(0))
-            End If
+
+            'Dim grid = If(InputGrid2, InputGrid1).GetRow(row, rowvals2(0))
+            If Not InputGrid2 Is Nothing Then InputGrid2.GetRow(row, rowvals2(0)) Else InputGrid1.GetRow(row, rowvals2(0))
+            If Not Inputgrid3 Is Nothing Then Inputgrid3.GetRow(row, rowvals3(0)) Else InputGrid1.GetRow(row, rowvals3(0))
+            If Not Inputgrid4 Is Nothing Then Inputgrid4.GetRow(row, rowvals4(0)) Else InputGrid1.GetRow(row, rowvals4(0))
+            If Not Inputgrid5 Is Nothing Then Inputgrid5.GetRow(row, rowvals5(0)) Else InputGrid1.GetRow(row, rowvals5(0))
 
             For col As Integer = 0 To ncol
                 If checkNullFirst Then
@@ -964,7 +848,7 @@ Module Utilities
                 End If
             Next
 
-            Outputgrid.PutRow(row, rowvalsout(0))
+            outputGrid.PutRow(row, rowvalsout(0))
         Next
     End Sub
 
@@ -1047,21 +931,14 @@ Module Utilities
         Else
             nodata5 = nodata1
         End If
-        ReDim rowvals1(0)(ncol)
-        ReDim rowvals2(0)(ncol)
-        ReDim rowvals3(0)(ncol)
-        ReDim rowvals4(0)(ncol)
-        ReDim rowvals5(0)(ncol)
-        ReDim rowvals1(1)(ncol)
-        ReDim rowvals2(1)(ncol)
-        ReDim rowvals3(1)(ncol)
-        ReDim rowvals4(1)(ncol)
-        ReDim rowvals5(1)(ncol)
-        ReDim rowvals1(2)(ncol)
-        ReDim rowvals2(2)(ncol)
-        ReDim rowvals3(2)(ncol)
-        ReDim rowvals4(2)(ncol)
-        ReDim rowvals5(2)(ncol)
+        For i As Integer = 0 To 2
+            ReDim rowvals1(i)(ncol)
+            ReDim rowvals2(i)(ncol)
+            ReDim rowvals3(i)(ncol)
+            ReDim rowvals4(i)(ncol)
+            ReDim rowvals5(i)(ncol)
+        Next
+
         ReDim rowvalsout(ncol)
 
         For row As Integer = 0 To nrow

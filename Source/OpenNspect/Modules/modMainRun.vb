@@ -79,55 +79,49 @@ Module modMainRun
 
     Public g_pSelectedPolyClip As Shape
 
-    Public g_pGroupLayer As Integer = - 1
+    Public g_pGroupLayer As Integer = -1
 
-    Public Sub SetGlobalEnvironment (ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", _
+    ''' <summary>
+    '''Set the analysis environment based on the properties of the DEM, and establish
+    '''the other contributing datasets: Watersheds, flow direction, flow accumulation, length/slope
+    ''' </summary>
+    ''' <param name="cmdWShed">the recordset of the selected ws delineation...used to get paths to datasets.</param>
+    ''' <param name="SelectedPath">selection layer, usually a watershed selection.</param>
+    ''' <param name="SelectedShapes">The selected shapes.</param>
+    Public Sub SetGlobalEnvironment(ByRef cmdWShed As OleDbCommand, Optional ByVal SelectedPath As String = "", _
                                      Optional ByRef SelectedShapes As List(Of Integer) = Nothing)
-        'GOAL:  Set the analysis environment based on the properties of the DEM, and establish
-        'the other contributing datasets: Watersheds, flow direction, flow accumulation, length/slope
-        'Incoming Parameters:
-        'rsWShed: the recordset of the selected ws delineation...used to get paths to datasets
-        'strWorkspace: Workspace identified by user in main project window
-        'pWShedlayer: selection layer, usually a watershed selection
-        Dim dblCellSize As Double
-        'Cell Size
-        Dim strError As String = ""
-        'Error Handling String
-        Dim strDEM As String
-        Dim strWS As String
-        Dim strFlowDir As String
-        Dim strFlowAcc As String
-        Dim strLS As String
-        Dim intDistUnits As Short
-        Dim pMaskGeoDataset As Shapefile
 
+        Dim strError As String
         Dim dataWshed As OleDbDataReader = cmdWShed.ExecuteReader()
         dataWshed.Read()
 
-        strDEM = dataWshed ("FilledDEMFileName")
-        strWS = dataWshed ("wsfilename")
-        strFlowDir = dataWshed ("FlowDirFileName")
-        strFlowAcc = dataWshed ("FlowAccumFileName")
-        strLS = dataWshed ("LSFileName")
-        intDistUnits = dataWshed ("DEMGridUnits")
+        Dim strDEM As String = dataWshed("FilledDEMFileName")
+        Dim strWS As String = dataWshed("wsfilename")
+        Dim strFlowDir As String = dataWshed("FlowDirFileName")
+        Dim strFlowAcc As String = dataWshed("FlowAccumFileName")
+        Dim strLS As String = dataWshed("LSFileName")
+        Dim intDistUnits As Short = dataWshed("DEMGridUnits")
+
+        dataWshed.Close()
 
         'STEP 1: Get the workspaces set
         g_strFlowDirFilename = strFlowDir
 
         'STEP 2: Establish the environment
-        If RasterExists (strDEM) Then
-            g_pDEMRaster = ReturnRaster (strDEM)
+        If RasterExists(strDEM) Then
+            g_pDEMRaster = ReturnRaster(strDEM)
         Else
             strError = "DEM Raster Does Not Exist: " & strDEM
+            MsgBox(strError, MsgBoxStyle.Critical, "Missing Data")
         End If
 
         'STEP 6: Set the other Datasets
         'Begin with Water shed, let a featureclass
-        g_pWaterShedFeatClass = New Shapefile
-        g_pWaterShedFeatClass = ReturnFeature (strWS)
+        g_pWaterShedFeatClass = ReturnFeature(strWS)
 
+        Dim pMaskGeoDataset As Shapefile
         If g_booSelectedPolys Then
-            pMaskGeoDataset = ReturnAnalysisMask (SelectedPath, SelectedShapes, strWS)
+            pMaskGeoDataset = ReturnAnalysisMask(SelectedPath, SelectedShapes, strWS)
             MapWindowPlugin.MapWindowInstance.View.Extents = pMaskGeoDataset.Extents
         Else
             pMaskGeoDataset = Nothing
@@ -136,10 +130,8 @@ Module modMainRun
 
         'STEP 3: With the Rasterdataset set, get its properties
         Dim pRasterProps As GridHeader = g_pDEMRaster.Header
-        'Get cell size and envelope
-        dblCellSize = pRasterProps.dX
         'Set the global cell size
-        g_dblCellSize = dblCellSize
+        g_dblCellSize = pRasterProps.dX
 
         'STEP 5: Set global units
         Select Case intDistUnits
@@ -150,34 +142,33 @@ Module modMainRun
         End Select
 
         'Flow Direction
-        If RasterExists (strFlowDir) Then
-            g_pFlowDirRaster = ReturnRaster (strFlowDir)
+        If RasterExists(strFlowDir) Then
+            g_pFlowDirRaster = ReturnRaster(strFlowDir)
         Else
             strError = "Flow Direction Raster Does Not Exist: " & strFlowDir
+            MsgBox(strError, MsgBoxStyle.Critical, "Missing Data")
         End If
 
         'FlowAccumulation
-        If RasterExists (strFlowAcc) Then
-            g_pFlowAccRaster = ReturnRaster (strFlowAcc)
+        If RasterExists(strFlowAcc) Then
+            g_pFlowAccRaster = ReturnRaster(strFlowAcc)
         Else
             strError = "Flow Accumulation Raster Does Not Exist: " & strFlowAcc
+            MsgBox(strError, MsgBoxStyle.Critical, "Missing Data")
         End If
 
         'Length Slope
-        If RasterExists (strLS) Then
-            g_pLSRaster = ReturnRaster (strLS)
+        If RasterExists(strLS) Then
+            g_pLSRaster = ReturnRaster(strLS)
             g_strLSFileName = strLS
         Else
             strError = "Length Slope raster does not Exist: " & strLS
-        End If
-
-        If Len (strError) > 0 Then
-            MsgBox (strError, MsgBoxStyle.Critical, "Missing Data")
+            MsgBox(strError, MsgBoxStyle.Critical, "Missing Data")
         End If
 
     End Sub
 
-    Private Function ReturnAnalysisMask (ByVal SelectedPath As String, _
+    Private Function ReturnAnalysisMask(ByVal SelectedPath As String, _
                                          ByRef SelectedShapes As List(Of Integer), _
                                          ByRef strBasinFeatClass As String) As Shapefile
         'Incoming
@@ -187,9 +178,9 @@ Module modMainRun
         'strBasinFeatClass: string file location of BasinPoly.shp
         ReturnAnalysisMask = Nothing
 
-        g_strSelectedExportPath = ExportSelectedFeatures (SelectedPath, SelectedShapes)
-        g_pSelectedPolyClip = ReturnSelectGeometry (g_strSelectedExportPath)
-        Dim sfSelected As Shapefile = ReturnFeature (g_strSelectedExportPath)
+        g_strSelectedExportPath = ExportSelectedFeatures(SelectedPath, SelectedShapes)
+        g_pSelectedPolyClip = ReturnSelectGeometry(g_strSelectedExportPath)
+        Dim sfSelected As Shapefile = ReturnFeature(g_strSelectedExportPath)
 
         'ARA 12/5/2010 Since this is purely used for zoom, intersecting with the basins is kind of pointless and ExportShapesWithPolygons isn't working anyways, so just returning the extents of the selection area.
         Return sfSelected
@@ -209,7 +200,7 @@ Module modMainRun
         'Return sfOut
     End Function
 
-    Public Function CheckMultiPartPolygon (ByVal pPolygon As Shape) As Boolean
+    Public Function CheckMultiPartPolygon(ByVal pPolygon As Shape) As Boolean
         If pPolygon.NumParts > 1 Then
             CheckMultiPartPolygon = True
         Else
@@ -217,14 +208,14 @@ Module modMainRun
         End If
     End Function
 
-    Public Function ReturnSelectGeometry (ByVal strInputSF As String) As Shape
+    Public Function ReturnSelectGeometry(ByVal strInputSF As String) As Shape
         ReturnSelectGeometry = Nothing
 
-        Dim sfSelected As Shapefile = ReturnFeature (strInputSF)
+        Dim sfSelected As Shapefile = ReturnFeature(strInputSF)
         If Not sfSelected Is Nothing Then
-            Dim unionShape As Shape = sfSelected.Shape (0)
+            Dim unionShape As Shape = sfSelected.Shape(0)
             For i As Integer = 1 To sfSelected.NumShapes - 1
-                unionShape = SpatialOperations.Union (unionShape, sfSelected.Shape (i))
+                unionShape = SpatialOperations.Union(unionShape, sfSelected.Shape(i))
             Next
             sfSelected.Close()
             Return unionShape

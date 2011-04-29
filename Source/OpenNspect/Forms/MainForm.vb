@@ -21,6 +21,7 @@ Imports System.Data.OleDb
 Imports MapWinGIS
 Imports OpenNspect.Xml
 Imports Point = System.Drawing.Point
+Imports MapWinGeoProc
 
 Friend Class MainForm
     Inherits Form
@@ -803,23 +804,10 @@ Friend Class MainForm
     ''' </summary>
     Private Sub RunAnalysis()
         Try
-            Dim strWaterShed As String
-            'Connection string
-            Dim strPrecip As String
-            'Connection String
-
-            Dim AreThereLandUseItems As Boolean
-            'Are there Landuse Scenarios???
-            Dim dictPollutants As New Dictionary(Of String, String)
-            'Dict to hold all pollutants
-            Dim i As Integer
-
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor
 
             'STEP 1: Save file, populate xml params: -------------------------------------------------------------------------
-            If Not SaveXmlFile() Then
-                Return
-            End If
+            If Not SaveXmlFile() Then Return
 
             'Handles whether to overwrite existing groups of the same name or to generate a new group for outputs
             If g_pGroupLayer <> -1 Then
@@ -875,6 +863,8 @@ Friend Class MainForm
             'STEP 5: Pollutant Dictionary creation, needed for Landuse -----------------------------------------------------------
             'Go through and find the pollutants, if they're used and what the CoeffSet is
             'We're creating a dictionary that will hold Pollutant, Coefficient Set for use in the Landuse Scenarios
+            Dim dictPollutants As New Dictionary(Of String, String)
+            Dim i As Integer
             For i = 0 To _XmlPrjParams.PollItems.Count - 1
                 If _XmlPrjParams.PollItems.Item(i).intApply = 1 Then
                     dictPollutants.Add(_XmlPrjParams.PollItems.Item(i).strPollName, _
@@ -884,14 +874,15 @@ Friend Class MainForm
             'END STEP 5: ---------------------------------------------------------------------------------------------------------
 
             'STEP 6: Landuses sent off to modLanduse for processing -----------------------------------------------------
+            Dim AreThereLandUseScenarioItems As Boolean
             For i = 0 To _XmlPrjParams.LUItems.Count - 1
                 If _XmlPrjParams.LUItems.Item(i).intApply = 1 Then
-                    AreThereLandUseItems = True
+                    AreThereLandUseScenarioItems = True
                     Begin(_XmlPrjParams.strLCGridType, _XmlPrjParams.LUItems, dictPollutants, _
                            _XmlPrjParams.strLCGridFileName)
                     Exit For
                 Else
-                    AreThereLandUseItems = False
+                    AreThereLandUseScenarioItems = False
                 End If
             Next i
             'END STEP 6: ---------------------------------------------------------------------------------------------------------
@@ -899,7 +890,7 @@ Friend Class MainForm
             'STEP 7: ---------------------------------------------------------------------------------------------------------
             'Obtain Watershed values
 
-            strWaterShed = String.Format("Select * from WSDelineation Where Name like '{0}'", _XmlPrjParams.strWaterShedDelin)
+            Dim strWaterShed As String = String.Format("Select * from WSDelineation Where Name like '{0}'", _XmlPrjParams.strWaterShedDelin)
             Dim cmdWS As New DataHelper(strWaterShed)
 
             'END STEP 7: -----------------------------------------------------------------------------------------------------
@@ -925,8 +916,7 @@ Friend Class MainForm
             'STEP 9: ---------------------------------------------------------------------------------------------------------
             'Create the runoff GRID
             'Get the precip scenario stuff
-            strPrecip = _
-                String.Format("Select * from PrecipScenario where name like '{0}'", _XmlPrjParams.strPrecipScenario)
+            Dim strPrecip As String = String.Format("Select * from PrecipScenario where name like '{0}'", _XmlPrjParams.strPrecipScenario)
             Using cmdPrecip As New DataHelper(strPrecip)
                 Using dataPrecip As OleDbDataReader = cmdPrecip.ExecuteReader()
                     dataPrecip.Read()
@@ -936,7 +926,7 @@ Friend Class MainForm
                 End Using
                 'If there has been a land use added, then a new LCType has been created, hence we get it from g_strLCTypename
                 Dim strLCType As String
-                If AreThereLandUseItems Then
+                If AreThereLandUseScenarioItems Then
                     strLCType = g_strLCTypeName
                 Else
                     strLCType = _XmlPrjParams.strLCGridType
@@ -1008,7 +998,7 @@ Friend Class MainForm
             'g_DictTempNames holds the names of all temporary landuses and/or coefficient sets created during the Landuse scenario
             'portion of our program, for example CCAP1, or NitSet1.  We now must eliminate them from the database if they exist.
             If g_DictTempNames.Count > 0 Then
-                If AreThereLandUseItems Then
+                If AreThereLandUseScenarioItems Then
                     Cleanup(g_DictTempNames, (_XmlPrjParams.PollItems), (_XmlPrjParams.strLCGridType))
                 End If
             End If
@@ -1021,15 +1011,12 @@ Friend Class MainForm
 
             'STEP 16: Apply the metadata to each of the rasters in the group layer ----------------------------------------------
             'TODO
-            'm_App.StatusBar.Message(0) = "Creating metadata for the OpenNSPECT group layer..."
             'modUtil.CreateMetadata(g_pGroupLayer, strProjectInfo)
             'END STEP 16: -------------------------------------------------------------------------------------------------------
 
             'Cleanup ------------------------------------------------------------------------------------------------------------
             'Go into workspace and rid it of all rasters
             CleanGlobals()
-
-            MapWindowPlugin.MapWindowInstance.StatusBar.ProgressBarValue = 0
 
             'Save xml to ensure outputs are saved
             _XmlPrjParams.SaveFile(_currentFileName)
@@ -1045,6 +1032,80 @@ Friend Class MainForm
         End Try
     End Sub
 
+    Private Sub CleanGlobals()
+        Try
+            'Sub to rid the world of stragling GRIDS, i.e. the ones established for global usse
+
+            If Not g_pSCS100Raster Is Nothing Then
+                g_pSCS100Raster.Close()
+                g_pSCS100Raster = Nothing
+            End If
+
+            If Not g_pMetRunoffRaster Is Nothing Then
+                g_pMetRunoffRaster.Close()
+                g_pMetRunoffRaster = Nothing
+            End If
+
+            If Not g_pRunoffRaster Is Nothing Then
+                g_pRunoffRaster.Close()
+                g_pRunoffRaster = Nothing
+            End If
+
+            If Not g_pDEMRaster Is Nothing Then
+                g_pDEMRaster.Close()
+                g_pDEMRaster = Nothing
+            End If
+
+            If Not g_pFlowAccRaster Is Nothing Then
+                g_pFlowAccRaster.Close()
+                g_pFlowAccRaster = Nothing
+            End If
+
+            If Not g_pFlowDirRaster Is Nothing Then
+                g_pFlowDirRaster.Close()
+                g_pFlowDirRaster = Nothing
+            End If
+
+            If Not g_pLSRaster Is Nothing Then
+                g_pLSRaster.Close()
+                g_pLSRaster = Nothing
+            End If
+
+            If Not g_pWaterShedFeatClass Is Nothing Then
+                g_pWaterShedFeatClass.Close()
+                g_pWaterShedFeatClass = Nothing
+            End If
+
+            If Not g_KFactorRaster Is Nothing Then
+                g_KFactorRaster.Close()
+                g_KFactorRaster = Nothing
+            End If
+
+            If Not g_pPrecipRaster Is Nothing Then
+                g_pPrecipRaster.Close()
+                g_pPrecipRaster = Nothing
+            End If
+
+            If Not g_LandCoverRaster Is Nothing Then
+                g_LandCoverRaster.Close()
+                g_LandCoverRaster = Nothing
+            End If
+
+            If Not g_pSelectedPolyClip Is Nothing Then
+                g_pSelectedPolyClip = Nothing
+            End If
+
+            For Each file As String In g_TempFilesToDel
+                ' Try to delete the file specified as well as any related files.
+                DataManagement.DeleteGrid(file)
+                DataManagement.DeleteShapefile(file)
+                DataManagement.TryDelete(file)
+            Next
+           
+        Catch ex As Exception
+            HandleError(ex)
+        End Try
+    End Sub
     Private Sub cmdRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdRun.Click
         RunAnalysis()
     End Sub
@@ -1369,11 +1430,8 @@ Friend Class MainForm
     End Sub
 
     Private Function GetPollutantsIdx() As Integer
-        Dim _intPollCount As Short
-        'count for pollutant grid
-        _intPollCount = _XmlPrjParams.PollItems.Count
+        Dim _intPollCount As Short = _XmlPrjParams.PollItems.Count
         Dim idx As Integer
-        Dim strPollName As String
         If _intPollCount > 0 Then
             dgvPollutants.Rows.Clear()
 
@@ -1383,7 +1441,7 @@ Friend Class MainForm
 
                     .Rows(idx).Cells("PollApply").Value = _XmlPrjParams.PollItems.Item(i).intApply
                     .Rows(idx).Cells("PollutantName").Value = _XmlPrjParams.PollItems.Item(i).strPollName
-                    strPollName = _XmlPrjParams.PollItems.Item(i).strPollName
+                    Dim strPollName = _XmlPrjParams.PollItems.Item(i).strPollName
                     PopulateCoefType(strPollName, idx)
                     .Rows(idx).Cells("CoefSet").Value = _XmlPrjParams.PollItems.Item(i).strCoeffSet
 
@@ -1661,10 +1719,10 @@ Friend Class MainForm
             'Reset to first tab
             TabsForGrids.SelectedIndex = 0
             _isFileOnDisk = True
-            System.Windows.Forms.Cursor.Current = Cursors.Default
-
         Catch ex As Exception
             HandleError(ex)
+        Finally
+            System.Windows.Forms.Cursor.Current = Cursors.Default
         End Try
     End Sub
 
@@ -1750,14 +1808,8 @@ Friend Class MainForm
             End Using
 
         Catch ex As Exception
-            If Err.Number = 32755 Then
-                SaveXmlFile = False
-                Exit Function
-            Else
-                HandleError(ex)
-
-                SaveXmlFile = False
-            End If
+            HandleError(ex)
+            Return False
         End Try
 
     End Function
