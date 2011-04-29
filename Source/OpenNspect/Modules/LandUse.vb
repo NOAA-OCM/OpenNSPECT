@@ -22,7 +22,7 @@ Imports MapWinGIS
 Imports System.Data.OleDb
 Imports OpenNspect.Xml
 
-Module modLanduse
+Module LandUse
     ' *************************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov

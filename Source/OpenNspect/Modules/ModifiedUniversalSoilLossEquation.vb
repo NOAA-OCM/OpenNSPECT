@@ -21,7 +21,7 @@ Imports MapWinGeoProc
 Imports MapWinGIS
 Imports OpenNspect.Xml
 
-Module modMUSLESoilLossEquation
+Module ModifiedUniversalSoilLossEquation
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov

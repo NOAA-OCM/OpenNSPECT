@@ -21,7 +21,7 @@ Imports MapWinGeoProc
 Imports MapWinGIS
 Imports OpenNspect.Xml
 
-Module modPollutantCalcs
+Module Pollutants
     ' *************************************************************************************
     ' *  Perot Systems Government Services
     ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov

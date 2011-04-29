@@ -21,7 +21,7 @@ Imports System.Windows.Forms
 ''' Code for handling progress dialog throughout OpenNSPECT
 ''' </summary>
 ''' <remarks></remarks>
-Module modProgDialog
+Module ProgressDialog
     Private ProgressForm As ProgressForm
     Public g_KeepRunning As Boolean
 

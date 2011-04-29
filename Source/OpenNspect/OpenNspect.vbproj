@@ -333,14 +333,14 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modules\ErrorHandling.vb" />
-    <Compile Include="Modules\modLanduse.vb" />
-    <Compile Include="Modules\modMainRun.vb" />
-    <Compile Include="Modules\modManagementScenarios.vb" />
-    <Compile Include="Modules\modMUSLESoilLossEquation.vb" />
-    <Compile Include="Modules\modPollutantCalcs.vb" />
-    <Compile Include="Modules\modProgDialog.vb" />
-    <Compile Include="Modules\modRunoff.vb" />
-    <Compile Include="Modules\modRusle.vb" />
+    <Compile Include="Modules\LandUse.vb" />
+    <Compile Include="Modules\MainRun.vb" />
+    <Compile Include="Modules\ManagementScenarios.vb" />
+    <Compile Include="Modules\ModifiedUniversalSoilLossEquation.vb" />
+    <Compile Include="Modules\Pollutants.vb" />
+    <Compile Include="Modules\ProgressDialog.vb" />
+    <Compile Include="Modules\Runoff.vb" />
+    <Compile Include="Modules\RevisedUniversalSoilLossEquation.vb" />
     <Compile Include="Modules\Utilities.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
