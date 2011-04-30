@@ -585,7 +585,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'False, "MnuLUAdd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -612,7 +611,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'False, "MnuLUEdit_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
 
     End Sub
@@ -783,7 +781,7 @@ Friend Class MainForm
             'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
             'If they're using, we send them over to modMgmtScen to implement
             If _XmlPrjParams.MgmtScenHolder.Count > 0 Then
-                MgmtScenSetup(_XmlPrjParams.MgmtScenHolder, _XmlPrjParams.strLCGridType, _XmlPrjParams.strLCGridFileName, _XmlPrjParams.strProjectWorkspace)
+                MgmtScenSetup(_XmlPrjParams.MgmtScenHolder, _XmlPrjParams.strLCGridType, _XmlPrjParams.strLCGridFileName)
             End If
             'END STEP 4: ---------------------------------------------------------------------------------------------------------
 
@@ -866,7 +864,7 @@ Friend Class MainForm
                 If _XmlPrjParams.PollItems.Item(i).intApply = 1 Then
                     'If user is NOT ignoring the pollutant then send the whole item over along with LCType
                     Dim pollitem As PollutantItem = _XmlPrjParams.PollItems.Item(i)
-                    If Not PollutantConcentrationSetup(pollitem, _XmlPrjParams.strLCGridType, _XmlPrjParams.strWaterQuality, _XmlPrjParams.OutputItems) Then
+                    If Not PollutantConcentrationSetup(pollitem, _XmlPrjParams.strWaterQuality, _XmlPrjParams.OutputItems) Then
                         Return
                     End If
                 End If
@@ -1073,7 +1071,6 @@ Friend Class MainForm
             frmProjectSetup_Load(Nothing, Nothing)
         Catch ex As Exception
             HandleError(ex)
-            'False, "ClearForm " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1162,7 +1159,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'False, "FillCboLCCLass " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1209,7 +1205,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'False, "PopPollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Sub
 
@@ -1964,7 +1959,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         Finally
             TabsForGrids.SelectedIndex = 0
         End Try
@@ -1999,7 +1993,6 @@ Friend Class MainForm
             Next
         Catch ex As Exception
             HandleError(ex)
-            'False, "ValidatePollutants " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -2100,7 +2093,6 @@ Friend Class MainForm
             ValidateWaterShed = True
         Catch ex As Exception
             HandleError(ex)
-            'False, "ValidateWaterShed " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 
@@ -2133,7 +2125,6 @@ Friend Class MainForm
 
         Catch ex As Exception
             HandleError(ex)
-            'False, "ValidateMgmtScenario " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, m_ParentHWND)
         End Try
     End Function
 

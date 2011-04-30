@@ -18,7 +18,6 @@
 Imports System.Data.OleDb
 Imports System.Data
 Imports System.Windows.Forms
-Imports System.Drawing
 Imports System.IO
 
 Friend Class LandCoverTypesForm

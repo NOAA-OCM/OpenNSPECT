@@ -120,7 +120,7 @@ Module MainRun
 
         Dim pMaskGeoDataset As Shapefile
         If g_booSelectedPolys Then
-            pMaskGeoDataset = ReturnAnalysisMask(SelectedPath, SelectedShapes, strWS)
+            pMaskGeoDataset = ReturnAnalysisMask(SelectedPath, SelectedShapes)
             MapWindowPlugin.MapWindowInstance.View.Extents = pMaskGeoDataset.Extents
         Else
             pMaskGeoDataset = Nothing
@@ -167,34 +167,19 @@ Module MainRun
 
     End Sub
 
-    Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As List(Of Integer), ByRef strBasinFeatClass As String) As Shapefile
-        'Incoming
-        'pLayer: Layer user has chosen as being the one from which the selected polys will come
-        'pMap: current map
-        'pWorkspace:  place to put the exported selected sheds
-        'strBasinFeatClass: string file location of BasinPoly.shp
-        ReturnAnalysisMask = Nothing
-
+    ''' <summary>
+    ''' Returns the analysis mask.
+    ''' </summary>
+    ''' <param name="SelectedPath">The selected path.</param>
+    ''' <param name="SelectedShapes">The selected shapes.</param>
+    ''' <returns></returns>
+    Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As List(Of Integer)) As Shapefile
         g_strSelectedExportPath = ExportSelectedFeatures(SelectedPath, SelectedShapes)
         g_pSelectedPolyClip = ReturnSelectGeometry(g_strSelectedExportPath)
         Dim sfSelected As Shapefile = ReturnFeature(g_strSelectedExportPath)
 
         'ARA 12/5/2010 Since this is purely used for zoom, intersecting with the basins is kind of pointless and ExportShapesWithPolygons isn't working anyways, so just returning the extents of the selection area.
         Return sfSelected
-
-        ''Make a call to get the BasinPoly featureclass using the name sent over
-        'Dim basinSF As MapWinGIS.Shapefile = modUtil.ReturnFeature(strBasinFeatClass)
-
-        ''Get unique name for output
-        'Dim strOutPath As String = modUtil.GetUniqueName("selshed", g_strWorkspace, ".shp")
-        'Dim sfOut As New MapWinGIS.Shapefile
-
-        ''Intersect watersheds by selection shapefile
-        'If MapWinGeoProc.Selection.ExportShapesWithPolygons(basinSF, sfSelected, sfOut) Then
-        '    sfOut.SaveAs(strOutPath)
-        'End If
-
-        'Return sfOut
     End Function
 
     Public Function CheckMultiPartPolygon(ByVal pPolygon As Shape) As Boolean
