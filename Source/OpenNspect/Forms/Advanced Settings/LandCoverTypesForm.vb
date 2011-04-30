@@ -22,7 +22,7 @@ Imports System.IO
 
 Friend Class LandCoverTypesForm
     Private _intLCTypeID As Integer
-  
+
     Private _intCount As Short
     'Number of rows in old GRID
     Private _bolBegin As Boolean
@@ -31,12 +31,12 @@ Friend Class LandCoverTypesForm
     Private _cBuilder As OleDbCommandBuilder
     Private _dTable As DataTable
     Private _bSource As BindingSource
-
+    Private intYesNo As Short
     Dim WithEvents _dbConn As OleDbConnection
 
 #Region "Events"
 
-    Private Sub frmLandCoverTypes_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmLandCoverTypes_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             _dbConn = g_DBConn
 
@@ -44,9 +44,9 @@ Friend Class LandCoverTypesForm
             'Nothing's changed
 
             'Initialize the Grid and populate the combobox
-            InitComboBox (cmbxLCType, "LCTYPE")
+            InitComboBox(cmbxLCType, "LCTYPE")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 

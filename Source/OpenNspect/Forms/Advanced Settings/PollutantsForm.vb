@@ -31,176 +31,82 @@ Friend Class PollutantsForm
     Private _intLCTypeID As Short
     'Land Class (CCAP) ID - needed to add new coefficient sets
 
-    Private _strLCType As String
-    'Need for name, we'll store here
-
     Private _coefs As OleDbDataAdapter
     Private _dtCoeff As DataTable
 
     Private _wq As OleDbDataAdapter
     Private _dtWQ As DataTable
+    Private intYesNo As Short
+    Private _hasLoaded As Boolean
+
 
 #Region "Events"
 
-    Private Sub frmPollutants_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmPollutants_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             'Toss in the names of all pollutants and call the cbo click event
-            InitComboBox (cboPollName, "Pollutant")
+            InitComboBox(cboPollName, "Pollutant")
 
             SSTab1.SelectedIndex = 0
-
+            _hasLoaded = True
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
     Private Sub cboPollName_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboPollName.SelectedIndexChanged
 
-        Dim strSQLPollutant As String
-        Dim strSQLLCType As String
-        Dim strSQLCoeff As String
-        Dim strSQLWQStd As String
-
         Try
             'Check to see if things have changed
             If IsDirty Then
-
+                ' this would be a "would you like to save" prompt
                 'intYesNo = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNlasoTitle)
-
+                'todo: determine what is going on logically here.
                 If intYesNo = MsgBoxResult.Yes Then
-
                     UpdateValues()
-
-                    'Selection based on combo box
-                    strSQLPollutant = "SELECT * FROM POLLUTANT WHERE NAME = '" & cboPollName.Text & "'"
-                    Dim pollCmd As New OleDbCommand(strSQLPollutant, g_DBConn)
-                    Dim poll As OleDbDataReader = pollCmd.ExecuteReader()
-                    poll.Read()
-                    _intPollID = poll.Item("POLLID")
-
-                    strSQLCoeff = "SELECT * FROM CoefficientSet WHERE POLLID = " & poll.Item("POLLID") & ""
-                    _coefCmd = New OleDbCommand(strSQLCoeff, g_DBConn)
-                    Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
-                    coef.Read()
-
-                    strSQLLCType = "SELECT NAME, LCTYPEID FROM LCTYPE WHERE LCTYPEID = " & coef.Item("LCTypeID") & ""
-                    Dim LCCmd As New OleDbCommand(strSQLLCType, g_DBConn)
-                    Dim LC As OleDbDataReader = LCCmd.ExecuteReader()
-                    LC.Read()
-                    _strLCType = LC.Item("Name")
-                    _intLCTypeID = LC.Item("LCTypeID")
-                    LC.Close()
-
-                    'Fill everything based on that
-                    cboCoeffSet.Items.Clear()
-                    cboCoeffSet.Items.Add(coef("Name"))
-                    While coef.Read()
-                        cboCoeffSet.Items.Add(coef("Name"))
-                    End While
-                    cboCoeffSet.SelectedIndex = 0
-                    coef.Close()
-
-                    txtLCType.Text = _strLCType
-
-                    'Fill the Water Quality Standards Tab
-                    strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
-                    Dim wqCmd As New OleDbCommand(strSQLWQStd, g_DBConn)
-                    _wq = New OleDbDataAdapter(wqCmd)
-                    _dtWQ = New DataTable
-                    _wq.Fill(_dtWQ)
-                    dgvWaterQuality.DataSource = _dtWQ
-                    poll.Close()
-
-                ElseIf intYesNo = MsgBoxResult.No Then
-
-                    IsDirty = False
-
-                    'Selection based on combo box
-                    strSQLPollutant = "SELECT * FROM POLLUTANT WHERE NAME = '" & cboPollName.Text & "'"
-                    Dim pollCmd As New OleDbCommand(strSQLPollutant, g_DBConn)
-                    Dim poll As OleDbDataReader = pollCmd.ExecuteReader()
-                    poll.Read()
-                    _intPollID = poll.Item("POLLID")
-
-                    strSQLCoeff = "SELECT * FROM CoefficientSet WHERE POLLID = " & poll.Item("POLLID") & ""
-                    _coefCmd = New OleDbCommand(strSQLCoeff, g_DBConn)
-                    Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
-                    coef.Read()
-
-                    strSQLLCType = "SELECT NAME, LCTYPEID FROM LCTYPE WHERE LCTYPEID = " & coef.Item("LCTypeID") & ""
-                    Dim LCCmd As New OleDbCommand(strSQLLCType, g_DBConn)
-                    Dim LC As OleDbDataReader = LCCmd.ExecuteReader()
-                    LC.Read()
-                    _strLCType = LC.Item("Name")
-                    _intLCTypeID = LC.Item("LCTypeID")
-                    LC.Close()
-
-                    'Fill everything based on that
-                    cboCoeffSet.Items.Clear()
-                    cboCoeffSet.Items.Add(coef.Item("Name"))
-                    While coef.Read()
-                        cboCoeffSet.Items.Add(coef.Item("Name"))
-                    End While
-                    cboCoeffSet.SelectedIndex = 0
-                    coef.Close()
-
-                    txtLCType.Text = _strLCType
-
-                    'Fill the Water Quality Standards Tab
-                    strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
-                    Dim wqCmd As New OleDbCommand(strSQLWQStd, g_DBConn)
-                    _wq = New OleDbDataAdapter(wqCmd)
-                    _dtWQ = New DataTable
-                    _wq.Fill(_dtWQ)
-                    dgvWaterQuality.DataSource = _dtWQ
-                    poll.Close()
-
+                    'ElseIf intYesNo = MsgBoxResult.No Then
+                    '    IsDirty = False
                 End If
-            Else
-
-                IsDirty = False
-
-                'Selection based on combo box
-                strSQLPollutant = "SELECT * FROM POLLUTANT WHERE NAME = '" & cboPollName.Text & "'"
-                Dim pollCmd As New OleDbCommand(strSQLPollutant, g_DBConn)
-                Dim poll As OleDbDataReader = pollCmd.ExecuteReader()
-                poll.Read()
-                _intPollID = poll.Item("POLLID")
-
-                strSQLCoeff = "SELECT * FROM CoefficientSet WHERE POLLID = " & poll.Item("POLLID") & ""
-                _coefCmd = New OleDbCommand(strSQLCoeff, g_DBConn)
-                Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
-                coef.Read()
-
-                strSQLLCType = "SELECT NAME, LCTYPEID FROM LCTYPE WHERE LCTYPEID = " & coef.Item("LCTypeID") & ""
-                Dim LCCmd As New OleDbCommand(strSQLLCType, g_DBConn)
-                Dim LC As OleDbDataReader = LCCmd.ExecuteReader()
-                LC.Read()
-                _strLCType = LC.Item("Name")
-                _intLCTypeID = LC.Item("LCTypeID")
-                LC.Close()
-
-                'Fill everything based on that
-                cboCoeffSet.Items.Clear()
-                cboCoeffSet.Items.Add(coef.Item("Name"))
-                While coef.Read()
-                    cboCoeffSet.Items.Add(coef.Item("Name"))
-                End While
-                cboCoeffSet.SelectedIndex = 0
-                coef.Close()
-
-                txtLCType.Text = _strLCType
-
-                'Fill the Water Quality Standards Tab
-                strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
-                Dim wqCmd As New OleDbCommand(strSQLWQStd, g_DBConn)
-                _wq = New OleDbDataAdapter(wqCmd)
-                _dtWQ = New DataTable
-                _wq.Fill(_dtWQ)
-                dgvWaterQuality.DataSource = _dtWQ
-                poll.Close()
 
             End If
+
+            'Selection based on combo box
+            Dim data = New DataHelper("SELECT * FROM POLLUTANT WHERE NAME = '" & cboPollName.Text & "'")
+            Dim poll As OleDbDataReader = data.ExecuteReader()
+            poll.Read()
+            _intPollID = poll.Item("POLLID")
+
+            Dim strSQLCoeff As String
+            strSQLCoeff = "SELECT * FROM CoefficientSet WHERE POLLID = " & poll.Item("POLLID") & ""
+            _coefCmd = New OleDbCommand(strSQLCoeff, g_DBConn)
+            Dim coef As OleDbDataReader = _coefCmd.ExecuteReader()
+            coef.Read()
+
+            Dim LCCmd As New DataHelper("SELECT NAME, LCTYPEID FROM LCTYPE WHERE LCTYPEID = " & coef.Item("LCTypeID") & "")
+            Dim LC As OleDbDataReader = LCCmd.ExecuteReader()
+            LC.Read()
+            txtLCType.Text = LC.Item("Name")
+            _intLCTypeID = LC.Item("LCTypeID")
+            LC.Close()
+
+            'Fill everything based on that
+            cboCoeffSet.Items.Clear()
+            cboCoeffSet.Items.Add(coef.Item("Name"))
+            While coef.Read()
+                cboCoeffSet.Items.Add(coef.Item("Name"))
+            End While
+            cboCoeffSet.SelectedIndex = 0
+            coef.Close()
+
+            'Fill the Water Quality Standards Tab
+            Dim strSQLWQStd As String
+            strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
+            Dim wqCmd As New OleDbCommand(strSQLWQStd, g_DBConn)
+            _wq = New OleDbDataAdapter(wqCmd)
+            _dtWQ = New DataTable
+            _wq.Fill(_dtWQ)
+            dgvWaterQuality.DataSource = _dtWQ
+            poll.Close()
 
             IsDirty = False
             CmdSaveEnabled()
@@ -211,20 +117,15 @@ Friend Class PollutantsForm
 
     Private Sub cboCoeffSet_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboCoeffSet.SelectedIndexChanged
         Try
-
             If IsDirty Then
-
                 intYesNo = MsgBox(strYesNo, MsgBoxStyle.YesNo, strYesNoTitle)
-
                 If intYesNo = MsgBoxResult.Yes Then
-
                     If ValidateGridValues() Then
                         UpdateValues()
                     End If
                 Else
                     NoSaveCoeffSetChange()
                 End If
-
             Else
                 NoSaveCoeffSetChange()
             End If
@@ -268,6 +169,9 @@ Friend Class PollutantsForm
     End Sub
 
     Private Sub txtCoeffSetDesc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtCoeffSetDesc.TextChanged
+        ' The data hasn't been changed by the user if the form hasn't finished loading
+        If Not _hasLoaded Then Return
+
         Try
             IsDirty = True
             _boolDescChanged = True
@@ -413,6 +317,9 @@ Friend Class PollutantsForm
     End Sub
 
     Private Sub dgvCoef_CellValueChanged(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged, dgvWaterQuality.CellValueChanged
+        ' The data hasn't been changed by the user if the form hasn't finished loading
+        If Not _hasLoaded Then Return
+
         Try
             IsDirty = True
             CmdSaveEnabled()
@@ -577,60 +484,52 @@ Friend Class PollutantsForm
             'garnered above during a cbo click event.  Once that's done, we'll add a series of blank
             'coefficients for the landclass type the user chooses...ie CCAP, NotCCAP, whatever
 
-            Dim strNewLcType As String
             'CmdString for inserting new coefficientset
-            Dim strGetLcType As String
-            Dim strDefault As String
-            '
-            Dim strNewCoeffID As String
             'Holder for the CoefficientSetID
             Dim intCoeffSetID As Short
 
-            strGetLcType = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCType & "'"
-            Dim cmdLCType As New DataHelper(strGetLcType)
+            Dim cmdLCType As New DataHelper("SELECT * FROM LCTYPE WHERE NAME LIKE '" & strLCType & "'")
             Dim datalctype As OleDbDataReader = cmdLCType.ExecuteReader()
             datalctype.Read()
 
             'First need to add the coefficient set to that table
-            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & Replace(CStr(_intPollID), "'", "''") & "," & Replace(datalctype("LCTypeID"), "'", "''") & ")"
-            Dim cmdInsLC As New DataHelper(strNewLcType)
-            cmdInsLC.ExecuteNonQuery()
+            Using cmdInsLC As New DataHelper("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & Replace(CStr(_intPollID), "'", "''") & "," & Replace(datalctype("LCTypeID"), "'", "''") & ")")
+                cmdInsLC.ExecuteNonQuery()
+            End Using
 
             'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
             'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
-            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
-            Dim cmdNewCoefID As New DataHelper(strNewCoeffID)
+            Dim cmdNewCoefID As New DataHelper("SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'")
             Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
             dataNewCoeffID.Read()
             intCoeffSetID = dataNewCoeffID("CoeffSetID")
             dataNewCoeffID.Close()
 
-            strDefault = "SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "' ORDER BY LCCLASS.Value"
-            Dim cmdCopySet As New DataHelper(strDefault)
+            Dim cmdCopySet As New DataHelper("SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "' ORDER BY LCCLASS.Value")
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
 
             'Now loopy loo to populate values.
-            Dim strNewCoeff1 As String
-            strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim cmdNewCoef As New DataHelper(strNewCoeff1)
-            Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
-            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
-            cbuilder.QuotePrefix = "["
-            cbuilder.QuoteSuffix = "]"
-            Dim dt As New DataTable
-            adaptNewCoeff.Fill(dt)
-
-            While dataCopySet.Read()
-                Dim row As DataRow = dt.NewRow()
-                row("Coeff1") = 0
-                row("Coeff2") = 0
-                row("Coeff3") = 0
-                row("Coeff4") = 0
-                row("CoeffSetID") = intCoeffSetID
-                row("LCClassID") = dataCopySet("LCClassID")
-                dt.Rows.Add(row)
-            End While
-            adaptNewCoeff.Update(dt)
+            Using cmdNewCoef As New DataHelper("SELECT * FROM COEFFICIENT")
+                Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
+                Using cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
+                    cbuilder.QuotePrefix = "["
+                    cbuilder.QuoteSuffix = "]"
+                End Using
+                Using dt As New DataTable()
+                    adaptNewCoeff.Fill(dt)
+                    While dataCopySet.Read()
+                        Dim row As DataRow = dt.NewRow()
+                        row("Coeff1") = 0
+                        row("Coeff2") = 0
+                        row("Coeff3") = 0
+                        row("Coeff4") = 0
+                        row("CoeffSetID") = intCoeffSetID
+                        row("LCClassID") = dataCopySet("LCClassID")
+                        dt.Rows.Add(row)
+                    End While
+                    adaptNewCoeff.Update(dt)
+                End Using
+            End Using
             dataCopySet.Close()
 
             cboPollName.SelectedIndex = cboPollName.SelectedIndex
