@@ -45,7 +45,7 @@ Module Pollutants
     Private _FlowMax As Single
     Private _picks() As String
 
-    Public Function PollutantConcentrationSetup(ByRef Pollutant As PollutantItem, ByRef strLandClass As String, ByRef strWQName As String, ByRef OutputItems As OutputItems) As Boolean
+    Public Function PollutantConcentrationSetup(ByRef Pollutant As PollutantItem, ByRef strWQName As String, ByRef OutputItems As OutputItems) As Boolean
         'Sub takes incoming parameters (in the form of a pollutant item) from the project file
         'and then parses them out
         Try
@@ -405,7 +405,7 @@ Module Pollutants
 
             If Not g_KeepRunning Then Return False
             ShowProgress("Comparing to water quality standard...", strTitle, 13, 13, g_MainForm)
-            If Not CompareWaterQuality(g_pWaterShedFeatClass, pTotalPollConc0Raster, OutputItems) Then Return False
+            If Not CompareWaterQuality(pTotalPollConc0Raster, OutputItems) Then Return False
 
             Return True
 
@@ -419,7 +419,7 @@ Module Pollutants
 
     End Function
 
-    Private Function CompareWaterQuality(ByRef pWSFeatureClass As Shapefile, ByRef pPollutantRaster As Grid, ByRef OutputItems As OutputItems) As Boolean
+    Private Function CompareWaterQuality(ByRef pPollutantRaster As Grid, ByRef OutputItems As OutputItems) As Boolean
         Dim strWQVAlue As Object
 
         'Get the zone dataset from the first layer in ArcMap
@@ -433,9 +433,6 @@ Module Pollutants
         Try
 
             ' Perform Spatial operation
-            'TODO: This seems useless on a singleband thing, otherwise, seems random. so skipping it.
-            'pMaxRaster = pLocalOp.LocalStatistics(pPollutantRaster, ESRI.ArcGIS.GeoAnalyst.esriGeoAnalysisStatisticsEnum.esriGeoAnalysisStatsMaximum)
-
             strWQVAlue = ReturnWQValue(_PollutantName, _WaterQualityStandardName)
 
             _WQValue = (CDbl(strWQVAlue)) / 1000
@@ -468,7 +465,6 @@ Module Pollutants
                 CloseProgressDialog()
             Else
                 HandleError(ex)
-                'False, "CompareWaterQuality " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, 0)
                 CompareWaterQuality = False
                 g_KeepRunning = False
                 CloseProgressDialog()

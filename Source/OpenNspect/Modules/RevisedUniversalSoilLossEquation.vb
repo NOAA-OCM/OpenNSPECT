@@ -267,8 +267,6 @@ Module RevisedUniversalSoilLossEquation
         'SDR
         Dim pSedYieldRaster As Grid = Nothing
         'Sediment Yield
-        Dim pAccumSedRaster As Grid = Nothing
-        'Accumulated Sed Raster
         Dim pTotalAccumSedRaster As Grid = Nothing
         'Total accumulated sediment raster
         Dim pPermAccumSedRaster As Grid = Nothing

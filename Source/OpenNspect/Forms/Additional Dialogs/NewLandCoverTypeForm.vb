@@ -16,7 +16,6 @@
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
 Imports System.Windows.Forms
-Imports System.Drawing
 Imports System.Data.OleDb
 
 Friend Class NewLandCoverTypeForm

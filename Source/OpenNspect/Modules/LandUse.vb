@@ -17,7 +17,6 @@
 '               Added licensing and comments to code
 Imports System.Collections.Generic
 Imports System.Data
-Imports MapWindow.Interfaces
 Imports MapWinGIS
 Imports System.Data.OleDb
 Imports OpenNspect.Xml

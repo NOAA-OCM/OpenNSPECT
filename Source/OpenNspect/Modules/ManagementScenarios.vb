@@ -35,7 +35,7 @@ Module ManagementScenarios
     Private _pLandCoverRaster As Grid
     Public g_booLCChange As Boolean
 
-    Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, ByRef strLCFileName As String, ByRef strWorkspace As String)
+    Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, ByRef strLCFileName As String)
         'Main Sub for setting everything up
         'MgmtScens: Xml wrapper for the management scenarios created by the user
         'strLCClass: Name of the LandCover being used, CCAP

@@ -247,7 +247,6 @@ Friend Class WaterQualityStandardsForm
             IsDirty = False
         Catch ex As Exception
             HandleError(ex)
-            'False, "UpdateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
 
@@ -271,7 +270,6 @@ Friend Class WaterQualityStandardsForm
             Next
         Catch ex As Exception
             HandleError(ex)
-            'False, "ValidateData " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Function
 
@@ -304,7 +302,6 @@ Friend Class WaterQualityStandardsForm
             out.Close()
         Catch ex As Exception
             HandleError(ex)
-            'False, "ExportStandard " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
     End Sub
 

@@ -412,7 +412,6 @@ Module Runoff
             dataLandClass.Close()
         Catch ex As Exception
             HandleError(ex)
-            'False, "CreateMetadata " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
         End Try
     End Function
 
