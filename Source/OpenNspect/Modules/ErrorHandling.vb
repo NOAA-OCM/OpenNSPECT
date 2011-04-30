@@ -40,7 +40,6 @@ Module ErrorHandling
 
     Public Const Err6 As String = "Warning: There is a problem with the value you just entered.  Please insure " & "your entry is numeric, in the range of 0 - 1000, and contains no more than " & vbNewLine & "four (4) values after the decimal point.  "
 
-    Public intYesNo As Short
     Public Const strYesNo As String = "You have made changes to the data.  Would you like to save before continuing?"
     Public Const strYesNoTitle As String = "Save Changes?"
 
