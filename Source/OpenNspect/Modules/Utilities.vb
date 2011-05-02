@@ -209,20 +209,7 @@ Module Utilities
         End Try
     End Function
 
-    Public Function AddRasterLayerToMapFromFileName(ByRef strName As String) As Boolean
-        Try
 
-            If Path.GetExtension(strName) <> "" Then
-                MapWindowPlugin.MapWindowInstance.Layers.Add(strName)
-            Else
-                MapWindowPlugin.MapWindowInstance.Layers.Add(strName + "\sta.adf")
-            End If
-            Return True
-        Catch ex As Exception
-            Return False
-        End Try
-
-    End Function
 
 
     Public Function AddInputFromGxBrowser(ByRef strType As String) As String

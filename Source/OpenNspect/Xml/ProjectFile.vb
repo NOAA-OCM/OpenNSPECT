@@ -17,6 +17,8 @@
 '               Added licensing and comments to code
 Imports System.Collections.Generic
 Imports System.Xml
+Imports System.Drawing
+Imports System.IO
 
 Namespace Xml
 
@@ -62,54 +64,342 @@ Namespace Xml
         Private Const NODE_SelectedPolyList As String = "SelectedPolyList"
         Private Const NODE_LocalEffects As String = "LocalEffects"
         Private Const NODE_CalcErosion As String = "CalcErosion"
-        '****************** Added 12/03/07 **************************
         Private Const NODE_UseOWNSDR As String = "SDRGrid"
         Private Const NODE_SDRGridFileName As String = "SDRGridFileName"
-        '****************** end Add *********************************
         Private Const NODE_RainGridBool As String = "RainGridBool"
         Private Const NODE_RainGridName As String = "RainGridName"
         Private Const NODE_RainGridFileName As String = "RainGridFileName"
         Private Const NODE_RainConstBool As String = "RainConstBool"
         Private Const NODE_RainConstValue As String = "RainConstValue"
 
+        Private _projectFilePath As String
         'Variables holding value of nodes above
-        Public strProjectName As String
-        Public strPrjRoot As String
-        Public strProjectWorkspace As String
-        Public strLCGridName As String
-        Public strLCGridFileName As String
-        Public strLCGridUnits As String
-        Public strLCGridType As String
-        Public strSoilsDefName As String
-        Public strSoilsHydFileName As String
-        Public strSoilsKFileName As String
-        Public strPrecipScenario As String
-        Public strWaterShedDelin As String
-        Public strWaterQuality As String
-        Public intSelectedPolys As Short
-        Public strSelectedPolyFileName As String
-        Public strSelectedPolyLyrName As String
+        Private _ProjectName As String
+        Private _ProjectRoot As String
+        Private _ProjectWorkspace As String
+        Private _LandCoverGridName As String
+        Private _LandCoverGridDirectory As String
+        Private _LandCoverGridUnits As String
+        Private _LandCoverGridType As String
+        Private _SoilsDefName As String
+        Private _SoilsHydDirectory As String
+        Private _SoilsKFileName As String
+        Private _PrecipScenario As String
+        Private _WaterShedDelin As String
+        Private _WaterQuality As String
+        Private _intSelectedPolys As Short
+        Private _strSelectedPolyFileName As String
+        Private _strSelectedPolyLyrName As String
         Public intSelectedPolyList As New List(Of Integer)
-        Public intLocalEffects As Short
+        Private _intLocalEffects As Short
 
-        'Class holders for DataGrid goodies
+        Private _intCalcErosion As Short
+        Private _intUseOwnSDR As Short
+        Private _strSDRGridFileName As String
+        Private _intRainGridBool As Short
+        Private _strRainGridName As String
+        Private _strRainGridFileName As String
+        Private _intRainConstBool As Short
+        Private _dblRainConstValue As Double
+
         Public MgmtScenHolder As ManagementScenarioItems
-        'A collection of management scenarios
         Public PollItems As PollutantItems
-        'A collection of pollutants from pollutants tab
         Public LUItems As LandUseItems
-        'A collection of land uses
         Public OutputItems As OutputItems
-        'A collection of outputs
 
-        Public intCalcErosion As Short
-        Public intUseOwnSDR As Short
-        Public strSDRGridFileName As String
-        Public intRainGridBool As Short
-        Public strRainGridName As String
-        Public strRainGridFileName As String
-        Public intRainConstBool As Short
-        Public dblRainConstValue As Double
+        Public Property ProjectName As String
+            Get
+                Return _ProjectName
+            End Get
+            Set(value As String)
+                If _ProjectName = value Then
+                    Return
+                End If
+                _ProjectName = value
+            End Set
+        End Property
+        Public Property ProjectRoot As String
+            Get
+                Return _ProjectRoot
+            End Get
+            Set(value As String)
+                If _ProjectRoot = value Then
+                    Return
+                End If
+                _ProjectRoot = value
+            End Set
+        End Property
+        Public Property ProjectWorkspace As String
+            Get
+                Return _ProjectWorkspace
+            End Get
+            Set(value As String)
+                If _ProjectWorkspace = value Then
+                    Return
+                End If
+                _ProjectWorkspace = value
+            End Set
+        End Property
+        Public Property LandCoverGridName As String
+            Get
+                Return _LandCoverGridName
+            End Get
+            Set(value As String)
+                If _LandCoverGridName = value Then
+                    Return
+                End If
+                _LandCoverGridName = value
+            End Set
+        End Property
+        ''' <summary>
+        ''' Tries to find a valid, relative path.
+        ''' </summary>
+        ''' <param name="value">The value.</param><returns></returns>
+        Private Function EncourageValidPath(ByVal value As String) As String
+            If Not Directory.Exists(value) Then
+                Dim relativePath = value.Replace(ProjectRoot, String.Empty)
+                Dim suggestedPath = Path.GetDirectoryName(_projectFilePath) + "\.." + relativePath
+                If Directory.Exists(suggestedPath) Then
+                    Return suggestedPath
+                End If
+            End If
+            Return value
+        End Function
+        Public Property LandCoverGridDirectory As String
+            Get
+                Return _LandCoverGridDirectory
+            End Get
+            Set(value As String)
+                If _LandCoverGridDirectory = value Then
+                    Return
+                End If
+
+                _LandCoverGridDirectory = EncourageValidPath(value)
+
+            End Set
+        End Property
+        Public Property LandCoverGridUnits As String
+            Get
+                Return _LandCoverGridUnits
+            End Get
+            Set(value As String)
+                If _LandCoverGridUnits = value Then
+                    Return
+                End If
+                _LandCoverGridUnits = value
+            End Set
+        End Property
+        Public Property LandCoverGridType As String
+            Get
+                Return _LandCoverGridType
+            End Get
+            Set(value As String)
+                If _LandCoverGridType = value Then
+                    Return
+                End If
+                _LandCoverGridType = value
+            End Set
+        End Property
+        Public Property SoilsDefName As String
+            Get
+                Return _SoilsDefName
+            End Get
+            Set(value As String)
+                If _SoilsDefName = value Then
+                    Return
+                End If
+                _SoilsDefName = value
+            End Set
+        End Property
+        Public Property SoilsHydDirectory As String
+            Get
+                Return _SoilsHydDirectory
+            End Get
+            Set(value As String)
+                If _SoilsHydDirectory = value Then
+                    Return
+                End If
+                _SoilsHydDirectory = EncourageValidPath(value)
+            End Set
+        End Property
+        Public Property SoilsKFileName As String
+            Get
+                Return _SoilsKFileName
+            End Get
+            Set(value As String)
+                If _SoilsKFileName = value Then
+                    Return
+                End If
+                _SoilsKFileName = value
+            End Set
+        End Property
+        Public Property PrecipScenario As String
+            Get
+                Return _PrecipScenario
+            End Get
+            Set(value As String)
+                If _PrecipScenario = value Then
+                    Return
+                End If
+                _PrecipScenario = value
+            End Set
+        End Property
+        Public Property WaterShedDelin As String
+            Get
+                Return _WaterShedDelin
+            End Get
+            Set(value As String)
+                If _WaterShedDelin = value Then
+                    Return
+                End If
+                _WaterShedDelin = value
+            End Set
+        End Property
+        Public Property WaterQuality As String
+            Get
+                Return _WaterQuality
+            End Get
+            Set(value As String)
+                If _WaterQuality = value Then
+                    Return
+                End If
+                _WaterQuality = value
+            End Set
+        End Property
+        Public Property IntSelectedPolys As Short
+            Get
+                Return _intSelectedPolys
+            End Get
+            Set(value As Short)
+                If _intSelectedPolys = value Then
+                    Return
+                End If
+                _intSelectedPolys = value
+            End Set
+        End Property
+        Public Property StrSelectedPolyFileName As String
+            Get
+                Return _strSelectedPolyFileName
+            End Get
+            Set(value As String)
+                If _strSelectedPolyFileName = value Then
+                    Return
+                End If
+                _strSelectedPolyFileName = value
+            End Set
+        End Property
+        Public Property StrSelectedPolyLyrName As String
+            Get
+                Return _strSelectedPolyLyrName
+            End Get
+            Set(value As String)
+                If _strSelectedPolyLyrName = value Then
+                    Return
+                End If
+                _strSelectedPolyLyrName = value
+            End Set
+        End Property
+        Public Property IntLocalEffects As Short
+            Get
+                Return _intLocalEffects
+            End Get
+            Set(value As Short)
+                If _intLocalEffects = value Then
+                    Return
+                End If
+                _intLocalEffects = value
+            End Set
+        End Property
+
+        Public Property IntCalcErosion As Short
+            Get
+                Return _intCalcErosion
+            End Get
+            Set(value As Short)
+                If _intCalcErosion = value Then
+                    Return
+                End If
+                _intCalcErosion = value
+            End Set
+        End Property
+        Public Property IntUseOwnSDR As Short
+            Get
+                Return _intUseOwnSDR
+            End Get
+            Set(value As Short)
+                If _intUseOwnSDR = value Then
+                    Return
+                End If
+                _intUseOwnSDR = value
+            End Set
+        End Property
+        Public Property StrSDRGridFileName As String
+            Get
+                Return _strSDRGridFileName
+            End Get
+            Set(value As String)
+                If _strSDRGridFileName = value Then
+                    Return
+                End If
+                _strSDRGridFileName = value
+            End Set
+        End Property
+        Public Property IntRainGridBool As Short
+            Get
+                Return _intRainGridBool
+            End Get
+            Set(value As Short)
+                If _intRainGridBool = value Then
+                    Return
+                End If
+                _intRainGridBool = value
+            End Set
+        End Property
+        Public Property StrRainGridName As String
+            Get
+                Return _strRainGridName
+            End Get
+            Set(value As String)
+                If _strRainGridName = value Then
+                    Return
+                End If
+                _strRainGridName = value
+            End Set
+        End Property
+        Public Property StrRainGridFileName As String
+            Get
+                Return _strRainGridFileName
+            End Get
+            Set(value As String)
+                If _strRainGridFileName = value Then
+                    Return
+                End If
+                _strRainGridFileName = value
+            End Set
+        End Property
+        Public Property IntRainConstBool As Short
+            Get
+                Return _intRainConstBool
+            End Get
+            Set(value As Short)
+                If _intRainConstBool = value Then
+                    Return
+                End If
+                _intRainConstBool = value
+            End Set
+        End Property
+        Public Property DblRainConstValue As Double
+            Get
+                Return _dblRainConstValue
+            End Get
+            Set(value As Double)
+                If _dblRainConstValue = value Then
+                    Return
+                End If
+                _dblRainConstValue = value
+            End Set
+        End Property
+
 
         Public ReadOnly Property NodeName() As String
             Get
@@ -136,6 +426,7 @@ Namespace Xml
                 Dim node As XmlNode
 
                 If InStr(Value, ".xml") > 0 Then
+                    _projectFilePath = Value
                     dom.Load(Value)
                 Else
                     dom.LoadXml(Value)
@@ -172,7 +463,7 @@ Namespace Xml
                 'If no parent was passed in, then create a DOM and document element.
                 If Parent Is Nothing Then
                     dom = New XmlDocument
-                    dom.LoadXml("<" & NODE_NAME & "/>")
+                    dom.LoadXml(String.Format("<{0}/>", NODE_NAME))
                     node = dom.DocumentElement
                     'Otherwise use passed-in parent.
                 Else
@@ -183,38 +474,38 @@ Namespace Xml
 
                 '*********************************************************************
                 node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-                NodeAppendChildElement(dom, node, NODE_PRJNAME, strProjectName)
-                NodeAppendChildElement(dom, node, NODE_PRJROOT, strPrjRoot)
-                NodeAppendChildElement(dom, node, NODE_PRJWORKSPACE, strProjectWorkspace)
-                NodeAppendChildElement(dom, node, NODE_LCGridName, strLCGridName)
-                NodeAppendChildElement(dom, node, NODE_LCGridFileName, strLCGridFileName)
-                NodeAppendChildElement(dom, node, NODE_LCGridUnits, strLCGridUnits)
-                NodeAppendChildElement(dom, node, NODE_LCGridType, strLCGridType)
-                NodeAppendChildElement(dom, node, NODE_SoilsDefName, strSoilsDefName)
-                NodeAppendChildElement(dom, node, NODE_SoilsHydFileName, strSoilsHydFileName)
-                NodeAppendChildElement(dom, node, NODE_SoilsKFileName, strSoilsKFileName)
+                NodeAppendChildElement(dom, node, NODE_PRJNAME, ProjectName)
+                NodeAppendChildElement(dom, node, NODE_PRJROOT, ProjectRoot)
+                NodeAppendChildElement(dom, node, NODE_PRJWORKSPACE, ProjectWorkspace)
+                NodeAppendChildElement(dom, node, NODE_LCGridName, LandCoverGridName)
+                NodeAppendChildElement(dom, node, NODE_LCGridFileName, LandCoverGridDirectory)
+                NodeAppendChildElement(dom, node, NODE_LCGridUnits, LandCoverGridUnits)
+                NodeAppendChildElement(dom, node, NODE_LCGridType, LandCoverGridType)
+                NodeAppendChildElement(dom, node, NODE_SoilsDefName, SoilsDefName)
+                NodeAppendChildElement(dom, node, NODE_SoilsHydFileName, SoilsHydDirectory)
+                NodeAppendChildElement(dom, node, NODE_SoilsKFileName, SoilsKFileName)
                 'NodeAppendChildElement dom, node, NODE_RainFallType, intRainFallType
-                NodeAppendChildElement(dom, node, NODE_PrecipScenario, strPrecipScenario)
-                NodeAppendChildElement(dom, node, NODE_WaterShedDelin, strWaterShedDelin)
-                NodeAppendChildElement(dom, node, NODE_WaterQuality, strWaterQuality)
-                NodeAppendChildElement(dom, node, NODE_SelectedPolys, intSelectedPolys)
-                NodeAppendChildElement(dom, node, NODE_SelectedPolyFileName, strSelectedPolyFileName)
+                NodeAppendChildElement(dom, node, NODE_PrecipScenario, PrecipScenario)
+                NodeAppendChildElement(dom, node, NODE_WaterShedDelin, WaterShedDelin)
+                NodeAppendChildElement(dom, node, NODE_WaterQuality, WaterQuality)
+                NodeAppendChildElement(dom, node, NODE_SelectedPolys, IntSelectedPolys)
+                NodeAppendChildElement(dom, node, NODE_SelectedPolyFileName, StrSelectedPolyFileName)
                 Dim strlist As String = ""
                 If intSelectedPolyList.Count > 0 Then strlist = intSelectedPolyList(0).ToString
                 For i As Integer = 1 To intSelectedPolyList.Count - 1
                     strlist = strlist + "," + intSelectedPolyList(i).ToString
                 Next
                 NodeAppendChildElement(dom, node, NODE_SelectedPolyList, strlist)
-                NodeAppendChildElement(dom, node, NODE_SelectedPolyLyrName, strSelectedPolyLyrName)
-                NodeAppendChildElement(dom, node, NODE_LocalEffects, intLocalEffects)
-                NodeAppendChildElement(dom, node, NODE_CalcErosion, intCalcErosion)
-                NodeAppendChildElement(dom, node, NODE_UseOWNSDR, intUseOwnSDR)
-                NodeAppendChildElement(dom, node, NODE_SDRGridFileName, strSDRGridFileName)
-                NodeAppendChildElement(dom, node, NODE_RainGridBool, intRainGridBool)
-                NodeAppendChildElement(dom, node, NODE_RainGridName, strRainGridName)
-                NodeAppendChildElement(dom, node, NODE_RainGridFileName, strRainGridFileName)
-                NodeAppendChildElement(dom, node, NODE_RainConstBool, intRainConstBool)
-                NodeAppendChildElement(dom, node, NODE_RainConstValue, dblRainConstValue)
+                NodeAppendChildElement(dom, node, NODE_SelectedPolyLyrName, StrSelectedPolyLyrName)
+                NodeAppendChildElement(dom, node, NODE_LocalEffects, IntLocalEffects)
+                NodeAppendChildElement(dom, node, NODE_CalcErosion, IntCalcErosion)
+                NodeAppendChildElement(dom, node, NODE_UseOWNSDR, IntUseOwnSDR)
+                NodeAppendChildElement(dom, node, NODE_SDRGridFileName, StrSDRGridFileName)
+                NodeAppendChildElement(dom, node, NODE_RainGridBool, IntRainGridBool)
+                NodeAppendChildElement(dom, node, NODE_RainGridName, StrRainGridName)
+                NodeAppendChildElement(dom, node, NODE_RainGridFileName, StrRainGridFileName)
+                NodeAppendChildElement(dom, node, NODE_RainConstBool, IntRainConstBool)
+                NodeAppendChildElement(dom, node, NODE_RainConstValue, DblRainConstValue)
 
                 'Format
                 node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
@@ -255,25 +546,25 @@ Namespace Xml
                 'Ensure that a valid node was passed in.
                 If node Is Nothing Then Return
 
-                strProjectName = GetNodeText(node, NODE_PRJNAME)
-                strPrjRoot = GetNodeText(node, NODE_PRJROOT)
+                ProjectName = GetNodeText(node, NODE_PRJNAME)
+                ProjectRoot = GetNodeText(node, NODE_PRJROOT)
                 ' assign default value
-                If String.IsNullOrEmpty(strPrjRoot) Then
-                    strPrjRoot = "C:\NSPECT"
+                If String.IsNullOrEmpty(ProjectRoot) Then
+                    ProjectRoot = "C:\NSPECT"
                 End If
-                strProjectWorkspace = GetNodeText(node, NODE_PRJWORKSPACE)
-                strLCGridName = GetNodeText(node, NODE_LCGridName)
-                strLCGridFileName = GetNodeText(node, NODE_LCGridFileName)
-                strLCGridUnits = GetNodeText(node, NODE_LCGridUnits)
-                strLCGridType = GetNodeText(node, NODE_LCGridType)
-                strSoilsDefName = GetNodeText(node, NODE_SoilsDefName)
-                strSoilsHydFileName = GetNodeText(node, NODE_SoilsHydFileName)
-                strSoilsKFileName = GetNodeText(node, NODE_SoilsKFileName)
-                strPrecipScenario = GetNodeText(node, NODE_PrecipScenario)
-                strWaterShedDelin = GetNodeText(node, NODE_WaterShedDelin)
-                strWaterQuality = GetNodeText(node, NODE_WaterQuality)
-                intSelectedPolys = CShort(GetNodeText(node, NODE_SelectedPolys))
-                strSelectedPolyFileName = GetNodeText(node, NODE_SelectedPolyFileName)
+                ProjectWorkspace = GetNodeText(node, NODE_PRJWORKSPACE)
+                LandCoverGridName = GetNodeText(node, NODE_LCGridName)
+                LandCoverGridDirectory = GetNodeText(node, NODE_LCGridFileName)
+                LandCoverGridUnits = GetNodeText(node, NODE_LCGridUnits)
+                LandCoverGridType = GetNodeText(node, NODE_LCGridType)
+                SoilsDefName = GetNodeText(node, NODE_SoilsDefName)
+                SoilsHydDirectory = GetNodeText(node, NODE_SoilsHydFileName)
+                SoilsKFileName = GetNodeText(node, NODE_SoilsKFileName)
+                PrecipScenario = GetNodeText(node, NODE_PrecipScenario)
+                WaterShedDelin = GetNodeText(node, NODE_WaterShedDelin)
+                WaterQuality = GetNodeText(node, NODE_WaterQuality)
+                IntSelectedPolys = CShort(GetNodeText(node, NODE_SelectedPolys))
+                StrSelectedPolyFileName = GetNodeText(node, NODE_SelectedPolyFileName)
                 Dim tmpstr As String() = GetNodeText(node, NODE_SelectedPolyList).Split(",")
                 intSelectedPolyList.Clear()
                 For i As Integer = 0 To tmpstr.Length - 1
@@ -281,15 +572,15 @@ Namespace Xml
                         intSelectedPolyList.Add(CShort(tmpstr(i)))
                     End If
                 Next
-                intLocalEffects = CShort(GetNodeText(node, NODE_LocalEffects))
-                intCalcErosion = CShort(GetNodeText(node, NODE_CalcErosion))
-                intUseOwnSDR = CShort(GetNodeText(node, NODE_UseOWNSDR, "integer"))
-                strSDRGridFileName = GetNodeText(node, NODE_SDRGridFileName)
-                intRainGridBool = CShort(GetNodeText(node, NODE_RainGridBool))
-                strRainGridName = GetNodeText(node, NODE_RainGridName)
-                strRainGridFileName = GetNodeText(node, NODE_RainGridFileName)
-                intRainConstBool = CShort(GetNodeText(node, NODE_RainConstBool))
-                dblRainConstValue = CDbl(GetNodeText(node, NODE_RainConstValue))
+                IntLocalEffects = CShort(GetNodeText(node, NODE_LocalEffects))
+                IntCalcErosion = CShort(GetNodeText(node, NODE_CalcErosion))
+                IntUseOwnSDR = CShort(GetNodeText(node, NODE_UseOWNSDR, "integer"))
+                StrSDRGridFileName = GetNodeText(node, NODE_SDRGridFileName)
+                IntRainGridBool = CShort(GetNodeText(node, NODE_RainGridBool))
+                StrRainGridName = GetNodeText(node, NODE_RainGridName)
+                StrRainGridFileName = GetNodeText(node, NODE_RainGridFileName)
+                IntRainConstBool = CShort(GetNodeText(node, NODE_RainConstBool))
+                DblRainConstValue = CDbl(GetNodeText(node, NODE_RainConstValue))
 
                 MgmtScenHolder.LoadNode(node.SelectSingleNode(MgmtScenHolder.NodeName))
                 PollItems.LoadNode(node.SelectSingleNode(PollItems.NodeName))
