@@ -44,6 +44,7 @@ Namespace Xml
 
         Private Const NODE_NAME As String = "NSPECTProjectFile"
         Private Const NODE_PRJNAME As String = "PrjName"
+        Private Const NODE_PRJROOT As String = "PrjRoot"
         Private Const NODE_PRJWORKSPACE As String = "PrjWorkspace"
         Private Const NODE_LCGridName As String = "LCGridName"
         Private Const NODE_LCGridFileName As String = "LCGridFileName"
@@ -73,6 +74,7 @@ Namespace Xml
 
         'Variables holding value of nodes above
         Public strProjectName As String
+        Public strPrjRoot As String
         Public strProjectWorkspace As String
         Public strLCGridName As String
         Public strLCGridFileName As String
@@ -182,6 +184,7 @@ Namespace Xml
                 '*********************************************************************
                 node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
                 NodeAppendChildElement(dom, node, NODE_PRJNAME, strProjectName)
+                NodeAppendChildElement(dom, node, NODE_PRJROOT, strPrjRoot)
                 NodeAppendChildElement(dom, node, NODE_PRJWORKSPACE, strProjectWorkspace)
                 NodeAppendChildElement(dom, node, NODE_LCGridName, strLCGridName)
                 NodeAppendChildElement(dom, node, NODE_LCGridFileName, strLCGridFileName)
@@ -253,6 +256,11 @@ Namespace Xml
                 If node Is Nothing Then Return
 
                 strProjectName = GetNodeText(node, NODE_PRJNAME)
+                strPrjRoot = GetNodeText(node, NODE_PRJROOT)
+                ' assign default value
+                If String.IsNullOrEmpty(strPrjRoot) Then
+                    strPrjRoot = "C:\NSPECT"
+                End If
                 strProjectWorkspace = GetNodeText(node, NODE_PRJWORKSPACE)
                 strLCGridName = GetNodeText(node, NODE_LCGridName)
                 strLCGridFileName = GetNodeText(node, NODE_LCGridFileName)

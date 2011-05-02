@@ -191,10 +191,10 @@ Public Class MapWindowPlugin
 
         AddMenus()
 
-        Dim nspectPath As String = "C:\NSPECT\"
-        ' Detects and sets the path to OpenNSPECT's application folder (installation directory)
-        'nspectPath = My.Application.Info.DirectoryPath
-
+        Dim nspectPath As String = InstallationHelper.GetInstallationDirectory()
+        If nspectPath Is Nothing Then
+            nspectPath = "C:\NSPECT" ' C:\NSPECT was the default for the ArcGIS version. We will try that if the user didn't use the installer.
+        End If
         If Not Directory.Exists(nspectPath) Then
             MessageBox.Show("{0} is not a valid directory. You need to reinstall the plugin or relocate your data files to this location.", nspectPath)
         End If
