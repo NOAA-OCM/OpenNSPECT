@@ -376,8 +376,8 @@ Module Runoff
             Dim strLCHeader As String
             Dim strCoeffValues As String = ""
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " &
-                                        g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " &
-                                        g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " &
+                                        g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " &
+                                        g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " &
                                         g_strPrecipFileName & vbNewLine
             If booLocal Then
 

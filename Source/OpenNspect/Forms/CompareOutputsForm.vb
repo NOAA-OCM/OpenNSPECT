@@ -222,7 +222,7 @@ Public Class CompareOutputsForm
                             End If
                         Next
                         If filesExist Then
-                            Dim tmpgrp As Integer = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add(prj.strProjectName)
+                            Dim tmpgrp As Integer = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add(prj.ProjectName)
                             For j As Integer = 0 To prj.OutputItems.Count - 1
                                 outitem = prj.OutputItems.Item(j)
                                 tmprast = New Grid

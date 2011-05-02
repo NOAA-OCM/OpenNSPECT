@@ -136,10 +136,10 @@ Module Pollutants
         Dim i As Short
 
         If booLocal Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Landcover grid type: " & g_XmlPrjFile.strLCGridType & vbNewLine & vbTab & vbTab & "Landcover grid units: " & g_XmlPrjFile.strLCGridUnits & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Landcover grid type: " & g_XmlPrjFile.LandCoverGridType & vbNewLine & vbTab & vbTab & "Landcover grid units: " & g_XmlPrjFile.LandCoverGridUnits & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine
 
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.strSoilsHydFileName & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.strLCGridFileName & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
         End If
 
         strConstructMetaData = vbTab & "Pollutant Coefficients:" & vbNewLine & vbTab & vbTab & "Pollutant: " & _PollutantName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & vbTab & vbTab & "The following lists the landcover classes and associated coefficients used" & vbNewLine & vbTab & vbTab & "in the OpenNSPECT analysis run that created this dataset: " & vbNewLine
