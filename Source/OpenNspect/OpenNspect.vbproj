@@ -148,6 +148,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\InstallationHelper.vb" />
     <Compile Include="Modules\ConvertTo.vb" />
     <Compile Include="Modules\Database.vb" />
     <Compile Include="Modules\Features.vb" />
@@ -482,7 +483,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>if '$(ConfigurationName)' == 'Release' (
+    <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
 copy /y "$(Targetpath)" "C:\dev\nSpect\Installer\OpenNspect\Base Files\bin\$(TargetFileName)"
 )</PostBuildEvent>
   </PropertyGroup>

@@ -77,8 +77,6 @@ Friend Class ImportCoefficientSetForm
             Dim strValue As String
             Dim strLCTypeNum As String
             Dim j As Short
-            Dim dataLCType As OleDbDataReader
-
             ValidateCoeffTextFile = False
 
             'Gameplan is to find number of records(landclasses) in the chosen LCType. Then
@@ -93,6 +91,7 @@ Friend Class ImportCoefficientSetForm
                     intLine = 0
 
                     'CHECK 1: loop through the text file, compare value to [Value], make sure exists
+                    Dim dataLCType As OleDbDataReader
                     Do While Not read.EndOfStream
 
                         strLine = read.ReadLine
