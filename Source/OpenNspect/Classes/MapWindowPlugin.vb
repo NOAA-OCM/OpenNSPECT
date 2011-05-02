@@ -185,26 +185,26 @@ Public Class MapWindowPlugin
             Throw New ArgumentNullException("MapWin", "MapWin is nothing.")
         End If
 
-        _mapwindowInstance = MapWin
-
         VerifyMapWindowVersion()
-
-        AddMenus()
 
         Dim nspectPath As String = InstallationHelper.GetInstallationDirectory()
         If nspectPath Is Nothing Then
             nspectPath = "C:\NSPECT" ' C:\NSPECT was the default for the ArcGIS version. We will try that if the user didn't use the installer.
         End If
         If Not Directory.Exists(nspectPath) Then
-            MessageBox.Show("{0} is not a valid directory. You need to reinstall the plugin or relocate your data files to this location.", nspectPath)
+            MessageBox.Show(String.Format("{0} is not a valid directory. You need to reinstall the plugin or relocate your data files to this location.", nspectPath))
+        Else
+            _mapwindowInstance = MapWin
+
+            AddMenus()
+
+            nspectPath = nspectPath.TrimEnd("\")
+
+            g_nspectPath = nspectPath
+            g_nspectDocPath = nspectPath
+
+            InitializeDBConnection()
         End If
-
-        nspectPath = nspectPath.TrimEnd("\")
-
-        g_nspectPath = nspectPath
-        g_nspectDocPath = nspectPath
-
-        InitializeDBConnection()
     End Sub
 
 
@@ -339,7 +339,12 @@ Public Class MapWindowPlugin
     End Sub
 
     Private Sub ShowHelpIntro()
-        Help.ShowHelp(Nothing, g_nspectPath & "\Help\nspect.chm", "Introduction.htm")
+        Dim pathToHelp As String = g_nspectPath & "\Help\nspect.chm"
+        If Not File.Exists(pathToHelp) Then
+            MessageBox.Show("The help files are not installed. Feel free to run the installer and install the help component.")
+        Else
+            Help.ShowHelp(Nothing, pathToHelp, "Introduction.htm")
+        End If
     End Sub
 
 #End Region

@@ -28,8 +28,6 @@ Module Utilities
     Public g_nspectDocPath As String
     Public g_strWorkspace As String
 
-
-
     Public g_cbMainForm As MainForm
     Public g_MainForm As Form
 
