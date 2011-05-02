@@ -482,7 +482,8 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>if '$(ConfigurationName)' == 'Release' (
+copy /y "$(Targetpath)" "C:\dev\nSpect\Installer\OpenNspect\Base Files\bin\$(TargetFileName)"
+)</PostBuildEvent>
   </PropertyGroup>
 </Project>
