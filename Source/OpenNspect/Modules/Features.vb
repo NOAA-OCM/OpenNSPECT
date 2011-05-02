@@ -28,13 +28,13 @@ Module Features
 
     End Function
 
-    Public Function AddFeatureLayerToMapFromFileName(ByRef pathOrDirectory As String, Optional ByRef strLyrName As String = "") As Boolean
+    Public Function AddFeatureLayerToMapFromFileName(ByRef pathOrDirectory As String, Optional ByRef layerName As String = "") As Boolean
         Try
             Dim path = GetFeatureFullPath(pathOrDirectory)
 
             If File.Exists(path) Then
-                If strLyrName <> "" Then
-                    MapWindowPlugin.MapWindowInstance.Layers.Add(pathOrDirectory, strLyrName)
+                If layerName <> "" Then
+                    MapWindowPlugin.MapWindowInstance.Layers.Add(pathOrDirectory, layerName)
                 Else
                     MapWindowPlugin.MapWindowInstance.Layers.Add(pathOrDirectory)
                 End If
