@@ -819,11 +819,10 @@ Friend Class MainForm
             'STEP 7: ---------------------------------------------------------------------------------------------------------
             'Obtain Watershed values
             Dim strWaterShed As String = String.Format("Select * from WSDelineation Where Name like '{0}'", _XmlPrjParams.WaterShedDelin)
-            Dim cmdWS As New DataHelper(strWaterShed)
-
-            'STEP 8: ---------------------------------------------------------------------------------------------------------
-            'Set the Analysis Environment and globals for output workspace
-            SetGlobalEnvironment(cmdWS.GetCommand(), _SelectLyrPath, _SelectedShapes)
+            Using cmdWS As New DataHelper(strWaterShed)
+                'Set the Analysis Environment and globals for output workspace
+                SetGlobalEnvironment(cmdWS.GetCommand(), _SelectLyrPath, _SelectedShapes)
+            End Using
 
 
             'STEP 9: ---------------------------------------------------------------------------------------------------------
@@ -864,16 +863,14 @@ Friend Class MainForm
           
             'Step 11: Erosion -------------------------------------------------------------------------------------------------
             'Check that they have chosen Erosion
-            Dim dataWS As OleDbDataReader = cmdWS.ExecuteReader
-            dataWS.Read()
             If _XmlPrjParams.IntCalcErosion = 1 Then
                 If _IsAnnualPrecipScenario Then 'If Annual (0) then TRUE, ergo RUSLE
                     If _XmlPrjParams.IntRainGridBool Then
-                        If Not RUSLESetup(dataWS.Item("dem2bfilename"), _XmlPrjParams.StrRainGridFileName, _XmlPrjParams.SoilsKFileName, _XmlPrjParams.StrSDRGridFileName, _XmlPrjParams.LandCoverGridType, _XmlPrjParams.OutputItems) Then
+                        If Not RUSLESetup(_XmlPrjParams.StrRainGridFileName, _XmlPrjParams.SoilsKFileName, _XmlPrjParams.StrSDRGridFileName, _XmlPrjParams.LandCoverGridType, _XmlPrjParams.OutputItems) Then
                             Return
                         End If
                     ElseIf _XmlPrjParams.IntRainConstBool Then
-                        If Not RUSLESetup(dataWS.Item("dem2bfilename"), _XmlPrjParams.StrRainGridFileName, _XmlPrjParams.SoilsKFileName, _XmlPrjParams.StrSDRGridFileName, _XmlPrjParams.LandCoverGridType, _XmlPrjParams.OutputItems, _XmlPrjParams.DblRainConstValue) Then
+                        If Not RUSLESetup(_XmlPrjParams.StrRainGridFileName, _XmlPrjParams.SoilsKFileName, _XmlPrjParams.StrSDRGridFileName, _XmlPrjParams.LandCoverGridType, _XmlPrjParams.OutputItems, _XmlPrjParams.DblRainConstValue) Then
                             Return
                         End If
                     End If
@@ -883,8 +880,7 @@ Friend Class MainForm
                     End If
                 End If
             End If
-            dataWS.Close()
-          
+
             'STEP 12 : Cleanup any temp critters -------------------------------------------------------------------------------
             'g_DictTempNames holds the names of all temporary landuses and/or coefficient sets created during the Landuse scenario
             'portion of our program, for example CCAP1, or NitSet1.  We now must eliminate them from the database if they exist.

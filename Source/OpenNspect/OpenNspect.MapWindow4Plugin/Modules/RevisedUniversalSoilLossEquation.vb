@@ -34,8 +34,6 @@ Module RevisedUniversalSoilLossEquation
     ' *  Called By:  Various
     ' *************************************************************************************
 
-    Public g_DEMTwoCellRaster As Grid
-    'Two Cell buffer of the DEM
     Public g_RFactorRaster As Grid
     'R Factor Raster
     Private _strRusleMetadata As String
@@ -51,23 +49,16 @@ Module RevisedUniversalSoilLossEquation
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="strDEMTwoCellFileName">FileName of the two cell buffered DEM.</param>
     ''' <param name="strRFactorFileName">FileName of the R Factor GRID.</param>
     ''' <param name="strKfactorFileName">.</param>
     ''' <param name="strSDRFileName">.</param>
     ''' <param name="strLandClass">Name of the Landclass we're using.</param>
     ''' <param name="OutputItems">The output items.</param>
-    ''' <param name="dblRFactorConstant">The R factor constant.</param><returns></returns>
-    Public Function RUSLESetup(ByRef strDEMTwoCellFileName As String, ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, ByRef OutputItems As OutputItems, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
+    ''' <param name="dblRFactorConstant">The R factor constant.</param>
+    ''' <returns></returns>
+    Public Function RUSLESetup(ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, ByRef OutputItems As OutputItems, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
 
         Dim strError As String = ""
-        'STEP 2: Set the DEMTwoCell Raster -------------------------------------------------------------
-        If RasterExists(strDEMTwoCellFileName) Then
-            g_DEMTwoCellRaster = ReturnRaster(strDEMTwoCellFileName)
-        Else
-            strError = "DEM Two Cell Buffer Raster Does Not Exist: " & strDEMTwoCellFileName
-        End If
-        'END STEP 2: -----------------------------------------------------------------------------------
 
         'STEP 3: Set the R Factor Raster ---------------------------------------------------------------
         If Len(strRFactorFileName) > 0 Then
@@ -101,18 +92,16 @@ Module RevisedUniversalSoilLossEquation
             strTempLCType = strLandClass
         End If
 
-        Dim strCovFactor As String
-        strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
-        Dim cmdCov As New DataHelper(strCovFactor)
-
         If Len(strError) > 0 Then
             MsgBox(strError)
             Exit Function
         End If
 
         'Get the con statement for the cover factor calculation
-        Dim strConStatement As String
-        strConStatement = ConstructPickStatment(cmdCov.GetCommand(), g_LandCoverRaster)
+        Dim strCovFactor As String = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
+        Dim cmdCov As New DataHelper(strCovFactor)
+
+        Dim strConStatement As String = ConstructPickStatment(cmdCov.GetCommand(), g_LandCoverRaster)
 
         'Are they using SDR
         _strSDRFileName = Trim(strSDRFileName)
@@ -121,11 +110,7 @@ Module RevisedUniversalSoilLossEquation
         _strRusleMetadata = CreateMetadata(g_booLocalEffects)
 
         'Calc rusle using the con
-        If CalcRUSLE(strConStatement, OutputItems) Then
-            RUSLESetup = True
-        Else
-            RUSLESetup = False
-        End If
+        Return CalcRUSLE(strConStatement, OutputItems)
 
     End Function
 
@@ -137,10 +122,10 @@ Module RevisedUniversalSoilLossEquation
 
         'Set up the header w/or without flow direction
         If localEffects = True Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.strRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.StrRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.strRainGridFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.StrRainGridFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
 
         'Now report the C:Factor figures for the landcover
@@ -277,12 +262,12 @@ Module RevisedUniversalSoilLossEquation
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
                 Dim AllSoilLossCalc As New RasterMathCellCalc(AddressOf AllSoilLossCellCalc)
-                If Not _booUsingConstantValue Then 'If not using a constant
-                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, g_RFactorRaster, Nothing, pSoilLossAcres, AllSoilLossCalc)
-                    'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
-                Else 'if using a constant
+                If _booUsingConstantValue Then
                     RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, Nothing, Nothing, pSoilLossAcres, AllSoilLossCalc)
                     'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]"
+                Else
+                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, g_RFactorRaster, Nothing, pSoilLossAcres, AllSoilLossCalc)
+                    'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
                 End If
                 'END STEP 2: -------------------------------------------------------------------------------
             End If
@@ -324,7 +309,6 @@ Module RevisedUniversalSoilLossEquation
                 RasterMath(pSDRRaster, pSoilLossAcres, Nothing, Nothing, Nothing, pSedYieldRaster, SedYieldcalc)
                 pSDRRaster.Close()
                 pSoilLossAcres.Close()
-                'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
                 'END STEP 11: --------------------------------------------------------------------------------
             End If
 
@@ -366,41 +350,24 @@ Module RevisedUniversalSoilLossEquation
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp1)
-                strtmp1 = strtmp1 + TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp1)
-                DataManagement.DeleteGrid(strtmp1)
-                pTauD8Flow.Save(strtmp1)
+                Dim flowdir As String = GetTempFileNameTAUDEMGridExt()
+                pTauD8Flow.Save(flowdir)
 
-                Dim strtmp2 As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp2)
-                strtmp2 = strtmp2 + TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp2)
-                DataManagement.DeleteGrid(strtmp2)
-                pSedYieldRaster.Save(strtmp2)
+                Dim sedyield As String = GetTempFileNameTAUDEMGridExt()
+                pSedYieldRaster.Save(sedyield)
 
-                Dim strtmpout As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmpout)
-                strtmpout = strtmpout + "out" + TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmpout)
-                DataManagement.DeleteGrid(strtmpout)
+                Dim strtmpout As String = GetTempFileNameTAUDEMGridExt()
 
-                'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
+                Dim result = Hydrology.WeightedAreaD8(flowdir, sedyield, Nothing, strtmpout, False, False, Environment.ProcessorCount, Nothing)
                 If result <> 0 Then
                     g_KeepRunning = False
                 End If
-                'strExpression = "flowaccumulation([flowdir], [sedyield], FLOAT)"
 
                 pTotalAccumSedRaster = New Grid
                 pTotalAccumSedRaster.Open(strtmpout)
 
                 pTauD8Flow.Close()
-                DataManagement.DeleteGrid(strtmp1)
                 pSedYieldRaster.Close()
-                DataManagement.DeleteGrid(strtmp2)
-                'END STEP 12: --------------------------------------------------------------------------------
             End If
 
             ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 13, 13, g_MainForm)
@@ -426,24 +393,13 @@ Module RevisedUniversalSoilLossEquation
             CloseProgressDialog()
 
         Catch ex As Exception
-
-            If Err.Number = -2147217297 Then 'User cancelled operation
-                g_KeepRunning = False
-                CalcRUSLE = False
-            ElseIf Err.Number = -2147467259 Then
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
-                g_KeepRunning = False
-                CloseProgressDialog()
-                CalcRUSLE = False
-            Else
-                MsgBox("RUSLE Error: " & Err.Number & " on RUSLE Calculation")
-                MsgBox(Err.Number & ": " & Err.Description)
-                g_KeepRunning = False
-                CloseProgressDialog()
-                Cursor.Current = Cursors.Default
-                CalcRUSLE = False
-            End If
+            HandleError(ex)
+            Return False
+        Finally
+            g_KeepRunning = False
+            CloseProgressDialog()
         End Try
+
 
     End Function
 
