@@ -34,8 +34,6 @@ Module RevisedUniversalSoilLossEquation
     ' *  Called By:  Various
     ' *************************************************************************************
 
-    Public g_NibbleRaster As Grid
-    'Nibble Raster
     Public g_DEMTwoCellRaster As Grid
     'Two Cell buffer of the DEM
     Public g_RFactorRaster As Grid
@@ -50,27 +48,19 @@ Module RevisedUniversalSoilLossEquation
     'If user provides own SDR GRid, store path here
     Private _picks As String()
 
-    Public Function RUSLESetup(ByRef strNibbleFileName As String, ByRef strDEMTwoCellFileName As String, ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, ByRef OutputItems As OutputItems, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
-        'Sub takes incoming parameters from the project file and then parses them out
-        'strNibbleFileName: FileName of the nibble GRID
-        'strDEMTwoCellFileName: FileName of the two cell buffered DEM
-        'strRFactorFileName: FileName of the R Factor GRID
-        'strLandClass: Name of the Landclass we're using
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strDEMTwoCellFileName">FileName of the two cell buffered DEM.</param>
+    ''' <param name="strRFactorFileName">FileName of the R Factor GRID.</param>
+    ''' <param name="strKfactorFileName">.</param>
+    ''' <param name="strSDRFileName">.</param>
+    ''' <param name="strLandClass">Name of the Landclass we're using.</param>
+    ''' <param name="OutputItems">The output items.</param>
+    ''' <param name="dblRFactorConstant">The R factor constant.</param><returns></returns>
+    Public Function RUSLESetup(ByRef strDEMTwoCellFileName As String, ByRef strRFactorFileName As String, ByRef strKfactorFileName As String, ByRef strSDRFileName As String, ByRef strLandClass As String, ByRef OutputItems As OutputItems, Optional ByRef dblRFactorConstant As Double = 0) As Boolean
 
-        'Open Strings
-        Dim strCovFactor As String
-        Dim strConStatement As String
         Dim strError As String = ""
-        Dim strTempLCType As String
-
-        'STEP 1: Set the Nibble Raster ----------------------------------------------------------------
-        If RasterExists(strNibbleFileName) Then
-            g_NibbleRaster = ReturnRaster(strNibbleFileName)
-        Else
-            strError = "Nibble Raster Does Not Exist: " & strNibbleFileName
-        End If
-        'END STEP 1: -----------------------------------------------------------------------------------
-
         'STEP 2: Set the DEMTwoCell Raster -------------------------------------------------------------
         If RasterExists(strDEMTwoCellFileName) Then
             g_DEMTwoCellRaster = ReturnRaster(strDEMTwoCellFileName)
@@ -104,12 +94,14 @@ Module RevisedUniversalSoilLossEquation
 
         'Get the landclasses of type strLandClass
         'Check first for temp name
+        Dim strTempLCType As String
         If g_DictTempNames.Count > 0 AndAlso Len(g_DictTempNames.Item(strLandClass)) > 0 Then
             strTempLCType = g_DictTempNames.Item(strLandClass)
         Else
             strTempLCType = strLandClass
         End If
 
+        Dim strCovFactor As String
         strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
         Dim cmdCov As New DataHelper(strCovFactor)
 
@@ -119,6 +111,7 @@ Module RevisedUniversalSoilLossEquation
         End If
 
         'Get the con statement for the cover factor calculation
+        Dim strConStatement As String
         strConStatement = ConstructPickStatment(cmdCov.GetCommand(), g_LandCoverRaster)
 
         'Are they using SDR
