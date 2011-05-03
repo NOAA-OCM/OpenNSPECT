@@ -1404,13 +1404,12 @@ Friend Class MainForm
         'Either they use the GRID
         optUseGRID.Checked = _XmlPrjParams.IntRainGridBool
         If optUseGRID.Checked Then
-            If RasterExists(_XmlPrjParams.StrRainGridFileName) Then
+            If Not RasterExists(_XmlPrjParams.StrRainGridFileName) Then
                 Dim browseForData = MsgBox(String.Format("Could not find Rainfall GRID: {0}.  Would you like to browse for it?", _XmlPrjParams.StrRainGridFileName), MsgBoxStyle.YesNo, "Cannot Locate Dataset")
                 If browseForData = MsgBoxResult.Yes Then
-                    Dim g As New Grid
                     Using dlgOpen As New OpenFileDialog()
                         dlgOpen.Title = "Choose Rainfall Factor GRID"
-                        dlgOpen.Filter = g.CdlgFilter
+                        dlgOpen.Filter = (New Grid).CdlgFilter
                         If dlgOpen.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                             txtbxRainGrid.Text = dlgOpen.FileName
                             _XmlPrjParams.StrRainGridFileName = dlgOpen.FileName
