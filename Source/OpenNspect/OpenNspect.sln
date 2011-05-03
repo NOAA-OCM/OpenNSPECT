@@ -2,12 +2,30 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "OpenNspect.MapWindow4Plugin", "OpenNspect.MapWindow4Plugin\OpenNspect.MapWindow4Plugin.vbproj", "{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenNspect.Tests", "OpenNspect.Tests\OpenNspect.Tests.csproj", "{D559B0AB-2F0A-4801-9E2E-073C112C3E09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6346BEAD-F0EF-43B1-8E96-CD6484C99804}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		OpenNspect.vsmdi = OpenNspect.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 1
+		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs03
 		SccLocalPath0 = .
+		SccProjectUniqueName1 = OpenNspect.MapWindow4Plugin\\OpenNspect.MapWindow4Plugin.vbproj
+		SccProjectName1 = OpenNspect.MapWindow4Plugin
+		SccLocalPath1 = OpenNspect.MapWindow4Plugin
+		SccProjectUniqueName2 = OpenNspect.Tests\\OpenNspect.Tests.csproj
+		SccProjectName2 = OpenNspect.Tests
+		SccLocalPath2 = OpenNspect.Tests
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = OpenNspect.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +39,12 @@ Global
 		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Dev (Debug)|Any CPU.Build.0 = Dev (Debug)|Any CPU
 		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D559B0AB-2F0A-4801-9E2E-073C112C3E09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D559B0AB-2F0A-4801-9E2E-073C112C3E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D559B0AB-2F0A-4801-9E2E-073C112C3E09}.Dev (Debug)|Any CPU.ActiveCfg = Debug|Any CPU
+		{D559B0AB-2F0A-4801-9E2E-073C112C3E09}.Dev (Debug)|Any CPU.Build.0 = Debug|Any CPU
+		{D559B0AB-2F0A-4801-9E2E-073C112C3E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D559B0AB-2F0A-4801-9E2E-073C112C3E09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
