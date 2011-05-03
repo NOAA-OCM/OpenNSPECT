@@ -511,7 +511,7 @@ Module Utilities
     ''' Generates two color representation of the grid or feature layer to show which flow paths were above the water quality standards for pollutant loads
     ''' </summary>
     ''' <returns></returns>
-    Public Function ReturnUniqueRasterRenderer() As Object
+    Public Function GetUniqueRasterRenderer() As Object
         'Create two colors, red, green
         Dim red As UInteger = Convert.ToUInt32(RGB(214, 71, 0))
         Dim green As UInteger = Convert.ToUInt32(RGB(56, 168, 0))
@@ -704,10 +704,9 @@ Module Utilities
     Public Function AddOutputGridLayer(ByRef outRast As Grid, ByVal ColorString As String, ByVal UseStretch As Boolean, ByVal LayerName As String, ByVal OutputType As String, ByVal OutputGroup As Integer, ByRef OutputItems As OutputItems) As Boolean
         Dim cs As GridColorScheme
         If UseStretch = True Then
-            cs = ReturnRasterStretchColorRampCS(outRast, ColorString)
-            'Dim cs As MapWinGIS.GridColorScheme = ReturnContinuousRampColorCS(pPermAccumLocRunoffRaster, "Blue")
+            cs = GetRasterStretchColorRampCS(outRast, ColorString)
         Else
-            cs = ReturnUniqueRasterRenderer()
+            cs = GetUniqueRasterRenderer()
         End If
 
         Dim lyr As Layer = MapWindowPlugin.MapWindowInstance.Layers.Add(outRast, cs, LayerName)
