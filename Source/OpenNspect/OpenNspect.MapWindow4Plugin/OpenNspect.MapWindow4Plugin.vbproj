@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\InstallationHelper.vb" />
+    <Compile Include="Modules\Colors.vb" />
     <Compile Include="Modules\ConvertTo.vb" />
     <Compile Include="Modules\Database.vb" />
     <Compile Include="Modules\Features.vb" />
