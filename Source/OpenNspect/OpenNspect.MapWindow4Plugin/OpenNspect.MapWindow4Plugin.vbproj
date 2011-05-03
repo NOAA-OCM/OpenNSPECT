@@ -54,7 +54,7 @@
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\..\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
+    <OutputPath>..\..\..\..\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
     <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -74,7 +74,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\..\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
+    <OutputPath>..\..\..\..\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
     <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -97,7 +97,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
+    <OutputPath>..\..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
     <BaseAddress>285212672</BaseAddress>
     <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
