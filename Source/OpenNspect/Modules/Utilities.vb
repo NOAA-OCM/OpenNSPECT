@@ -109,7 +109,7 @@ Module Utilities
         For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
             If MapWindowPlugin.MapWindowInstance.Layers(i).Name = strLayerName Then
                 Dim proj As String = MapWindowPlugin.MapWindowInstance.Layers(i).Projection
-                If proj <> "" Then
+                If Not String.IsNullOrEmpty(proj) Then
                     If proj.Contains("units=m") Then
                         Return 0
                     ElseIf proj.Contains("units=ft") Then
@@ -508,7 +508,7 @@ Module Utilities
         End Try
     End Function
     ''' <summary>
-    ''' Generates two color representation of the grid or feature layer
+    ''' Generates two color representation of the grid or feature layer to show which flow paths were above the water quality standards for pollutant loads
     ''' </summary>
     ''' <returns></returns>
     Public Function ReturnUniqueRasterRenderer() As Object
@@ -557,36 +557,33 @@ Module Utilities
     End Function
 
     Public Function CheckSpatialReference(ByRef pRasGeoDataset As Grid) As String
-        CheckSpatialReference = ""
         Try
             If Not pRasGeoDataset Is Nothing Then
                 Dim strprj As String = pRasGeoDataset.Header.Projection
-                If strprj <> "" Then
+                If Not String.IsNullOrEmpty(strprj) Then
                     Return strprj
                 Else
                     If Path.GetFileName(pRasGeoDataset.Filename) = "sta.adf" Then
-                        If File.Exists(Path.GetDirectoryName(pRasGeoDataset.Filename) + Path.DirectorySeparatorChar + "prj.adf") Then
-                            Dim infile As New StreamReader(Path.GetDirectoryName(pRasGeoDataset.Filename) + Path.DirectorySeparatorChar + "prj.adf")
-                            'TODO: Temporary measure that allows at least units to be recognized
-                            If infile.ReadToEnd.Contains("METERS") Then
-                                Return "units=m"
-                            Else
-                                Return "units=ft"
-                            End If
+                        Dim rasPath As String = Path.Combine(Path.GetDirectoryName(pRasGeoDataset.Filename), "prj.adf")
+                        If File.Exists(rasPath) Then
+                            Using infile As New StreamReader(rasPath)
+                                'TODO: Temporary measure that allows at least units to be recognized
+                                If infile.ReadToEnd.Contains("METERS") Then
+                                    Return "units=m"
+                                Else
+                                    Return "units=ft"
+                                End If
+                            End Using
                             Return "convert this prj.adf to real projection"
-                        Else
-                            Return ""
                         End If
-                    Else
-                        Return ""
                     End If
                 End If
-            Else
-                Return ""
             End If
+
         Catch ex As Exception
             HandleError(ex)
         End Try
+        Return ""
     End Function
 
     Public Function ClipBySelectedPoly(ByRef pGridToClip As Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As Grid
@@ -735,6 +732,18 @@ Module Utilities
 
     Public Delegate Function RasterMathCellCalcNulls(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single, ByVal Input2Null As Single, ByVal Input3 As Single, ByVal Input3Null As Single, ByVal Input4 As Single, ByVal Input4Null As Single, ByVal Input5 As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
 
+    ''' <summary>
+    ''' performs an operation using a number of lined up input grids on a cell-by-cell comparison.
+    ''' </summary>
+    ''' <param name="InputGrid1">The input grid1.</param>
+    ''' <param name="InputGrid2">The input grid2.</param>
+    ''' <param name="Inputgrid3">The inputgrid3.</param>
+    ''' <param name="Inputgrid4">The inputgrid4.</param>
+    ''' <param name="Inputgrid5">The inputgrid5.</param>
+    ''' <param name="outputGrid">The output grid.</param>
+    ''' <param name="CellCalc">The cell calc.</param>
+    ''' <param name="checkNullFirst">if set to <c>true</c> [check null first].</param>
+    ''' <param name="CellCalcNull">The cell calc null.</param>
     Public Sub RasterMath(ByRef InputGrid1 As Grid, ByRef InputGrid2 As Grid, ByRef Inputgrid3 As Grid, ByRef Inputgrid4 As Grid, ByRef Inputgrid5 As Grid, ByRef outputGrid As Grid, ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
 
 
@@ -810,6 +819,21 @@ Module Utilities
         End If
     End Function
 
+    ''' <summary>
+    ''' performs an operation using a number of lined up input grids on a cell-by-cell comparison exposing the 8 cell surround the current center cell:
+    ''' 7 0 1
+    ''' 6 C 2
+    ''' 5 4 3
+    ''' </summary>
+    ''' <param name="InputGrid1">The input grid1.</param>
+    ''' <param name="InputGrid2">The input grid2.</param>
+    ''' <param name="Inputgrid3">The inputgrid3.</param>
+    ''' <param name="Inputgrid4">The inputgrid4.</param>
+    ''' <param name="Inputgrid5">The inputgrid5.</param>
+    ''' <param name="Outputgrid">The outputgrid.</param>
+    ''' <param name="CellCalcWindow">The cell calc window.</param>
+    ''' <param name="checkNullFirst">if set to <c>true</c> [check null first].</param>
+    ''' <param name="CellCalcWindowNull">The cell calc window null.</param>
     Public Sub RasterMathWindow(ByRef InputGrid1 As Grid, ByRef InputGrid2 As Grid, ByRef Inputgrid3 As Grid, ByRef Inputgrid4 As Grid, ByRef Inputgrid5 As Grid, ByRef Outputgrid As Grid, ByRef CellCalcWindow As RasterMathCellCalcWindow, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcWindowNull As RasterMathCellCalcWindowNulls = Nothing)
         Dim head1, head2, head3, head4, head5, headnew As GridHeader
         Dim ncol As Integer
