@@ -11,7 +11,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>OpenNspect</AssemblyName>
+    <AssemblyName>OpenNspect.MapWindow4Plugin</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\..\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
-    <DocumentationFile>OpenNspect.xml</DocumentationFile>
+    <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
@@ -75,7 +75,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\..\..\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
-    <DocumentationFile>OpenNspect.xml</DocumentationFile>
+    <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
@@ -99,7 +99,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
     <BaseAddress>285212672</BaseAddress>
-    <DocumentationFile>OpenNspect.xml</DocumentationFile>
+    <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
     <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>

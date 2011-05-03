@@ -33,7 +33,7 @@ Module Features
             Dim path = GetFeatureFullPath(pathOrDirectory)
 
             If File.Exists(path) Then
-                If layerName <> "" Then
+                If Not String.IsNullOrEmpty(layerName) Then
                     MapWindowPlugin.MapWindowInstance.Layers.Add(pathOrDirectory, layerName)
                 Else
                     MapWindowPlugin.MapWindowInstance.Layers.Add(pathOrDirectory)
