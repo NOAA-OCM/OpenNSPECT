@@ -56,8 +56,19 @@ Module Rasters
     Public Function ReturnRasterStretchColorRampCS(ByRef pRaster As Grid, ByRef strColor As String) As GridColorScheme
         ReturnRasterStretchColorRampCS = Nothing
         Try
-            Dim rTo, bTo, gTo, rFrom, bFrom, gFrom, rTo2, bTo2, gTo2, rFrom2, bFrom2, gFrom2 As Integer
-
+            Dim rTo As Integer
+            Dim bTo As Integer
+            Dim gTo As Integer
+            Dim rFrom As Integer
+            Dim bFrom As Integer
+            Dim gFrom As Integer
+            Dim rTo2 As Integer
+            Dim bTo2 As Integer
+            Dim gTo2 As Integer
+            Dim rFrom2 As Integer
+            Dim bFrom2 As Integer
+            Dim gFrom2 As Integer
+            'System.Drawing.Color.Brown.R
             Select Case strColor
                 Case "Blue"
                     ' 242, 245, 255
