@@ -160,12 +160,8 @@ Friend Class NewPrecipitationScenarioForm
 #Region "Helper Functions"
 
     Public Sub Init(ByRef frmPrj As MainForm, ByRef frmPrec As PrecipitationScenariosForm)
-        Try
-            _frmPrj = frmPrj
-            _frmPrec = frmPrec
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
+        _frmPrj = frmPrj
+        _frmPrec = frmPrec
     End Sub
 
     Private Function CheckParams() As Boolean
