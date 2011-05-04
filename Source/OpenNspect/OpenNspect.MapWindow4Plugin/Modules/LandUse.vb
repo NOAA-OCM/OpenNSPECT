@@ -266,30 +266,23 @@ Module LandUse
 
         CopyCoefficient = Nothing
         Try
-            Dim strCopySet As String
-            'The Recordset of existing coefficients being copied
-            Dim strNewLcType As String
+
             'CmdString for inserting new coefficientset               '
-            Dim strNewCoeffID As String
             'Holder for the CoefficientSetID
 
-            strCopySet = String.Format("SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '{0}'", strCoeffSet)
-            Dim cmdCopySet As New DataHelper(strCopySet)
+            'The Recordset of existing coefficients being copied
+            Dim cmdCopySet As New DataHelper(String.Format("SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '{0}'", strCoeffSet))
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader
             dataCopySet.Read()
-
-            'INSERT: new Coefficient set taking the PollID and LCType ID from rsCopySet
-            strNewLcType = String.Format("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('{0}',{1},{2})", Replace(strNewCoeffName, "'", "''"), dataCopySet("POLLID"), _intLCTypeID)
-
             dataCopySet.Close()
 
+            'INSERT: new Coefficient set taking the PollID and LCType ID from rsCopySet
             'First need to add the coefficient set to that table
-            Dim cmdNewLCType As New DataHelper(strNewLcType)
+            Dim cmdNewLCType As New DataHelper(String.Format("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('{0}',{1},{2})", Replace(strNewCoeffName, "'", "''"), dataCopySet("POLLID"), _intLCTypeID))
             cmdNewLCType.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set
-            strNewCoeffID = String.Format("SELECT COEFFSETID FROM COEFFICIENTSET WHERE COEFFICIENTSET.NAME LIKE '{0}'", strNewCoeffName)
-            Dim cmdNewCoeffId As New DataHelper(strNewCoeffID)
+            Dim cmdNewCoeffId As New DataHelper(String.Format("SELECT COEFFSETID FROM COEFFICIENTSET WHERE COEFFICIENTSET.NAME LIKE '{0}'", strNewCoeffName))
             Dim datanewCoeffId As OleDbDataReader = cmdNewCoeffId.ExecuteReader()
             datanewCoeffId.Read()
             _intCoeffSetID = datanewCoeffId("CoeffSetID")

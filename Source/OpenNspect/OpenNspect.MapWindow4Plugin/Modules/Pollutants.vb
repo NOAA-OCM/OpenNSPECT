@@ -50,14 +50,11 @@ Module Pollutants
         'and then parses them out
         Try
             'Open Strings
-            Dim strPoll As String
             Dim strType As String
             Dim strField As String = ""
             Dim strConStatement As String = ""
             Dim strTempCoeffSet As String
             'Again, because of landuse, we have to check for 'temp' coeff sets and their use
-            Dim strPollColor As String
-
             'Get the name of the pollutant
             _PollutantName = Pollutant.strPollName
 
@@ -89,23 +86,22 @@ Module Pollutants
             End If
 
             If Len(strField) > 0 Then
-                strPoll = "SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '" & strTempCoeffSet & "'"
-                Dim cmdPoll As New DataHelper(strPoll)
-                Dim dataPoll As OleDbDataReader = cmdPoll.ExecuteReader()
-                dataPoll.Read()
-                strType = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT." & strField & " As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & "WHERE COEFFICIENT.COEFFSETID = " & dataPoll("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
-                dataPoll.Close()
-                Dim cmdType As New DataHelper(strType)
-
-                Dim command As OleDbCommand = cmdType.GetCommand()
-                strConStatement = ConstructPickStatment(command, g_LandCoverRaster)
-                _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_booLocalEffects)
+                Using cmdPoll As New DataHelper("SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '" & strTempCoeffSet & "'")
+                    Using dataPoll As OleDbDataReader = cmdPoll.ExecuteReader()
+                        dataPoll.Read()
+                        strType = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT." & strField & " As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & "WHERE COEFFICIENT.COEFFSETID = " & dataPoll("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
+                        Using cmdType As New DataHelper(strType)
+                            Dim command As OleDbCommand = cmdType.GetCommand()
+                            strConStatement = ConstructPickStatment(command, g_LandCoverRaster)
+                            _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_booLocalEffects)
+                        End Using
+                    End Using
+                End Using
 
             End If
 
             'Find out the color of the pollutant
-            strPollColor = "Select Color from Pollutant where NAME LIKE '" & _PollutantName & "'"
-            Using cmdPollColor As New DataHelper(strPollColor)
+            Using cmdPollColor As New DataHelper("Select Color from Pollutant where NAME LIKE '" & _PollutantName & "'")
                 Using datapollcolor As OleDbDataReader = cmdPollColor.ExecuteReader()
                     datapollcolor.Read()
                     _PollutantColor = CStr(datapollcolor("Color"))
@@ -130,19 +126,16 @@ Module Pollutants
         'Takes the rs and creates a string describing the pollutants and coefficients used in this run, will
         'later be added to the global dictionary
 
-        Dim strConstructMetaData As String
+        Dim strConstructMetaData As String = vbTab & "Pollutant Coefficients:" & vbNewLine & vbTab & vbTab & "Pollutant: " & _PollutantName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & vbTab & vbTab & "The following lists the landcover classes and associated coefficients used" & vbNewLine & vbTab & vbTab & "in the OpenNSPECT analysis run that created this dataset: " & vbNewLine
         Dim strLandClassCoeff As String = ""
         Dim strHeader As String
         Dim i As Short
 
         If booLocal Then
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Landcover grid type: " & g_XmlPrjFile.LandCoverGridType & vbNewLine & vbTab & vbTab & "Landcover grid units: " & g_XmlPrjFile.LandCoverGridUnits & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine
-
         Else
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
         End If
-
-        strConstructMetaData = vbTab & "Pollutant Coefficients:" & vbNewLine & vbTab & vbTab & "Pollutant: " & _PollutantName & vbNewLine & vbTab & vbTab & "Coefficient Set: " & strCoeffSet & vbNewLine & vbTab & vbTab & "The following lists the landcover classes and associated coefficients used" & vbNewLine & vbTab & vbTab & "in the OpenNSPECT analysis run that created this dataset: " & vbNewLine
 
         Dim dataType As OleDbDataReader = cmdType.ExecuteReader()
         While dataType.Read()
@@ -170,17 +163,8 @@ Module Pollutants
             Dim maxVal As Integer = pLCRaster.Maximum
 
             'TODO: it looks like some of this code is copied, refactor it.
-            Dim tablepath As String = ""
-            'Get the raster table
-            Dim lcPath As String = pLCRaster.Filename
-            If Path.GetFileName(lcPath) = "sta.adf" Then
-                tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
-            Else
-                tablepath = Path.ChangeExtension(lcPath, ".dbf")
-            End If
+            Dim tablepath = GetRasterTablePath(pLCRaster)
             Dim TableExist As Boolean = File.Exists(tablepath)
-
-
             Dim strpick As String = ""
 
             Dim mwTable As New Table
@@ -191,14 +175,7 @@ Module Pollutants
             Else
                 mwTable.Open(tablepath)
 
-                'Get index of Value Field
-                FieldIndex = -1
-                For fidx As Integer = 0 To mwTable.NumFields - 1
-                    If mwTable.Field(fidx).Name.ToLower = "value" Then
-                        FieldIndex = fidx
-                        Exit For
-                    End If
-                Next
+                FieldIndex = GetFieldIndex(mwTable)
 
                 Dim rowidx As Integer = 0
                 Dim dataType As OleDbDataReader
@@ -261,12 +238,10 @@ Module Pollutants
 
                 mwTable.Close()
             End If
-            'strCompleteCon = strCon & strParens
-            'ConstructPickStatment = strCompleteCon
-            ConstructPickStatment = strpick
+            Return strpick
 
         Catch ex As Exception
-            MsgBox("Error in pick Statement: " & Err.Number & ": " & Err.Description)
+            HandleError(ex)
         End Try
     End Function
 

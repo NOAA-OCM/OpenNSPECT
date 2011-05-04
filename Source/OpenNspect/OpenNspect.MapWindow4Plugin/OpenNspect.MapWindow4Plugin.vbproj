@@ -149,11 +149,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\InstallationHelper.vb" />
-    <Compile Include="Modules\Colors.vb" />
+    <Compile Include="Modules\Coloring.vb" />
     <Compile Include="Modules\ConvertTo.vb" />
     <Compile Include="Modules\Database.vb" />
     <Compile Include="Modules\Features.vb" />
     <Compile Include="Modules\Rasters.vb" />
+    <Compile Include="Modules\UniversalSoilLossEquation.vb" />
     <Compile Include="Xml\LandUseMangementScenario.vb" />
     <Compile Include="Xml\LandUseScenarioPollutantItem.vb" />
     <Compile Include="Xml\Base.vb" />

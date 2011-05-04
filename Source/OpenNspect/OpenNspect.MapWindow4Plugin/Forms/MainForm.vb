@@ -101,7 +101,7 @@ Friend Class MainForm
             PopulateManagement(0)
 
             'Test workspace persistence
-            If g_XmlPrjFile.ProjectWorkspace IsNot Nothing Then
+            If g_XmlPrjFile IsNot Nothing AndAlso g_XmlPrjFile.ProjectWorkspace IsNot Nothing Then
                 txtOutputWS.Text = g_XmlPrjFile.ProjectWorkspace
             End If
 
@@ -835,7 +835,6 @@ Friend Class MainForm
                     dataPrecip.Read()
                     'Added 6/04 to account for different PrecipTypes
                     g_intPrecipType = dataPrecip.Item("PrecipType")
-                    dataPrecip.Close()
                 End Using
                 'If there has been a land use added, then a new LCType has been created, hence we get it from g_strLCTypename
                 Dim strLCType As String
@@ -1242,13 +1241,12 @@ Friend Class MainForm
         Using WSCmd As OleDbCommand = New OleDbCommand(strCurrWShed, g_DBConn)
             Using wsData As OleDbDataReader = WSCmd.ExecuteReader
                 wsData.Read()
-                Dim strBasin As String = ""
                 If wsData.HasRows() Then
-                    strBasin = wsData.Item("wsfilename")
+                    Dim strBasin As String = wsData.Item("wsfilename")
                     If Path.GetExtension(strBasin) <> ".shp" Then
                         strBasin = strBasin + ".shp"
                     End If
-                    If Not LayerInMapByFileName(strBasin) Then
+                    If Not ExistsLayerInMapByFileName(strBasin) Then
                         If AddFeatureLayerToMapFromFileName(strBasin, String.Format("{0} Drainage Basins", wsData.Item("Name"))) Then
 
                             arrAreaList.Add(String.Format("{0} Drainage Basins", wsData.Item("Name")))
@@ -1330,7 +1328,7 @@ Friend Class MainForm
     End Function
     Private Function LoadSoils() As Boolean
         If RasterExists(_XmlPrjParams.SoilsHydDirectory) Then
-            cboSoilsLayer.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.SoilsDefName), cboSoilsLayer)
+            cboSoilsLayer.SelectedIndex = GetIndexOfEntry(_XmlPrjParams.SoilsDefName, cboSoilsLayer)
             Return True
         Else
             MsgBox("Could not find soils dataset.  Please correct the soils definition in the Advanced Settings.", MsgBoxStyle.Critical, "Dataset Missing")
@@ -1351,7 +1349,7 @@ Friend Class MainForm
             _SelectedShapes = _XmlPrjParams.intSelectedPolyList
             lblSelected.Text = _SelectedShapes.Count.ToString + " selected"
 
-            If Not LayerInMapByFileName(strSelected) Then
+            If Not ExistsLayerInMapByFileName(strSelected) Then
                 'Not there then add it
                 If AddFeatureLayerToMapFromFileName(strSelected, _XmlPrjParams.StrSelectedPolyLyrName) Then
                     arrAreaList.Add(_XmlPrjParams.StrSelectedPolyLyrName)
@@ -1504,10 +1502,10 @@ Friend Class MainForm
 
             If Not LoadLandCoverGrid() Then Return
             If Not LoadSoils() Then Return
-            cboPrecipitationScenarios.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.PrecipScenario), cboPrecipitationScenarios)
-            cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.WaterShedDelin), cboWaterShedDelineations)
+            cboPrecipitationScenarios.SelectedIndex = GetIndexOfEntry(_XmlPrjParams.PrecipScenario, cboPrecipitationScenarios)
+            cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry(_XmlPrjParams.WaterShedDelin, cboWaterShedDelineations)
             AddBasinpolyToMap()
-            cboWaterQualityCriteriaStd.SelectedIndex = GetIndexOfEntry((_XmlPrjParams.WaterQuality), cboWaterQualityCriteriaStd)
+            cboWaterQualityCriteriaStd.SelectedIndex = GetIndexOfEntry(_XmlPrjParams.WaterQuality, cboWaterQualityCriteriaStd)
             LoadWatersheds()
             If Not LoadErosion() Then Return
             Dim idx As Integer = GetPollutantsIdx()
@@ -1994,19 +1992,17 @@ Friend Class MainForm
                                 'rsWShed.Fields("DEMFileName").Value = strDEM
                                 booUpdate = True
                             Else
-                                ValidateWaterShed = False
-                                Exit Function
+                                Return False
                             End If
                             'WaterShed Delineation
                         ElseIf Not FeatureExists(dtWS.Rows(0)("wsfilename")) Then
                             MsgBox(String.Format("Unable to locate Watershed dataset: {0}.", dtWS.Rows(0)("wsfilename")), MsgBoxStyle.Critical, "Missing Dataset")
-                            strWShed = BrowseForFileName("Feature")
-                            If Len(strWShed) > 0 Then
-                                dtWS.Rows(0)("wsfilename") = strWShed
+                            Dim strWShed1 = BrowseForFileName("Feature")
+                            If Len(strWShed1) > 0 Then
+                                dtWS.Rows(0)("wsfilename") = strWShed1
                                 booUpdate = True
                             Else
-                                ValidateWaterShed = False
-                                Exit Function
+                                Return False
                             End If
                             'Flow Direction
                         ElseIf Not RasterExists(dtWS.Rows(0)("FlowDirFileName")) Then
@@ -2016,8 +2012,7 @@ Friend Class MainForm
                                 dtWS.Rows(0)("FlowDirFileName") = strFlowDirFileName
                                 booUpdate = True
                             Else
-                                ValidateWaterShed = False
-                                Exit Function
+                                Return False
                             End If
                             'Flow Accumulation
                         ElseIf Not RasterExists(dtWS.Rows(0)("FlowAccumFileName")) Then
@@ -2027,8 +2022,7 @@ Friend Class MainForm
                                 dtWS.Rows(0)("FlowAccumFileName") = strFlowAccumFileName
                                 booUpdate = True
                             Else
-                                ValidateWaterShed = False
-                                Exit Function
+                                Return False
                             End If
                             'Check for non-hydro correct GRIDS
                         ElseIf dtWS.Rows(0)("HydroCorrected") = 0 Then
@@ -2039,8 +2033,7 @@ Friend Class MainForm
                                     dtWS.Rows(0)("FilledDEMFileName") = strFilledDEMFileName
                                     booUpdate = True
                                 Else
-                                    ValidateWaterShed = False
-                                    Exit Function
+                                    Return False
                                 End If
                             End If
                         End If

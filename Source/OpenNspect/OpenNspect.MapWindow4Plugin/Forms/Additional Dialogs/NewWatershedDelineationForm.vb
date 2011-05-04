@@ -420,6 +420,9 @@ Friend Class NewWatershedDelineationForm
                 Return False
             End If
 
+            'Step 6: Do WaterShed Op got moved into above step.
+            _strWShedFileName = OutPath + "basinpoly.shp"
+
             ShowProgress("Creating Watershed Shape...", strProgTitle, 10, 7, Me)
             If g_KeepRunning Then
                 Dim file = pFlowDirRaster.Filename

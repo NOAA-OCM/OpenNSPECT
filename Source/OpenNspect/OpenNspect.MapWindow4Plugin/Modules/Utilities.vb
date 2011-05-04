@@ -141,18 +141,13 @@ Module Utilities
         End Try
     End Function
 
-    Public Function LayerInMapByFileName(ByRef strName As String) As Boolean
+    Public Function ExistsLayerInMapByFileName(ByRef strName As String) As Boolean
+        For layerIndex As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+            Dim pLayer As Layer = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(layerIndex))
 
-        For lngLyrIndex As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
-            Dim pLayer As Layer = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.GetHandle(lngLyrIndex))
-
-            If Trim(LCase(pLayer.FileName)) <> Trim(LCase(strName)) Then
-                LayerInMapByFileName = False
-            Else
-                LayerInMapByFileName = True
-                Exit For
-            End If
+            If Trim(LCase(pLayer.FileName)) = Trim(LCase(strName)) Then Return True
         Next
+        Return False
     End Function
 
     Public Function GetLayerIndex(ByRef strLayerName As String) As Integer

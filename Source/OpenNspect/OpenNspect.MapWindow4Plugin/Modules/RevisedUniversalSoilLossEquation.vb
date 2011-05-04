@@ -99,7 +99,7 @@ Module RevisedUniversalSoilLossEquation
         'Get the con statement for the cover factor calculation
         Dim strCovFactor As String = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
         Using cmdCov As New DataHelper(strCovFactor)
-            Dim strConStatement As String = ConstructPickStatment(cmdCov.GetCommand(), g_LandCoverRaster)
+            Dim strConStatement As String = ConstructPickStatmentUsingLandClass(cmdCov.GetCommand(), g_LandCoverRaster)
             'Are they using SDR
             _strSDRFileName = Trim(strSDRFileName)
             'Metadata time
@@ -139,94 +139,6 @@ Module RevisedUniversalSoilLossEquation
         CreateMetadata = strHeader
         '& vbTab & "C-Factor values: " & vbNewLine & strCFactor
 
-    End Function
-
-    Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As Grid) As String
-        'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
-        'and the Land Class Raster.  Returns a string
-
-        Try
-            Dim FieldIndex As Short
-            Dim booValueFound As Boolean
-            Dim i As Short
-            Dim maxVal As Integer = pLCRaster.Maximum
-            'TODO: it looks like some of this code is copied, refactor it.
-            Dim tablepath As String = ""
-            'Get the raster table
-            Dim lcPath As String = pLCRaster.Filename
-            If Path.GetFileName(lcPath) = "sta.adf" Then
-                tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
-            Else
-                tablepath = Path.ChangeExtension(lcPath, ".dbf")
-            End If
-            Dim TableExist As Boolean = File.Exists(tablepath)
-
-            Dim strpick As String = ""
-
-            Dim mwTable As New Table
-            If Not TableExist Then
-                MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
-
-                Return ""
-            Else
-                mwTable.Open(tablepath)
-
-                'Get index of Value Field
-                FieldIndex = -1
-                For fidx As Integer = 0 To mwTable.NumFields - 1
-                    If mwTable.Field(fidx).Name.ToLower = "value" Then
-                        FieldIndex = fidx
-                        Exit For
-                    End If
-                Next
-
-                Dim rowidx As Integer = 0
-                Dim dataType As OleDbDataReader
-                For i = 1 To maxVal
-                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
-                        dataType = cmdType.ExecuteReader
-
-                        booValueFound = False
-                        While dataType.Read()
-                            If mwTable.CellValue(FieldIndex, rowidx) = dataType("Value") Then
-                                booValueFound = True
-                                If strpick = "" Then
-                                    strpick = CStr(dataType("CoverFactor"))
-                                Else
-                                    strpick = strpick & ", " & CStr(dataType("CoverFactor"))
-                                End If
-                                rowidx = rowidx + 1
-                                Exit While
-                            Else
-                                booValueFound = False
-                            End If
-                        End While
-                        If booValueFound = False Then
-                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
-                            dataType.Close()
-                            mwTable.Close()
-                            Return Nothing
-                        End If
-                        dataType.Close()
-
-                    Else
-                        If strpick = "" Then
-                            strpick = "0"
-                        Else
-                            strpick = strpick & ", 0"
-                        End If
-                    End If
-
-                Next
-                mwTable.Close()
-            End If
-
-            Return strpick
-
-        Catch ex As Exception
-            MsgBox("Error in pick Statement: " & Err.Number & ": " & Err.Description)
-        End Try
-        Return ""
     End Function
 
     Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As OutputItems) As Boolean
