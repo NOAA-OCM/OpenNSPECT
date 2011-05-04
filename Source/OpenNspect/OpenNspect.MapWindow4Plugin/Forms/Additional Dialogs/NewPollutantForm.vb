@@ -29,11 +29,11 @@ Friend Class NewPollutantForm
 
 #Region "Events"
 
-    Private Sub frmNewPollutants_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmNewPollutants_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
-            InitComboBox (cboLCType, "LCType")
+            InitComboBox(cboLCType, "LCType")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -69,9 +69,10 @@ Friend Class NewPollutantForm
     Private Sub mnuCoeffNewSet_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuCoeffNewSet.Click
         Try
             g_boolAddCoeff = False
-            Dim addCoeff As New NewCoefficientSetForm
-            addCoeff.Init(Nothing, Me)
-            addCoeff.ShowDialog()
+            Using addCoeff As New NewCoefficientSetForm()
+                addCoeff.Init(Nothing, Me)
+                addCoeff.ShowDialog()
+            End Using
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -80,9 +81,10 @@ Friend Class NewPollutantForm
     Private Sub mnuCoeffCopySet_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuCoeffCopySet.Click
         Try
             g_boolCopyCoeff = False
-            Dim newCopyCoef As New CopyCoefficientSetForm
-            newCopyCoef.Init(Nothing, Nothing, Me)
-            newCopyCoef.ShowDialog()
+            Using newCopyCoef As New CopyCoefficientSetForm()
+                newCopyCoef.Init(Nothing, Nothing, Me)
+                newCopyCoef.ShowDialog()
+            End Using
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -243,78 +245,66 @@ Friend Class NewPollutantForm
 
     Private Function UpdateValues() As Boolean
 
-        Dim strInsertPollutant As String
         'Insert String for new poll
-        Dim strSelectPollutant As String
         'Select string for new poll
-        Dim strSelectLCType As String
         'Select string for LCType
-        Dim strInsertCoeffSet As String
         'Insert string for new coeff set
-        Dim strSelectCoeffSet As String
         'Select string for new coeff set
-        Dim strInsertCoeffs As String
         'Insert string for the coefficients
-        Dim strSelectWQCrit As String
         'Select string for Water Quality
-        Dim strInsertWQCrit As String
         'Insert string for Water Quality
         Dim strNewColor As String
         'New color
 
         Try
             'Step 1a: Get a new color for this pollutant
-            strNewColor = GetRandomHSVColorString
+            strNewColor = GetRandomHSVColorString()
 
             'Step 1: Insert the New Pollutant
-            strInsertPollutant = "INSERT INTO POLLUTANT(NAME, POLLTYPE, COLOR) VALUES ('" & Replace(Trim(txtPollutant.Text), "'", "''") & "', 0, " & "'" & strNewColor & "'" & ")"
-            Dim cmdinspol As New DataHelper(strInsertPollutant)
-            cmdinspol.ExecuteNonQuery()
+            Using cmdinspol As New DataHelper("INSERT INTO POLLUTANT(NAME, POLLTYPE, COLOR) VALUES ('" & Replace(Trim(txtPollutant.Text), "'", "''") & "', 0, " & "'" & strNewColor & "'" & ")")
+                cmdinspol.ExecuteNonQuery()
+            End Using
 
             'Step 2: Select the newly inserted pollutant info
-            strSelectPollutant = "SELECT * FROM POLLUTANT WHERE NAME LIKE '" & Trim(txtPollutant.Text) & "'"
-            Dim cmdSelPoll As New DataHelper(strSelectPollutant)
+            Dim cmdSelPoll As New DataHelper("SELECT * FROM POLLUTANT WHERE NAME LIKE '" & Trim(txtPollutant.Text) & "'")
             Dim dataNewPoll As OleDbDataReader = cmdSelPoll.ExecuteReader()
             dataNewPoll.Read()
 
             'Step 2a: Select the WQ Standards
-            strSelectWQCrit = "SELECT * FROM WQCriteria"
-            Dim cmdWQCrit As New DataHelper(strSelectWQCrit)
-            Dim dataWQCrit As OleDbDataReader = cmdWQCrit.ExecuteReader()
-
-            While dataWQCrit.Read()
-                strInsertWQCrit = "INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES (" & dataNewPoll("POLLID") & "," & dataWQCrit("WQCRITID") & "," & "0 )"
-                Dim cmdInsWQCrit As New DataHelper(strInsertWQCrit)
-                cmdInsWQCrit.ExecuteNonQuery()
-            End While
-            dataWQCrit.Close()
+            Using cmdWQCrit As New DataHelper("SELECT * FROM WQCriteria")
+                Dim dataWQCrit As OleDbDataReader = cmdWQCrit.ExecuteReader()
+                While dataWQCrit.Read()
+                    Using cmdInsWQCrit As New DataHelper("INSERT INTO POLL_WQCRITERIA (POLLID, WQCRITID, THRESHOLD) VALUES (" & dataNewPoll("POLLID") & "," & dataWQCrit("WQCRITID") & "," & "0 )")
+                        cmdInsWQCrit.ExecuteNonQuery()
+                    End Using
+                End While
+                dataWQCrit.Close()
+            End Using
 
             'Step 3: Get the LCtype information
-            strSelectLCType = "SELECT * FROM LCTYPE WHERE NAME LIKE '" & cboLCType.Text & "'"
-            Dim cmdNewType As New DataHelper(strSelectLCType)
-            Dim dataNewType As OleDbDataReader = cmdNewType.ExecuteReader()
-            dataNewType.Read()
+            Using cmdNewType As New DataHelper("SELECT * FROM LCTYPE WHERE NAME LIKE '" & cboLCType.Text & "'")
+                Dim dataNewType As OleDbDataReader = cmdNewType.ExecuteReader()
+                dataNewType.Read()
 
-            'Step 4: Insert the New coefficient set
-            strInsertCoeffSet = "INSERT INTO COEFFICIENTSET (NAME, DESCRIPTION, LCTYPEID, POLLID) VALUES ('" & Replace(Trim(txtCoeffSet.Text), "'", "''") & "', '" & Replace(Trim(txtCoeffSetDesc.Text), "'", "''") & "'," & dataNewType("LCTypeID") & "," & dataNewPoll("POLLID") & ")"
+                'Step 4: Insert the New coefficient set
+                Using cmdInsCoef As New DataHelper("INSERT INTO COEFFICIENTSET (NAME, DESCRIPTION, LCTYPEID, POLLID) VALUES ('" & Replace(Trim(txtCoeffSet.Text), "'", "''") & "', '" & Replace(Trim(txtCoeffSetDesc.Text), "'", "''") & "'," & dataNewType("LCTypeID") & "," & dataNewPoll("POLLID") & ")")
+                    cmdInsCoef.ExecuteNonQuery()
+                End Using
+            End Using
             dataNewPoll.Close()
-            dataNewType.Close()
-            Dim cmdInsCoef As New DataHelper(strInsertCoeffSet)
-            cmdInsCoef.ExecuteNonQuery()
 
             'Step 5: Select the newly inserted coefficient set
-            strSelectCoeffSet = "SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '" & txtCoeffSet.Text & "'"
-            Dim cmdSelCoef As New DataHelper(strSelectCoeffSet)
-            Dim dataCoeff As OleDbDataReader = cmdSelCoef.ExecuteReader()
-            dataCoeff.Read()
-
-            'Step 6: Insert the new coeffs for that set
-            For i As Integer = 0 To dgvCoef.Rows.Count - 1
-                strInsertCoeffs = "INSERT INTO COEFFICIENT (COEFF1, COEFF2, COEFF3, COEFF4, COEFFSETID, LCCLASSID) VALUES (" & dgvCoef.Rows(i).Cells(2).Value.ToString & ", " & dgvCoef.Rows(i).Cells(3).Value.ToString & ", " & dgvCoef.Rows(i).Cells(4).Value.ToString & ", " & dgvCoef.Rows(i).Cells(5).Value.ToString & ", " & dataCoeff("CoeffSetID") & ", " & dgvCoef.Rows(i).Cells(7).Value.ToString & ")"
-                Dim cmdInsCoeffs As New DataHelper(strInsertCoeffs)
-                cmdInsCoeffs.ExecuteNonQuery()
-            Next i
-            dataCoeff.Close()
+            Using cmdSelCoef As New DataHelper("SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '" & txtCoeffSet.Text & "'")
+                Dim dataCoeff As OleDbDataReader = cmdSelCoef.ExecuteReader()
+                dataCoeff.Read()
+                'Step 6: Insert the new coeffs for that set
+                For i As Integer = 0 To dgvCoef.Rows.Count - 1
+                    Using cmdInsCoeffs As New DataHelper("INSERT INTO COEFFICIENT (COEFF1, COEFF2, COEFF3, COEFF4, COEFFSETID, LCCLASSID) VALUES (" & dgvCoef.Rows(i).Cells(2).Value.ToString & ", " & dgvCoef.Rows(i).Cells(3).Value.ToString & ", " & dgvCoef.Rows(i).Cells(4).Value.ToString & ", " & dgvCoef.Rows(i).Cells(5).Value.ToString & ", " & dataCoeff("CoeffSetID") & ", " & dgvCoef.Rows(i).Cells(7).Value.ToString & ")")
+                        cmdInsCoeffs.ExecuteNonQuery()
+                    End Using
+                Next
+                dataCoeff.Close()
+            End Using
 
             _frmPoll.cboPollName.Items.Clear()
             InitComboBox(_frmPoll.cboPollName, "Pollutant")
@@ -353,19 +343,17 @@ Friend Class NewPollutantForm
             While dataCopySet.Read()
                 strLandClass = "SELECT * FROM LCCLASS WHERE LCCLASSID = " & dataCopySet("LCClassID")
                 'Let's try one more ADO method, why not, righ?
-                Dim cmdLC As New DataHelper(strLandClass)
-                Dim dataLC As OleDbDataReader = cmdLC.ExecuteReader
-                dataLC.Read()
-
-                'Add the necessary components
-                dgvCoef.Rows(i).Cells(0).Value = dataLC("Value")
-                dgvCoef.Rows(i).Cells(1).Value = dataLC("Value")
-                dgvCoef.Rows(i).Cells(2).Value = dataCopySet("Value")
-                dgvCoef.Rows(i).Cells(3).Value = dataCopySet("Value")
-                dgvCoef.Rows(i).Cells(4).Value = dataCopySet("Value")
-                dgvCoef.Rows(i).Cells(5).Value = dataCopySet("Value")
-
-                dataLC.Close()
+                Using cmdLC As New DataHelper(strLandClass)
+                    Dim dataLC As OleDbDataReader = cmdLC.ExecuteReader
+                    dataLC.Read()
+                    'Add the necessary components
+                    dgvCoef.Rows(i).Cells(0).Value = dataLC("Value")
+                    dgvCoef.Rows(i).Cells(1).Value = dataLC("Value")
+                    dgvCoef.Rows(i).Cells(2).Value = dataCopySet("Value")
+                    dgvCoef.Rows(i).Cells(3).Value = dataCopySet("Value")
+                    dgvCoef.Rows(i).Cells(4).Value = dataCopySet("Value")
+                    dgvCoef.Rows(i).Cells(5).Value = dataCopySet("Value")
+                End Using
                 i = i + 1
             End While
 
@@ -383,30 +371,24 @@ Friend Class NewPollutantForm
             'garnered above during a cbo click event.  Once that's done, we'll add a series of blank
             'coefficients for the landclass type the user chooses...ie CCAP, NotCCAP, whatever
 
-            Dim strNewLcType As String
             'CmdString for inserting new coefficientset
-            Dim strDefault As String
             '
-            Dim strNewCoeffID As String
             'Holder for the CoefficientSetID
             Dim intCoeffSetID As Short
             Dim i As Short = 0
 
             'First need to add the coefficient set to that table
-            strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & _intLCTypeID & ")"
-            Dim cmdInsLC As New DataHelper(strNewLcType)
+            Dim cmdInsLC As New DataHelper("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & _intLCTypeID & ")")
             cmdInsLC.ExecuteNonQuery()
 
             'Get the Coefficient Set ID of the newly created coefficient set to populate Column # 8 in the GRid,
             'which by the way, is hidden from view.  InitPollDef sets the widths of col 7, 8 to 0
-            strNewCoeffID = "SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'"
-            Dim cmdNewCoefID As New DataHelper(strNewCoeffID)
+            Dim cmdNewCoefID As New DataHelper("SELECT COEFFSETID FROM COEFFICIENTSET " & "WHERE COEFFICIENTSET.NAME LIKE '" & strCoeffName & "'")
             Dim dataNewCoeffID As OleDbDataReader = cmdNewCoefID.ExecuteReader()
             dataNewCoeffID.Read()
             intCoeffSetID = dataNewCoeffID("CoeffSetID")
 
-            strDefault = "SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "'"
-            Dim cmdCopySet As New DataHelper(strDefault)
+            Dim cmdCopySet As New DataHelper("SELECT LCTYPE.LCTYPEID, LCCLASS.LCCLASSID, LCCLASS.NAME As valName, " & "LCCLASS.VAlue as valValue FROM LCTYPE " & "INNER JOIN LCCLASS ON LCCLASS.LCTYPEID = LCTYPE.LCTYPEID " & "WHERE LCTYPE.Name Like " & "'" & strLCType & "'")
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader()
 
             'Clear things and set the rows to recordcount + 1, remember 1st row fixed

@@ -170,37 +170,41 @@ Friend Class PrecipitationScenariosForm
     Private Sub SaveRecord()
         Dim strSQLPrecip As String = "SELECT * FROM PRECIPSCENARIO WHERE NAME LIKE '" & cboScenName.Text & "'"
 
-        Dim precipCmd As New OleDbCommand(strSQLPrecip, g_DBConn)
-        Dim precipAdapter As New OleDbDataAdapter(precipCmd)
-        Dim cBuilder As New OleDbCommandBuilder(precipAdapter)
-        cBuilder.QuotePrefix = "["
-        cBuilder.QuoteSuffix = "]"
-        Dim dt As New DataTable
-        precipAdapter.Fill(dt)
+        Using precipCmd As New OleDbCommand(strSQLPrecip, g_DBConn)
+            Dim precipAdapter As New OleDbDataAdapter(precipCmd)
+            Using cBuilder As New OleDbCommandBuilder(precipAdapter)
+                cBuilder.QuotePrefix = "["
+                cBuilder.QuoteSuffix = "]"
+            End Using
+            Using dt As New DataTable()
+                precipAdapter.Fill(dt)
 
-        dt.Rows(0)("Name") = cboScenName.Text
-        dt.Rows(0)("Description") = txtDesc.Text
-        dt.Rows(0)("PrecipFileName") = txtPrecipFile.Text
-        dt.Rows(0)("PrecipGridUnits") = cboGridUnits.SelectedIndex
-        dt.Rows(0)("PrecipUnits") = cboPrecipUnits.SelectedIndex
-        dt.Rows(0)("PrecipType") = cboPrecipType.SelectedIndex
-        dt.Rows(0)("Type") = cboTimePeriod.SelectedIndex
+                dt.Rows(0)("Name") = cboScenName.Text
+                dt.Rows(0)("Description") = txtDesc.Text
+                dt.Rows(0)("PrecipFileName") = txtPrecipFile.Text
+                dt.Rows(0)("PrecipGridUnits") = cboGridUnits.SelectedIndex
+                dt.Rows(0)("PrecipUnits") = cboPrecipUnits.SelectedIndex
+                dt.Rows(0)("PrecipType") = cboPrecipType.SelectedIndex
+                dt.Rows(0)("Type") = cboTimePeriod.SelectedIndex
 
-        If cboTimePeriod.SelectedIndex = 0 Then
-            dt.Rows(0)("RainingDays") = CShort(txtRainingDays.Text)
-        Else
-            dt.Rows(0)("RainingDays") = 0
-        End If
-        precipAdapter.Update(dt)
+                If cboTimePeriod.SelectedIndex = 0 Then
+                    dt.Rows(0)("RainingDays") = CShort(txtRainingDays.Text)
+                Else
+                    dt.Rows(0)("RainingDays") = 0
+                End If
+                precipAdapter.Update(dt)
+            End Using
+        End Using
 
         IsDirty = False
     End Sub
 
     Private Sub mnuNewPrecip_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuNewPrecip.Click
         Try
-            Dim newpre As New NewPrecipitationScenarioForm
-            newpre.Init(Nothing, Me)
-            newpre.ShowDialog()
+            Using newpre As New NewPrecipitationScenarioForm()
+                newpre.Init(Nothing, Me)
+                newpre.ShowDialog()
+            End Using
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -219,8 +223,9 @@ Friend Class PrecipitationScenariosForm
                 'code to handle response
                 If intAns = MsgBoxResult.Yes Then
                     'Set up a delete rs and get rid of it
-                    Dim cmdDel As New DataHelper(strSQLPrecipDel)
-                    cmdDel.ExecuteNonQuery()
+                    Using cmdDel As New DataHelper(strSQLPrecipDel)
+                        cmdDel.ExecuteNonQuery()
+                    End Using
 
                     MsgBox(cboScenName.SelectedItem & " deleted.", MsgBoxStyle.OkOnly, "Record Deleted")
 
