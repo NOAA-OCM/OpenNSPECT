@@ -771,7 +771,8 @@ Friend Class MainForm
             If Not SaveXmlFile() Then Return
 
             'Handles whether to overwrite existing groups of the same name or to generate a new group for outputs
-            If g_pGroupLayer <> -1 Then
+            ' the global group layer might have stored a value, but the user may have reset the project or removed the group.
+            If g_pGroupLayer <> -1 AndAlso MapWindowPlugin.MapWindowInstance.Layers.Groups.ItemByHandle(g_pGroupLayer) IsNot Nothing Then
                 If MapWindowPlugin.MapWindowInstance.Layers.Groups.ItemByHandle(g_pGroupLayer).Text = _XmlPrjParams.ProjectName Then
                     Dim res As MsgBoxResult = MsgBox(String.Format("Would you like to overwrite the last results group named {0}?", _XmlPrjParams.ProjectName), MsgBoxStyle.YesNoCancel, "Replace Results?")
                     If res = MsgBoxResult.Yes Then
@@ -847,7 +848,7 @@ Friend Class MainForm
                     Return
                 End If
             End Using
-         
+
             'STEP 10: ---------------------------------------------------------------------------------------------------------
             'Process pollutants
             Dim i As Integer
@@ -860,7 +861,7 @@ Friend Class MainForm
                     End If
                 End If
             Next i
-          
+
             'Step 11: Erosion -------------------------------------------------------------------------------------------------
             'Check that they have chosen Erosion
             If _XmlPrjParams.IntCalcErosion = 1 Then
@@ -893,11 +894,11 @@ Friend Class MainForm
             'STEP 15: create string describing project parameters ---------------------------------------------------------------
             'TODO metadata stuff
             'strProjectInfo = modUtil.ParseProjectforMetadata(_XmlPrjParams, _strFileName)
-          
+
             'STEP 16: Apply the metadata to each of the rasters in the group layer ----------------------------------------------
             'TODO
             'modUtil.CreateMetadata(g_pGroupLayer, strProjectInfo)
-           
+
             'Go into workspace and rid it of all rasters
             CleanGlobals()
 

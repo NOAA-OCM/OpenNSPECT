@@ -264,7 +264,7 @@ Friend Class NewPollutantForm
 
         Try
             'Step 1a: Get a new color for this pollutant
-            strNewColor = ReturnHSVColorString
+            strNewColor = GetRandomHSVColorString
 
             'Step 1: Insert the New Pollutant
             strInsertPollutant = "INSERT INTO POLLUTANT(NAME, POLLTYPE, COLOR) VALUES ('" & Replace(Trim(txtPollutant.Text), "'", "''") & "', 0, " & "'" & strNewColor & "'" & ")"
