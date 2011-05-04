@@ -96,7 +96,7 @@
         Me.chkHydroCorr.Name = "chkHydroCorr"
         Me.chkHydroCorr.Size = New System.Drawing.Size(241, 22)
         Me.chkHydroCorr.TabIndex = 17
-        Me.chkHydroCorr.Text = "DEM is hyrdologically correct (filled)"
+        Me.chkHydroCorr.Text = "DEM is hydrologically correct (filled)"
         Me.chkHydroCorr.UseVisualStyleBackColor = True
         '
         'cmdBrowseDEMFile

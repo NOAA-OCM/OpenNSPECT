@@ -49,7 +49,7 @@ Module Utilities
     Public g_boolAgree As Boolean
     'True: use the Agree Function on Streams.
     Public g_boolHydCorr As Boolean
-    'True: Hyrdologically Correct DEM, no fill needed
+    'True: Hydrologically Correct DEM, no fill needed
     Public g_boolNewWShed As Boolean
     'True: New WaterShed form called from frmPrj
 
