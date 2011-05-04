@@ -91,12 +91,12 @@ Friend Class WaterQualityStandardsForm
 
     Private Sub mnuNewWQStd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuNewWQStd.Click
         Try
-            Dim addwq As New NewWaterQualityStandardForm
-            addwq.Init(Me, Nothing)
-            addwq.ShowDialog()
+            Using addwq As New NewWaterQualityStandardForm()
+                addwq.Init(Me, Nothing)
+                addwq.ShowDialog()
+            End Using
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuNewWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
@@ -141,7 +141,7 @@ Friend Class WaterQualityStandardsForm
             End If
 
         Catch ex As Exception
-            MsgBox("An Error occurred during deletion." & "  " & Err.Number & ": " & Err.Description, MsgBoxStyle.Critical, "Error")
+            HandleError(ex)
         End Try
     End Sub
 
@@ -153,7 +153,6 @@ Friend Class WaterQualityStandardsForm
             End Using
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuCopyWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
@@ -166,7 +165,6 @@ Friend Class WaterQualityStandardsForm
             End Using
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuImpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
@@ -185,7 +183,6 @@ Friend Class WaterQualityStandardsForm
 
         Catch ex As Exception
             HandleError(ex)
-            'True, "mnuExpWQStd_Click " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 4)
         End Try
 
     End Sub
@@ -316,7 +313,7 @@ Friend Class WaterQualityStandardsForm
             End If
 
         Catch ex As Exception
-            MsgBox("Error updating Water Quality Standards: " & Err.Number & vbNewLine & Err.Description, MsgBoxStyle.Critical, "Error")
+            HandleError(ex)
         End Try
     End Sub
 End Class

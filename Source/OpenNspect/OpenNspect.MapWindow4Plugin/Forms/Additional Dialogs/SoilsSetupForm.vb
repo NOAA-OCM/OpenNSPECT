@@ -359,11 +359,10 @@ Friend Class SoilsSetupForm
                 CloseProgressDialog()
             End If
 
-            CreateSoilsGrid = True
+            Return True
         Catch ex As Exception
             HandleError(ex)
-            'MsgBox(Err.Number & ": " & Err.Description)
-            CreateSoilsGrid = False
+            Return False
         End Try
     End Function
 

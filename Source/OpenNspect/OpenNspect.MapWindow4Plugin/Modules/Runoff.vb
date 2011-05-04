@@ -289,7 +289,7 @@ Module Runoff
             End If
 
         Catch ex As Exception
-            MsgBox(Err.Number & ": " & Err.Description & " " & "ConstructPickStatemnt")
+            HandleError(ex)
         End Try
     End Function
 

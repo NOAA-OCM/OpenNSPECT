@@ -100,7 +100,7 @@ Module Utilities
                 End If
             End If
         Catch ex As Exception
-            MsgBox("Workspace Split:" & Err.Description)
+            HandleError(ex)
         End Try
     End Function
 
@@ -227,7 +227,7 @@ Module Utilities
                 Return ""
             End If
         Catch ex As Exception
-            MsgBox("AddInputfromBrowser:" & Err.Description)
+            HandleError(ex)
         End Try
         Return ""
     End Function

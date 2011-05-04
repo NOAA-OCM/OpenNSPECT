@@ -236,7 +236,7 @@ Friend Class NewWatershedDelineationForm
             End If
 
         Catch ex As Exception
-            MsgBox(Err.Number & Err.Description & " :New Watershed Delineation")
+            HandleError(ex)
         End Try
 
     End Sub
@@ -497,13 +497,8 @@ Friend Class NewWatershedDelineationForm
 
             DelineateWatershed = True
         Catch ex As Exception
-            If Err.Number = -2147217297 Then 'User cancelled operation
-                g_KeepRunning = False
-                DelineateWatershed = False
-            Else
-                HandleError(ex)
-                DelineateWatershed = False
-            End If
+            HandleError(ex)
+            DelineateWatershed = False
         Finally
             CloseProgressDialog()
             pFlowDirRaster.Close()
@@ -518,7 +513,7 @@ Friend Class NewWatershedDelineationForm
             DataManagement.DeleteGrid(totalupslopeout)
             DataManagement.DeleteGrid(streamgridout)
             DataManagement.DeleteGrid(streamordout)
-            File.Delete(treedatout)
+            File.Delete(treedatout) 'TODO: trying to delete this file will not work if the user cancels.
             File.Delete(coorddatout)
             DataManagement.DeleteGrid(strWSGridOut)
             DataManagement.DeleteShapefile(strWSSFOut)

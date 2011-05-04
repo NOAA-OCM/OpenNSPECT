@@ -453,23 +453,13 @@ Module ModifiedUniversalSoilLossEquation
             End If
 
             CalcMUSLE = True
-
-            CloseProgressDialog()
-
         Catch ex As Exception
-            If Err.Number = -2147217297 Then 'S.A. constant for User cancelled operation
-                g_KeepRunning = False
-            ElseIf Err.Number = -2147467259 Then 'S.A. constant for crappy ESRI stupid GRID error
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
-                CalcMUSLE = False
-                g_KeepRunning = False
-                CloseProgressDialog()
-            Else
-                MsgBox("MUSLE Error: " & Err.Number & " on MUSLE Calculation: ")
-                CalcMUSLE = False
-                g_KeepRunning = False
-                CloseProgressDialog()
-            End If
+            HandleError(ex)
+            CalcMUSLE = False
+            g_KeepRunning = False
+
+        Finally
+            CloseProgressDialog()
         End Try
     End Function
 

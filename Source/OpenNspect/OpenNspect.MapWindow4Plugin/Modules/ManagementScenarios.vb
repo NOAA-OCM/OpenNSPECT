@@ -91,7 +91,7 @@ Module ManagementScenarios
             CloseProgressDialog()
 
         Catch ex As Exception
-            MsgBox("error in MSSetup " & Err.Number & ": " & Err.Description)
+            HandleError(ex)
             CloseProgressDialog()
         End Try
 
