@@ -26,7 +26,6 @@ Imports OpenNspect.Xml
 Module Utilities
     Public g_nspectPath As String
     Public g_nspectDocPath As String
-    Public g_strWorkspace As String
 
     Public g_cbMainForm As MainForm
     Public g_MainForm As Form
@@ -364,7 +363,7 @@ Module Utilities
                 ShapefileType = ShpfileType.SHP_POINT
             End If
 
-            sFileName = GetUniqueFileName("selpoly", g_strWorkspace, ".shp")
+            sFileName = GetUniqueFileName("selpoly", g_XmlPrjFile.ProjectWorkspace, ".shp")
 
             'Create the new shapefile
             newShapefile = New Shapefile

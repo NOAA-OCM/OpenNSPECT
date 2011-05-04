@@ -445,7 +445,7 @@ Module Runoff
         pMetRunoffRaster.Close()
     End Sub
     Private Function CreateDataLayerForLocalEffects(ByRef OutputItems As OutputItems) As String
-        Dim strOutAccum As String = GetUniqueFileName("locaccum", g_strWorkspace, FinalOutputGridExt)
+        Dim strOutAccum As String = GetUniqueFileName("locaccum", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccumLocRunoffRaster As Grid = Nothing
         If g_booSelectedPolys Then
@@ -515,7 +515,7 @@ Module Runoff
     End Function
     Private Sub CreateRunoffGrid(ByRef OutputItems As OutputItems, ByVal pAccumRunoffRaster As Grid)
         'Get a unique name for accumulation GRID
-        Dim strOutAccum = GetUniqueFileName("runoff", g_strWorkspace, FinalOutputGridExt)
+        Dim strOutAccum = GetUniqueFileName("runoff", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
 
         'Clip to selected polys if chosen
         Dim pPermAccumRunoffRaster As Grid = Nothing

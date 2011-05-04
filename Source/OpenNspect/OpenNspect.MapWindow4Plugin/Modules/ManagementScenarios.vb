@@ -55,7 +55,7 @@ Module ManagementScenarios
                 Return
             End If
 
-            strOutLandCover = GetUniqueFileName("landcover", g_strWorkspace, OutputGridExt)
+            strOutLandCover = GetUniqueFileName("landcover", g_XmlPrjFile.ProjectWorkspace, OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
@@ -100,14 +100,13 @@ Module ManagementScenarios
     Public Sub ReclassRaster(ByRef MgmtScen As ManagementScenarioItem, ByVal strLCClass As String, ByRef outputGrid As Grid)
         'We're passing over a single management scenarios in the form of the xml
         'class XmlmgmtScenItem, seems to be the easiest way to do this.
-        Dim strSelect As String
+        Dim strSelect As String = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strLCClass & "' AND LCCLASS.NAME LIKE '" & MgmtScen.strChangeToClass & "'"
         'OLEDB selections string
         Dim LCValue As Double
         'value
 
         'Open the landclass Value Value 
         'This is the value user's landclass will change to
-        strSelect = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strLCClass & "' AND LCCLASS.NAME LIKE '" & MgmtScen.strChangeToClass & "'"
         Dim cmdLCVal As New OleDbCommand(strSelect, g_DBConn)
         Dim readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
         readLCVal.Read()

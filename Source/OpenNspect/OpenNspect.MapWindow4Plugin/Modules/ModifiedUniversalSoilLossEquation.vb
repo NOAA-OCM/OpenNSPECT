@@ -58,14 +58,13 @@ Module ModifiedUniversalSoilLossEquation
         Dim strTempLCType As String
         'Our potential holder for a temp landtype
 
-        Dim strSoilsDef As String
+        Dim strSoilsDef As String = "SELECT * FROM SOILS WHERE NAME LIKE '" & strSoilsDefName & "'"
 
         'Open Strings
         Dim strCovFactor As String
         Dim strError As String = ""
 
         'STEP 1: Get the MUSLE Values
-        strSoilsDef = "SELECT * FROM SOILS WHERE NAME LIKE '" & strSoilsDefName & "'"
         Dim cmdsoils As New DataHelper(strSoilsDef)
         Dim datasoils As OleDbDataReader = cmdsoils.ExecuteReader
         datasoils.Read()
@@ -445,7 +444,7 @@ Module ModifiedUniversalSoilLossEquation
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
                 RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, pQuRaster, AllMUSLECalc)
             End If
-            'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_strWorkspace, g_OutputGridExt))
+            'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_XmlPrjFile.ProjectWorkspace, g_OutputGridExt))
 
             ShowProgress("Calculating MUSLE...", strTitle, 27, 22, g_MainForm)
             If g_KeepRunning Then
@@ -455,7 +454,7 @@ Module ModifiedUniversalSoilLossEquation
                 RasterMath(pQuRaster, g_LandCoverRaster, g_pDEMRaster, g_pMetRunoffRaster, Nothing, pHISYTempRaster, AllMUSLECalc2)
                 pQuRaster.Close()
             End If
-            'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_strWorkspace, g_OutputGridExt))
+            'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_XmlPrjFile.ProjectWorkspace, g_OutputGridExt))
 
             ShowProgress("Calculating MUSLE...", strTitle, 27, 25, g_MainForm)
             If g_KeepRunning Then
@@ -465,7 +464,7 @@ Module ModifiedUniversalSoilLossEquation
                 RasterMath(pHISYTempRaster, g_LandCoverRaster, g_KFactorRaster, g_pLSRaster, Nothing, pHISYMGRaster, AllMUSLECalc3)
                 pHISYTempRaster.Close()
             End If
-            'modUtil.ReturnPermanentRaster(pHISYMGRaster, modUtil.GetUniqueName("hisymg", g_strWorkspace, g_OutputGridExt))
+            'modUtil.ReturnPermanentRaster(pHISYMGRaster, modUtil.GetUniqueName("hisymg", g_XmlPrjFile.ProjectWorkspace, g_OutputGridExt))
 
             Dim pHISYMGRasterNoNull As Grid = Nothing
             Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
@@ -476,7 +475,7 @@ Module ModifiedUniversalSoilLossEquation
                 ShowProgress("Creating data layer for local effects...", strTitle, 27, 27, g_MainForm)
                 If g_KeepRunning Then
 
-                    strMUSLE = GetUniqueFileName("locmusle", g_strWorkspace, FinalOutputGridExt)
+                    strMUSLE = GetUniqueFileName("locmusle", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_booSelectedPolys Then
                         pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
@@ -543,7 +542,7 @@ Module ModifiedUniversalSoilLossEquation
             If g_KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
-                strMUSLE = GetUniqueFileName("MUSLEmass", g_strWorkspace, FinalOutputGridExt)
+                strMUSLE = GetUniqueFileName("MUSLEmass", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_booSelectedPolys Then

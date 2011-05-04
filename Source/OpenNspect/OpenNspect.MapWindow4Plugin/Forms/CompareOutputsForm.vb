@@ -25,13 +25,13 @@ Public Class CompareOutputsForm
 
 #Region "Events"
 
-    Private Sub frmCompareOutputs_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmCompareOutputs_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             g_comp = Me
             RefreshLeft()
             RefreshRight()
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -180,7 +180,8 @@ Public Class CompareOutputsForm
                             End If
                         End If
                     Catch ex As Exception
-                        'do nothing, xml failed to load so not a valid project file
+                        ' xml failed to load so not a valid project file
+                        HandleError(ex)
                     End Try
                 End If
             Next
@@ -356,8 +357,8 @@ Public Class CompareOutputsForm
                                 If outgrpnum = -1 Then
                                     outgrpnum = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add("Compare Outputs")
                                 End If
-                                If g_strWorkspace = "" Then
-                                    g_strWorkspace = g_nspectDocPath & "\workspace"
+                                If g_XmlPrjFile.ProjectWorkspace = "" Then
+                                    g_XmlPrjFile.ProjectWorkspace = g_nspectDocPath & "\workspace"
                                 End If
 
                                 Dim strSelectedExportPath As String = ExportSelectedFeatures(_SelectLyrPath, _SelectedShapes)
@@ -367,7 +368,7 @@ Public Class CompareOutputsForm
                                 Dim compcalc As New RasterMathCellCalc(AddressOf CompareCellCalc)
                                 RasterMath(gleft, gright, Nothing, Nothing, Nothing, gout, compcalc)
 
-                                outstring = GetUniqueFileName("comp_base", g_strWorkspace, FinalOutputGridExt)
+                                outstring = GetUniqueFileName("comp_base", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
                                 If chkSelectedPolys.Checked Then
                                     compout = ClipBySelectedPoly(gout, pSelectedPolyClip, outstring)
                                 Else
@@ -378,7 +379,7 @@ Public Class CompareOutputsForm
                                 Dim percchangecalc As New RasterMathCellCalc(AddressOf PercChangeCellCalc)
                                 RasterMath(gleft, gright, Nothing, Nothing, Nothing, gout, percchangecalc)
 
-                                outstring = GetUniqueFileName("comp_perc", g_strWorkspace, FinalOutputGridExt)
+                                outstring = GetUniqueFileName("comp_perc", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
                                 If chkSelectedPolys.Checked Then
                                     comppercout = ClipBySelectedPoly(gout, pSelectedPolyClip, outstring)
                                 Else
