@@ -101,8 +101,8 @@ Friend Class MainForm
             PopulateManagement(0)
 
             'Test workspace persistence
-            If g_strWorkspace IsNot Nothing Then
-                txtOutputWS.Text = g_strWorkspace
+            If g_XmlPrjFile.ProjectWorkspace IsNot Nothing Then
+                txtOutputWS.Text = g_XmlPrjFile.ProjectWorkspace
             End If
 
             txtProjectName.Focus()
@@ -155,7 +155,7 @@ Friend Class MainForm
                 {.Description = "Choose a directory for analysis output: ", .SelectedPath = initFolder}
                 If dlgBrowser.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                     txtOutputWS.Text = dlgBrowser.SelectedPath
-                    g_strWorkspace = txtOutputWS.Text
+                    g_XmlPrjFile.ProjectWorkspace = txtOutputWS.Text
                 End If
             End Using
         Catch ex As Exception
@@ -788,7 +788,7 @@ Friend Class MainForm
             'Init your global dictionary to hold the metadata records as well as the global xml prj file
             g_dicMetadata = New Dictionary(Of String, String)
             g_XmlPrjFile = _XmlPrjParams
-            g_strWorkspace = g_XmlPrjFile.ProjectWorkspace
+            g_XmlPrjFile.ProjectWorkspace = g_XmlPrjFile.ProjectWorkspace
             'END STEP 1: -----------------------------------------------------------------------------------------------------
 
             'STEP 2: Identify if local effects are being used : --------------------------------------------------------------
