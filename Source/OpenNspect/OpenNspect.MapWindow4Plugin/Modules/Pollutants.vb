@@ -159,7 +159,7 @@ Module Pollutants
         If g_booSelectedPolys Then
             pPermMassVolumeRaster = ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, outputFileNameOutConc)
         Else
-            pPermMassVolumeRaster = ReturnPermanentRaster(pMassVolumeRaster, outputFileNameOutConc)
+            pPermMassVolumeRaster = CopyRaster(pMassVolumeRaster, outputFileNameOutConc)
         End If
 
         g_dicMetadata.Add(_PollutantName & "Local Effects (mg)", _PollutantCoeffMetadata)
@@ -217,7 +217,7 @@ Module Pollutants
         If g_booSelectedPolys Then
             pPermAccPollRaster = ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
         Else
-            pPermAccPollRaster = ReturnPermanentRaster(pAccumPollRaster, strAccPoll)
+            pPermAccPollRaster = CopyRaster(pAccumPollRaster, strAccPoll)
         End If
 
         Dim layerName As String = String.Format("Accumulated {0} (kg)", _PollutantName)
@@ -235,7 +235,7 @@ Module Pollutants
         If g_booSelectedPolys Then
             pPermTotalConcRaster = ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, outputFileNameOutConc)
         Else
-            pPermTotalConcRaster = ReturnPermanentRaster(pTotalPollConc0Raster, outputFileNameOutConc)
+            pPermTotalConcRaster = CopyRaster(pTotalPollConc0Raster, outputFileNameOutConc)
         End If
 
         g_dicMetadata.Add(_PollutantName & " Conc. (mg/L)", _PollutantCoeffMetadata)
@@ -323,7 +323,7 @@ Module Pollutants
             If g_booSelectedPolys Then
                 pPermWQRaster = ClipBySelectedPoly(pConRaster, g_pSelectedPolyClip, strOutWQ)
             Else
-                pPermWQRaster = ReturnPermanentRaster(pConRaster, strOutWQ)
+                pPermWQRaster = CopyRaster(pConRaster, strOutWQ)
             End If
 
             strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _WaterQualityStandardName & vbNewLine & vbTab & vbTab & "Standard: " & dblConvertValue & " mg/L"

@@ -413,9 +413,7 @@ Module Runoff
 
     Private Sub CalculateMaxiumumPotentialRetention(ByRef strPick As String(), ByRef pInLandCoverRaster As Grid, ByRef pInSoilsRaster As Grid)
         ReDim _picks(strPick.Length - 1)
-        Dim picksLength As Integer = strPick(0).Split(",").Length
         For i As Integer = 0 To strPick.Length - 1
-            ReDim _picks(i)(picksLength)
             _picks(i) = strPick(i).Split(",")
         Next
         Dim sc100calc As New RasterMathCellCalc(AddressOf SC100CellCalc)
@@ -443,10 +441,9 @@ Module Runoff
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccumLocRunoffRaster As Grid = Nothing
         If g_booSelectedPolys Then
-            pPermAccumLocRunoffRaster =
-                ClipBySelectedPoly(g_pMetRunoffRaster, g_pSelectedPolyClip, strOutAccum)
+            pPermAccumLocRunoffRaster = ClipBySelectedPoly(g_pMetRunoffRaster, g_pSelectedPolyClip, strOutAccum)
         Else
-            pPermAccumLocRunoffRaster = ReturnPermanentRaster(g_pMetRunoffRaster, strOutAccum)
+            pPermAccumLocRunoffRaster = CopyRaster(g_pMetRunoffRaster, strOutAccum)
         End If
 
         g_dicMetadata.Add("Runoff Local Effects (L)", _strRunoffMetadata)
@@ -467,6 +464,7 @@ Module Runoff
     Public Function GetTempFileNameTAUDEMGridExt() As String
         Return GetTempFileName(TAUDEMGridExt)
     End Function
+
     Public Function GetTempFileNameOutputGridExt() As String
         Return GetTempFileName(OutputGridExt)
     End Function
@@ -483,13 +481,8 @@ Module Runoff
         Dim metRunoffFile As String = GetTempFileNameTAUDEMGridExt()
         If Not g_pMetRunoffRaster.Save(metRunoffFile) Then Return Nothing
 
-        Dim outFile As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(outFile)
-        outFile = String.Format("{0}out{1}", outFile, TAUDEMGridExt)
-        g_TempFilesToDel.Add(outFile)
-        DataManagement.DeleteGrid(outFile)
+        Dim outFile As String = GetTempFileNameTAUDEMGridExt()
 
-        'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
         Dim result = Hydrology.WeightedAreaD8(flowFile, metRunoffFile, Nothing, outFile, False, False,
                                   Environment.ProcessorCount, Nothing)
         If result <> 0 Then
@@ -510,7 +503,7 @@ Module Runoff
             pPermAccumRunoffRaster =
                 ClipBySelectedPoly(pAccumRunoffRaster, g_pSelectedPolyClip, strOutAccum)
         Else
-            pPermAccumRunoffRaster = ReturnPermanentRaster(pAccumRunoffRaster, strOutAccum)
+            pPermAccumRunoffRaster = CopyRaster(pAccumRunoffRaster, strOutAccum)
         End If
 
         AddOutputGridLayer(pPermAccumRunoffRaster, "Blue", True, "Accumulated Runoff (L)", "Runoff Accum", -1,
@@ -572,31 +565,15 @@ Module Runoff
     Private Function SC100CellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single,
                                     ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
 
-        If Input1 = 1 Then
-            For i As Integer = 0 To _picks(0).Length - 1
+        If Input1 = 1 OrElse Input1 = 2 OrElse Input1 = 3 OrElse Input1 = 4 Then
+            Dim position = Input1 - 1
+            For i As Integer = 0 To _picks(position).Length - 1
                 If Input2 = i + 1 Then
-                    Return 100 * _picks(0)(i)
-                End If
-            Next
-        ElseIf Input1 = 2 Then
-            For i As Integer = 0 To _picks(1).Length - 1
-                If Input2 = i + 1 Then
-                    Return 100 * _picks(1)(i)
-                End If
-            Next
-        ElseIf Input1 = 3 Then
-            For i As Integer = 0 To _picks(2).Length - 1
-                If Input2 = i + 1 Then
-                    Return 100 * _picks(2)(i)
-                End If
-            Next
-        ElseIf Input1 = 4 Then
-            For i As Integer = 0 To _picks(3).Length - 1
-                If Input2 = i + 1 Then
-                    Return 100 * _picks(3)(i)
+                    Return 100 * _picks(position)(i)
                 End If
             Next
         End If
+
     End Function
 
     Private Function AllRunoffCellCalc(ByVal Input1 As Single, ByVal Input1Null As Single, ByVal Input2 As Single,

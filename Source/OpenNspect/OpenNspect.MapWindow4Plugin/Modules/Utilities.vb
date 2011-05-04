@@ -217,15 +217,14 @@ Module Utilities
                     pFilter = g.CdlgFilter
             End Select
 
-            Dim dlgopen As New OpenFileDialog
-            dlgopen.Title = "Open a " + strType + " file"
-            dlgopen.Filter = pFilter
+            Using dlgopen As New OpenFileDialog()
+                dlgopen.Title = String.Format("Open a {0} file", strType)
+                dlgopen.Filter = pFilter
 
-            If dlgopen.ShowDialog = DialogResult.OK Then
-                Return dlgopen.FileName
-            Else
-                Return ""
-            End If
+                If dlgopen.ShowDialog = DialogResult.OK Then
+                    Return dlgopen.FileName
+                End If
+            End Using
         Catch ex As Exception
             HandleError(ex)
         End Try
@@ -432,10 +431,6 @@ Module Utilities
             nameAttempt = folderPath + Path.DirectorySeparatorChar + Name + i.ToString + Extension
         Loop While File.Exists(nameAttempt) And i < 1000
 
-        If i < 1000 Then
-            GetUniqueFileName = nameAttempt
-        Else
-            GetUniqueFileName = ""
-        End If
+        If i < 1000 Then Return nameAttempt Else Throw New InvalidOperationException("Workspace is too large. Could not get Unique Filename.")
     End Function
 End Module

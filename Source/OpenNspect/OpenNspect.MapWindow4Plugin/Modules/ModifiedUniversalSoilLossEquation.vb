@@ -374,7 +374,7 @@ Module ModifiedUniversalSoilLossEquation
                     If g_booSelectedPolys Then
                         pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
                     Else
-                        pPermMUSLERaster = ReturnPermanentRaster(pHISYMGRasterNoNull, strMUSLE)
+                        pPermMUSLERaster = CopyRaster(pHISYMGRasterNoNull, strMUSLE)
                     End If
 
                     'metadata time
@@ -398,38 +398,25 @@ Module ModifiedUniversalSoilLossEquation
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = Path.GetTempFileName()
-                g_TempFilesToDel.Add(strtmp1)
-                strtmp1 = strtmp1 + TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp1)
-                DataManagement.DeleteGrid(strtmp1)
-                pTauD8Flow.Save(strtmp1)
+                Dim flowDir As String = GetTempFileNameTAUDEMGridExt()
+                pTauD8Flow.Save(flowDir)
 
-                Dim strtmp2 As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp2)
-                strtmp2 = strtmp2 + TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp2)
-                DataManagement.DeleteGrid(strtmp2)
-                pHISYMGRasterNoNull.Save(strtmp2)
-                'pHISYMGRaster.Save(strtmp2)
+                Dim pHISYMGRasterTmp As String = GetTempFileNameTAUDEMGridExt()
+                pHISYMGRasterNoNull.Save(pHISYMGRasterTmp)
 
-                Dim strtmpout As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmpout)
-                strtmpout = strtmpout + "out" + TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmpout)
-                DataManagement.DeleteGrid(strtmpout)
+                Dim strtmpout As String = GetTempFileNameTAUDEMGridExt()
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
+                Hydrology.WeightedAreaD8(flowDir, pHISYMGRasterTmp, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
                 'strExpression = "FlowAccumulation([flowdir], [pHISYMGRaster], FLOAT)"
 
                 pTotSedMassHIRaster = New Grid
                 pTotSedMassHIRaster.Open(strtmpout)
 
                 pTauD8Flow.Close()
-                DataManagement.DeleteGrid(strtmp1)
+                DataManagement.DeleteGrid(flowDir)
                 pHISYMGRaster.Close()
-                DataManagement.DeleteGrid(strtmp2)
+                DataManagement.DeleteGrid(pHISYMGRasterTmp)
             End If
 
             ShowProgress("Adding Sediment Mass to Group Layer...", strTitle, 27, 25, g_MainForm)
@@ -442,7 +429,7 @@ Module ModifiedUniversalSoilLossEquation
                 If g_booSelectedPolys Then
                     pPermTotSedConcHIraster = ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, strMUSLE)
                 Else
-                    pPermTotSedConcHIraster = ReturnPermanentRaster(pTotSedMassHIRaster, strMUSLE)
+                    pPermTotSedConcHIraster = CopyRaster(pTotSedMassHIRaster, strMUSLE)
                 End If
 
                 'Metadata:
