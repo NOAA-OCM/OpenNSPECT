@@ -372,7 +372,7 @@ Public Class CompareOutputsForm
                                 If chkSelectedPolys.Checked Then
                                     compout = ClipBySelectedPoly(gout, pSelectedPolyClip, outstring)
                                 Else
-                                    compout = ReturnPermanentRaster(gout, outstring)
+                                    compout = CopyRaster(gout, outstring)
                                 End If
                                 AddOutputGridLayer(compout, "Blue", True, leftOutItems.Item(i).strType + " Direct Comparison", "", outgrpnum, Nothing)
 
@@ -383,7 +383,7 @@ Public Class CompareOutputsForm
                                 If chkSelectedPolys.Checked Then
                                     comppercout = ClipBySelectedPoly(gout, pSelectedPolyClip, outstring)
                                 Else
-                                    comppercout = ReturnPermanentRaster(gout, outstring)
+                                    comppercout = CopyRaster(gout, outstring)
                                 End If
                                 AddOutputGridLayer(comppercout, "Brown", True, leftOutItems.Item(i).strType + " Percentage Change", "", outgrpnum, Nothing)
 

@@ -56,15 +56,18 @@ Module Rasters
         Next
         Return FieldIndex
     End Function
-    Public Function ReturnPermanentRaster(ByRef pRaster As Grid, ByRef sOutputName As String) As Grid
+    Public Function CopyRaster(ByRef pRaster As Grid, ByRef fileName As String) As Grid
 
         pRaster.Save()
-        pRaster.Save(sOutputName)
-        pRaster.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection
+        pRaster.Save(fileName)
 
-        Dim tmpraster As New Grid
-        tmpraster.Open(sOutputName)
-        Return tmpraster
+        ' TODO: why would we change projection mid flight?
+        ' A simple analysis seem to reveal that the prjections were the same in our case.
+        'pRaster.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection
+
+        Dim newRaster As New Grid
+        newRaster.Open(fileName)
+        Return newRaster
     End Function
 
     Public Function AddRasterLayerToMapFromFileName(ByRef fileOrDirectory As String) As Boolean

@@ -228,7 +228,7 @@ Module RevisedUniversalSoilLossEquation
                     If g_booSelectedPolys Then
                         pPermRUSLELocRaster = ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
                     Else
-                        pPermRUSLELocRaster = ReturnPermanentRaster(pSedYieldRaster, strOutYield)
+                        pPermRUSLELocRaster = CopyRaster(pSedYieldRaster, strOutYield)
                     End If
 
                     'Metadata
@@ -285,7 +285,7 @@ Module RevisedUniversalSoilLossEquation
                 If g_booSelectedPolys Then
                     pPermAccumSedRaster = ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, strOutYield)
                 Else
-                    pPermAccumSedRaster = ReturnPermanentRaster(pTotalAccumSedRaster, strOutYield)
+                    pPermAccumSedRaster = CopyRaster(pTotalAccumSedRaster, strOutYield)
                 End If
 
                 'Metadata
