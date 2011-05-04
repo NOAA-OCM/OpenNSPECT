@@ -4,7 +4,7 @@ Imports System.IO
 Imports MapWinGIS
 Module UniversalSoilLossEquation
 
-    Public Function ConstructPickStatmentUsingLandClass(ByRef cmdType As OleDbCommand, ByRef pLCRaster As Grid) As String
+    Public Function ConstructPickStatmentUsingLandClass(ByRef cmdType As OleDbCommand, ByRef pLCRaster As Grid, Optional ByVal nameOfColumn As String = "CoverFactor") As String
         'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
         'and the Land Class Raster.  Returns a string
 
@@ -38,9 +38,9 @@ Module UniversalSoilLossEquation
                             If mwTable.CellValue(FieldIndex, rowidx) = dataType("Value") Then
                                 booValueFound = True
                                 If strpick = "" Then
-                                    strpick = CStr(dataType("CoverFactor"))
+                                    strpick = CStr(dataType(nameOfColumn))
                                 Else
-                                    strpick = strpick & ", " & CStr(dataType("CoverFactor"))
+                                    strpick = String.Format("{0}, {1}", strpick, CStr(dataType(nameOfColumn)))
                                 End If
                                 rowidx = rowidx + 1
                                 Exit While
