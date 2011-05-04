@@ -73,15 +73,17 @@ Module RevisedUniversalSoilLossEquation
             _dblRFactorConstant = dblRFactorConstant
         End If
 
-        'END STEP 3: -----------------------------------------------------------------------------------
-
         'STEP 4: Set the K Factor Raster
         If RasterExists(strKfactorFileName) Then
             g_KFactorRaster = ReturnRaster(strKfactorFileName)
         Else
             strError = "K Factor Raster Does Not Exist: " & strKfactorFileName
         End If
-        'END STEP 3: -----------------------------------------------------------------------------------
+
+        If Len(strError) > 0 Then
+            MsgBox(strError)
+            Exit Function
+        End If
 
         'Get the landclasses of type strLandClass
         'Check first for temp name
@@ -92,25 +94,19 @@ Module RevisedUniversalSoilLossEquation
             strTempLCType = strLandClass
         End If
 
-        If Len(strError) > 0 Then
-            MsgBox(strError)
-            Exit Function
-        End If
+
 
         'Get the con statement for the cover factor calculation
         Dim strCovFactor As String = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
-        Dim cmdCov As New DataHelper(strCovFactor)
-
-        Dim strConStatement As String = ConstructPickStatment(cmdCov.GetCommand(), g_LandCoverRaster)
-
-        'Are they using SDR
-        _strSDRFileName = Trim(strSDRFileName)
-
-        'Metadata time
-        _strRusleMetadata = CreateMetadata(g_booLocalEffects)
-
-        'Calc rusle using the con
-        Return CalcRUSLE(strConStatement, OutputItems)
+        Using cmdCov As New DataHelper(strCovFactor)
+            Dim strConStatement As String = ConstructPickStatment(cmdCov.GetCommand(), g_LandCoverRaster)
+            'Are they using SDR
+            _strSDRFileName = Trim(strSDRFileName)
+            'Metadata time
+            _strRusleMetadata = CreateMetadata(g_booLocalEffects)
+            'Calc rusle using the con
+            Return CalcRUSLE(strConStatement, OutputItems)
+        End Using
 
     End Function
 
@@ -148,7 +144,7 @@ Module RevisedUniversalSoilLossEquation
     Private Function ConstructPickStatment(ByRef cmdType As OleDbCommand, ByRef pLCRaster As Grid) As String
         'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
         'and the Land Class Raster.  Returns a string
-        ConstructPickStatment = ""
+
         Try
             Dim FieldIndex As Short
             Dim booValueFound As Boolean
@@ -207,10 +203,9 @@ Module RevisedUniversalSoilLossEquation
                         End While
                         If booValueFound = False Then
                             MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
-                            ConstructPickStatment = Nothing
                             dataType.Close()
                             mwTable.Close()
-                            Exit Function
+                            Return Nothing
                         End If
                         dataType.Close()
 
@@ -226,13 +221,12 @@ Module RevisedUniversalSoilLossEquation
                 mwTable.Close()
             End If
 
-            'strCompleteCon = strCon & strParens
-            'ConstructPickStatment = strCompleteCon
-            ConstructPickStatment = strpick
+            Return strpick
 
         Catch ex As Exception
             MsgBox("Error in pick Statement: " & Err.Number & ": " & Err.Description)
         End Try
+        Return ""
     End Function
 
     Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As OutputItems) As Boolean

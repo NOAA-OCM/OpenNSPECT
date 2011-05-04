@@ -117,6 +117,8 @@ Module Coloring
             Dim firstBoundary As Double = pRaster.Minimum + stdMult * stdDev
             Dim secondBoundary As Double = pRaster.Maximum - stdMult * stdDev
 
+            Const STR_LegendCaptionFormat As String = "{0:0,0.##}} - {1}"
+
             Dim cs As New GridColorScheme
             Dim csbrk As New GridColorBreak
             csbrk.LowValue = pRaster.Minimum
@@ -124,7 +126,8 @@ Module Coloring
             csbrk.ColoringType = ColoringType.Gradient
             csbrk.LowColor = fromColor
             csbrk.HighColor = toColor
-            csbrk.Caption = String.Format("{0} - {1}", csbrk.LowValue, csbrk.HighValue)
+
+            csbrk.Caption = String.Format(STR_LegendCaptionFormat, csbrk.LowValue, csbrk.HighValue)
             cs.InsertBreak(csbrk)
             csbrk = New GridColorBreak
             csbrk.LowValue = firstBoundary
@@ -132,7 +135,7 @@ Module Coloring
             csbrk.ColoringType = ColoringType.Gradient
             csbrk.LowColor = toColor
             csbrk.HighColor = fromColor2
-            csbrk.Caption = String.Format("{0} - {1}", csbrk.LowValue, csbrk.HighValue)
+            csbrk.Caption = String.Format(STR_LegendCaptionFormat, csbrk.LowValue, csbrk.HighValue)
             cs.InsertBreak(csbrk)
             csbrk = New GridColorBreak
             csbrk.LowValue = secondBoundary
@@ -140,7 +143,7 @@ Module Coloring
             csbrk.ColoringType = ColoringType.Gradient
             csbrk.LowColor = fromColor2
             csbrk.HighColor = toColor2
-            csbrk.Caption = String.Format("{0} - {1}", csbrk.LowValue, csbrk.HighValue)
+            csbrk.Caption = String.Format(STR_LegendCaptionFormat, csbrk.LowValue, csbrk.HighValue)
             cs.InsertBreak(csbrk)
             Return cs
 
@@ -183,9 +186,11 @@ Module Coloring
     End Function
 
 
-
-    Public Function ReturnContinuousRampColorCS(ByRef grd As Grid, ByRef strColor As String) As GridColorScheme
+    Public Function GetContinuousRampColorCS(ByRef grd As Grid, ByRef strColor As String) As GridColorScheme
         'Based on the Mapwindow Grid Coloring Scheme Editor MakeContinuousRamp function
+        ' The most similar method I found in DotSpatial is named CreateRampColors and located in the Scheme.cs file.
+        ' It is called as follows: CreateRampColors(numColors, .25f, .25f, 0, .75f, .75f, 360, 0, 255, 255);
+
         Dim arr(), val As Object, i, j As Integer
         Dim ht As New Hashtable
         Dim brk As GridColorBreak
@@ -430,20 +435,15 @@ Module Coloring
     End Function
 
 
-    Public Function ReturnHSVColorString() As String
-        ReturnHSVColorString = ""
-        Try
-            'Returns a comma delimited string of 6 values.  1st 3 a 'To Color' - HIGH, 2nd 3 a 'From Color' - LOW
-            Dim intHue As Short
+    ''' <summary>
+    ''' Returns the HSV color string.
+    ''' </summary><returns>A comma delimited string of 6 values.  1st 3 a 'To Color' - HIGH, 2nd 3 a 'From Color' - LOW</returns>
+    Public Function GetRandomHSVColorString() As String
+        'Hue is a value from 1 to 360 so find a random one
+        Dim intHue As Short = Int((360 * Rnd()) + 1)
 
-            'Hue is a value from 1 to 360 so find a random one
-            intHue = Int((360 * Rnd()) + 1)
+        'Value will be a constant of 97, 100 in the SV and 5, 100..
+        Return String.Format("{0},97,100,{0},5,100", CStr(intHue))
 
-            'Value will be a constant of 97, 100 in the SV and 5, 100..
-            ReturnHSVColorString = CStr(intHue) & ",97,100," & CStr(intHue) & ",5,100"
-
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
     End Function
 End Module
