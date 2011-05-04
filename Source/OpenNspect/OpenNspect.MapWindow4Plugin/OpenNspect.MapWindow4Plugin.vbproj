@@ -153,6 +153,7 @@
     <Compile Include="Modules\ConvertTo.vb" />
     <Compile Include="Modules\Database.vb" />
     <Compile Include="Modules\Features.vb" />
+    <Compile Include="Modules\RasterMathematics.vb" />
     <Compile Include="Modules\Rasters.vb" />
     <Compile Include="Modules\UniversalSoilLossEquation.vb" />
     <Compile Include="Xml\LandUseMangementScenario.vb" />

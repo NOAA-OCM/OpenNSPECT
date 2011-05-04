@@ -74,13 +74,11 @@ Module Runoff
 
         'Get the LandCover Raster
         'if no management scenarios were applied then g_landcoverRaster will be nothing
-        Dim strError As Object
         If g_LandCoverRaster Is Nothing Then
             If RasterExists(strLCFileName) Then
                 g_LandCoverRaster = ReturnRaster(strLCFileName)
             Else
-                strError = strLCFileName
-                MsgBox("Error: The following dataset is missing: " & strError, MsgBoxStyle.Critical, "Missing Data")
+                MsgBox("Error: The following dataset is missing: " & strLCFileName, MsgBoxStyle.Critical, "Missing Data")
                 Return False
             End If
         End If
@@ -101,21 +99,17 @@ Module Runoff
                 g_intRunoffPrecipType = dataPrecip("Type")
                 g_intRainingDays = dataPrecip("RainingDays")
             Else
-                strError = strLCFileName
-                MsgBox("Error: The following dataset is missing: " & strError, MsgBoxStyle.Critical, "Missing Data")
+                MsgBox("Error: The following dataset is missing: " & strLCFileName, MsgBoxStyle.Critical, "Missing Data")
                 Return False
             End If
         End Using
-
-        'if they select cm as incoming precip units, convert GRID
 
         'Get the Soils Raster
         Dim pSoilsRaster As Grid
         If RasterExists(strSoilsFileName) Then
             pSoilsRaster = ReturnRaster(strSoilsFileName)
         Else
-            strError = strSoilsFileName
-            MsgBox("Error: The following dataset is missing: " & strError, MsgBoxStyle.Critical, "Missing Data")
+            MsgBox("Error: The following dataset is missing: " & strSoilsFileName, MsgBoxStyle.Critical, "Missing Data")
             Return False
         End If
 
@@ -461,27 +455,20 @@ Module Runoff
                             "Runoff Local", -1, OutputItems)
         Return strOutAccum
     End Function
-    'todo:refactor
-    Public Function GetTempFileNameTAUDEMGridExt() As String
+    Private Function GetTempFileName(ByVal fileExtension As String) As String
         Dim file As String = Path.GetTempFileName
         g_TempFilesToDel.Add(file)
         ' Things don't get saved correctly if they don't have the right file extension
-        file = Path.ChangeExtension(file, TAUDEMGridExt)
+        file = Path.ChangeExtension(file, fileExtension)
         g_TempFilesToDel.Add(file)
-        'TODO: I would not think this file nor related ones should exist
-        DataManagement.DeleteGrid(file)
         Return file
     End Function
-    'todo:refactor
+
+    Public Function GetTempFileNameTAUDEMGridExt() As String
+        Return GetTempFileName(TAUDEMGridExt)
+    End Function
     Public Function GetTempFileNameOutputGridExt() As String
-        Dim file As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(file)
-        ' Things don't get saved correctly if they don't have the right file extension
-        file = Path.ChangeExtension(file, OutputGridExt)
-        g_TempFilesToDel.Add(file)
-        'TODO: I would not think this file nor related ones should exist
-        DataManagement.DeleteGrid(file)
-        Return file
+        Return GetTempFileName(OutputGridExt)
     End Function
 
     Private Function DeriveAccumulatedRunoff() As Grid
