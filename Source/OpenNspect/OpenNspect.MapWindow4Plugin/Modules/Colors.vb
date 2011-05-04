@@ -117,7 +117,7 @@ Module Coloring
             Dim firstBoundary As Double = pRaster.Minimum + stdMult * stdDev
             Dim secondBoundary As Double = pRaster.Maximum - stdMult * stdDev
 
-            Const STR_LegendCaptionFormat As String = "{0:0,0.##}} - {1}"
+            Const STR_LegendCaptionFormat As String = "{0:#,0.##} - {1:#,0.##}"
 
             Dim cs As New GridColorScheme
             Dim csbrk As New GridColorBreak
