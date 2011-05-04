@@ -312,8 +312,6 @@ Friend Class NewPollutantForm
 
             UpdateValues = True
         Catch ex As Exception
-            'ALFREDO
-            MsgBox("An error occurred while creating new pollutant." & vbNewLine & Err.Number & ": " & Err.Description, MsgBoxStyle.Critical, "Error")
             HandleError(ex)
         End Try
     End Function

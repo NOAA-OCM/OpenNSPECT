@@ -284,8 +284,7 @@ Friend Class PollutantsForm
             End If
 
         Catch ex As Exception
-            MsgBox("Error deleting coefficient set.", MsgBoxStyle.Critical, "Error")
-            MsgBox(Err.Number & ": " & Err.Description)
+            HandleError(ex)
         End Try
     End Sub
 

@@ -23,21 +23,21 @@ Friend Class NewLandCoverTypeForm
 
 #Region "Events"
 
-    Private Sub frmNewLCType_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmNewLCType_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             dgvLCTypes.Rows.Add()
-            With dgvLCTypes.Rows (0)
-                .Cells (0).Value = "0"
-                .Cells (1).Value = "Landclass1"
-                .Cells (2).Value = "0"
-                .Cells (3).Value = "0"
-                .Cells (4).Value = "0"
-                .Cells (5).Value = "0"
-                .Cells (6).Value = "0"
-                .Cells (7).Value = "0"
+            With dgvLCTypes.Rows(0)
+                .Cells(0).Value = "0"
+                .Cells(1).Value = "Landclass1"
+                .Cells(2).Value = "0"
+                .Cells(3).Value = "0"
+                .Cells(4).Value = "0"
+                .Cells(5).Value = "0"
+                .Cells(6).Value = "0"
+                .Cells(7).Value = "0"
             End With
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -267,18 +267,18 @@ Friend Class NewLandCoverTypeForm
 
             'Get the WQCriteria values using the name
             strLCTypeAdd = "SELECT * FROM LCTYPE WHERE NAME = " & "'" & strName & "'"
-            Dim lctypeaddCmd As New DataHelper(strLCTypeAdd)
-            Dim datLCType As OleDbDataReader = lctypeaddCmd.ExecuteReader()
-            datLCType.Read()
-
-            strCmdInsert = "INSERT INTO LCCLASS([Value],[Name],[LCTYPEID],[CN-A],[CN-B],[CN-C],[CN-D],[CoverFactor],[W_WL]) VALUES(" & CStr(row.Cells(0).Value) & ",'" & CStr(row.Cells(1).Value) & "'," & CStr(datLCType("LCTypeID")) & "," & CStr(row.Cells(2).Value) & "," & CStr(row.Cells(3).Value) & "," & CStr(row.Cells(4).Value) & "," & CStr(row.Cells(5).Value) & "," & CStr(row.Cells(6).Value) & "," & CStr(row.Cells(7).Value) & ")"
-            Dim insertCmd As New DataHelper(strCmdInsert)
-            insertCmd.ExecuteNonQuery()
-
-            datLCType.Close()
+            Using lctypeaddCmd As New DataHelper(strLCTypeAdd)
+                Dim datLCType As OleDbDataReader = lctypeaddCmd.ExecuteReader()
+                datLCType.Read()
+                strCmdInsert = "INSERT INTO LCCLASS([Value],[Name],[LCTYPEID],[CN-A],[CN-B],[CN-C],[CN-D],[CoverFactor],[W_WL]) VALUES(" & CStr(row.Cells(0).Value) & ",'" & CStr(row.Cells(1).Value) & "'," & CStr(datLCType("LCTypeID")) & "," & CStr(row.Cells(2).Value) & "," & CStr(row.Cells(3).Value) & "," & CStr(row.Cells(4).Value) & "," & CStr(row.Cells(5).Value) & "," & CStr(row.Cells(6).Value) & "," & CStr(row.Cells(7).Value) & ")"
+                Using insertCmd As New DataHelper(strCmdInsert)
+                    insertCmd.ExecuteNonQuery()
+                End Using
+                datLCType.Close()
+            End Using
 
         Catch ex As Exception
-            MsgBox("There is an error inserting records into LCClass.", MsgBoxStyle.Critical, Err.Number & ": " & Err.Description)
+            HandleError(ex)
         End Try
 
     End Sub

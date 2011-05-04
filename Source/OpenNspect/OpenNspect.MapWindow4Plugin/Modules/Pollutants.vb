@@ -109,16 +109,11 @@ Module Pollutants
                 End Using
             End Using
 
-            If CalcPollutantConcentration(strConStatement, OutputItems) Then
-                PollutantConcentrationSetup = True
-            Else
-                PollutantConcentrationSetup = False
-            End If
+            PollutantConcentrationSetup = CalcPollutantConcentration(strConStatement, OutputItems)
 
         Catch ex As Exception
             HandleError(ex)
-            'True, "PollutantConcentrationSetup " & c_sModuleFileName & " " & GetErrorLineNumberString(Erl()), Err.Number, Err.Source, Err.Description, 1, _ParentHWND)
-            PollutantConcentrationSetup = False
+            Return False
         End Try
     End Function
 
@@ -339,17 +334,10 @@ Module Pollutants
             CompareWaterQuality = True
 
         Catch ex As Exception
-            If Err.Number = -2147467259 Then
-                MsgBox("ArcMap has reached the maximum number of GRIDs allowed in memory.  " & "Please exit OpenNSPECT and restart ArcMap.", MsgBoxStyle.Information, "Maximum GRID Number Encountered")
-                CompareWaterQuality = False
-                g_KeepRunning = False
-                CloseProgressDialog()
-            Else
-                HandleError(ex)
-                CompareWaterQuality = False
-                g_KeepRunning = False
-                CloseProgressDialog()
-            End If
+            HandleError(ex)
+            CompareWaterQuality = False
+            g_KeepRunning = False
+            CloseProgressDialog()
         End Try
     End Function
 
@@ -372,7 +360,7 @@ Module Pollutants
                 End Using
             End Using
         Catch ex As Exception
-            MsgBox("Error in ADO pollutant part: " & Err.Number & vbNewLine & Err.Description & vbNewLine & strWQStd)
+            HandleError(ex)
         End Try
     End Function
 

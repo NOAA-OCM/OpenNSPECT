@@ -150,12 +150,6 @@ Friend Class LandCoverTypesForm
                 MyBase.OK_Button_Click(sender, e)
             End If
         Catch ex As Exception
-            'TODO: Make sure this error functions
-            If Err.Number = -2147221504 Then
-                MsgBox("The data values entered exceed the allowable precision of the database." & vbNewLine & "Data must not contain more than 4 values to the right of the decimal place." & vbNewLine & "Please correct your inputs before saving.", MsgBoxStyle.Information, "Precision Error")
-                Return
-            End If
-
             MsgBox("There was an error saving changes: " + ex.Message, MsgBoxStyle.Critical, "Error Saving Changes")
         End Try
     End Sub

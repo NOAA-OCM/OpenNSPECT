@@ -224,8 +224,7 @@ Module LandUse
                         g_DictTempNames.Add(strCoeffSetOrigName, strCoeffSetTempName)
 
                         Dim adaptTemp As OleDbDataAdapter = CopyCoefficient(strCoeffSetTempName, strCoeffSetOrigName)
-                        'Call to function that returns the
-                        'copied record set.
+                        'Call to function that returns the copied record set.
                         Dim dataTemp As New DataTable
                         adaptTemp.Fill(dataTemp)
 
@@ -250,11 +249,11 @@ Module LandUse
             Next j
 
             g_strLCTypeName = strTempLCTypeName
-            'ReclassLanduse(LUScenItems, strTempLCTypeName, _strLCFileName)
+
             ReclassLanduse(LUScenItems, _strLCFileName)
 
         Catch ex As Exception
-            MsgBox("Error Number: " & Err.Number & vbNewLine & "Error Description: " & Err.Description)
+            HandleError(ex)
         End Try
 
     End Sub
@@ -317,7 +316,7 @@ Module LandUse
 
             CopyCoefficient = adaptNewCoeff
         Catch ex As Exception
-            MsgBox("Error Number: " & Err.Number & vbNewLine & "Error Description: " & Err.Description, MsgBoxStyle.Critical, "Error in modutil.copycoefficient")
+            HandleError(ex)
         End Try
     End Function
 
@@ -378,7 +377,7 @@ Module LandUse
             CloseProgressDialog()
 
         Catch ex As Exception
-            MsgBox("error in MSSetup ReclassLanduse" & Err.Number & ": " & Err.Description)
+            HandleError(ex)
         End Try
     End Sub
 
