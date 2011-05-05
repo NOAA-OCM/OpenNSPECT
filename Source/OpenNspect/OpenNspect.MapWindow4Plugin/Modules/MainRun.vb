@@ -182,12 +182,12 @@ Module MainRun
         Return sfSelected
     End Function
 
-    Public Function CheckMultiPartPolygon(ByVal pPolygon As Shape) As Boolean
-        If pPolygon.NumParts > 1 Then
-            CheckMultiPartPolygon = True
-        Else
-            CheckMultiPartPolygon = False
+    Public Function CheckMultiPartPolygon(ByVal polygon As Shape) As Boolean
+        If polygon Is Nothing Then
+            Throw New ArgumentNullException("polygon", "polygon is nothing.")
         End If
+
+        Return polygon.NumParts > 1
     End Function
 
     Public Function ReturnSelectGeometry(ByVal strInputSF As String) As Shape
