@@ -34,7 +34,7 @@ Module RevisedUniversalSoilLossEquation
     ' *  Called By:  Various
     ' *************************************************************************************
 
-    Public g_RFactorRaster As Grid
+    Private _RFactorRaster As Grid
     'R Factor Raster
     Private _strRusleMetadata As String
     'Metadata holder
@@ -63,7 +63,7 @@ Module RevisedUniversalSoilLossEquation
         'STEP 3: Set the R Factor Raster ---------------------------------------------------------------
         If Len(strRFactorFileName) > 0 Then
             If RasterExists(strRFactorFileName) Then
-                g_RFactorRaster = ReturnRaster(strRFactorFileName)
+                _RFactorRaster = ReturnRaster(strRFactorFileName)
             Else
                 strError = "R Factor Raster Does Not Exist: " & strRFactorFileName
             End If
@@ -88,8 +88,8 @@ Module RevisedUniversalSoilLossEquation
         'Get the landclasses of type strLandClass
         'Check first for temp name
         Dim strTempLCType As String
-        If g_DictTempNames.Count > 0 AndAlso Len(g_DictTempNames.Item(strLandClass)) > 0 Then
-            strTempLCType = g_DictTempNames.Item(strLandClass)
+        If g_LandUse_DictTempNames.Count > 0 AndAlso Len(g_LandUse_DictTempNames.Item(strLandClass)) > 0 Then
+            strTempLCType = g_LandUse_DictTempNames.Item(strLandClass)
         Else
             strTempLCType = strLandClass
         End If
@@ -103,7 +103,7 @@ Module RevisedUniversalSoilLossEquation
             'Are they using SDR
             _strSDRFileName = Trim(strSDRFileName)
             'Metadata time
-            _strRusleMetadata = CreateMetadata(g_booLocalEffects)
+            _strRusleMetadata = CreateMetadata(g_XmlPrjFile.UseLocalEffectsOnly)
             'Calc rusle using the con
             Return CalcRUSLE(strConStatement, OutputItems)
         End Using
@@ -172,7 +172,7 @@ Module RevisedUniversalSoilLossEquation
                     RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, Nothing, Nothing, pSoilLossAcres, AllSoilLossCalc)
                     'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]"
                 Else
-                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, g_RFactorRaster, Nothing, pSoilLossAcres, AllSoilLossCalc)
+                    RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, _RFactorRaster, Nothing, pSoilLossAcres, AllSoilLossCalc)
                     'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
                 End If
                 'END STEP 2: -------------------------------------------------------------------------------
@@ -218,14 +218,14 @@ Module RevisedUniversalSoilLossEquation
                 'END STEP 11: --------------------------------------------------------------------------------
             End If
 
-            If g_booLocalEffects Then
+            If g_XmlPrjFile.UseLocalEffectsOnly Then
                 progress.Increment("Creating data layer for local effects...")
                 If SynchronousProgressDialog.KeepRunning Then
 
                     'STEP 12: Local Effects -------------------------------------------------
 
                     strOutYield = GetUniqueFileName("locrusle", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
-                    If g_booSelectedPolys Then
+                    If g_XmlPrjFile.UseSelectedPolygons Then
                         pPermRUSLELocRaster = ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
                     Else
                         pPermRUSLELocRaster = CopyRaster(pSedYieldRaster, strOutYield)
@@ -282,7 +282,7 @@ Module RevisedUniversalSoilLossEquation
                 strOutYield = GetUniqueFileName("RUSLE", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
-                If g_booSelectedPolys Then
+                If g_XmlPrjFile.UseSelectedPolygons Then
                     pPermAccumSedRaster = ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, strOutYield)
                 Else
                     pPermAccumSedRaster = CopyRaster(pTotalAccumSedRaster, strOutYield)
@@ -321,10 +321,10 @@ Module RevisedUniversalSoilLossEquation
 
         If Not _booUsingConstantValue Then 'If not using a constant
             'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
-            Return (Math.Pow(g_dblCellSize, 2) * 0.000247104369) * Input1 * Input2 * tmpval * Input4
+            Return (Math.Pow(g_CellSize, 2) * 0.000247104369) * Input1 * Input2 * tmpval * Input4
         Else 'if using a constant
             'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]"
-            Return (Math.Pow(g_dblCellSize, 2) * 0.000247104369) * _dblRFactorConstant * Input1 * Input2 * tmpval
+            Return (Math.Pow(g_CellSize, 2) * 0.000247104369) * _dblRFactorConstant * Input1 * Input2 * tmpval
         End If
 
     End Function
@@ -339,7 +339,7 @@ Module RevisedUniversalSoilLossEquation
                     '  ([fdrnib] ge 0.5 and [fdrnib] lt 1.5), 
                     '  (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001)),
                     If InputBox2(1, 2) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(1, 2)) / (g_dblCellSize * 0.001)
+                        Return (InputBox2(1, 1) - InputBox2(1, 2)) / (g_CellSize * 0.001)
                     Else
                         Return OutNull
                     End If
@@ -348,7 +348,7 @@ Module RevisedUniversalSoilLossEquation
                     '    ([fdrnib] ge 1.5 and [fdrnib] lt 3.0), 
                     '    (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142)),
                     If InputBox2(2, 2) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(2, 2)) / (g_dblCellSize * 0.0014142)
+                        Return (InputBox2(1, 1) - InputBox2(2, 2)) / (g_CellSize * 0.0014142)
                     Else
                         Return OutNull
                     End If
@@ -357,7 +357,7 @@ Module RevisedUniversalSoilLossEquation
                     '      ([fdrnib] ge 3.0 and [fdrnib] lt 6.0), 
                     '      (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001)),
                     If InputBox2(2, 1) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(2, 1)) / (g_dblCellSize * 0.001)
+                        Return (InputBox2(1, 1) - InputBox2(2, 1)) / (g_CellSize * 0.001)
                     Else
                         Return OutNull
                     End If
@@ -366,7 +366,7 @@ Module RevisedUniversalSoilLossEquation
                     '        ([fdrnib] ge 6.0 and [fdrnib] lt 12.0), 
                     '        (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142)),
                     If InputBox2(2, 0) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(2, 0)) / (g_dblCellSize * 0.0014142)
+                        Return (InputBox2(1, 1) - InputBox2(2, 0)) / (g_CellSize * 0.0014142)
                     Else
                         Return OutNull
                     End If
@@ -375,7 +375,7 @@ Module RevisedUniversalSoilLossEquation
                     '          ([fdrnib] ge 12.0 and [fdrnib] lt 24.0), 
                     '          (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001)),
                     If InputBox2(1, 0) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(1, 0)) / (g_dblCellSize * 0.001)
+                        Return (InputBox2(1, 1) - InputBox2(1, 0)) / (g_CellSize * 0.001)
                     Else
                         Return OutNull
                     End If
@@ -384,7 +384,7 @@ Module RevisedUniversalSoilLossEquation
                     '            ([fdrnib] ge 24.0 and [fdrnib] lt 48.0), 
                     '            (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142)),
                     If InputBox2(0, 0) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(0, 0)) / (g_dblCellSize * 0.0014142)
+                        Return (InputBox2(1, 1) - InputBox2(0, 0)) / (g_CellSize * 0.0014142)
                     Else
                         Return OutNull
                     End If
@@ -393,7 +393,7 @@ Module RevisedUniversalSoilLossEquation
                     '                ([fdrnib] ge 48.0 and [fdrnib] lt 96.0), 
                     '                (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001)),
                     If InputBox2(0, 1) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(0, 1)) / (g_dblCellSize * 0.001)
+                        Return (InputBox2(1, 1) - InputBox2(0, 1)) / (g_CellSize * 0.001)
                     Else
                         Return OutNull
                     End If
@@ -402,7 +402,7 @@ Module RevisedUniversalSoilLossEquation
                     '                  ([fdrnib] ge 96.0 and [fdrnib] lt 192.0), 
                     '                  (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142)),
                     If InputBox2(0, 2) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(0, 2)) / (g_dblCellSize * 0.0014142)
+                        Return (InputBox2(1, 1) - InputBox2(0, 2)) / (g_CellSize * 0.0014142)
                     Else
                         Return OutNull
                     End If
@@ -411,7 +411,7 @@ Module RevisedUniversalSoilLossEquation
                     '                      ([fdrnib] ge 192.0 and [fdrnib] le 255.0), 
                     '                      (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001)),
                     If InputBox2(1, 2) <> Input2Null Then
-                        Return (InputBox2(1, 1) - InputBox2(1, 2)) / (g_dblCellSize * 0.001)
+                        Return (InputBox2(1, 1) - InputBox2(1, 2)) / (g_CellSize * 0.001)
                     Else
                         Return OutNull
                     End If
@@ -432,7 +432,7 @@ Module RevisedUniversalSoilLossEquation
 
         'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
         If Input1 >= 0 Then
-            kmval = g_dblCellSize / 1000.0
+            kmval = g_CellSize / 1000.0
         Else
             kmval = 0
         End If

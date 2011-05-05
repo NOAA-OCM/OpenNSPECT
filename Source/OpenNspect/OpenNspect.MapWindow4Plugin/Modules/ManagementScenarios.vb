@@ -33,7 +33,6 @@ Module ManagementScenarios
 
     Private _strLCClass As String
     Private _pLandCoverRaster As Grid
-    Public g_booLCChange As Boolean
 
     Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, ByRef strLCFileName As String)
         'Main Sub for setting everything up

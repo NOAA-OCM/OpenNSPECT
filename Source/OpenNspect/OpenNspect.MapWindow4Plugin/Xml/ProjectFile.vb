@@ -277,6 +277,12 @@ Namespace Xml
                 _intSelectedPolys = value
             End Set
         End Property
+        Public ReadOnly Property UseSelectedPolygons As Boolean
+            Get
+                Return IntSelectedPolys = 1
+            End Get
+        End Property
+
         Public Property StrSelectedPolyFileName As String
             Get
                 Return _strSelectedPolyFileName
@@ -309,6 +315,12 @@ Namespace Xml
                 End If
                 _intLocalEffects = value
             End Set
+        End Property
+
+        Public ReadOnly Property UseLocalEffectsOnly As Boolean
+            Get
+                Return IntLocalEffects = 1
+            End Get
         End Property
 
         Public Property IntCalcErosion As Short

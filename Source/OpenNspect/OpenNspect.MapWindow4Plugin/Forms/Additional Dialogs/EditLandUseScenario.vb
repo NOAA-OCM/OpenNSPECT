@@ -45,8 +45,8 @@ Friend Class EditLandUseScenario
 
             _ManScen = New LandUseMangementScenario
 
-            If Len(g_strLUScenFileName) > 0 Then
-                _ManScen.Xml = g_strLUScenFileName
+            If Len(g_ManagementScenarioLUScenFileName) > 0 Then
+                _ManScen.Xml = g_ManagementScenarioLUScenFileName
                 PopulateForm()
             Else
                 _txtLUCN_0.Text = "0"
@@ -146,7 +146,7 @@ Friend Class EditLandUseScenario
                 Next
             End With
 
-            _frmPrj.SetLURow(CInt(g_intManScenRow), Man.strLUScenName, Man.Xml)
+            _frmPrj.SetLURow(CInt(g_ManagementScenarioRowNumber), Man.strLUScenName, Man.Xml)
             CreateXmlFile = Man.Xml
 
         Catch ex As Exception

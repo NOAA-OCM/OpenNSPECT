@@ -33,8 +33,6 @@ Module Utilities
     Public g_comp As CompareOutputsForm
     Public g_luscen As EditLandUseScenario
 
-    Public g_strSelectedExportPath As String = ""
-
     'Intermediate and output extensions
     Public Const OutputGridExt As String = ".tif"
     Public Const FinalOutputGridExt As String = ".tif"
@@ -42,43 +40,17 @@ Module Utilities
 
     Public g_TempFilesToDel As New List(Of String)
 
-
     Public g_boolAddCoeff As Boolean
     Public g_boolCopyCoeff As Boolean
     'True: called frmPollutants, False: called frmNewPollutants
-    Public g_boolAgree As Boolean
-    'True: use the Agree Function on Streams.
-    Public g_boolHydCorr As Boolean
-    'True: Hydrologically Correct DEM, no fill needed
     Public g_boolNewWShed As Boolean
     'True: New WaterShed form called from frmPrj
 
-    'WqStd
-
-    'Agree DEM Stuff
-    Public g_boolParams As Boolean
-    'Flag to indicate Agree params have been entered
-
-    'Project Form Variables
-    Public g_strPrjFileName As String
-    'Project file name
-
     'Management Scenario variables::frmPrjCalc
-    Public g_strLUScenFileName As String
-    'Management scenario file name
-    Public g_intManScenRow As String
-    'Management scenario ROW number
-
-    'Pollutant Coefficient variable::frmPrjCalc
-    Public g_intCoeffRow As Short
-    'Coeff Row Number
-    Public g_strCoeffCalc As String
-    'if the Calc option is chosen, hold results in string
-
-
+    Public g_ManagementScenarioLUScenFileName As String
+    Public g_ManagementScenarioRowNumber As String
 
     'Returns a filename given for example C:\temp\dataset returns dataset
-
     Public Function SplitFileName(ByRef sWholeName As String) As String
         SplitFileName = ""
         Try

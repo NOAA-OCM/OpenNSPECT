@@ -75,9 +75,9 @@ Module Pollutants
             End Select
 
             'Find out the name of the Coefficient set, could be a temporary one due to landuses
-            If g_DictTempNames.Count > 0 Then
-                If Len(g_DictTempNames.Item(Pollutant.strCoeffSet)) > 0 Then
-                    strTempCoeffSet = g_DictTempNames.Item(Pollutant.strCoeffSet)
+            If g_LandUse_DictTempNames.Count > 0 Then
+                If Len(g_LandUse_DictTempNames.Item(Pollutant.strCoeffSet)) > 0 Then
+                    strTempCoeffSet = g_LandUse_DictTempNames.Item(Pollutant.strCoeffSet)
                 Else
                     strTempCoeffSet = Pollutant.strCoeffSet
                 End If
@@ -93,7 +93,7 @@ Module Pollutants
                         Using cmdType As New DataHelper(strType)
                             Dim command As OleDbCommand = cmdType.GetCommand()
                             strConStatement = ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType")
-                            _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_booLocalEffects)
+                            _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_XmlPrjFile.UseLocalEffectsOnly)
                         End Using
                     End Using
                 End Using
@@ -156,7 +156,7 @@ Module Pollutants
         Dim pPermMassVolumeRaster As Grid
 
         'Added 7/23/04 to account for clip by selected polys functionality
-        If g_booSelectedPolys Then
+        If g_XmlPrjFile.UseSelectedPolygons Then
             pPermMassVolumeRaster = ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, outputFileNameOutConc)
         Else
             pPermMassVolumeRaster = CopyRaster(pMassVolumeRaster, outputFileNameOutConc)
@@ -214,7 +214,7 @@ Module Pollutants
         Dim strAccPoll As String = GetUniqueFileName("accpoll", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccPollRaster As Grid
-        If g_booSelectedPolys Then
+        If g_XmlPrjFile.UseSelectedPolygons Then
             pPermAccPollRaster = ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
         Else
             pPermAccPollRaster = CopyRaster(pAccumPollRaster, strAccPoll)
@@ -232,7 +232,7 @@ Module Pollutants
     Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByVal pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
         outputFileNameOutConc = GetUniqueFileName("conc", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
         Dim pPermTotalConcRaster As Grid
-        If g_booSelectedPolys Then
+        If g_XmlPrjFile.UseSelectedPolygons Then
             pPermTotalConcRaster = ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, outputFileNameOutConc)
         Else
             pPermTotalConcRaster = CopyRaster(pTotalPollConc0Raster, outputFileNameOutConc)
@@ -256,7 +256,7 @@ Module Pollutants
             CalcMassOfPhosperous(strConStatement, pMassVolumeRaster)
 
             'At this point the above grid will satisfy 'local effects only' people so...
-            If g_booLocalEffects Then
+            If g_XmlPrjFile.UseLocalEffectsOnly Then
                 If Not progress.Increment("Creating data layer for local effects...") Then Return False
                 CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
             End If
@@ -312,7 +312,7 @@ Module Pollutants
             strOutWQ = GetUniqueFileName("wq", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
 
             'Clip if selectedpolys
-            If g_booSelectedPolys Then
+            If g_XmlPrjFile.UseSelectedPolygons Then
                 pPermWQRaster = ClipBySelectedPoly(pConRaster, g_pSelectedPolyClip, strOutWQ)
             Else
                 pPermWQRaster = CopyRaster(pConRaster, strOutWQ)

@@ -43,16 +43,10 @@ Module MainRun
     'Following represent variables that will be used for all analysis
     'Garnered primarily from the DEM Dataset
 
-    Public g_intDistanceUnits As Short
-    'Global Units 0 = meters, 1 = feet
-    Public g_dblCellSize As Double
+    Public g_CellSize As Double
     'Global Cell Size, again taken from DEM
-    Public g_intPrecipType As Short
+    Public g_intPrecipType As Short ' only used by MUSLE
     'Precipitation Type; I, IA, II, III
-    Public g_booLocalEffects As Boolean
-    'Did they check local effects?
-    Public g_booSelectedPolys As Boolean
-    'Did they select n polygons for limiting analysis?
 
     'The Public member datasets, to be used quite a bit
     Public g_pDEMRaster As Grid
@@ -67,8 +61,6 @@ Module MainRun
     'LS file name
     Public g_pLSRaster As Grid
     'LS Raster
-    Public g_pWaterShedFeatClass As Shapefile
-    'WaterShed Poly featureclass
     Public g_KFactorRaster As Grid
     'K Factor DS, used in RUSLE or MUSLE
 
@@ -115,11 +107,9 @@ Module MainRun
         End If
 
         'STEP 6: Set the other Datasets
-        'Begin with Water shed, let a featureclass
-        g_pWaterShedFeatClass = ReturnFeature(strWS)
 
         Dim pMaskGeoDataset As Shapefile
-        If g_booSelectedPolys Then
+        If g_XmlPrjFile.UseSelectedPolygons Then
             pMaskGeoDataset = ReturnAnalysisMask(SelectedPath, SelectedShapes)
             MapWindowPlugin.MapWindowInstance.View.Extents = pMaskGeoDataset.Extents
         Else
@@ -130,15 +120,7 @@ Module MainRun
         'STEP 3: With the Rasterdataset set, get its properties
         Dim pRasterProps As GridHeader = g_pDEMRaster.Header
         'Set the global cell size
-        g_dblCellSize = pRasterProps.dX
-
-        'STEP 5: Set global units
-        Select Case intDistUnits
-            Case 0 'Meters
-                g_intDistanceUnits = 0
-            Case 1 'Feed
-                g_intDistanceUnits = 1
-        End Select
+        g_CellSize = pRasterProps.dX
 
         'Flow Direction
         If RasterExists(strFlowDir) Then
@@ -174,9 +156,10 @@ Module MainRun
     ''' <param name="SelectedShapes">The selected shapes.</param>
     ''' <returns></returns>
     Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As List(Of Integer)) As Shapefile
-        g_strSelectedExportPath = ExportSelectedFeatures(SelectedPath, SelectedShapes)
-        g_pSelectedPolyClip = ReturnSelectGeometry(g_strSelectedExportPath)
-        Dim sfSelected As Shapefile = ReturnFeature(g_strSelectedExportPath)
+        Dim selectedExportPath As String
+        selectedExportPath = ExportSelectedFeatures(SelectedPath, SelectedShapes)
+        g_pSelectedPolyClip = ReturnSelectGeometry(selectedExportPath)
+        Dim sfSelected As Shapefile = ReturnFeature(selectedExportPath)
 
         'ARA 12/5/2010 Since this is purely used for zoom, intersecting with the basins is kind of pointless and ExportShapesWithPolygons isn't working anyways, so just returning the extents of the selection area.
         Return sfSelected
