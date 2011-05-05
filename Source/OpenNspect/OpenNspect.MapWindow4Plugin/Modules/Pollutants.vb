@@ -257,30 +257,23 @@ Module Pollutants
 
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
-                If Not SynchronousProgressDialog.KeepRunning Then Return False
-
-                progress.Increment("Creating data layer for local effects...")
+                If Not progress.Increment("Creating data layer for local effects...") Then Return False
                 CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
             End If
 
-            If Not SynchronousProgressDialog.KeepRunning Then Return False
-            progress.Increment("Deriving accumulated pollutant...")
+            If Not progress.Increment("Deriving accumulated pollutant...") Then Return False
             DeriveAccumulatedPollutant(pMassVolumeRaster, pAccumPollRaster)
 
-            If Not SynchronousProgressDialog.KeepRunning Then Return False
-            progress.Increment("Creating accumlated pollutant layer...")
+            If Not progress.Increment("Creating accumlated pollutant layer...") Then Return False
             AddAccumulatedPollutantToGroupLayer(OutputItems, pAccumPollRaster)
 
-            If Not SynchronousProgressDialog.KeepRunning Then Return False
-            progress.Increment("Calculating final concentration...")
+            If Not progress.Increment("Calculating final concentration...") Then Return False
             CalcFinalConcentration(pMassVolumeRaster, pAccumPollRaster, pTotalPollConc0Raster)
 
-            If Not SynchronousProgressDialog.KeepRunning Then Return False
-            progress.Increment("Creating data layer...")
+            If Not progress.Increment("Creating data layer...") Then Return False
             CreateDataLayer(OutputItems, pTotalPollConc0Raster, outputFileNameOutConc)
 
-            If Not SynchronousProgressDialog.KeepRunning Then Return False
-            progress.Increment("Comparing to water quality standard...")
+            If Not progress.Increment("Comparing to water quality standard...") Then Return False
             If Not CompareWaterQuality(pTotalPollConc0Raster, OutputItems) Then Return False
 
             Return True
