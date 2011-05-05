@@ -22,8 +22,6 @@ Imports MapWinGIS
 Friend Class NewFromExistingWaterShedDelineationForm
     Private _frmWS As WatershedDelineationsForm
     Private _frmPrj As MainForm
-    Private _strDEM2BFileName As String
-    Private _strNibbleName As String
 
 #Region "Events"
 
@@ -98,13 +96,9 @@ Friend Class NewFromExistingWaterShedDelineationForm
             End If
 
             Try
-                'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
-                _strDEM2BFileName = txtDEMFile.Text
-                _strNibbleName = txtFlowDir.Text
-
                 progress.Increment("Updating Database...")
 
-                strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text, _strNibbleName, _strDEM2BFileName)
+                strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text)
 
                 'Execute the statement.
                 Using cmdIns As New DataHelper(strCmdInsert)
