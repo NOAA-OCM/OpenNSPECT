@@ -87,7 +87,7 @@ Module ModifiedUniversalSoilLossEquation
         'Get the landclasses of type strLandClass
         Dim cmdCovfact As New DataHelper("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE")
 
-        _strMusleMetadata = CreateMetadata(g_XmlPrjFile.UseLocalEffectsOnly)
+        _strMusleMetadata = CreateMetadata(g_Project.UseLocalEffectsOnly)
         ', rsCoverFactor)
 
         If Len(strError) > 0 Then
@@ -117,10 +117,10 @@ Module ModifiedUniversalSoilLossEquation
 
         'Set up the header w/or without flow direction
         If booLocal = True Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_Project.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_Project.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
 
         CreateMetadata = strHeader
@@ -358,14 +358,14 @@ Module ModifiedUniversalSoilLossEquation
             Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
             RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, hisymgrnonullcalc)
 
-            If g_XmlPrjFile.UseLocalEffectsOnly Then
+            If g_Project.UseLocalEffectsOnly Then
 
                 progress.Increment("Creating data layer for local effects...")
                 If SynchronousProgressDialog.KeepRunning Then
 
-                    strMUSLE = GetUniqueFileName("locmusle", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+                    strMUSLE = GetUniqueFileName("locmusle", g_Project.ProjectWorkspace, FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
-                    If g_XmlPrjFile.UseSelectedPolygons Then
+                    If g_Project.UseSelectedPolygons Then
                         pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
                     Else
                         pPermMUSLERaster = CopyRaster(pHISYMGRasterNoNull, strMUSLE)
@@ -417,10 +417,10 @@ Module ModifiedUniversalSoilLossEquation
             If SynchronousProgressDialog.KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
-                strMUSLE = GetUniqueFileName("MUSLEmass", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+                strMUSLE = GetUniqueFileName("MUSLEmass", g_Project.ProjectWorkspace, FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
-                If g_XmlPrjFile.UseSelectedPolygons Then
+                If g_Project.UseSelectedPolygons Then
                     pPermTotSedConcHIraster = ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, strMUSLE)
                 Else
                     pPermTotSedConcHIraster = CopyRaster(pTotSedMassHIRaster, strMUSLE)

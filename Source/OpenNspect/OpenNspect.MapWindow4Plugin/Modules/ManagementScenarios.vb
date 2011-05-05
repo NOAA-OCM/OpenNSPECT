@@ -54,7 +54,7 @@ Module ManagementScenarios
                 Return
             End If
 
-            strOutLandCover = GetUniqueFileName("landcover", g_XmlPrjFile.ProjectWorkspace, OutputGridExt)
+            strOutLandCover = GetUniqueFileName("landcover", g_Project.ProjectWorkspace, OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster

@@ -357,8 +357,8 @@ Public Class CompareOutputsForm
                                 If outgrpnum = -1 Then
                                     outgrpnum = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add("Compare Outputs")
                                 End If
-                                If g_XmlPrjFile.ProjectWorkspace = "" Then
-                                    g_XmlPrjFile.ProjectWorkspace = g_nspectDocPath & "\workspace"
+                                If g_Project.ProjectWorkspace = "" Then
+                                    g_Project.ProjectWorkspace = g_nspectDocPath & "\workspace"
                                 End If
 
                                 Dim strSelectedExportPath As String = ExportSelectedFeatures(_SelectLyrPath, _SelectedShapes)
@@ -368,7 +368,7 @@ Public Class CompareOutputsForm
                                 Dim compcalc As New RasterMathCellCalc(AddressOf CompareCellCalc)
                                 RasterMath(gleft, gright, Nothing, Nothing, Nothing, gout, compcalc)
 
-                                outstring = GetUniqueFileName("comp_base", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+                                outstring = GetUniqueFileName("comp_base", g_Project.ProjectWorkspace, FinalOutputGridExt)
                                 If chkSelectedPolys.Checked Then
                                     compout = ClipBySelectedPoly(gout, pSelectedPolyClip, outstring)
                                 Else
@@ -379,7 +379,7 @@ Public Class CompareOutputsForm
                                 Dim percchangecalc As New RasterMathCellCalc(AddressOf PercChangeCellCalc)
                                 RasterMath(gleft, gright, Nothing, Nothing, Nothing, gout, percchangecalc)
 
-                                outstring = GetUniqueFileName("comp_perc", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+                                outstring = GetUniqueFileName("comp_perc", g_Project.ProjectWorkspace, FinalOutputGridExt)
                                 If chkSelectedPolys.Checked Then
                                     comppercout = ClipBySelectedPoly(gout, pSelectedPolyClip, outstring)
                                 Else

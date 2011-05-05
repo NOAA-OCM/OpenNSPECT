@@ -329,7 +329,7 @@ Module Utilities
                 ShapefileType = ShpfileType.SHP_POINT
             End If
 
-            sFileName = GetUniqueFileName("selpoly", g_XmlPrjFile.ProjectWorkspace, ".shp")
+            sFileName = GetUniqueFileName("selpoly", g_Project.ProjectWorkspace, ".shp")
 
             'Create the new shapefile
             newShapefile = New Shapefile

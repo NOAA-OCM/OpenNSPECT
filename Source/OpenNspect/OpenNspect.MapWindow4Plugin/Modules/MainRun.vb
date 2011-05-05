@@ -66,7 +66,7 @@ Module MainRun
 
     Public g_dicMetadata As Dictionary(Of String, String)
     'Global dictionary to hold name of layer, metadata process string
-    Public g_XmlPrjFile As ProjectFile
+    Public g_Project As ProjectFile
     'Global xml project file for metadata support
 
     Public g_pSelectedPolyClip As Shape
@@ -87,11 +87,11 @@ Module MainRun
         dataWshed.Read()
 
         Dim strDEM As String = dataWshed("FilledDEMFileName")
-        Dim strWS As String = dataWshed("wsfilename")
+        'Dim strWS As String = dataWshed("wsfilename")
         Dim strFlowDir As String = dataWshed("FlowDirFileName")
         Dim strFlowAcc As String = dataWshed("FlowAccumFileName")
         Dim strLS As String = dataWshed("LSFileName")
-        Dim intDistUnits As Short = dataWshed("DEMGridUnits")
+        'Dim intDistUnits As Short = dataWshed("DEMGridUnits")
 
         dataWshed.Close()
 
@@ -109,7 +109,7 @@ Module MainRun
         'STEP 6: Set the other Datasets
 
         Dim pMaskGeoDataset As Shapefile
-        If g_XmlPrjFile.UseSelectedPolygons Then
+        If g_Project.UseSelectedPolygons Then
             pMaskGeoDataset = ReturnAnalysisMask(SelectedPath, SelectedShapes)
             MapWindowPlugin.MapWindowInstance.View.Extents = pMaskGeoDataset.Extents
         Else

@@ -61,9 +61,9 @@ Module Rasters
         pRaster.Save()
         pRaster.Save(fileName)
 
-        ' TODO: why would we change projection mid flight?
+        ' TODO: why would we change projection after we save the file?
         ' A simple analysis seem to reveal that the prjections were the same in our case.
-        'pRaster.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection
+        pRaster.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection
 
         Dim newRaster As New Grid
         newRaster.Open(fileName)
