@@ -23,15 +23,15 @@ Friend Class ImportCoefficientSetForm
     Private _frmPoll As PollutantsForm
     Private _cmdCoeff As OleDbCommand
 
-    Private Sub frmImportCoeffSet_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmImportCoeffSet_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
-            InitComboBox (cboLCType, "LCTYPE")
+            InitComboBox(cboLCType, "LCTYPE")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Private Sub cmdBrowse_Click (ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowse.Click
+    Private Sub cmdBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdBrowse.Click
         Try
             Using dlgOpen As New OpenFileDialog()
                 'browse...get output filename
@@ -42,15 +42,15 @@ Friend Class ImportCoefficientSetForm
                 End If
             End Using
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Try
-            If UniqueName ("CoefficientSet", (txtCoeffSetName.Text)) Then
-                If ValidateCoeffTextFile (txtImpFile.Text, cboLCType.Text) Then
-                    _frmPoll.UpdateCoeffSet (_cmdCoeff, txtCoeffSetName.Text, txtImpFile.Text)
+            If UniqueName("CoefficientSet", (txtCoeffSetName.Text)) Then
+                If ValidateCoeffTextFile(txtImpFile.Text, cboLCType.Text) Then
+                    _frmPoll.UpdateCoeffSet(_cmdCoeff, txtCoeffSetName.Text, txtImpFile.Text)
                 End If
             Else
                 MsgBox("The name you have chosen is in use, please enter a different name.", MsgBoxStyle.Critical, "Name Detected")
@@ -77,7 +77,6 @@ Friend Class ImportCoefficientSetForm
             Dim strValue As String
             Dim strLCTypeNum As String
             Dim j As Short
-            ValidateCoeffTextFile = False
 
             'Gameplan is to find number of records(landclasses) in the chosen LCType. Then
             'compare that to the number of lines in the text file, and the [Value] field to
@@ -110,8 +109,10 @@ Friend Class ImportCoefficientSetForm
 
                         If j = 0 Then
                             MsgBox("There is a value in your text file that does not exist in the Land Class Type: '" & strLCTypeName & "' Please check your text file in line: " & intLine + 1, MsgBoxStyle.OkOnly, "Data Import Error")
+                            Return False
                         ElseIf j > 1 Then
                             MsgBox("There are records in your text file that contain the same value.  Please check line " & intLine, MsgBoxStyle.Critical, "Multiple values found")
+                            Return False
                         ElseIf j = 1 Then
                             ValidateCoeffTextFile = True
                         End If
@@ -132,12 +133,13 @@ Friend Class ImportCoefficientSetForm
                         ValidateCoeffTextFile = True
                     Else
                         MsgBox(String.Format("The number of records in your import file do not match the number of records in the Landclass '{0}'.  Your file should contain {1} records.", strLCTypeName, iRows), MsgBoxStyle.Critical, "Error Importing File")
+                        Return False
                     End If
                 End Using
 
             Else
                 MsgBox("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, "File Not Found")
-                'Cleanup
+                Return False
             End If
 
             If ValidateCoeffTextFile Then
