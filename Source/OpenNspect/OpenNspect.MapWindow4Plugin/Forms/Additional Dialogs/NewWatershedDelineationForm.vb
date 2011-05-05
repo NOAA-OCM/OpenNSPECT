@@ -39,8 +39,6 @@ Friend Class NewWatershedDelineationForm
     Private _strStreamLayer As String
     Private _strWShedFileName As String
     Private _strLSFileName As String
-    Private _strNibbleName As String
-    Private _strDEM2BName As String
 
     Private Const _dblSmall As Double = 0.03
     '0.001    '
@@ -210,7 +208,7 @@ Friend Class NewWatershedDelineationForm
                 'SQL Insert
                 'DataBase Update
                 'Compose the INSERT statement.
-                Dim strCmdInsert As String = "INSERT INTO WSDelineation " & "(Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName," & "FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName) " & " VALUES (" & "'" & CStr(txtWSDelinName.Text) & "', " & "'" & CStr(_InputDEMPath) & "', " & "'" & cboDEMUnits.SelectedIndex & "', " & "'" & _strDirFileName & "', " & "'" & _strAccumFileName & "', " & "'" & _strFilledDEMFileName & "', " & "'" & chkHydroCorr.CheckState & "', " & "'" & _strStreamLayer & "', " & "'" & cboSubWSSize.SelectedIndex & "', " & "'" & _strWShedFileName & "', " & "'" & _strLSFileName & "', " & "'" & _strNibbleName & "', " & "'" & _strDEM2BName & "')"
+                Dim strCmdInsert As String = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}')", CStr(txtWSDelinName.Text), CStr(_InputDEMPath), cboDEMUnits.SelectedIndex, _strDirFileName, _strAccumFileName, _strFilledDEMFileName, chkHydroCorr.CheckState, _strStreamLayer, cboSubWSSize.SelectedIndex, _strWShedFileName, _strLSFileName)
 
                 'Execute the statement.
                 Using insCmd As New DataHelper(strCmdInsert)
@@ -444,10 +442,6 @@ Friend Class NewWatershedDelineationForm
             'With all of that done, now go get the name of the LS Grid while actually computing said LS Grid
             '_strLSFileName = CalcLengthSlope(pFillRaster, pFlowDirRaster, pAccumRaster, pEnv, "0", pWorkspace)
 
-            _strNibbleName = _strDirFileName
-            _strDEM2BName = pSurfaceDatasetIn.Filename
-            'TODO: create these if really needed
-
             DelineateWatershed = True
         Catch ex As Exception
             HandleError(ex)
@@ -466,8 +460,8 @@ Friend Class NewWatershedDelineationForm
             DataManagement.DeleteGrid(totalupslopeout)
             DataManagement.DeleteGrid(streamgridout)
             DataManagement.DeleteGrid(streamordout)
-            File.Delete(treedatout) 'TODO: trying to delete this file will not work if the user cancels.
-            File.Delete(coorddatout)
+            DataManagement.TryDelete(treedatout)
+            DataManagement.TryDelete(coorddatout)
             DataManagement.DeleteGrid(strWSGridOut)
             DataManagement.DeleteShapefile(strWSSFOut)
         End Try
