@@ -461,11 +461,7 @@ Friend Class LandCoverTypesForm
                                 End If
 
                             Case 1
-                                If IsNumeric(val) Then
-                                    DisplayError(Err1, i, j)
-                                    ValidateGridValues = False
-                                    Exit Function
-                                End If
+                                ' Allow any value for the Name column
 
                             Case 2, 3, 4, 5
                                 If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 6) Then
