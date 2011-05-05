@@ -368,7 +368,7 @@ Public Class CompareOutputsForm
                                 Dim compcalc As New RasterMathCellCalc(AddressOf CompareCellCalc)
                                 RasterMath(gleft, gright, Nothing, Nothing, Nothing, gout, compcalc)
 
-                                outstring = GetUniqueFileName("comp_base", g_Project.ProjectWorkspace, FinalOutputGridExt)
+                                outstring = GetUniqueFileName("comp_base", g_Project.ProjectWorkspace, OutputGridExt)
                                 If chkSelectedPolys.Checked Then
                                     compout = ClipBySelectedPoly(gout, pSelectedPolyClip, outstring)
                                 Else
@@ -379,7 +379,7 @@ Public Class CompareOutputsForm
                                 Dim percchangecalc As New RasterMathCellCalc(AddressOf PercChangeCellCalc)
                                 RasterMath(gleft, gright, Nothing, Nothing, Nothing, gout, percchangecalc)
 
-                                outstring = GetUniqueFileName("comp_perc", g_Project.ProjectWorkspace, FinalOutputGridExt)
+                                outstring = GetUniqueFileName("comp_perc", g_Project.ProjectWorkspace, OutputGridExt)
                                 If chkSelectedPolys.Checked Then
                                     comppercout = ClipBySelectedPoly(gout, pSelectedPolyClip, outstring)
                                 Else

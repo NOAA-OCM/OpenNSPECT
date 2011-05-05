@@ -350,6 +350,7 @@ Module LandUse
             'will reclass that area of the output raster using reclass raster
             If LUScenItems.Count > 0 Then
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
+                _pLandCoverRaster.Save()  'Saving because it seemed necessary.
                 _pLandCoverRaster.Save(strOutLandCover)
                 _pLandCoverRaster.Close()
                 pNewLandCoverRaster.Open(strOutLandCover)

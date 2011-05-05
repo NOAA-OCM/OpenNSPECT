@@ -211,7 +211,7 @@ Module Pollutants
         DataManagement.DeleteGrid(strtmp1)
     End Sub
     Private Sub AddAccumulatedPollutantToGroupLayer(ByRef OutputItems As OutputItems, ByRef pAccumPollRaster As Grid)
-        Dim strAccPoll As String = GetUniqueFileName("accpoll", g_Project.ProjectWorkspace, FinalOutputGridExt)
+        Dim strAccPoll As String = GetUniqueFileName("accpoll", g_Project.ProjectWorkspace, OutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccPollRaster As Grid
         If g_Project.UseSelectedPolygons Then
@@ -230,7 +230,7 @@ Module Pollutants
         RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, pTotalPollConc0Raster, Nothing, False, AllConCalc)
     End Sub
     Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByVal pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
-        outputFileNameOutConc = GetUniqueFileName("conc", g_Project.ProjectWorkspace, FinalOutputGridExt)
+        outputFileNameOutConc = GetUniqueFileName("conc", g_Project.ProjectWorkspace, OutputGridExt)
         Dim pPermTotalConcRaster As Grid
         If g_Project.UseSelectedPolygons Then
             pPermTotalConcRaster = ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, outputFileNameOutConc)
@@ -249,7 +249,7 @@ Module Pollutants
         Dim pTotalPollConc0Raster As Grid = Nothing
 
         Dim strTitle = String.Format("Processing {0} Conc. Calculation...", _PollutantName)
-        Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_Project.ProjectWorkspace, FinalOutputGridExt)
+        Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_Project.ProjectWorkspace, OutputGridExt)
         Dim progress = New SynchronousProgressDialog(strTitle, 13, g_MainForm)
         Try
             progress.Increment("Calculating Mass Volume...")
@@ -311,7 +311,7 @@ Module Pollutants
             Dim concalc As New RasterMathCellCalc(AddressOf concompCellCalc)
             RasterMath(pPollutantRaster, g_pFlowAccRaster, Nothing, Nothing, Nothing, pConRaster, concalc)
 
-            strOutWQ = GetUniqueFileName("wq", g_Project.ProjectWorkspace, FinalOutputGridExt)
+            strOutWQ = GetUniqueFileName("wq", g_Project.ProjectWorkspace, OutputGridExt)
 
             'Clip if selectedpolys
             If g_Project.UseSelectedPolygons Then

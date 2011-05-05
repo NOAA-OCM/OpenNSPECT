@@ -35,7 +35,6 @@ Module Utilities
 
     'Intermediate and output extensions
     Public Const OutputGridExt As String = ".tif"
-    Public Const FinalOutputGridExt As String = ".tif"
     Public Const TAUDEMGridExt As String = ".tif"
 
     Public g_TempFilesToDel As New List(Of String)
