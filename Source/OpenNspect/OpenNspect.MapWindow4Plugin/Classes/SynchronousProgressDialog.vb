@@ -7,7 +7,7 @@ Public Class SynchronousProgressDialog
     Public Shared KeepRunning As Boolean
 
     Public Sub New(title As String, max As Integer, owner As Form)
-        SynchronousProgressDialog.KeepRunning = True
+        KeepRunning = True
         form = New ProgressForm
 
         If Not owner Is Nothing Then
