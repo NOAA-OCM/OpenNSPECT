@@ -381,7 +381,8 @@ Module ModifiedUniversalSoilLossEquation
                     Exit Function
 
                 End If
-
+            Else
+                pHISYMGRasterNoNull.Save()
             End If
 
             progress.Increment("Calculating the accumulated sediment...")

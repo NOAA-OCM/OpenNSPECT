@@ -242,7 +242,8 @@ Module RevisedUniversalSoilLossEquation
                     Exit Function
 
                 End If
-
+            Else
+                pSedYieldRaster.Save()
             End If
 
             progress.Increment("Calculating Accumulated Sediment...")
