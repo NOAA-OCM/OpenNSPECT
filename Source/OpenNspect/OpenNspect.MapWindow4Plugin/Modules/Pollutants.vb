@@ -93,7 +93,7 @@ Module Pollutants
                         Using cmdType As New DataHelper(strType)
                             Dim command As OleDbCommand = cmdType.GetCommand()
                             strConStatement = ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType")
-                            _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_XmlPrjFile.UseLocalEffectsOnly)
+                            _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_Project.UseLocalEffectsOnly)
                         End Using
                     End Using
                 End Using
@@ -127,9 +127,9 @@ Module Pollutants
         Dim i As Short
 
         If booLocal Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Landcover grid type: " & g_XmlPrjFile.LandCoverGridType & vbNewLine & vbTab & vbTab & "Landcover grid units: " & g_XmlPrjFile.LandCoverGridUnits & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Landcover grid type: " & g_Project.LandCoverGridType & vbNewLine & vbTab & vbTab & "Landcover grid units: " & g_Project.LandCoverGridUnits & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
         End If
 
         Dim dataType As OleDbDataReader = cmdType.ExecuteReader()
@@ -156,7 +156,7 @@ Module Pollutants
         Dim pPermMassVolumeRaster As Grid
 
         'Added 7/23/04 to account for clip by selected polys functionality
-        If g_XmlPrjFile.UseSelectedPolygons Then
+        If g_Project.UseSelectedPolygons Then
             pPermMassVolumeRaster = ClipBySelectedPoly(pMassVolumeRaster, g_pSelectedPolyClip, outputFileNameOutConc)
         Else
             pPermMassVolumeRaster = CopyRaster(pMassVolumeRaster, outputFileNameOutConc)
@@ -211,10 +211,10 @@ Module Pollutants
         DataManagement.DeleteGrid(strtmp1)
     End Sub
     Private Sub AddAccumulatedPollutantToGroupLayer(ByRef OutputItems As OutputItems, ByRef pAccumPollRaster As Grid)
-        Dim strAccPoll As String = GetUniqueFileName("accpoll", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+        Dim strAccPoll As String = GetUniqueFileName("accpoll", g_Project.ProjectWorkspace, FinalOutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccPollRaster As Grid
-        If g_XmlPrjFile.UseSelectedPolygons Then
+        If g_Project.UseSelectedPolygons Then
             pPermAccPollRaster = ClipBySelectedPoly(pAccumPollRaster, g_pSelectedPolyClip, strAccPoll)
         Else
             pPermAccPollRaster = CopyRaster(pAccumPollRaster, strAccPoll)
@@ -230,9 +230,9 @@ Module Pollutants
         RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, pTotalPollConc0Raster, Nothing, False, AllConCalc)
     End Sub
     Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByVal pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
-        outputFileNameOutConc = GetUniqueFileName("conc", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+        outputFileNameOutConc = GetUniqueFileName("conc", g_Project.ProjectWorkspace, FinalOutputGridExt)
         Dim pPermTotalConcRaster As Grid
-        If g_XmlPrjFile.UseSelectedPolygons Then
+        If g_Project.UseSelectedPolygons Then
             pPermTotalConcRaster = ClipBySelectedPoly(pTotalPollConc0Raster, g_pSelectedPolyClip, outputFileNameOutConc)
         Else
             pPermTotalConcRaster = CopyRaster(pTotalPollConc0Raster, outputFileNameOutConc)
@@ -249,14 +249,14 @@ Module Pollutants
         Dim pTotalPollConc0Raster As Grid = Nothing
 
         Dim strTitle = String.Format("Processing {0} Conc. Calculation...", _PollutantName)
-        Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+        Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_Project.ProjectWorkspace, FinalOutputGridExt)
         Dim progress = New SynchronousProgressDialog(strTitle, 13, g_MainForm)
         Try
             progress.Increment("Calculating Mass Volume...")
             CalcMassOfPhosperous(strConStatement, pMassVolumeRaster)
 
             'At this point the above grid will satisfy 'local effects only' people so...
-            If g_XmlPrjFile.UseLocalEffectsOnly Then
+            If g_Project.UseLocalEffectsOnly Then
                 If Not progress.Increment("Creating data layer for local effects...") Then Return False
                 CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
             End If
@@ -309,10 +309,10 @@ Module Pollutants
             Dim concalc As New RasterMathCellCalc(AddressOf concompCellCalc)
             RasterMath(pPollutantRaster, g_pFlowAccRaster, Nothing, Nothing, Nothing, pConRaster, concalc)
 
-            strOutWQ = GetUniqueFileName("wq", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+            strOutWQ = GetUniqueFileName("wq", g_Project.ProjectWorkspace, FinalOutputGridExt)
 
             'Clip if selectedpolys
-            If g_XmlPrjFile.UseSelectedPolygons Then
+            If g_Project.UseSelectedPolygons Then
                 pPermWQRaster = ClipBySelectedPoly(pConRaster, g_pSelectedPolyClip, strOutWQ)
             Else
                 pPermWQRaster = CopyRaster(pConRaster, strOutWQ)

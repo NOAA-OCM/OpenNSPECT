@@ -103,7 +103,7 @@ Module RevisedUniversalSoilLossEquation
             'Are they using SDR
             _strSDRFileName = Trim(strSDRFileName)
             'Metadata time
-            _strRusleMetadata = CreateMetadata(g_XmlPrjFile.UseLocalEffectsOnly)
+            _strRusleMetadata = CreateMetadata(g_Project.UseLocalEffectsOnly)
             'Calc rusle using the con
             Return CalcRUSLE(strConStatement, OutputItems)
         End Using
@@ -118,10 +118,10 @@ Module RevisedUniversalSoilLossEquation
 
         'Set up the header w/or without flow direction
         If localEffects = True Then
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.StrRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_Project.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_Project.StrRainGridFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else
-            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_XmlPrjFile.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_XmlPrjFile.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_XmlPrjFile.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_XmlPrjFile.StrRainGridFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
+            strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_Project.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & vbTab & vbTab & "R Factor grid: " & g_Project.StrRainGridFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine & g_strLandCoverParameters & vbNewLine
         End If
 
         'Now report the C:Factor figures for the landcover
@@ -218,14 +218,14 @@ Module RevisedUniversalSoilLossEquation
                 'END STEP 11: --------------------------------------------------------------------------------
             End If
 
-            If g_XmlPrjFile.UseLocalEffectsOnly Then
+            If g_Project.UseLocalEffectsOnly Then
                 progress.Increment("Creating data layer for local effects...")
                 If SynchronousProgressDialog.KeepRunning Then
 
                     'STEP 12: Local Effects -------------------------------------------------
 
-                    strOutYield = GetUniqueFileName("locrusle", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
-                    If g_XmlPrjFile.UseSelectedPolygons Then
+                    strOutYield = GetUniqueFileName("locrusle", g_Project.ProjectWorkspace, FinalOutputGridExt)
+                    If g_Project.UseSelectedPolygons Then
                         pPermRUSLELocRaster = ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
                     Else
                         pPermRUSLELocRaster = CopyRaster(pSedYieldRaster, strOutYield)
@@ -279,10 +279,10 @@ Module RevisedUniversalSoilLossEquation
             progress.Increment("Adding accumulated sediment layer to the data group layer...")
 
             If SynchronousProgressDialog.KeepRunning Then
-                strOutYield = GetUniqueFileName("RUSLE", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
+                strOutYield = GetUniqueFileName("RUSLE", g_Project.ProjectWorkspace, FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
-                If g_XmlPrjFile.UseSelectedPolygons Then
+                If g_Project.UseSelectedPolygons Then
                     pPermAccumSedRaster = ClipBySelectedPoly(pTotalAccumSedRaster, g_pSelectedPolyClip, strOutYield)
                 Else
                     pPermAccumSedRaster = CopyRaster(pTotalAccumSedRaster, strOutYield)
