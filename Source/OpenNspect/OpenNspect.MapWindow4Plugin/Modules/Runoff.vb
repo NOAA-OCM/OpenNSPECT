@@ -172,7 +172,7 @@ Module Runoff
             Dim cmdLandClass As New DataHelper(strRS)
 
             'while here, make metadata
-            _strRunoffMetadata = CreateMetadata(cmdLandClass.GetCommand(), strLandClass, g_booLocalEffects)
+            _strRunoffMetadata = CreateMetadata(cmdLandClass.GetCommand(), strLandClass, g_XmlPrjFile.UseLocalEffectsOnly)
             'End Database stuff
 
             'STEP 2: Raster Values ---------------------------------------------------------------------
@@ -439,7 +439,7 @@ Module Runoff
         Dim strOutAccum As String = GetUniqueFileName("locaccum", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
         'Added 7/23/04 to account for clip by selected polys functionality
         Dim pPermAccumLocRunoffRaster As Grid = Nothing
-        If g_booSelectedPolys Then
+        If g_XmlPrjFile.UseSelectedPolygons Then
             pPermAccumLocRunoffRaster = ClipBySelectedPoly(g_pMetRunoffRaster, g_pSelectedPolyClip, strOutAccum)
         Else
             pPermAccumLocRunoffRaster = CopyRaster(g_pMetRunoffRaster, strOutAccum)
@@ -498,7 +498,7 @@ Module Runoff
 
         'Clip to selected polys if chosen
         Dim pPermAccumRunoffRaster As Grid = Nothing
-        If g_booSelectedPolys Then
+        If g_XmlPrjFile.UseSelectedPolygons Then
             pPermAccumRunoffRaster =
                 ClipBySelectedPoly(pAccumRunoffRaster, g_pSelectedPolyClip, strOutAccum)
         Else
@@ -532,7 +532,7 @@ Module Runoff
                 If Not progress.Increment("Calculating runoff...") Then Return False
                 CalculateRunoff(pInRainRaster)
 
-                If g_booLocalEffects Then
+                If g_XmlPrjFile.UseLocalEffectsOnly Then
                     If Not progress.Increment("Creating data layer for local effects...") Then Return False
                     CreateDataLayerForLocalEffects(OutputItems)
                 End If
@@ -596,7 +596,7 @@ Module Runoff
                 End If
 
                 If Input3 >= 0 Then
-                    AreaSquareMeters = Math.Pow(g_dblCellSize, 2)
+                    AreaSquareMeters = Math.Pow(g_CellSize, 2)
                 Else
                     AreaSquareMeters = 0
                 End If

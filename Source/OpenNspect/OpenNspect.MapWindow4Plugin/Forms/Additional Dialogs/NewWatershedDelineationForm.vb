@@ -49,14 +49,16 @@ Friend Class NewWatershedDelineationForm
     Private Const _dblLarge As Double = 0.1
     '
 
+    'Agree DEM Stuff
+    Private AgreeParams As Boolean
+    'Flag to indicate Agree params have been entered
+
 #Region "Events"
 
     Private Sub frmNewWSDelin_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             'Init bool variables
-            g_boolAgree = False
-            g_boolHydCorr = False
-            g_boolParams = False
+            AgreeParams = False
 
             Dim i As Short
 
@@ -136,14 +138,12 @@ Friend Class NewWatershedDelineationForm
                     chkStreamAgree.Enabled = True
                     cboStreamLayer.Enabled = True
                     cmdOptions.Enabled = True
-                    g_boolHydCorr = True
 
                 Case CheckState.Unchecked
 
                     chkStreamAgree.Enabled = False
                     cboStreamLayer.Enabled = False
                     cmdOptions.Enabled = False
-                    g_boolHydCorr = False
 
             End Select
 
@@ -261,7 +261,7 @@ Friend Class NewWatershedDelineationForm
         Try
 
             If chkHydroCorr.CheckState And chkStreamAgree.CheckState Then
-                If boolChange(0) And boolChange(1) And boolChange(2) And boolChange(3) And g_boolParams Then
+                If boolChange(0) And boolChange(1) And boolChange(2) And boolChange(3) And AgreeParams Then
                     OK_Button.Enabled = True
                 Else
                     OK_Button.Enabled = False

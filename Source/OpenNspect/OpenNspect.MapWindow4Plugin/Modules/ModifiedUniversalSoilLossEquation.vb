@@ -58,14 +58,11 @@ Module ModifiedUniversalSoilLossEquation
         Dim strTempLCType As String
         'Our potential holder for a temp landtype
 
-        Dim strSoilsDef As String = "SELECT * FROM SOILS WHERE NAME LIKE '" & strSoilsDefName & "'"
-
         'Open Strings
-        Dim strCovFactor As String
         Dim strError As String = ""
 
         'STEP 1: Get the MUSLE Values
-        Dim cmdsoils As New DataHelper(strSoilsDef)
+        Dim cmdsoils As New DataHelper("SELECT * FROM SOILS WHERE NAME LIKE '" & strSoilsDefName & "'")
         Dim datasoils As OleDbDataReader = cmdsoils.ExecuteReader
         datasoils.Read()
 
@@ -81,17 +78,16 @@ Module ModifiedUniversalSoilLossEquation
         End If
         'END STEP 1: -----------------------------------------------------------------------------------
 
-        If g_DictTempNames.Count > 0 AndAlso Len(g_DictTempNames.Item(strLandClass)) > 0 Then
-            strTempLCType = g_DictTempNames.Item(strLandClass)
+        If g_LandUse_DictTempNames.Count > 0 AndAlso Len(g_LandUse_DictTempNames.Item(strLandClass)) > 0 Then
+            strTempLCType = g_LandUse_DictTempNames.Item(strLandClass)
         Else
             strTempLCType = strLandClass
         End If
 
         'Get the landclasses of type strLandClass
-        strCovFactor = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
-        Dim cmdCovfact As New DataHelper(strCovFactor)
+        Dim cmdCovfact As New DataHelper("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE")
 
-        _strMusleMetadata = CreateMetadata(g_booLocalEffects)
+        _strMusleMetadata = CreateMetadata(g_XmlPrjFile.UseLocalEffectsOnly)
         ', rsCoverFactor)
 
         If Len(strError) > 0 Then
@@ -362,14 +358,14 @@ Module ModifiedUniversalSoilLossEquation
             Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
             RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, hisymgrnonullcalc)
 
-            If g_booLocalEffects Then
+            If g_XmlPrjFile.UseLocalEffectsOnly Then
 
                 progress.Increment("Creating data layer for local effects...")
                 If SynchronousProgressDialog.KeepRunning Then
 
                     strMUSLE = GetUniqueFileName("locmusle", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
-                    If g_booSelectedPolys Then
+                    If g_XmlPrjFile.UseSelectedPolygons Then
                         pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
                     Else
                         pPermMUSLERaster = CopyRaster(pHISYMGRasterNoNull, strMUSLE)
@@ -424,7 +420,7 @@ Module ModifiedUniversalSoilLossEquation
                 strMUSLE = GetUniqueFileName("MUSLEmass", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
-                If g_booSelectedPolys Then
+                If g_XmlPrjFile.UseSelectedPolygons Then
                     pPermTotSedConcHIraster = ClipBySelectedPoly(pTotSedMassHIRaster, g_pSelectedPolyClip, strMUSLE)
                 Else
                     pPermTotSedConcHIraster = CopyRaster(pTotSedMassHIRaster, strMUSLE)
@@ -800,9 +796,9 @@ Module ModifiedUniversalSoilLossEquation
 
         If Input3 > 0 Then
             'sq meters to square miles area
-            sqmival = ((g_dblCellSize * g_dblCellSize) * 0.000001 * 0.386102)
+            sqmival = ((g_CellSize * g_CellSize) * 0.000001 * 0.386102)
             'cubic meters to cubic inches to inches
-            runoff_inches = (Input4 / 0.016387064) / (g_dblCellSize * g_dblCellSize * 1550.0031)
+            runoff_inches = (Input4 / 0.016387064) / (g_CellSize * g_CellSize * 1550.0031)
         Else
             sqmival = 0
             runoff_inches = 0

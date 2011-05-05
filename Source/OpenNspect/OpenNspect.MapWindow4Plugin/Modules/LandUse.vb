@@ -47,10 +47,10 @@ Module LandUse
     Private _strLCClass As String
     Private _pLandCoverRaster As Grid
 
-    Public g_booLCChange As Boolean
-    Public g_strLCTypeName As String
+
+    Public g_LandUse_LCTypeName As String
     'the temp name of Land Cover type, if indeed landuses are applied.
-    Public g_DictTempNames As New Dictionary(Of String, String)
+    Public g_LandUse_DictTempNames As New Dictionary(Of String, String)
     'Array holding the temp names of the LCType, and subsequent Coefficient Set Names
     ' Constant used by the Error handler function - DO NOT REMOVE
 
@@ -116,7 +116,7 @@ Module LandUse
             strInsertTempLCType = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{0} Description')", Replace(strTempLCTypeName, "'", "''"))
 
             'Add the name to the Dictionary for storage; used for cleanup and in pollutants
-            g_DictTempNames.Add(strLCClassName, strTempLCTypeName)
+            g_LandUse_DictTempNames.Add(strLCClassName, strTempLCTypeName)
 
             'STEP 4: INSERT the copy of the LCTYPE in
             Using cmdInsertCopy As New DataHelper(strInsertTempLCType)
@@ -221,7 +221,7 @@ Module LandUse
                         'Make a new temp name
 
                         'Now add names of the coefficient sets to the dictionary
-                        g_DictTempNames.Add(strCoeffSetOrigName, strCoeffSetTempName)
+                        g_LandUse_DictTempNames.Add(strCoeffSetOrigName, strCoeffSetTempName)
 
                         Dim adaptTemp As OleDbDataAdapter = CopyCoefficient(strCoeffSetTempName, strCoeffSetOrigName)
                         'Call to function that returns the copied record set.
@@ -248,7 +248,7 @@ Module LandUse
                 Next k
             Next j
 
-            g_strLCTypeName = strTempLCTypeName
+            g_LandUse_LCTypeName = strTempLCTypeName
 
             ReclassLanduse(LUScenItems, _strLCFileName)
 

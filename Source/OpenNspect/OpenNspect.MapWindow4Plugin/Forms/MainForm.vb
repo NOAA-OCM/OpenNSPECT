@@ -568,8 +568,8 @@ Friend Class MainForm
     Private Sub AddScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles AddScenarioToolStripMenuItem.Click
         Try
             Dim intRow As Short = dgvLandUse.Rows.Add()
-            g_intManScenRow = intRow.ToString
-            g_strLUScenFileName = ""
+            g_ManagementScenarioRowNumber = intRow.ToString
+            g_ManagementScenarioLUScenFileName = ""
 
             'Generate the scenario form
             Using newscen As New EditLandUseScenario()
@@ -578,7 +578,7 @@ Friend Class MainForm
                     .Text = "Add Land Use Scenario"
                     'If they cancel, then remove the added
                     If .ShowDialog() = System.Windows.Forms.DialogResult.Cancel Then
-                        dgvLandUse.Rows.RemoveAt(g_intManScenRow)
+                        dgvLandUse.Rows.RemoveAt(g_ManagementScenarioRowNumber)
                     End If
                 End With
             End Using
@@ -597,8 +597,8 @@ Friend Class MainForm
     Private Sub EditScenarioToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles EditScenarioToolStripMenuItem.Click
         Try
             If Not dgvLandUse.CurrentRow Is Nothing Then
-                g_intManScenRow = dgvLandUse.CurrentRow.Index.ToString
-                g_strLUScenFileName = dgvLandUse.CurrentRow.Cells("LUScenarioXml").Value
+                g_ManagementScenarioRowNumber = dgvLandUse.CurrentRow.Index.ToString
+                g_ManagementScenarioLUScenFileName = dgvLandUse.CurrentRow.Cells("LUScenarioXml").Value
 
                 Using newscen As New EditLandUseScenario()
                     With newscen
@@ -791,12 +791,6 @@ Friend Class MainForm
             g_XmlPrjFile.ProjectWorkspace = g_XmlPrjFile.ProjectWorkspace
             'END STEP 1: -----------------------------------------------------------------------------------------------------
 
-            'STEP 2: Identify if local effects are being used : --------------------------------------------------------------
-            g_booLocalEffects = (_XmlPrjParams.IntLocalEffects = 1)
-
-            'STEP 3: Find out if user is making use of only the selected Sheds -----------------------------------------------
-            g_booSelectedPolys = _XmlPrjParams.IntSelectedPolys = 1
-
             'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
             'If they're using, we send them over to modMgmtScen to implement
             If _XmlPrjParams.MgmtScenHolder.Count > 0 Then
@@ -839,7 +833,7 @@ Friend Class MainForm
                 'If there has been a land use added, then a new LCType has been created, hence we get it from g_strLCTypename
                 Dim strLCType As String
                 If AreThereLandUseScenarioItems Then
-                    strLCType = g_strLCTypeName
+                    strLCType = g_LandUse_LCTypeName
                 Else
                     strLCType = _XmlPrjParams.LandCoverGridType
                 End If
@@ -884,9 +878,9 @@ Friend Class MainForm
             'STEP 12 : Cleanup any temp critters -------------------------------------------------------------------------------
             'g_DictTempNames holds the names of all temporary landuses and/or coefficient sets created during the Landuse scenario
             'portion of our program, for example CCAP1, or NitSet1.  We now must eliminate them from the database if they exist.
-            If g_DictTempNames.Count > 0 Then
+            If g_LandUse_DictTempNames.Count > 0 Then
                 If AreThereLandUseScenarioItems Then
-                    Cleanup(g_DictTempNames, (_XmlPrjParams.PollItems), (_XmlPrjParams.LandCoverGridType))
+                    Cleanup(g_LandUse_DictTempNames, (_XmlPrjParams.PollItems), (_XmlPrjParams.LandCoverGridType))
                 End If
             End If
 
@@ -951,11 +945,6 @@ Friend Class MainForm
             If Not g_pLSRaster Is Nothing Then
                 g_pLSRaster.Close()
                 g_pLSRaster = Nothing
-            End If
-
-            If Not g_pWaterShedFeatClass Is Nothing Then
-                g_pWaterShedFeatClass.Close()
-                g_pWaterShedFeatClass = Nothing
             End If
 
             If Not g_KFactorRaster Is Nothing Then
