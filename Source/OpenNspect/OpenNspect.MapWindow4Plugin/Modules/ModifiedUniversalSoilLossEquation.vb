@@ -248,30 +248,12 @@ Module ModifiedUniversalSoilLossEquation
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strtmp1)
-                strtmp1 = strtmp1 + TAUDEMGridExt
-                g_TempFilesToDel.Add(strtmp1)
-                DataManagement.DeleteGrid(strtmp1)
+                Dim strtmp1 As String = GetTempFileNameTAUDEMGridExt()
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strLongestOut As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strLongestOut)
-                strLongestOut = strLongestOut + "out" + TAUDEMGridExt
-                g_TempFilesToDel.Add(strLongestOut)
-                DataManagement.DeleteGrid(strLongestOut)
-
-                Dim strTotalOut As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strTotalOut)
-                strTotalOut = strTotalOut + "out" + TAUDEMGridExt
-                g_TempFilesToDel.Add(strTotalOut)
-                DataManagement.DeleteGrid(strTotalOut)
-
-                Dim strStrahlOut As String = Path.GetTempFileName
-                g_TempFilesToDel.Add(strStrahlOut)
-                strStrahlOut = strStrahlOut + "out" + TAUDEMGridExt
-                g_TempFilesToDel.Add(strStrahlOut)
-                DataManagement.DeleteGrid(strStrahlOut)
+                Dim strLongestOut As String = GetTempFileNameTAUDEMGridExt()
+                Dim strTotalOut As String = GetTempFileNameTAUDEMGridExt()
+                Dim strStrahlOut As String = GetTempFileNameTAUDEMGridExt()
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
                 Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, Environment.ProcessorCount, Nothing)
@@ -363,7 +345,7 @@ Module ModifiedUniversalSoilLossEquation
                 progress.Increment("Creating data layer for local effects...")
                 If SynchronousProgressDialog.KeepRunning Then
 
-                    strMUSLE = GetUniqueFileName("locmusle", g_Project.ProjectWorkspace, FinalOutputGridExt)
+                    strMUSLE = GetUniqueFileName("locmusle", g_Project.ProjectWorkspace, OutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
                     If g_Project.UseSelectedPolygons Then
                         pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
@@ -394,16 +376,16 @@ Module ModifiedUniversalSoilLossEquation
                 pTauD8Flow.Header.NodataValue = -1
 
                 Dim flowDir As String = GetTempFileNameTAUDEMGridExt()
+                pTauD8Flow.Save()  'Saving because it seemed necessary.
                 pTauD8Flow.Save(flowDir)
 
                 Dim pHISYMGRasterTmp As String = GetTempFileNameTAUDEMGridExt()
+                pHISYMGRasterNoNull.Save()  'Saving because it seemed necessary.
                 pHISYMGRasterNoNull.Save(pHISYMGRasterTmp)
 
                 Dim strtmpout As String = GetTempFileNameTAUDEMGridExt()
 
-                'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
                 Hydrology.WeightedAreaD8(flowDir, pHISYMGRasterTmp, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
-                'strExpression = "FlowAccumulation([flowdir], [pHISYMGRaster], FLOAT)"
 
                 pTotSedMassHIRaster = New Grid
                 pTotSedMassHIRaster.Open(strtmpout)
@@ -418,7 +400,7 @@ Module ModifiedUniversalSoilLossEquation
             If SynchronousProgressDialog.KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
-                strMUSLE = GetUniqueFileName("MUSLEmass", g_Project.ProjectWorkspace, FinalOutputGridExt)
+                strMUSLE = GetUniqueFileName("MUSLEmass", g_Project.ProjectWorkspace, OutputGridExt)
 
                 'Clip to selected polys if chosen
                 If g_Project.UseSelectedPolygons Then

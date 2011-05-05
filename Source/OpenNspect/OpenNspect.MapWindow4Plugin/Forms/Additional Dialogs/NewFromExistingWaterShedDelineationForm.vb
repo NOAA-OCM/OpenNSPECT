@@ -228,6 +228,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
                             pESRID8Flow.CreateNew(flowpath, tmphead, GridDataType.FloatDataType, -1)
                             RasterMath(tmpFlow, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, GetConverterToEsriFromTauDem())
                             pESRID8Flow.Header.NodataValue = -1
+                            pESRID8Flow.Save()  'Saving because it seemed necessary.
                             pESRID8Flow.Save(flowpath)
                             pESRID8Flow.Close()
                             txtFlowDir.Text = flowpath

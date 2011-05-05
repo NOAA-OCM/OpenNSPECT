@@ -285,6 +285,14 @@ Friend Class NewWatershedDelineationForm
         End Try
     End Sub
 
+    Private Shared Sub ReSaveFile(ByVal finalFileName As String, ByVal proj As String, ByVal tmpfile As String)
+        Dim g As New Grid
+        g.Open(tmpfile)
+        g.Header.Projection = proj
+        g.Save(finalFileName)
+        g.Close()
+        File.Delete(tmpfile)
+    End Sub
     Private Function DelineateWatershed(ByRef pSurfaceDatasetIn As Grid, ByVal OutPath As String) As Boolean
         'Declare the raster objects
         Dim pFlowDirRaster As New Grid
@@ -356,6 +364,7 @@ Friend Class NewWatershedDelineationForm
                 pESRID8Flow.CreateNew(_strDirFileName, tmphead, GridDataType.FloatDataType, -1)
                 RasterMath(pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, GetConverterToEsriFromTauDem())
                 pESRID8Flow.Header.NodataValue = -1
+                pESRID8Flow.Save()  'Saving because it seemed necessary.
                 pESRID8Flow.Save(_strDirFileName)
                 pESRID8Flow.Close()
             Else
@@ -432,55 +441,9 @@ Friend Class NewWatershedDelineationForm
                 Return False
             End If
 
-            'Save final output tif versions (since Taudem needed bgds before this)
-            Dim proj As String = pOutputFeatClass.Projection
-            Dim tmpfile As String
-            tmpfile = _strFilledDEMFileName
-            _strFilledDEMFileName = OutPath + "demfill" + FinalOutputGridExt
-            pFillRaster.Close()
-            pFillRaster = New Grid
-            pFillRaster.Open(tmpfile)
-            pFillRaster.Header.Projection = proj
-            pFillRaster.Save(_strFilledDEMFileName)
-            pFillRaster.Close()
-            File.Delete(tmpfile)
-
-            tmpfile = strSlpFileName
-            strSlpFileName = OutPath + "slope" + FinalOutputGridExt
-            Dim pslope As New Grid
-            pslope.Open(tmpfile)
-            pslope.Header.Projection = proj
-            pslope.Save(strSlpFileName)
-            pslope.Close()
-            File.Delete(tmpfile)
-
-            tmpfile = _strDirFileName
-            _strDirFileName = OutPath + "flowdir" + FinalOutputGridExt
-
-            pFlowDirRaster = New Grid
-            pFlowDirRaster.Open(tmpfile)
-            pFlowDirRaster.Header.Projection = proj
-            pFlowDirRaster.Save(_strDirFileName)
-            pFlowDirRaster.Close()
-            File.Delete(tmpfile)
-
-            tmpfile = _strAccumFileName
-            _strAccumFileName = OutPath + "flowacc" + FinalOutputGridExt
-            pAccumRaster.Close()
-            pAccumRaster = New Grid
-            pAccumRaster.Open(tmpfile)
-            pAccumRaster.Header.Projection = proj
-            pAccumRaster.Save(_strAccumFileName)
-            pAccumRaster.Close()
-            File.Delete(tmpfile)
-
             'With all of that done, now go get the name of the LS Grid while actually computing said LS Grid
             '_strLSFileName = CalcLengthSlope(pFillRaster, pFlowDirRaster, pAccumRaster, pEnv, "0", pWorkspace)
-            _strLSFileName = OutPath + "lsgrid" + FinalOutputGridExt
-            Dim g As New Grid
-            g.Open(longestupslopeout)
-            g.Save(_strLSFileName)
-            g.Close()
+
             _strNibbleName = _strDirFileName
             _strDEM2BName = pSurfaceDatasetIn.Filename
             'TODO: create these if really needed
