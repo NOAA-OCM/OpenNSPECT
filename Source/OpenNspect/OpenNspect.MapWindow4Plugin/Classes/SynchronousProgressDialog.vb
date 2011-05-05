@@ -36,8 +36,12 @@ Public Class SynchronousProgressDialog
     ''' </summary>
     ''' <param name="message">The message.</param><returns>Whether the process should continue to run.</returns>
     Public Function Increment(message As String) As Boolean
+        Return StepTo(message, form.Progress + 1)
+    End Function
+
+    Public Function StepTo(message As String, value As Integer) As Boolean
         form.Description = message
-        form.Progress += 1
+        form.Progress = value
         Application.DoEvents()
         Return KeepRunning
     End Function
