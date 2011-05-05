@@ -255,11 +255,7 @@ Module Utilities
     End Function
 
     Public Function ClipBySelectedPoly(ByRef pGridToClip As Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As Grid
-        Dim strtmp1 As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(strtmp1)
-        strtmp1 = strtmp1 + OutputGridExt
-        g_TempFilesToDel.Add(strtmp1)
-        DataManagement.DeleteGrid(strtmp1)
+        Dim strtmp1 As String = GetTempFileNameOutputGridExt()
         pGridToClip.Save()
         pGridToClip.Save(strtmp1)
         pGridToClip.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection

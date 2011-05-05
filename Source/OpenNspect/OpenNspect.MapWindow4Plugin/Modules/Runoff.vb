@@ -120,7 +120,6 @@ Module Runoff
             Return False
         End If
 
-        'Call the Runoff Calculation using the string and rasters
         Return RunoffCalculation(strPick, g_pPrecipRaster, g_LandCoverRaster, pSoilsRaster, OutputItems)
 
     End Function
@@ -451,22 +450,6 @@ Module Runoff
                             "Runoff Local", -1, OutputItems)
         Return strOutAccum
     End Function
-    Private Function GetTempFileName(ByVal fileExtension As String) As String
-        Dim file As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(file)
-        ' Things don't get saved correctly if they don't have the right file extension
-        file = Path.ChangeExtension(file, fileExtension)
-        g_TempFilesToDel.Add(file)
-        Return file
-    End Function
-
-    Public Function GetTempFileNameTAUDEMGridExt() As String
-        Return GetTempFileName(TAUDEMGridExt)
-    End Function
-
-    Public Function GetTempFileNameOutputGridExt() As String
-        Return GetTempFileName(OutputGridExt)
-    End Function
 
     Private Function DeriveAccumulatedRunoff() As Grid
         Dim tauD8calc = GetConverterToTauDemFromEsri()
@@ -475,9 +458,11 @@ Module Runoff
         pTauD8Flow.Header.NodataValue = -1
 
         Dim flowFile As String = GetTempFileNameTAUDEMGridExt()
+        pTauD8Flow.Save() 'Saving because it seemed necessary.
         If Not pTauD8Flow.Save(flowFile) Then Return Nothing
 
         Dim metRunoffFile As String = GetTempFileNameTAUDEMGridExt()
+        g_pMetRunoffRaster.Save() 'Saving because it seemed necessary.
         If Not g_pMetRunoffRaster.Save(metRunoffFile) Then Return Nothing
 
         Dim outFile As String = GetTempFileNameTAUDEMGridExt()
@@ -492,15 +477,14 @@ Module Runoff
 
         Return pAccumRunoffRaster
     End Function
-    Private Sub CreateRunoffGrid(ByRef OutputItems As OutputItems, ByVal pAccumRunoffRaster As Grid)
+    Private Sub CreateRunoffGridFileAndLayer(ByRef OutputItems As OutputItems, ByVal pAccumRunoffRaster As Grid)
         'Get a unique name for accumulation GRID
         Dim strOutAccum = GetUniqueFileName("runoff", g_Project.ProjectWorkspace, FinalOutputGridExt)
 
         'Clip to selected polys if chosen
         Dim pPermAccumRunoffRaster As Grid = Nothing
         If g_Project.UseSelectedPolygons Then
-            pPermAccumRunoffRaster =
-                ClipBySelectedPoly(pAccumRunoffRaster, g_pSelectedPolyClip, strOutAccum)
+            pPermAccumRunoffRaster = ClipBySelectedPoly(pAccumRunoffRaster, g_pSelectedPolyClip, strOutAccum)
         Else
             pPermAccumRunoffRaster = CopyRaster(pAccumRunoffRaster, strOutAccum)
         End If
@@ -541,7 +525,7 @@ Module Runoff
                 Dim pAccumRunoffRaster As Grid = DeriveAccumulatedRunoff()
 
                 If Not progress.Increment("Creating Runoff Layer...") Then Return False
-                CreateRunoffGrid(OutputItems, pAccumRunoffRaster)
+                CreateRunoffGridFileAndLayer(OutputItems, pAccumRunoffRaster)
             End Using
 
             Return True

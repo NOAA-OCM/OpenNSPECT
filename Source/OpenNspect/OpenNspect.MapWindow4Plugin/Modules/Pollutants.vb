@@ -259,6 +259,8 @@ Module Pollutants
             If g_Project.UseLocalEffectsOnly Then
                 If Not progress.Increment("Creating data layer for local effects...") Then Return False
                 CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
+            Else
+                pMassVolumeRaster.Save()
             End If
 
             If Not progress.Increment("Deriving accumulated pollutant...") Then Return False

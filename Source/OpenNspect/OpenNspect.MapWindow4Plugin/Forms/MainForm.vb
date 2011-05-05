@@ -812,7 +812,7 @@ Friend Class MainForm
 
             '' g_pSelectedPolyClip is set by SetGlobalEnvironment and must be called afterward.
             'account for non-adjacent polygons
-            If _Project.IntSelectedPolys = 1 Then
+            If _Project.UseSelectedPolygons Then
                 If CheckMultiPartPolygon(g_pSelectedPolyClip) Then
                     MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
                     Return
