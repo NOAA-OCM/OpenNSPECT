@@ -797,14 +797,6 @@ Friend Class MainForm
             'STEP 3: Find out if user is making use of only the selected Sheds -----------------------------------------------
             g_booSelectedPolys = _XmlPrjParams.IntSelectedPolys = 1
 
-            'account for non-adjacent polygons
-            If _XmlPrjParams.IntSelectedPolys = 1 Then
-                If CheckMultiPartPolygon(g_pSelectedPolyClip) Then
-                    MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
-                    Return
-                End If
-            End If
-
             'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
             'If they're using, we send them over to modMgmtScen to implement
             If _XmlPrjParams.MgmtScenHolder.Count > 0 Then
@@ -825,6 +817,14 @@ Friend Class MainForm
                 SetGlobalEnvironment(cmdWS.GetCommand(), _SelectLyrPath, _SelectedShapes)
             End Using
 
+            '' g_pSelectedPolyClip is set by SetGlobalEnvironment and must be called afterward.
+            'account for non-adjacent polygons
+            If _XmlPrjParams.IntSelectedPolys = 1 Then
+                If CheckMultiPartPolygon(g_pSelectedPolyClip) Then
+                    MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
+                    Return
+                End If
+            End If
 
             'STEP 9: ---------------------------------------------------------------------------------------------------------
             'Create the runoff GRID
