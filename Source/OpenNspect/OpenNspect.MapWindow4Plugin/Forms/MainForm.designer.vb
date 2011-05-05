@@ -100,24 +100,24 @@
         Me.LUApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.LUScenario = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.LUScenarioXml = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.cnxtmnuLandUse = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.AddScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me._SSTab1_TabPage3 = New System.Windows.Forms.TabPage()
         Me.lblManageNote = New System.Windows.Forms.Label()
         Me.dgvManagementScen = New System.Windows.Forms.DataGridView()
         Me.ManageApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.ChangeAreaLayer = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.ChangeToClass = New System.Windows.Forms.DataGridViewComboBoxColumn()
-        Me.cmdRun = New System.Windows.Forms.Button()
-        Me.cmdQuit = New System.Windows.Forms.Button()
-        Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox()
-        Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox()
-        Me.cnxtmnuLandUse = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.AddScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.EditScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DeleteScenarioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.cnxtmnuManagement = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AppendRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.InsertRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteCurrentRowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmdRun = New System.Windows.Forms.Button()
+        Me.cmdQuit = New System.Windows.Forms.Button()
+        Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox()
+        Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox()
         Me.MainMenu1.SuspendLayout()
         Me.Frame6.SuspendLayout()
         Me.Frame5.SuspendLayout()
@@ -134,9 +134,9 @@
         Me.frmSDR.SuspendLayout()
         Me._SSTab1_TabPage2.SuspendLayout()
         CType(Me.dgvLandUse, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.cnxtmnuLandUse.SuspendLayout()
         Me._SSTab1_TabPage3.SuspendLayout()
         CType(Me.dgvManagementScen, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cnxtmnuLandUse.SuspendLayout()
         Me.cnxtmnuManagement.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -177,7 +177,6 @@
         Me.txtRainValue.Name = "txtRainValue"
         Me.txtRainValue.Size = New System.Drawing.Size(84, 20)
         Me.txtRainValue.TabIndex = 26
-        Me.ToolTip1.SetToolTip(Me.txtRainValue, "Functionality to be implemented in Alpha2")
         '
         'optUseValue
         '
@@ -187,7 +186,6 @@
         Me.optUseValue.TabIndex = 24
         Me.optUseValue.TabStop = True
         Me.optUseValue.Text = "Use Constant Value: "
-        Me.ToolTip1.SetToolTip(Me.optUseValue, "Functionality to be implemented in Alpha2")
         Me.optUseValue.UseVisualStyleBackColor = True
         '
         'txtbxRainGrid
@@ -198,7 +196,6 @@
         Me.txtbxRainGrid.Name = "txtbxRainGrid"
         Me.txtbxRainGrid.Size = New System.Drawing.Size(122, 20)
         Me.txtbxRainGrid.TabIndex = 69
-        Me.ToolTip1.SetToolTip(Me.txtbxRainGrid, "Functionality to be implemented in Alpha2")
         '
         'MainMenu1
         '
@@ -212,58 +209,58 @@
         '
         Me.mnuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNew, Me.mnuOpen, Me.mnuSpace, Me.mnuSave, Me.mnuSaveAs, Me.mnuSpace1, Me.mnuExit})
         Me.mnuFile.Name = "mnuFile"
-        Me.mnuFile.Size = New System.Drawing.Size(37, 20)
+        Me.mnuFile.Size = New System.Drawing.Size(35, 20)
         Me.mnuFile.Text = "&File"
         '
         'mnuNew
         '
         Me.mnuNew.Name = "mnuNew"
         Me.mnuNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
-        Me.mnuNew.Size = New System.Drawing.Size(195, 22)
+        Me.mnuNew.Size = New System.Drawing.Size(200, 22)
         Me.mnuNew.Text = "New Project"
         '
         'mnuOpen
         '
         Me.mnuOpen.Name = "mnuOpen"
         Me.mnuOpen.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.mnuOpen.Size = New System.Drawing.Size(195, 22)
+        Me.mnuOpen.Size = New System.Drawing.Size(200, 22)
         Me.mnuOpen.Text = "Open Project..."
         '
         'mnuSpace
         '
         Me.mnuSpace.Name = "mnuSpace"
-        Me.mnuSpace.Size = New System.Drawing.Size(192, 6)
+        Me.mnuSpace.Size = New System.Drawing.Size(197, 6)
         '
         'mnuSave
         '
         Me.mnuSave.Name = "mnuSave"
         Me.mnuSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.mnuSave.Size = New System.Drawing.Size(195, 22)
+        Me.mnuSave.Size = New System.Drawing.Size(200, 22)
         Me.mnuSave.Text = "Save"
         '
         'mnuSaveAs
         '
         Me.mnuSaveAs.Name = "mnuSaveAs"
-        Me.mnuSaveAs.Size = New System.Drawing.Size(195, 22)
+        Me.mnuSaveAs.Size = New System.Drawing.Size(200, 22)
         Me.mnuSaveAs.Text = "Save As..."
         '
         'mnuSpace1
         '
         Me.mnuSpace1.Name = "mnuSpace1"
-        Me.mnuSpace1.Size = New System.Drawing.Size(192, 6)
+        Me.mnuSpace1.Size = New System.Drawing.Size(197, 6)
         '
         'mnuExit
         '
         Me.mnuExit.Name = "mnuExit"
         Me.mnuExit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.mnuExit.Size = New System.Drawing.Size(195, 22)
+        Me.mnuExit.Size = New System.Drawing.Size(200, 22)
         Me.mnuExit.Text = "E&xit"
         '
         'mnuBigHelp
         '
         Me.mnuBigHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGeneralHelp})
         Me.mnuBigHelp.Name = "mnuBigHelp"
-        Me.mnuBigHelp.Size = New System.Drawing.Size(44, 20)
+        Me.mnuBigHelp.Size = New System.Drawing.Size(40, 20)
         Me.mnuBigHelp.Text = "&Help"
         '
         'mnuGeneralHelp
@@ -846,6 +843,30 @@
         Me.LUScenarioXml.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
         Me.LUScenarioXml.Visible = False
         '
+        'cnxtmnuLandUse
+        '
+        Me.cnxtmnuLandUse.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddScenarioToolStripMenuItem, Me.EditScenarioToolStripMenuItem, Me.DeleteScenarioToolStripMenuItem})
+        Me.cnxtmnuLandUse.Name = "cnxtmnuLandUse"
+        Me.cnxtmnuLandUse.Size = New System.Drawing.Size(165, 70)
+        '
+        'AddScenarioToolStripMenuItem
+        '
+        Me.AddScenarioToolStripMenuItem.Name = "AddScenarioToolStripMenuItem"
+        Me.AddScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
+        Me.AddScenarioToolStripMenuItem.Text = "Add Scenario..."
+        '
+        'EditScenarioToolStripMenuItem
+        '
+        Me.EditScenarioToolStripMenuItem.Name = "EditScenarioToolStripMenuItem"
+        Me.EditScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
+        Me.EditScenarioToolStripMenuItem.Text = "Edit Scenario..."
+        '
+        'DeleteScenarioToolStripMenuItem
+        '
+        Me.DeleteScenarioToolStripMenuItem.Name = "DeleteScenarioToolStripMenuItem"
+        Me.DeleteScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
+        Me.DeleteScenarioToolStripMenuItem.Text = "Delete Scenario..."
+        '
         '_SSTab1_TabPage3
         '
         Me._SSTab1_TabPage3.Controls.Add(Me.lblManageNote)
@@ -902,6 +923,30 @@
         Me.ChangeToClass.Name = "ChangeToClass"
         Me.ChangeToClass.Width = 180
         '
+        'cnxtmnuManagement
+        '
+        Me.cnxtmnuManagement.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AppendRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteCurrentRowToolStripMenuItem})
+        Me.cnxtmnuManagement.Name = "cnxtmnuManagement"
+        Me.cnxtmnuManagement.Size = New System.Drawing.Size(177, 70)
+        '
+        'AppendRowToolStripMenuItem
+        '
+        Me.AppendRowToolStripMenuItem.Name = "AppendRowToolStripMenuItem"
+        Me.AppendRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.AppendRowToolStripMenuItem.Text = "Append Row"
+        '
+        'InsertRowToolStripMenuItem
+        '
+        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
+        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
+        '
+        'DeleteCurrentRowToolStripMenuItem
+        '
+        Me.DeleteCurrentRowToolStripMenuItem.Name = "DeleteCurrentRowToolStripMenuItem"
+        Me.DeleteCurrentRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
+        Me.DeleteCurrentRowToolStripMenuItem.Text = "Delete Current Row"
+        '
         'cmdRun
         '
         Me.cmdRun.CausesValidation = False
@@ -941,54 +986,6 @@
         Me._chkIgnoreLU_0.TabIndex = 36
         Me._chkIgnoreLU_0.Text = "Check2"
         Me._chkIgnoreLU_0.UseVisualStyleBackColor = True
-        '
-        'cnxtmnuLandUse
-        '
-        Me.cnxtmnuLandUse.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddScenarioToolStripMenuItem, Me.EditScenarioToolStripMenuItem, Me.DeleteScenarioToolStripMenuItem})
-        Me.cnxtmnuLandUse.Name = "cnxtmnuLandUse"
-        Me.cnxtmnuLandUse.Size = New System.Drawing.Size(165, 70)
-        '
-        'AddScenarioToolStripMenuItem
-        '
-        Me.AddScenarioToolStripMenuItem.Name = "AddScenarioToolStripMenuItem"
-        Me.AddScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
-        Me.AddScenarioToolStripMenuItem.Text = "Add Scenario..."
-        '
-        'EditScenarioToolStripMenuItem
-        '
-        Me.EditScenarioToolStripMenuItem.Name = "EditScenarioToolStripMenuItem"
-        Me.EditScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
-        Me.EditScenarioToolStripMenuItem.Text = "Edit Scenario..."
-        '
-        'DeleteScenarioToolStripMenuItem
-        '
-        Me.DeleteScenarioToolStripMenuItem.Name = "DeleteScenarioToolStripMenuItem"
-        Me.DeleteScenarioToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
-        Me.DeleteScenarioToolStripMenuItem.Text = "Delete Scenario..."
-        '
-        'cnxtmnuManagement
-        '
-        Me.cnxtmnuManagement.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AppendRowToolStripMenuItem, Me.InsertRowToolStripMenuItem, Me.DeleteCurrentRowToolStripMenuItem})
-        Me.cnxtmnuManagement.Name = "cnxtmnuManagement"
-        Me.cnxtmnuManagement.Size = New System.Drawing.Size(177, 70)
-        '
-        'AppendRowToolStripMenuItem
-        '
-        Me.AppendRowToolStripMenuItem.Name = "AppendRowToolStripMenuItem"
-        Me.AppendRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
-        Me.AppendRowToolStripMenuItem.Text = "Append Row"
-        '
-        'InsertRowToolStripMenuItem
-        '
-        Me.InsertRowToolStripMenuItem.Name = "InsertRowToolStripMenuItem"
-        Me.InsertRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
-        Me.InsertRowToolStripMenuItem.Text = "Insert Row"
-        '
-        'DeleteCurrentRowToolStripMenuItem
-        '
-        Me.DeleteCurrentRowToolStripMenuItem.Name = "DeleteCurrentRowToolStripMenuItem"
-        Me.DeleteCurrentRowToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
-        Me.DeleteCurrentRowToolStripMenuItem.Text = "Delete Current Row"
         '
         'MainForm
         '
@@ -1037,10 +1034,10 @@
         Me._SSTab1_TabPage2.ResumeLayout(False)
         Me._SSTab1_TabPage2.PerformLayout()
         CType(Me.dgvLandUse, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cnxtmnuLandUse.ResumeLayout(False)
         Me._SSTab1_TabPage3.ResumeLayout(False)
         Me._SSTab1_TabPage3.PerformLayout()
         CType(Me.dgvManagementScen, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.cnxtmnuLandUse.ResumeLayout(False)
         Me.cnxtmnuManagement.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
