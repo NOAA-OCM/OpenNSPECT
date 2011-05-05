@@ -158,12 +158,12 @@ Module RevisedUniversalSoilLossEquation
         Dim pPermRUSLELocRaster As Grid = Nothing
         'RUSLE Local Effects raster
 
-        Const strTitle As String = "Processing RUSLE Calculation..."
-        Dim strOutYield As String
 
+        Dim strOutYield As String
+        Dim progress = New SynchronousProgressDialog("Processing RUSLE Calculation...", 13, g_MainForm)
         Try
-            ShowProgress("Solving RUSLE Equation...", strTitle, 13, 3, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Solving RUSLE Equation...")
+            If SynchronousProgressDialog.KeepRunning Then
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
@@ -182,8 +182,8 @@ Module RevisedUniversalSoilLossEquation
             'BEGIN SDR CODE......
             '***********************************************
             If Len(Trim(_strSDRFileName)) = 0 Then
-                ShowProgress("Calculating Relief-Length Ratio for Sediment Delivery...", strTitle, 13, 5, g_MainForm)
-                If g_KeepRunning Then
+                progress.Increment("Calculating Relief-Length Ratio for Sediment Delivery...")
+                If SynchronousProgressDialog.KeepRunning Then
                     'STEP 4: DAVE'S WACKY CALCULATION OF RELIEF-LENGTH RATIO FOR SEDIMENT DELIVERY RATIO-------
                     Dim pZSedcalc As New RasterMathCellCalcWindowNulls(AddressOf pZSedCellCalc)
                     'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
@@ -194,8 +194,8 @@ Module RevisedUniversalSoilLossEquation
                     'END STEP 4: ------------------------------------------------------------------------------
                 End If
 
-                ShowProgress("Calculating Sediment Delivery Ratio...", strTitle, 13, 6, g_MainForm)
-                If g_KeepRunning Then
+                progress.Increment("Calculating Sediment Delivery Ratio...")
+                If SynchronousProgressDialog.KeepRunning Then
                     Dim AllSDRCalc As New RasterMathCellCalc(AddressOf AllSDRCellCalc)
                     RasterMath(g_pDEMRaster, pZSedDelRaster, g_pSCS100Raster, Nothing, Nothing, pSDRRaster, AllSDRCalc)
                     pZSedDelRaster.Close()
@@ -208,8 +208,8 @@ Module RevisedUniversalSoilLossEquation
             'END SDR CALC
             '********************************************************************
 
-            ShowProgress("Applying Sediment Delivery Ratio...", strTitle, 13, 13, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Applying Sediment Delivery Ratio...")
+            If SynchronousProgressDialog.KeepRunning Then
                 'STEP 11: sed_yield = [soil_loss_ac] * [sdr] -------------------------------------------------
                 Dim SedYieldcalc As New RasterMathCellCalc(AddressOf sedYieldCellCalc)
                 RasterMath(pSDRRaster, pSoilLossAcres, Nothing, Nothing, Nothing, pSedYieldRaster, SedYieldcalc)
@@ -219,8 +219,8 @@ Module RevisedUniversalSoilLossEquation
             End If
 
             If g_booLocalEffects Then
-                ShowProgress("Creating data layer for local effects...", strTitle, 13, 13, g_MainForm)
-                If g_KeepRunning Then
+                progress.Increment("Creating data layer for local effects...")
+                If SynchronousProgressDialog.KeepRunning Then
 
                     'STEP 12: Local Effects -------------------------------------------------
 
@@ -237,7 +237,7 @@ Module RevisedUniversalSoilLossEquation
                     AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
 
                     CalcRUSLE = True
-                    CloseProgressDialog()
+                    progress.Dispose()
 
                     Exit Function
 
@@ -245,8 +245,8 @@ Module RevisedUniversalSoilLossEquation
 
             End If
 
-            ShowProgress("Calculating Accumulated Sediment...", strTitle, 13, 13, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Calculating Accumulated Sediment...")
+            If SynchronousProgressDialog.KeepRunning Then
 
                 'STEP 12: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
 
@@ -266,7 +266,7 @@ Module RevisedUniversalSoilLossEquation
 
                 Dim result = Hydrology.WeightedAreaD8(flowdir, sedyield, Nothing, strtmpout, False, False, Environment.ProcessorCount, Nothing)
                 If result <> 0 Then
-                    g_KeepRunning = False
+                    SynchronousProgressDialog.KeepRunning = False
                 End If
 
                 pTotalAccumSedRaster = New Grid
@@ -276,9 +276,9 @@ Module RevisedUniversalSoilLossEquation
                 pSedYieldRaster.Close()
             End If
 
-            ShowProgress("Adding accumulated sediment layer to the data group layer...", strTitle, 13, 13, g_MainForm)
+            progress.Increment("Adding accumulated sediment layer to the data group layer...")
 
-            If g_KeepRunning Then
+            If SynchronousProgressDialog.KeepRunning Then
                 strOutYield = GetUniqueFileName("RUSLE", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
 
                 'Clip to selected polys if chosen
@@ -296,14 +296,13 @@ Module RevisedUniversalSoilLossEquation
 
             CalcRUSLE = True
 
-            CloseProgressDialog()
+            progress.Dispose()
 
         Catch ex As Exception
             HandleError(ex)
             Return False
         Finally
-            g_KeepRunning = False
-            CloseProgressDialog()
+            progress.Dispose()
         End Try
 
 

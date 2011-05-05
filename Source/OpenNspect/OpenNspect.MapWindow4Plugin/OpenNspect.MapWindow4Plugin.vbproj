@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\InstallationHelper.vb" />
+    <Compile Include="Classes\SynchronousProgressDialog.vb" />
     <Compile Include="Modules\Coloring.vb" />
     <Compile Include="Modules\ConvertTo.vb" />
     <Compile Include="Modules\Database.vb" />
@@ -342,7 +343,6 @@
     <Compile Include="Modules\ManagementScenarios.vb" />
     <Compile Include="Modules\ModifiedUniversalSoilLossEquation.vb" />
     <Compile Include="Modules\Pollutants.vb" />
-    <Compile Include="Modules\ProgressDialog.vb" />
     <Compile Include="Modules\Runoff.vb" />
     <Compile Include="Modules\RevisedUniversalSoilLossEquation.vb" />
     <Compile Include="Modules\Utilities.vb" />

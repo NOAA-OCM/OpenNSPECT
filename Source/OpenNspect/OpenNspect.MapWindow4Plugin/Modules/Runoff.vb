@@ -409,7 +409,6 @@ Module Runoff
         End Try
     End Function
 
-    Const ProgressTitle As String = "Processing Runoff Calculation..."
 
     Private Sub CalculateMaxiumumPotentialRetention(ByRef strPick As String(), ByRef pInLandCoverRaster As Grid, ByRef pInSoilsRaster As Grid)
         ReDim _picks(strPick.Length - 1)
@@ -486,7 +485,7 @@ Module Runoff
         Dim result = Hydrology.WeightedAreaD8(flowFile, metRunoffFile, Nothing, outFile, False, False,
                                   Environment.ProcessorCount, Nothing)
         If result <> 0 Then
-            g_KeepRunning = False
+            SynchronousProgressDialog.KeepRunning = False
         End If
         Dim pAccumRunoffRaster As Grid = New Grid
         pAccumRunoffRaster.Open(outFile)
@@ -527,36 +526,29 @@ Module Runoff
                                        ByRef pInSoilsRaster As Grid, ByRef OutputItems As OutputItems) As Boolean
 
         Try
-            ShowProgress("Calculating maximum potential retention...", ProgressTitle, 10, 3, g_MainForm)
-            CalculateMaxiumumPotentialRetention(picks, pInLandCoverRaster, pInSoilsRaster)
+            Using progress = New SynchronousProgressDialog("Calculating maximum potential retention...", "Processing Runoff Calculation...", 5, g_MainForm)
+                CalculateMaxiumumPotentialRetention(picks, pInLandCoverRaster, pInSoilsRaster)
 
-            If Not g_KeepRunning Then Return False
-            ShowProgress("Calculating runoff...", ProgressTitle, 10, 6, g_MainForm)
-            CalculateRunoff(pInRainRaster)
+                If Not progress.Increment("Calculating runoff...") Then Return False
+                CalculateRunoff(pInRainRaster)
 
-            If g_booLocalEffects Then
-                If Not g_KeepRunning Then Return False
-                ShowProgress("Creating data layer for local effects...", ProgressTitle, 10, 7, g_MainForm)
-                CreateDataLayerForLocalEffects(OutputItems)
-            End If
+                If g_booLocalEffects Then
+                    If Not progress.Increment("Creating data layer for local effects...") Then Return False
+                    CreateDataLayerForLocalEffects(OutputItems)
+                End If
 
-            If Not g_KeepRunning Then Return False
-            ShowProgress("Creating flow accumulation...", ProgressTitle, 10, 9, g_MainForm)
-            Dim pAccumRunoffRaster As Grid = DeriveAccumulatedRunoff()
+                If Not progress.Increment("Creating flow accumulation...") Then Return False
+                Dim pAccumRunoffRaster As Grid = DeriveAccumulatedRunoff()
 
-            If Not g_KeepRunning Then Return False
-            'Add this then map as our runoff grid
-            ShowProgress("Creating Runoff Layer...", ProgressTitle, 10, 10, g_MainForm)
-            CreateRunoffGrid(OutputItems, pAccumRunoffRaster)
+                If Not progress.Increment("Creating Runoff Layer...") Then Return False
+                CreateRunoffGrid(OutputItems, pAccumRunoffRaster)
+            End Using
 
             Return True
 
         Catch ex As Exception
             HandleError(ex)
-            g_KeepRunning = False
             Return False
-        Finally
-            CloseProgressDialog()
         End Try
     End Function
 

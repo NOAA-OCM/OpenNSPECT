@@ -59,27 +59,29 @@ Module ManagementScenarios
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
-            Dim i As Short
             If MgmtScens.Count > 0 Then
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
                 _pLandCoverRaster.Save(strOutLandCover)
                 _pLandCoverRaster.Close()
                 pNewLandCoverRaster.Open(strOutLandCover)
 
-                For i = 0 To MgmtScens.Count - 1
-                    If MgmtScens.Item(i).intApply = 1 Then
-                        ShowProgress("Adding new landclass...", "Creating Management Scenario", CInt(MgmtScens.Count), CInt(i), g_MainForm)
-                        If g_KeepRunning Then
-                            Dim mgmtitem As ManagementScenarioItem = MgmtScens.Item(i)
-                            ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
-                            booLandScen = True
-                        Else
-                            pNewLandCoverRaster.Close()
-                            booLandScen = False
-                            Exit For
+                Using progress = New SynchronousProgressDialog("Creating Management Scenario", MgmtScens.Count, g_MainForm)
+                    Dim i As Short
+                    For i = 0 To MgmtScens.Count - 1
+                        If MgmtScens.Item(i).intApply = 1 Then
+                            progress.Increment("Adding new landclass...")
+                            If SynchronousProgressDialog.KeepRunning Then
+                                Dim mgmtitem As ManagementScenarioItem = MgmtScens.Item(i)
+                                ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
+                                booLandScen = True
+                            Else
+                                pNewLandCoverRaster.Close()
+                                booLandScen = False
+                                Exit For
+                            End If
                         End If
-                    End If
-                Next i
+                    Next i
+                End Using
             End If
 
             If Not booLandScen Then
@@ -88,13 +90,9 @@ Module ManagementScenarios
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
 
-            CloseProgressDialog()
-
         Catch ex As Exception
             HandleError(ex)
-            CloseProgressDialog()
         End Try
-
     End Sub
 
     Public Sub ReclassRaster(ByRef MgmtScen As ManagementScenarioItem, ByVal strLCClass As String, ByRef outputGrid As Grid)
