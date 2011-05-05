@@ -187,6 +187,7 @@
         '
         'cmbxLCType
         '
+        Me.cmbxLCType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbxLCType.Location = New System.Drawing.Point(124, 24)
         Me.cmbxLCType.Name = "cmbxLCType"
         Me.cmbxLCType.Size = New System.Drawing.Size(482, 21)
