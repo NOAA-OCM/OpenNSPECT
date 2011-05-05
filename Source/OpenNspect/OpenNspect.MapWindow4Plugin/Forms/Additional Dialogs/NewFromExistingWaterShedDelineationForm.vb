@@ -92,47 +92,43 @@ Friend Class NewFromExistingWaterShedDelineationForm
     Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Dim strCmdInsert As String
 
-        ShowProgress("Validating input...", "Adding New Delineation...", 3, 1, Me)
-        If Not ValidateDataFormInput() Then
-            CloseProgressDialog()
-            Return
-        End If
-
-        Try
-            'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
-            _strDEM2BFileName = txtDEMFile.Text
-            _strNibbleName = txtFlowDir.Text
-
-            ShowProgress("Updating Database...", "Adding New Delineation...", 3, 2, Me)
-
-            strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text, _strNibbleName, _strDEM2BFileName)
-
-            'Execute the statement.
-            Using cmdIns As New DataHelper(strCmdInsert)
-                cmdIns.ExecuteNonQuery()
-            End Using
-            System.Windows.Forms.Cursor.Current = Cursors.Default
-
-            CloseProgressDialog()
-
-            'Confirm
-            MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
-
-            If g_boolNewWShed Then
-                'frmPrj.Show
-                _frmPrj.cboWaterShedDelineations.Items.Clear()
-                InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
-                _frmPrj.cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
-                MyBase.OK_Button_Click(sender, e)
-            Else
-                MyBase.OK_Button_Click(sender, e)
-                _frmWS.Close()
+        Using progress = New SynchronousProgressDialog("Validating input...", "Adding New Delineation...", 3, Me)
+            If Not ValidateDataFormInput() Then
+                Return
             End If
 
-        Catch ex As Exception
-            MsgBox("An error occurred while processing your Watershed Delineation.", MsgBoxStyle.Critical, "Error")
-            CloseProgressDialog()
-        End Try
+            Try
+                'ARA 10/29/2010 Using base dem and flow dir instead of expanded grids
+                _strDEM2BFileName = txtDEMFile.Text
+                _strNibbleName = txtFlowDir.Text
+
+                progress.Increment("Updating Database...")
+
+                strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName, NibbleFileName, DEM2bFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text, _strNibbleName, _strDEM2BFileName)
+
+                'Execute the statement.
+                Using cmdIns As New DataHelper(strCmdInsert)
+                    cmdIns.ExecuteNonQuery()
+                End Using
+
+                'Confirm
+                MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
+
+                If g_boolNewWShed Then
+                    'frmPrj.Show
+                    _frmPrj.cboWaterShedDelineations.Items.Clear()
+                    InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
+                    _frmPrj.cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
+                    MyBase.OK_Button_Click(sender, e)
+                Else
+                    MyBase.OK_Button_Click(sender, e)
+                    _frmWS.Close()
+                End If
+
+            Catch ex As Exception
+                MsgBox("An error occurred while processing your Watershed Delineation.", MsgBoxStyle.Critical, "Error")
+            End Try
+        End Using
 
     End Sub
 

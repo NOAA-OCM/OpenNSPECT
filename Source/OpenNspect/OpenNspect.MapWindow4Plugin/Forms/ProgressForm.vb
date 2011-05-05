@@ -89,7 +89,7 @@ Public Class ProgressForm
     End Property
 
     Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
-        g_KeepRunning = False
+        SynchronousProgressDialog.KeepRunning = False
     End Sub
 
     Private Sub tmrEventDriver_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrEventDriver.Tick

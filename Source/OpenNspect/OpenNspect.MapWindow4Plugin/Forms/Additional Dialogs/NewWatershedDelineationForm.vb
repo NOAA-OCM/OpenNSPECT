@@ -313,18 +313,8 @@ Friend Class NewWatershedDelineationForm
         Dim pBasinFeatClass As New Shapefile
         'Basin Featureclass
 
+        Dim progress = New SynchronousProgressDialog("Filling DEM...", "Watershed Delineation Processing...", 10, Me)
         Try
-            Dim strProgTitle As String = "Watershed Delineation Processing..."
-
-            'Have to hide the existing forms, to be able to show the progress
-            If g_boolNewWShed Then
-                'Me.Hide()
-                '_frmPrj.Hide()
-            ElseIf Not g_boolNewWShed Then
-                'Me.Hide()
-                '_frmWS.Hide()
-            End If
-
             'Get cell size from DEM; needed later in the Length Slope Calculation
             _intCellSize = pSurfaceDatasetIn.Header.dX
 
@@ -332,14 +322,14 @@ Friend Class NewWatershedDelineationForm
 
             'STEP 1:  Fill the Surface
             'if hydrocorrect, then skip the Fill, just use the incoming DEM
-            ShowProgress("Filling DEM...", strProgTitle, 10, 1, Me)
+
             If chkHydroCorr.CheckState = 1 Then
                 pFillRaster = pSurfaceDatasetIn
                 _strFilledDEMFileName = pSurfaceDatasetIn.Filename
             Else
                 'Call to ProgDialog to use throughout process: keep user informed.
 
-                If g_KeepRunning Then
+                If SynchronousProgressDialog.KeepRunning Then
                     _strFilledDEMFileName = OutPath + "demfill" + OutputGridExt
                     Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
                     pFillRaster.Open(_strFilledDEMFileName)
@@ -350,12 +340,12 @@ Friend Class NewWatershedDelineationForm
             'End if Fill
 
             'STEP 2: Flow Direction
-            ShowProgress("Computing Flow Direction...", strProgTitle, 10, 2, Me)
+            progress.Increment("Computing Flow Direction...")
 
             Dim mwDirFileName As String = OutPath + "mwflowdir" + OutputGridExt
             _strDirFileName = OutPath + "flowdir" + OutputGridExt
             Dim strSlpFileName As String = OutPath + "slope" + OutputGridExt
-            If g_KeepRunning Then
+            If SynchronousProgressDialog.KeepRunning Then
                 ret = Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Environment.ProcessorCount, Nothing)
                 If ret <> 0 Then Return False
                 pFlowDirRaster.Open(mwDirFileName)
@@ -373,9 +363,9 @@ Friend Class NewWatershedDelineationForm
             End If
 
             'STEP 3: Flow Accumulation
-            ShowProgress("Computing Flow Accumulation...", strProgTitle, 10, 3, Me)
+            progress.Increment("Computing Flow Accumulation...")
             _strAccumFileName = OutPath + "flowacc" + OutputGridExt
-            If g_KeepRunning Then
+            If SynchronousProgressDialog.KeepRunning Then
                 ret = Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Environment.ProcessorCount, Nothing)
                 If ret <> 0 Then Return False
                 pAccumRaster.Open(_strAccumFileName)
@@ -412,8 +402,8 @@ Friend Class NewWatershedDelineationForm
 
             '        'Step 5: Using Hydrology Op to create stream network
             _strStreamLayer = OutPath + "stream.shp"
-            ShowProgress("Creating Stream Network...", strProgTitle, 10, 4, Me)
-            If g_KeepRunning Then
+            progress.Increment("Creating Stream Network...")
+            If SynchronousProgressDialog.KeepRunning Then
                 ret = Hydrology.DelinStreamGrids(pSurfaceDatasetIn.Filename, pFillRaster.Filename, pFlowDirRaster.Filename, strSlpFileName, pAccumRaster.Filename, "", strahlordout, longestupslopeout, totalupslopeout, streamgridout, streamordout, treedatout, coorddatout, _strStreamLayer, strWSGridOut, dblSubShedSize, False, False, 2, Nothing)
                 If ret <> 0 Then Return False
             Else
@@ -423,8 +413,8 @@ Friend Class NewWatershedDelineationForm
             'Step 6: Do WaterShed Op got moved into above step.
             _strWShedFileName = OutPath + "basinpoly.shp"
 
-            ShowProgress("Creating Watershed Shape...", strProgTitle, 10, 7, Me)
-            If g_KeepRunning Then
+            progress.Increment("Creating Watershed Shape...")
+            If SynchronousProgressDialog.KeepRunning Then
                 Dim file = pFlowDirRaster.Filename
                 pFlowDirRaster.Close()
                 ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
@@ -433,8 +423,8 @@ Friend Class NewWatershedDelineationForm
                 Return False
             End If
 
-            ShowProgress("Removing Small Polygons...", strProgTitle, 10, 9, Me)
-            If g_KeepRunning Then
+            progress.Increment("Removing Small Polygons...")
+            If SynchronousProgressDialog.KeepRunning Then
                 pBasinFeatClass.Open(strWSSFOut)
 
                 pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
@@ -500,7 +490,7 @@ Friend Class NewWatershedDelineationForm
             HandleError(ex)
             DelineateWatershed = False
         Finally
-            CloseProgressDialog()
+            progress.Dispose()
             pFlowDirRaster.Close()
             pAccumRaster.Close()
             pFillRaster.Close()

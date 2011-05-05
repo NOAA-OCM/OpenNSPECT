@@ -910,7 +910,6 @@ Friend Class MainForm
         Catch ex As Exception
             HandleError(ex)
         Finally
-            CloseProgressDialog()
             System.Windows.Forms.Cursor.Current = Cursors.Default
         End Try
     End Sub

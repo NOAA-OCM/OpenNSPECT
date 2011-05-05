@@ -238,13 +238,11 @@ Module ModifiedUniversalSoilLossEquation
         'Permanent MUSLE
         Dim strMUSLE As String
 
-        'String to hold calculations
-        Const strTitle As String = "Processing MUSLE Calculation..."
+        Dim progress = New SynchronousProgressDialog("Processing MUSLE Calculation...", 10, g_MainForm)
 
         Try
-
-            ShowProgress("Calculating Watershed Length...", strTitle, 27, 2, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Calculating Watershed Length...")
+            If SynchronousProgressDialog.KeepRunning Then
                 'STEP 2: ------------------------------------------------------------------------------------
                 'Calculate Watershed Length
 
@@ -312,8 +310,8 @@ Module ModifiedUniversalSoilLossEquation
                 'END STEP 3: -----------------------------------------------------------------------------------
             End If
 
-            ShowProgress("Calculating Mod Slope...", strTitle, 27, 4, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Calculating Mod Slope...")
+            If SynchronousProgressDialog.KeepRunning Then
                 'STEP 4a: ---------------------------------------------------------------------------------------
                 'Calculate Average Slope
                 Dim strtmpslpout As String = GetTempFileNameOutputGridExt()
@@ -333,15 +331,15 @@ Module ModifiedUniversalSoilLossEquation
                 'END STEP 4a ------------------------------------------------------------------------------------
             End If
 
-            ShowProgress("Calculating MUSLE...", strTitle, 27, 18, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Calculating MUSLE...")
+            If SynchronousProgressDialog.KeepRunning Then
                 Dim AllMUSLECalc As New RasterMathCellCalc(AddressOf AllMUSLECellCalc)
                 RasterMath(pWSLengthUnitsRaster, g_pSCS100Raster, pSlopeModRaster, g_pPrecipRaster, g_LandCoverRaster, pQuRaster, AllMUSLECalc)
             End If
             'modUtil.ReturnPermanentRaster(pQuRaster, modUtil.GetUniqueName("qu", g_XmlPrjFile.ProjectWorkspace, g_OutputGridExt))
 
-            ShowProgress("Calculating MUSLE...", strTitle, 27, 22, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Calculating MUSLE...")
+            If SynchronousProgressDialog.KeepRunning Then
                 ReDim _pondpicks(strConPondStatement.Split(",").Length)
                 _pondpicks = strConPondStatement.Split(",")
                 Dim AllMUSLECalc2 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc2)
@@ -350,8 +348,8 @@ Module ModifiedUniversalSoilLossEquation
             End If
             'modUtil.ReturnPermanentRaster(pHISYTempRaster, modUtil.GetUniqueName("hisytmp", g_XmlPrjFile.ProjectWorkspace, g_OutputGridExt))
 
-            ShowProgress("Calculating MUSLE...", strTitle, 27, 25, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Calculating MUSLE...")
+            If SynchronousProgressDialog.KeepRunning Then
                 ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
                 Dim AllMUSLECalc3 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc3)
@@ -366,8 +364,8 @@ Module ModifiedUniversalSoilLossEquation
 
             If g_booLocalEffects Then
 
-                ShowProgress("Creating data layer for local effects...", strTitle, 27, 27, g_MainForm)
-                If g_KeepRunning Then
+                progress.Increment("Creating data layer for local effects...")
+                If SynchronousProgressDialog.KeepRunning Then
 
                     strMUSLE = GetUniqueFileName("locmusle", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
                     'Added 7/23/04 to account for clip by selected polys functionality
@@ -383,15 +381,15 @@ Module ModifiedUniversalSoilLossEquation
                     AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
 
                     CalcMUSLE = True
-                    CloseProgressDialog()
+                    progress.Dispose()
                     Exit Function
 
                 End If
 
             End If
 
-            ShowProgress("Calculating the accumulated sediment...", strTitle, 27, 23, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Calculating the accumulated sediment...")
+            If SynchronousProgressDialog.KeepRunning Then
                 Dim pTauD8Flow As Grid = Nothing
 
                 Dim tauD8calc = GetConverterToTauDemFromEsri()
@@ -419,8 +417,8 @@ Module ModifiedUniversalSoilLossEquation
                 DataManagement.DeleteGrid(pHISYMGRasterTmp)
             End If
 
-            ShowProgress("Adding Sediment Mass to Group Layer...", strTitle, 27, 25, g_MainForm)
-            If g_KeepRunning Then
+            progress.Increment("Adding Sediment Mass to Group Layer...")
+            If SynchronousProgressDialog.KeepRunning Then
                 'STEP 21: Created the Sediment Mass Raster layer and add to Group Layer -----------------------------------
                 'Get a unique name for MUSLE and return the permanently made raster
                 strMUSLE = GetUniqueFileName("MUSLEmass", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
@@ -443,10 +441,8 @@ Module ModifiedUniversalSoilLossEquation
         Catch ex As Exception
             HandleError(ex)
             CalcMUSLE = False
-            g_KeepRunning = False
-
         Finally
-            CloseProgressDialog()
+            progress.Dispose()
         End Try
     End Function
 

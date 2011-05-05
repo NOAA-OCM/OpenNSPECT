@@ -238,127 +238,122 @@ Friend Class SoilsSetupForm
             lngValue = 1
 
             pSoilsFeatClass.StartEditingTable()
-            'Now calc the Values
-            For i As Integer = 0 To pSoilsFeatClass.NumShapes - 1
-                ShowProgress("Calculating soils values...", "Processing Soils", pSoilsFeatClass.NumShapes, lngValue, Me)
-                'Find the current value
-                If g_KeepRunning Then
-                    strHydValue = pSoilsFeatClass.CellValue(lngHydFieldIndex, i)
-                    'Based on current value, change GROUP to appropriate setting
-                    Select Case strHydValue
-                        Case "A"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
-                        Case "B"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 2)
-                        Case "C"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
-                        Case "D"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
-                        Case "A/B"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 2)
-                        Case "B/C"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
-                        Case "C/D"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
-                        Case "B/D"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
-                        Case "A/D"
-                            pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
-                        Case ""
-                            MsgBox("Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", MsgBoxStyle.Critical, "Missing Values Detected")
-                            CreateSoilsGrid = False
-                            CloseProgressDialog()
-                            Exit Function
-                    End Select
-                    lngValue = lngValue + 1
-                Else
-                    'If they cancel, kill the dialog
-                    CloseProgressDialog()
-                    Exit Function
-                End If
-            Next
-            pSoilsFeatClass.StopEditingTable()
-            pSoilsFeatClass.Save()
-            pSoilsFeatClass.Close()
-
-            'Close dialog
-            CloseProgressDialog()
-
-            'STEP 2:
-            'Now do the conversion: Convert soils layer to GRID using new
-            'Group field as the value
-
-            If g_KeepRunning Then
-                ShowProgress("Converting Soils Dataset...", "Processing Soils", 2, 2, Me)
-
-                strOutSoils = GetUniqueFileName("soils", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
-
-                'Hand convert the soils shapefile to grids by creating new grids based on header of dem
-                Dim dem As New Grid
-                dem.Open(txtDEMFile.Text)
-                Dim head As New GridHeader
-                Dim headK As New GridHeader
-                head.CopyFrom(dem.Header)
-                headK.CopyFrom(dem.Header)
-                dem.Close()
-
-                Dim soilsshp As New Shapefile
-                soilsshp.Open(strSoilsFileName)
-                soilsshp.BeginPointInShapefile()
-
-                Dim outSoils As New Grid
-                Dim outSoilsK As New Grid
-
-                outSoils.CreateNew(strOutSoils, head, GridDataType.DoubleDataType, head.NodataValue)
-
-                If Len(strKFactor) > 0 Then
-                    strOutKSoils = GetUniqueFileName("soilsk", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
-                    outSoilsK.CreateNew(strOutKSoils, headK, GridDataType.DoubleDataType, head.NodataValue)
-                Else
-                    strOutKSoils = ""
-                End If
-
-                'Then cycle over each cell, testing the cell to proj for intersection with the shapefile. very cheesy, but should work
-                Dim x, y As Double
-                Dim idx As Integer
-                Dim nc As Integer = head.NumberCols - 1
-                Dim nr As Integer = head.NumberRows - 1
-                For row As Integer = 0 To nr
-                    ShowProgress("Converting Soils Dataset...", "Processing Soils", nr, row, Me)
-                    For col As Integer = 0 To nc
-                        outSoils.CellToProj(col, row, x, y)
-                        idx = soilsshp.PointInShapefile(x, y)
-                        If idx <> -1 Then
-                            outSoils.Value(col, row) = soilsshp.CellValue(lngNewHydFieldIndex, idx)
-                            If strOutKSoils <> "" Then
-                                outSoilsK.Value(col, row) = soilsshp.CellValue(lngKFieldIndex, idx)
-                            End If
-                        End If
-                    Next
+            Using progress = New SynchronousProgressDialog("Calculating soils values...", "Processing Soils", pSoilsFeatClass.NumShapes, Me)
+                'Now calc the Values
+                For i As Integer = 0 To pSoilsFeatClass.NumShapes - 1
+                    progress.Increment("Calculating soils values...")
+                    'Find the current value
+                    If SynchronousProgressDialog.KeepRunning Then
+                        strHydValue = pSoilsFeatClass.CellValue(lngHydFieldIndex, i)
+                        'Based on current value, change GROUP to appropriate setting
+                        Select Case strHydValue
+                            Case "A"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
+                            Case "B"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 2)
+                            Case "C"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
+                            Case "D"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
+                            Case "A/B"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 2)
+                            Case "B/C"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
+                            Case "C/D"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
+                            Case "B/D"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
+                            Case "A/D"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
+                            Case ""
+                                MsgBox("Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", MsgBoxStyle.Critical, "Missing Values Detected")
+                                CreateSoilsGrid = False
+                                progress.Dispose()
+                                Exit Function
+                        End Select
+                        lngValue = lngValue + 1
+                    Else
+                        'If they cancel, kill the dialog
+                        progress.Dispose()
+                        Exit Function
+                    End If
                 Next
 
-                'After, save the grids and close them.
-                outSoils.Save()
-                outSoils.Close()
-                If strOutKSoils <> "" Then
-                    outSoilsK.Save()
-                    outSoilsK.Close()
+                pSoilsFeatClass.StopEditingTable()
+                pSoilsFeatClass.Save()
+                pSoilsFeatClass.Close()
+
+                'STEP 2:
+                'Now do the conversion: Convert soils layer to GRID using new
+                'Group field as the value
+
+                If SynchronousProgressDialog.KeepRunning Then
+                    progress.Increment("Converting Soils Dataset...")
+
+                    strOutSoils = GetUniqueFileName("soils", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
+
+                    'Hand convert the soils shapefile to grids by creating new grids based on header of dem
+                    Dim dem As New Grid
+                    dem.Open(txtDEMFile.Text)
+                    Dim head As New GridHeader
+                    Dim headK As New GridHeader
+                    head.CopyFrom(dem.Header)
+                    headK.CopyFrom(dem.Header)
+                    dem.Close()
+
+                    Dim soilsshp As New Shapefile
+                    soilsshp.Open(strSoilsFileName)
+                    soilsshp.BeginPointInShapefile()
+
+                    Dim outSoils As New Grid
+                    Dim outSoilsK As New Grid
+
+                    outSoils.CreateNew(strOutSoils, head, GridDataType.DoubleDataType, head.NodataValue)
+
+                    If Len(strKFactor) > 0 Then
+                        strOutKSoils = GetUniqueFileName("soilsk", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
+                        outSoilsK.CreateNew(strOutKSoils, headK, GridDataType.DoubleDataType, head.NodataValue)
+                    Else
+                        strOutKSoils = ""
+                    End If
+
+                    'Then cycle over each cell, testing the cell to proj for intersection with the shapefile. very cheesy, but should work
+                    Dim x, y As Double
+                    Dim idx As Integer
+                    Dim nc As Integer = head.NumberCols - 1
+                    Dim nr As Integer = head.NumberRows - 1
+                    For row As Integer = 0 To nr
+                        progress.Increment("Converting Soils Dataset...")
+                        For col As Integer = 0 To nc
+                            outSoils.CellToProj(col, row, x, y)
+                            idx = soilsshp.PointInShapefile(x, y)
+                            If idx <> -1 Then
+                                outSoils.Value(col, row) = soilsshp.CellValue(lngNewHydFieldIndex, idx)
+                                If strOutKSoils <> "" Then
+                                    outSoilsK.Value(col, row) = soilsshp.CellValue(lngKFieldIndex, idx)
+                                End If
+                            End If
+                        Next
+                    Next
+
+                    'After, save the grids and close them.
+                    outSoils.Save()
+                    outSoils.Close()
+                    If strOutKSoils <> "" Then
+                        outSoilsK.Save()
+                        outSoilsK.Close()
+                    End If
+
+                    soilsshp.EndPointInShapefile()
+                    soilsshp.Close()
+                    'STEP 4:
+                    'Now enter all into database
+                    strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & CDbl(txtMUSLEExp.Text) & ")"
+                    Dim cmdIns As New DataHelper(strCmd)
+                    cmdIns.ExecuteNonQuery()
+
                 End If
-
-                soilsshp.EndPointInShapefile()
-                soilsshp.Close()
-                'STEP 4:
-                'Now enter all into database
-                strCmd = "INSERT INTO SOILS (NAME,SOILSFILENAME,SOILSKFILENAME,MUSLEVal,MUSLEExp) VALUES ('" & Replace(txtSoilsName.Text, "'", "''") & "', '" & Replace(strOutSoils, "'", "''") & "', '" & Replace(strOutKSoils, "'", "''") & "', " & CDbl(txtMUSLEVal.Text) & ", " & CDbl(txtMUSLEExp.Text) & ")"
-                Dim cmdIns As New DataHelper(strCmd)
-                cmdIns.ExecuteNonQuery()
-
-                CloseProgressDialog()
-
-            Else
-                CloseProgressDialog()
-            End If
-
+            End Using
             Return True
         Catch ex As Exception
             HandleError(ex)

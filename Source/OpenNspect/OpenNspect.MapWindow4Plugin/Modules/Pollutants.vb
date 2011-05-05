@@ -199,7 +199,7 @@ Module Pollutants
         Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
         'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
         If result <> 0 Then
-            g_KeepRunning = False
+            SynchronousProgressDialog.KeepRunning = False
         End If
         Dim tmpGrid As New Grid
         tmpGrid.Open(strtmpout)
@@ -250,47 +250,46 @@ Module Pollutants
 
         Dim strTitle = String.Format("Processing {0} Conc. Calculation...", _PollutantName)
         Dim outputFileNameOutConc = GetUniqueFileName("locconc", g_XmlPrjFile.ProjectWorkspace, FinalOutputGridExt)
-
+        Dim progress = New SynchronousProgressDialog(strTitle, 13, g_MainForm)
         Try
-            ShowProgress("Calculating Mass Volume...", strTitle, 13, 1, g_MainForm)
+            progress.Increment("Calculating Mass Volume...")
             CalcMassOfPhosperous(strConStatement, pMassVolumeRaster)
 
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_booLocalEffects Then
-                If Not g_KeepRunning Then Return False
+                If Not SynchronousProgressDialog.KeepRunning Then Return False
 
-                ShowProgress("Creating data layer for local effects...", strTitle, 13, 2, g_MainForm)
+                progress.Increment("Creating data layer for local effects...")
                 CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
             End If
 
-            If Not g_KeepRunning Then Return False
-            ShowProgress("Deriving accumulated pollutant...", strTitle, 13, 3, g_MainForm)
+            If Not SynchronousProgressDialog.KeepRunning Then Return False
+            progress.Increment("Deriving accumulated pollutant...")
             DeriveAccumulatedPollutant(pMassVolumeRaster, pAccumPollRaster)
 
-            If Not g_KeepRunning Then Return False
-            ShowProgress("Creating accumlated pollutant layer...", strTitle, 13, 4, g_MainForm)
+            If Not SynchronousProgressDialog.KeepRunning Then Return False
+            progress.Increment("Creating accumlated pollutant layer...")
             AddAccumulatedPollutantToGroupLayer(OutputItems, pAccumPollRaster)
 
-            If Not g_KeepRunning Then Return False
-            ShowProgress("Calculating final concentration...", strTitle, 13, 9, g_MainForm)
+            If Not SynchronousProgressDialog.KeepRunning Then Return False
+            progress.Increment("Calculating final concentration...")
             CalcFinalConcentration(pMassVolumeRaster, pAccumPollRaster, pTotalPollConc0Raster)
 
-            If Not g_KeepRunning Then Return False
-            ShowProgress("Creating data layer...", strTitle, 13, 11, g_MainForm)
+            If Not SynchronousProgressDialog.KeepRunning Then Return False
+            progress.Increment("Creating data layer...")
             CreateDataLayer(OutputItems, pTotalPollConc0Raster, outputFileNameOutConc)
 
-            If Not g_KeepRunning Then Return False
-            ShowProgress("Comparing to water quality standard...", strTitle, 13, 13, g_MainForm)
+            If Not SynchronousProgressDialog.KeepRunning Then Return False
+            progress.Increment("Comparing to water quality standard...")
             If Not CompareWaterQuality(pTotalPollConc0Raster, OutputItems) Then Return False
 
             Return True
 
         Catch ex As Exception
             HandleError(ex)
-            g_KeepRunning = False
             Return False
         Finally
-            CloseProgressDialog()
+            progress.Dispose()
         End Try
 
     End Function
@@ -336,8 +335,6 @@ Module Pollutants
         Catch ex As Exception
             HandleError(ex)
             CompareWaterQuality = False
-            g_KeepRunning = False
-            CloseProgressDialog()
         End Try
     End Function
 

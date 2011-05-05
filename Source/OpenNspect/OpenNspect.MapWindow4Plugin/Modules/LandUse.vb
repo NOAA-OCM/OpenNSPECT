@@ -348,33 +348,33 @@ Module LandUse
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
-            Dim i As Short
             If LUScenItems.Count > 0 Then
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
                 _pLandCoverRaster.Save(strOutLandCover)
                 _pLandCoverRaster.Close()
                 pNewLandCoverRaster.Open(strOutLandCover)
 
-                For i = 0 To LUScenItems.Count - 1
-                    If LUScenItems.Item(i).intApply = 1 Then
-                        ShowProgress("Processing Landuse scenario...", "Landuse Scenario", CInt(LUScenItems.Count), CInt(i), g_MainForm)
-                        If g_KeepRunning Then
-                            ReclassRaster(LUScenItems.Item(i), _strLCClass, pNewLandCoverRaster)
-                            booLandScen = True
-                        Else
-                            pNewLandCoverRaster.Close()
-                            booLandScen = False
-                            Exit For
+                Using progress = New SynchronousProgressDialog("Landuse Scenario", CInt(LUScenItems.Count), g_MainForm)
+                    Dim i As Short
+                    For i = 0 To LUScenItems.Count - 1
+                        If LUScenItems.Item(i).intApply = 1 Then
+                            progress.Increment(String.Format("Processing Landuse scenario...{0}", i))
+                            If SynchronousProgressDialog.KeepRunning Then
+                                ReclassRaster(LUScenItems.Item(i), _strLCClass, pNewLandCoverRaster)
+                                booLandScen = True
+                            Else
+                                pNewLandCoverRaster.Close()
+                                booLandScen = False
+                                Exit For
+                            End If
                         End If
-                    End If
-                Next i
+                    Next i
+                End Using
             End If
 
             If booLandScen Then
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
-
-            CloseProgressDialog()
 
         Catch ex As Exception
             HandleError(ex)
