@@ -171,6 +171,7 @@ Friend Class NewWatershedDelineationForm
         End Try
     End Sub
 
+
     Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Try
             If _InputDEMPath = "" Then
@@ -205,30 +206,10 @@ Friend Class NewWatershedDelineationForm
 
             'Give the call; if successful insert new record
             If DelineateWatershed(pRasterDataset, outpath) Then
-                'SQL Insert
-                'DataBase Update
-                'Compose the INSERT statement.
-                Dim strCmdInsert As String = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}')", CStr(txtWSDelinName.Text), CStr(_InputDEMPath), cboDEMUnits.SelectedIndex, _strDirFileName, _strAccumFileName, _strFilledDEMFileName, chkHydroCorr.CheckState, _strStreamLayer, cboSubWSSize.SelectedIndex, _strWShedFileName, _strLSFileName)
 
-                'Execute the statement.
-                Using insCmd As New DataHelper(strCmdInsert)
-                    insCmd.ExecuteNonQuery()
-                End Using
+                InsertWaterShedDelineation()
 
-                'Confirm
-                MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
-
-                If g_boolNewWShed Then
-                    'frmPrj.Show
-                    _frmPrj.Visible = True
-                    _frmPrj.cboWaterShedDelineations.Items.Clear()
-                    InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
-                    _frmPrj.cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
-                    MyBase.OK_Button_Click(sender, e)
-                Else
-                    MyBase.OK_Button_Click(sender, e)
-                    _frmWS.Close()
-                End If
+                MyBase.OK_Button_Click(sender, e)
             Else
                 Return
             End If
@@ -237,6 +218,27 @@ Friend Class NewWatershedDelineationForm
             HandleError(ex)
         End Try
 
+    End Sub
+    Private Sub InsertWaterShedDelineation()
+        'TODO: refactor this duplicate method.
+        Dim strCmdInsert As String = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}')", CStr(txtWSDelinName.Text), CStr(_InputDEMPath), cboDEMUnits.SelectedIndex, _strDirFileName, _strAccumFileName, _strFilledDEMFileName, chkHydroCorr.CheckState, _strStreamLayer, cboSubWSSize.SelectedIndex, _strWShedFileName, _strLSFileName)
+
+        'Execute the statement.
+        Using insCmd As New DataHelper(strCmdInsert)
+            insCmd.ExecuteNonQuery()
+        End Using
+
+        'Confirm
+        MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
+
+        If g_boolNewWShed Then
+            _frmPrj.Visible = True
+            _frmPrj.cboWaterShedDelineations.Items.Clear()
+            InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
+            _frmPrj.cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
+        Else
+            _frmWS.Close()
+        End If
     End Sub
 
     Protected Overrides Sub Cancel_Button_Click(sender As Object, e As EventArgs)
@@ -283,14 +285,6 @@ Friend Class NewWatershedDelineationForm
         End Try
     End Sub
 
-    Private Shared Sub ReSaveFile(ByVal finalFileName As String, ByVal proj As String, ByVal tmpfile As String)
-        Dim g As New Grid
-        g.Open(tmpfile)
-        g.Header.Projection = proj
-        g.Save(finalFileName)
-        g.Close()
-        File.Delete(tmpfile)
-    End Sub
     Private Function DelineateWatershed(ByRef pSurfaceDatasetIn As Grid, ByVal OutPath As String) As Boolean
         'Declare the raster objects
         Dim pFlowDirRaster As New Grid

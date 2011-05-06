@@ -175,29 +175,17 @@ Module Pollutants
         RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
         pTauD8Flow.Header.NodataValue = -1
 
-        Dim strtmp1 As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(strtmp1)
-        strtmp1 = strtmp1 + TAUDEMGridExt
-        g_TempFilesToDel.Add(strtmp1)
-        DataManagement.DeleteGrid(strtmp1)
-        pTauD8Flow.Save(strtmp1)
+        Dim flowdir As String = GetTempFileNameTauDemGridExt()
+        pTauD8Flow.Save()  'Saving because it seemed necessary.
+        pTauD8Flow.Save(flowdir)
 
-        Dim strtmp2 As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(strtmp2)
-        strtmp2 = strtmp2 + TAUDEMGridExt
-        g_TempFilesToDel.Add(strtmp2)
-        DataManagement.DeleteGrid(strtmp2)
-        pMassVolumeRaster.Save(strtmp2)
+        Dim metRun As String = GetTempFileNameTauDemGridExt()
+        pMassVolumeRaster.Save(metRun)
 
-        Dim strtmpout As String = Path.GetTempFileName
-        g_TempFilesToDel.Add(strtmpout)
-        strtmpout = String.Format("{0}out{1}", strtmpout, TAUDEMGridExt)
-        g_TempFilesToDel.Add(strtmpout)
-        DataManagement.DeleteGrid(strtmpout)
+        Dim strtmpout As String = GetTempFileNameTauDemGridExt()
 
-        'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-        Dim result = Hydrology.WeightedAreaD8(strtmp1, strtmp2, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
-        'strExpression = "FlowAccumulation([flowdir], [met_run], FLOAT)"
+        Dim result = Hydrology.WeightedAreaD8(flowdir, metRun, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
+
         If result <> 0 Then
             SynchronousProgressDialog.KeepRunning = False
         End If
@@ -208,7 +196,7 @@ Module Pollutants
         RasterMath(tmpGrid, Nothing, Nothing, Nothing, Nothing, pAccumPollRaster, multAccumcalc)
 
         pTauD8Flow.Close()
-        DataManagement.DeleteGrid(strtmp1)
+        DataManagement.DeleteGrid(flowdir)
     End Sub
     Private Sub AddAccumulatedPollutantToGroupLayer(ByRef OutputItems As OutputItems, ByRef pAccumPollRaster As Grid)
         Dim strAccPoll As String = GetUniqueFileName("accpoll", g_Project.ProjectWorkspace, OutputGridExt)
@@ -244,7 +232,7 @@ Module Pollutants
     End Sub
     Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As OutputItems) As Boolean
 
-        Dim pMassVolumeRaster As Grid = Nothing
+        Dim massVolumeRaster As Grid = Nothing
         Dim pAccumPollRaster As Grid = Nothing
         Dim pTotalPollConc0Raster As Grid = Nothing
 
@@ -253,24 +241,24 @@ Module Pollutants
         Dim progress = New SynchronousProgressDialog(strTitle, 13, g_MainForm)
         Try
             progress.Increment("Calculating Mass Volume...")
-            CalcMassOfPhosperous(strConStatement, pMassVolumeRaster)
+            CalcMassOfPhosperous(strConStatement, massVolumeRaster)
 
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_Project.IncludeLocalEffects Then
                 If Not progress.Increment("Creating data layer for local effects...") Then Return False
-                CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
+                CreateLayerForLocalEffect(OutputItems, massVolumeRaster, outputFileNameOutConc)
             Else
-                pMassVolumeRaster.Save()
+                massVolumeRaster.Save()
             End If
 
             If Not progress.Increment("Deriving accumulated pollutant...") Then Return False
-            DeriveAccumulatedPollutant(pMassVolumeRaster, pAccumPollRaster)
+            DeriveAccumulatedPollutant(massVolumeRaster, pAccumPollRaster)
 
             If Not progress.Increment("Creating accumlated pollutant layer...") Then Return False
             AddAccumulatedPollutantToGroupLayer(OutputItems, pAccumPollRaster)
 
             If Not progress.Increment("Calculating final concentration...") Then Return False
-            CalcFinalConcentration(pMassVolumeRaster, pAccumPollRaster, pTotalPollConc0Raster)
+            CalcFinalConcentration(massVolumeRaster, pAccumPollRaster, pTotalPollConc0Raster)
 
             If Not progress.Increment("Creating data layer...") Then Return False
             CreateDataLayer(OutputItems, pTotalPollConc0Raster, outputFileNameOutConc)

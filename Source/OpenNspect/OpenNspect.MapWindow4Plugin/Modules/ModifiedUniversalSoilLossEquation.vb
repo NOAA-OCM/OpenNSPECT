@@ -247,12 +247,13 @@ Module ModifiedUniversalSoilLossEquation
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = GetTempFileNameTAUDEMGridExt()
+                Dim strtmp1 As String = GetTempFileNameTauDemGridExt()
+                pTauD8Flow.Save()  'Saving because it seemed necessary.
                 pTauD8Flow.Save(strtmp1)
 
-                Dim strLongestOut As String = GetTempFileNameTAUDEMGridExt()
-                Dim strTotalOut As String = GetTempFileNameTAUDEMGridExt()
-                Dim strStrahlOut As String = GetTempFileNameTAUDEMGridExt()
+                Dim strLongestOut As String = GetTempFileNameTauDemGridExt()
+                Dim strTotalOut As String = GetTempFileNameTauDemGridExt()
+                Dim strStrahlOut As String = GetTempFileNameTauDemGridExt()
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
                 Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, Environment.ProcessorCount, Nothing)
@@ -369,15 +370,15 @@ Module ModifiedUniversalSoilLossEquation
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim flowDir As String = GetTempFileNameTAUDEMGridExt()
+                Dim flowDir As String = GetTempFileNameTauDemGridExt()
                 pTauD8Flow.Save()  'Saving because it seemed necessary.
                 pTauD8Flow.Save(flowDir)
 
-                Dim pHISYMGRasterTmp As String = GetTempFileNameTAUDEMGridExt()
+                Dim pHISYMGRasterTmp As String = GetTempFileNameTauDemGridExt()
                 pHISYMGRasterNoNull.Save()  'Saving because it seemed necessary.
                 pHISYMGRasterNoNull.Save(pHISYMGRasterTmp)
 
-                Dim strtmpout As String = GetTempFileNameTAUDEMGridExt()
+                Dim strtmpout As String = GetTempFileNameTauDemGridExt()
 
                 Hydrology.WeightedAreaD8(flowDir, pHISYMGRasterTmp, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
 

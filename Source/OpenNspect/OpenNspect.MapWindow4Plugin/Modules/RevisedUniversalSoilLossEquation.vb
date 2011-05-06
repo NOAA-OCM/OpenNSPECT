@@ -250,13 +250,15 @@ Module RevisedUniversalSoilLossEquation
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim flowdir As String = GetTempFileNameTAUDEMGridExt()
+                Dim flowdir As String = GetTempFileNameTauDemGridExt()
+                pTauD8Flow.Save()  'Saving because it seemed necessary.
                 pTauD8Flow.Save(flowdir)
 
-                Dim sedyield As String = GetTempFileNameTAUDEMGridExt()
+                Dim sedyield As String = GetTempFileNameTauDemGridExt()
+                pSedYieldRaster.Save()  'Saving because it seemed necessary.
                 pSedYieldRaster.Save(sedyield)
 
-                Dim strtmpout As String = GetTempFileNameTAUDEMGridExt()
+                Dim strtmpout As String = GetTempFileNameTauDemGridExt()
 
                 Dim result = Hydrology.WeightedAreaD8(flowdir, sedyield, Nothing, strtmpout, False, False, Environment.ProcessorCount, Nothing)
                 If result <> 0 Then
@@ -289,8 +291,6 @@ Module RevisedUniversalSoilLossEquation
             End If
 
             CalcRUSLE = True
-
-            progress.Dispose()
 
         Catch ex As Exception
             HandleError(ex)
