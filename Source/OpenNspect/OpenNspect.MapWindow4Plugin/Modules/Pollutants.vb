@@ -93,7 +93,7 @@ Module Pollutants
                         Using cmdType As New DataHelper(strType)
                             Dim command As OleDbCommand = cmdType.GetCommand()
                             strConStatement = ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType")
-                            _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_Project.UseLocalEffectsOnly)
+                            _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_Project.IncludeLocalEffects)
                         End Using
                     End Using
                 End Using
@@ -117,7 +117,7 @@ Module Pollutants
         End Try
     End Function
 
-    Private Function ConstructMetaData(ByRef cmdType As OleDbCommand, ByRef strCoeffSet As String, ByRef booLocal As Boolean) As String
+    Private Function ConstructMetaData(ByRef cmdType As OleDbCommand, ByRef strCoeffSet As String, ByRef includeLocalEffects As Boolean) As String
         'Takes the rs and creates a string describing the pollutants and coefficients used in this run, will
         'later be added to the global dictionary
 
@@ -126,7 +126,7 @@ Module Pollutants
         Dim strHeader As String
         Dim i As Short
 
-        If booLocal Then
+        If includeLocalEffects Then
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Landcover grid type: " & g_Project.LandCoverGridType & vbNewLine & vbTab & vbTab & "Landcover grid units: " & g_Project.LandCoverGridUnits & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine
         Else
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
@@ -256,7 +256,7 @@ Module Pollutants
             CalcMassOfPhosperous(strConStatement, pMassVolumeRaster)
 
             'At this point the above grid will satisfy 'local effects only' people so...
-            If g_Project.UseLocalEffectsOnly Then
+            If g_Project.IncludeLocalEffects Then
                 If Not progress.Increment("Creating data layer for local effects...") Then Return False
                 CreateLayerForLocalEffect(OutputItems, pMassVolumeRaster, outputFileNameOutConc)
             Else
