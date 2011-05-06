@@ -10,7 +10,7 @@ Module FileUtilities
         Return file
     End Function
 
-    Public Function GetTempFileNameTAUDEMGridExt() As String
+    Public Function GetTempFileNameTauDemGridExt() As String
         Return GetTempFileName(TAUDEMGridExt)
     End Function
 

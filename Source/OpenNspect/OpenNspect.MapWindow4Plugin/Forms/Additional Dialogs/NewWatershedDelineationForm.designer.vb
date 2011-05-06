@@ -73,7 +73,7 @@
         Me.frmMain.Controls.Add(Me._Label1_2)
         Me.frmMain.Controls.Add(Me._Label1_12)
         Me.frmMain.Controls.Add(Me._Label1_1)
-        Me.frmMain.Location = New System.Drawing.Point(13, 8)
+        Me.frmMain.Location = New System.Drawing.Point(13, 7)
         Me.frmMain.Name = "frmMain"
         Me.frmMain.Padding = New System.Windows.Forms.Padding(0)
         Me.frmMain.Size = New System.Drawing.Size(569, 149)

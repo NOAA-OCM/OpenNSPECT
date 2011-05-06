@@ -88,8 +88,6 @@ Friend Class NewFromExistingWaterShedDelineationForm
     End Sub
 
     Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
-        Dim strCmdInsert As String
-
         Using progress = New SynchronousProgressDialog("Validating input...", "Adding New Delineation...", 3, Me)
             If Not ValidateDataFormInput() Then
                 Return
@@ -97,37 +95,37 @@ Friend Class NewFromExistingWaterShedDelineationForm
 
             Try
                 progress.Increment("Updating Database...")
-
-                strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text)
-
-                'Execute the statement.
-                Using cmdIns As New DataHelper(strCmdInsert)
-                    cmdIns.ExecuteNonQuery()
-                End Using
-
-                'Confirm
-                MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
-
-                If g_boolNewWShed Then
-                    'frmPrj.Show
-                    _frmPrj.cboWaterShedDelineations.Items.Clear()
-                    InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
-                    _frmPrj.cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
-                    MyBase.OK_Button_Click(sender, e)
-                Else
-                    MyBase.OK_Button_Click(sender, e)
-                    _frmWS.Close()
-                End If
+                InsertWaterShedDelineation()
 
             Catch ex As Exception
                 MsgBox("An error occurred while processing your Watershed Delineation.", MsgBoxStyle.Critical, "Error")
             End Try
         End Using
-
     End Sub
 
 #End Region
+    Private Sub InsertWaterShedDelineation()
+        'TODO: refactor this duplicate method.
+        'Dim strCmdInsert As String = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}')", CStr(txtWSDelinName.Text), CStr(_InputDEMPath), cboDEMUnits.SelectedIndex, _strDirFileName, _strAccumFileName, _strFilledDEMFileName, chkHydroCorr.CheckState, _strStreamLayer, cboSubWSSize.SelectedIndex, _strWShedFileName, _strLSFileName)
+        Dim strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text)
 
+        'Execute the statement.
+        Using insCmd As New DataHelper(strCmdInsert)
+            insCmd.ExecuteNonQuery()
+        End Using
+
+        'Confirm
+        MsgBox(txtWSDelinName.Text & " successfully added.", MsgBoxStyle.OkOnly, "Record Added")
+
+        If g_boolNewWShed Then
+            _frmPrj.Visible = True
+            _frmPrj.cboWaterShedDelineations.Items.Clear()
+            InitComboBox((_frmPrj.cboWaterShedDelineations), "WSDelineation")
+            _frmPrj.cboWaterShedDelineations.SelectedIndex = GetIndexOfEntry((txtWSDelinName.Text), (_frmPrj.cboWaterShedDelineations))
+        Else
+            _frmWS.Close()
+        End If
+    End Sub
 #Region "Helper"
 
     Public Sub Init(ByRef frmWS As WatershedDelineationsForm, ByRef frmPrj As MainForm)

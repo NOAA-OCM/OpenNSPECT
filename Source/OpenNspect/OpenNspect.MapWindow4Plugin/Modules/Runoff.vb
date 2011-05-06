@@ -457,15 +457,15 @@ Module Runoff
         RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
         pTauD8Flow.Header.NodataValue = -1
 
-        Dim flowFile As String = GetTempFileNameTAUDEMGridExt()
+        Dim flowFile As String = GetTempFileNameTauDemGridExt()
         pTauD8Flow.Save() 'Saving because it seemed necessary.
         If Not pTauD8Flow.Save(flowFile) Then Return Nothing
 
-        Dim metRunoffFile As String = GetTempFileNameTAUDEMGridExt()
+        Dim metRunoffFile As String = GetTempFileNameTauDemGridExt()
         g_pMetRunoffRaster.Save() 'Saving because it seemed necessary.
         If Not g_pMetRunoffRaster.Save(metRunoffFile) Then Return Nothing
 
-        Dim outFile As String = GetTempFileNameTAUDEMGridExt()
+        Dim outFile As String = GetTempFileNameTauDemGridExt()
 
         Dim result = Hydrology.WeightedAreaD8(flowFile, metRunoffFile, Nothing, outFile, False, False,
                                   Environment.ProcessorCount, Nothing)
@@ -519,6 +519,9 @@ Module Runoff
                 If g_Project.IncludeLocalEffects Then
                     If Not progress.Increment("Creating data layer for local effects...") Then Return False
                     CreateDataLayerForLocalEffects(OutputItems)
+                Else
+                    Dim pRaster = g_pMetRunoffRaster
+                    pRaster.Save()
                 End If
 
                 If Not progress.Increment("Creating flow accumulation...") Then Return False
