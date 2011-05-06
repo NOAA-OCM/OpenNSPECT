@@ -171,7 +171,7 @@ Module Runoff
             Dim cmdLandClass As New DataHelper(strRS)
 
             'while here, make metadata
-            _strRunoffMetadata = CreateMetadata(cmdLandClass.GetCommand(), strLandClass, g_Project.UseLocalEffectsOnly)
+            _strRunoffMetadata = CreateMetadata(cmdLandClass.GetCommand(), strLandClass, g_Project.IncludeLocalEffects)
             'End Database stuff
 
             'STEP 2: Raster Values ---------------------------------------------------------------------
@@ -361,7 +361,7 @@ Module Runoff
     End Function
 
     Private Function CreateMetadata(ByRef cmdLandClass As OleDbCommand, ByRef strLandClass As String,
-                                     ByRef booLocal As Boolean) As String
+                                     ByRef includeLocalEffects As Boolean) As String
         CreateMetadata = ""
         Try
             Dim i As Short
@@ -372,7 +372,7 @@ Module Runoff
                                         g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " &
                                         g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " &
                                         g_strPrecipFileName & vbNewLine
-            If booLocal Then
+            If includeLocalEffects Then
 
             Else
                 strHeader += vbTab & vbTab & "Flow direction grid: " & g_strFlowDirFilename & vbNewLine
@@ -516,7 +516,7 @@ Module Runoff
                 If Not progress.Increment("Calculating runoff...") Then Return False
                 CalculateRunoff(pInRainRaster)
 
-                If g_Project.UseLocalEffectsOnly Then
+                If g_Project.IncludeLocalEffects Then
                     If Not progress.Increment("Creating data layer for local effects...") Then Return False
                     CreateDataLayerForLocalEffects(OutputItems)
                 End If

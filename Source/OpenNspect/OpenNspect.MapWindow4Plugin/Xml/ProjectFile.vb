@@ -317,7 +317,7 @@ Namespace Xml
             End Set
         End Property
 
-        Public ReadOnly Property UseLocalEffectsOnly As Boolean
+        Public ReadOnly Property IncludeLocalEffects As Boolean
             Get
                 Return IntLocalEffects = 1
             End Get

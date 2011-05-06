@@ -76,8 +76,8 @@ Module ModifiedUniversalSoilLossEquation
         Else
             strError = "K Factor Raster Does Not Exist: " & strKfactorFileName
         End If
-        'END STEP 1: -----------------------------------------------------------------------------------
 
+        '
         If g_LandUse_DictTempNames.Count > 0 AndAlso Len(g_LandUse_DictTempNames.Item(strLandClass)) > 0 Then
             strTempLCType = g_LandUse_DictTempNames.Item(strLandClass)
         Else
@@ -87,8 +87,7 @@ Module ModifiedUniversalSoilLossEquation
         'Get the landclasses of type strLandClass
         Dim cmdCovfact As New DataHelper("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR, LCCLASS.W_WL FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE")
 
-        _strMusleMetadata = CreateMetadata(g_Project.UseLocalEffectsOnly)
-        ', rsCoverFactor)
+        _strMusleMetadata = CreateMetadata(g_Project.IncludeLocalEffects)
 
         If Len(strError) > 0 Then
             MsgBox(strError)
@@ -109,14 +108,14 @@ Module ModifiedUniversalSoilLossEquation
 
     End Function
 
-    Private Function CreateMetadata(ByRef booLocal As Boolean) As String
+    Private Function CreateMetadata(ByRef includeLocalEffects As Boolean) As String
 
         Dim strHeader As String
         'Dim i As Integer
         'Dim strCFactor As String
 
         'Set up the header w/or without flow direction
-        If booLocal = True Then
+        If includeLocalEffects = True Then
             strHeader = vbTab & "Input Datasets:" & vbNewLine & vbTab & vbTab & "Hydrologic soils grid: " & g_Project.SoilsHydDirectory & vbNewLine & vbTab & vbTab & "Landcover grid: " & g_Project.LandCoverGridDirectory & vbNewLine & vbTab & vbTab & "Precipitation grid: " & g_strPrecipFileName & vbNewLine & vbTab & vbTab & "Soils K Factor: " & g_Project.SoilsKFileName & vbNewLine & vbTab & vbTab & "LS Factor grid: " & g_strLSFileName & vbNewLine & g_strLandCoverParameters & vbNewLine
             'append the g_strLandCoverParameters that was set up during runoff
         Else
@@ -340,7 +339,7 @@ Module ModifiedUniversalSoilLossEquation
             Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
             RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, hisymgrnonullcalc)
 
-            If g_Project.UseLocalEffectsOnly Then
+            If g_Project.IncludeLocalEffects Then
 
                 progress.Increment("Creating data layer for local effects...")
                 If SynchronousProgressDialog.KeepRunning Then

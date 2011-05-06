@@ -103,7 +103,7 @@ Module RevisedUniversalSoilLossEquation
             'Are they using SDR
             _strSDRFileName = Trim(strSDRFileName)
             'Metadata time
-            _strRusleMetadata = CreateMetadata(g_Project.UseLocalEffectsOnly)
+            _strRusleMetadata = CreateMetadata(g_Project.IncludeLocalEffects)
             'Calc rusle using the con
             Return CalcRUSLE(strConStatement, OutputItems)
         End Using
@@ -218,7 +218,7 @@ Module RevisedUniversalSoilLossEquation
                 'END STEP 11: --------------------------------------------------------------------------------
             End If
 
-            If g_Project.UseLocalEffectsOnly Then
+            If g_Project.IncludeLocalEffects Then
                 progress.Increment("Creating data layer for local effects...")
                 If SynchronousProgressDialog.KeepRunning Then
 
