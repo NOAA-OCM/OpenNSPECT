@@ -44,10 +44,6 @@ Module LandUse
     Private _intCoeffSetID As Short
     Private _strLCFileName As String
 
-    Private _strLCClass As String
-    Private _pLandCoverRaster As Grid
-
-
     Public g_LandUse_LCTypeName As String
     'the temp name of Land Cover type, if indeed landuses are applied.
     Public g_LandUse_DictTempNames As New Dictionary(Of String, String)
@@ -326,33 +322,38 @@ Module LandUse
     ''' <param name="LUScenItems">which is a collection of the landuse entered.</param>
     ''' <param name="strLCFileName">path to which the landcover grid exists.</param>
     Private Sub ReclassLanduse(ByRef LUScenItems As LandUseItems, ByRef strLCFileName As String)
-        'strLCClass: Name of the LCTYPE being altered
 
+        ' categorizes the all classes
+
+        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
+        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
+        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
+
+        Dim landCoverName As String = ""
+        Dim landCoverRaster As Grid
         Try
-            Dim strOutLandCover As String
-
             '    'Make sure the landcoverraster exists..it better if they get to this point, ED!
             If g_LandCoverRaster Is Nothing Then
                 If RasterExists(strLCFileName) Then
-                    _pLandCoverRaster = ReturnRaster(strLCFileName)
+                    landCoverRaster = ReturnRaster(strLCFileName)
                 Else
                     Return
                 End If
             Else
-                _pLandCoverRaster = g_LandCoverRaster
+                landCoverRaster = g_LandCoverRaster
             End If
 
-            Dim booLandScen As Boolean
-            Dim pNewLandCoverRaster As New Grid
-            strOutLandCover = GetUniqueFileName("landcover", g_Project.ProjectWorkspace, OutputGridExt)
+            Dim strOutLandCover As String = GetUniqueFileName("landcover", g_Project.ProjectWorkspace, OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
+            Dim booLandScen As Boolean
+            Dim pNewLandCoverRaster As New Grid
             If LUScenItems.Count > 0 Then
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
-                _pLandCoverRaster.Save()  'Saving because it seemed necessary.
-                _pLandCoverRaster.Save(strOutLandCover)
-                _pLandCoverRaster.Close()
+                landCoverRaster.Save()  'Saving because it seemed necessary.
+                landCoverRaster.Save(strOutLandCover)
+                landCoverRaster.Close()
                 pNewLandCoverRaster.Open(strOutLandCover)
 
                 Using progress = New SynchronousProgressDialog("Landuse Scenario", CInt(LUScenItems.Count), g_MainForm)
@@ -361,7 +362,9 @@ Module LandUse
                         If LUScenItems.Item(i).intApply = 1 Then
                             progress.Increment(String.Format("Processing Landuse scenario...{0}", i))
                             If SynchronousProgressDialog.KeepRunning Then
-                                ReclassRaster(LUScenItems.Item(i), _strLCClass, pNewLandCoverRaster)
+                                'TODO: This looks like a bug: landcovername is used to restrict the following select statement.
+                                'Instead the select statement should allow anything.
+                                ReclassRaster(LUScenItems.Item(i), landCoverName, pNewLandCoverRaster)
                                 booLandScen = True
                             Else
                                 pNewLandCoverRaster.Close()
@@ -373,6 +376,7 @@ Module LandUse
                 End Using
             End If
 
+            'probably not missing an else clause
             If booLandScen Then
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
