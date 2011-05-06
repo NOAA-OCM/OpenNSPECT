@@ -31,37 +31,42 @@ Module ManagementScenarios
     ' *  Called By:
     ' *************************************************************************************
 
-    Private _strLCClass As String
-    Private _pLandCoverRaster As Grid
-
     Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, ByRef strLCFileName As String)
         'Main Sub for setting everything up
         'MgmtScens: Xml wrapper for the management scenarios created by the user
         'strLCClass: Name of the LandCover being used, CCAP
         'strLCFileName: filename of location of LandCover file
-        Try
-            Dim strOutLandCover As String
-            Dim booLandScen As Boolean
-            Dim pNewLandCoverRaster As New Grid
 
+        'only categorizes the particular strLCClass in the managementScenario
+
+        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
+        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
+        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
+
+        Dim landCoverRaster As Grid
+        Dim landCoverName As String
+        Try
             'init everything
-            _strLCClass = strLCClass
+            landCoverName = strLCClass
 
             'Make sure the landcoverraster exists..it better if they get to this point, ED!
             If RasterExists(strLCFileName) Then
-                _pLandCoverRaster = ReturnRaster(strLCFileName)
+                landCoverRaster = ReturnRaster(strLCFileName)
             Else
                 Return
             End If
 
-            strOutLandCover = GetUniqueFileName("landcover", g_Project.ProjectWorkspace, OutputGridExt)
+            Dim strOutLandCover As String = GetUniqueFileName("landcover", g_Project.ProjectWorkspace, OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
             'will reclass that area of the output raster using reclass raster
+            Dim booLandScen As Boolean
+            Dim pNewLandCoverRaster As New Grid
             If MgmtScens.Count > 0 Then
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
-                _pLandCoverRaster.Save(strOutLandCover)
-                _pLandCoverRaster.Close()
+                landCoverRaster.Save()  'Saving because it seemed necessary.
+                landCoverRaster.Save(strOutLandCover)
+                landCoverRaster.Close()
                 pNewLandCoverRaster.Open(strOutLandCover)
 
                 Using progress = New SynchronousProgressDialog("Creating Management Scenario", MgmtScens.Count, g_MainForm)
@@ -71,7 +76,7 @@ Module ManagementScenarios
                             progress.Increment("Adding new landclass...")
                             If SynchronousProgressDialog.KeepRunning Then
                                 Dim mgmtitem As ManagementScenarioItem = MgmtScens.Item(i)
-                                ReclassRaster(mgmtitem, _strLCClass, pNewLandCoverRaster)
+                                ReclassRaster(mgmtitem, landCoverName, pNewLandCoverRaster)
                                 booLandScen = True
                             Else
                                 pNewLandCoverRaster.Close()
@@ -84,7 +89,7 @@ Module ManagementScenarios
             End If
 
             If Not booLandScen Then
-                g_LandCoverRaster = _pLandCoverRaster
+                g_LandCoverRaster = landCoverRaster
             Else
                 g_LandCoverRaster = pNewLandCoverRaster
             End If
