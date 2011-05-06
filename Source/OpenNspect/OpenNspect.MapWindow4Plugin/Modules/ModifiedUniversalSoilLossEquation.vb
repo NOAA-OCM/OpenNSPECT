@@ -339,29 +339,24 @@ Module ModifiedUniversalSoilLossEquation
             Dim hisymgrnonullcalc As New RasterMathCellCalcNulls(AddressOf hisymgrnonullCellCalc)
             RasterMath(pHISYMGRaster, g_pDEMRaster, Nothing, Nothing, Nothing, pHISYMGRasterNoNull, Nothing, False, hisymgrnonullcalc)
 
+            ' this was the one of two places where local effects would not calculate accumulations. For consistency we will keep running.
             If g_Project.IncludeLocalEffects Then
 
-                progress.Increment("Creating data layer for local effects...")
-                If SynchronousProgressDialog.KeepRunning Then
+                If Not progress.Increment("Creating data layer for local effects...") Then Return False
 
-                    strMUSLE = GetUniqueFileName("locmusle", g_Project.ProjectWorkspace, OutputGridExt)
-                    'Added 7/23/04 to account for clip by selected polys functionality
-                    If g_Project.UseSelectedPolygons Then
-                        pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
-                    Else
-                        pPermMUSLERaster = CopyRaster(pHISYMGRasterNoNull, strMUSLE)
-                    End If
-
-                    'metadata time
-                    g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
-
-                    AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
-
-                    CalcMUSLE = True
-                    progress.Dispose()
-                    Exit Function
-
+                strMUSLE = GetUniqueFileName("locmusle", g_Project.ProjectWorkspace, OutputGridExt)
+                'Added 7/23/04 to account for clip by selected polys functionality
+                If g_Project.UseSelectedPolygons Then
+                    pPermMUSLERaster = ClipBySelectedPoly(pHISYMGRasterNoNull, g_pSelectedPolyClip, strMUSLE)
+                Else
+                    pPermMUSLERaster = CopyRaster(pHISYMGRasterNoNull, strMUSLE)
                 End If
+
+                'metadata time
+                g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
+
+                AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
+
             Else
                 pHISYMGRasterNoNull.Save()
             End If

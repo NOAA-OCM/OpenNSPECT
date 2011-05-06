@@ -218,38 +218,31 @@ Module RevisedUniversalSoilLossEquation
                 'END STEP 11: --------------------------------------------------------------------------------
             End If
 
+            ' this was the one of two places where local effects would not calculate accumulations. For consistency we will keep running.
             If g_Project.IncludeLocalEffects Then
-                progress.Increment("Creating data layer for local effects...")
-                If SynchronousProgressDialog.KeepRunning Then
 
-                    'STEP 12: Local Effects -------------------------------------------------
+                If Not progress.Increment("Creating data layer for local effects...") Then Return False
 
-                    strOutYield = GetUniqueFileName("locrusle", g_Project.ProjectWorkspace, OutputGridExt)
-                    If g_Project.UseSelectedPolygons Then
-                        pPermRUSLELocRaster = ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
-                    Else
-                        pPermRUSLELocRaster = CopyRaster(pSedYieldRaster, strOutYield)
-                    End If
+                'STEP 12: Local Effects -------------------------------------------------
 
-                    'Metadata
-                    g_dicMetadata.Add("Sediment Local Effects (mg)", _strRusleMetadata)
-
-                    AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
-
-                    CalcRUSLE = True
-                    progress.Dispose()
-
-                    Exit Function
-
+                strOutYield = GetUniqueFileName("locrusle", g_Project.ProjectWorkspace, OutputGridExt)
+                If g_Project.UseSelectedPolygons Then
+                    pPermRUSLELocRaster = ClipBySelectedPoly(pSedYieldRaster, g_pSelectedPolyClip, strOutYield)
+                Else
+                    pPermRUSLELocRaster = CopyRaster(pSedYieldRaster, strOutYield)
                 End If
+
+                'Metadata
+                g_dicMetadata.Add("Sediment Local Effects (mg)", _strRusleMetadata)
+
+                AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
+
             Else
                 pSedYieldRaster.Save()
             End If
 
             progress.Increment("Calculating Accumulated Sediment...")
             If SynchronousProgressDialog.KeepRunning Then
-
-                'STEP 12: accum_sed = flowaccumulation([flowdir], [sedyield]) -------------------------------------------------
 
                 Dim pTauD8Flow As Grid = Nothing
 
