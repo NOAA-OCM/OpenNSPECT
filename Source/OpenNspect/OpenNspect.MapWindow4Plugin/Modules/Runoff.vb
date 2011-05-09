@@ -468,7 +468,7 @@ Module Runoff
         Dim outFile As String = GetTempFileNameTauDemGridExt()
 
         Dim result = Hydrology.WeightedAreaD8(flowFile, metRunoffFile, Nothing, outFile, False, False,
-                                  Environment.ProcessorCount, Nothing)
+                                  Environment.ProcessorCount, False, Nothing)
         If result <> 0 Then
             SynchronousProgressDialog.KeepRunning = False
         End If
