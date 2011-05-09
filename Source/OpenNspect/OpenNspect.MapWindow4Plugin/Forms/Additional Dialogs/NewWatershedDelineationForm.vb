@@ -221,7 +221,7 @@ Friend Class NewWatershedDelineationForm
     End Sub
     Private Sub InsertWaterShedDelineation()
         'TODO: refactor this duplicate method.
-        Dim strCmdInsert As String = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}')", CStr(txtWSDelinName.Text), CStr(_InputDEMPath), cboDEMUnits.SelectedIndex, _strDirFileName, _strAccumFileName, _strFilledDEMFileName, chkHydroCorr.CheckState, _strStreamLayer, cboSubWSSize.SelectedIndex, _strWShedFileName, _strLSFileName)
+        Dim strCmdInsert As String = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}')", CStr(txtWSDelinName.Text), CStr(_InputDEMPath), cboDEMUnits.SelectedIndex, _strDirFileName, _strAccumFileName, _strFilledDEMFileName, IIf(chkHydroCorr.Checked, 1, 0), _strStreamLayer, cboSubWSSize.SelectedIndex, _strWShedFileName, _strLSFileName)
 
         'Execute the statement.
         Using insCmd As New DataHelper(strCmdInsert)
@@ -416,6 +416,7 @@ Friend Class NewWatershedDelineationForm
 
             progress.Increment("Creating Watershed Shape...")
             If SynchronousProgressDialog.KeepRunning Then
+                pFlowDirRaster.Save()
                 Dim file = pFlowDirRaster.Filename
                 pFlowDirRaster.Close()
                 ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
@@ -433,13 +434,16 @@ Friend Class NewWatershedDelineationForm
                 Return False
             End If
 
-            'With all of that done, now go get the name of the LS Grid while actually computing said LS Grid
-            '_strLSFileName = CalcLengthSlope(pFillRaster, pFlowDirRaster, pAccumRaster, pEnv, "0", pWorkspace)
+            _strLSFileName = OutPath + "lsgrid" + OutputGridExt
+            Dim g As New Grid
+            g.Open(longestupslopeout)
+            g.Save(_strLSFileName)
+            g.Close()
 
-            DelineateWatershed = True
+            Return True
         Catch ex As Exception
             HandleError(ex)
-            DelineateWatershed = False
+            Return False
         Finally
             progress.Dispose()
             pFlowDirRaster.Close()
