@@ -18,10 +18,10 @@
 Imports System.Data.OleDb
 Imports System.Windows.Forms
 Imports System.IO
+Imports System.Data
 
 Friend Class ImportCoefficientSetForm
     Private _frmPoll As PollutantsForm
-    Private _cmdCoeff As OleDbCommand
 
     Private Sub frmImportCoeffSet_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
@@ -50,7 +50,7 @@ Friend Class ImportCoefficientSetForm
         Try
             If UniqueName("CoefficientSet", (txtCoeffSetName.Text)) Then
                 If ValidateCoeffTextFile(txtImpFile.Text, cboLCType.Text) Then
-                    _frmPoll.UpdateCoeffSet(_cmdCoeff, txtCoeffSetName.Text, txtImpFile.Text)
+                    _frmPoll.UpdateCoeffSet(cboLCType.Text, txtCoeffSetName.Text, txtImpFile.Text)
                 End If
             Else
                 MsgBox("The name you have chosen is in use, please enter a different name.", MsgBoxStyle.Critical, "Name Detected")
@@ -69,83 +69,67 @@ Friend Class ImportCoefficientSetForm
     'Need to check the text file coming in from the import menu of the pollutant form.
     'Bringing the Text File itself, and the name of the LCType as picked by John User
 
-    Private Function ValidateCoeffTextFile(ByRef strFileName As String, ByRef strLCTypeName As String) As Boolean
+    Private Function ValidateCoeffTextFile(ByRef fileName As String, ByRef landClassTypeName As String) As Boolean
         Try
-
-            Dim strLine As String
-            Dim intLine As Short
-            Dim strValue As String
-            Dim strLCTypeNum As String
-            Dim j As Short
-
-            'Gameplan is to find number of records(landclasses) in the chosen LCType. Then
-            'compare that to the number of lines in the text file, and the [Value] field to
-            'make sure both jive.  If not, bark at them...ruff, ruff
-
-            strLCTypeNum = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", strLCTypeName)
-            Dim cmdLCType As New DataHelper(strLCTypeNum)
-            If File.Exists(strFileName) Then
-                Using read As New StreamReader(strFileName)
-
-                    intLine = 0
-
-                    'CHECK 1: loop through the text file, compare value to [Value], make sure exists
-                    Dim dataLCType As OleDbDataReader
-                    Do While Not read.EndOfStream
-
-                        strLine = read.ReadLine
-                        'Value exits??
-                        strValue = Split(strLine, ",")(0)
-
-                        j = 0
-
-                        dataLCType = cmdLCType.ExecuteReader()
-                        While dataLCType.Read()
-                            If dataLCType("Value") = strValue Then
-                                j = j + 1
-                            End If
-                        End While
-                        dataLCType.Close()
-
-                        If j = 0 Then
-                            MsgBox("There is a value in your text file that does not exist in the Land Class Type: '" & strLCTypeName & "' Please check your text file in line: " & intLine + 1, MsgBoxStyle.OkOnly, "Data Import Error")
-                            Return False
-                        ElseIf j > 1 Then
-                            MsgBox("There are records in your text file that contain the same value.  Please check line " & intLine, MsgBoxStyle.Critical, "Multiple values found")
-                            Return False
-                        ElseIf j = 1 Then
-                            ValidateCoeffTextFile = True
-                        End If
-                        intLine = intLine + 1
-                        Debug.WriteLine(intLine)
-
-                    Loop
-
-                    dataLCType = cmdLCType.ExecuteReader()
-                    Dim iRows As Integer = 0
-                    While dataLCType.Read()
-                        iRows = iRows + 1
-                    End While
-                    dataLCType.Close()
-
-                    'Final check, make sure same number of records in text file vs the
-                    If iRows = intLine Then
-                        ValidateCoeffTextFile = True
-                    Else
-                        MsgBox(String.Format("The number of records in your import file do not match the number of records in the Landclass '{0}'.  Your file should contain {1} records.", strLCTypeName, iRows), MsgBoxStyle.Critical, "Error Importing File")
-                        Return False
-                    End If
-                End Using
-
-            Else
+            If Not File.Exists(fileName) Then
                 MsgBox("The file you are pointing to does not exist. Please select another.", MsgBoxStyle.Critical, "File Not Found")
                 Return False
             End If
+            Dim strLCTypeNum As String = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", landClassTypeName)
+            'find number of records(landclasses) in the chosen LCType. Then
+            'compare that to the number of lines in the text file, and the [Value] field to
+            'make sure both jive.  If not, bark at them...ruff, ruff
+            Using data As New DataHelper(strLCTypeNum)
 
-            If ValidateCoeffTextFile Then
-                _cmdCoeff = cmdLCType.GetCommand()
-            End If
+                Using streamReader As New StreamReader(fileName)
 
+                    Dim intLine As Short
+
+                    'CHECK 1: loop through the text file, compare value to [Value], make sure exists exactly once
+                    Using records As New DataTable()
+                        data.GetAdapter.Fill(records)
+
+                        Do While Not streamReader.EndOfStream
+
+                            Dim fileValue As String = Split(streamReader.ReadLine, ",")(0)
+
+                            Dim timesValueAppears As Short = 0
+
+                            For Each row As DataRow In records.Rows
+                                If row("Value") = fileValue Then
+                                    timesValueAppears += 1
+                                End If
+                            Next
+
+                            If timesValueAppears = 0 Then
+                                MsgBox("There is a value in your text file that does not exist in the Land Class Type: '" & landClassTypeName & "' Please check your text file in line: " & intLine + 1, MsgBoxStyle.OkOnly, "Data Import Error")
+                                Return False
+                            ElseIf timesValueAppears > 1 Then
+                                MsgBox("There are records in your text file that contain the same value.  Please check line " & intLine, MsgBoxStyle.Critical, "Multiple values found")
+                                Return False
+                            End If
+                            intLine = intLine + 1
+
+                        Loop
+
+                    End Using
+
+                    Using dataLCType2 = data.ExecuteReader()
+                        Dim iRows As Integer = 0
+                        While dataLCType2.Read()
+                            iRows = iRows + 1
+                        End While
+                        dataLCType2.Close()
+                        'Final check, make sure same number of records in text file vs the
+                        If iRows <> intLine Then
+                            MsgBox(String.Format("The number of records in your import file do not match the number of records in the Landclass '{0}'.  Your file should contain {1} records.", landClassTypeName, iRows), MsgBoxStyle.Critical, "Error Importing File")
+                            Return False
+                        End If
+                    End Using
+                End Using
+
+            End Using
+            Return True
         Catch ex As Exception
             HandleError(ex)
         End Try

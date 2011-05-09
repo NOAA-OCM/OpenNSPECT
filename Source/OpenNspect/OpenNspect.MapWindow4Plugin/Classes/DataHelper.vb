@@ -17,12 +17,16 @@ Public Class DataHelper
 
     Public Function GetAdapter() As OleDbDataAdapter
         If _adapter Is Nothing Then
-            _adapter = New OleDbDataAdapter (_command)
+            _adapter = New OleDbDataAdapter(_command)
         End If
 
         Return _adapter
     End Function
-
+    ''' <summary>
+    ''' Returns the reader associated with this object or creates a new one if needed.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function ExecuteReader() As OleDbDataReader
         If _reader Is Nothing Then
             _reader = _command.ExecuteReader()
@@ -35,8 +39,8 @@ Public Class DataHelper
         _command.ExecuteNonQuery()
     End Sub
 
-    Public Sub New (query As String)
-        _command = New OleDbCommand (query, g_DBConn)
+    Public Sub New(query As String)
+        _command = New OleDbCommand(query, g_DBConn)
     End Sub
 
 #Region "IDisposable Support"
@@ -45,7 +49,7 @@ Public Class DataHelper
 
     ' To detect redundant calls
 
-    Protected Overridable Sub Dispose (disposing As Boolean)
+    Protected Overridable Sub Dispose(disposing As Boolean)
         If Not Me.disposedValue Then
             If disposing Then
                 If _reader IsNot Nothing Then
@@ -70,8 +74,8 @@ Public Class DataHelper
 
     Public Sub Dispose() Implements IDisposable.Dispose
         ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose (True)
-        GC.SuppressFinalize (Me)
+        Dispose(True)
+        GC.SuppressFinalize(Me)
     End Sub
 
 #End Region
