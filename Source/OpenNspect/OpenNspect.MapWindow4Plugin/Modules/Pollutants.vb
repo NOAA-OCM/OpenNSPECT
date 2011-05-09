@@ -183,7 +183,7 @@ Module Pollutants
 
         Dim strtmpout As String = GetTempFileNameTauDemGridExt()
 
-        Dim result = Hydrology.WeightedAreaD8(flowdir, metRun, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
+        Dim result = Hydrology.WeightedAreaD8(flowdir, metRun, "", strtmpout, False, False, Environment.ProcessorCount, False, Nothing)
 
         If result <> 0 Then
             SynchronousProgressDialog.KeepRunning = False

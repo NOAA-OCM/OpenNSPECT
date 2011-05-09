@@ -257,7 +257,7 @@ Module RevisedUniversalSoilLossEquation
 
                 Dim strtmpout As String = GetTempFileNameTauDemGridExt()
 
-                Dim result = Hydrology.WeightedAreaD8(flowdir, sedyield, Nothing, strtmpout, False, False, Environment.ProcessorCount, Nothing)
+                Dim result = Hydrology.WeightedAreaD8(flowdir, sedyield, Nothing, strtmpout, False, False, Environment.ProcessorCount, False, Nothing)
                 If result <> 0 Then
                     SynchronousProgressDialog.KeepRunning = False
                 End If

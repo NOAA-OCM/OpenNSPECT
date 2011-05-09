@@ -344,7 +344,7 @@ Friend Class NewWatershedDelineationForm
             _strDirFileName = OutPath + "flowdir" + OutputGridExt
             Dim strSlpFileName As String = OutPath + "slope" + OutputGridExt
             If SynchronousProgressDialog.KeepRunning Then
-                ret = Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Environment.ProcessorCount, Nothing)
+                ret = Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Environment.ProcessorCount, False, Nothing)
                 If ret <> 0 Then Return False
                 pFlowDirRaster.Open(mwDirFileName)
 
@@ -365,7 +365,7 @@ Friend Class NewWatershedDelineationForm
             progress.Increment("Computing Flow Accumulation...")
             _strAccumFileName = OutPath + "flowacc" + OutputGridExt
             If SynchronousProgressDialog.KeepRunning Then
-                ret = Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Environment.ProcessorCount, Nothing)
+                ret = Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Environment.ProcessorCount, False, Nothing)
                 If ret <> 0 Then Return False
                 pAccumRaster.Open(_strAccumFileName)
             Else
@@ -403,7 +403,7 @@ Friend Class NewWatershedDelineationForm
             _strStreamLayer = OutPath + "stream.shp"
             progress.Increment("Creating Stream Network...")
             If SynchronousProgressDialog.KeepRunning Then
-                ret = Hydrology.DelinStreamGrids(pSurfaceDatasetIn.Filename, pFillRaster.Filename, pFlowDirRaster.Filename, strSlpFileName, pAccumRaster.Filename, "", strahlordout, longestupslopeout, totalupslopeout, streamgridout, streamordout, treedatout, coorddatout, _strStreamLayer, strWSGridOut, dblSubShedSize, False, False, 2, Nothing)
+                ret = Hydrology.DelinStreamGrids(pSurfaceDatasetIn.Filename, pFillRaster.Filename, pFlowDirRaster.Filename, strSlpFileName, pAccumRaster.Filename, "", strahlordout, longestupslopeout, totalupslopeout, streamgridout, streamordout, treedatout, coorddatout, _strStreamLayer, strWSGridOut, dblSubShedSize, False, False, 2, False, Nothing)
                 If ret <> 0 Then Return False
             Else
                 Return False

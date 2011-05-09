@@ -247,20 +247,20 @@ Module ModifiedUniversalSoilLossEquation
                 RasterMath(g_pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pTauD8Flow, Nothing, False, tauD8calc)
                 pTauD8Flow.Header.NodataValue = -1
 
-                Dim strtmp1 As String = GetTempFileNameTauDemGridExt()
+                Dim flowDir As String = GetTempFileNameTauDemGridExt()
                 pTauD8Flow.Save()  'Saving because it seemed necessary.
-                pTauD8Flow.Save(strtmp1)
+                pTauD8Flow.Save(flowDir)
 
                 Dim strLongestOut As String = GetTempFileNameTauDemGridExt()
                 Dim strTotalOut As String = GetTempFileNameTauDemGridExt()
                 Dim strStrahlOut As String = GetTempFileNameTauDemGridExt()
 
                 'Use geoproc weightedAreaD8 after converting the D8 grid to taudem format bgd if needed
-                Hydrology.PathLength(strtmp1, strStrahlOut, strLongestOut, strTotalOut, Environment.ProcessorCount, Nothing)
+                Hydrology.PathLength(flowDir, strStrahlOut, strLongestOut, strTotalOut, Environment.ProcessorCount, False, Nothing)
                 'strExpression = "flowlength([flowdir], [weight], upstream)"
 
                 pTauD8Flow.Close()
-                DataManagement.DeleteGrid(strtmp1)
+                DataManagement.DeleteGrid(flowDir)
 
                 pWSLengthRaster = New Grid
                 pWSLengthRaster.Open(strLongestOut)
@@ -380,7 +380,7 @@ Module ModifiedUniversalSoilLossEquation
 
                 Dim strtmpout As String = GetTempFileNameTauDemGridExt()
 
-                Hydrology.WeightedAreaD8(flowDir, pHISYMGRasterTmp, "", strtmpout, False, False, Environment.ProcessorCount, Nothing)
+                Hydrology.WeightedAreaD8(flowDir, pHISYMGRasterTmp, "", strtmpout, False, False, Environment.ProcessorCount, False, Nothing)
 
                 pTotSedMassHIRaster = New Grid
                 pTotSedMassHIRaster.Open(strtmpout)
