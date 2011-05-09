@@ -62,12 +62,13 @@ Friend Class WaterQualityStandardsForm
 
                 strSQLWQStdPoll = "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD, POLL_WQCRITERIA.POLL_WQCRITID " & "FROM POLL_WQCRITERIA INNER JOIN POLLUTANT " & "ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = " & WQCrit.Item("WQCRITID")
 
-                Dim WQCmd As New OleDbCommand(strSQLWQStdPoll, g_DBConn)
-                Dim WQ As New OleDbDataAdapter(WQCmd)
-                Dim dt As New DataTable()
-                WQ.Fill(dt)
-
-                dgvWaterQuality.DataSource = dt
+                Using WQCmd As New OleDbCommand(strSQLWQStdPoll, g_DBConn)
+                    Using WQ As New OleDbDataAdapter(WQCmd)
+                        Dim dt As New DataTable()
+                        WQ.Fill(dt)
+                        dgvWaterQuality.DataSource = dt
+                    End Using
+                End Using
             Else
 
                 MsgBox("Warning: There are no water quality standards remaining.  Please add a new one.", MsgBoxStyle.Critical, "Recordset Empty")
@@ -171,15 +172,16 @@ Friend Class WaterQualityStandardsForm
 
     Private Sub mnuExpWQStd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuExpWQStd.Click
         Try
-            Dim dlgSave As New SaveFileDialog
-            dlgSave.Filter = Replace(MSG1TextFile, "<name>", "Water Quality Standard")
-            dlgSave.Title = Replace(MSG3, "<name>", "Water Quality Standard")
-            dlgSave.DefaultExt = ".txt"
+            Using dlgSave As New SaveFileDialog()
+                dlgSave.Filter = Replace(MSG1TextFile, "<name>", "Water Quality Standard")
+                dlgSave.Title = Replace(MSG3, "<name>", "Water Quality Standard")
+                dlgSave.DefaultExt = ".txt"
 
-            If dlgSave.ShowDialog = System.Windows.Forms.DialogResult.OK Then
-                'Export Water Quality Standard to file - dlgCMD1.FileName
-                ExportStandard(dlgSave.FileName)
-            End If
+                If dlgSave.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+                    'Export Water Quality Standard to file - dlgCMD1.FileName
+                    ExportStandard(dlgSave.FileName)
+                End If
+            End Using
 
         Catch ex As Exception
             HandleError(ex)
@@ -284,19 +286,16 @@ Friend Class WaterQualityStandardsForm
 
     Private Sub ExportStandard(ByRef strFileName As String)
         Try
-            Dim out As New StreamWriter(strFileName)
+            Using out As New StreamWriter(strFileName)
+                'Write the name and descript.
+                out.WriteLine(String.Format("{0},{1}", cboWQStdName.Text, txtWQStdDesc.Text))
 
-            'Write the name and descript.
-            out.WriteLine(String.Format("{0},{1}", cboWQStdName.Text, txtWQStdDesc.Text))
+                'Write name of pollutant and threshold
+                For i = 0 To dgvWaterQuality.Rows.Count - 1
+                    out.WriteLine(String.Format("{0},{1}", dgvWaterQuality.Rows(i).Cells(0).Value, dgvWaterQuality.Rows(i).Cells(1).Value))
+                Next
 
-            Dim i As Short
-
-            'Write name of pollutant and threshold
-            For i = 0 To dgvWaterQuality.Rows.Count - 1
-                out.WriteLine(String.Format("{0},{1}", dgvWaterQuality.Rows(i).Cells(0).Value, dgvWaterQuality.Rows(i).Cells(1).Value))
-            Next i
-
-            out.Close()
+            End Using
         Catch ex As Exception
             HandleError(ex)
         End Try

@@ -15,7 +15,6 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-Imports System.Windows.Forms
 Imports System.IO
 Imports MapWindow.Interfaces
 Imports MapWinGeoProc
@@ -131,18 +130,17 @@ Friend Class NewWatershedDelineationForm
 
     Private Sub chkHydroCorr_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkHydroCorr.CheckedChanged
         Try
-            Select Case chkHydroCorr.CheckState
-                Case CheckState.Checked
+            Select Case chkHydroCorr.Checked
+
+                Case True
                     chkStreamAgree.Enabled = True
                     cboStreamLayer.Enabled = True
                     cmdOptions.Enabled = True
-
-                Case CheckState.Unchecked
+                Case False
 
                     chkStreamAgree.Enabled = False
                     cboStreamLayer.Enabled = False
                     cmdOptions.Enabled = False
-
             End Select
 
             CheckEnabled()

@@ -16,7 +16,6 @@
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
 Imports System.Data.OleDb
-Imports System.IO
 Imports MapWinGeoProc
 Imports MapWinGIS
 Imports OpenNspect.Xml

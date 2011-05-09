@@ -15,11 +15,8 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-Imports System.IO
-Imports System.Windows.Forms
 Imports MapWinGeoProc
 Imports MapWinGIS
-Imports System.Data.OleDb
 Imports OpenNspect.Xml
 
 Module RevisedUniversalSoilLossEquation
