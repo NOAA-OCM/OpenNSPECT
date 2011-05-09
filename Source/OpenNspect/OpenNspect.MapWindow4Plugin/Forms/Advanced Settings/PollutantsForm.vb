@@ -632,7 +632,7 @@ Friend Class PollutantsForm
         End Try
     End Sub
 
-    Public Sub UpdateCoeffSet(ByRef cmdCoeff As OleDbCommand, ByRef strCoeffName As String, ByRef strFileName As String)
+    Public Sub UpdateCoeffSet(landClassTypeName As String, ByRef strCoeffName As String, ByRef strFileName As String)
         Try
             'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
             'the name, m_intPollID as the PollID, and m_intLCTYPEID as the LCTypeID.  The last two are
@@ -651,7 +651,12 @@ Friend Class PollutantsForm
             Dim strValue As Short
             Dim intLine As Short
 
-            Dim dataCoeff As OleDbDataReader = cmdCoeff.ExecuteReader()
+            Dim strLCTypeNum As String = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.LCCLASSID FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}'", landClassTypeName)
+            'find number of records(landclasses) in the chosen LCType. Then
+            'compare that to the number of lines in the text file, and the [Value] field to
+            'make sure both jive.  If not, bark at them...ruff, ruff
+            Dim data As New DataHelper(strLCTypeNum)
+            Dim dataCoeff As OleDbDataReader = data.ExecuteReader()
             dataCoeff.Read()
             strNewLcType = "INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('" & Replace(strCoeffName, "'", "''") & "'," & _intPollID & "," & dataCoeff("LCTypeID") & ")"
             dataCoeff.Close()
@@ -694,7 +699,8 @@ Friend Class PollutantsForm
                 'Value exits??
                 strValue = CShort(Split(strLine, ",")(0))
 
-                dataCoeff = cmdCoeff.ExecuteReader()
+                ' We are using get command to make sure we get a fresh reader
+                dataCoeff = data.GetCommand().ExecuteReader()
                 While dataCoeff.Read()
                     If dataCoeff("Value") = strValue Then
                         Dim row As DataRow = dt.NewRow()
