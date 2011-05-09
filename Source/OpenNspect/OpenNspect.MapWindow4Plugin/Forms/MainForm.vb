@@ -20,7 +20,6 @@ Imports MapWindow.Interfaces
 Imports System.Data.OleDb
 Imports MapWinGIS
 Imports OpenNspect.Xml
-Imports Point = System.Drawing.Point
 Imports MapWinGeoProc
 
 Friend Class MainForm

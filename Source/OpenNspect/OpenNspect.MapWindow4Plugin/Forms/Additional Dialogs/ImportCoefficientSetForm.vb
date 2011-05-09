@@ -15,7 +15,6 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
-Imports System.Data.OleDb
 Imports System.Windows.Forms
 Imports System.IO
 Imports System.Data
