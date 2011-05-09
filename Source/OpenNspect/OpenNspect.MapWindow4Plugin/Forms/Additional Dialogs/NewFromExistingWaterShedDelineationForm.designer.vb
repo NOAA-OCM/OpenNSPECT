@@ -73,7 +73,7 @@
         Me.cmdBrowseLS.Image = CType(resources.GetObject("cmdBrowseLS.Image"), System.Drawing.Image)
         Me.cmdBrowseLS.Location = New System.Drawing.Point(522, 146)
         Me.cmdBrowseLS.Name = "cmdBrowseLS"
-        Me.cmdBrowseLS.Size = New System.Drawing.Size(25, 19)
+        Me.cmdBrowseLS.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseLS.TabIndex = 12
         Me.cmdBrowseLS.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.cmdBrowseLS.UseVisualStyleBackColor = True
@@ -130,7 +130,7 @@
         Me.cmdBrowseFlowDir.Image = CType(resources.GetObject("cmdBrowseFlowDir.Image"), System.Drawing.Image)
         Me.cmdBrowseFlowDir.Location = New System.Drawing.Point(522, 93)
         Me.cmdBrowseFlowDir.Name = "cmdBrowseFlowDir"
-        Me.cmdBrowseFlowDir.Size = New System.Drawing.Size(25, 19)
+        Me.cmdBrowseFlowDir.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFlowDir.TabIndex = 18
         Me.cmdBrowseFlowDir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.cmdBrowseFlowDir.UseVisualStyleBackColor = True
@@ -140,7 +140,7 @@
         Me.cmdBrowseWS.Image = CType(resources.GetObject("cmdBrowseWS.Image"), System.Drawing.Image)
         Me.cmdBrowseWS.Location = New System.Drawing.Point(522, 170)
         Me.cmdBrowseWS.Name = "cmdBrowseWS"
-        Me.cmdBrowseWS.Size = New System.Drawing.Size(25, 19)
+        Me.cmdBrowseWS.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseWS.TabIndex = 17
         Me.cmdBrowseWS.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.cmdBrowseWS.UseVisualStyleBackColor = True
@@ -159,7 +159,7 @@
         Me.cmdBrowseFlowAcc.Image = CType(resources.GetObject("cmdBrowseFlowAcc.Image"), System.Drawing.Image)
         Me.cmdBrowseFlowAcc.Location = New System.Drawing.Point(522, 123)
         Me.cmdBrowseFlowAcc.Name = "cmdBrowseFlowAcc"
-        Me.cmdBrowseFlowAcc.Size = New System.Drawing.Size(25, 19)
+        Me.cmdBrowseFlowAcc.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFlowAcc.TabIndex = 11
         Me.cmdBrowseFlowAcc.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.cmdBrowseFlowAcc.UseVisualStyleBackColor = True
@@ -178,7 +178,7 @@
         Me.cmdBrowseDEMFile.Image = CType(resources.GetObject("cmdBrowseDEMFile.Image"), System.Drawing.Image)
         Me.cmdBrowseDEMFile.Location = New System.Drawing.Point(522, 47)
         Me.cmdBrowseDEMFile.Name = "cmdBrowseDEMFile"
-        Me.cmdBrowseDEMFile.Size = New System.Drawing.Size(25, 19)
+        Me.cmdBrowseDEMFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseDEMFile.TabIndex = 2
         Me.cmdBrowseDEMFile.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.cmdBrowseDEMFile.UseVisualStyleBackColor = True

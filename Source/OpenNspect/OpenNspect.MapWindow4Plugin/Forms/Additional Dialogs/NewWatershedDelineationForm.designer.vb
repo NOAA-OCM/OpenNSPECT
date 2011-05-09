@@ -104,7 +104,7 @@
         Me.cmdBrowseDEMFile.Image = CType(resources.GetObject("cmdBrowseDEMFile.Image"), System.Drawing.Image)
         Me.cmdBrowseDEMFile.Location = New System.Drawing.Point(391, 43)
         Me.cmdBrowseDEMFile.Name = "cmdBrowseDEMFile"
-        Me.cmdBrowseDEMFile.Size = New System.Drawing.Size(25, 19)
+        Me.cmdBrowseDEMFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseDEMFile.TabIndex = 1
         Me.cmdBrowseDEMFile.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.cmdBrowseDEMFile.UseVisualStyleBackColor = True

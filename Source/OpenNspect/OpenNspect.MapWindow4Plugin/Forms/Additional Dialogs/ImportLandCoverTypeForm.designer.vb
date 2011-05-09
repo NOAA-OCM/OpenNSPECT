@@ -60,7 +60,7 @@
         Me.cmdBrowse.Image = CType(resources.GetObject("cmdBrowse.Image"), System.Drawing.Image)
         Me.cmdBrowse.Location = New System.Drawing.Point(331, 45)
         Me.cmdBrowse.Name = "cmdBrowse"
-        Me.cmdBrowse.Size = New System.Drawing.Size(25, 19)
+        Me.cmdBrowse.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowse.TabIndex = 0
         Me.cmdBrowse.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.cmdBrowse.UseVisualStyleBackColor = True
