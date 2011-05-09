@@ -97,6 +97,8 @@ Friend Class MainForm
             dgvManagementScen.Rows.Add()
             PopulateManagement(0)
 
+            PopulatePollutants()
+
             'Test workspace persistence
             If g_Project IsNot Nothing AndAlso g_Project.ProjectWorkspace IsNot Nothing Then
                 txtOutputWS.Text = g_Project.ProjectWorkspace
@@ -295,8 +297,6 @@ Friend Class MainForm
                     fNewWQ.Init(Nothing, Me)
                     fNewWQ.ShowDialog()
                 End Using
-            Else
-                PopulatePollutants()
             End If
         Catch ex As Exception
             HandleError(ex)
