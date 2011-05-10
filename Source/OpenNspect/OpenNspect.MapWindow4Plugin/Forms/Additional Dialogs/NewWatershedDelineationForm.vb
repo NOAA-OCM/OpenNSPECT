@@ -409,6 +409,9 @@ Friend Class NewWatershedDelineationForm
                 Return False
             End If
 
+
+            FillInMissingSpaces(strWSGridOut, pFlowDirRaster)
+
             'Step 6: Do WaterShed Op got moved into above step.
             _strWShedFileName = OutPath + "basinpoly.shp"
 
@@ -464,52 +467,7 @@ Friend Class NewWatershedDelineationForm
     End Function
 
     Private Function RemoveSmallPolys(ByRef pFeatureClass As Shapefile, ByRef pDEMRaster As Grid) As Shapefile
-        Dim pMaskCalcRaster As New Grid
-        Dim rastersf As New Shapefile
         Try
-            'TODO: Find way in mapwindow to generate a decent outline of the grid
-            '#1 First step, get a 1, 0 representation of the DEM, so we can get the outline
-            'Dim maskcalc As New RasterMathCellCalc(AddressOf maskCellCalc)
-            'RasterMath(pDEMRaster, Nothing, Nothing, Nothing, Nothing, pMaskCalcRaster, maskcalc)
-            'strExpression = "Con([DEMo] >= 0, 1, 0)"
-
-            '#2 init the rasterconverter and create the poly
-            'Dim outMaskPath As String = IO.Path.GetTempFileName() + g_OutputGridExt
-            'pMaskCalcRaster.Save(outMaskPath)
-            'Dim outShapePath As String = IO.Path.GetTempFileName() + ".shp"
-
-            'Dim outMaskPath2 As String = IO.Path.GetTempFileName() + g_OutputGridExt
-            'Dim g As New MapWinGIS.Grid
-            'Dim ghead As New MapWinGIS.GridHeader
-            'ghead.CopyFrom(pMaskCalcRaster.Header)
-            'g.CreateNew(outMaskPath2, ghead, MapWinGIS.GridDataType.ShortDataType, ghead.NodataValue)
-            'Dim nr As Integer = ghead.NumberRows - 1
-            'Dim nc As Integer = ghead.NumberCols - 1
-            'Dim oldnull As Double = pMaskCalcRaster.Header.NodataValue
-            'Dim rowsvals() As Single
-            'ReDim rowsvals(nc)
-            'For row As Integer = 0 To nr
-            '    pMaskCalcRaster.GetRow(row, rowsvals(0))
-            '    g.PutRow(row, rowsvals(0))
-            'Next
-            'pMaskCalcRaster.Close()
-            'g.Save(outMaskPath)
-            'Dim outdirPath As String = IO.Path.GetTempFileName() + "dir" + g_OutputGridExt
-            'g.Save(outdirPath)
-            'pMaskCalcRaster.Open(outMaskPath)
-
-            'Dim u As New MapWinGIS.Utils
-            'rastersf = u.GridToShapefile(pMaskCalcRaster, g)
-            'rastersf.SaveAs(outShapePath)
-
-            'MapWinGeoProc.FlowArea.SimpleRasterToPolygon(pMaskCalcRaster.Filename, outShapePath, Nothing)
-            'rastersf.Open(outShapePath)
-            'Dim u As New MapWinGIS.Utils
-            'rastersf = u.GridToShapefile(pMaskCalcRaster)
-            'rastersf.SaveAs(outShapePath)
-            'MapWinGeoProc.Utils.GridToShapefile(pMaskCalcRaster.Filename, outShapePath)
-            'rastersf.Open(outShapePath)
-
             '#3 determine size of 'small' watersheds, this is the area
             'Number of cells in the DEM area that are not null * a number dave came up with * CellSize Squared
             Dim dblArea As Double = ((pDEMRaster.Header.NumberCols * pDEMRaster.Header.NumberRows) * 0.004) * _intCellSize * _intCellSize
@@ -523,7 +481,8 @@ Friend Class NewWatershedDelineationForm
             Next
             pFeatureClass.StopEditingShapes()
 
-            'TODO: Once we have an outline, union it, but for now just output the base with smalls removed
+            'Once we have an outline, union it, but for now just output the base with smalls removed
+
             '#5  Now, time to union the outline of the of the DEM with the newly paired down basin poly
             'Dim outputSf As MapWinGIS.Shapefile = rastersf.GetIntersection(False, pFeatureClass, False, pFeatureClass.ShapefileType, Nothing)
             'outputSf.SaveAs(_strWShedFileName)
@@ -531,7 +490,7 @@ Friend Class NewWatershedDelineationForm
             pFeatureClass.Close()
             Dim outputSf As New Shapefile
             outputSf.Open(_strWShedFileName)
-            Return outputSf
+
 
             'Dim currshape As MapWinGIS.Shape = rastersf.Shape(0)
             'For i As Integer = 0 To pFeatureClass.NumShapes() - 1
@@ -541,16 +500,158 @@ Friend Class NewWatershedDelineationForm
             'outputSf.StartEditingShapes()
             'outputSf.EditInsertShape(currshape, 0)
             'outputSf.StopEditingTable()
-            'Return outputSf
+            Return outputSf
         Catch ex As Exception
             HandleError(ex)
             Return Nothing
         Finally
-            pMaskCalcRaster.Close()
             pFeatureClass.Close()
-            rastersf.Close()
+
         End Try
     End Function
 #End Region
 
+    Private Shared Sub FillInMissingSpaces(gridPath As String, dem As Grid)
+
+        Dim g As New Grid
+        g.Open(gridPath)
+
+        Dim header = g.Header
+        Dim nr As Integer = header.NumberRows - 1
+        Dim nc As Integer = header.NumberCols - 1
+        Dim gridNoData = header.NodataValue
+        Dim demNoData = dem.Header.NodataValue
+        Dim newValue = g.Maximum + 1
+
+        For row As Integer = 0 To nr
+            For col = 0 To nc
+                Dim demValue = dem.Value(col, row)
+                If demValue <> demNoData Then
+                    If g.Value(col, row) = gridNoData Then
+                        g.Value(col, row) = newValue
+                    End If
+                End If
+            Next
+        Next
+        g.Save()
+
+    End Sub
+    ''' <summary>
+    ''' Flattens a grid to simple (nodata or 1) values
+    ''' </summary>
+    ''' <param name="grid"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function Flatten(grid As Grid) As Grid
+        Dim tempPath = GetTempFileNameOutputGridExt()
+        grid.Save()
+        grid.Save(tempPath)
+
+        Dim g As New Grid
+        g.Open(tempPath)
+        Dim header = g.Header
+        Dim nr As Integer = header.NumberRows - 1
+        Dim nc As Integer = header.NumberCols - 1
+        Dim gridNoData As Double = header.NodataValue
+
+        ' Convert grid to a simple 0, 1 grid
+        For row As Integer = 0 To nr
+            For col = 0 To nc
+                Dim value As Double = grid.Value(col, row)
+                If value = gridNoData Then
+                    Debug.Assert(g.Value(col, row) = gridNoData)
+                Else
+                    g.Value(col, row) = 1
+                End If
+            Next
+        Next
+        g.Save()
+
+        Return g
+
+    End Function
+
+    ''' <summary>
+    ''' Removes the first and last pixel on each row in the grid. Assumes no holes.
+    ''' </summary>
+    ''' <param name="grid"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function RightLeftTrim(grid As Grid) As Grid
+        Dim tempPath = GetTempFileNameOutputGridExt()
+        grid.Save()
+        grid.Save(tempPath)
+
+        Dim g As New Grid
+        g.Open(tempPath)
+        Dim header = g.Header
+        Dim nr As Integer = header.NumberRows - 1
+        Dim nc As Integer = header.NumberCols - 1
+        Dim gridNoData As Double = header.NodataValue
+
+        For row As Integer = 0 To nr
+            Dim overwroteStart = False
+            Dim overwroteFinish = False
+
+            For col = 0 To nc
+                Dim value As Double = grid.Value(col, row)
+                If value = 1 Then
+                    If overwroteStart Then
+                        ' look for the finish
+                        Dim nextCol = Math.Min(nc, col + 1)
+                        If grid.Value(nextCol, row) = gridNoData Then
+                            'we're in the last cell with data
+                            g.Value(col, row) = gridNoData
+                            overwroteFinish = True
+                        End If
+                    Else
+                        g.Value(col, row) = gridNoData
+                        overwroteStart = True
+                    End If
+                End If
+
+                If overwroteFinish Then
+                    ' skip to the next row.
+                    Exit For
+                End If
+            Next
+        Next
+        g.Save()
+
+        Return g
+
+    End Function
+
+    ''' <summary>
+    ''' Trims the specified grid.
+    ''' </summary>
+    ''' <param name="gridPath">The grid.</param>
+    ''' <param name="clippingArea">The clipping area.</param><returns></returns>
+    Private Function Trim(gridPath As String, clippingArea As Grid) As Grid
+
+        Dim g As New Grid
+        g.Open(gridPath)
+        Dim header = g.Header
+        Dim nr As Integer = header.NumberRows - 1
+        Dim nc As Integer = header.NumberCols - 1
+        Dim gridNoData As Single = header.NodataValue
+        Dim clippingNoData As Single = clippingArea.Header.NodataValue
+
+        For row As Integer = 0 To nr
+            For col = 0 To nc
+                ' if the grid has data
+                If g.Value(col, row) <> gridNoData Then
+                    ' and the clipping area does not
+                    If clippingArea.Value(col, row) = clippingNoData Then
+                        ' remove the data from the grid
+                        g.Value(col, row) = gridNoData
+                    End If
+                End If
+            Next
+        Next
+        g.Save()
+
+        Return g
+
+    End Function
 End Class
