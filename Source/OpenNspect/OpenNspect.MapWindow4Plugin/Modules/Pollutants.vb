@@ -104,7 +104,6 @@ Module Pollutants
                 Using datapollcolor As OleDbDataReader = cmdPollColor.ExecuteReader()
                     datapollcolor.Read()
                     _PollutantColor = CStr(datapollcolor("Color"))
-                    datapollcolor.Close()
                 End Using
             End Using
 

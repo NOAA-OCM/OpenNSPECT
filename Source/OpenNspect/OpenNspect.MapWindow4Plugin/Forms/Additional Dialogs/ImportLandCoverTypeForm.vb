@@ -27,11 +27,11 @@ Friend Class ImportLandCoverTypeForm
     Private _strFileName As String
     Private _parent As LandCoverTypesForm
 
-    Public Sub Init (ByRef parent As LandCoverTypesForm)
+    Public Sub Init(ByRef parent As LandCoverTypesForm)
         Try
             _parent = parent
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -121,7 +121,6 @@ Friend Class ImportLandCoverTypeForm
                     _parent.cmbxLCType.Items.Clear()
                     InitComboBox(_parent.cmbxLCType, "LCTYPE")
                     _parent.cmbxLCType.SelectedIndex = GetIndexOfEntry(strname, _parent.cmbxLCType)
-                    read.Close()
                 End Using
                 MyBase.OK_Button_Click(sender, e)
             Else
@@ -173,14 +172,14 @@ Friend Class ImportLandCoverTypeForm
         End Try
     End Function
 
-    Private Sub RollBackImport (ByRef strName As String)
+    Private Sub RollBackImport(ByRef strName As String)
         Try
             Dim strSQLDel As String = "DELETE FROM LCTYPE where NAME LIKE '" & strName & "'"
-            Using cmdDel As New DataHelper (strSQLDel)
+            Using cmdDel As New DataHelper(strSQLDel)
                 cmdDel.ExecuteNonQuery()
             End Using
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 End Class

@@ -107,7 +107,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
     Private Sub InsertWaterShedDelineation()
         'TODO: refactor this duplicate method.
         'Dim strCmdInsert As String = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}')", CStr(txtWSDelinName.Text), CStr(_InputDEMPath), cboDEMUnits.SelectedIndex, _strDirFileName, _strAccumFileName, _strFilledDEMFileName, chkHydroCorr.CheckState, _strStreamLayer, cboSubWSSize.SelectedIndex, _strWShedFileName, _strLSFileName)
-        Dim strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}', '{8}', '{9}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text)
+        Dim strCmdInsert = String.Format("INSERT INTO WSDelineation (Name, DEMFileName, DEMGridUnits, FlowDirFileName, FlowAccumFileName,FilledDEMFileName, HydroCorrected, StreamFileName, SubWSSize, WSFileName, LSFileName)  VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '0', '', '0', '{6}', '{7}')", CStr(txtWSDelinName.Text), CStr(txtDEMFile.Text), cboDEMUnits.SelectedIndex, txtFlowDir.Text, txtFlowAcc.Text, txtDEMFile.Text, txtWaterSheds.Text, txtLS.Text)
 
         'Execute the statement.
         Using insCmd As New DataHelper(strCmdInsert)

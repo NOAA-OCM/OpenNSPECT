@@ -1118,7 +1118,6 @@ Friend Class MainForm
                     Do While lcChanges.Read()
                         arrClassList.Insert(i, lcChanges.Item("Name2"))
                     Loop
-                    lcChanges.Close()
                 End Using
             End Using
 

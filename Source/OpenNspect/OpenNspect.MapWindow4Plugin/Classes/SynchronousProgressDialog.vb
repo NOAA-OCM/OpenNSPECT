@@ -25,8 +25,8 @@ Public Class SynchronousProgressDialog
     End Sub
 
     ' This method increments the value by one to mimic the previous behavior
-    Public Sub New(ByRef message As String, ByRef title As String, ByRef max As Integer, ByRef Owner As Form)
-        Me.New(title, max, Owner)
+    Public Sub New(message As String, title As String, max As Integer, ByRef owner As Form)
+        Me.New(title, max, owner)
         Increment(message)
     End Sub
 
