@@ -63,7 +63,6 @@ Friend Class CopyWaterQualityStandardForm
                                             cmdIns2.ExecuteNonQuery()
                                         End Using
                                     End While
-                                    datastd.Close()
                                 End Using
                             End Using
                         End Using
@@ -79,7 +78,7 @@ Friend Class CopyWaterQualityStandardForm
         End Try
     End Sub
 
-    Public Sub Init (ByRef frmWQ As WaterQualityStandardsForm)
+    Public Sub Init(ByRef frmWQ As WaterQualityStandardsForm)
         _frmWQStd = frmWQ
     End Sub
 End Class

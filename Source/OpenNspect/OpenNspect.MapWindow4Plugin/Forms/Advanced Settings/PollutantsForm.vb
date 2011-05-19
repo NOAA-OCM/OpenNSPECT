@@ -393,20 +393,23 @@ Friend Class PollutantsForm
             Dim strUpdateDescription As Object
             If _boolDescChanged Then
                 strUpdateDescription = "SELECT Description from CoefficientSet Where Name like '" & cboCoeffSet.Text & "'"
-                Dim cmdDesc As New DataHelper(strUpdateDescription)
-                Dim adDesc = cmdDesc.GetAdapter()
-                Dim buildDesc As New OleDbCommandBuilder(adDesc)
-                buildDesc.QuotePrefix = "["
-                buildDesc.QuoteSuffix = "]"
-                Dim dt As New DataTable
-                adDesc.Fill(dt)
-
-                If Len(txtCoeffSetDesc.Text) = 0 Then
-                    dt.Rows(0)("Description") = ""
-                Else
-                    dt.Rows(0)("Description") = txtCoeffSetDesc.Text
-                End If
-                adDesc.Update(dt)
+                Using cmdDesc As New DataHelper(strUpdateDescription)
+                    Using adDesc = cmdDesc.GetAdapter()
+                        Using buildDesc As New OleDbCommandBuilder(adDesc)
+                            buildDesc.QuotePrefix = "["
+                            buildDesc.QuoteSuffix = "]"
+                        End Using
+                        Using dt As New DataTable()
+                            adDesc.Fill(dt)
+                            If Len(txtCoeffSetDesc.Text) = 0 Then
+                                dt.Rows(0)("Description") = ""
+                            Else
+                                dt.Rows(0)("Description") = txtCoeffSetDesc.Text
+                            End If
+                            adDesc.Update(dt)
+                        End Using
+                    End Using
+                End Using
             End If
 
             Dim i As Short
@@ -438,17 +441,18 @@ Friend Class PollutantsForm
 
             For i = 0 To dgvWaterQuality.Rows.Count - 1
                 strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & dgvWaterQuality.Rows(i).Cells(3).Value.ToString
-                Dim cmdNewWQ As New DataHelper(strWQSelect)
-                Dim adaptNewWQ = cmdNewWQ.GetAdapter()
-                Dim wqbuilder As New OleDbCommandBuilder(adaptNewWQ)
-                wqbuilder.QuotePrefix = "["
-                wqbuilder.QuoteSuffix = "]"
-                Dim dt As New DataTable
-                adaptNewWQ.Fill(dt)
-
-                dt.Rows(0)("Threshold") = dgvWaterQuality.Rows(i).Cells(2).Value
-
-                adaptNewWQ.Update(dt)
+                Using cmdNewWQ As New DataHelper(strWQSelect)
+                    Using adaptNewWQ = cmdNewWQ.GetAdapter()
+                        Using wqbuilder As New OleDbCommandBuilder(adaptNewWQ)
+                            wqbuilder.QuotePrefix = "["
+                            wqbuilder.QuoteSuffix = "]"
+                        End Using
+                        Dim dt As New DataTable()
+                        adaptNewWQ.Fill(dt)
+                        dt.Rows(0)("Threshold") = dgvWaterQuality.Rows(i).Cells(2).Value
+                        adaptNewWQ.Update(dt)
+                    End Using
+                End Using
             Next i
 
             IsDirty = False

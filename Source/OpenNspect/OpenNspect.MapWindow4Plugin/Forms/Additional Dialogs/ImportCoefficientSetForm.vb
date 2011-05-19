@@ -118,7 +118,7 @@ Friend Class ImportCoefficientSetForm
                         While dataLCType2.Read()
                             iRows = iRows + 1
                         End While
-                        dataLCType2.Close()
+
                         'Final check, make sure same number of records in text file vs the
                         If iRows <> intLine Then
                             MsgBox(String.Format("The number of records in your import file do not match the number of records in the Landclass '{0}'.  Your file should contain {1} records.", landClassTypeName, iRows), MsgBoxStyle.Critical, "Error Importing File")
@@ -126,7 +126,6 @@ Friend Class ImportCoefficientSetForm
                         End If
                     End Using
                 End Using
-
             End Using
             Return True
         Catch ex As Exception

@@ -58,7 +58,6 @@ Friend Class NewPollutantForm
                         dgvCoef.Rows(rowNum).Cells(6).Value = 0
                         dgvCoef.Rows(rowNum).Cells(7).Value = dataLC("LCClassID")
                     End While
-                    dataLC.Close()
                 End Using
             End Using
         Catch ex As Exception
