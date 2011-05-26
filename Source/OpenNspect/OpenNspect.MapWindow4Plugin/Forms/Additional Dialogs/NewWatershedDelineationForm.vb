@@ -409,6 +409,8 @@ Friend Class NewWatershedDelineationForm
                 Return False
             End If
 
+            ' Copy prj file for "basinpoly.shp" http://nspect.codeplex.com/workitem/20849
+            File.Copy(OutPath + "stream.prj", OutPath + "basinpoly.prj")
 
             FillInMissingSpaces(strWSGridOut, pFlowDirRaster)
 

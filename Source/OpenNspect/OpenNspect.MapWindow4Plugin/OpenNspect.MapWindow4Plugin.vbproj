@@ -97,7 +97,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\..\..\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
+    <OutputPath>..\..\..\..\..\dev\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
     <BaseAddress>285212672</BaseAddress>
     <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <WarningLevel>1</WarningLevel>
