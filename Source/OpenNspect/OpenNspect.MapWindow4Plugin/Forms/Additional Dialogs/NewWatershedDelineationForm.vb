@@ -289,6 +289,7 @@ Friend Class CreateNewWatershedDelineationForm
         Trace.TraceError(ex.Message)
         Dim ret = MessageBox.Show("An error occured in the Hydrology class. This leaves everything in an unstable state, so MapWindow needs to be shut down. Close MapWindow now?", "Close MapWindow?", MessageBoxButtons.YesNo)
         If ret = Windows.Forms.DialogResult.Yes Then
+            Application.Exit()
             Application.ExitThread()
         Else
             Close()
@@ -344,7 +345,12 @@ Friend Class CreateNewWatershedDelineationForm
                 End If
 
                 _strFilledDEMFileName = OutPath + "demfill" + OutputGridExt
-                Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
+                Try
+                    Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
+                Catch ex As OutOfMemoryException
+                    MessageBox.Show("For some reason when we run Hydrology.Fill it usually fails with OutOfMemoryException. You might try using a DEM that doesn't need to be filled or restarting Mapwindow.")
+                End Try
+
 
                 pFillRaster.Open(_strFilledDEMFileName)
 
