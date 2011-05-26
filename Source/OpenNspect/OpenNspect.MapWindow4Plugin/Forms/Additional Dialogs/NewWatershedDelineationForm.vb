@@ -20,7 +20,7 @@ Imports MapWindow.Interfaces
 Imports MapWinGeoProc
 Imports MapWinGIS
 
-Friend Class NewWatershedDelineationForm
+Friend Class CreateNewWatershedDelineationForm
     Private boolChange(3) As Boolean
     'Array set to track changes in controls: On Change,OK_Button is enabled
     Private _frmWS As WatershedDelineationsForm
@@ -170,7 +170,7 @@ Friend Class NewWatershedDelineationForm
     End Sub
 
 
-    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
         Try
             If _InputDEMPath = "" Then
                 If txtDEMFile.Text <> "" Then
@@ -239,7 +239,7 @@ Friend Class NewWatershedDelineationForm
         End If
     End Sub
 
-    Protected Overrides Sub Cancel_Button_Click(sender As Object, e As EventArgs)
+    Protected Overrides Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
         If Not _frmPrj Is Nothing Then
             _frmPrj.cboPrecipitationScenarios.SelectedIndex = 0
         End If
@@ -513,7 +513,7 @@ Friend Class NewWatershedDelineationForm
     End Function
 #End Region
 
-    Private Shared Sub FillInMissingSpaces(gridPath As String, dem As Grid)
+    Private Shared Sub FillInMissingSpaces(ByVal gridPath As String, ByVal dem As Grid)
 
         Dim g As New Grid
         g.Open(gridPath)
@@ -544,7 +544,7 @@ Friend Class NewWatershedDelineationForm
     ''' <param name="grid"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function Flatten(grid As Grid) As Grid
+    Private Function Flatten(ByVal grid As Grid) As Grid
         Dim tempPath = GetTempFileNameOutputGridExt()
         grid.Save()
         grid.Save(tempPath)
@@ -579,7 +579,7 @@ Friend Class NewWatershedDelineationForm
     ''' <param name="grid"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function RightLeftTrim(grid As Grid) As Grid
+    Private Function RightLeftTrim(ByVal grid As Grid) As Grid
         Dim tempPath = GetTempFileNameOutputGridExt()
         grid.Save()
         grid.Save(tempPath)
@@ -629,7 +629,7 @@ Friend Class NewWatershedDelineationForm
     ''' </summary>
     ''' <param name="gridPath">The grid.</param>
     ''' <param name="clippingArea">The clipping area.</param><returns></returns>
-    Private Function Trim(gridPath As String, clippingArea As Grid) As Grid
+    Private Function Trim(ByVal gridPath As String, ByVal clippingArea As Grid) As Grid
 
         Dim g As New Grid
         g.Open(gridPath)

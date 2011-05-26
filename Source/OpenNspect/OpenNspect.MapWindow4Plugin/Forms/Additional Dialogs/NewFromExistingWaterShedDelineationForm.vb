@@ -19,7 +19,7 @@ Imports System.Windows.Forms
 Imports System.IO
 Imports MapWinGIS
 
-Friend Class NewFromExistingWaterShedDelineationForm
+Friend Class DefineFromExistingWaterShedDelineationForm
     Private _frmWS As WatershedDelineationsForm
     Private _frmPrj As MainForm
 
@@ -87,7 +87,7 @@ Friend Class NewFromExistingWaterShedDelineationForm
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
         Using progress = New SynchronousProgressDialog("Validating input...", "Adding New Delineation...", 3, Me)
             If Not ValidateDataFormInput() Then
                 Return

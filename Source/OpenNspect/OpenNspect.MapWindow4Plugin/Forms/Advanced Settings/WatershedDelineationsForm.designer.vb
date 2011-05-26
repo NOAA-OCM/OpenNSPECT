@@ -91,39 +91,39 @@
         '
         Me.mnuDefWSDelin.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewWSDelin, Me.mnuNewExist, Me.mnuDelWSDelin})
         Me.mnuDefWSDelin.Name = "mnuDefWSDelin"
-        Me.mnuDefWSDelin.Size = New System.Drawing.Size(61, 20)
+        Me.mnuDefWSDelin.Size = New System.Drawing.Size(56, 20)
         Me.mnuDefWSDelin.Text = "&Options"
         '
         'mnuNewWSDelin
         '
         Me.mnuNewWSDelin.Name = "mnuNewWSDelin"
-        Me.mnuNewWSDelin.Size = New System.Drawing.Size(205, 22)
-        Me.mnuNewWSDelin.Text = "&New..."
+        Me.mnuNewWSDelin.Size = New System.Drawing.Size(221, 22)
+        Me.mnuNewWSDelin.Text = "&Create from a DEM..."
         '
         'mnuNewExist
         '
         Me.mnuNewExist.Name = "mnuNewExist"
-        Me.mnuNewExist.Size = New System.Drawing.Size(205, 22)
-        Me.mnuNewExist.Text = "New from existing data..."
+        Me.mnuNewExist.Size = New System.Drawing.Size(221, 22)
+        Me.mnuNewExist.Text = "Define using existing data..."
         '
         'mnuDelWSDelin
         '
         Me.mnuDelWSDelin.Name = "mnuDelWSDelin"
-        Me.mnuDelWSDelin.Size = New System.Drawing.Size(205, 22)
+        Me.mnuDelWSDelin.Size = New System.Drawing.Size(221, 22)
         Me.mnuDelWSDelin.Text = "&Delete..."
         '
         'mnuHelp
         '
         Me.mnuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuWSDelin})
         Me.mnuHelp.Name = "mnuHelp"
-        Me.mnuHelp.Size = New System.Drawing.Size(44, 20)
+        Me.mnuHelp.Size = New System.Drawing.Size(40, 20)
         Me.mnuHelp.Text = "&Help"
         '
         'mnuWSDelin
         '
         Me.mnuWSDelin.Name = "mnuWSDelin"
         Me.mnuWSDelin.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F1), System.Windows.Forms.Keys)
-        Me.mnuWSDelin.Size = New System.Drawing.Size(258, 22)
+        Me.mnuWSDelin.Size = New System.Drawing.Size(260, 22)
         Me.mnuWSDelin.Text = "Watershed Delineations..."
         '
         'Frame1
