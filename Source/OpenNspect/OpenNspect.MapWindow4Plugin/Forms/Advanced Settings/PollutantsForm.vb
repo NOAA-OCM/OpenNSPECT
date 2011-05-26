@@ -414,8 +414,6 @@ Friend Class PollutantsForm
 
             Dim i As Short
             Dim strPollUpdate As String
-            Dim strWQSelect As String
-
             If ValidateGridValues() Then
                 'Update
 
@@ -440,18 +438,9 @@ Friend Class PollutantsForm
             End If
 
             For i = 0 To dgvWaterQuality.Rows.Count - 1
-                strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & dgvWaterQuality.Rows(i).Cells(3).Value.ToString
-                Using cmdNewWQ As New DataHelper(strWQSelect)
-                    Using adaptNewWQ = cmdNewWQ.GetAdapter()
-                        Using wqbuilder As New OleDbCommandBuilder(adaptNewWQ)
-                            wqbuilder.QuotePrefix = "["
-                            wqbuilder.QuoteSuffix = "]"
-                        End Using
-                        Dim dt As New DataTable()
-                        adaptNewWQ.Fill(dt)
-                        dt.Rows(0)("Threshold") = dgvWaterQuality.Rows(i).Cells(2).Value
-                        adaptNewWQ.Update(dt)
-                    End Using
+                Dim updateQuery As String = String.Format("Update POLL_WQCRITERIA Set Threshold = {1} WHERE POLL_WQCRITID = {0} ", dgvWaterQuality.Rows(i).Cells(3).Value, dgvWaterQuality.Rows(i).Cells(2).Value)
+                Using cmdNewWQ As New DataHelper(updateQuery)
+                    cmdNewWQ.ExecuteNonQuery()
                 End Using
             Next i
 
