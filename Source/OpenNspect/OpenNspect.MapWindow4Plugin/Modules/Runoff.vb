@@ -489,8 +489,7 @@ Module Runoff
             pPermAccumRunoffRaster = CopyRaster(pAccumRunoffRaster, strOutAccum)
         End If
 
-        AddOutputGridLayer(pPermAccumRunoffRaster, "Blue", True, "Accumulated Runoff (L)", "Runoff Accum", -1,
-                            OutputItems)
+        AddOutputGridLayer(pPermAccumRunoffRaster, "Blue", True, "Accumulated Runoff (L)", "Runoff Accum", -1, OutputItems)
 
         g_dicMetadata.Add("Accumulated Runoff (L)", _strRunoffMetadata)
 
