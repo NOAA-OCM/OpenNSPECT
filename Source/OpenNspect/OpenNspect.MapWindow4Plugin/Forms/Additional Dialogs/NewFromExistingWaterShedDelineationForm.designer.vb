@@ -279,16 +279,16 @@
         Me._Label1_12.Text = "DEM Grid:"
         Me._Label1_12.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'NewFromExistingWaterShedDelineationForm
+        'DefineFromExistingWaterShedDelineationForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(584, 336)
         Me.Controls.Add(Me.Frame1)
         Me.Location = New System.Drawing.Point(4, 30)
-        Me.Name = "NewFromExistingWaterShedDelineationForm"
+        Me.Name = "DefineFromExistingWaterShedDelineationForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "New Watershed Delineation"
+        Me.Text = "Define From Existing Watershed Delineation"
         Me.Controls.SetChildIndex(Me.Frame1, 0)
         Me.Frame1.ResumeLayout(False)
         Me.Frame1.PerformLayout()

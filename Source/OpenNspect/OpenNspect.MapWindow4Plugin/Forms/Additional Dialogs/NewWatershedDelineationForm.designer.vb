@@ -228,7 +228,7 @@
         Me._lblStream_0.TabIndex = 15
         Me._lblStream_0.Text = "Stream Layer:"
         '
-        'NewWatershedDelineationForm
+        'CreateNewWatershedDelineationForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -236,9 +236,9 @@
         Me.Controls.Add(Me.frmMain)
         Me.Controls.Add(Me.frmAdvanced)
         Me.Location = New System.Drawing.Point(213, 196)
-        Me.Name = "NewWatershedDelineationForm"
+        Me.Name = "CreateNewWatershedDelineationForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "New Watershed Delineation"
+        Me.Text = "Create New Watershed Delineation"
         Me.Controls.SetChildIndex(Me.frmAdvanced, 0)
         Me.Controls.SetChildIndex(Me.frmMain, 0)
         Me.frmMain.ResumeLayout(False)
