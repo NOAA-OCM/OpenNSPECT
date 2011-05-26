@@ -30,6 +30,7 @@ Friend Class MainForm
     Private _isFileOnDisk As Boolean
     Private _IsAnnualPrecipScenario As Boolean
     Private _currentFileName As String
+    Private _soilsFileName As Object
     Private _strPrecipFile As String
     Private _strOpenFileName As String
 
@@ -44,14 +45,26 @@ Friend Class MainForm
 
 #Region "Events"
 
-    Private Sub GetMapWindowLayers()
-        Dim currLyr As Layer
+    Private Sub ReloadTargetLayers()
+        cboTargetLayer.Items.Clear()
+        Dim layer As Layer
         For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
-            currLyr = MapWindowPlugin.MapWindowInstance.Layers(i)
-            If currLyr.LayerType = eLayerType.Grid Then
-                cboLCLayer.Items.Add(currLyr.Name)
-            ElseIf currLyr.LayerType = eLayerType.PolygonShapefile Then
-                arrAreaList.Add(currLyr.Name)
+            layer = MapWindowPlugin.MapWindowInstance.Layers(i)
+            If layer.LayerType = eLayerType.PolygonShapefile Then
+                cboTargetLayer.Items.Add(layer.Name)
+            End If
+        Next
+        cboTargetLayer.SelectedIndex = GetIndexOfEntry(MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).Name, cboTargetLayer)
+    End Sub
+    Private Sub GetMapWindowLayers()
+        Dim layer As Layer
+        For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+            layer = MapWindowPlugin.MapWindowInstance.Layers(i)
+            If layer.LayerType = eLayerType.Grid Then
+                cboLCLayer.Items.Add(layer.Name)
+            ElseIf layer.LayerType = eLayerType.PolygonShapefile Then
+                arrAreaList.Add(layer.Name)
+                cboTargetLayer.Items.Add(layer.Name)
             End If
         Next
     End Sub
@@ -162,20 +175,6 @@ Friend Class MainForm
     End Sub
 
     ''' <summary>
-    ''' Changes the LC units if LC layer changes
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub cboLCLayer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboLCLayer.SelectedIndexChanged
-        Try
-            cboLCUnits.SelectedIndex = GetRasterDistanceUnits(cboLCLayer.Text)
-        Catch ex As Exception
-            HandleError(ex)
-        End Try
-    End Sub
-
-    ''' <summary>
     ''' Fills the LC combo whena type is selected
     ''' </summary>
     ''' <param name="sender"></param>
@@ -203,7 +202,7 @@ Friend Class MainForm
                 Dim soilData As OleDbDataReader = soilCmd.ExecuteReader()
                 soilData.Read()
                 lblKFactor.Text = soilData.Item("SoilsKFileName")
-                lblSoilsHyd.Text = soilData.Item("SoilsFileName")
+                _soilsFileName = soilData.Item("SoilsFileName")
                 soilData.Close()
             End Using
         Catch ex As Exception
@@ -984,16 +983,18 @@ Friend Class MainForm
     ''' Used by the selection form to set the selected shape
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub SetSelectedShape()
+    ''' <param name="layer"></param>
+    Public Sub SetSelectedShape(ByVal layer As Integer)
         'Uses the current layer and cycles the select shapes, populating a list of shape index values
-        If MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer <> -1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 Then
+        If layer <> -1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 Then
             chkSelectedPolys.Checked = True
-            _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).FileName
+            _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(layer).FileName
             _SelectedShapes = New List(Of Integer)
-            For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected - 1
-                _SelectedShapes.Add(MapWindowPlugin.MapWindowInstance.View.SelectedShapes(i).ShapeIndex)
+
+            For Each selectedShape As SelectedShape In MapWindowPlugin.MapWindowInstance.View.SelectedShapes
+                _SelectedShapes.Add(selectedShape.ShapeIndex)
             Next
-            lblSelected.Text = MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected.ToString + " selected"
+            chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected)
         End If
     End Sub
 
@@ -1008,6 +1009,7 @@ Friend Class MainForm
             'LandClass stuff
             cboLCLayer.Items.Clear()
             cboLandCoverType.Items.Clear()
+            cboTargetLayer.Items.Clear()
 
             'DBase scens
             cboPrecipitationScenarios.Items.Clear()
@@ -1303,7 +1305,6 @@ Friend Class MainForm
 
         End If
 
-        cboLCUnits.SelectedIndex = GetIndexOfEntry((g_Project.LandCoverGridUnits), cboLCUnits)
         cboLandCoverType.SelectedIndex = GetIndexOfEntry((g_Project.LandCoverGridType), cboLandCoverType)
 
         Return True
@@ -1329,7 +1330,7 @@ Friend Class MainForm
             End If
             _SelectLyrPath = strSelected
             _SelectedShapes = g_Project.intSelectedPolyList
-            lblSelected.Text = _SelectedShapes.Count.ToString + " selected"
+            chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", _SelectedShapes.Count)
 
             If Not ExistsLayerInMapByFileName(strSelected) Then
                 'Not there then add it
@@ -1494,6 +1495,8 @@ Friend Class MainForm
             LoadLandUses(idx)
             LoadManagementScenarios(idx)
 
+            ReloadTargetLayers()
+
             'Reset to first tab
             TabsForGrids.SelectedIndex = 0
             _isFileOnDisk = True
@@ -1645,7 +1648,7 @@ Friend Class MainForm
                 If LayerLoadedInMap(cboLCLayer.Text) Then
                     ParamsPrj.LandCoverGridName = cboLCLayer.Text
                     ParamsPrj.LandCoverGridDirectory = GetLayerFilename(cboLCLayer.Text)
-                    ParamsPrj.LandCoverGridUnits = CStr(cboLCUnits.SelectedIndex)
+                    ParamsPrj.LandCoverGridUnits = GetRasterDistanceUnits(cboLCLayer.Text)
                 Else
                     MsgBox("The Land Cover layer you have choosen is not in the current map frame.", MsgBoxStyle.Information, "Layer Not Found")
                     ValidateData = False
@@ -1670,11 +1673,11 @@ Friend Class MainForm
                 ValidateData = False
                 Exit Function
             Else
-                If RasterExists((lblSoilsHyd.Text)) Then
+                If RasterExists(_soilsFileName) Then
                     ParamsPrj.SoilsDefName = cboSoilsLayer.Text
-                    ParamsPrj.SoilsHydDirectory = lblSoilsHyd.Text
+                    ParamsPrj.SoilsHydDirectory = _soilsFileName
                 Else
-                    MsgBox(String.Format("The hydrologic soils layer {0} you have selected is missing.  Please check you soils definition.", lblSoilsHyd.Text), MsgBoxStyle.Information, "Soils Layer Not Found")
+                    MsgBox(String.Format("The hydrologic soils layer {0} you have selected is missing.  Please check you soils definition.", _soilsFileName), MsgBoxStyle.Information, "Soils Layer Not Found")
                     ValidateData = False
                     Exit Function
                 End If
@@ -1757,7 +1760,7 @@ Friend Class MainForm
                 If RasterExists((lblKFactor.Text)) Then
                     ParamsPrj.SoilsKFileName = lblKFactor.Text
                 Else
-                    MsgBox(String.Format("The K Factor soils dataset {0} you have selected is missing.  Please check your soils definition.", lblSoilsHyd.Text), MsgBoxStyle.Information, "Soils K Factor Not Found")
+                    MsgBox(String.Format("The K Factor soils dataset {0} you have selected is missing.  Please check your soils definition.", lblKFactor.Text), MsgBoxStyle.Information, "Soils K Factor Not Found")
                     ValidateData = False
                     Exit Function
                 End If
@@ -2114,4 +2117,15 @@ Friend Class MainForm
     End Sub
 
 #End Region
+
+    Private Sub cboTargetLayer_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboTargetLayer.SelectedIndexChanged
+        ' get mapwindow layer index
+        For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
+            If MapWindowPlugin.MapWindowInstance.Layers(i).Name = cboTargetLayer.SelectedItem.ToString() Then
+                SetSelectedShape(i)
+                Return
+            End If
+        Next
+
+    End Sub
 End Class
