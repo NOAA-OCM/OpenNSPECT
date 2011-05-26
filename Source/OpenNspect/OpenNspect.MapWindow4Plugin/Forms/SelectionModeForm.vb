@@ -36,7 +36,7 @@ Public Class SelectionModeForm
     End Sub
 
     Private Sub frmSelectShapes_FormClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs) Handles MyBase.FormClosed
-        If Not g_cbMainForm Is Nothing Then g_cbMainForm.SetSelectedShape()
+        If Not g_cbMainForm Is Nothing Then g_cbMainForm.SetSelectedShape(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer)
         If Not g_comp Is Nothing Then g_comp.SetSelectedShape()
         If Not g_luscen Is Nothing Then g_luscen.SetSelectedShape()
 

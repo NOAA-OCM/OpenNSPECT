@@ -41,33 +41,23 @@
         Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuBigHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGeneralHelp = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Frame6 = New System.Windows.Forms.GroupBox()
         Me.cboWaterQualityCriteriaStd = New System.Windows.Forms.ComboBox()
         Me._Label1_6 = New System.Windows.Forms.Label()
-        Me.Frame5 = New System.Windows.Forms.GroupBox()
         Me.cboWaterShedDelineations = New System.Windows.Forms.ComboBox()
         Me._Label1_3 = New System.Windows.Forms.Label()
-        Me.Frame4 = New System.Windows.Forms.GroupBox()
         Me.cboPrecipitationScenarios = New System.Windows.Forms.ComboBox()
         Me._Label1_7 = New System.Windows.Forms.Label()
-        Me.frm_raintype = New System.Windows.Forms.GroupBox()
-        Me.lblSelected = New System.Windows.Forms.Label()
         Me.btnSelect = New System.Windows.Forms.Button()
         Me.Frame3 = New System.Windows.Forms.GroupBox()
+        Me.txtProjectName = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.cmdOpenWS = New System.Windows.Forms.Button()
         Me.txtOutputWS = New System.Windows.Forms.TextBox()
-        Me.txtProjectName = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Frame1 = New System.Windows.Forms.GroupBox()
         Me.cboSoilsLayer = New System.Windows.Forms.ComboBox()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.lblSoilsHyd = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.fraLC = New System.Windows.Forms.GroupBox()
-        Me.cboLCUnits = New System.Windows.Forms.ComboBox()
         Me.cboLandCoverType = New System.Windows.Forms.ComboBox()
-        Me._Label1_5 = New System.Windows.Forms.Label()
         Me._Label1_0 = New System.Windows.Forms.Label()
         Me._Label1_2 = New System.Windows.Forms.Label()
         Me.TabsForGrids = New System.Windows.Forms.TabControl()
@@ -118,13 +108,13 @@
         Me.cmdQuit = New System.Windows.Forms.Button()
         Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox()
         Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.cboTargetLayer = New System.Windows.Forms.ComboBox()
+        Me._Label1_19 = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.MainMenu1.SuspendLayout()
-        Me.Frame6.SuspendLayout()
-        Me.Frame5.SuspendLayout()
-        Me.Frame4.SuspendLayout()
-        Me.frm_raintype.SuspendLayout()
         Me.Frame3.SuspendLayout()
-        Me.Frame1.SuspendLayout()
         Me.fraLC.SuspendLayout()
         Me.TabsForGrids.SuspendLayout()
         Me._SSTab1_TabPage0.SuspendLayout()
@@ -138,13 +128,16 @@
         Me._SSTab1_TabPage3.SuspendLayout()
         CType(Me.dgvManagementScen, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cnxtmnuManagement.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'chkSelectedPolys
         '
-        Me.chkSelectedPolys.Location = New System.Drawing.Point(7, 20)
+        Me.chkSelectedPolys.Location = New System.Drawing.Point(8, 19)
         Me.chkSelectedPolys.Name = "chkSelectedPolys"
-        Me.chkSelectedPolys.Size = New System.Drawing.Size(147, 20)
+        Me.chkSelectedPolys.Size = New System.Drawing.Size(168, 20)
         Me.chkSelectedPolys.TabIndex = 61
         Me.chkSelectedPolys.Text = "Selected Polygons Only"
         Me.ToolTip1.SetToolTip(Me.chkSelectedPolys, "Select to limit analysis to selected polygons from a map layer")
@@ -152,18 +145,18 @@
         '
         'chkLocalEffects
         '
-        Me.chkLocalEffects.Location = New System.Drawing.Point(8, 80)
+        Me.chkLocalEffects.Location = New System.Drawing.Point(10, 19)
         Me.chkLocalEffects.Name = "chkLocalEffects"
         Me.chkLocalEffects.Size = New System.Drawing.Size(131, 16)
         Me.chkLocalEffects.TabIndex = 51
-        Me.chkLocalEffects.Text = "Local Effects Only"
+        Me.chkLocalEffects.Text = "Include Local Effects"
         Me.ToolTip1.SetToolTip(Me.chkLocalEffects, "Select for analysis of local effects only")
         Me.chkLocalEffects.UseVisualStyleBackColor = True
         '
         'cboLCLayer
         '
         Me.cboLCLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboLCLayer.Location = New System.Drawing.Point(55, 23)
+        Me.cboLCLayer.Location = New System.Drawing.Point(87, 25)
         Me.cboLCLayer.Name = "cboLCLayer"
         Me.cboLCLayer.Size = New System.Drawing.Size(149, 21)
         Me.cboLCLayer.TabIndex = 0
@@ -209,58 +202,58 @@
         '
         Me.mnuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNew, Me.mnuOpen, Me.mnuSpace, Me.mnuSave, Me.mnuSaveAs, Me.mnuSpace1, Me.mnuExit})
         Me.mnuFile.Name = "mnuFile"
-        Me.mnuFile.Size = New System.Drawing.Size(35, 20)
+        Me.mnuFile.Size = New System.Drawing.Size(37, 20)
         Me.mnuFile.Text = "&File"
         '
         'mnuNew
         '
         Me.mnuNew.Name = "mnuNew"
         Me.mnuNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
-        Me.mnuNew.Size = New System.Drawing.Size(200, 22)
+        Me.mnuNew.Size = New System.Drawing.Size(195, 22)
         Me.mnuNew.Text = "New Project"
         '
         'mnuOpen
         '
         Me.mnuOpen.Name = "mnuOpen"
         Me.mnuOpen.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.mnuOpen.Size = New System.Drawing.Size(200, 22)
+        Me.mnuOpen.Size = New System.Drawing.Size(195, 22)
         Me.mnuOpen.Text = "Open Project..."
         '
         'mnuSpace
         '
         Me.mnuSpace.Name = "mnuSpace"
-        Me.mnuSpace.Size = New System.Drawing.Size(197, 6)
+        Me.mnuSpace.Size = New System.Drawing.Size(192, 6)
         '
         'mnuSave
         '
         Me.mnuSave.Name = "mnuSave"
         Me.mnuSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.mnuSave.Size = New System.Drawing.Size(200, 22)
+        Me.mnuSave.Size = New System.Drawing.Size(195, 22)
         Me.mnuSave.Text = "Save"
         '
         'mnuSaveAs
         '
         Me.mnuSaveAs.Name = "mnuSaveAs"
-        Me.mnuSaveAs.Size = New System.Drawing.Size(200, 22)
+        Me.mnuSaveAs.Size = New System.Drawing.Size(195, 22)
         Me.mnuSaveAs.Text = "Save As..."
         '
         'mnuSpace1
         '
         Me.mnuSpace1.Name = "mnuSpace1"
-        Me.mnuSpace1.Size = New System.Drawing.Size(197, 6)
+        Me.mnuSpace1.Size = New System.Drawing.Size(192, 6)
         '
         'mnuExit
         '
         Me.mnuExit.Name = "mnuExit"
         Me.mnuExit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.mnuExit.Size = New System.Drawing.Size(200, 22)
+        Me.mnuExit.Size = New System.Drawing.Size(195, 22)
         Me.mnuExit.Text = "E&xit"
         '
         'mnuBigHelp
         '
         Me.mnuBigHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGeneralHelp})
         Me.mnuBigHelp.Name = "mnuBigHelp"
-        Me.mnuBigHelp.Size = New System.Drawing.Size(40, 20)
+        Me.mnuBigHelp.Size = New System.Drawing.Size(44, 20)
         Me.mnuBigHelp.Text = "&Help"
         '
         'mnuGeneralHelp
@@ -270,119 +263,63 @@
         Me.mnuGeneralHelp.Size = New System.Drawing.Size(234, 22)
         Me.mnuGeneralHelp.Text = "OpenNSPECT Help..."
         '
-        'Frame6
-        '
-        Me.Frame6.Controls.Add(Me.cboWaterQualityCriteriaStd)
-        Me.Frame6.Controls.Add(Me._Label1_6)
-        Me.Frame6.Location = New System.Drawing.Point(461, 178)
-        Me.Frame6.Name = "Frame6"
-        Me.Frame6.Padding = New System.Windows.Forms.Padding(0)
-        Me.Frame6.Size = New System.Drawing.Size(174, 54)
-        Me.Frame6.TabIndex = 6
-        Me.Frame6.TabStop = False
-        Me.Frame6.Text = "Water Quality Standard "
-        '
         'cboWaterQualityCriteriaStd
         '
         Me.cboWaterQualityCriteriaStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboWaterQualityCriteriaStd.Location = New System.Drawing.Point(46, 20)
+        Me.cboWaterQualityCriteriaStd.Location = New System.Drawing.Point(162, 57)
         Me.cboWaterQualityCriteriaStd.Name = "cboWaterQualityCriteriaStd"
-        Me.cboWaterQualityCriteriaStd.Size = New System.Drawing.Size(110, 21)
+        Me.cboWaterQualityCriteriaStd.Size = New System.Drawing.Size(149, 21)
         Me.cboWaterQualityCriteriaStd.TabIndex = 0
         '
         '_Label1_6
         '
-        Me._Label1_6.Location = New System.Drawing.Point(7, 23)
+        Me._Label1_6.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me._Label1_6.Location = New System.Drawing.Point(3, 60)
         Me._Label1_6.Name = "_Label1_6"
-        Me._Label1_6.Size = New System.Drawing.Size(44, 15)
+        Me._Label1_6.Size = New System.Drawing.Size(153, 15)
         Me._Label1_6.TabIndex = 60
-        Me._Label1_6.Text = "Name: "
-        '
-        'Frame5
-        '
-        Me.Frame5.Controls.Add(Me.cboWaterShedDelineations)
-        Me.Frame5.Controls.Add(Me._Label1_3)
-        Me.Frame5.Location = New System.Drawing.Point(240, 178)
-        Me.Frame5.Name = "Frame5"
-        Me.Frame5.Padding = New System.Windows.Forms.Padding(0)
-        Me.Frame5.Size = New System.Drawing.Size(214, 54)
-        Me.Frame5.TabIndex = 5
-        Me.Frame5.TabStop = False
-        Me.Frame5.Text = "Watershed Delineation "
+        Me._Label1_6.Text = "Water Quality Standard:"
         '
         'cboWaterShedDelineations
         '
         Me.cboWaterShedDelineations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboWaterShedDelineations.Location = New System.Drawing.Point(46, 20)
+        Me.cboWaterShedDelineations.Location = New System.Drawing.Point(162, 3)
         Me.cboWaterShedDelineations.Name = "cboWaterShedDelineations"
-        Me.cboWaterShedDelineations.Size = New System.Drawing.Size(141, 21)
+        Me.cboWaterShedDelineations.Size = New System.Drawing.Size(149, 21)
         Me.cboWaterShedDelineations.TabIndex = 0
         '
         '_Label1_3
         '
-        Me._Label1_3.Location = New System.Drawing.Point(7, 23)
+        Me._Label1_3.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me._Label1_3.Location = New System.Drawing.Point(3, 5)
         Me._Label1_3.Name = "_Label1_3"
-        Me._Label1_3.Size = New System.Drawing.Size(39, 16)
+        Me._Label1_3.Size = New System.Drawing.Size(153, 16)
         Me._Label1_3.TabIndex = 57
-        Me._Label1_3.Text = "Name:"
-        '
-        'Frame4
-        '
-        Me.Frame4.Controls.Add(Me.cboPrecipitationScenarios)
-        Me.Frame4.Controls.Add(Me._Label1_7)
-        Me.Frame4.Location = New System.Drawing.Point(10, 178)
-        Me.Frame4.Name = "Frame4"
-        Me.Frame4.Padding = New System.Windows.Forms.Padding(0)
-        Me.Frame4.Size = New System.Drawing.Size(223, 54)
-        Me.Frame4.TabIndex = 4
-        Me.Frame4.TabStop = False
-        Me.Frame4.Text = "Precipitation Scenario  "
+        Me._Label1_3.Text = "Watershed Delineation:"
         '
         'cboPrecipitationScenarios
         '
         Me.cboPrecipitationScenarios.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboPrecipitationScenarios.Location = New System.Drawing.Point(54, 20)
+        Me.cboPrecipitationScenarios.Location = New System.Drawing.Point(162, 30)
         Me.cboPrecipitationScenarios.Name = "cboPrecipitationScenarios"
         Me.cboPrecipitationScenarios.Size = New System.Drawing.Size(149, 21)
         Me.cboPrecipitationScenarios.TabIndex = 0
         '
         '_Label1_7
         '
-        Me._Label1_7.Location = New System.Drawing.Point(9, 23)
+        Me._Label1_7.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me._Label1_7.Location = New System.Drawing.Point(3, 31)
         Me._Label1_7.Name = "_Label1_7"
-        Me._Label1_7.Size = New System.Drawing.Size(40, 18)
+        Me._Label1_7.Size = New System.Drawing.Size(153, 18)
         Me._Label1_7.TabIndex = 54
-        Me._Label1_7.Text = "Name: "
-        '
-        'frm_raintype
-        '
-        Me.frm_raintype.Controls.Add(Me.lblSelected)
-        Me.frm_raintype.Controls.Add(Me.btnSelect)
-        Me.frm_raintype.Controls.Add(Me.chkSelectedPolys)
-        Me.frm_raintype.Controls.Add(Me.chkLocalEffects)
-        Me.frm_raintype.Location = New System.Drawing.Point(461, 68)
-        Me.frm_raintype.Name = "frm_raintype"
-        Me.frm_raintype.Padding = New System.Windows.Forms.Padding(0)
-        Me.frm_raintype.Size = New System.Drawing.Size(175, 105)
-        Me.frm_raintype.TabIndex = 3
-        Me.frm_raintype.TabStop = False
-        Me.frm_raintype.Text = "Miscellaneous "
-        '
-        'lblSelected
-        '
-        Me.lblSelected.Location = New System.Drawing.Point(85, 50)
-        Me.lblSelected.Name = "lblSelected"
-        Me.lblSelected.Size = New System.Drawing.Size(84, 21)
-        Me.lblSelected.TabIndex = 68
-        Me.lblSelected.Text = "0 selected"
+        Me._Label1_7.Text = "Precipitation Scenario: "
         '
         'btnSelect
         '
-        Me.btnSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnSelect.CausesValidation = False
-        Me.btnSelect.Location = New System.Drawing.Point(7, 45)
+        Me.btnSelect.Location = New System.Drawing.Point(182, 12)
         Me.btnSelect.Name = "btnSelect"
-        Me.btnSelect.Size = New System.Drawing.Size(75, 23)
+        Me.btnSelect.Size = New System.Drawing.Size(54, 23)
         Me.btnSelect.TabIndex = 0
         Me.btnSelect.TabStop = False
         Me.btnSelect.Text = "Select"
@@ -390,23 +327,37 @@
         '
         'Frame3
         '
-        Me.Frame3.Controls.Add(Me.cmdOpenWS)
-        Me.Frame3.Controls.Add(Me.txtOutputWS)
         Me.Frame3.Controls.Add(Me.txtProjectName)
-        Me.Frame3.Controls.Add(Me.Label5)
         Me.Frame3.Controls.Add(Me.Label4)
         Me.Frame3.Location = New System.Drawing.Point(9, 25)
         Me.Frame3.Name = "Frame3"
         Me.Frame3.Padding = New System.Windows.Forms.Padding(0)
-        Me.Frame3.Size = New System.Drawing.Size(625, 37)
+        Me.Frame3.Size = New System.Drawing.Size(625, 47)
         Me.Frame3.TabIndex = 0
         Me.Frame3.TabStop = False
         Me.Frame3.Text = "Project Information "
         '
+        'txtProjectName
+        '
+        Me.txtProjectName.AcceptsReturn = True
+        Me.txtProjectName.Location = New System.Drawing.Point(55, 17)
+        Me.txtProjectName.MaxLength = 0
+        Me.txtProjectName.Name = "txtProjectName"
+        Me.txtProjectName.Size = New System.Drawing.Size(192, 20)
+        Me.txtProjectName.TabIndex = 0
+        '
+        'Label4
+        '
+        Me.Label4.Location = New System.Drawing.Point(11, 19)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(40, 15)
+        Me.Label4.TabIndex = 41
+        Me.Label4.Text = "Name:"
+        '
         'cmdOpenWS
         '
         Me.cmdOpenWS.Image = CType(resources.GetObject("cmdOpenWS.Image"), System.Drawing.Image)
-        Me.cmdOpenWS.Location = New System.Drawing.Point(570, 13)
+        Me.cmdOpenWS.Location = New System.Drawing.Point(578, 14)
         Me.cmdOpenWS.Name = "cmdOpenWS"
         Me.cmdOpenWS.Size = New System.Drawing.Size(23, 21)
         Me.cmdOpenWS.TabIndex = 40
@@ -416,123 +367,58 @@
         'txtOutputWS
         '
         Me.txtOutputWS.AcceptsReturn = True
-        Me.txtOutputWS.Location = New System.Drawing.Point(373, 14)
+        Me.txtOutputWS.Location = New System.Drawing.Point(381, 15)
         Me.txtOutputWS.MaxLength = 0
         Me.txtOutputWS.Name = "txtOutputWS"
         Me.txtOutputWS.Size = New System.Drawing.Size(192, 20)
         Me.txtOutputWS.TabIndex = 1
         '
-        'txtProjectName
-        '
-        Me.txtProjectName.AcceptsReturn = True
-        Me.txtProjectName.Location = New System.Drawing.Point(55, 14)
-        Me.txtProjectName.MaxLength = 0
-        Me.txtProjectName.Name = "txtProjectName"
-        Me.txtProjectName.Size = New System.Drawing.Size(169, 20)
-        Me.txtProjectName.TabIndex = 0
-        '
         'Label5
         '
-        Me.Label5.Location = New System.Drawing.Point(270, 15)
+        Me.Label5.Location = New System.Drawing.Point(278, 16)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(99, 17)
         Me.Label5.TabIndex = 42
         Me.Label5.Text = "Working Directory:"
         '
-        'Label4
-        '
-        Me.Label4.Location = New System.Drawing.Point(11, 16)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(40, 15)
-        Me.Label4.TabIndex = 41
-        Me.Label4.Text = "Name:"
-        '
-        'Frame1
-        '
-        Me.Frame1.Controls.Add(Me.cboSoilsLayer)
-        Me.Frame1.Controls.Add(Me.Label6)
-        Me.Frame1.Controls.Add(Me.lblSoilsHyd)
-        Me.Frame1.Controls.Add(Me.Label2)
-        Me.Frame1.Location = New System.Drawing.Point(240, 68)
-        Me.Frame1.Name = "Frame1"
-        Me.Frame1.Padding = New System.Windows.Forms.Padding(0)
-        Me.Frame1.Size = New System.Drawing.Size(214, 105)
-        Me.Frame1.TabIndex = 2
-        Me.Frame1.TabStop = False
-        Me.Frame1.Text = "Soils"
-        '
         'cboSoilsLayer
         '
         Me.cboSoilsLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboSoilsLayer.Location = New System.Drawing.Point(46, 25)
+        Me.cboSoilsLayer.Location = New System.Drawing.Point(162, 84)
         Me.cboSoilsLayer.Name = "cboSoilsLayer"
-        Me.cboSoilsLayer.Size = New System.Drawing.Size(141, 21)
+        Me.cboSoilsLayer.Size = New System.Drawing.Size(149, 21)
         Me.cboSoilsLayer.TabIndex = 0
         '
         'Label6
         '
-        Me.Label6.Location = New System.Drawing.Point(7, 58)
+        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label6.Location = New System.Drawing.Point(3, 88)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(157, 15)
+        Me.Label6.Size = New System.Drawing.Size(153, 15)
         Me.Label6.TabIndex = 47
         Me.Label6.Text = "Hydrologic Soils Data Set:"
         '
-        'lblSoilsHyd
-        '
-        Me.lblSoilsHyd.Location = New System.Drawing.Point(7, 73)
-        Me.lblSoilsHyd.Name = "lblSoilsHyd"
-        Me.lblSoilsHyd.Size = New System.Drawing.Size(198, 19)
-        Me.lblSoilsHyd.TabIndex = 46
-        '
-        'Label2
-        '
-        Me.Label2.Location = New System.Drawing.Point(7, 18)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(39, 38)
-        Me.Label2.TabIndex = 10
-        Me.Label2.Text = "Soils Def:"
-        '
         'fraLC
         '
-        Me.fraLC.Controls.Add(Me.cboLCUnits)
         Me.fraLC.Controls.Add(Me.cboLCLayer)
         Me.fraLC.Controls.Add(Me.cboLandCoverType)
-        Me.fraLC.Controls.Add(Me._Label1_5)
         Me.fraLC.Controls.Add(Me._Label1_0)
         Me.fraLC.Controls.Add(Me._Label1_2)
-        Me.fraLC.Location = New System.Drawing.Point(9, 68)
+        Me.fraLC.Location = New System.Drawing.Point(9, 78)
         Me.fraLC.Name = "fraLC"
         Me.fraLC.Padding = New System.Windows.Forms.Padding(0)
-        Me.fraLC.Size = New System.Drawing.Size(226, 105)
+        Me.fraLC.Size = New System.Drawing.Size(247, 82)
         Me.fraLC.TabIndex = 1
         Me.fraLC.TabStop = False
         Me.fraLC.Text = "Land Cover"
         '
-        'cboLCUnits
-        '
-        Me.cboLCUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboLCUnits.Enabled = False
-        Me.cboLCUnits.Items.AddRange(New Object() {"meters", "feet"})
-        Me.cboLCUnits.Location = New System.Drawing.Point(55, 47)
-        Me.cboLCUnits.Name = "cboLCUnits"
-        Me.cboLCUnits.Size = New System.Drawing.Size(149, 21)
-        Me.cboLCUnits.TabIndex = 1
-        '
         'cboLandCoverType
         '
         Me.cboLandCoverType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboLandCoverType.Location = New System.Drawing.Point(55, 72)
+        Me.cboLandCoverType.Location = New System.Drawing.Point(87, 52)
         Me.cboLandCoverType.Name = "cboLandCoverType"
         Me.cboLandCoverType.Size = New System.Drawing.Size(149, 21)
         Me.cboLandCoverType.TabIndex = 2
-        '
-        '_Label1_5
-        '
-        Me._Label1_5.Location = New System.Drawing.Point(10, 51)
-        Me._Label1_5.Name = "_Label1_5"
-        Me._Label1_5.Size = New System.Drawing.Size(40, 18)
-        Me._Label1_5.TabIndex = 8
-        Me._Label1_5.Text = "Grid Units:"
         '
         '_Label1_0
         '
@@ -544,7 +430,7 @@
         '
         '_Label1_2
         '
-        Me._Label1_2.Location = New System.Drawing.Point(10, 75)
+        Me._Label1_2.Location = New System.Drawing.Point(10, 55)
         Me._Label1_2.Name = "_Label1_2"
         Me._Label1_2.Size = New System.Drawing.Size(40, 18)
         Me._Label1_2.TabIndex = 6
@@ -557,10 +443,10 @@
         Me.TabsForGrids.Controls.Add(Me._SSTab1_TabPage2)
         Me.TabsForGrids.Controls.Add(Me._SSTab1_TabPage3)
         Me.TabsForGrids.ItemSize = New System.Drawing.Size(42, 18)
-        Me.TabsForGrids.Location = New System.Drawing.Point(16, 238)
+        Me.TabsForGrids.Location = New System.Drawing.Point(16, 301)
         Me.TabsForGrids.Name = "TabsForGrids"
         Me.TabsForGrids.SelectedIndex = 3
-        Me.TabsForGrids.Size = New System.Drawing.Size(618, 194)
+        Me.TabsForGrids.Size = New System.Drawing.Size(618, 235)
         Me.TabsForGrids.TabIndex = 7
         '
         '_SSTab1_TabPage0
@@ -568,7 +454,7 @@
         Me._SSTab1_TabPage0.Controls.Add(Me.dgvPollutants)
         Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
-        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(610, 168)
+        Me._SSTab1_TabPage0.Size = New System.Drawing.Size(610, 209)
         Me._SSTab1_TabPage0.TabIndex = 0
         Me._SSTab1_TabPage0.Text = "Pollutants"
         '
@@ -579,11 +465,12 @@
         Me.dgvPollutants.AllowUserToResizeColumns = False
         Me.dgvPollutants.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvPollutants.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.PollApply, Me.PollutantName, Me.CoefSet, Me.WhichCoeff, Me.Threshold, Me.TypeDef})
-        Me.dgvPollutants.Location = New System.Drawing.Point(3, 3)
+        Me.dgvPollutants.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvPollutants.Location = New System.Drawing.Point(0, 0)
         Me.dgvPollutants.MultiSelect = False
         Me.dgvPollutants.Name = "dgvPollutants"
         Me.dgvPollutants.ShowEditingIcon = False
-        Me.dgvPollutants.Size = New System.Drawing.Size(600, 156)
+        Me.dgvPollutants.Size = New System.Drawing.Size(610, 209)
         Me.dgvPollutants.TabIndex = 0
         '
         'PollApply
@@ -645,13 +532,13 @@
         Me._SSTab1_TabPage1.Controls.Add(Me.frmSDR)
         Me._SSTab1_TabPage1.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage1.Name = "_SSTab1_TabPage1"
-        Me._SSTab1_TabPage1.Size = New System.Drawing.Size(610, 168)
+        Me._SSTab1_TabPage1.Size = New System.Drawing.Size(610, 209)
         Me._SSTab1_TabPage1.TabIndex = 1
         Me._SSTab1_TabPage1.Text = "Erosion"
         '
         'lblErodFactor
         '
-        Me.lblErodFactor.Location = New System.Drawing.Point(440, 171)
+        Me.lblErodFactor.Location = New System.Drawing.Point(15, 178)
         Me.lblErodFactor.Name = "lblErodFactor"
         Me.lblErodFactor.Size = New System.Drawing.Size(129, 14)
         Me.lblErodFactor.TabIndex = 28
@@ -668,7 +555,7 @@
         '
         'Label3
         '
-        Me.Label3.Location = New System.Drawing.Point(15, 141)
+        Me.Label3.Location = New System.Drawing.Point(15, 149)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(180, 17)
         Me.Label3.TabIndex = 45
@@ -731,15 +618,15 @@
         '
         'cboErodFactor
         '
-        Me.cboErodFactor.Location = New System.Drawing.Point(344, 141)
+        Me.cboErodFactor.Location = New System.Drawing.Point(197, 171)
         Me.cboErodFactor.Name = "cboErodFactor"
-        Me.cboErodFactor.Size = New System.Drawing.Size(136, 21)
+        Me.cboErodFactor.Size = New System.Drawing.Size(141, 21)
         Me.cboErodFactor.TabIndex = 29
         Me.cboErodFactor.Visible = False
         '
         'cboSoilAttribute
         '
-        Me.cboSoilAttribute.Location = New System.Drawing.Point(197, 140)
+        Me.cboSoilAttribute.Location = New System.Drawing.Point(197, 148)
         Me.cboSoilAttribute.Name = "cboSoilAttribute"
         Me.cboSoilAttribute.Size = New System.Drawing.Size(141, 21)
         Me.cboSoilAttribute.TabIndex = 44
@@ -794,14 +681,14 @@
         Me._SSTab1_TabPage2.Controls.Add(Me.dgvLandUse)
         Me._SSTab1_TabPage2.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage2.Name = "_SSTab1_TabPage2"
-        Me._SSTab1_TabPage2.Size = New System.Drawing.Size(610, 168)
+        Me._SSTab1_TabPage2.Size = New System.Drawing.Size(610, 209)
         Me._SSTab1_TabPage2.TabIndex = 2
         Me._SSTab1_TabPage2.Text = "Land Uses"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(3, 143)
+        Me.Label1.Location = New System.Drawing.Point(3, 185)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(345, 13)
         Me.Label1.TabIndex = 2
@@ -819,7 +706,7 @@
         Me.dgvLandUse.MultiSelect = False
         Me.dgvLandUse.Name = "dgvLandUse"
         Me.dgvLandUse.ShowEditingIcon = False
-        Me.dgvLandUse.Size = New System.Drawing.Size(604, 135)
+        Me.dgvLandUse.Size = New System.Drawing.Size(604, 179)
         Me.dgvLandUse.TabIndex = 0
         '
         'LUApply
@@ -873,14 +760,14 @@
         Me._SSTab1_TabPage3.Controls.Add(Me.dgvManagementScen)
         Me._SSTab1_TabPage3.Location = New System.Drawing.Point(4, 22)
         Me._SSTab1_TabPage3.Name = "_SSTab1_TabPage3"
-        Me._SSTab1_TabPage3.Size = New System.Drawing.Size(610, 168)
+        Me._SSTab1_TabPage3.Size = New System.Drawing.Size(610, 209)
         Me._SSTab1_TabPage3.TabIndex = 3
         Me._SSTab1_TabPage3.Text = "Management Scenarios"
         '
         'lblManageNote
         '
         Me.lblManageNote.AutoSize = True
-        Me.lblManageNote.Location = New System.Drawing.Point(9, 143)
+        Me.lblManageNote.Location = New System.Drawing.Point(3, 186)
         Me.lblManageNote.Name = "lblManageNote"
         Me.lblManageNote.Size = New System.Drawing.Size(302, 13)
         Me.lblManageNote.TabIndex = 1
@@ -898,7 +785,7 @@
         Me.dgvManagementScen.MultiSelect = False
         Me.dgvManagementScen.Name = "dgvManagementScen"
         Me.dgvManagementScen.ShowEditingIcon = False
-        Me.dgvManagementScen.Size = New System.Drawing.Size(601, 135)
+        Me.dgvManagementScen.Size = New System.Drawing.Size(601, 180)
         Me.dgvManagementScen.TabIndex = 0
         '
         'ManageApply
@@ -950,7 +837,7 @@
         'cmdRun
         '
         Me.cmdRun.CausesValidation = False
-        Me.cmdRun.Location = New System.Drawing.Point(459, 437)
+        Me.cmdRun.Location = New System.Drawing.Point(459, 541)
         Me.cmdRun.Name = "cmdRun"
         Me.cmdRun.Size = New System.Drawing.Size(75, 23)
         Me.cmdRun.TabIndex = 8
@@ -960,7 +847,7 @@
         'cmdQuit
         '
         Me.cmdQuit.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.cmdQuit.Location = New System.Drawing.Point(562, 437)
+        Me.cmdQuit.Location = New System.Drawing.Point(562, 541)
         Me.cmdQuit.Name = "cmdQuit"
         Me.cmdQuit.Size = New System.Drawing.Size(75, 23)
         Me.cmdQuit.TabIndex = 9
@@ -970,7 +857,7 @@
         '_chkIgnoreMgmt_0
         '
         Me._chkIgnoreMgmt_0.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me._chkIgnoreMgmt_0.Location = New System.Drawing.Point(535, 345)
+        Me._chkIgnoreMgmt_0.Location = New System.Drawing.Point(535, 449)
         Me._chkIgnoreMgmt_0.Name = "_chkIgnoreMgmt_0"
         Me._chkIgnoreMgmt_0.Size = New System.Drawing.Size(15, 12)
         Me._chkIgnoreMgmt_0.TabIndex = 35
@@ -980,32 +867,95 @@
         '_chkIgnoreLU_0
         '
         Me._chkIgnoreLU_0.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me._chkIgnoreLU_0.Location = New System.Drawing.Point(467, 357)
+        Me._chkIgnoreLU_0.Location = New System.Drawing.Point(467, 461)
         Me._chkIgnoreLU_0.Name = "_chkIgnoreLU_0"
         Me._chkIgnoreLU_0.Size = New System.Drawing.Size(15, 12)
         Me._chkIgnoreLU_0.TabIndex = 36
         Me._chkIgnoreLU_0.Text = "Check2"
         Me._chkIgnoreLU_0.UseVisualStyleBackColor = True
         '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.Label6, 0, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.cboSoilsLayer, 1, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.cboWaterQualityCriteriaStd, 1, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me._Label1_6, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.cboPrecipitationScenarios, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.cboWaterShedDelineations, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me._Label1_7, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me._Label1_3, 0, 0)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(291, 95)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 4
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(319, 110)
+        Me.TableLayoutPanel1.TabIndex = 61
+        '
+        'cboTargetLayer
+        '
+        Me.cboTargetLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTargetLayer.Location = New System.Drawing.Point(87, 41)
+        Me.cboTargetLayer.Name = "cboTargetLayer"
+        Me.cboTargetLayer.Size = New System.Drawing.Size(149, 21)
+        Me.cboTargetLayer.TabIndex = 69
+        '
+        '_Label1_19
+        '
+        Me._Label1_19.Location = New System.Drawing.Point(8, 44)
+        Me._Label1_19.Name = "_Label1_19"
+        Me._Label1_19.Size = New System.Drawing.Size(40, 18)
+        Me._Label1_19.TabIndex = 70
+        Me._Label1_19.Text = "Layer:"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.cmdOpenWS)
+        Me.GroupBox1.Controls.Add(Me.chkLocalEffects)
+        Me.GroupBox1.Controls.Add(Me.txtOutputWS)
+        Me.GroupBox1.Controls.Add(Me.Label5)
+        Me.GroupBox1.Location = New System.Drawing.Point(10, 246)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(622, 49)
+        Me.GroupBox1.TabIndex = 71
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Output"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.chkSelectedPolys)
+        Me.GroupBox2.Controls.Add(Me._Label1_19)
+        Me.GroupBox2.Controls.Add(Me.btnSelect)
+        Me.GroupBox2.Controls.Add(Me.cboTargetLayer)
+        Me.GroupBox2.Location = New System.Drawing.Point(9, 166)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(247, 74)
+        Me.GroupBox2.TabIndex = 72
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Target Area"
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.cmdQuit
-        Me.ClientSize = New System.Drawing.Size(644, 470)
-        Me.Controls.Add(Me.Frame6)
-        Me.Controls.Add(Me.Frame4)
-        Me.Controls.Add(Me.frm_raintype)
-        Me.Controls.Add(Me.Frame5)
+        Me.ClientSize = New System.Drawing.Size(644, 572)
         Me.Controls.Add(Me.Frame3)
-        Me.Controls.Add(Me.Frame1)
-        Me.Controls.Add(Me.fraLC)
-        Me.Controls.Add(Me.cmdRun)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TabsForGrids)
+        Me.Controls.Add(Me.MainMenu1)
+        Me.Controls.Add(Me.cmdRun)
+        Me.Controls.Add(Me.fraLC)
+        Me.Controls.Add(Me._chkIgnoreLU_0)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me._chkIgnoreMgmt_0)
         Me.Controls.Add(Me.cmdQuit)
-        Me.Controls.Add(Me._chkIgnoreLU_0)
-        Me.Controls.Add(Me.MainMenu1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
@@ -1015,13 +965,8 @@
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.MainMenu1.ResumeLayout(False)
         Me.MainMenu1.PerformLayout()
-        Me.Frame6.ResumeLayout(False)
-        Me.Frame5.ResumeLayout(False)
-        Me.Frame4.ResumeLayout(False)
-        Me.frm_raintype.ResumeLayout(False)
         Me.Frame3.ResumeLayout(False)
         Me.Frame3.PerformLayout()
-        Me.Frame1.ResumeLayout(False)
         Me.fraLC.ResumeLayout(False)
         Me.TabsForGrids.ResumeLayout(False)
         Me._SSTab1_TabPage0.ResumeLayout(False)
@@ -1039,16 +984,15 @@
         Me._SSTab1_TabPage3.PerformLayout()
         CType(Me.dgvManagementScen, System.ComponentModel.ISupportInitialize).EndInit()
         Me.cnxtmnuManagement.ResumeLayout(False)
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents Frame6 As System.Windows.Forms.GroupBox
-    Private WithEvents Frame5 As System.Windows.Forms.GroupBox
-    Private WithEvents Frame4 As System.Windows.Forms.GroupBox
-    Private WithEvents frm_raintype As System.Windows.Forms.GroupBox
     Private WithEvents Frame3 As System.Windows.Forms.GroupBox
-    Private WithEvents Frame1 As System.Windows.Forms.GroupBox
     Private WithEvents fraLC As System.Windows.Forms.GroupBox
     Private WithEvents TabsForGrids As System.Windows.Forms.TabControl
     Private WithEvents cmdRun As System.Windows.Forms.Button
@@ -1079,12 +1023,8 @@
     Private WithEvents Label4 As System.Windows.Forms.Label
     Private WithEvents cboSoilsLayer As System.Windows.Forms.ComboBox
     Private WithEvents Label6 As System.Windows.Forms.Label
-    Private WithEvents lblSoilsHyd As System.Windows.Forms.Label
-    Private WithEvents Label2 As System.Windows.Forms.Label
-    Private WithEvents cboLCUnits As System.Windows.Forms.ComboBox
     Private WithEvents cboLCLayer As System.Windows.Forms.ComboBox
     Private WithEvents cboLandCoverType As System.Windows.Forms.ComboBox
-    Private WithEvents _Label1_5 As System.Windows.Forms.Label
     Private WithEvents _Label1_0 As System.Windows.Forms.Label
     Private WithEvents _Label1_2 As System.Windows.Forms.Label
     Private WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
@@ -1136,7 +1076,11 @@
     Friend WithEvents LUScenario As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LUScenarioXml As System.Windows.Forms.DataGridViewTextBoxColumn
     Private WithEvents txtbxRainGrid As System.Windows.Forms.TextBox
-    Friend WithEvents lblSelected As System.Windows.Forms.Label
     Private WithEvents btnSelect As System.Windows.Forms.Button
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Public WithEvents cboTargetLayer As System.Windows.Forms.ComboBox
+    Public WithEvents _Label1_19 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
 #End Region
 End Class
