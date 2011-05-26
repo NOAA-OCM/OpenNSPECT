@@ -19,6 +19,8 @@ Imports System.IO
 Imports MapWindow.Interfaces
 Imports MapWinGeoProc
 Imports MapWinGIS
+Imports System.Windows.Forms
+Imports System.Runtime.InteropServices
 
 Friend Class CreateNewWatershedDelineationForm
     Private boolChange(3) As Boolean
@@ -283,6 +285,16 @@ Friend Class CreateNewWatershedDelineationForm
         End Try
     End Sub
 
+    Private Sub FatalError(ByVal ex As SEHException)
+        Trace.TraceError(ex.Message)
+        Dim ret = MessageBox.Show("An error occured in the Hydrology class. This leaves everything in an unstable state, so MapWindow needs to be shut down. Close MapWindow now?", "Close MapWindow?", MessageBoxButtons.YesNo)
+        If ret = Windows.Forms.DialogResult.Yes Then
+            Application.ExitThread()
+        Else
+            Close()
+        End If
+
+    End Sub
     Private Function DelineateWatershed(ByRef pSurfaceDatasetIn As Grid, ByVal OutPath As String) As Boolean
         'Declare the raster objects
         Dim pFlowDirRaster As New Grid
@@ -327,13 +339,15 @@ Friend Class CreateNewWatershedDelineationForm
             Else
                 'Call to ProgDialog to use throughout process: keep user informed.
 
-                If SynchronousProgressDialog.KeepRunning Then
-                    _strFilledDEMFileName = OutPath + "demfill" + OutputGridExt
-                    Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
-                    pFillRaster.Open(_strFilledDEMFileName)
-                Else
+                If Not SynchronousProgressDialog.KeepRunning Then
                     Return False
                 End If
+
+                _strFilledDEMFileName = OutPath + "demfill" + OutputGridExt
+                Hydrology.Fill(pSurfaceDatasetIn.Filename, _strFilledDEMFileName, False)
+
+                pFillRaster.Open(_strFilledDEMFileName)
+
             End If
             'End if Fill
 
@@ -344,8 +358,15 @@ Friend Class CreateNewWatershedDelineationForm
             _strDirFileName = OutPath + "flowdir" + OutputGridExt
             Dim strSlpFileName As String = OutPath + "slope" + OutputGridExt
             If SynchronousProgressDialog.KeepRunning Then
-                ret = Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Environment.ProcessorCount, False, Nothing)
+                Try
+                    ret = Hydrology.D8(pFillRaster.Filename, mwDirFileName, strSlpFileName, Environment.ProcessorCount, False, Nothing)
+                Catch ex As SEHException
+                    FatalError(ex)
+                    Return False
+                End Try
+
                 If ret <> 0 Then Return False
+
                 pFlowDirRaster.Open(mwDirFileName)
 
                 Dim pESRID8Flow As New Grid
@@ -365,7 +386,12 @@ Friend Class CreateNewWatershedDelineationForm
             progress.Increment("Computing Flow Accumulation...")
             _strAccumFileName = OutPath + "flowacc" + OutputGridExt
             If SynchronousProgressDialog.KeepRunning Then
-                ret = Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Environment.ProcessorCount, False, Nothing)
+                Try
+                    ret = Hydrology.AreaD8(pFlowDirRaster.Filename, "", _strAccumFileName, False, False, Environment.ProcessorCount, False, Nothing)
+                Catch ex As SEHException
+                    FatalError(ex)
+                    Return False
+                End Try
                 If ret <> 0 Then Return False
                 pAccumRaster.Open(_strAccumFileName)
             Else
@@ -403,7 +429,12 @@ Friend Class CreateNewWatershedDelineationForm
             _strStreamLayer = OutPath + "stream.shp"
             progress.Increment("Creating Stream Network...")
             If SynchronousProgressDialog.KeepRunning Then
-                ret = Hydrology.DelinStreamGrids(pSurfaceDatasetIn.Filename, pFillRaster.Filename, pFlowDirRaster.Filename, strSlpFileName, pAccumRaster.Filename, "", strahlordout, longestupslopeout, totalupslopeout, streamgridout, streamordout, treedatout, coorddatout, _strStreamLayer, strWSGridOut, dblSubShedSize, False, False, 2, False, Nothing)
+                Try
+                    ret = Hydrology.DelinStreamGrids(pSurfaceDatasetIn.Filename, pFillRaster.Filename, pFlowDirRaster.Filename, strSlpFileName, pAccumRaster.Filename, "", strahlordout, longestupslopeout, totalupslopeout, streamgridout, streamordout, treedatout, coorddatout, _strStreamLayer, strWSGridOut, dblSubShedSize, False, False, 2, False, Nothing)
+                Catch ex As SEHException
+                    FatalError(ex)
+                    Return False
+                End Try
                 If ret <> 0 Then Return False
             Else
                 Return False
@@ -418,23 +449,28 @@ Friend Class CreateNewWatershedDelineationForm
             _strWShedFileName = OutPath + "basinpoly.shp"
 
             progress.Increment("Creating Watershed Shape...")
-            If SynchronousProgressDialog.KeepRunning Then
+            If Not SynchronousProgressDialog.KeepRunning Then
+                Return False
+            Else
                 pFlowDirRaster.Save()
                 Dim file = pFlowDirRaster.Filename
                 pFlowDirRaster.Close()
-                ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
+                Try
+                    ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
+                Catch ex As SEHException
+                    FatalError(ex)
+                    Return False
+                End Try
                 If ret <> 0 Then Return False
-            Else
-                Return False
             End If
 
             progress.Increment("Removing Small Polygons...")
-            If SynchronousProgressDialog.KeepRunning Then
+            If Not SynchronousProgressDialog.KeepRunning Then
+                Return False
+            Else
                 pBasinFeatClass.Open(strWSSFOut)
 
                 pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
-            Else
-                Return False
             End If
 
             _strLSFileName = OutPath + "lsgrid" + OutputGridExt
