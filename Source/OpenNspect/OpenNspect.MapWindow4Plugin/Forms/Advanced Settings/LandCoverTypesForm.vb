@@ -139,7 +139,7 @@ Friend Class LandCoverTypesForm
     Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
 
         Try
-            If ValidateGridValues() Then
+            If ValidateGridValues(_dTable) Then
                 SaveToDB()
                 _bolBegin = False
 
@@ -422,38 +422,34 @@ Friend Class LandCoverTypesForm
             HandleError(ex)
         End Try
     End Sub
-
-    Private Function ValidateGridValues() As Boolean
+    ' TODO: Refactor ValidateGridValues()
+    Private Function ValidateGridValues(ByVal dataTable As DataTable) As Boolean
         Try
             ''Need to validate each grid value before saving.  Essentially we take it a row at a time,
             ''then rifle through each column of each row.  Case Select tests each each x,y value depending
-            ''on column... eg Column 1 must be unique, 3-6 must be 1-100 range, 7 must be <= 1
-
-            ''Returns: True or False
+            ''on column... eg Column 1 must be unique, 3-7 must be 0-1 range
 
             Dim dr, dr2 As DataRow
             Dim val As Object
 
-            For i As Integer = 0 To _dTable.Rows.Count - 1
-                If _dTable.Rows(i).RowState <> DataRowState.Deleted Then
-                    dr = _dTable.Rows(i)
-                    For j As Integer = 0 To _dTable.Columns.Count - 1
+            For i As Integer = 0 To dataTable.Rows.Count - 1
+                If dataTable.Rows(i).RowState <> DataRowState.Deleted Then
+                    dr = dataTable.Rows(i)
+                    For j As Integer = 0 To dataTable.Columns.Count - 1
                         val = dr.Item(j)
                         Select Case j
                             Case 0
                                 If Not IsNumeric(val) Then
                                     DisplayError(Err1, i, j)
-                                    ValidateGridValues = False
-                                    Exit Function
+                                    Return False
                                 Else
-                                    For k As Integer = 0 To _dTable.Rows.Count - 1
-                                        If _dTable.Rows(k).RowState <> DataRowState.Deleted Then
-                                            dr2 = _dTable.Rows(k)
+                                    For k As Integer = 0 To dataTable.Rows.Count - 1
+                                        If dataTable.Rows(k).RowState <> DataRowState.Deleted Then
+                                            dr2 = dataTable.Rows(k)
                                             If k <> i Then 'Don't want to compare value to itself
                                                 If val = dr2.Item(j) Then
                                                     DisplayError(Err2, i, j)
-                                                    ValidateGridValues = False
-                                                    Exit Function
+                                                    Return False
                                                 End If
                                             End If
                                         End If
@@ -466,23 +462,23 @@ Friend Class LandCoverTypesForm
                             Case 2, 3, 4, 5
                                 If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 6) Then
                                     DisplayError(Err1, i, j)
-                                    ValidateGridValues = False
-                                    Exit Function
+                                    Return False
                                 End If
+                                ' Probably an old ESRI standby 
                             Case 6
                                 If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 5) Then
                                     DisplayError(Err3, i, j)
-                                    ValidateGridValues = False
-                                    Exit Function
+                                    Return False
                                 End If
                         End Select
                     Next
                 End If
             Next
 
-            ValidateGridValues = True
+            Return True
         Catch ex As Exception
             HandleError(ex)
+            Return False
         End Try
     End Function
 

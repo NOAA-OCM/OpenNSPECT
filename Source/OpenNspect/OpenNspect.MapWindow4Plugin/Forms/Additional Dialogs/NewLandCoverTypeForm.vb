@@ -113,7 +113,7 @@ Friend Class NewLandCoverTypeForm
 
 #End Region
 
-#Region "Helper Functions'"
+#Region "Helper Functions"
 
     Public Sub Init(ByRef frmLC As LandCoverTypesForm)
         Try
@@ -171,14 +171,12 @@ Friend Class NewLandCoverTypeForm
             HandleError(ex)
         End Try
     End Sub
-
+    ' TODO: Refactor ValidateGridValues()
     Private Function ValidateGridValues() As Boolean
         Try
-            'Need to validate each grid value before saving.  Essentially we take it a row at a time,
-            'then rifle through each column of each row.  Case Select tests each each x,y value depending
-            'on column... eg Column 1 must be unique, 3-6 must be 1-100 range, 7 must be <= 1
-
-            'Returns: True or False
+            ''Need to validate each grid value before saving.  Essentially we take it a row at a time,
+            ''then rifle through each column of each row.  Case Select tests each each x,y value depending
+            ''on column... eg Column 1 must be unique, 3-7 must be 0-1 range
 
             Dim val As String
             'txtActiveCell value
@@ -213,37 +211,16 @@ Friend Class NewLandCoverTypeForm
                             End If
 
                         Case 1
-                            If IsNumeric(val) Then
+                            ' Allow any value for the Name column
+
+                        Case 2, 3, 4, 5
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 6) Then
                                 DisplayError(Err1, i, j)
                                 Return False
                             End If
-
-                        Case 2
-                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                DisplayError(Err1, i, j)
-                                Return False
-                            End If
-
-                        Case 3
-                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                DisplayError(Err1, i, j)
-                                Return False
-                            End If
-
-                        Case 4
-                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                DisplayError(Err1, i, j)
-                                Return False
-                            End If
-
-                        Case 5
-                            If Not IsNumeric(val) Or ((val < 0) Or (val > 100)) Then
-                                DisplayError(Err1, i, j)
-                                Return False
-                            End If
-
+                            ' Probably an old ESRI standby 
                         Case 6
-                            If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Then
+                            If Not IsNumeric(val) Or ((val < 0) Or (val > 1)) Or (Len(val.ToString) > 5) Then
                                 DisplayError(Err3, i, j)
                                 Return False
                             End If
