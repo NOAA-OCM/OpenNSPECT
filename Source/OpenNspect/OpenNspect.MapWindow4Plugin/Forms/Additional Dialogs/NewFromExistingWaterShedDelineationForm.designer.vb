@@ -1,4 +1,4 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class DefineFromExistingWaterShedDelineationForm
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> Partial Class DefineFromExistingWatershedDelineationForm
     Inherits OpenNspect.BaseDialogForm
 #Region "Windows Form Designer generated code "
     <System.Diagnostics.DebuggerNonUserCode()> Public Sub New()
@@ -43,7 +43,7 @@
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DefineFromExistingWaterShedDelineationForm))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DefineFromExistingWatershedDelineationForm))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.cmdBrowseLS = New System.Windows.Forms.Button()
         Me.Frame1 = New System.Windows.Forms.GroupBox()

@@ -71,7 +71,7 @@ Friend Class WatershedDelineationsForm
 
     Private Sub mnuNewExist_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuNewExist.Click
         Try
-            Dim newWS As New DefineFromExistingWaterShedDelineationForm
+            Dim newWS As New DefineFromExistingWatershedDelineationForm
             newWS.Init(Me, Nothing)
             newWS.ShowDialog()
         Catch ex As Exception
