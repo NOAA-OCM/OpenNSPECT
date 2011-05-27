@@ -61,7 +61,7 @@ Friend Class WatershedDelineationsForm
 
     Private Sub mnuNewWSDelin_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuNewWSDelin.Click
         Try
-            Dim newWS As New CreateNewWatershedDelineationForm
+            Dim newWS As New NewWatershedDelineationForm
             newWS.Init(Me, Nothing)
             newWS.ShowDialog()
         Catch ex As Exception

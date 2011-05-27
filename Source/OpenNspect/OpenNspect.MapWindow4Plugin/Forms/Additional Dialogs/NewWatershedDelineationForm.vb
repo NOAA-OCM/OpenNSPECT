@@ -22,7 +22,7 @@ Imports MapWinGIS
 Imports System.Windows.Forms
 Imports System.Runtime.InteropServices
 
-Friend Class CreateNewWatershedDelineationForm
+Friend Class NewWatershedDelineationForm
     Private boolChange(3) As Boolean
     'Array set to track changes in controls: On Change,OK_Button is enabled
     Private _frmWS As WatershedDelineationsForm
