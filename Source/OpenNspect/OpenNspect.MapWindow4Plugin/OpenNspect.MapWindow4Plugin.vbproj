@@ -317,10 +317,10 @@
     <Compile Include="Forms\Additional Dialogs\SoilsSetupForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\NewFromExistingWaterShedDelineationForm.designer.vb">
-      <DependentUpon>NewFromExistingWaterShedDelineationForm.vb</DependentUpon>
+    <Compile Include="Forms\Additional Dialogs\DefineFromExistingWatershedDelineationForm.designer.vb">
+      <DependentUpon>DefineFromExistingWatershedDelineationForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Additional Dialogs\NewFromExistingWaterShedDelineationForm.vb">
+    <Compile Include="Forms\Additional Dialogs\DefineFromExistingWatershedDelineationForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Advanced Settings\WatershedDelineationsForm.designer.vb">
@@ -427,8 +427,8 @@
     <EmbeddedResource Include="Forms\Additional Dialogs\SoilsSetupForm.resX">
       <DependentUpon>SoilsSetupForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Additional Dialogs\NewFromExistingWaterShedDelineationForm.resX">
-      <DependentUpon>NewFromExistingWaterShedDelineationForm.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\Additional Dialogs\DefineFromExistingWatershedDelineationForm.resX">
+      <DependentUpon>DefineFromExistingWatershedDelineationForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Advanced Settings\WatershedDelineationsForm.resX">
       <DependentUpon>WatershedDelineationsForm.vb</DependentUpon>
