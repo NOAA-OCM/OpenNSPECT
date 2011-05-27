@@ -271,7 +271,7 @@ Friend Class MainForm
 
                 g_boolNewWShed = True
 
-                Using newWS As New CreateNewWatershedDelineationForm()
+                Using newWS As New NewWatershedDelineationForm()
                     newWS.Init(Nothing, Me)
                     newWS.ShowDialog()
                 End Using
