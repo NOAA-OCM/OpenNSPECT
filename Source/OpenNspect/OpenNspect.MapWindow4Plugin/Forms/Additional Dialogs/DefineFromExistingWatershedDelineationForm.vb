@@ -215,9 +215,6 @@ Friend Class DefineFromExistingWatershedDelineationForm
                                 flowpath = Path.GetDirectoryName(txtFlowDir.Text) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(txtFlowDir.Text) + "_esri" + OutputGridExt
                             End If
                             Dim pESRID8Flow As New Grid
-                            Dim tmphead As New GridHeader
-                            tmphead.CopyFrom(tmpFlow.Header)
-                            pESRID8Flow.CreateNew(flowpath, tmphead, GridDataType.FloatDataType, -1)
                             RasterMath(tmpFlow, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, GetConverterToEsriFromTauDem())
                             pESRID8Flow.Header.NodataValue = -1
                             pESRID8Flow.Save()  'Saving because it seemed necessary.
