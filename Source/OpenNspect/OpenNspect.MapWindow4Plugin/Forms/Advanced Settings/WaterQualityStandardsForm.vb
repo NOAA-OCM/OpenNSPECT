@@ -207,39 +207,19 @@ Friend Class WaterQualityStandardsForm
 
     Private Sub UpdateData()
         Try
-            Dim strSQLWQStd As String
-            Dim strWQSelect As String
-            Dim i As Short
-
             'Selection based on combo box, update Description
-            strSQLWQStd = "SELECT * FROM WQCRITERIA WHERE NAME LIKE '" & cboWQStdName.Text & "'"
-            Using cmdWQ As New DataHelper(strSQLWQStd)
-                Dim adWQ = cmdWQ.GetAdapter()
-                Using buWQ As New OleDbCommandBuilder(adWQ)
-                    buWQ.QuotePrefix = "["
-                    buWQ.QuoteSuffix = "]"
-                End Using
-                Using dt As New DataTable()
-                    adWQ.Fill(dt)
-                    dt.Rows(0)("Description") = txtWQStdDesc.Text
-                    adWQ.Update(dt)
-                End Using
+            Dim updateDescription = String.Format("UPDATE WQCRITERIA SET Description = '{0}' WHERE NAME = '{1}'", txtWQStdDesc.Text, cboWQStdName.Text)
+            Using updateCommand As OleDbCommand = New OleDbCommand(updateDescription, g_DBConn)
+                updateCommand.ExecuteNonQuery()
             End Using
 
             'Now update Threshold values
             For i = 0 To dgvWaterQuality.Rows.Count - 1
-                strWQSelect = "SELECT * from POLL_WQCRITERIA WHERE POLL_WQCRITID = " & dgvWaterQuality.Rows(i).Cells(2).Value.ToString
-                Using cmdWQSel As New DataHelper(strWQSelect)
-                    Dim adWQSel = cmdWQSel.GetAdapter()
-                    Using buWQSel As New OleDbCommandBuilder(adWQSel)
-                        buWQSel.QuotePrefix = "["
-                        buWQSel.QuoteSuffix = "]"
-                    End Using
-                    Using dtSel As New DataTable()
-                        adWQSel.Fill(dtSel)
-                        dtSel.Rows(0)("Threshold") = dgvWaterQuality.Rows(i).Cells(1).Value
-                        adWQSel.Update(dtSel)
-                    End Using
+                Dim updateThreshold = String.Format("UPDATE POLL_WQCRITERIA SET Threshold = {0} WHERE POLL_WQCRITID = {1}",
+                                          dgvWaterQuality.Rows(i).Cells(1).Value,
+                                          dgvWaterQuality.Rows(i).Cells(2).Value)
+                Using updateCommand As OleDbCommand = New OleDbCommand(updateThreshold, g_DBConn)
+                    updateCommand.ExecuteNonQuery()
                 End Using
             Next i
 
