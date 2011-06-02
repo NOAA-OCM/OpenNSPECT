@@ -205,7 +205,7 @@ Friend Class WaterQualityStandardsForm
 
 #Region "Helper Functions"
 
-    Private Sub UpdateData()
+    Private Function UpdateData() As Boolean
         Try
             'Selection based on combo box, update Description
             Dim updateDescription = String.Format("UPDATE WQCRITERIA SET Description = '{0}' WHERE NAME = '{1}'", txtWQStdDesc.Text, cboWQStdName.Text)
@@ -224,10 +224,12 @@ Friend Class WaterQualityStandardsForm
             Next i
 
             IsDirty = False
+            Return True
         Catch ex As Exception
             HandleError(ex)
+            Return False
         End Try
-    End Sub
+    End Function
 
     Private Function ValidateData() As Boolean
         Try
@@ -286,9 +288,10 @@ Friend Class WaterQualityStandardsForm
     Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
         Try
             If ValidateData() Then
-                UpdateData()
-                MsgBox("Data saved successfully.", MsgBoxStyle.Information, "Data Saved")
-                MyBase.OK_Button_Click(sender, e)
+                If (UpdateData()) Then
+                    MsgBox("Data saved successfully.", MsgBoxStyle.Information, "Data Saved")
+                    MyBase.OK_Button_Click(sender, e)
+                End If
             End If
 
         Catch ex As Exception
