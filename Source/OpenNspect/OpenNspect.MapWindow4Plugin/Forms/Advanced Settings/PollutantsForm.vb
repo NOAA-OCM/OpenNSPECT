@@ -390,33 +390,16 @@ Friend Class PollutantsForm
 
     Private Sub UpdateValues()
         Try
-            Dim strUpdateDescription As Object
             If _boolDescChanged Then
-                strUpdateDescription = "SELECT Description from CoefficientSet Where Name like '" & cboCoeffSet.Text & "'"
-                Using cmdDesc As New DataHelper(strUpdateDescription)
-                    Using adDesc = cmdDesc.GetAdapter()
-                        Using buildDesc As New OleDbCommandBuilder(adDesc)
-                            buildDesc.QuotePrefix = "["
-                            buildDesc.QuoteSuffix = "]"
-                        End Using
-                        Using dt As New DataTable()
-                            adDesc.Fill(dt)
-                            If Len(txtCoeffSetDesc.Text) = 0 Then
-                                dt.Rows(0)("Description") = ""
-                            Else
-                                dt.Rows(0)("Description") = txtCoeffSetDesc.Text
-                            End If
-                            adDesc.Update(dt)
-                        End Using
-                    End Using
+                Dim updateQuery As String = String.Format("Update CoefficientSet Set Description = '{0}' WHERE Name = '{1}' ", txtCoeffSetDesc.Text, cboCoeffSet.Text)
+                Using cmdNewWQ As New DataHelper(updateQuery)
+                    cmdNewWQ.ExecuteNonQuery()
                 End Using
             End If
 
             Dim i As Short
             Dim strPollUpdate As String
             If ValidateGridValues() Then
-                'Update
-
                 For i = 0 To dgvCoef.Rows.Count - 1
 
                     strPollUpdate = "SELECT * From Coefficient Where CoeffID = " & dgvCoef.Rows(i).Cells(6).Value.ToString
