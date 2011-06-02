@@ -376,9 +376,6 @@ Friend Class NewWatershedDelineationForm
                 pFlowDirRaster.Open(mwDirFileName)
 
                 Dim pESRID8Flow As New Grid
-                Dim tmphead As New GridHeader
-                tmphead.CopyFrom(pFlowDirRaster.Header)
-                pESRID8Flow.CreateNew(_strDirFileName, tmphead, GridDataType.FloatDataType, -1)
                 RasterMath(pFlowDirRaster, Nothing, Nothing, Nothing, Nothing, pESRID8Flow, Nothing, False, GetConverterToEsriFromTauDem())
                 pESRID8Flow.Header.NodataValue = -1
                 pESRID8Flow.Save()  'Saving because it seemed necessary.
