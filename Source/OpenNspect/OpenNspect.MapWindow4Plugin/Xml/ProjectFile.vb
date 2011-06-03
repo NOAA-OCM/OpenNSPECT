@@ -120,7 +120,12 @@ Namespace Xml
         End Property
         Public Property ProjectRoot As String
             Get
-                Return _ProjectRoot
+                ' assign default value
+                If String.IsNullOrEmpty(_ProjectRoot) Then
+                    Return "C:\NSPECT"
+                Else
+                    Return _ProjectRoot
+                End If
             End Get
             Set(value As String)
                 If _ProjectRoot = value Then
@@ -156,6 +161,10 @@ Namespace Xml
         ''' </summary>
         ''' <param name="value">The value.</param><returns></returns>
         Private Function EncourageValidPath(ByVal value As String) As String
+            If String.IsNullOrEmpty(value) Then
+                Throw New ArgumentException("value is nothing or empty.", "value")
+            End If
+
             If Not Directory.Exists(value) Then
                 Dim relativePath = value.Replace(ProjectRoot, String.Empty)
                 Dim suggestedPath = Path.GetDirectoryName(_projectFilePath) + "\.." + relativePath
@@ -560,10 +569,6 @@ Namespace Xml
 
                 ProjectName = GetNodeText(node, NODE_PRJNAME)
                 ProjectRoot = GetNodeText(node, NODE_PRJROOT)
-                ' assign default value
-                If String.IsNullOrEmpty(ProjectRoot) Then
-                    ProjectRoot = "C:\NSPECT"
-                End If
                 ProjectWorkspace = GetNodeText(node, NODE_PRJWORKSPACE)
                 LandCoverGridName = GetNodeText(node, NODE_LCGridName)
                 LandCoverGridDirectory = GetNodeText(node, NODE_LCGridFileName)
