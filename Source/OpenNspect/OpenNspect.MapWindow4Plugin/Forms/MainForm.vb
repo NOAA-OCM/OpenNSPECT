@@ -60,11 +60,13 @@ Friend Class MainForm
         Dim layer As Layer
         For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
             layer = MapWindowPlugin.MapWindowInstance.Layers(i)
-            If layer.LayerType = eLayerType.Grid Then
-                cboLCLayer.Items.Add(layer.Name)
-            ElseIf layer.LayerType = eLayerType.PolygonShapefile Then
-                arrAreaList.Add(layer.Name)
-                cboTargetLayer.Items.Add(layer.Name)
+            If layer IsNot Nothing Then
+                If layer.LayerType = eLayerType.Grid Then
+                    cboLCLayer.Items.Add(layer.Name)
+                ElseIf layer.LayerType = eLayerType.PolygonShapefile Then
+                    arrAreaList.Add(layer.Name)
+                    cboTargetLayer.Items.Add(layer.Name)
+                End If
             End If
         Next
     End Sub
@@ -983,17 +985,25 @@ Friend Class MainForm
     ''' Used by the selection form to set the selected shape
     ''' </summary>
     ''' <remarks></remarks>
-    ''' <param name="layer"></param>
-    Public Sub SetSelectedShape(ByVal layer As Integer)
+    ''' <param name="layerHandle"></param>
+    Public Sub SetSelectedShape(ByVal layerHandle As Integer)
         'Uses the current layer and cycles the select shapes, populating a list of shape index values
-        If layer <> -1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 Then
+        If layerHandle <> -1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 Then
             chkSelectedPolys.Checked = True
-            _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(layer).FileName
+            _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(layerHandle).FileName
             _SelectedShapes = New List(Of Integer)
 
-            For Each selectedShape As SelectedShape In MapWindowPlugin.MapWindowInstance.View.SelectedShapes
-                _SelectedShapes.Add(selectedShape.ShapeIndex)
-            Next
+            ' Recommended code that throws invalid cast ex.
+            'Dim map As MapWinGIS.Map = MapWindowPlugin.MapWindowInstance.GetOCX
+            'Dim sf As MapWinGIS.Shapefile = map.Shapefile(layerHandle)
+            'If Not sf Is Nothing Then   ' layer object can be an image as well, nothing wil be returned in this case
+            '    For i As Integer = 0 To sf.NumShapes - 1
+            '        If sf.ShapeSelected(i) Then
+            '            _SelectedShapes.Add(i)
+            '        End If
+            '    Next i
+            'End If
+
             chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected)
         End If
     End Sub
@@ -1696,9 +1706,9 @@ Friend Class MainForm
                     'Can't find it...well, then send user to Browse
                     MsgBox(String.Format("Unable to find precip dataset: {0}.  Please Correct", _strPrecipFile), MsgBoxStyle.Information, "Cannot Find Dataset")
                     _strPrecipFile = BrowseForFileName("Raster")
-                    'If new one found, then we must update DataBase
+                    'If new one found, then we must update Database
                     If Len(_strPrecipFile) > 0 Then
-                        strUpdatePrecip = String.Format("UPDATE PrecipScenario SET precipScenario.PrecipFileName = '{0}'WHERE NAME = '{1}'", _strPrecipFile, cboPrecipitationScenarios.Text)
+                        strUpdatePrecip = String.Format("UPDATE PrecipScenario SET precipScenario.PrecipFileName = '{0}' WHERE NAME = '{1}'", _strPrecipFile, cboPrecipitationScenarios.Text)
                         Using PreUpdCmd As OleDbCommand = New OleDbCommand(strUpdatePrecip, g_DBConn)
                             PreUpdCmd.ExecuteNonQuery()
                         End Using
