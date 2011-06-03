@@ -502,7 +502,6 @@ Friend Class NewWatershedDelineationForm
             DataManagement.DeleteGrid(streamordout)
             DataManagement.TryDelete(treedatout)
             DataManagement.TryDelete(coorddatout)
-            DataManagement.DeleteGrid(strWSGridOut)
             DataManagement.DeleteShapefile(strWSSFOut)
         End Try
     End Function
