@@ -238,7 +238,7 @@ Friend Class SoilsSetupForm
             lngValue = 1
 
             pSoilsFeatClass.StartEditingTable()
-            Using progress = New SynchronousProgressDialog("Calculating soils values...", "Processing Soils", pSoilsFeatClass.NumShapes, Me)
+            Using progress = New SynchronousProgressDialog("Calculating soils values...", "Processing Soils", pSoilsFeatClass.NumShapes + 3, Me)
                 'Now calc the Values
                 For i As Integer = 0 To pSoilsFeatClass.NumShapes - 1
                     progress.Increment("Calculating soils values...")
@@ -267,15 +267,11 @@ Friend Class SoilsSetupForm
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
                             Case ""
                                 MsgBox("Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", MsgBoxStyle.Critical, "Missing Values Detected")
-                                CreateSoilsGrid = False
-                                progress.Dispose()
-                                Exit Function
+                                Return False
                         End Select
                         lngValue = lngValue + 1
                     Else
-                        'If they cancel, kill the dialog
-                        progress.Dispose()
-                        Exit Function
+                        Return False
                     End If
                 Next
 
@@ -322,19 +318,22 @@ Friend Class SoilsSetupForm
                     Dim idx As Integer
                     Dim nc As Integer = head.NumberCols - 1
                     Dim nr As Integer = head.NumberRows - 1
-                    For row As Integer = 0 To nr
-                        progress.Increment("Converting Soils Dataset...")
-                        For col As Integer = 0 To nc
-                            outSoils.CellToProj(col, row, x, y)
-                            idx = soilsshp.PointInShapefile(x, y)
-                            If idx <> -1 Then
-                                outSoils.Value(col, row) = soilsshp.CellValue(lngNewHydFieldIndex, idx)
-                                If strOutKSoils <> "" Then
-                                    outSoilsK.Value(col, row) = soilsshp.CellValue(lngKFieldIndex, idx)
+
+                    Using progress2 = New SynchronousProgressDialog("Calculating soils Dataset...", "Processing Soils", nr + 2, Me)
+                        For row As Integer = 0 To nr
+                            progress2.Increment("Converting Soils Dataset...")
+                            For col As Integer = 0 To nc
+                                outSoils.CellToProj(col, row, x, y)
+                                idx = soilsshp.PointInShapefile(x, y)
+                                If idx <> -1 Then
+                                    outSoils.Value(col, row) = soilsshp.CellValue(lngNewHydFieldIndex, idx)
+                                    If strOutKSoils <> "" Then
+                                        outSoilsK.Value(col, row) = soilsshp.CellValue(lngKFieldIndex, idx)
+                                    End If
                                 End If
-                            End If
+                            Next
                         Next
-                    Next
+                    End Using
 
                     'After, save the grids and close them.
                     outSoils.Save()
