@@ -307,15 +307,19 @@ Module Pollutants
             End If
 
             strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _WaterQualityStandardName & vbNewLine & vbTab & vbTab & "Standard: " & dblConvertValue & " mg/L"
-            g_dicMetadata.Add(_PollutantName & " Standard: " & CStr(dblConvertValue) & " mg/L", _PollutantCoeffMetadata & strMetadata)
+            Dim layerCaption As String = String.Format("{0} Standard: {1} mg/L", _PollutantName, CStr(dblConvertValue))
+            g_dicMetadata.Add(layerCaption, _PollutantCoeffMetadata & strMetadata)
 
-            AddOutputGridLayer(pPermWQRaster, _WaterQualityStandardName, False, _PollutantName & " Standard: " & CStr(dblConvertValue) & " mg/L", "Pollutant " & _PollutantName & " WQ", -1, OutputItems)
+            ' Hide standard output because we're not sure anyone uses it http://nspect.codeplex.com/workitem/20911
+            If False Then
+                AddOutputGridLayer(pPermWQRaster, _WaterQualityStandardName, False, layerCaption, "Pollutant " & _PollutantName & " WQ", -1, OutputItems)
+            End If
 
-            CompareWaterQuality = True
 
+            Return True
         Catch ex As Exception
             HandleError(ex)
-            CompareWaterQuality = False
+            Return False
         End Try
     End Function
 
