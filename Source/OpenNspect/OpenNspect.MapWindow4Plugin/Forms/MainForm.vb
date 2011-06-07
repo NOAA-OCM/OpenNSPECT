@@ -984,6 +984,9 @@ Friend Class MainForm
 
 #Region "Helper Functions"
 
+    Private Sub RefreshPolygonCount()
+        chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected)
+    End Sub
     ''' <summary>
     ''' Used by the selection form to set the selected shape
     ''' </summary>
@@ -1006,7 +1009,7 @@ Friend Class MainForm
                 Next i
             End If
 
-            chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected)
+            RefreshPolygonCount()
         End If
     End Sub
 
@@ -1342,7 +1345,8 @@ Friend Class MainForm
             End If
             _SelectLyrPath = strSelected
             _SelectedShapes = g_Project.intSelectedPolyList
-            chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", _SelectedShapes.Count)
+            RefreshPolygonCount()
+            'chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", _SelectedShapes.Count)
 
             If Not ExistsLayerInMapByFileName(strSelected) Then
                 'Not there then add it
@@ -1625,8 +1629,7 @@ Friend Class MainForm
                     End If
                 Else
                     MsgBox("You have chosen 'Selected watersheds only'.  Please select watersheds.", MsgBoxStyle.Critical, "No Selected Features Found")
-                    ValidateData = False
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -1636,8 +1639,7 @@ Friend Class MainForm
             Else
                 MsgBox("Please enter a name for this project.", MsgBoxStyle.Information, "Enter Name")
                 txtProjectName.Focus()
-                ValidateData = False
-                Exit Function
+                Return False
             End If
 
             'Working Directory
@@ -1646,16 +1648,14 @@ Friend Class MainForm
             Else
                 MsgBox("Please choose a valid output working directory.", MsgBoxStyle.Information, "Choose Workspace")
                 txtOutputWS.Focus()
-                ValidateData = False
-                Exit Function
+                Return False
             End If
 
             'LandCover
             If cboLCLayer.Text = "" Then
                 MsgBox("Please select a Land Cover layer before continuing.", MsgBoxStyle.Information, "Select Land Cover Layer")
                 cboLCLayer.Focus()
-                ValidateData = False
-                Exit Function
+                Return False
             Else
                 If LayerLoadedInMap(cboLCLayer.Text) Then
                     ParamsPrj.LandCoverGridName = cboLCLayer.Text
@@ -1663,8 +1663,7 @@ Friend Class MainForm
                     ParamsPrj.LandCoverGridUnits = GetRasterDistanceUnits(cboLCLayer.Text)
                 Else
                     MsgBox("The Land Cover layer you have choosen is not in the current map frame.", MsgBoxStyle.Information, "Layer Not Found")
-                    ValidateData = False
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -1672,8 +1671,7 @@ Friend Class MainForm
             If cboLandCoverType.Text = "" Then
                 MsgBox("Please select a Land Class Type before continuing.", MsgBoxStyle.Information, "Select Land Class Type")
                 cboLandCoverType.Focus()
-                ValidateData = False
-                Exit Function
+                Return False
             Else
                 ParamsPrj.LandCoverGridType = cboLandCoverType.Text
             End If
@@ -1682,16 +1680,14 @@ Friend Class MainForm
             If cboSoilsLayer.Text = "" Then
                 MsgBox("Please select a Soils definition before continuing.", MsgBoxStyle.Information, "Select Soils Layer")
                 cboSoilsLayer.Focus()
-                ValidateData = False
-                Exit Function
+                Return False
             Else
                 If RasterExists(_soilsFileName) Then
                     ParamsPrj.SoilsDefName = cboSoilsLayer.Text
                     ParamsPrj.SoilsHydDirectory = _soilsFileName
                 Else
                     MsgBox(String.Format("The hydrologic soils layer {0} you have selected is missing.  Please check you soils definition.", _soilsFileName), MsgBoxStyle.Information, "Soils Layer Not Found")
-                    ValidateData = False
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -1731,8 +1727,7 @@ Friend Class MainForm
                 ParamsPrj.WaterShedDelin = cboWaterShedDelineations.Text
             Else
                 MsgBox("There is a problems with the selected Watershed Delineation.", MsgBoxStyle.Information, "Watershed Delineation")
-                ValidateData = False
-                Exit Function
+                Return False
             End If
 
             'Water Quality
@@ -1740,8 +1735,7 @@ Friend Class MainForm
                 ParamsPrj.WaterQuality = cboWaterQualityCriteriaStd.Text
             Else
                 MsgBox("Please select a water quality standard.", MsgBoxStyle.Information, "Water Quality Standard Missing")
-                ValidateData = False
-                Exit Function
+                Return False
             End If
 
             'Checkboxes, straight up values
@@ -1773,8 +1767,7 @@ Friend Class MainForm
                     ParamsPrj.SoilsKFileName = lblKFactor.Text
                 Else
                     MsgBox(String.Format("The K Factor soils dataset {0} you have selected is missing.  Please check your soils definition.", lblKFactor.Text), MsgBoxStyle.Information, "Soils K Factor Not Found")
-                    ValidateData = False
-                    Exit Function
+                    Return False
                 End If
 
                 'Check the Rainfall Factor grid objects.
@@ -1790,8 +1783,7 @@ Friend Class MainForm
                         Else
                             MsgBox("Please choose a rainfall Grid.", MsgBoxStyle.Information, "Select Rainfall GRID")
                             TabsForGrids.SelectedIndex = 1
-                            ValidateData = False
-                            Exit Function
+                            Return False
 
                         End If
 
@@ -1813,8 +1805,7 @@ Friend Class MainForm
 
                     Else
                         MsgBox("You must choose a rainfall factor.", MsgBoxStyle.Information, "Rainfall Factor Missing")
-                        ValidateData = False
-                        Exit Function
+                        Return False
                     End If
                 End If
 
@@ -1827,13 +1818,11 @@ Friend Class MainForm
                             ParamsPrj.StrSDRGridFileName = txtSDRGRID.Text
                         Else
                             MsgBox(String.Format("SDR GRID {0} not found.", txtSDRGRID.Text), MsgBoxStyle.Information, "SDR GRID Not Found")
-                            ValidateData = False
-                            Exit Function
+                            Return False
                         End If
                     Else
                         MsgBox("Please select an SDR GRID.", MsgBoxStyle.Information, "SDR GRID Not Selected")
-                        ValidateData = False
-                        Exit Function
+                        Return False
                     End If
                 Else
                     ParamsPrj.IntUseOwnSDR = 0
@@ -1862,9 +1851,8 @@ Friend Class MainForm
                     End If
                 Next
             Else
-                ValidateData = False
                 dgvManagementScen.Focus()
-                Exit Function
+                Return False
             End If
 
             TabsForGrids.SelectedIndex = 0
@@ -1890,9 +1878,8 @@ Friend Class MainForm
                     ParamsPrj.PollItems.Add(pollitem)
                 Next
             Else
-                ValidateData = False
                 dgvPollutants.Focus()
-                Exit Function
+                Return False
             End If
 
             TabsForGrids.SelectedIndex = 2
