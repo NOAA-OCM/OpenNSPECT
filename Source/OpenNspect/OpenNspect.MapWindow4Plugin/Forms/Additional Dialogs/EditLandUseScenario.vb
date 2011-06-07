@@ -36,8 +36,10 @@ Friend Class EditLandUseScenario
             g_luscen = Me
             cboLULayer.Items.Clear()
             For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
-                If MapWindowPlugin.MapWindowInstance.Layers(i).LayerType = eLayerType.PolygonShapefile Then
-                    cboLULayer.Items.Add(MapWindowPlugin.MapWindowInstance.Layers(i).Name)
+                If MapWindowPlugin.MapWindowInstance.Layers(i) IsNot Nothing Then
+                    If MapWindowPlugin.MapWindowInstance.Layers(i).LayerType = eLayerType.PolygonShapefile Then
+                        cboLULayer.Items.Add(MapWindowPlugin.MapWindowInstance.Layers(i).Name)
+                    End If
                 End If
             Next
 
@@ -336,9 +338,12 @@ Friend Class EditLandUseScenario
                 chkSelectedPolys.Checked = True
                 cboLULayer.Items.Clear()
                 For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
-                    If MapWindowPlugin.MapWindowInstance.Layers(i).LayerType = eLayerType.PolygonShapefile Then
-                        cboLULayer.Items.Add(MapWindowPlugin.MapWindowInstance.Layers(i).Name)
+                    If MapWindowPlugin.MapWindowInstance.Layers(i) IsNot Nothing Then
+                        If MapWindowPlugin.MapWindowInstance.Layers(i).LayerType = eLayerType.PolygonShapefile Then
+                            cboLULayer.Items.Add(MapWindowPlugin.MapWindowInstance.Layers(i).Name)
+                        End If
                     End If
+
                 Next
                 cboLULayer.SelectedIndex = GetIndexOfEntry(MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).Name, cboLULayer)
 

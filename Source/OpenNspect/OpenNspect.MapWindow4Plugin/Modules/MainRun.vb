@@ -111,9 +111,15 @@ Module MainRun
         Dim pMaskGeoDataset As Shapefile
         If g_Project.UseSelectedPolygons Then
             pMaskGeoDataset = ReturnAnalysisMask(SelectedPath, SelectedShapes)
-            MapWindowPlugin.MapWindowInstance.View.Extents = pMaskGeoDataset.Extents
+            If pMaskGeoDataset IsNot Nothing Then
+                MapWindowPlugin.MapWindowInstance.View.Extents = pMaskGeoDataset.Extents
+            End If
+
         Else
             pMaskGeoDataset = Nothing
+        End If
+
+        If pMaskGeoDataset Is Nothing Then
             MapWindowPlugin.MapWindowInstance.View.ZoomToMaxExtents()
         End If
 
