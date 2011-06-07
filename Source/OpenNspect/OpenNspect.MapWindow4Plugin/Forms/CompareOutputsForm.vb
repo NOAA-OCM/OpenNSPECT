@@ -264,11 +264,14 @@ Public Class CompareOutputsForm
                 For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.Groups(grpnum).LayerCount - 1
                     glyr = MapWindowPlugin.MapWindowInstance.Layers.Groups(grpnum).Item(i)
                     tmplyr = MapWindowPlugin.MapWindowInstance.Layers(glyr.Handle)
-                    outitem = New OutputItem
-                    outitem.strPath = tmplyr.FileName
-                    outitem.strName = tmplyr.Name
-                    outitem.strType = GetTypeFromPath(tmplyr.FileName, tmplyr.Name)
-                    tmpOutItems.Add(outitem)
+                    If tmplyr IsNot Nothing Then
+                        outitem = New OutputItem
+                        outitem.strPath = tmplyr.FileName
+                        outitem.strName = tmplyr.Name
+                        outitem.strType = GetTypeFromPath(tmplyr.FileName, tmplyr.Name)
+                        tmpOutItems.Add(outitem)
+                    End If
+
                 Next
             Else
                 Try

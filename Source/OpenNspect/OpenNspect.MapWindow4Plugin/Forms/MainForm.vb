@@ -50,9 +50,12 @@ Friend Class MainForm
         Dim layer As Layer
         For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
             layer = MapWindowPlugin.MapWindowInstance.Layers(i)
-            If layer.LayerType = eLayerType.PolygonShapefile Then
-                cboTargetLayer.Items.Add(layer.Name)
+            If layer IsNot Nothing Then
+                If layer.LayerType = eLayerType.PolygonShapefile Then
+                    cboTargetLayer.Items.Add(layer.Name)
+                End If
             End If
+
         Next
         cboTargetLayer.SelectedIndex = GetIndexOfEntry(MapWindowPlugin.MapWindowInstance.Layers(MapWindowPlugin.MapWindowInstance.Layers.CurrentLayer).Name, cboTargetLayer)
     End Sub
@@ -993,16 +996,15 @@ Friend Class MainForm
             _SelectLyrPath = MapWindowPlugin.MapWindowInstance.Layers(layerHandle).FileName
             _SelectedShapes = New List(Of Integer)
 
-            ' Recommended code that throws invalid cast ex.
-            'Dim map As MapWinGIS.Map = MapWindowPlugin.MapWindowInstance.GetOCX
-            'Dim sf As MapWinGIS.Shapefile = map.Shapefile(layerHandle)
-            'If Not sf Is Nothing Then   ' layer object can be an image as well, nothing wil be returned in this case
-            '    For i As Integer = 0 To sf.NumShapes - 1
-            '        If sf.ShapeSelected(i) Then
-            '            _SelectedShapes.Add(i)
-            '        End If
-            '    Next i
-            'End If
+            Dim axMap As AxMapWinGIS.AxMap = CType(MapWindowPlugin.MapWindowInstance.GetOCX(), AxMapWinGIS.AxMap)
+            Dim sf As MapWinGIS.Shapefile = CType(axMap.get_GetObject(layerHandle), MapWinGIS.Shapefile)
+            If Not sf Is Nothing Then   ' layer object can be an image as well, nothing wil be returned in this case
+                For i As Integer = 0 To sf.NumShapes - 1
+                    If sf.ShapeSelected(i) Then
+                        _SelectedShapes.Add(i)
+                    End If
+                Next i
+            End If
 
             chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected)
         End If
@@ -2131,9 +2133,12 @@ Friend Class MainForm
     Private Sub cboTargetLayer_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cboTargetLayer.SelectedIndexChanged
         ' get mapwindow layer index
         For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
-            If MapWindowPlugin.MapWindowInstance.Layers(i).Name = cboTargetLayer.SelectedItem.ToString() Then
-                SetSelectedShape(i)
-                Return
+            Dim layer As Layer = MapWindowPlugin.MapWindowInstance.Layers(i)
+            If layer IsNot Nothing Then
+                If layer.Name = cboTargetLayer.SelectedItem.ToString() Then
+                    SetSelectedShape(i)
+                    Return
+                End If
             End If
         Next
 

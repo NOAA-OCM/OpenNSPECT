@@ -77,17 +77,20 @@ Module Utilities
 
     Public Function GetRasterDistanceUnits(ByRef strLayerName As String) As Short
         For i As Integer = 0 To MapWindowPlugin.MapWindowInstance.Layers.NumLayers - 1
-            If MapWindowPlugin.MapWindowInstance.Layers(i).Name = strLayerName Then
-                Dim proj As String = MapWindowPlugin.MapWindowInstance.Layers(i).Projection
-                If Not String.IsNullOrEmpty(proj) Then
-                    If proj.Contains("units=m") Then
-                        Return 0
-                    ElseIf proj.Contains("units=ft") Then
-                        Return 1
+            Dim layer As Layer = MapWindowPlugin.MapWindowInstance.Layers(i)
+            If layer IsNot Nothing Then
+                If layer.Name = strLayerName Then
+                    Dim proj As String = layer.Projection
+                    If Not String.IsNullOrEmpty(proj) Then
+                        If proj.Contains("units=m") Then
+                            Return 0
+                        ElseIf proj.Contains("units=ft") Then
+                            Return 1
+                        End If
+                    Else
+                        MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
+                        Return -1
                     End If
-                Else
-                    MsgBox("The GRID you have choosen has no spatial reference information.  Please define a projection before continuing.", MsgBoxStyle.Exclamation, "No Project Information Detected")
-                    Return -1
                 End If
             End If
         Next

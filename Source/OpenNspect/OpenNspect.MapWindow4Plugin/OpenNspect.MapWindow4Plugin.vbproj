@@ -116,6 +116,11 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxInterop.MapWinGIS, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\dev\MapWindow4Dev\Bin\AxInterop.MapWinGIS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Interop.MapWinGIS, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
