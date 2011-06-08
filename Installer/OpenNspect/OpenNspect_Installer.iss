@@ -16,7 +16,12 @@ VersionInfoVersion=1.0
 AppPublisherURL=http://www.csc.noaa.gov/
 AppSupportURL=http://www.csc.noaa.gov/
 AppUpdatesURL=http://www.csc.noaa.gov/
-DefaultDirName={userdocs}\OpenNSPECT
+
+;The database references files at C:\NSPECT, so we will need to use that location.
+;DefaultDirName={userdocs}\OpenNSPECT
+DefaultDirName=C:\NSPECT
+DisableDirPage=yes
+
 DefaultGroupName=OpenNSPECT
 EnableDirDoesntExistWarning=no
 OutputBaseFilename=OpenNSPECT_Setup
@@ -45,7 +50,7 @@ Name: {app}\metadata; Permissions: everyone-modify
 ;Source: "License.rtf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Base Files\*"; Excludes: "*..svnbridge*,\help\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs uninsneveruninstall; Components: sample_data
 Source: "Base Files\help\*"; Excludes: "*..svnbridge*"; DestDir: "{app}\help"; Flags: ignoreversion; Components: help
-Source: "Base Files\bin\OpenNSPECT.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly; Components: main
+Source: "Base Files\bin\OpenNspect.MapWindow4Plugin.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly; Components: main
 
 [Registry]
 ;Installation Path
