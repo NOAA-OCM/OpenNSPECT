@@ -74,7 +74,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\..\..\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
+    <OutputPath>Release\OpenNSPECT\</OutputPath>
     <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -495,8 +495,10 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
-copy /y "$(Targetpath)" "C:\dev\nSpect\Installer\OpenNspect\Base Files\bin\$(TargetFileName)"
-)</PostBuildEvent>
+    <PostBuildEvent>
+      if "$(ConfigurationName)" == "Release" (
+      copy /y "$(Targetpath)" "c:\tfs\nSpect\Installer\OpenNspect\Base Files\bin\$(TargetFileName)"
+      )
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
