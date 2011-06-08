@@ -183,7 +183,7 @@ Module Runoff
             Dim tablepath As String = ""
             'Get the raster table
             Dim lcPath As String = pLCRaster.Filename
-            If Path.GetFileName(lcPath) = "sta.adf" Then
+            If Path.GetFileName(lcPath) = "sta.adf" Or Path.GetFileName(lcPath) = "sta.bmp" Then
                 tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
                 If File.Exists(tablepath) Then
 

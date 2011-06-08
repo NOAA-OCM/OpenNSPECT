@@ -293,7 +293,7 @@ Public Class CompareOutputsForm
     Private Function GetTypeFromPath(ByVal path As String, ByVal name As String) As String
         Try
             Dim filename As String = IO.Path.GetFileName(path)
-            If filename = "sta.adf" Then
+            If filename = "sta.adf" Or filename = "sta.bmp" Then
                 Dim dir As String() = IO.Path.GetDirectoryName(path).Split(IO.Path.DirectorySeparatorChar)
                 filename = dir(dir.Length - 1)
             End If

@@ -39,7 +39,7 @@ Module Rasters
     Public Function GetRasterTablePath(ByRef raster As Grid) As String
         Dim tablepath As String
         Dim lcPath As String = raster.Filename
-        If Path.GetFileName(lcPath) = "sta.adf" Then
+        If Path.GetFileName(lcPath) = "sta.adf" Or Path.GetFileName(lcPath) = "sta.bmp" Then
             tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
         Else
             tablepath = Path.ChangeExtension(lcPath, ".dbf")
@@ -69,7 +69,7 @@ Module Rasters
     Public Function AddRasterLayerToMapFromFileName(ByRef fileOrDirectory As String) As Boolean
         If Not Path.HasExtension(fileOrDirectory) Then
             ' we were passed a directory which represents an Esri Grid.
-            fileOrDirectory = fileOrDirectory + "\sta.adf"
+            fileOrDirectory = Path.Combine(fileOrDirectory, "sta.adf")
         End If
 
         MapWindowPlugin.MapWindowInstance.Layers.Add(fileOrDirectory)
