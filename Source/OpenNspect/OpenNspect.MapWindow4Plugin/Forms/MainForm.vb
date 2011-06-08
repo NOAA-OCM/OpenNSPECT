@@ -987,6 +987,7 @@ Friend Class MainForm
     Private Sub RefreshPolygonCount()
         chkSelectedPolys.Text = String.Format("{0} Selected Polygons Only", MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected)
     End Sub
+
     ''' <summary>
     ''' Used by the selection form to set the selected shape
     ''' </summary>

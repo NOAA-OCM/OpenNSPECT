@@ -165,7 +165,7 @@ Module Utilities
                 If Trim(LCase(pLayer.Name)) = Trim(LCase(strLayerName)) Then
                     GetLayerFilename = pLayer.FileName
 
-                    If GetLayerFilename.EndsWith("sta.adf") Then
+                    If GetLayerFilename.EndsWith("sta.adf") Or GetLayerFilename.EndsWith("sta.bmp") Then
                         GetLayerFilename = Path.GetDirectoryName(GetLayerFilename)
                     End If
 
