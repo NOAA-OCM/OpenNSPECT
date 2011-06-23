@@ -370,6 +370,7 @@
         Me.txtOutputWS.Location = New System.Drawing.Point(381, 15)
         Me.txtOutputWS.MaxLength = 0
         Me.txtOutputWS.Name = "txtOutputWS"
+        Me.txtOutputWS.ReadOnly = True
         Me.txtOutputWS.Size = New System.Drawing.Size(192, 20)
         Me.txtOutputWS.TabIndex = 1
         '
