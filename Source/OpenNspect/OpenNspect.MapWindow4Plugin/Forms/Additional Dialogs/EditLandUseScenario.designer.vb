@@ -134,7 +134,7 @@
         Me.chkWatWetlands.Name = "chkWatWetlands"
         Me.chkWatWetlands.Size = New System.Drawing.Size(109, 18)
         Me.chkWatWetlands.TabIndex = 7
-        Me.chkWatWetlands.Text = "Water/Wetlands"
+        Me.chkWatWetlands.Text = "Water"
         Me.chkWatWetlands.UseVisualStyleBackColor = True
         '
         'txtLUName
@@ -301,7 +301,9 @@
         Me.dgvCoef.AllowUserToAddRows = False
         Me.dgvCoef.AllowUserToDeleteRows = False
         Me.dgvCoef.AllowUserToResizeColumns = False
-        Me.dgvCoef.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dgvCoef.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvCoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCoef.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Pollutant, Me.Type1, Me.Type2, Me.Type3, Me.Type4})
         Me.dgvCoef.Location = New System.Drawing.Point(11, 213)
