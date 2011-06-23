@@ -278,7 +278,7 @@
         Me._Label1_6.Name = "_Label1_6"
         Me._Label1_6.Size = New System.Drawing.Size(74, 18)
         Me._Label1_6.TabIndex = 11
-        Me._Label1_6.Text = "Grid Units:"
+        Me._Label1_6.Text = "Spatial Units:"
         Me._Label1_6.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         '_Label1_7
