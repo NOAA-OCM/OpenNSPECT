@@ -165,20 +165,20 @@
         'txtRainValue
         '
         Me.txtRainValue.AcceptsReturn = True
-        Me.txtRainValue.Location = New System.Drawing.Point(139, 53)
+        Me.txtRainValue.Location = New System.Drawing.Point(159, 53)
         Me.txtRainValue.MaxLength = 0
         Me.txtRainValue.Name = "txtRainValue"
-        Me.txtRainValue.Size = New System.Drawing.Size(84, 20)
+        Me.txtRainValue.Size = New System.Drawing.Size(61, 20)
         Me.txtRainValue.TabIndex = 26
         '
         'optUseValue
         '
         Me.optUseValue.Location = New System.Drawing.Point(19, 53)
         Me.optUseValue.Name = "optUseValue"
-        Me.optUseValue.Size = New System.Drawing.Size(126, 19)
+        Me.optUseValue.Size = New System.Drawing.Size(134, 19)
         Me.optUseValue.TabIndex = 24
         Me.optUseValue.TabStop = True
-        Me.optUseValue.Text = "Use Constant Value: "
+        Me.optUseValue.Text = "Use Constant (inches): "
         Me.optUseValue.UseVisualStyleBackColor = True
         '
         'txtbxRainGrid
