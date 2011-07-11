@@ -163,23 +163,18 @@ Friend Class EditLandUseScenario
             If Len(txtLUName.Text) = 0 Or Len(txtLUName.Text) > 30 Then
                 MsgBox("Please enter a name for the scenario.  Names must be 30 characters or less.", MsgBoxStyle.Critical, "Enter Name")
                 txtLUName.Focus()
-                ValidateData = False
-                Exit Function
-            Else
-                ValidateData = True
+                Return False
             End If
 
             'LandCoverLayer
             If cboLULayer.Text = "" Then
                 MsgBox("Please select a layer before continuing.", MsgBoxStyle.Critical, "Select Layer")
                 cboLULayer.Focus()
-                ValidateData = False
-                Exit Function
+                Return False
             Else
                 If Not LayerLoadedInMap(cboLULayer.Text) Then
                     MsgBox("The layer you have choosen is not in the current map frame.", MsgBoxStyle.Critical, "Layer Not Found")
-                    ValidateData = False
-                    Exit Function
+                    Return False
                 End If
             End If
 
@@ -187,7 +182,7 @@ Friend Class EditLandUseScenario
             If chkSelectedPolys.CheckState = 1 Then
                 If _SelectLyrPath = "" Or _SelectedShapes.Count = 0 Then
                     MsgBox("You have chosen to use selected polygons from " & cboLULayer.Text & ", but there are no selected features." & vbNewLine & "Please select features or OpenNSPECT will use the entire extent of " & cboLULayer.Text & " to apply this landuse scenario.", MsgBoxStyle.Information, "No Selected Features Found")
-                    ValidateData = False
+                    Return False
                 End If
             End If
 
@@ -198,9 +193,8 @@ Friend Class EditLandUseScenario
                 End If
             Else
                 MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
-                ValidateData = False
                 _txtLUCN_0.Focus()
-                Exit Function
+                Return False
             End If
             If IsNumeric(Trim(_txtLUCN_1.Text)) Then
                 If CShort(_txtLUCN_1.Text) > 0 Or CShort(_txtLUCN_1.Text) <= 1 Then
@@ -208,9 +202,9 @@ Friend Class EditLandUseScenario
                 End If
             Else
                 MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
-                ValidateData = False
+
                 _txtLUCN_1.Focus()
-                Exit Function
+                Return False
             End If
             If IsNumeric(Trim(_txtLUCN_2.Text)) Then
                 If CShort(_txtLUCN_2.Text) > 0 Or CShort(_txtLUCN_2.Text) <= 1 Then
@@ -218,9 +212,8 @@ Friend Class EditLandUseScenario
                 End If
             Else
                 MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
-                ValidateData = False
                 _txtLUCN_2.Focus()
-                Exit Function
+                Return False
             End If
             If IsNumeric(Trim(_txtLUCN_3.Text)) Then
                 If CShort(_txtLUCN_3.Text) > 0 Or CShort(_txtLUCN_3.Text) <= 1 Then
@@ -228,9 +221,8 @@ Friend Class EditLandUseScenario
                 End If
             Else
                 MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
-                ValidateData = False
                 _txtLUCN_3.Focus()
-                Exit Function
+                Return False
             End If
             If IsNumeric(Trim(_txtLUCN_4.Text)) Then
                 If CShort(_txtLUCN_4.Text) > 0 Or CShort(_txtLUCN_4.Text) <= 1 Then
@@ -238,9 +230,8 @@ Friend Class EditLandUseScenario
                 End If
             Else
                 MsgBox("SCS Values are to be numeric only in the range of 0 - 1.", MsgBoxStyle.Critical, "Check SCS Values")
-                ValidateData = False
                 _txtLUCN_4.Focus()
-                Exit Function
+                Return False
             End If
         Catch ex As Exception
             HandleError(ex)

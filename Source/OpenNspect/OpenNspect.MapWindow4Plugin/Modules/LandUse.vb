@@ -169,7 +169,7 @@ Module LandUse
             ReDim intLCClassIDs(LUScenItems.Count - 1)
 
             For i = 0 To LUScenItems.Count - 1
-                If LUScenItems.Item(i).intApply = 1 Then
+                If LUScenItems.Item(i).Enabled Then
                     'init the fake value: will be max value + 1
                     intValue = intValue + 1
 
@@ -195,7 +195,9 @@ Module LandUse
                 Using cmdNewLC As New DataHelper(strNewLandClass)
                     Using dataNewLC As OleDbDataReader = cmdNewLC.ExecuteReader()
                         dataNewLC.Read()
-                        intLCClassIDs(i - 1) = dataNewLC("LCClassID")
+                        If dataNewLC.HasRows Then
+                            intLCClassIDs(i - 1) = dataNewLC("LCClassID")
+                        End If
                     End Using
                 End Using
             Next i
@@ -205,7 +207,7 @@ Module LandUse
             'Key_________Item__________            'Pollutant , CoefficientSet
             Dim l As Short
             pollArray = dictPollutants.Keys.GetEnumerator
-
+            pollArray.MoveNext()
             'Now to the pollutants
             'Loop through the pollutants coming from the Xml class, as well as those in the project that are being used
             For j = 0 To LUScen.PollItems.Count - 1
@@ -359,7 +361,7 @@ Module LandUse
                 Using progress = New SynchronousProgressDialog("Landuse Scenario", CInt(LUScenItems.Count), g_MainForm)
                     Dim i As Short
                     For i = 0 To LUScenItems.Count - 1
-                        If LUScenItems.Item(i).intApply = 1 Then
+                        If LUScenItems.Item(i).Enabled Then
                             progress.Increment(String.Format("Processing Landuse scenario...{0}", i))
                             If SynchronousProgressDialog.KeepRunning Then
                                 'TODO: This looks like a bug: landcovername is used to restrict the following select statement.

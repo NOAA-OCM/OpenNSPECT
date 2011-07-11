@@ -746,19 +746,17 @@ Friend Class MainForm
         Next i
         Return dictPollutants
     End Function
-    Private Function GetAreThereLandUseScenarioItems(ByVal dictPollutants As Dictionary(Of String, String)) As Boolean
-        Dim AreThereLandUseScenarioItems As Boolean
+    Private Function ProcessLandUseScenarioItems() As Boolean
+        Dim dictPollutants As Dictionary(Of String, String) = GetPollutants()
+
         Dim i As Integer
         For i = 0 To g_Project.LUItems.Count - 1
-            If g_Project.LUItems.Item(i).intApply = 1 Then
-                AreThereLandUseScenarioItems = True
+            If g_Project.LUItems.Item(i).Enabled Then
                 Begin(g_Project.LandCoverGridType, g_Project.LUItems, dictPollutants, g_Project.LandCoverGridDirectory)
-                Exit For
-            Else
-                AreThereLandUseScenarioItems = False
+                Return True
             End If
         Next i
-        Return AreThereLandUseScenarioItems
+        Return False
     End Function
     ''' <summary>
     ''' The workhorse of NSPECT. Automates the entire process of the nspect processing
@@ -796,11 +794,8 @@ Friend Class MainForm
                 MgmtScenSetup(g_Project.MgmtScenHolder, g_Project.LandCoverGridType, g_Project.LandCoverGridDirectory)
             End If
 
-            'STEP 5: Pollutant Dictionary creation, needed for Landuse -----------------------------------------------------------
-            Dim dictPollutants As Dictionary(Of String, String) = GetPollutants()
-
             'STEP 6: Landuses sent off to modLanduse for processing -----------------------------------------------------
-            Dim AreThereLandUseScenarioItems As Boolean = GetAreThereLandUseScenarioItems(dictPollutants)
+            Dim AreThereLandUseScenarioItems As Boolean = ProcessLandUseScenarioItems()
 
             'STEP 7: ---------------------------------------------------------------------------------------------------------
             'Obtain Watershed values
@@ -1432,7 +1427,7 @@ Friend Class MainForm
             For i = 0 To landUsesCount - 1
                 With dgvLandUse
                     idx = .Rows.Add()
-                    .Rows(idx).Cells("LUApply").Value = g_Project.LUItems.Item(i).intApply
+                    .Rows(idx).Cells("LUApply").Value = g_Project.LUItems.Item(i).Enabled
                     .Rows(idx).Cells("LUScenario").Value = g_Project.LUItems.Item(i).strLUScenName
                     .Rows(idx).Cells("LUScenarioXml").Value = g_Project.LUItems.Item(i).strLUScenXmlFile
                 End With
@@ -1890,7 +1885,7 @@ Friend Class MainForm
                 If Len(row.Cells("LUScenario").Value) > 0 Then
                     luitem = New LandUseItem
                     luitem.intID = row.Index + 1
-                    luitem.intApply = CShort(row.Cells("LUApply").FormattedValue)
+                    luitem.Enabled = row.Cells("LUApply").FormattedValue
                     luitem.strLUScenName = row.Cells("LUScenario").Value
                     luitem.strLUScenXmlFile = row.Cells("LUScenarioXml").Value
                     ParamsPrj.LUItems.Add(luitem)
