@@ -41,12 +41,12 @@ Namespace Xml
 
         Private Const NODE_NAME As String = "Landuse"
         Private Const ATTRIBUTE_ID As String = "ID"
-        Private Const ELEMENT_Apply As String = "Apply"
+        Private Const ELEMENT_Enabled As String = "Apply"
         Private Const ELEMENT_LUScenName As String = "LUScenName"
         Private Const ELEMENT_LUScenXmlFile As String = "LUScenXmlFile"
 
         Public intID As Short
-        Public intApply As Short
+        Public Enabled As Boolean
         Public strLUScenName As String
         Public strLUScenXmlFile As String
 
@@ -82,7 +82,7 @@ Namespace Xml
 
                 node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
                 NodeAppendAttribute(dom, node, ATTRIBUTE_ID, intID)
-                NodeAppendChildElement(dom, node, ELEMENT_Apply, intApply)
+                NodeAppendChildElement(dom, node, ELEMENT_Enabled, Enabled)
                 NodeAppendChildElement(dom, node, ELEMENT_LUScenName, strLUScenName)
                 NodeAppendChildElement(dom, node, ELEMENT_LUScenXmlFile, strLUScenXmlFile)
 
@@ -104,7 +104,7 @@ Namespace Xml
                 If node Is Nothing Then Return
 
                 intID = CShort(GetNodeText(node, "@" & ATTRIBUTE_ID))
-                intApply = CShort(GetNodeText(node, ELEMENT_Apply))
+                Enabled = CBool(GetNodeText(node, ELEMENT_Enabled))
                 strLUScenName = GetNodeText(node, ELEMENT_LUScenName)
                 strLUScenXmlFile = GetNodeText(node, ELEMENT_LUScenXmlFile)
 
