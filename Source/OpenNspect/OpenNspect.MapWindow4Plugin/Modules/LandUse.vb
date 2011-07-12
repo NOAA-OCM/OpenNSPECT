@@ -68,12 +68,10 @@ Module LandUse
             Dim strTempLCTypeName As String
             Dim strrsInsertLCType As String
             'the inserted LCTYPE
-            Dim strrsPermLandClass As String
             'the landclass table currently in the database
             Dim strNewLandClass As String
             'Newly added landclass - to get its new ID
 
-            Dim i As Short
             Dim j As Short
             Dim k As Short
             Dim intValue As Short
@@ -112,7 +110,7 @@ Module LandUse
             strInsertTempLCType = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{0} Description')", Replace(strTempLCTypeName, "'", "''"))
 
             'Add the name to the Dictionary for storage; used for cleanup and in pollutants
-            g_LandUse_DictTempNames.Add(strLCClassName, strTempLCTypeName)
+            g_LandUse_DictTempNames(strLCClassName) = strTempLCTypeName
 
             'STEP 4: INSERT the copy of the LCTYPE in
             Using cmdInsertCopy As New DataHelper(strInsertTempLCType)
@@ -132,37 +130,40 @@ Module LandUse
             Dim cmdCloneLCClass As OleDbCommand = cmdCurrentLCClass.CloneCommand()
 
             'Prepare the landclass table to accept the copies of landclass
-            strrsPermLandClass = "SELECT * FROM LCCLASS"
-            Dim adaptPermLC As New OleDbDataAdapter(strrsPermLandClass, g_DBConn)
-            Dim dataPermLC As New DataTable
-            adaptPermLC.Fill(dataPermLC)
+            Dim adaptPermLC As New DataHelper("SELECT * FROM LCCLASS")
+            Dim adaptNewCoeff = adaptPermLC.GetAdapter()
+            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
+            cbuilder.QuotePrefix = "["
+            cbuilder.QuoteSuffix = "]"
+            Dim dt As New DataTable
+            adaptNewCoeff.Fill(dt)
 
             'STEP 7: loop through the XmlLandUseItems to add new land uses to the copy rs
-            Dim dataCloneLCClass As OleDbDataReader = cmdCloneLCClass.ExecuteReader()
+            Using dataCloneLCClass As OleDbDataReader = cmdCloneLCClass.ExecuteReader()
+                'Now add all the landclasses.
+                While dataCloneLCClass.Read()
+                    'Add new
+                    Dim dataPermRow As DataRow = dt.NewRow()
+                    'Add the necessary components
+                    dataPermRow("LCTypeID") = _intLCTypeID
+                    dataPermRow("Value") = dataCloneLCClass("Value")
+                    dataPermRow("Name") = dataCloneLCClass("Name")
+                    dataPermRow("CN-A") = dataCloneLCClass("CN-A")
+                    dataPermRow("CN-B") = dataCloneLCClass("CN-B")
+                    dataPermRow("CN-C") = dataCloneLCClass("CN-C")
+                    dataPermRow("CN-D") = dataCloneLCClass("CN-D")
+                    dataPermRow("CoverFactor") = dataCloneLCClass("CoverFactor")
+                    dataPermRow("W_WL") = dataCloneLCClass("W_WL")
+                    dt.Rows.Add(dataPermRow)
 
-            'Now add all the landclasses.
-            While dataCloneLCClass.Read()
-                'Add new
-                Dim dataPermRow As DataRow = dataPermLC.NewRow()
-                'Add the necessary components
-                dataPermRow("LCTypeID") = _intLCTypeID
-                dataPermRow("Value") = dataCloneLCClass("Value")
-                dataPermRow("Name") = dataCloneLCClass("Name")
-                dataPermRow("CN-A") = dataCloneLCClass("CN-A")
-                dataPermRow("CN-B") = dataCloneLCClass("CN-B")
-                dataPermRow("CN-C") = dataCloneLCClass("CN-C")
-                dataPermRow("CN-D") = dataCloneLCClass("CN-D")
-                dataPermRow("CoverFactor") = dataCloneLCClass("CoverFactor")
-                dataPermRow("W_WL") = dataCloneLCClass("W_WL")
+                    'move to next record
+                    intValue = dataCloneLCClass("Value")
+                    'This keeps track of the max
+                End While
 
-                'Update
-                adaptPermLC.Update(dataPermLC)
-
-                'move to next record
-                intValue = dataCloneLCClass("Value")
-                'This keeps track of the max
-            End While
-            dataCloneLCClass.Close()
+                adaptNewCoeff.Update(dt)
+                dataCloneLCClass.Close()
+            End Using
 
             'STEP 8: Now add the new landclass
             Dim intLCClassIDs() As Short
@@ -176,7 +177,7 @@ Module LandUse
                     'Init the LUScen
                     LUScen.Xml = LUScenItems.Item(i).strLUScenXmlFile
 
-                    Dim dataPermRow As DataRow = dataPermLC.NewRow()
+                    Dim dataPermRow As DataRow = dt.NewRow()
                     dataPermRow("LCTypeID") = _intLCTypeID
                     dataPermRow("Value") = intValue
                     dataPermRow("Name") = LUScen.strLUScenName
@@ -186,8 +187,8 @@ Module LandUse
                     dataPermRow("CN-D") = LUScen.intSCSCurveD
                     dataPermRow("CoverFactor") = LUScen.lngCoverFactor
                     dataPermRow("W_WL") = LUScen.intWaterWetlands
-
-                    adaptPermLC.Update(dataPermLC)
+                    dt.Rows.Add(dataPermRow)
+                    adaptNewCoeff.Update(dt)
                 End If
 
                 'Gather the newly added LCClassIds in an array for use later
@@ -196,7 +197,7 @@ Module LandUse
                     Using dataNewLC As OleDbDataReader = cmdNewLC.ExecuteReader()
                         dataNewLC.Read()
                         If dataNewLC.HasRows Then
-                            intLCClassIDs(i - 1) = dataNewLC("LCClassID")
+                            intLCClassIDs(i) = dataNewLC("LCClassID")
                         End If
                     End Using
                 End Using
@@ -212,7 +213,7 @@ Module LandUse
             'Loop through the pollutants coming from the Xml class, as well as those in the project that are being used
             For j = 0 To LUScen.PollItems.Count - 1
                 For k = 0 To dictPollutants.Count - 1
-                    If InStr(1, LUScen.PollItems.Item(j).strPollName, pollArray.Current, CompareMethod.Text) > 0 Then
+                    If InStr(1, LUScen.PollItems.Item(j).strPollName, pollArray.Current, CompareMethod.Text) > 0 AndAlso pollArray.Current IsNot Nothing Then
                         strCoeffSetOrigName = dictPollutants.Item(pollArray.Current)
                         'Original Name
                         strCoeffSetTempName = CreateUniqueName("COEFFICIENTSET", strCoeffSetOrigName & "_Temp")
@@ -223,6 +224,9 @@ Module LandUse
 
                         Dim adaptTemp As OleDbDataAdapter = CopyCoefficient(strCoeffSetTempName, strCoeffSetOrigName)
                         'Call to function that returns the copied record set.
+                        Dim cbuilder2 As New OleDbCommandBuilder(adaptTemp)
+                        cbuilder2.QuotePrefix = "["
+                        cbuilder2.QuoteSuffix = "]"
                         Dim dataTemp As New DataTable
                         adaptTemp.Fill(dataTemp)
 
@@ -232,15 +236,16 @@ Module LandUse
 
                             LUScen.Xml = LUScenItems.Item(l).strLUScenXmlFile
 
-                            dataRow("Coeff1").Value = LUScen.PollItems.Item(j).intType1
-                            dataRow("Coeff2").Value = LUScen.PollItems.Item(j).intType2
-                            dataRow("Coeff3").Value = LUScen.PollItems.Item(j).intType3
-                            dataRow("Coeff4").Value = LUScen.PollItems.Item(j).intType4
-                            dataRow("CoeffSetID").Value = _intCoeffSetID
-                            dataRow("LCClassID").Value = intLCClassIDs(l)
+                            dataRow("Coeff1") = LUScen.PollItems.Item(j).intType1
+                            dataRow("Coeff2") = LUScen.PollItems.Item(j).intType2
+                            dataRow("Coeff3") = LUScen.PollItems.Item(j).intType3
+                            dataRow("Coeff4") = LUScen.PollItems.Item(j).intType4
+                            dataRow("CoeffSetID") = _intCoeffSetID
+                            dataRow("LCClassID") = intLCClassIDs(0)
+                            dataTemp.Rows.Add(dataRow)
 
-                            adaptTemp.Update(dataTemp)
                         Next l
+                        adaptTemp.Update(dataTemp)
                     End If
                     pollArray.MoveNext()
                 Next k
@@ -271,7 +276,7 @@ Module LandUse
             Dim cmdCopySet As New DataHelper(String.Format("SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '{0}'", strCoeffSet))
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader
             dataCopySet.Read()
-            dataCopySet.Close()
+            '            dataCopySet.Close()
 
             'INSERT: new Coefficient set taking the PollID and LCType ID from rsCopySet
             'First need to add the coefficient set to that table
@@ -366,7 +371,8 @@ Module LandUse
                             If SynchronousProgressDialog.KeepRunning Then
                                 'TODO: This looks like a bug: landcovername is used to restrict the following select statement.
                                 'Instead the select statement should allow anything.
-                                ReclassRaster(LUScenItems.Item(i), landCoverName, pNewLandCoverRaster)
+                                'ReclassRaster(LUScenItems.Item(i), landCoverName, pNewLandCoverRaster)
+                                ReclassRaster(LUScenItems.Item(i), pNewLandCoverRaster)
                                 booLandScen = True
                             Else
                                 pNewLandCoverRaster.Close()
@@ -388,12 +394,12 @@ Module LandUse
         End Try
     End Sub
 
-    Private Sub ReclassRaster(ByRef LUItem As LandUseItem, ByRef strLCClass As String, ByRef outputGrid As Grid)
+    Private Sub ReclassRaster(ByRef LUItem As LandUseItem, ByRef outputGrid As Grid)
 
         'We're passing over a single land use scenario in the form of the xml
         'class XmlLandUseItem, seems to be the easiest way to do this.
 
-        Dim strSelect As String = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}' AND LCCLASS.NAME LIKE '{1}'", strLCClass, LUItem.strLUScenName)
+        Dim strSelect As String = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCCLASS.NAME LIKE '{0}'", LUItem.strLUScenName)
         Dim LCValue As Double
         Dim LUItemDetails As New LandUseMangementScenario
         'The particulars in the landuse
@@ -403,7 +409,9 @@ Module LandUse
         Using cmdLCVal As New OleDbCommand(strSelect, g_DBConn)
             Using readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
                 readLCVal.Read()
-                LCValue = readLCVal("Value")
+                If readLCVal.HasRows Then
+                    LCValue = readLCVal("Value")
+                End If
             End Using
         End Using
 

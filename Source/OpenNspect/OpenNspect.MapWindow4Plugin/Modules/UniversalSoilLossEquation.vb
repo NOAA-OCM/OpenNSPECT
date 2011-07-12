@@ -10,7 +10,7 @@ Module UniversalSoilLossEquation
 
         Try
             Dim FieldIndex As Short
-            Dim booValueFound As Boolean
+
             Dim i As Short
             Dim maxVal As Integer = pLCRaster.Maximum
             Dim tablepath = GetRasterTablePath(pLCRaster)
@@ -33,10 +33,10 @@ Module UniversalSoilLossEquation
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                         dataType = cmdType.ExecuteReader
 
-                        booValueFound = False
+
                         While dataType.Read()
                             If mwTable.CellValue(FieldIndex, rowidx) = dataType("Value") Then
-                                booValueFound = True
+
                                 If strpick = "" Then
                                     strpick = CStr(dataType(nameOfColumn))
                                 Else
@@ -45,16 +45,14 @@ Module UniversalSoilLossEquation
                                 rowidx = rowidx + 1
                                 Exit While
                             Else
-                                booValueFound = False
+                                MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                                ConstructPickStatmentUsingLandClass = Nothing
+                                dataType.Close()
+                                mwTable.Close()
+                                Exit Function
                             End If
                         End While
-                        If booValueFound = False Then
-                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
-                            ConstructPickStatmentUsingLandClass = Nothing
-                            dataType.Close()
-                            mwTable.Close()
-                            Exit Function
-                        End If
+
                         dataType.Close()
 
                     Else

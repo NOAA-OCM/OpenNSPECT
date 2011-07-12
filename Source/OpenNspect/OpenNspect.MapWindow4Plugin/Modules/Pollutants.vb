@@ -145,6 +145,7 @@ Module Pollutants
     End Function
 
     Private Sub CalcMassOfPhosperous(ByRef strConStatement As String, ByRef pMassVolumeRaster As Grid)
+
         ReDim _picks(strConStatement.Split(",").Length)
         _picks = strConStatement.Split(",")
         Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
