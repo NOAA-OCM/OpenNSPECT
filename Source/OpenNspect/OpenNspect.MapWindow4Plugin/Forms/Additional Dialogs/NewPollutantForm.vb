@@ -392,9 +392,7 @@ Friend Class NewPollutantForm
             dgvCoef.Rows.Clear()
 
             'Now loopy loo to populate values.
-            Dim strNewCoeff1 As String
-            strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim cmdNewCoef As New DataHelper(strNewCoeff1)
+            Dim cmdNewCoef As New DataHelper("SELECT * FROM COEFFICIENT")
             Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
             Dim dt As New DataTable
             adaptNewCoeff.Fill(dt)
