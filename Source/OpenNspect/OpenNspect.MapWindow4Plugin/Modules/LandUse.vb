@@ -60,21 +60,16 @@ Module LandUse
     Public Sub Begin(ByRef strLCClassName As String, ByRef LUScenItems As LandUseItems, ByRef dictPollutants As Dictionary(Of String, String), ByRef strLCFileName As String)
 
         Try
-            Dim strCurrentLCType As String
-            'Current LCTYpe
+            Dim currentLCType As String
             Dim strCurrentLCClass As String
             'Current Landclasses of The LCType
             Dim strInsertTempLCType As String
-            Dim tempLandClassTypeName As String
             Dim strrsInsertLCType As String
             'the inserted LCTYPE
-            'the landclass table currently in the database
             Dim strNewLandClass As String
             'Newly added landclass - to get its new ID
 
-            Dim j As Short
-            Dim k As Short
-            Dim intValue As Short
+            Dim maxValue As Short
             'Temp new landclasses fake value
             Dim LUScen As New LandUseMangementScenario
             'Xml Land use scenario
@@ -90,8 +85,8 @@ Module LandUse
 
             'STEP 1: Get the current LCTYPE
             Dim lcTypeId As Object
-            strCurrentLCType = String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", strLCClassName)
-            Using cmdCurrentLCType As New DataHelper(strCurrentLCType)
+            currentLCType = String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", strLCClassName)
+            Using cmdCurrentLCType As New DataHelper(currentLCType)
                 Using dataCurrentLCType As OleDbDataReader = cmdCurrentLCType.ExecuteReader()
                     dataCurrentLCType.Read()
                     lcTypeId = dataCurrentLCType("LCTypeID")
@@ -106,7 +101,7 @@ Module LandUse
 
             'STEP 3: Now INSERT a copy of current LCTYPE
             'First, get a temp name... like CCAPLUTemp1, CCAPLUTemp2 etc
-            tempLandClassTypeName = CreateUniqueName("LCTYPE", strLCClassName & "LUTemp")
+            Dim tempLandClassTypeName As String = CreateUniqueName("LCTYPE", strLCClassName & "LUTemp")
             strInsertTempLCType = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{0} Description')", SqlEncode(tempLandClassTypeName))
 
             'Add the name to the Dictionary for storage; used for cleanup and in pollutants
@@ -157,8 +152,7 @@ Module LandUse
                     dt.Rows.Add(dataPermRow)
 
                     'move to next record
-                    intValue = dataCloneLCClass("Value")
-                    'This keeps track of the max
+                    maxValue = dataCloneLCClass("Value")
                 End While
 
                 adaptNewCoeff.Update(dt)
@@ -170,15 +164,13 @@ Module LandUse
 
             For i = 0 To LUScenItems.Count - 1
                 If LUScenItems.Item(i).Enabled Then
-                    'init the fake value: will be max value + 1
-                    intValue = intValue + 1
 
                     'Init the LUScen
                     LUScen.Xml = LUScenItems.Item(i).strLUScenXmlFile
 
                     Dim dataPermRow As DataRow = dt.NewRow()
                     dataPermRow("LCTypeID") = _intLCTypeID
-                    dataPermRow("Value") = intValue
+                    dataPermRow("Value") = maxValue + 1 ' the max +1
                     dataPermRow("Name") = LUScen.strLUScenName
                     dataPermRow("CN-A") = LUScen.intSCSCurveA
                     dataPermRow("CN-B") = LUScen.intSCSCurveB
@@ -188,29 +180,34 @@ Module LandUse
                     dataPermRow("W_WL") = LUScen.intWaterWetlands
                     dt.Rows.Add(dataPermRow)
                     adaptNewCoeff.Update(dt)
-                End If
 
-                'Gather the newly added LCClassIds in an array for use later
-                strNewLandClass = String.Format("SELECT LCCLASSID FROM LCCLASS WHERE NAME LIKE '{0}'", LUScen.strLUScenName)
-                Using cmdNewLC As New DataHelper(strNewLandClass)
-                    Using dataNewLC As OleDbDataReader = cmdNewLC.ExecuteReader()
-                        dataNewLC.Read()
-                        If dataNewLC.HasRows Then
-                            intLCClassIDs(i) = dataNewLC("LCClassID")
-                        End If
+
+                    'Gather the newly added LCClassIds in an array for use later
+                    'This code assumes that there is only one scenario by that name
+                    ' I've added in order by LCCLASSID DESC so that it gets the last id for something by that name.
+                    strNewLandClass = String.Format("SELECT LCCLASSID FROM LCCLASS WHERE NAME LIKE '{0}' order by LCCLASSID DESC", LUScen.strLUScenName)
+                    Using cmdNewLC As New DataHelper(strNewLandClass)
+                        Using dataNewLC As OleDbDataReader = cmdNewLC.ExecuteReader()
+                            dataNewLC.Read()
+                            If dataNewLC.HasRows Then
+                                intLCClassIDs(i) = dataNewLC("LCClassID")
+                            End If
+                        End Using
                     End Using
-                End Using
+
+                End If
             Next i
 
             'STEP 10: Parse the incoming dictionary
             'Remember, it's in this form:
-            'Key_________Item__________            'Pollutant , CoefficientSet
-            Dim l As Short
-            pollArray = dictPollutants.Keys.GetEnumerator
-            pollArray.MoveNext()
+            'Key_________Item__________
+            'Pollutant , CoefficientSet
+
             'Now to the pollutants
             'Loop through the pollutants coming from the Xml class, as well as those in the project that are being used
             For j = 0 To LUScen.PollItems.Count - 1
+                pollArray = dictPollutants.Keys.GetEnumerator
+                pollArray.MoveNext()
                 For k = 0 To dictPollutants.Count - 1
                     If InStr(1, LUScen.PollItems.Item(j).strPollName, pollArray.Current, CompareMethod.Text) > 0 AndAlso pollArray.Current IsNot Nothing Then
                         coeffSetOrigName = dictPollutants.Item(pollArray.Current)
