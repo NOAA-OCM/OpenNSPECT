@@ -44,6 +44,17 @@ Module Pollutants
     Private _FlowMax As Single
     Private _picks() As String
 
+    ''' <summary>
+    ''' Gets the name of the coefficient set; could be a temporary one due to landuses
+    ''' </summary>
+    ''' <param name="Pollutant">The pollutant.</param><returns></returns>
+    Private Function GetCoefficientSetName(ByRef Pollutant As PollutantItem) As String
+        If g_LandUse_DictTempNames.ContainsKey(Pollutant.strCoeffSet) AndAlso Len(g_LandUse_DictTempNames.Item(Pollutant.strCoeffSet)) > 0 Then
+            Return g_LandUse_DictTempNames.Item(Pollutant.strCoeffSet)
+        End If
+
+        Return Pollutant.strCoeffSet
+    End Function
     Public Function PollutantConcentrationSetup(ByRef Pollutant As PollutantItem, ByRef strWQName As String, ByRef OutputItems As OutputItems) As Boolean
         'Sub takes incoming parameters (in the form of a pollutant item) from the project file
         'and then parses them out
@@ -52,7 +63,6 @@ Module Pollutants
             Dim strType As String
             Dim strField As String = ""
             Dim strConStatement As String = ""
-            Dim strTempCoeffSet As String
             'Again, because of landuse, we have to check for 'temp' coeff sets and their use
             'Get the name of the pollutant
             _PollutantName = Pollutant.strPollName
@@ -73,22 +83,12 @@ Module Pollutants
                 Case ""
             End Select
 
-            'Find out the name of the Coefficient set, could be a temporary one due to landuses
-            If g_LandUse_DictTempNames.Count > 0 Then
-                If Len(g_LandUse_DictTempNames.Item(Pollutant.strCoeffSet)) > 0 Then
-                    strTempCoeffSet = g_LandUse_DictTempNames.Item(Pollutant.strCoeffSet)
-                Else
-                    strTempCoeffSet = Pollutant.strCoeffSet
-                End If
-            Else
-                strTempCoeffSet = Pollutant.strCoeffSet
-            End If
-
+            
             If Len(strField) > 0 Then
-                Using cmdPoll As New DataHelper("SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '" & strTempCoeffSet & "'")
+                Using cmdPoll As New DataHelper(String.Format("SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", GetCoefficientSetName(Pollutant)))
                     Using dataPoll As OleDbDataReader = cmdPoll.ExecuteReader()
                         dataPoll.Read()
-                        strType = "SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT." & strField & " As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID " & "FROM LCCLASS LEFT OUTER JOIN COEFFICIENT " & "ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID " & "WHERE COEFFICIENT.COEFFSETID = " & dataPoll("CoeffSetID") & " ORDER BY LCCLASS.VALUE"
+                        strType = String.Format("SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.{0} As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID FROM LCCLASS LEFT OUTER JOIN COEFFICIENT ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID WHERE COEFFICIENT.COEFFSETID = {1} ORDER BY LCCLASS.VALUE", strField, dataPoll("CoeffSetID"))
                         Using cmdType As New DataHelper(strType)
                             Dim command As OleDbCommand = cmdType.GetCommand()
                             strConStatement = ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType")
@@ -228,6 +228,9 @@ Module Pollutants
         AddOutputGridLayer(pPermTotalConcRaster, _PollutantColor, True, _PollutantName & " Conc. (mg/L)", String.Format("Pollutant {0} Conc", _PollutantName), -1, OutputItems)
     End Sub
     Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As OutputItems) As Boolean
+        If strConStatement = Nothing Then
+            Throw New ArgumentNullException("strConStatement")
+        End If
 
         Dim massVolumeRaster As Grid = Nothing
         Dim pAccumPollRaster As Grid = Nothing

@@ -47,7 +47,7 @@ Module LandUse
     Public g_LandUse_LCTypeName As String
     'the temp name of Land Cover type, if indeed landuses are applied.
     Public g_LandUse_DictTempNames As New Dictionary(Of String, String)
-    'Array holding the temp names of the LCType, and subsequent Coefficient Set Names
+    'Array holding th'AddType, and subsequent Coefficient Set Names
     ' Constant used by the Error handler function - DO NOT REMOVE
 
     ''' <summary>
@@ -65,7 +65,7 @@ Module LandUse
             Dim strCurrentLCClass As String
             'Current Landclasses of The LCType
             Dim strInsertTempLCType As String
-            Dim strTempLCTypeName As String
+            Dim tempLandClassTypeName As String
             Dim strrsInsertLCType As String
             'the inserted LCTYPE
             'the landclass table currently in the database
@@ -78,9 +78,9 @@ Module LandUse
             'Temp new landclasses fake value
             Dim LUScen As New LandUseMangementScenario
             'Xml Land use scenario
-            Dim strCoeffSetTempName As String
+            Dim coeffSetTempName As String
             'New temp name for the coefficient set
-            Dim strCoeffSetOrigName As String
+            Dim coeffSetOrigName As String
             'Original name for the coefficient set
             Dim pollArray As Dictionary(Of String, String).KeyCollection.Enumerator
             'Array to hold pollutants...get itself from the dictionary
@@ -106,11 +106,11 @@ Module LandUse
 
             'STEP 3: Now INSERT a copy of current LCTYPE
             'First, get a temp name... like CCAPLUTemp1, CCAPLUTemp2 etc
-            strTempLCTypeName = CreateUniqueName("LCTYPE", strLCClassName & "LUTemp")
-            strInsertTempLCType = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{0} Description')", Replace(strTempLCTypeName, "'", "''"))
+            tempLandClassTypeName = CreateUniqueName("LCTYPE", strLCClassName & "LUTemp")
+            strInsertTempLCType = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{0} Description')", SqlEncode(tempLandClassTypeName))
 
             'Add the name to the Dictionary for storage; used for cleanup and in pollutants
-            g_LandUse_DictTempNames(strLCClassName) = strTempLCTypeName
+            g_LandUse_DictTempNames(strLCClassName) = tempLandClassTypeName
 
             'STEP 4: INSERT the copy of the LCTYPE in
             Using cmdInsertCopy As New DataHelper(strInsertTempLCType)
@@ -118,7 +118,7 @@ Module LandUse
             End Using
 
             'STEP 5: Get it back now so you can use its ID for inserting the landclasses
-            strrsInsertLCType = String.Format("SELECT LCTYPEID FROM LCTYPE WHERE LCTYPE.NAME LIKE '{0}'", strTempLCTypeName)
+            strrsInsertLCType = String.Format("SELECT LCTYPEID FROM LCTYPE WHERE LCTYPE.NAME LIKE '{0}'", tempLandClassTypeName)
             Using cmdInsertType As New DataHelper(strrsInsertLCType)
                 Using dataInsertType As OleDbDataReader = cmdInsertType.ExecuteReader()
                     dataInsertType.Read()
@@ -213,15 +213,13 @@ Module LandUse
             For j = 0 To LUScen.PollItems.Count - 1
                 For k = 0 To dictPollutants.Count - 1
                     If InStr(1, LUScen.PollItems.Item(j).strPollName, pollArray.Current, CompareMethod.Text) > 0 AndAlso pollArray.Current IsNot Nothing Then
-                        strCoeffSetOrigName = dictPollutants.Item(pollArray.Current)
-                        'Original Name
-                        strCoeffSetTempName = CreateUniqueName("COEFFICIENTSET", strCoeffSetOrigName & "_Temp")
-                        'Make a new temp name
+                        coeffSetOrigName = dictPollutants.Item(pollArray.Current)
+                        coeffSetTempName = CreateUniqueName("COEFFICIENTSET", coeffSetOrigName & "_Temp")
 
                         'Now add names of the coefficient sets to the dictionary
-                        g_LandUse_DictTempNames.Add(strCoeffSetOrigName, strCoeffSetTempName)
+                        g_LandUse_DictTempNames(coeffSetOrigName) = coeffSetTempName
 
-                        Dim adaptTemp As OleDbDataAdapter = CopyCoefficient(strCoeffSetTempName, strCoeffSetOrigName)
+                        Dim adaptTemp As OleDbDataAdapter = CopyCoefficient(coeffSetTempName, coeffSetOrigName)
                         'Call to function that returns the copied record set.
                         Dim cbuilder2 As New OleDbCommandBuilder(adaptTemp)
                         cbuilder2.QuotePrefix = "["
@@ -250,7 +248,7 @@ Module LandUse
                 Next k
             Next j
 
-            g_LandUse_LCTypeName = strTempLCTypeName
+            g_LandUse_LCTypeName = tempLandClassTypeName
 
             ReclassLanduse(LUScenItems, _strLCFileName)
 
@@ -260,30 +258,29 @@ Module LandUse
 
     End Sub
 
-    Private Function CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String) As OleDbDataAdapter
-        'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
-        'the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
-        'from the set being copied
-
-        CopyCoefficient = Nothing
+    Private Function SqlEncode(ByVal value As String) As String
+        Return Replace(value, "'", "''")
+    End Function
+    ''' <summary>
+    ''' Copies the coefficient. First we add new record to the Coefficient Set table using strNewCoeffName as the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients from the set being copied
+    ''' </summary>
+    ''' <param name="newCoeffName">Name of the new coeff.</param>
+    ''' <param name="coeffSet">The coeff set.</param><returns></returns>
+    Private Function CopyCoefficient(ByRef newCoeffName As String, ByRef coeffSet As String) As OleDbDataAdapter
         Try
-
-            'CmdString for inserting new coefficientset               '
-            'Holder for the CoefficientSetID
-
             'The Recordset of existing coefficients being copied
-            Dim cmdCopySet As New DataHelper(String.Format("SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '{0}'", strCoeffSet))
+            Dim cmdCopySet As New DataHelper(String.Format("SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '{0}'", coeffSet))
             Dim dataCopySet As OleDbDataReader = cmdCopySet.ExecuteReader
             dataCopySet.Read()
-            '            dataCopySet.Close()
 
             'INSERT: new Coefficient set taking the PollID and LCType ID from rsCopySet
             'First need to add the coefficient set to that table
-            Dim cmdNewLCType As New DataHelper(String.Format("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('{0}',{1},{2})", Replace(strNewCoeffName, "'", "''"), dataCopySet("POLLID"), _intLCTypeID))
+            Dim cmdNewLCType As New DataHelper(String.Format("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('{0}',{1},{2})", Replace(newCoeffName, "'", "''"), dataCopySet("POLLID"), _intLCTypeID))
             cmdNewLCType.ExecuteNonQuery()
+            dataCopySet.Close()
 
             'Get the Coefficient Set ID of the newly created coefficient set
-            Dim cmdNewCoeffId As New DataHelper(String.Format("SELECT COEFFSETID FROM COEFFICIENTSET WHERE COEFFICIENTSET.NAME LIKE '{0}'", strNewCoeffName))
+            Dim cmdNewCoeffId As New DataHelper(String.Format("SELECT COEFFSETID FROM COEFFICIENTSET WHERE COEFFICIENTSET.NAME LIKE '{0}'", newCoeffName))
             Dim datanewCoeffId As OleDbDataReader = cmdNewCoeffId.ExecuteReader()
             datanewCoeffId.Read()
             _intCoeffSetID = datanewCoeffId("CoeffSetID")
@@ -291,34 +288,39 @@ Module LandUse
 
             'Now loopy loo to populate values.
             'Get the coefficient table
-            Dim strNewCoeff1 As String
-            strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim adaptNewCoeff As New OleDbDataAdapter(strNewCoeff1, g_DBConn)
+            Dim adaptNewCoeff As New OleDbDataAdapter("SELECT * FROM COEFFICIENT", g_DBConn)
+            Dim builder As New OleDbCommandBuilder(adaptNewCoeff)
+            builder.QuotePrefix = "["
+            builder.QuoteSuffix = "]"
             Dim dataNewCoeff As New DataTable
             adaptNewCoeff.Fill(dataNewCoeff)
 
-            dataCopySet = cmdCopySet.ExecuteReader
+            'The Recordset of existing coefficients being copied
+            Dim cmdCopySet2 As New DataHelper(String.Format("SELECT * FROM COEFFICIENTSET INNER JOIN COEFFICIENT ON COEFFICIENTSET.COEFFSETID = COEFFICIENT.COEFFSETID WHERE COEFFICIENTSET.NAME LIKE '{0}'", coeffSet))
+            Dim dataCopySet2 As OleDbDataReader = cmdCopySet2.ExecuteReader
 
             'Actually add the records to the new set
-            While dataCopySet.Read()
+            While dataCopySet2.Read()
                 'Add New one
                 Dim dataRow As DataRow = dataNewCoeff.NewRow()
 
                 'Add the necessary components
-                dataRow("Coeff1") = dataCopySet("Coeff1")
-                dataRow("Coeff2") = dataCopySet("Coeff2")
-                dataRow("Coeff3") = dataCopySet("Coeff3")
-                dataRow("Coeff4") = dataCopySet("Coeff4")
+                dataRow("Coeff1") = dataCopySet2("Coeff1")
+                dataRow("Coeff2") = dataCopySet2("Coeff2")
+                dataRow("Coeff3") = dataCopySet2("Coeff3")
+                dataRow("Coeff4") = dataCopySet2("Coeff4")
                 dataRow("CoeffSetID") = _intCoeffSetID
-                dataRow("LCClassID") = dataCopySet("LCClassID")
+                dataRow("LCClassID") = dataCopySet2("LCClassID")
 
-                adaptNewCoeff.Update(dataNewCoeff)
+                dataNewCoeff.Rows.Add(dataRow)
             End While
-            dataCopySet.Close()
+            adaptNewCoeff.Update(dataNewCoeff)
+            dataCopySet2.Close()
 
-            CopyCoefficient = adaptNewCoeff
+            Return adaptNewCoeff
         Catch ex As Exception
             HandleError(ex)
+            Return Nothing
         End Try
     End Function
 
@@ -483,13 +485,17 @@ Module LandUse
                 End Using
 
                 For i = 0 To PollItems.Count - 1
-                    strCoeffDeleteName = dictNames.Item(PollItems.Item(i).strCoeffSet)
-                    If Len(strCoeffDeleteName) > 0 Then
-                        strDeleteCoeffSet = String.Format("DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", strCoeffDeleteName)
-                        Using cmdDelete2 = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
-                            cmdDelete2.ExecuteNonQuery()
-                        End Using
+                    Dim name As String = PollItems.Item(i).strCoeffSet
+                    If dictNames.ContainsKey(name) Then
+                        strCoeffDeleteName = dictNames.Item(name)
+                        If Len(strCoeffDeleteName) > 0 Then
+                            strDeleteCoeffSet = String.Format("DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", strCoeffDeleteName)
+                            Using cmdDelete2 = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
+                                cmdDelete2.ExecuteNonQuery()
+                            End Using
+                        End If
                     End If
+
                 Next
             End Using
 

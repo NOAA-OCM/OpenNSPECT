@@ -31,22 +31,27 @@ Module Database
         End Try
     End Function
 
-    'Tests name inputs to insure unique values for databases
 
-    Public Function CreateUniqueName(ByRef strTableName As String, ByRef strName As String) As String
+
+    ''' <summary>
+    ''' Tests name inputs to insure unique values for databases
+    ''' </summary>
+    ''' <param name="tableName">Name of the table.</param>
+    ''' <param name="name">The name.</param><returns></returns>
+    Public Function CreateUniqueName(ByRef tableName As String, ByRef name As String) As String
         CreateUniqueName = ""
         Try
             Dim strCmdText As String
             Dim sCurrNum As String
             Dim strCurrNameRecord As String
-            strCmdText = "SELECT * FROM " & strTableName
+            strCmdText = "SELECT * FROM " & tableName
             '& " WHERE NAME LIKE '" & strName & "'"
             Using cmd As New DataHelper(strCmdText)
                 Dim data As OleDbDataReader = cmd.ExecuteReader
                 sCurrNum = "0"
                 While data.Read()
                     strCurrNameRecord = CStr(data("Name"))
-                    If InStr(1, strCurrNameRecord, strName, 1) > 0 Then
+                    If InStr(1, strCurrNameRecord, name, 1) > 0 Then
                         If IsNumeric(Right(strCurrNameRecord, 2)) Then
                             If (CShort(Right(strCurrNameRecord, 2)) > CShort(sCurrNum)) Then
                                 sCurrNum = Right(strCurrNameRecord, 2)
@@ -63,9 +68,9 @@ Module Database
                     End If
                 End While
                 If sCurrNum = "0" Then
-                    CreateUniqueName = strName & "1"
+                    CreateUniqueName = name & "1"
                 Else
-                    CreateUniqueName = strName & CStr(CShort(sCurrNum) + 1)
+                    CreateUniqueName = name & CStr(CShort(sCurrNum) + 1)
                 End If
                 data.Close()
             End Using
