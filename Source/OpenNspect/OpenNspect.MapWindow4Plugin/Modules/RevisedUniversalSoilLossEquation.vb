@@ -96,13 +96,13 @@ Module RevisedUniversalSoilLossEquation
         'Get the con statement for the cover factor calculation
         Dim strCovFactor As String = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE, LCCLASS.COVERFACTOR FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strTempLCType & "' ORDER BY LCCLASS.VALUE"
         Using cmdCov As New DataHelper(strCovFactor)
-            Dim strConStatement As String = ConstructPickStatmentUsingLandClass(cmdCov.GetCommand(), g_LandCoverRaster)
+            Dim concentrationStatement As String = ConstructPickStatmentUsingLandClass(cmdCov.GetCommand(), g_LandCoverRaster)
             'Are they using SDR
             _strSDRFileName = Trim(strSDRFileName)
             'Metadata time
             _strRusleMetadata = CreateMetadata(g_Project.IncludeLocalEffects)
             'Calc rusle using the con
-            Return CalcRUSLE(strConStatement, OutputItems)
+            Return CalcRUSLE(concentrationStatement, OutputItems)
         End Using
 
     End Function
@@ -138,7 +138,7 @@ Module RevisedUniversalSoilLossEquation
 
     End Function
 
-    Private Function CalcRUSLE(ByRef strConStatement As String, ByRef OutputItems As OutputItems) As Boolean
+    Private Function CalcRUSLE(ByRef concentrationStatement As String, ByRef OutputItems As OutputItems) As Boolean
 
         Dim pSoilLossAcres As Grid = Nothing
         'Soil Loss Acres
@@ -162,7 +162,7 @@ Module RevisedUniversalSoilLossEquation
             progress.Increment("Solving RUSLE Equation...")
             If SynchronousProgressDialog.KeepRunning Then
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
-                _picks = strConStatement.Split(",")
+                _picks = concentrationStatement.Split(",")
                 Dim AllSoilLossCalc As New RasterMathCellCalc(AddressOf AllSoilLossCellCalc)
                 If _booUsingConstantValue Then
                     RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, Nothing, Nothing, pSoilLossAcres, AllSoilLossCalc)
