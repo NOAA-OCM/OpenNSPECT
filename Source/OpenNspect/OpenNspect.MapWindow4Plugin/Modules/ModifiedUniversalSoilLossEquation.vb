@@ -206,16 +206,14 @@ Module ModifiedUniversalSoilLossEquation
 
     End Function
 
+
     ''' <summary>
-    ''' Calcs the MUSLE.
+    ''' Calculates the MUSLE erosion model
     ''' </summary>
-    ''' <param name="strConStatement">The STR con statement.</param>
+    ''' <param name="concentrationStatement">The concentration statement.</param>
     ''' <param name="strConPondStatement">The STR con pond statement.</param>
     ''' <param name="OutputItems">The output items.</param><returns></returns>
-    Private Function CalcMUSLE(ByRef strConStatement As String, ByRef strConPondStatement As String, ByRef OutputItems As OutputItems) As Boolean
-        'Incoming strings: strConStatment: the monster con statement
-        'strConPondstatement: the con for the pond stuff
-        'Calculates the MUSLE erosion model
+    Private Function CalcMUSLE(ByRef concentrationStatement As String, ByRef strConPondStatement As String, ByRef OutputItems As OutputItems) As Boolean
 
         Dim pWSLengthRaster As Grid = Nothing
         'STEP 2: Watershed length
@@ -333,7 +331,7 @@ Module ModifiedUniversalSoilLossEquation
 
             progress.Increment("Calculating MUSLE...")
             If SynchronousProgressDialog.KeepRunning Then
-                _picks = strConStatement.Split(",")
+                _picks = concentrationStatement.Split(",")
                 Dim AllMUSLECalc3 As New RasterMathCellCalc(AddressOf AllMUSLECellCalc3)
                 RasterMath(pHISYTempRaster, g_LandCoverRaster, g_KFactorRaster, g_pLSRaster, Nothing, pHISYMGRaster, AllMUSLECalc3)
                 pHISYTempRaster.Close()

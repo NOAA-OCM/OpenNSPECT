@@ -62,7 +62,7 @@ Module Pollutants
             'Open Strings
             Dim strType As String
             Dim strField As String = ""
-            Dim strConStatement As String = ""
+            Dim concentrationStatement As String = ""
             'Again, because of landuse, we have to check for 'temp' coeff sets and their use
             'Get the name of the pollutant
             _PollutantName = Pollutant.strPollName
@@ -91,7 +91,7 @@ Module Pollutants
                         strType = String.Format("SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.{0} As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID FROM LCCLASS LEFT OUTER JOIN COEFFICIENT ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID WHERE COEFFICIENT.COEFFSETID = {1} ORDER BY LCCLASS.VALUE", strField, dataPoll("CoeffSetID"))
                         Using cmdType As New DataHelper(strType)
                             Dim command As OleDbCommand = cmdType.GetCommand()
-                            strConStatement = ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType")
+                            concentrationStatement = ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType")
                             _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_Project.IncludeLocalEffects)
                         End Using
                     End Using
@@ -107,7 +107,7 @@ Module Pollutants
                 End Using
             End Using
 
-            PollutantConcentrationSetup = CalcPollutantConcentration(strConStatement, OutputItems)
+            PollutantConcentrationSetup = CalcPollutantConcentration(concentrationStatement, OutputItems)
 
         Catch ex As Exception
             HandleError(ex)
@@ -144,8 +144,8 @@ Module Pollutants
 
     End Function
 
-    Private Sub CalcMassOfPhosperous(ByRef strConStatement As String, ByRef pMassVolumeRaster As Grid)
-        _picks = strConStatement.Split(",")
+    Private Sub CalcMassOfPhosperous(ByRef concentrationStatement As String, ByRef pMassVolumeRaster As Grid)
+        _picks = concentrationStatement.Split(",")
         Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
         RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
     End Sub
@@ -227,9 +227,9 @@ Module Pollutants
 
         AddOutputGridLayer(pPermTotalConcRaster, _PollutantColor, True, _PollutantName & " Conc. (mg/L)", String.Format("Pollutant {0} Conc", _PollutantName), -1, OutputItems)
     End Sub
-    Private Function CalcPollutantConcentration(ByRef strConStatement As String, ByRef OutputItems As OutputItems) As Boolean
-        If strConStatement = Nothing Then
-            Throw New ArgumentNullException("strConStatement")
+    Private Function CalcPollutantConcentration(ByRef concentrationStatement As String, ByRef OutputItems As OutputItems) As Boolean
+        If concentrationStatement = Nothing Then
+            Throw New ArgumentNullException("concentrationStatement")
         End If
 
         Dim massVolumeRaster As Grid = Nothing
@@ -241,7 +241,7 @@ Module Pollutants
         Dim progress = New SynchronousProgressDialog(strTitle, 13, g_MainForm)
         Try
             progress.Increment("Calculating Mass Volume...")
-            CalcMassOfPhosperous(strConStatement, massVolumeRaster)
+            CalcMassOfPhosperous(concentrationStatement, massVolumeRaster)
 
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_Project.IncludeLocalEffects Then
