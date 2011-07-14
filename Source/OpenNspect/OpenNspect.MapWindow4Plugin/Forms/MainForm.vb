@@ -785,7 +785,6 @@ Friend Class MainForm
 
             'Init your global dictionary to hold the metadata records as well as the global xml prj file
             g_dicMetadata = New Dictionary(Of String, String)
-            g_Project = g_Project
             'END STEP 1: -----------------------------------------------------------------------------------------------------
 
             'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
