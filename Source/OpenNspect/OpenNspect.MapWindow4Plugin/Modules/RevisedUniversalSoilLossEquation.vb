@@ -162,7 +162,6 @@ Module RevisedUniversalSoilLossEquation
             progress.Increment("Solving RUSLE Equation...")
             If SynchronousProgressDialog.KeepRunning Then
                 'STEP 2: SOLVE RUSLE EQUATION -------------------------------------------------------------
-                ReDim _picks(strConStatement.Split(",").Length)
                 _picks = strConStatement.Split(",")
                 Dim AllSoilLossCalc As New RasterMathCellCalc(AddressOf AllSoilLossCellCalc)
                 If _booUsingConstantValue Then

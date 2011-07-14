@@ -130,8 +130,8 @@ Module Runoff
         Dim ncol As Integer = head.NumberCols - 1
         Dim nrow As Integer = head.NumberRows - 1
         Dim nodata As Single = head.NodataValue
-        Dim rowvals() As Single
-        ReDim rowvals(ncol)
+        Dim rowvals(ncol) As Single
+        
         For row As Integer = 0 To nrow
             pInRaster.GetRow(row, rowvals(0))
 

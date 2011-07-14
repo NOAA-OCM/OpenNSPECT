@@ -321,8 +321,7 @@ Module Coloring
             b = sB
 
             If ht.Keys.Count <= numBreaks Then
-                Dim brkArr() As Object
-                ReDim brkArr(ht.Keys.Count - 1)
+                Dim brkArr(ht.Keys.Count - 1) As Object
                 ht.Keys.CopyTo(brkArr, 0)
                 Array.Sort(brkArr)
 

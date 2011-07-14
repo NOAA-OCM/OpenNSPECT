@@ -166,8 +166,7 @@ Module LandUse
             End Using
 
             'STEP 8: Now add the new landclass
-            Dim intLCClassIDs() As Short
-            ReDim intLCClassIDs(LUScenItems.Count - 1)
+            Dim intLCClassIDs(LUScenItems.Count - 1) As Short
 
             For i = 0 To LUScenItems.Count - 1
                 If LUScenItems.Item(i).Enabled Then
