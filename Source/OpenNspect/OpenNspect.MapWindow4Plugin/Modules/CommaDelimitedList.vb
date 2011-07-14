@@ -2,15 +2,17 @@
 Imports System.Data.OleDb
 Imports System.IO
 Imports MapWinGIS
-Module UniversalSoilLossEquation
+Module CommaDelimitedList
 
-    Public Function ConstructPickStatmentUsingLandClass(ByRef cmdType As OleDbCommand, ByRef pLCRaster As Grid, Optional ByVal nameOfColumn As String = "CoverFactor") As String
-        'Creates the initial pick statement using the name of the the LandCass [CCAP, for example]
-        'and the Land Class Raster.  Returns a string
-
+    ''' <summary>
+    ''' Creates the initial pick statement using the name of the the LandCass [CCAP, for example].
+    ''' </summary>
+    ''' <param name="pLCRaster">The raster.</param>
+    ''' <param name="nameOfColumn">The name of column.</param><returns></returns>
+    Public Function ConstructPickStatmentUsingLandClass(ByRef command As OleDbCommand, ByRef pLCRaster As Grid, Optional ByVal nameOfColumn As String = "CoverFactor") As String
         Try
             Dim FieldIndex As Short
-
+            Dim booValueFound As Boolean
             Dim i As Short
             Dim maxVal As Integer = pLCRaster.Maximum
             Dim tablepath = GetRasterTablePath(pLCRaster)
@@ -30,8 +32,8 @@ Module UniversalSoilLossEquation
                 Dim rowidx As Integer = 0
                 Dim dataType As OleDbDataReader
                 For i = 1 To maxVal
-                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
-                        dataType = cmdType.ExecuteReader
+                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then
+                        dataType = command.ExecuteReader
 
 
                         While dataType.Read()
@@ -44,15 +46,15 @@ Module UniversalSoilLossEquation
                                 End If
                                 rowidx = rowidx + 1
                                 Exit While
-                            Else
-                                MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
-                                ConstructPickStatmentUsingLandClass = Nothing
-                                dataType.Close()
-                                mwTable.Close()
-                                Exit Function
                             End If
                         End While
+                        If booValueFound = False Then
+                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
 
+                            dataType.Close()
+                            mwTable.Close()
+                            Return Nothing
+                        End If
                         dataType.Close()
 
                     Else

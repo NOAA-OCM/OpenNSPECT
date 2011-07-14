@@ -165,7 +165,7 @@
     <Compile Include="Modules\FileUtilities.vb" />
     <Compile Include="Modules\RasterMathematics.vb" />
     <Compile Include="Modules\Rasters.vb" />
-    <Compile Include="Modules\UniversalSoilLossEquation.vb" />
+    <Compile Include="Modules\CommaDelimitedList.vb" />
     <Compile Include="Xml\LandUseMangementScenario.vb" />
     <Compile Include="Xml\LandUseScenarioPollutantItem.vb" />
     <Compile Include="Xml\Base.vb" />
