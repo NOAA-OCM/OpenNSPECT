@@ -228,7 +228,7 @@ Module Runoff
                 'Loop through and get all values
                 For i = 1 To dblMaxValue
 
-                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
+                    If (mwTable.CellValue(FieldIndex, rowidx) = i) Then
                         'MK a new reader was created each time this loop ran, but I couldn't see why as it was passed the same query.
                         booValueFound = False
                         While dataLandClass.Read()
@@ -252,8 +252,7 @@ Module Runoff
                             End If
                         End While
                         If booValueFound = False Then
-                            MsgBox(
-                                    "Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
+                            MsgBox("Error: Your OpenNSPECT Land Class Table is missing values found in your landcover GRID dataset.")
                             ConstructPickStatment = Nothing
                             dataLandClass.Close()
                             mwTable.Close()
