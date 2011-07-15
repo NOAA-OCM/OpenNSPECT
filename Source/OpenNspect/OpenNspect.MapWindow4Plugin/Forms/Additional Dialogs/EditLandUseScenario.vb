@@ -286,18 +286,14 @@ Friend Class EditLandUseScenario
 
     Private Sub FillGrid()
         Try
-            Dim strSQLWQStd As String
-            Dim strSQLWQStdPoll As String
-
             'Selection based on combo box
-            strSQLWQStd = "SELECT * FROM WQCRITERIA WHERE NAME LIKE '" & _strWQStd & "'"
-            Dim cmdWQStdCboClick As New DataHelper(strSQLWQStd)
+            Dim cmdWQStdCboClick As New DataHelper("SELECT * FROM WQCRITERIA WHERE NAME LIKE '" & _strWQStd & "'")
             Dim dataWQStd As OleDbDataReader = cmdWQStdCboClick.ExecuteReader()
             dataWQStd.Read()
 
             If dataWQStd.HasRows Then
 
-                strSQLWQStdPoll = "SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD " & "FROM POLL_WQCRITERIA INNER JOIN POLLUTANT " & "ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = " & dataWQStd.Item("WQCRITID")
+                Dim strSQLWQStdPoll As String = String.Format("SELECT POLLUTANT.NAME, POLL_WQCRITERIA.THRESHOLD FROM POLL_WQCRITERIA INNER JOIN POLLUTANT ON POLL_WQCRITERIA.POLLID = POLLUTANT.POLLID Where POLL_WQCRITERIA.WQCRITID = {0}", dataWQStd.Item("WQCRITID"))
                 Dim cmdSQLWQStdPoll As New DataHelper(strSQLWQStdPoll)
                 Dim dataWQStdPoll As OleDbDataReader = cmdSQLWQStdPoll.ExecuteReader()
 

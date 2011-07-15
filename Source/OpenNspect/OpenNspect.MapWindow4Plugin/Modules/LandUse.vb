@@ -127,9 +127,8 @@ Module LandUse
             'Prepare the landclass table to accept the copies of landclass
             Dim adaptPermLC As New DataHelper("SELECT * FROM LCCLASS")
             Dim adaptNewCoeff = adaptPermLC.GetAdapter()
-            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
-            cbuilder.QuotePrefix = "["
-            cbuilder.QuoteSuffix = "]"
+            ' creating this builder allows us to update.            
+            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff) With {.QuotePrefix = "[", .QuoteSuffix = "]"}
             Dim dt As New DataTable
             adaptNewCoeff.Fill(dt)
 
@@ -218,9 +217,8 @@ Module LandUse
 
                         Dim adaptTemp As OleDbDataAdapter = CopyCoefficient(coeffSetTempName, coeffSetOrigName)
                         'Call to function that returns the copied record set.
-                        Dim cbuilder2 As New OleDbCommandBuilder(adaptTemp)
-                        cbuilder2.QuotePrefix = "["
-                        cbuilder2.QuoteSuffix = "]"
+                        ' creating this builder allows us to update.
+                        Dim cbuilder2 As New OleDbCommandBuilder(adaptTemp) With {.QuotePrefix = "[", .QuoteSuffix = "]"}
                         Dim dataTemp As New DataTable
                         adaptTemp.Fill(dataTemp)
 
@@ -286,9 +284,8 @@ Module LandUse
             'Now loopy loo to populate values.
             'Get the coefficient table
             Dim adaptNewCoeff As New OleDbDataAdapter("SELECT * FROM COEFFICIENT", g_DBConn)
-            Dim builder As New OleDbCommandBuilder(adaptNewCoeff)
-            builder.QuotePrefix = "["
-            builder.QuoteSuffix = "]"
+            ' creating this builder allows us to update.
+            Dim builder As New OleDbCommandBuilder(adaptNewCoeff) With {.QuotePrefix = "[", .QuoteSuffix = "]"}
             Dim dataNewCoeff As New DataTable
             adaptNewCoeff.Fill(dataNewCoeff)
 
@@ -334,7 +331,7 @@ Module LandUse
         'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
         'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
 
-        Dim landCoverName As String = ""
+        'Dim landCoverName As String = ""
         Dim landCoverRaster As Grid
         Try
             '    'Make sure the landcoverraster exists..it better if they get to this point, ED!
@@ -420,7 +417,7 @@ Module LandUse
         'Get the featureclass, check for selected features
         Dim sf As New Shapefile
         Dim sfIndex As Long = GetLayerIndex(LUItemDetails.strLUScenLyrName)
-        Dim shape As MapWinGIS.Shape
+        Dim shape As Shape
         If LUItemDetails.intLUScenSelectedPoly = 1 And MapWindowPlugin.MapWindowInstance.View.SelectedShapes.NumSelected > 0 And sfIndex <> -1 Then
             'Dim lyr As Layer = MapWindowPlugin.MapwindowInstance.Layers (sfIndex)
             Dim exportPath As String = ExportSelectedFeatures(LUItemDetails.strLUScenFileName, LUItemDetails.intLUScenSelectedPolyList)
@@ -457,37 +454,28 @@ Module LandUse
 
     Public Sub Cleanup(ByRef dictNames As Dictionary(Of String, String), ByRef PollItems As PollutantItems, ByRef strLCTypeName As String)
         Try
-            Dim strDeleteCoeffSet As String
-            Dim strCoeffDeleteName As String
-            Dim strLCDeleteName As String
-            Dim i As Short
 
-            strLCDeleteName = dictNames.Item(strLCTypeName)
+            Dim strLCDeleteName As String = dictNames.Item(strLCTypeName)
 
             If Len(strLCDeleteName) = 0 Then
                 Return
             End If
 
-            Dim strLCTypeDelete As String
-            Dim strLCClassDelete As String
-
-            strLCTypeDelete = String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", strLCDeleteName)
-            Using cmdDeleteList As New DataHelper(strLCTypeDelete)
+            Using cmdDeleteList As New DataHelper(String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", strLCDeleteName))
                 Dim dataDeleteList As OleDbDataReader = cmdDeleteList.ExecuteReader()
                 dataDeleteList.Read()
-                strLCClassDelete = "Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID")
                 dataDeleteList.Close()
-                Using cmdDelete As New DataHelper(strLCClassDelete)
+                Using cmdDelete As New DataHelper("Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID"))
                     cmdDelete.ExecuteNonQuery()
                 End Using
 
                 For i = 0 To PollItems.Count - 1
                     Dim name As String = PollItems.Item(i).strCoeffSet
                     If dictNames.ContainsKey(name) Then
+                        Dim strCoeffDeleteName As String
                         strCoeffDeleteName = dictNames.Item(name)
                         If Len(strCoeffDeleteName) > 0 Then
-                            strDeleteCoeffSet = String.Format("DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", strCoeffDeleteName)
-                            Using cmdDelete2 = New OleDbCommand(strDeleteCoeffSet, g_DBConn)
+                            Using cmdDelete2 = New OleDbCommand(String.Format("DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", strCoeffDeleteName), g_DBConn)
                                 cmdDelete2.ExecuteNonQuery()
                             End Using
                         End If

@@ -61,14 +61,15 @@ Module ErrorHandling
         MsgBox(String.Format("{0}Row: {1}, Column: {2}", Error_Renamed, (i + 1), (j + 1)), MsgBoxStyle.Critical, "Warning")
     End Sub
 
-    Public Sub HandleError(ByRef ex As Exception)
+    Public Sub HandleError(ByRef exception As Exception)
         Try
-            Using errorBox As New ErrorForm(ex)
+            Using errorBox As New ErrorForm(exception)
                 errorBox.ShowDialog()
             End Using
-            Trace.TraceError(ex.Message)
-        Catch ex2 As Exception
-            ' // couldn't show the dialog.
+        Catch ex As Exception
+            Debug.WriteLine("Couldn't show the errorBox dialog.")
+        Finally
+            Trace.TraceError(exception.Message)
         End Try
     End Sub
 End Module

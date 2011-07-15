@@ -17,7 +17,7 @@ Imports Microsoft.Win32
 ''' http://www.codeproject.com/KB/vb/aboutbox.aspx
 ''' Originally called 'AboutBox'
 ''' </remarks>
-    Public Class AboutForm
+Public Class AboutForm
     Inherits Form
 
     Private _IsPainted As Boolean
@@ -41,7 +41,7 @@ Imports Microsoft.Win32
         Get
             Return _EntryAssembly
         End Get
-        Set (ByVal Value As Assembly)
+        Set(ByVal Value As Assembly)
             _EntryAssembly = Value
         End Set
     End Property
@@ -57,7 +57,7 @@ Imports Microsoft.Win32
         Get
             Return AppTitleLabel.Text
         End Get
-        Set (ByVal Value As String)
+        Set(ByVal Value As String)
             AppTitleLabel.Text = Value
         End Set
     End Property
@@ -73,7 +73,7 @@ Imports Microsoft.Win32
         Get
             Return AppDescriptionLabel.Text
         End Get
-        Set (ByVal Value As String)
+        Set(ByVal Value As String)
             If Value = "" Then
                 AppDescriptionLabel.Visible = False
             Else
@@ -94,7 +94,7 @@ Imports Microsoft.Win32
         Get
             Return AppVersionLabel.Text
         End Get
-        Set (ByVal Value As String)
+        Set(ByVal Value As String)
             If Value = "" Then
                 AppVersionLabel.Visible = False
             Else
@@ -116,7 +116,7 @@ Imports Microsoft.Win32
         Get
             Return AppCopyrightLabel.Text
         End Get
-        Set (ByVal Value As String)
+        Set(ByVal Value As String)
             If Value = "" Then
                 AppCopyrightLabel.Visible = False
             Else
@@ -136,7 +136,7 @@ Imports Microsoft.Win32
         Get
             Return ImagePictureBox.Image
         End Get
-        Set (ByVal Value As Image)
+        Set(ByVal Value As Image)
             ImagePictureBox.Image = Value
         End Set
     End Property
@@ -154,7 +154,7 @@ Imports Microsoft.Win32
         Get
             Return MoreRichTextBox.Text
         End Get
-        Set (ByVal Value As String)
+        Set(ByVal Value As String)
             If Value = "" Then
                 MoreRichTextBox.Visible = False
             Else
@@ -171,7 +171,7 @@ Imports Microsoft.Win32
         Get
             Return DetailsButton.Visible
         End Get
-        Set (ByVal Value As Boolean)
+        Set(ByVal Value As Boolean)
             DetailsButton.Visible = Value
         End Set
     End Property
@@ -182,9 +182,9 @@ Imports Microsoft.Win32
     ''' exception-safe retrieval of LastWriteTime for this assembly.
     ''' </summary>
     ''' <returns>File.GetLastWriteTime, or DateTime.MaxValue if exception was encountered.</returns>
-    Private Shared Function AssemblyLastWriteTime (ByVal a As Assembly) As DateTime
+    Private Shared Function AssemblyLastWriteTime(ByVal a As Assembly) As DateTime
         Try
-            Return File.GetLastWriteTime (a.Location)
+            Return File.GetLastWriteTime(a.Location)
         Catch ex As Exception
             Return DateTime.MaxValue
         End Try
@@ -563,6 +563,7 @@ Imports Microsoft.Win32
             ' for web hosted apps, GetEntryAssembly = nothing
             _EntryAssemblyName = [Assembly].GetEntryAssembly.GetName.Name
         Catch ex As Exception
+            Debug.WriteLine(ex.Message)
         End Try
 
         _MinWindowHeight = AppCopyrightLabel.Top + AppCopyrightLabel.Height + OKButton.Height + 30
@@ -657,6 +658,7 @@ Imports Microsoft.Win32
         Try
             Process.Start(e.LinkText)
         Catch ex As Exception
+            Debug.WriteLine(ex.Message)
         End Try
     End Sub
 
