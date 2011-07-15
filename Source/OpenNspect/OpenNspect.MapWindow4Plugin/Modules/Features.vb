@@ -3,8 +3,8 @@ Imports MapWinGIS
 
 Module Features
 
-    Public Function FeatureExists(ByRef strFeatureFileName As String) As Boolean
-        Return File.Exists(GetFeatureFullPath(strFeatureFileName))
+    Public Function FeatureExists(ByRef featureFileName As String) As Boolean
+        Return File.Exists(GetFeatureFullPath(featureFileName))
     End Function
 
     Private Function GetFeatureFullPath(pathOrDirectory As String) As String

@@ -882,7 +882,7 @@ Friend Class MainForm
             'strProjectInfo = modUtil.ParseProjectforMetadata(_XmlPrjParams, _strFileName)
 
             'STEP 16: Apply the metadata to each of the rasters in the group layer ----------------------------------------------
-            'TODO
+            'TODO metadata stuff
             'modUtil.CreateMetadata(g_pGroupLayer, strProjectInfo)
 
             'Go into workspace and rid it of all rasters

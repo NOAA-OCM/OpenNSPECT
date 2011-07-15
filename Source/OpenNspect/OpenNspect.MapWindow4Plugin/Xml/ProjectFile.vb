@@ -17,7 +17,6 @@
 '               Added licensing and comments to code
 Imports System.Collections.Generic
 Imports System.Xml
-Imports System.Drawing
 Imports System.IO
 
 Namespace Xml

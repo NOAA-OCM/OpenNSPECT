@@ -361,7 +361,7 @@ Friend Class NewPollutantForm
 
     Public Sub AddCoefficient(ByRef strCoeffName As String, ByRef strLCType As String)
         Try
-            'TODO: verify this is even possible without the _intPollID and _intLCTypeID
+            'TODO: verify this is even possible without the _intPollID and _intLCTypeID (which are always 0)
 
             'General gist:  First we add new record to the Coefficient Set table using strCoeffName as
             'the name, m_intPollID as the PollID, and m_intLCTYPEID as the LCTypeID.  The last two are

@@ -162,8 +162,7 @@ Module MainRun
     ''' <param name="SelectedShapes">The selected shapes.</param>
     ''' <returns></returns>
     Private Function ReturnAnalysisMask(ByVal SelectedPath As String, ByRef SelectedShapes As List(Of Integer)) As Shapefile
-        Dim selectedExportPath As String
-        selectedExportPath = ExportSelectedFeatures(SelectedPath, SelectedShapes)
+        Dim selectedExportPath As String = ExportSelectedFeatures(SelectedPath, SelectedShapes)
         g_pSelectedPolyClip = ReturnSelectGeometry(selectedExportPath)
         Dim sfSelected As Shapefile = ReturnFeature(selectedExportPath)
 

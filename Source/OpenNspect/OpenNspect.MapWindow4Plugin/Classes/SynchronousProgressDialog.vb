@@ -59,9 +59,6 @@ Public Class SynchronousProgressDialog
                     form = Nothing
                 End With
             End If
-
-
-            ' TODO: set large fields to null.
         End If
         Me.disposedValue = True
     End Sub
