@@ -318,33 +318,33 @@ Module LandUse
         End Try
     End Function
 
+    Public Function GetLandCoverRaster(ByRef landCoverFileName As String) As Grid
+        If g_LandCoverRaster IsNot Nothing Then
+            Return g_LandCoverRaster
+        End If
+
+        If RasterExists(landCoverFileName) Then
+            Return ReturnRaster(landCoverFileName)
+        End If
+
+        Return Nothing
+    End Function
     ''' <summary>
     ''' Reclasses the landuse.
     ''' </summary>
     ''' <param name="LUScenItems">which is a collection of the landuse entered.</param>
-    ''' <param name="strLCFileName">path to which the landcover grid exists.</param>
-    Private Sub ReclassLanduse(ByRef LUScenItems As LandUseItems, ByRef strLCFileName As String)
+    ''' <param name="landCoverFileName">path to which the landcover grid exists.</param>
+    Private Sub ReclassLanduse(ByRef LUScenItems As LandUseItems, ByRef landCoverFileName As String)
 
         ' categorizes the all classes
 
-        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
-        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
-        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
-
         'Dim landCoverName As String = ""
-        Dim landCoverRaster As Grid
-        Try
-            '    'Make sure the landcoverraster exists..it better if they get to this point, ED!
-            If g_LandCoverRaster Is Nothing Then
-                If RasterExists(strLCFileName) Then
-                    landCoverRaster = ReturnRaster(strLCFileName)
-                Else
-                    Return
-                End If
-            Else
-                landCoverRaster = g_LandCoverRaster
-            End If
+        Dim landCoverRaster = GetLandCoverRaster(landCoverFileName)
+        If landCoverRaster Is Nothing Then
+            Throw New ArgumentException("cannot get landCoverRaseter.")
+        End If
 
+        Try
             Dim strOutLandCover As String = GetUniqueFileName("landcover", g_Project.ProjectWorkspace, OutputGridExt)
 
             'Going to now take each entry in the landuse scenarios, if they've choosen 'apply', we
@@ -389,26 +389,33 @@ Module LandUse
         End Try
     End Sub
 
-    Private Sub ReclassRaster(ByRef LUItem As LandUseItem, ByRef outputGrid As Grid)
-
-        'We're passing over a single land use scenario in the form of the xml
-        'class XmlLandUseItem, seems to be the easiest way to do this.
-
-        Dim strSelect As String = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCCLASS.NAME LIKE '{0}'", LUItem.strLUScenName)
+    Public Function GetLandClassValue(name As String) As Double
+        Dim strSelect As String = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCCLASS.NAME LIKE '{0}'", name)
         Dim LCValue As Double
-        Dim LUItemDetails As New LandUseMangementScenario
-        'The particulars in the landuse
 
-        'Open the landclass Value Value 
+
+        'Open the landclass Value Value
         'This is the value user's landclass will change to
         Using cmdLCVal As New OleDbCommand(strSelect, g_DBConn)
             Using readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
                 readLCVal.Read()
+                'HACK: this hasRows prevents an exception, but may cause a problem.
                 If readLCVal.HasRows Then
                     LCValue = readLCVal("Value")
                 End If
             End Using
         End Using
+        Return LCValue
+    End Function
+    Private Sub ReclassRaster(ByRef LUItem As LandUseItem, ByRef outputGrid As Grid)
+
+        'We're passing over a single land use scenario in the form of the xml
+        'class XmlLandUseItem, seems to be the easiest way to do this.
+
+        Dim LCValue As Double = GetLandClassValue(LUItem.strLUScenName)
+
+        Dim LUItemDetails As New LandUseMangementScenario
+        'The particulars in the landuse
 
         'init the landuse xml stuff
         LUItemDetails.Xml = LUItem.strLUScenXmlFile

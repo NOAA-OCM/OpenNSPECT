@@ -20,41 +20,25 @@ Imports System.Data.OleDb
 Imports OpenNspect.Xml
 
 Module ManagementScenarios
-    ' *************************************************************************************
-    ' *  Perot Systems Government Services
-    ' *  Contact: Ed Dempsey - ed.dempsey@noaa.gov
-    ' *  modMgmtScen
-    ' *************************************************************************************
-    ' *  Description: Code for handling the Management Scenarios
-    ' *
-    ' *
-    ' *  Called By:
-    ' *************************************************************************************
 
-    Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, ByRef strLCFileName As String)
-        'Main Sub for setting everything up
-        'MgmtScens: Xml wrapper for the management scenarios created by the user
-        'strLCClass: Name of the LandCover being used, CCAP
-        'strLCFileName: filename of location of LandCover file
+    ''' <summary>
+    ''' setting everything up
+    ''' </summary>
+    ''' <param name="MgmtScens">Xml wrapper for the management scenarios created by the user.</param>
+    ''' <param name="strLCClass">Name of the LandCover being used, CCAP.</param>
+    ''' <param name="landCoverFileName">filename of location of LandCover file.</param>
+    Public Sub MgmtScenSetup(ByRef MgmtScens As ManagementScenarioItems, ByRef strLCClass As String, ByRef landCoverFileName As String)
 
         'only categorizes the particular strLCClass in the managementScenario
 
-        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
-        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
-        'TODO: refactor as this is duplicate code. (ReclassLanduse, MgmtScenSetup)
-
-        Dim landCoverRaster As Grid
+        Dim landCoverRaster = GetLandCoverRaster(landCoverFileName)
+        If landCoverRaster Is Nothing Then
+            Throw New ArgumentException("cannot get landCoverRaseter.")
+        End If
         Dim landCoverName As String
         Try
             'init everything
             landCoverName = strLCClass
-
-            'Make sure the landcoverraster exists..it better if they get to this point, ED!
-            If RasterExists(strLCFileName) Then
-                landCoverRaster = ReturnRaster(strLCFileName)
-            Else
-                Return
-            End If
 
             Dim strOutLandCover As String = GetUniqueFileName("landcover", g_Project.ProjectWorkspace, OutputGridExt)
 
@@ -98,22 +82,28 @@ Module ManagementScenarios
             HandleError(ex)
         End Try
     End Sub
+    Public Function GetLandClassValue(typename As String, className As String) As Double
+        Dim strSelect As String = String.Format("SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID WHERE LCTYPE.NAME LIKE '{0}' AND LCCLASS.NAME LIKE '{1}'", typename, className)
+        Dim LCValue As Double
 
+
+        'Open the landclass Value Value
+        'This is the value user's landclass will change to
+        Using cmdLCVal As New OleDbCommand(strSelect, g_DBConn)
+            Using readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
+                readLCVal.Read()
+                'HACK: this hasRows prevents an exception, but may cause a problem.
+                If readLCVal.HasRows Then
+                    LCValue = readLCVal("Value")
+                End If
+            End Using
+        End Using
+        Return LCValue
+    End Function
     Public Sub ReclassRaster(ByRef MgmtScen As ManagementScenarioItem, ByVal strLCClass As String, ByRef outputGrid As Grid)
         'We're passing over a single management scenarios in the form of the xml
         'class XmlmgmtScenItem, seems to be the easiest way to do this.
-        Dim strSelect As String = "SELECT LCTYPE.LCTYPEID, LCCLASS.NAME, LCCLASS.VALUE FROM " & "LCTYPE INNER JOIN LCCLASS ON LCTYPE.LCTYPEID = LCCLASS.LCTYPEID " & "WHERE LCTYPE.NAME LIKE '" & strLCClass & "' AND LCCLASS.NAME LIKE '" & MgmtScen.strChangeToClass & "'"
-        'OLEDB selections string
-        Dim LCValue As Double
-        'value
-
-        'Open the landclass Value Value 
-        'This is the value user's landclass will change to
-        Dim cmdLCVal As New OleDbCommand(strSelect, g_DBConn)
-        Dim readLCVal As OleDbDataReader = cmdLCVal.ExecuteReader()
-        readLCVal.Read()
-        LCValue = readLCVal("Value")
-        readLCVal.Close()
+        Dim LCValue As Double = GetLandClassValue(strLCClass, MgmtScen.strChangeToClass)
 
         'classify the output grid cells under the area polygon to the correct value
         Dim sf As New Shapefile
