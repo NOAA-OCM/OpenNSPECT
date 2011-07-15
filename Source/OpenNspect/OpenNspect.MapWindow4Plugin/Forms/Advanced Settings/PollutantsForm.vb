@@ -522,11 +522,15 @@ Friend Class PollutantsForm
         End Try
     End Sub
 
+    ''' <summary>
+    '''First we add new record to the Coefficient Set table using strNewCoeffName as
+    '''the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
+    '''from the set being copied
+    ''' </summary>
+    ''' <param name="strNewCoeffName">Name of the STR new coeff.</param>
+    ''' <param name="strCoeffSet">The STR coeff set.</param>
     Public Sub CopyCoefficient(ByRef strNewCoeffName As String, ByRef strCoeffSet As String)
         Try
-            'General gist:  First we add new record to the Coefficient Set table using strNewCoeffName as
-            'the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
-            'from the set being copied
             Dim strCopySet As String
             'The Recordset of existing coefficients being copied
             Dim strNewLcType As String
@@ -557,13 +561,9 @@ Friend Class PollutantsForm
             dataNewCoeffID.Close()
 
             'Now loopy loo to populate values.
-            Dim strNewCoeff1 As String
-            strNewCoeff1 = "SELECT * FROM COEFFICIENT"
-            Dim cmdNewCoef As New DataHelper(strNewCoeff1)
+            Dim cmdNewCoef As New DataHelper("SELECT * FROM COEFFICIENT")
             Dim adaptNewCoeff = cmdNewCoef.GetAdapter()
-            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff)
-            cbuilder.QuotePrefix = "["
-            cbuilder.QuoteSuffix = "]"
+            Dim cbuilder As New OleDbCommandBuilder(adaptNewCoeff) With {.QuotePrefix = "[", .QuoteSuffix = "]"}
             Dim dt As New DataTable
             adaptNewCoeff.Fill(dt)
 
@@ -697,6 +697,7 @@ Friend Class PollutantsForm
                         drow(5) = Split(strLine, ",")(4)
                         drow(6) = intCoeffSetID
                         drow(7) = row("coeffID")
+                        ' TODO: Isn't it intended that we add this row to the datatable?
                     End If
                 End While
                 adaptNewCoeff.Update(dt)
