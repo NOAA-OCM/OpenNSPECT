@@ -469,11 +469,11 @@ Module LandUse
             End If
 
             Using cmdDeleteList As New DataHelper(String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", strLCDeleteName))
-                Dim dataDeleteList As OleDbDataReader = cmdDeleteList.ExecuteReader()
-                dataDeleteList.Read()
-                dataDeleteList.Close()
-                Using cmdDelete As New DataHelper("Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID"))
-                    cmdDelete.ExecuteNonQuery()
+                Using dataDeleteList As OleDbDataReader = cmdDeleteList.ExecuteReader()
+                    dataDeleteList.Read()
+                    Using cmdDelete As New DataHelper("Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID"))
+                        cmdDelete.ExecuteNonQuery()
+                    End Using
                 End Using
 
                 For i = 0 To PollItems.Count - 1
