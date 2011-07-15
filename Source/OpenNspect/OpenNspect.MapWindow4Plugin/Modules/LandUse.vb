@@ -42,13 +42,12 @@ Module LandUse
 
     Private _intLCTypeID As Short
     Private _intCoeffSetID As Short
-    Private _strLCFileName As String
+       
 
     Public g_LandUse_LCTypeName As String
     'the temp name of Land Cover type, if indeed landuses are applied.
     Public g_LandUse_DictTempNames As New Dictionary(Of String, String)
     'Array holding th'AddType, and subsequent Coefficient Set Names
-    ' Constant used by the Error handler function - DO NOT REMOVE
 
     ''' <summary>
     ''' Begins working.
@@ -56,35 +55,13 @@ Module LandUse
     ''' <param name="strLCClassName">str of current land cover class.</param>
     ''' <param name="LUScenItems">Xml class that holds the params of the user's Land Use Scenario.</param>
     ''' <param name="dictPollutants">dictionary created to hold the pollutants of this particular project.</param>
-    ''' <param name="strLCFileName">FileName of land cover grid.</param>
-    Public Sub Begin(ByRef strLCClassName As String, ByRef LUScenItems As LandUseItems, ByRef dictPollutants As Dictionary(Of String, String), ByRef strLCFileName As String)
+    ''' <param name="LCFileName">FileName of land cover grid.</param>
+    Public Sub Begin(ByRef strLCClassName As String, ByRef LUScenItems As LandUseItems, ByRef dictPollutants As Dictionary(Of String, String), ByRef LCFileName As String)
 
         Try
-            Dim currentLCType As String
-            Dim strCurrentLCClass As String
-            'Current Landclasses of The LCType
-            Dim strInsertTempLCType As String
-            Dim strrsInsertLCType As String
-            'the inserted LCTYPE
-            Dim strNewLandClass As String
-            'Newly added landclass - to get its new ID
-
-            Dim maxValue As Short
-            'Temp new landclasses fake value
-            Dim LUScen As New LandUseMangementScenario
-            'Xml Land use scenario
-            Dim coeffSetTempName As String
-            'New temp name for the coefficient set
-            Dim coeffSetOrigName As String
-            'Original name for the coefficient set
-            Dim pollArray As Dictionary(Of String, String).KeyCollection.Enumerator
-            'Array to hold pollutants...get itself from the dictionary
-
-            'init the file name of the LandClass File
-            _strLCFileName = strLCFileName
-
             'STEP 1: Get the current LCTYPE
             Dim lcTypeId As Object
+            Dim currentLCType As String
             currentLCType = String.Format("SELECT * FROM LCTYPE WHERE NAME LIKE '{0}'", strLCClassName)
             Using cmdCurrentLCType As New DataHelper(currentLCType)
                 Using dataCurrentLCType As OleDbDataReader = cmdCurrentLCType.ExecuteReader()
@@ -95,26 +72,23 @@ Module LandUse
 
             'MK - I'm not sure this works like they thought it did.
             'STEP 2: Get the current LCCLASSES of the current LCTYPE
-
-            strCurrentLCClass = String.Format("SELECT * FROM LCCLASS WHERE LCTYPEID = {0} ORDER BY LCCLass.Value", lcTypeId)
-            Dim cmdCurrentLCClass As New DataHelper(strCurrentLCClass)
+            'Current Landclasses of The LCType
+            Dim cmdCurrentLCClass As New DataHelper(String.Format("SELECT * FROM LCCLASS WHERE LCTYPEID = {0} ORDER BY LCCLass.Value", lcTypeId))
 
             'STEP 3: Now INSERT a copy of current LCTYPE
             'First, get a temp name... like CCAPLUTemp1, CCAPLUTemp2 etc
             Dim tempLandClassTypeName As String = CreateUniqueName("LCTYPE", strLCClassName & "LUTemp")
-            strInsertTempLCType = String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{0} Description')", SqlEncode(tempLandClassTypeName))
 
             'Add the name to the Dictionary for storage; used for cleanup and in pollutants
             g_LandUse_DictTempNames(strLCClassName) = tempLandClassTypeName
 
             'STEP 4: INSERT the copy of the LCTYPE in
-            Using cmdInsertCopy As New DataHelper(strInsertTempLCType)
+            Using cmdInsertCopy As New DataHelper(String.Format("INSERT INTO LCTYPE (NAME,DESCRIPTION) VALUES ('{0}', '{0} Description')", SqlEncode(tempLandClassTypeName)))
                 cmdInsertCopy.ExecuteNonQuery()
             End Using
 
             'STEP 5: Get it back now so you can use its ID for inserting the landclasses
-            strrsInsertLCType = String.Format("SELECT LCTYPEID FROM LCTYPE WHERE LCTYPE.NAME LIKE '{0}'", tempLandClassTypeName)
-            Using cmdInsertType As New DataHelper(strrsInsertLCType)
+            Using cmdInsertType As New DataHelper(String.Format("SELECT LCTYPEID FROM LCTYPE WHERE LCTYPE.NAME LIKE '{0}'", tempLandClassTypeName))
                 Using dataInsertType As OleDbDataReader = cmdInsertType.ExecuteReader()
                     dataInsertType.Read()
                     _intLCTypeID = dataInsertType("LCTypeID")
@@ -132,13 +106,16 @@ Module LandUse
             Dim dt As New DataTable
             adaptNewCoeff.Fill(dt)
 
+
+            'Temp new landclasses fake value
+            Dim maxValue As Short
             'STEP 7: loop through the XmlLandUseItems to add new land uses to the copy rs
             Using dataCloneLCClass As OleDbDataReader = cmdCloneLCClass.ExecuteReader()
                 'Now add all the landclasses.
                 While dataCloneLCClass.Read()
-                    'Add new
+
                     Dim dataPermRow As DataRow = dt.NewRow()
-                    'Add the necessary components
+
                     dataPermRow("LCTypeID") = _intLCTypeID
                     dataPermRow("Value") = dataCloneLCClass("Value")
                     dataPermRow("Name") = dataCloneLCClass("Name")
@@ -150,7 +127,7 @@ Module LandUse
                     dataPermRow("W_WL") = dataCloneLCClass("W_WL")
                     dt.Rows.Add(dataPermRow)
 
-                    'move to next record
+                    'move to next record, hope the values were in asc order so that we end up with the largest one.
                     maxValue = dataCloneLCClass("Value")
                 End While
 
@@ -161,6 +138,7 @@ Module LandUse
             'STEP 8: Now add the new landclass
             Dim intLCClassIDs(LUScenItems.Count - 1) As Short
 
+            Dim LUScen As New LandUseMangementScenario
             For i = 0 To LUScenItems.Count - 1
                 If LUScenItems.Item(i).Enabled Then
 
@@ -184,8 +162,7 @@ Module LandUse
                     'Gather the newly added LCClassIds in an array for use later
                     'This code assumes that there is only one scenario by that name
                     ' I've added in order by LCCLASSID DESC so that it gets the last id for something by that name.
-                    strNewLandClass = String.Format("SELECT LCCLASSID FROM LCCLASS WHERE NAME LIKE '{0}' order by LCCLASSID DESC", LUScen.strLUScenName)
-                    Using cmdNewLC As New DataHelper(strNewLandClass)
+                    Using cmdNewLC As New DataHelper(String.Format("SELECT LCCLASSID FROM LCCLASS WHERE NAME LIKE '{0}' order by LCCLASSID DESC", LUScen.strLUScenName))
                         Using dataNewLC As OleDbDataReader = cmdNewLC.ExecuteReader()
                             dataNewLC.Read()
                             If dataNewLC.HasRows Then
@@ -204,13 +181,19 @@ Module LandUse
 
             'Now to the pollutants
             'Loop through the pollutants coming from the Xml class, as well as those in the project that are being used
+
             For j = 0 To LUScen.PollItems.Count - 1
-                pollArray = dictPollutants.Keys.GetEnumerator
+
+                'Array to hold pollutants...get itself from the dictionary
+                Dim pollArray As Dictionary(Of String, String).KeyCollection.Enumerator = dictPollutants.Keys.GetEnumerator
                 pollArray.MoveNext()
                 For k = 0 To dictPollutants.Count - 1
                     If InStr(1, LUScen.PollItems.Item(j).strPollName, pollArray.Current, CompareMethod.Text) > 0 AndAlso pollArray.Current IsNot Nothing Then
+                        Dim coeffSetOrigName As String
                         coeffSetOrigName = dictPollutants.Item(pollArray.Current)
-                        coeffSetTempName = CreateUniqueName("COEFFICIENTSET", coeffSetOrigName & "_Temp")
+
+                        'New temp name for the coefficient set
+                        Dim coeffSetTempName As String = CreateUniqueName("COEFFICIENTSET", coeffSetOrigName & "_Temp")
 
                         'Now add names of the coefficient sets to the dictionary
                         g_LandUse_DictTempNames(coeffSetOrigName) = coeffSetTempName
@@ -245,7 +228,7 @@ Module LandUse
 
             g_LandUse_LCTypeName = tempLandClassTypeName
 
-            ReclassLanduse(LUScenItems, _strLCFileName)
+            ReclassLanduse(LUScenItems, LCFileName)
 
         Catch ex As Exception
             HandleError(ex)
@@ -270,7 +253,7 @@ Module LandUse
 
             'INSERT: new Coefficient set taking the PollID and LCType ID from rsCopySet
             'First need to add the coefficient set to that table
-            Dim cmdNewLCType As New DataHelper(String.Format("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('{0}',{1},{2})", Replace(newCoeffName, "'", "''"), dataCopySet("POLLID"), _intLCTypeID))
+            Dim cmdNewLCType As New DataHelper(String.Format("INSERT INTO COEFFICIENTSET(NAME, POLLID, LCTYPEID) VALUES ('{0}',{1},{2})", SqlEncode(newCoeffName), dataCopySet("POLLID"), _intLCTypeID))
             cmdNewLCType.ExecuteNonQuery()
             dataCopySet.Close()
 
