@@ -52,6 +52,7 @@ Friend Class NewWatershedDelineationForm
     Private AgreeParams As Boolean
     'Flag to indicate Agree params have been entered
 
+    Private iFlag As Integer 'DLE 6/20/2012 for tracking callback values
 #Region "Events"
 
     Private Sub frmNewWSDelin_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -460,15 +461,17 @@ Friend Class NewWatershedDelineationForm
                 pFlowDirRaster.Save()
                 Dim file = pFlowDirRaster.Filename
                 pFlowDirRaster.Close()
+                MessageBox.Show("D8, WSGrid, WSShape = " + file + ", " + strWSGridOut + ", " + strWSSFOut) 'DLE 6/20/2012 debugging
                 Try
+
                     ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
-                Catch ex As SEHException
+                 Catch ex As SEHException
                     FatalError(ex)
                     Return False
                 End Try
                 If ret <> 0 Then Return False
             End If
-
+            MessageBox.Show("Ready to remove small Polygons")
             progress.Increment("Removing Small Polygons...")
             If Not SynchronousProgressDialog.KeepRunning Then
                 Return False
