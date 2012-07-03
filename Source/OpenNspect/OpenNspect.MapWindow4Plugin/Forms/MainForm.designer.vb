@@ -41,7 +41,6 @@
         Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuBigHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGeneralHelp = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cboWaterQualityCriteriaStd = New System.Windows.Forms.ComboBox()
         Me._Label1_6 = New System.Windows.Forms.Label()
         Me.cboWaterShedDelineations = New System.Windows.Forms.ComboBox()
         Me._Label1_3 = New System.Windows.Forms.Label()
@@ -113,6 +112,7 @@
         Me._Label1_19 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.cboWaterQualityCriteriaStd = New System.Windows.Forms.ComboBox()
         Me.MainMenu1.SuspendLayout()
         Me.Frame3.SuspendLayout()
         Me.fraLC.SuspendLayout()
@@ -263,14 +263,6 @@
         Me.mnuGeneralHelp.Size = New System.Drawing.Size(234, 22)
         Me.mnuGeneralHelp.Text = "OpenNSPECT Help..."
         '
-        'cboWaterQualityCriteriaStd
-        '
-        Me.cboWaterQualityCriteriaStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboWaterQualityCriteriaStd.Location = New System.Drawing.Point(162, 57)
-        Me.cboWaterQualityCriteriaStd.Name = "cboWaterQualityCriteriaStd"
-        Me.cboWaterQualityCriteriaStd.Size = New System.Drawing.Size(149, 21)
-        Me.cboWaterQualityCriteriaStd.TabIndex = 0
-        '
         '_Label1_6
         '
         Me._Label1_6.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -278,7 +270,7 @@
         Me._Label1_6.Name = "_Label1_6"
         Me._Label1_6.Size = New System.Drawing.Size(153, 15)
         Me._Label1_6.TabIndex = 60
-        Me._Label1_6.Text = "Water Quality Standard:"
+        Me._Label1_6.Text = "Hydrologic Soils Data Set:"
         '
         'cboWaterShedDelineations
         '
@@ -385,7 +377,7 @@
         'cboSoilsLayer
         '
         Me.cboSoilsLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboSoilsLayer.Location = New System.Drawing.Point(162, 84)
+        Me.cboSoilsLayer.Location = New System.Drawing.Point(162, 57)
         Me.cboSoilsLayer.Name = "cboSoilsLayer"
         Me.cboSoilsLayer.Size = New System.Drawing.Size(149, 21)
         Me.cboSoilsLayer.TabIndex = 0
@@ -397,7 +389,8 @@
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(153, 15)
         Me.Label6.TabIndex = 47
-        Me.Label6.Text = "Hydrologic Soils Data Set:"
+        Me.Label6.Text = "Water Quality Standard:"
+        Me.Label6.Visible = False
         '
         'fraLC
         '
@@ -881,13 +874,13 @@
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.Label6, 0, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.cboSoilsLayer, 1, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.cboWaterQualityCriteriaStd, 1, 2)
         Me.TableLayoutPanel1.Controls.Add(Me._Label1_6, 0, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.cboPrecipitationScenarios, 1, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.cboWaterShedDelineations, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me._Label1_7, 0, 1)
         Me.TableLayoutPanel1.Controls.Add(Me._Label1_3, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.cboSoilsLayer, 1, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.cboWaterQualityCriteriaStd, 1, 3)
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(291, 95)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 4
@@ -939,6 +932,16 @@
         Me.GroupBox2.TabIndex = 72
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Target Area"
+        '
+        'cboWaterQualityCriteriaStd
+        '
+        Me.cboWaterQualityCriteriaStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboWaterQualityCriteriaStd.Enabled = False
+        Me.cboWaterQualityCriteriaStd.Location = New System.Drawing.Point(162, 84)
+        Me.cboWaterQualityCriteriaStd.Name = "cboWaterQualityCriteriaStd"
+        Me.cboWaterQualityCriteriaStd.Size = New System.Drawing.Size(149, 21)
+        Me.cboWaterQualityCriteriaStd.TabIndex = 61
+        Me.cboWaterQualityCriteriaStd.Visible = False
         '
         'MainForm
         '
@@ -1063,7 +1066,6 @@
     Friend WithEvents ChangeToClass As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblManageNote As System.Windows.Forms.Label
-    Friend WithEvents cboWaterQualityCriteriaStd As System.Windows.Forms.ComboBox
     Friend WithEvents cboWaterShedDelineations As System.Windows.Forms.ComboBox
     Friend WithEvents cboPrecipitationScenarios As System.Windows.Forms.ComboBox
     Private WithEvents btnOpenRainfallFactorGrid As System.Windows.Forms.Button
@@ -1083,5 +1085,6 @@
     Public WithEvents _Label1_19 As System.Windows.Forms.Label
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents cboWaterQualityCriteriaStd As System.Windows.Forms.ComboBox
 #End Region
 End Class

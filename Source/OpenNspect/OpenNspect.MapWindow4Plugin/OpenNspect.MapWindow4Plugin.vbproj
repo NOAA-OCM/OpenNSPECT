@@ -54,7 +54,7 @@
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\..\..\..\..\..\Projects\Dev\MapWindow4Dev\Bin\Plugins\OpenNSPECT\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
     <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -118,23 +118,23 @@
   <ItemGroup>
     <Reference Include="AxInterop.MapWinGIS, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\dev\MapWindow4Dev\Bin\AxInterop.MapWinGIS.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\AxInterop.MapWinGIS.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Interop.MapWinGIS, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\Projects\Dev\MapWindow4Dev\Bin\Interop.MapWinGIS.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\Interop.MapWinGIS.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MapWinGeoProc, Version=4.8.2.84, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Projects\Dev\MapWindow4Dev\Bin\MapWinGeoProc.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\MapWinGeoProc.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MapWinInterfaces, Version=4.8.2.20932, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Projects\Dev\MapWindow4Dev\Bin\MapWinInterfaces.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\MapWinInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System">
