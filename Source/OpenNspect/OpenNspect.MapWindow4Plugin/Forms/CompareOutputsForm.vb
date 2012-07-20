@@ -361,6 +361,7 @@ Public Class CompareOutputsForm
                                     outgrpnum = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add("Compare Outputs")
                                 End If
                                 If g_Project.ProjectWorkspace = "" Then
+                                    'If String.IsNullOrEmpty(g_Project.ProjectWorkspace) Then
                                     g_Project.ProjectWorkspace = g_nspectDocPath & "\workspace"
                                 End If
 
@@ -378,6 +379,7 @@ Public Class CompareOutputsForm
                                     compout = CopyRaster(gout, outstring)
                                 End If
                                 AddOutputGridLayer(compout, "Blue", True, leftOutItems.Item(i).strType + " Direct Comparison", "", outgrpnum, Nothing)
+                                'AddOutputGridLayer(compout, "Red", True, leftOutItems.Item(i).strType + " Direct Comparison", "", outgrpnum, Nothing)
 
                                 Dim percchangecalc As New RasterMathCellCalc(AddressOf PercChangeCellCalc)
                                 RasterMath(gleft, gright, Nothing, Nothing, Nothing, gout, percchangecalc)

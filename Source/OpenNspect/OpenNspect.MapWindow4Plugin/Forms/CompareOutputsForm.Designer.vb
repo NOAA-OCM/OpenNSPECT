@@ -35,6 +35,9 @@
         Me.chkSelectedPolys = New System.Windows.Forms.CheckBox()
         Me.btnSelect = New System.Windows.Forms.Button()
         Me.lblSelected = New System.Windows.Forms.Label()
+        Me.lblOriginal = New System.Windows.Forms.Label()
+        Me.lblModified = New System.Windows.Forms.Label()
+        Me.lblCompareInstruction = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         Me.spltconBase.Panel1.SuspendLayout()
         Me.spltconBase.Panel2.SuspendLayout()
@@ -44,7 +47,9 @@
         '
         'pnlTop
         '
-        Me.pnlTop.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pnlTop.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlTop.Controls.Add(Me.spltconBase)
         Me.pnlTop.Location = New System.Drawing.Point(0, 27)
         Me.pnlTop.Name = "pnlTop"
@@ -59,12 +64,14 @@
         '
         'spltconBase.Panel1
         '
+        Me.spltconBase.Panel1.Controls.Add(Me.lblModified)
         Me.spltconBase.Panel1.Controls.Add(Me.lstbxLeft)
         Me.spltconBase.Panel1.Controls.Add(Me.chkbxLeftUseLegend)
         Me.spltconBase.Panel1MinSize = 100
         '
         'spltconBase.Panel2
         '
+        Me.spltconBase.Panel2.Controls.Add(Me.lblOriginal)
         Me.spltconBase.Panel2.Controls.Add(Me.lstbxRight)
         Me.spltconBase.Panel2.Controls.Add(Me.chkbxRightUseLegend)
         Me.spltconBase.Panel2MinSize = 100
@@ -74,9 +81,11 @@
         '
         'lstbxLeft
         '
-        Me.lstbxLeft.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lstbxLeft.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstbxLeft.FormattingEnabled = True
-        Me.lstbxLeft.Location = New System.Drawing.Point(12, 41)
+        Me.lstbxLeft.Location = New System.Drawing.Point(12, 33)
         Me.lstbxLeft.Name = "lstbxLeft"
         Me.lstbxLeft.Size = New System.Drawing.Size(273, 238)
         Me.lstbxLeft.TabIndex = 1
@@ -84,18 +93,20 @@
         'chkbxLeftUseLegend
         '
         Me.chkbxLeftUseLegend.AutoSize = True
-        Me.chkbxLeftUseLegend.Location = New System.Drawing.Point(13, 13)
+        Me.chkbxLeftUseLegend.Location = New System.Drawing.Point(12, 277)
         Me.chkbxLeftUseLegend.Name = "chkbxLeftUseLegend"
-        Me.chkbxLeftUseLegend.Size = New System.Drawing.Size(174, 17)
+        Me.chkbxLeftUseLegend.Size = New System.Drawing.Size(206, 17)
         Me.chkbxLeftUseLegend.TabIndex = 0
-        Me.chkbxLeftUseLegend.Text = "Use Output Group from Legend"
+        Me.chkbxLeftUseLegend.Text = "Show Only Output Group from Legend"
         Me.chkbxLeftUseLegend.UseVisualStyleBackColor = True
         '
         'lstbxRight
         '
-        Me.lstbxRight.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lstbxRight.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstbxRight.FormattingEnabled = True
-        Me.lstbxRight.Location = New System.Drawing.Point(4, 41)
+        Me.lstbxRight.Location = New System.Drawing.Point(4, 33)
         Me.lstbxRight.Name = "lstbxRight"
         Me.lstbxRight.Size = New System.Drawing.Size(278, 238)
         Me.lstbxRight.TabIndex = 2
@@ -103,11 +114,11 @@
         'chkbxRightUseLegend
         '
         Me.chkbxRightUseLegend.AutoSize = True
-        Me.chkbxRightUseLegend.Location = New System.Drawing.Point(5, 12)
+        Me.chkbxRightUseLegend.Location = New System.Drawing.Point(4, 277)
         Me.chkbxRightUseLegend.Name = "chkbxRightUseLegend"
-        Me.chkbxRightUseLegend.Size = New System.Drawing.Size(174, 17)
+        Me.chkbxRightUseLegend.Size = New System.Drawing.Size(206, 17)
         Me.chkbxRightUseLegend.TabIndex = 1
-        Me.chkbxRightUseLegend.Text = "Use Output Group from Legend"
+        Me.chkbxRightUseLegend.Text = "Show Only Output Group from Legend"
         Me.chkbxRightUseLegend.UseVisualStyleBackColor = True
         '
         'cmdRun
@@ -171,6 +182,7 @@
         Me.chkSelectedPolys.TabIndex = 63
         Me.chkSelectedPolys.Text = "Selected Polygons Only"
         Me.chkSelectedPolys.UseVisualStyleBackColor = True
+        Me.chkSelectedPolys.Visible = False
         '
         'btnSelect
         '
@@ -183,6 +195,7 @@
         Me.btnSelect.TabStop = False
         Me.btnSelect.Text = "Select"
         Me.btnSelect.UseVisualStyleBackColor = True
+        Me.btnSelect.Visible = False
         '
         'lblSelected
         '
@@ -191,6 +204,37 @@
         Me.lblSelected.Size = New System.Drawing.Size(100, 23)
         Me.lblSelected.TabIndex = 66
         Me.lblSelected.Text = "0 selected"
+        Me.lblSelected.Visible = False
+        '
+        'lblOriginal
+        '
+        Me.lblOriginal.AutoSize = True
+        Me.lblOriginal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblOriginal.Location = New System.Drawing.Point(3, 12)
+        Me.lblOriginal.Name = "lblOriginal"
+        Me.lblOriginal.Size = New System.Drawing.Size(148, 15)
+        Me.lblOriginal.TabIndex = 67
+        Me.lblOriginal.Text = "Select Original Output"
+        '
+        'lblModified
+        '
+        Me.lblModified.AutoSize = True
+        Me.lblModified.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblModified.Location = New System.Drawing.Point(12, 12)
+        Me.lblModified.Name = "lblModified"
+        Me.lblModified.Size = New System.Drawing.Size(153, 15)
+        Me.lblModified.TabIndex = 68
+        Me.lblModified.Text = "Select Modified Output"
+        '
+        'lblCompareInstruction
+        '
+        Me.lblCompareInstruction.AutoSize = True
+        Me.lblCompareInstruction.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCompareInstruction.Location = New System.Drawing.Point(146, 6)
+        Me.lblCompareInstruction.Name = "lblCompareInstruction"
+        Me.lblCompareInstruction.Size = New System.Drawing.Size(280, 18)
+        Me.lblCompareInstruction.TabIndex = 69
+        Me.lblCompareInstruction.Text = "Compare Modified to Orignal Output"
         '
         'CompareOutputsForm
         '
@@ -198,6 +242,7 @@
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.cmdQuit
         Me.ClientSize = New System.Drawing.Size(584, 362)
+        Me.Controls.Add(Me.lblCompareInstruction)
         Me.Controls.Add(Me.lblSelected)
         Me.Controls.Add(Me.btnSelect)
         Me.Controls.Add(Me.chkSelectedPolys)
@@ -238,4 +283,7 @@
     Private WithEvents chkSelectedPolys As System.Windows.Forms.CheckBox
     Private WithEvents btnSelect As System.Windows.Forms.Button
     Friend WithEvents lblSelected As System.Windows.Forms.Label
+    Friend WithEvents lblOriginal As System.Windows.Forms.Label
+    Friend WithEvents lblModified As System.Windows.Forms.Label
+    Friend WithEvents lblCompareInstruction As System.Windows.Forms.Label
 End Class
