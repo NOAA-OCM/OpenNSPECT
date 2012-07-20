@@ -40,7 +40,7 @@ Friend Class ImportWaterQualityStandardForm
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
 
         Try
             Dim strLine As String
@@ -51,16 +51,16 @@ Friend Class ImportWaterQualityStandardForm
             Dim strThresh As String
             Dim strCmd As String
 
-            Using read As New StreamReader (_strFileName)
+            Using read As New StreamReader(_strFileName)
                 intLine = 0
                 Do While Not read.EndOfStream
                     strLine = read.ReadLine
                     intLine = intLine + 1
                     If intLine = 1 Then
-                        strName = Trim (txtStdName.Text)
-                        strDescript = Split (strLine, ",") (1)
+                        strName = Trim(txtStdName.Text)
+                        strDescript = Split(strLine, ",")(1)
                         If strName = "" Then
-                            MsgBox ("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
+                            MsgBox("Name is blank.  Please enter a name.", MsgBoxStyle.Critical, "Empty Name Field")
                             txtStdName.Focus()
                             Return
                         Else

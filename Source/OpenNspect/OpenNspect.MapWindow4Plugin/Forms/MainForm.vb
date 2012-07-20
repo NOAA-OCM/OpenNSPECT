@@ -293,7 +293,7 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub cboWQStd_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub cboWQStd_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboWaterQualityCriteriaStd.SelectedIndexChanged
         Try
             If cboWaterQualityCriteriaStd.Text = "New water quality standard..." Then
                 Using fNewWQ As New NewWaterQualityStandardForm()

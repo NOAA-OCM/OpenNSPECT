@@ -189,7 +189,9 @@
         '
         'SSTab1
         '
-        Me.SSTab1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SSTab1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
         Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)

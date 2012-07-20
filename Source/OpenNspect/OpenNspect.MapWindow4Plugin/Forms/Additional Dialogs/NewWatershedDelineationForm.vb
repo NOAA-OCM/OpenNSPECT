@@ -17,6 +17,7 @@
 '               Added licensing and comments to code
 Imports System.IO
 Imports MapWindow.Interfaces
+'Imports MapWinUtility
 Imports MapWinGeoProc
 Imports MapWinGIS
 Imports System.Windows.Forms
@@ -52,7 +53,6 @@ Friend Class NewWatershedDelineationForm
     Private AgreeParams As Boolean
     'Flag to indicate Agree params have been entered
 
-    Private iFlag As Integer 'DLE 6/20/2012 for tracking callback values
 #Region "Events"
 
     Private Sub frmNewWSDelin_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -322,9 +322,18 @@ Friend Class NewWatershedDelineationForm
         Dim coorddatout As String = ""
         Dim strWSGridOut As String = ""
         Dim strWSSFOut As String = ""
+        Dim strWSSFOuttmp As String = ""
+
+        ' DLE 7/20/12
+        Dim FieldToEdit As New Integer
+        Dim calcArea As New Double
+        Dim Indices() As Long
+        Dim SortValue() As Long
 
         'Featureclass objects
         Dim pBasinFeatClass As New Shapefile
+        Dim pBasinFeatClassTmp As New Shapefile
+
         'Basin Featureclass
 
         Dim progress = New SynchronousProgressDialog("Filling DEM...", "Watershed Delineation Processing...", 10, Me)
@@ -430,6 +439,7 @@ Friend Class NewWatershedDelineationForm
             coorddatout = OutPath + "coord.dat"
             strWSGridOut = OutPath + "wsgrid" + OutputGridExt
             strWSSFOut = OutPath + "ws.shp"
+            strWSSFOuttmp = OutPath + "wstmp.shp"
 
             '        'Step 5: Using Hydrology Op to create stream network
             _strStreamLayer = OutPath + "stream.shp"
@@ -461,25 +471,89 @@ Friend Class NewWatershedDelineationForm
                 pFlowDirRaster.Save()
                 Dim file = pFlowDirRaster.Filename
                 pFlowDirRaster.Close()
-                MessageBox.Show("D8, WSGrid, WSShape = " + file + ", " + strWSGridOut + ", " + strWSSFOut) 'DLE 6/20/2012 debugging
                 Try
-
-                    ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
-                 Catch ex As SEHException
+                    'ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
+                    MapWinGeoProc.ManhattanShapes.GridToShapeManhattan(strWSGridOut, strWSSFOut, "Value", Nothing) 'DLE 7/13/2012
+                    'TODO DLE 7/17/2012 need a new shapefile here and then explode the selected shapes into it.tmp()
+                Catch ex As SEHException
                     FatalError(ex)
                     Return False
                 End Try
-                If ret <> 0 Then Return False
+                'If ret <> 0 Then Return False 'TODO May need to fix this.  Doesn't do anything since ManhattenShapes was used.  But do we
+                '                              ' need to do any similar test on its return value?  DLE 7/13/2012
             End If
-            MessageBox.Show("Ready to remove small Polygons")
+
             progress.Increment("Removing Small Polygons...")
             If Not SynchronousProgressDialog.KeepRunning Then
                 Return False
             Else
-                pBasinFeatClass.Open(strWSSFOut)
+                pBasinFeatClassTmp.Open(strWSSFOut)
+                Dim targetValue As Integer = (pBasinFeatClassTmp.NumFields - 1)
 
-                pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
+                'To Do:
+                ' 1. Explode only the last shape: do a slect on it then explode only the selected shape.
+                ' 2. Assign new Values (i.e., indexes) to the exploded ares.
+                ' 3. Recaluate area of the new shapes.
+                ' 4. Merge that file with the original file, less the exploded shapes.
+                ' 5. Sort the shapefile on value
+                ' NOTE that order might actually be 1, then 4, then 3-5 in one loop.
+                ' 7/20/13 3-5 done!
+                '
+                ' Some code that might be useful in that:
+                '   MapWinGeoProc.SpatialOperations.SelectByAttribute(strWSSFOut, 0, targetValue, "==", strWSSFOuttmp)
+                '   pBasinFeatClass = pBasinFeatClassTmp.set_selected(0, True)
+                '
+                pBasinFeatClass = pBasinFeatClassTmp.ExplodeShapes(False)
+
+                'Starting on above list: updating area based on code in "Calculate Area" tool.
+                ' DLE 7/20/12
+                ReDim Indices(pBasinFeatClass.NumShapes - 1)
+                ReDim SortValue(pBasinFeatClass.NumShapes - 1)
+
+                ' Find the "Area" field for Area updates:
+                For i As Integer = 0 To pBasinFeatClass.NumFields - 1
+                    If pBasinFeatClass.Field(i).Name = "Area" Then
+                        FieldToEdit = i
+                        Exit For
+                    End If
+                Next
+                ' MessageBox.Show("Field to Edit for Area is " & FieldToEdit.ToString)
+                If FieldToEdit = -1 Then
+                    Me.Cursor = Windows.Forms.Cursors.Default
+                    Exit Function
+                End If
+
+                ' Step through and populate the indices and SortValues arrays for use by QuickSort
+                ' NOTE BENE: The Vlaues field is what is sorted on, which is assumed to be the first field, field 0
+                For i As Integer = 0 To pBasinFeatClass.NumShapes - 1
+                    Indices(i) = i
+                    SortValue(i) = pBasinFeatClass.Table.CellValue(0, i)
+                Next
+                ' Now sort the Indices array by the SortValues
+                QuickSort(SortValue, Indices, 0, pBasinFeatClass.NumShapes - 1)
+
+                'Copy pBasinFeatClass into pBasinFeatClasstmp for use in rearanging.
+                ' We will copy from the tmp array into the sorted location of the final array.
+                pBasinFeatClassTmp = pBasinFeatClass
+
+                pBasinFeatClass.StartEditingTable()
+                ' Step through SHAPES, sorting as we go.  
+                ' N.B. pBasinFeatClasstmp always has unsorted data
+                For i As Integer = 0 To pBasinFeatClass.NumShapes - 1
+                    calcArea = MapWinGeoProc.Utils.Area(pBasinFeatClassTmp.Shape(i))
+                    ' Step through Fields, copying from ...tmp into regular, in sorted order
+                    For j = 1 To pBasinFeatClass.NumFields - 1 ' start at 1 since replacing 0 below
+                        'pBasinFeatClass.EditCellValue(j, i, pBasinFeatClassTmp.Table.CellValue(j, (i)))
+                        pBasinFeatClass.EditCellValue(j, i, pBasinFeatClassTmp.Table.CellValue(j, Indices(i)))
+                    Next
+                    ' now update area
+                    pBasinFeatClass.EditCellValue(FieldToEdit, i, calcArea)
+                    ' and reset the Value field to go from 1 through the new number of shapes
+                    pBasinFeatClass.EditCellValue(0, i, i)
+                Next
+                 pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
             End If
+            pBasinFeatClass.StopEditingTable()
 
             _strLSFileName = OutPath + "lsgrid" + OutputGridExt
             Dim g As New Grid
@@ -500,6 +574,8 @@ Friend Class NewWatershedDelineationForm
             pBasinRaster.Close()
             pBasinFeatClass.Close()
             pOutputFeatClass.Close()
+            pBasinFeatClassTmp.Close()
+
             DataManagement.DeleteGrid(strahlordout)
             DataManagement.DeleteGrid(longestupslopeout)
             DataManagement.DeleteGrid(totalupslopeout)
@@ -508,9 +584,10 @@ Friend Class NewWatershedDelineationForm
             DataManagement.TryDelete(treedatout)
             DataManagement.TryDelete(coorddatout)
             DataManagement.DeleteShapefile(strWSSFOut)
+            DataManagement.DeleteShapefile(strWSSFOuttmp)
         End Try
     End Function
-
+ 
     Private Function RemoveSmallPolys(ByRef pFeatureClass As Shapefile, ByRef pDEMRaster As Grid) As Shapefile
         Try
             '#3 determine size of 'small' watersheds, this is the area
@@ -580,6 +657,39 @@ Friend Class NewWatershedDelineationForm
         Next
         g.Save()
 
+    End Sub
+
+    Public Sub QuickSort(SortList As Object, SortList2 As Object, ByVal First As Integer, ByVal Last As Integer)
+        'Awesome function for sorting lists.
+        'Found on the Internet and modified for two lists
+        'DPA 1999
+        ' Copied from http://www.mapwindow.org/phorum/read.php?3,356,printview,page=1
+        ' By DLE 7/20/2012:  It's always nice to have a quicksort subroutine around!
+        Dim Low As Integer, High As Integer 'Use Integer for lists up to 32,767 entries.
+        Dim Temp As Object, Temp1 As Object, TestElement As Object 'Variant can handle any type of list.
+        Low = First
+        High = Last
+        TestElement = SortList((First + Last) / 2) 'Select an element from the middle.
+        Do
+            Do While SortList(Low) < TestElement 'Find lowest element that is >= TestElement.
+                Low = Low + 1
+            Loop
+            Do While SortList(High) > TestElement 'Find highest element that is <= TestElement.
+                High = High - 1
+            Loop
+            If (Low <= High) Then 'If not done,
+                Temp = SortList(Low) 'Swap the elements.
+                Temp1 = SortList2(Low)
+                SortList(Low) = SortList(High)
+                SortList2(Low) = SortList2(High)
+                SortList(High) = Temp
+                SortList2(High) = Temp1
+                Low = Low + 1
+                High = High - 1
+            End If
+        Loop While (Low <= High)
+        If (First < High) Then QuickSort(SortList, SortList2, First, High)
+        If (Low < Last) Then QuickSort(SortList, SortList2, Low, Last)
     End Sub
 
 End Class
