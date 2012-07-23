@@ -22,8 +22,10 @@
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CompareOutputsForm))
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.spltconBase = New System.Windows.Forms.SplitContainer()
+        Me.lblModified = New System.Windows.Forms.Label()
         Me.lstbxLeft = New System.Windows.Forms.ListBox()
         Me.chkbxLeftUseLegend = New System.Windows.Forms.CheckBox()
+        Me.lblOriginal = New System.Windows.Forms.Label()
         Me.lstbxRight = New System.Windows.Forms.ListBox()
         Me.chkbxRightUseLegend = New System.Windows.Forms.CheckBox()
         Me.cmdRun = New System.Windows.Forms.Button()
@@ -35,8 +37,6 @@
         Me.chkSelectedPolys = New System.Windows.Forms.CheckBox()
         Me.btnSelect = New System.Windows.Forms.Button()
         Me.lblSelected = New System.Windows.Forms.Label()
-        Me.lblOriginal = New System.Windows.Forms.Label()
-        Me.lblModified = New System.Windows.Forms.Label()
         Me.lblCompareInstruction = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         Me.spltconBase.Panel1.SuspendLayout()
@@ -79,6 +79,16 @@
         Me.spltconBase.SplitterDistance = 288
         Me.spltconBase.TabIndex = 0
         '
+        'lblModified
+        '
+        Me.lblModified.AutoSize = True
+        Me.lblModified.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblModified.Location = New System.Drawing.Point(12, 12)
+        Me.lblModified.Name = "lblModified"
+        Me.lblModified.Size = New System.Drawing.Size(153, 15)
+        Me.lblModified.TabIndex = 68
+        Me.lblModified.Text = "Select Modified Output"
+        '
         'lstbxLeft
         '
         Me.lstbxLeft.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -99,6 +109,16 @@
         Me.chkbxLeftUseLegend.TabIndex = 0
         Me.chkbxLeftUseLegend.Text = "Show Only Output Group from Legend"
         Me.chkbxLeftUseLegend.UseVisualStyleBackColor = True
+        '
+        'lblOriginal
+        '
+        Me.lblOriginal.AutoSize = True
+        Me.lblOriginal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblOriginal.Location = New System.Drawing.Point(3, 12)
+        Me.lblOriginal.Name = "lblOriginal"
+        Me.lblOriginal.Size = New System.Drawing.Size(148, 15)
+        Me.lblOriginal.TabIndex = 67
+        Me.lblOriginal.Text = "Select Original Output"
         '
         'lstbxRight
         '
@@ -206,35 +226,15 @@
         Me.lblSelected.Text = "0 selected"
         Me.lblSelected.Visible = False
         '
-        'lblOriginal
-        '
-        Me.lblOriginal.AutoSize = True
-        Me.lblOriginal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOriginal.Location = New System.Drawing.Point(3, 12)
-        Me.lblOriginal.Name = "lblOriginal"
-        Me.lblOriginal.Size = New System.Drawing.Size(148, 15)
-        Me.lblOriginal.TabIndex = 67
-        Me.lblOriginal.Text = "Select Original Output"
-        '
-        'lblModified
-        '
-        Me.lblModified.AutoSize = True
-        Me.lblModified.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblModified.Location = New System.Drawing.Point(12, 12)
-        Me.lblModified.Name = "lblModified"
-        Me.lblModified.Size = New System.Drawing.Size(153, 15)
-        Me.lblModified.TabIndex = 68
-        Me.lblModified.Text = "Select Modified Output"
-        '
         'lblCompareInstruction
         '
         Me.lblCompareInstruction.AutoSize = True
         Me.lblCompareInstruction.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCompareInstruction.Location = New System.Drawing.Point(146, 6)
         Me.lblCompareInstruction.Name = "lblCompareInstruction"
-        Me.lblCompareInstruction.Size = New System.Drawing.Size(280, 18)
+        Me.lblCompareInstruction.Size = New System.Drawing.Size(284, 18)
         Me.lblCompareInstruction.TabIndex = 69
-        Me.lblCompareInstruction.Text = "Compare Modified to Orignal Output"
+        Me.lblCompareInstruction.Text = "Compare Modified to Original Output"
         '
         'CompareOutputsForm
         '
