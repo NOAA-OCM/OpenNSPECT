@@ -1,0 +1,6 @@
+<ColoringScheme SchemeType="Grid" GridName="HI_annual_prec" GroupName="Data Layers">
+  <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="90" LightSourceElevation="45" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
+    <Break Caption="" LowValue="19.014644622803" HighValue="86.1539745330815" LowColor="-13399600" HighColor="-1907802" ColoringType="0" GradientModel="1" />
+    <Break Caption="" LowValue="86.1539745330815" HighValue="153.29330444336" LowColor="-1907802" HighColor="-6843787" ColoringType="0" GradientModel="1" />
+  </GridColoringScheme>
+</ColoringScheme>

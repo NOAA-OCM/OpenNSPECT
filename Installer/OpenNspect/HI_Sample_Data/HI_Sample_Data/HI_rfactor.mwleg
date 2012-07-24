@@ -1,0 +1,6 @@
+<ColoringScheme SchemeType="Grid" GridName="HI_rfactor" GroupName="Data Layers">
+  <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="90" LightSourceElevation="45" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
+    <Break Caption="" LowValue="0" HighValue="200.157150268555" LowColor="-2896287" HighColor="-7636880" ColoringType="0" GradientModel="1" />
+    <Break Caption="" LowValue="200.157150268555" HighValue="400.31430053711" LowColor="-7636880" HighColor="-1" ColoringType="0" GradientModel="1" />
+  </GridColoringScheme>
+</ColoringScheme>

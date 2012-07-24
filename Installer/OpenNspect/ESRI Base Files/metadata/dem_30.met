@@ -1,0 +1,303 @@
+Identification_Information:
+  Citation:
+    Citation_Information:
+      Originator: NOAA Coastal Services Center
+      Publication_Date: 20040806
+      Title: dem_30
+      Geospatial_Data_Presentation_Form: Map
+      Publication_Information:
+        Publication_Place: NOAA Coastal Services Center, Charleston, SC
+        Publisher: NOAA Coastal Services Center
+      Larger_Work_Citation:
+        Citation_Information:
+          Originator: NOAA Coastal Services Center
+          Publication_Date: 20040806
+          Title: N-SPECT
+          Edition: 1
+          Publication_Information:
+            Publication_Place: NOAA Coastal Services Center, Charleston, SC
+            Publisher: NOAA Coastal Services Center
+          Online_Linkage: http://www.csc.noaa.gov/crs
+  Description:
+    Abstract:
+      Wai'anae 30m DEM
+      The Nonpoint Source Pollution and Erosion Comparison Tool (N-SPECT) 
+      was developed by the National Oceanic and Atmospheric Administration 
+      (NOAA) Coastal Services Center to accompany the Wai'anae Ecological 
+      Characterization being developed by the Hawaii Coastal Zone 
+      Management (CZM) program.  N-SPECT examines the relationship between 
+      land cover, nonpoint source pollution, and erosion.  N-SPECT is an 
+      extension to Environmental Systems Research Institutes (ESRI) ArcGIS 
+      software package, version 8.3 and requires the Spatial Analyst 
+      extension.  N-SPECT is designed to be portable to any watershed, 
+      provided the user has access to the necessary data. Data provided 
+      with N-SPECT are for the Wai'anae ahupua'a, the original study area 
+      located on the western side of Oahu, Hawaii.  The Wai'anae ahupua'a 
+      is the collection of catchments that drain the Wai'anae mountains 
+      westward to the Wai'anae coast (west coast of Oahu, HI), including 
+      Kaluakauila, Makua, Keaau, Makaha, Kaupuni, Kamaileunu, Mailiili, 
+      Ulehawa, and Nanakuli.  The dem_30 data file is a grid with 30 meter
+      pixel resolution which represents elevations in meters.  This data
+      set was derived from USGS DEMs in SDTS format.
+    Purpose:
+      This data set was created to provide resource managers working in the 
+      Wai'anae Ahupua'a with an accurate elevation data set.  Though higher
+      resolution data exist for this area (10 meter), the coarser 30 meter
+      resolution data was deemed sufficient for the purposes of N-SPECT
+      given that the landcover data was originally gridded at 30 meters.
+      Furthermore, the coarser resolution data permits N-SPECT to run 
+      analyses significantly faster than it does with higher resolution
+      data.  
+    Supplemental_Information:
+      (Source DEM information) 
+      QUADNAME      RESOLUTION  ULLAT   ULLON     LRLAT   LRLON   HDATUM  ZMIN ZMAX  ZMEAN    ZSIGMA  PMETHOD QUADDATE 
+      kaena_oe_w_HI         10  21.622  -158.397  21.497  -158.272  27    0    130   0.026    1.159      5    20010801 
+      kaena_HI              10  21.622  -158.272  21.497  -158.147  27    0    1212  157.316  228.385    5    20010801 
+      haleiwa_HI            10  21.622  -158.147  21.497  -158.022  27    0    1233  208.884  186.049    5    20010801 
+      waianae_HI            10  21.497  -158.272  21.372  -158.147  27    0    978   48.079   131.619    5    20010801 
+      schofield_barracks_HI 10  21.497  -158.147  21.372  -158.022  27    0    1064  290.999  190.445    5    20010801 
+      ewa_HI                10  21.372  -158.147  21.247  -158.022  27    0    465   27.368   67.571     5    20010801 
+  Time_Period_of_Content:
+    Time_Period_Information:
+      Range_of_Dates/Times:
+        Beginning_Date: 19990201
+        Ending_Date: Unknown
+    Currentness_Reference: publication date
+  Status:
+    Progress: Complete
+    Maintenance_and_Update_Frequency: None planned
+  Spatial_Domain:
+    Bounding_Coordinates:
+      West_Bounding_Coordinate: -158.281681
+      East_Bounding_Coordinate: -158.089438
+      North_Bounding_Coordinate: 21.574541
+      South_Bounding_Coordinate: 21.368444
+  Keywords:
+    Theme:
+      Theme_Keyword_Thesaurus: None
+      Theme_Keyword: EARTH SCIENCE
+      Theme_Keyword: LAND SURFACE
+      Theme_Keyword: TOPOGRAPHY
+      Theme_Keyword: LANDFORMS
+      Theme_Keyword: TERRAIN ELEVATION
+      Theme_Keyword: 7.5-MINUTE DEM
+      Theme_Keyword: CARTOGRAPHY
+      Theme_Keyword: DEM
+      Theme_Keyword: DIGITAL ELEVATION MODEL
+      Theme_Keyword: DIGITAL MAPPING
+      Theme_Keyword: MAPPING
+      Theme_Keyword: RASTER
+      Theme_Keyword: USGS
+      Theme_Keyword: ELEVATION
+      Theme_Keyword: N-SPECT
+    Place:
+      Place_Keyword_Thesaurus: None
+      Place_Keyword: USA
+      Place_Keyword: Hawaii
+      Place_Keyword: Coastal Zone
+      Place_Keyword: Oahu
+      Place_Keyword: Wai'anae
+  Access_Constraints: None
+  Use_Constraints:
+    Data set is not for use in litigation. While efforts have been
+    made to ensure that these data are accurate and reliable within
+    the state of the art, NOAA, cannot assume liability for any
+    damages, or misrepresentations, caused by any inaccuracies in the
+    data, or as a result of the data to be used on a particular
+    system. NOAA makes no warranty, expressed or implied, nor does the
+    fact of distribution constitute such a warranty.
+  Point_of_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S. Hobson Ave.
+        City: Charleston
+        State_or_Province: South Carolina
+        Postal_Code: 29405-2413
+        Country: USA
+      Contact_Voice_Telephone: (843) 740-1200
+      Contact_Facsimile_Telephone: (843) 740-1290
+
+Data_Quality_Information:
+  Logical_Consistency_Report:
+    The 30m DEM was compared to the original 10m DEM and inconsistencies were
+    addressed using a filter technique described in the process steps below.
+  Completeness_Report:
+    All pixels contain elevation values.  Values range from 0 to 1216 meters.
+  Lineage:
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: USGS
+          Publication_Date: 20010917
+          Title: SDTS DEM - 7.5 X 7.5 minute GRID
+      Type_of_Source_Media: electronic media
+      Source_Time_Period_of_Content: 
+        Time_Period_Information:
+          Single_Date/Time: 
+            Calendar_Date: 1983
+        Source_Currentness_Reference: ground condition
+      Source_Citation_Abbreviation: USGS DEM
+      Source_Contribution:
+        USGS SDTS 10m DEMs provided the source elevation data for the
+        N-SPECT project.  
+    Process_Step:
+      Process_Description:
+        Six 7.5 x 7.5 minute SDTS 10 meter DEMs were mosaiced using the 
+        ArcINFO GRID command "mosaic" to create a single data set that 
+        covered the Wai'anae study region.
+      Process_Date: unknown
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: mailing and physical address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: SC
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        The 10 meter grid was resampled with the ArcINFO GRID command
+        "resample" using bilinear interpolation and an output cell size
+        of 30 meters.
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: mailing and physical address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: SC
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        Due to the resampling process, small coastal features such as stream
+        mouths were closed off creating unnatural ponds.  To address this
+        issue, the ArcINFO GRID command "blockmin" was used to run a 3 x 3
+        filter over the DEM to record the lowest elevations within each 30
+        meter cell.  A mask was created by encoding all cells having values
+        greater than zero with ones, and all cells equal to zero with zeros.
+        The mask successfully captured the small coastal features and was
+        subsequently multiplied by the resampled DEM to produce a final 30
+        meter DEM that contained the coastal features.
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+            
+Spatial_Data_Organization_Information:
+  Direct_Spatial_Reference_Method: Raster
+  
+Spatial_Reference_Information:
+  Horizontal_Coordinate_System_Definition:
+    Planar:
+      Grid_Coordinate_System:
+        Grid_Coordinate_System_Name: Universal Transverse Mercator
+        Universal_Transverse_Mercator:
+          UTM_Zone_Number:  4
+          Transverse_Mercator:
+            Scale_Factor_at_Central_Meridian: 0.999600
+            Longitude_of_Central_Meridian: -159.000000
+            Latitude_of_Projection_Origin: 0.000000
+            False_Easting: 500000.000000
+            False_Northing: 0.000000
+      Planar_Coordinate_Information:
+        Planar_Coordinate_Encoding_Method: Row and column
+        Coordinate_Representation:
+          Abscissa_Resolution: 30.000000
+          Ordinate_Resolution: 30.000000
+        Planar_Distance_Units: Meters
+    Geodetic_Model:
+      Horizontal_Datum_Name: North American Datum of 1983
+      Ellipsoid_Name: GRS 80
+      Semi-major_Axis: 6378137.0000000
+      Denominator_of_Flattening_Ratio: 298.26
+  Vertical_Coordinate_System_Definition:
+    Altitude_System_Definition:
+      Altitude_Datum_Name: North American Vertical Datum of 1988
+      Altitude_Resolution: 1
+      Altitude_Distance_Units: meters
+      Altitude_Encoding_Method: Attribute values
+
+Entity_and_Attribute_Information:
+  Detailed_Description:
+    Entity_Type:
+      Entity_Type_Label: DEM
+      Entity_Type_Definition: Digital Elevation Model
+      Entity_Type_Definition_Source: None
+    Attribute:
+      Attribute_Label: Value
+      Attribute_Definition: Pixel value (elevation in meters)
+      Attribute_Definition_Source: None
+      Attribute_Domain_Values:
+        Unrepresentable_Domain:
+          Software computed
+    Attribute:
+      Attribute_Label: Count
+      Attribute_Definition: Number of pixel with same value
+      Attribute_Definition_Source: Software generated
+      Attribute_Domain_Values:
+        Unrepresentable_Domain:
+          Software computed
+
+  
+Distribution_Information:
+  Distributor:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Position: N-SPECT Project Manager
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S Hobson Ave.
+        City: Charleston
+        State_or_Province: SC
+        Postal_Code: 29405
+        Country: USA
+      Contact_Voice_Telephone: 843-740-1200
+      Contact_Facsimile_Telephone: 843-740-1224
+      Contact_Electronic_Mail_Address: csc@csc.noaa.gov
+      Hours_of_Service: Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.
+  Distribution_Liability:
+    Users must assume responsibility to determine the usability of these
+    data.
+    
+Metadata_Reference_Information:
+  Metadata_Date: 20040809
+  Metadata_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Position: N-SPECT Metadata Manager
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S Hobson Ave.
+        City: Charleston
+        State_or_Province: SC
+        Postal_Code: 29405
+        Country: USA
+      Contact_Voice_Telephone: 843-740-1200
+      Contact_Facsimile_Telephone: 843-740-1224
+      Contact_Electronic_Mail_Address: csc@csc.noaa.gov
+      Hours_of_Service: Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.
+  Metadata_Standard_Name: FGDC CSDGM
+  Metadata_Standard_Version: FGDC-STD-001-1998

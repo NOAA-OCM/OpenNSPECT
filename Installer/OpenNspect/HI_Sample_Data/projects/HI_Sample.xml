@@ -1,0 +1,133 @@
+<NSPECTProjectFile>
+  <PrjName>HI_Sample</PrjName>
+  <PrjRoot>C:\NSPECT</PrjRoot>
+  <PrjWorkspace>C:\NSPECT\workspace</PrjWorkspace>
+  <LCGridName>CCAP05</LCGridName>
+  <LCGridFileName>C:\NSPECT\HI_Sample_Data\HI_CCAP05.tif</LCGridFileName>
+  <LCGridUnits>0</LCGridUnits>
+  <LCGridType>CCAP</LCGridType>
+  <SoilsDefName>HI_SampleSoils</SoilsDefName>
+  <SoilsHydFileName>C:\NSPECT\HI_Sample_Data\soils1.tif</SoilsHydFileName>
+  <SoilsKFileName>C:\NSPECT\HI_Sample_Data\soilsk1.tif</SoilsKFileName>
+  <PrecipScenario>Annual Precipitation</PrecipScenario>
+  <WaterShedDelineation>HI_SampleWS</WaterShedDelineation>
+  <WaterQualityStandard>Long Term Criteria</WaterQualityStandard>
+  <SelectedPolygons>0</SelectedPolygons>
+  <SelectedPolyFileName>
+  </SelectedPolyFileName>
+  <SelectedPolyList>
+  </SelectedPolyList>
+  <SelectedPolyLyrName>
+  </SelectedPolyLyrName>
+  <LocalEffects>0</LocalEffects>
+  <CalcErosion>1</CalcErosion>
+  <SDRGrid>0</SDRGrid>
+  <SDRGridFileName>
+  </SDRGridFileName>
+  <RainGridBool>1</RainGridBool>
+  <RainGridName>C:\NSPECT\HI_Sample_Data\HI_rfactor.tif</RainGridName>
+  <RainGridFileName>C:\NSPECT\HI_Sample_Data\HI_rfactor.tif</RainGridFileName>
+  <RainConstBool>0</RainConstBool>
+  <RainConstValue>0</RainConstValue>
+  <Pollutants>
+    <Pollutant ID="1">
+      <Apply>1</Apply>
+      <PollName>Phosphorus</PollName>
+      <CoeffSet>PhosSet</CoeffSet>
+      <Coeff>Type 1</Coeff>
+      <Threshold>50</Threshold>
+      <TypeDefXmlFile>
+      </TypeDefXmlFile>
+    </Pollutant>
+    <Pollutant ID="2">
+      <Apply>1</Apply>
+      <PollName>Nitrogen</PollName>
+      <CoeffSet>NitSet</CoeffSet>
+      <Coeff>Type 1</Coeff>
+      <Threshold>250</Threshold>
+      <TypeDefXmlFile>
+      </TypeDefXmlFile>
+    </Pollutant>
+    <Pollutant ID="3">
+      <Apply>0</Apply>
+      <PollName>Total Suspended Solids</PollName>
+      <CoeffSet>
+      </CoeffSet>
+      <Coeff>
+      </Coeff>
+      <Threshold>20</Threshold>
+      <TypeDefXmlFile>
+      </TypeDefXmlFile>
+    </Pollutant>
+    <Pollutant ID="4">
+      <Apply>0</Apply>
+      <PollName>Zinc</PollName>
+      <CoeffSet>
+      </CoeffSet>
+      <Coeff>
+      </Coeff>
+      <Threshold>22</Threshold>
+      <TypeDefXmlFile>
+      </TypeDefXmlFile>
+    </Pollutant>
+    <Pollutant ID="5">
+      <Apply>0</Apply>
+      <PollName>Lead</PollName>
+      <CoeffSet>
+      </CoeffSet>
+      <Coeff>
+      </Coeff>
+      <Threshold>29</Threshold>
+      <TypeDefXmlFile>
+      </TypeDefXmlFile>
+    </Pollutant>
+  </Pollutants>
+  <MgmtScenarios>
+  </MgmtScenarios>
+  <LandUses>
+  </LandUses>
+  <OutputFiles>
+    <OutputFile>
+      <OutputPath>C:\NSPECT\workspace\runoff11.tif</OutputPath>
+      <OutputName>Accumulated Runoff (L)</OutputName>
+      <OutputType>Runoff Accum</OutputType>
+      <OutputColor>Blue</OutputColor>
+      <OutputUseStretch>True</OutputUseStretch>
+    </OutputFile>
+    <OutputFile>
+      <OutputPath>C:\NSPECT\workspace\accpoll20.tif</OutputPath>
+      <OutputName>Accumulated Phosphorus (kg)</OutputName>
+      <OutputType>Pollutant Phosphorus Accum</OutputType>
+      <OutputColor>81,100,100,81,5,100</OutputColor>
+      <OutputUseStretch>True</OutputUseStretch>
+    </OutputFile>
+    <OutputFile>
+      <OutputPath>C:\NSPECT\workspace\conc20.tif</OutputPath>
+      <OutputName>Phosphorus Conc. (mg/L)</OutputName>
+      <OutputType>Pollutant Phosphorus Conc</OutputType>
+      <OutputColor>81,100,100,81,5,100</OutputColor>
+      <OutputUseStretch>True</OutputUseStretch>
+    </OutputFile>
+    <OutputFile>
+      <OutputPath>C:\NSPECT\workspace\accpoll21.tif</OutputPath>
+      <OutputName>Accumulated Nitrogen (kg)</OutputName>
+      <OutputType>Pollutant Nitrogen Accum</OutputType>
+      <OutputColor>45,97,100,45,5,100</OutputColor>
+      <OutputUseStretch>True</OutputUseStretch>
+    </OutputFile>
+    <OutputFile>
+      <OutputPath>C:\NSPECT\workspace\conc21.tif</OutputPath>
+      <OutputName>Nitrogen Conc. (mg/L)</OutputName>
+      <OutputType>Pollutant Nitrogen Conc</OutputType>
+      <OutputColor>45,97,100,45,5,100</OutputColor>
+      <OutputUseStretch>True</OutputUseStretch>
+    </OutputFile>
+    <OutputFile>
+      <OutputPath>C:\NSPECT\workspace\RUSLE7.tif</OutputPath>
+      <OutputName>Accumulated Sediment (kg)</OutputName>
+      <OutputType>RUSLE Accum</OutputType>
+      <OutputColor>Brown</OutputColor>
+      <OutputUseStretch>True</OutputUseStretch>
+    </OutputFile>
+  </OutputFiles>
+</NSPECTProjectFile>
