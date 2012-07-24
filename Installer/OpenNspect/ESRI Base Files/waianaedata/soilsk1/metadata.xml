@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<metadata>
+	<idinfo>
+		<citation>
+			<citeinfo>
+				<origin>NOAA Coastal Services Center</origin>
+				<pubdate>20040806</pubdate>
+				<title Sync="TRUE">soilsk1</title>
+				<geoform Sync="TRUE">raster digital data</geoform>
+				<pubinfo>
+					<pubplace>NOAA Coastal Services Center, Charleston, SC</pubplace>
+					<publish>NOAA Coastal Services Center</publish>
+				</pubinfo>
+				<onlink Sync="TRUE">\\CSC-W-EDEMPSEY\C$\NSPECT\WaianaeData\soilsk1</onlink>
+				<lworkcit>
+					<citeinfo>
+						<origin>NOAA Coastal Services Center</origin>
+						<pubdate>20040806</pubdate>
+						<title>N-SPECT</title>
+						<edition>1</edition>
+						<pubinfo>
+							<pubplace>NOAA Coastal Services Center, Charleston, SC</pubplace>
+							<publish>NOAA Coastal Services Center</publish>
+						</pubinfo>
+						<onlink>http://www.csc.noaa.gov/crs</onlink>
+					</citeinfo>
+				</lworkcit>
+				<ftname Sync="TRUE">soilsk1</ftname></citeinfo>
+		</citation>
+		<descript>
+			<abstract>
+Wai'anae Soils (K-Factors)
+The Nonpoint Source Pollution and Erosion Comparison Tool (N-SPECT)
+was developed by the National Oceanic and Atmospheric Administration
+(NOAA) Coastal Services Center to accompany the Wai'anae Ecological
+Characterization being developed by the Hawaii Coastal Zone
+Management (CZM) program.  N-SPECT examines the relationship between
+land cover, nonpoint source pollution, and erosion.  N-SPECT is an
+extension to Environmental Systems Research Institutes (ESRI) ArcGIS
+software package, version 8.3 and requires the Spatial Analyst
+extension.  N-SPECT is designed to be portable to any watershed,
+provided the user has access to the necessary data. Data provided
+with N-SPECT are for the Wai'anae ahupua'a, the original study area
+located on the western side of Oahu, Hawaii.  The Wai'anae ahupua'a
+is the collection of catchments that drain the Wai'anae mountains
+westward to the Wai'anae coast (west coast of Oahu, HI), including
+Kaluakauila, Makua, Keaau, Makaha, Kaupuni, Kamaileunu, Mailiili,
+Ulehawa, and Nanakuli.  The Soils1K data file is a grid that
+contains values for the different soil types and their associated
+k-factors throughout the Wai'anae study region.
+</abstract>
+			<purpose>
+This data set was created to provide resource managers working in the
+Wai'anae ahupua'a with an accurate representation of soil erodibility.
+The grid was created specifically for N-SPECT, which requires
+the input of a k-factor soils grid to estimate erosion using
+the NRCS-developed RUSLE and MUSLE equations.  RUSLE is used to
+estimate average erosion over time, whereas MUSLE is used to estimate
+erosion from specific rainfall events.
+</purpose>
+			<langdata Sync="TRUE">en</langdata></descript>
+		<timeperd>
+			<timeinfo>
+				<rngdates>
+					<begdate>20010116</begdate>
+					<enddate>20010116</enddate>
+				</rngdates>
+				<sngdate><caldate>REQUIRED: The year (and optionally month, or month and day) for which the data set corresponds to the ground.</caldate></sngdate></timeinfo>
+			<current>20010116</current>
+		</timeperd>
+		<status>
+			<progress>Complete</progress>
+			<update>As needed</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc Sync="TRUE">-158.281687</westbc>
+				<eastbc Sync="TRUE">-158.089447</eastbc>
+				<northbc Sync="TRUE">21.574330</northbc>
+				<southbc Sync="TRUE">21.368774</southbc>
+			</bounding>
+			<lboundng><leftbc Sync="TRUE">574469.461065</leftbc><rightbc Sync="TRUE">594269.461065</rightbc><bottombc Sync="TRUE">2363234.375478</bottombc><topbc Sync="TRUE">2385884.375478</topbc></lboundng></spdom>
+		<keywords>
+			<theme>
+				<themekt>None</themekt>
+				<themekey>soils</themekey>
+				<themekey>k factor</themekey>
+				<themekey>N-SPECT</themekey>
+				<themekey>SSURGO</themekey>
+			</theme>
+			<place>
+				<placekt>None</placekt>
+				<placekey>USA</placekey>
+				<placekey>Hawaii</placekey>
+				<placekey>Oahu</placekey>
+				<placekey>Waianae</placekey>
+				<placekey>Coastal zone</placekey>
+			</place>
+		</keywords>
+		<accconst>None</accconst>
+		<useconst>
+Data set is not for use in litigation. While efforts have been
+made to ensure that these data are accurate and reliable within
+the state of the art, NOAA, cannot assume liability for any
+damages, or misrepresentations, caused by any inaccuracies in the
+data, or as a result of the data to be used on a particular
+system. NOAA makes no warranty, expressed or implied, nor does the
+fact of distribution constitute such a warranty.
+</useconst>
+		<ptcontac>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>NOAA Coastal Services Center</cntorg>
+				</cntorgp>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>2234 S. Hobson Ave.</address>
+					<city>Charleston</city>
+					<state>South Carolina</state>
+					<postal>29405-2413</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>(843) 740-1200</cntvoice>
+				<cntfax>(843) 740-1290</cntfax>
+			</cntinfo>
+		</ptcontac>
+		<native Sync="TRUE">Microsoft Windows 2000 Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 8.3.0.800</native><natvform Sync="TRUE">Raster Dataset</natvform></idinfo>
+	<dataqual>
+		<logic>
+Tests for logical consistency indicate that all row and column positions
+in the selected latitude/longitude window contain data. Conversion and
+integration with vector files indicates that all positions are
+consistent with earth coordinates covering the same area. Attribute
+files appear to be logically consistent.
+</logic>
+		<complete>
+This data set contains information about soil k-factors.  The
+content includes only those areal features that were delineated in the
+original SSURGO database as polygons.
+</complete>
+		<posacc>
+			<horizpa>
+				<horizpar>
+The accuracy of these digital data is based upon their
+compilation to base maps that meet National Map Accuracy
+Standards. The difference in positional accuracy between the
+soil boundaries and special soil features locations in the
+field and their digitized map locations is unknown. The
+locational accuracy of soil delineations on the ground varies
+with the transition between map units.
+
+For example, on long gently sloping landscapes the transition
+occurs gradually over many feet. Where landscapes change
+abruptly from steep to level, the transition will be very
+narrow. Soil delineation boundaries and special soil features
+generally were digitized within 0.01 inch of their locations on
+the digitizing source. The digital map elements are edge matched
+between data sets. The data along each quadrangle edge are
+matched against the data for the adjacent quadrangle. Edge
+locations generally do not deviate from centerline to centerline
+by more than 0.01 inch.
+</horizpar>
+			</horizpa>
+		</posacc>
+		<lineage>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>
+U.S. Department of Agriculture, Soil
+Conservation Service
+</origin>
+						<pubdate>1972</pubdate>
+						<title>
+Soil Survey of the Islands of Kauai, Oahu, Maui, Molokai,
+and Lanai, State of Hawaii
+</title>
+						<geoform>map</geoform>
+						<pubinfo>
+							<pubplace>Washington, D.C.</pubplace>
+							<publish>U.S. Government Printing Office</publish>
+						</pubinfo>
+					</citeinfo>
+				</srccite>
+				<srcscale>24000</srcscale>
+				<typesrc>paper</typesrc>
+				<srctime>
+					<timeinfo>
+						<rngdates>
+							<begdate>1994</begdate>
+							<enddate>2001</enddate>
+						</rngdates>
+					</timeinfo>
+					<srccurr>publication date</srccurr>
+				</srctime>
+				<srccitea>SCS1</srccitea>
+				<srccontr>
+basic reference about soils and landscapes;
+information for soil map unit delineations, special soil feature
+locations, and data on soil properties
+</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>
+U.S. Department of Agriculture, Agricultural
+Stabilization and Conservation Service
+</origin>
+						<pubdate>1965</pubdate>
+						<title>multiple high altitude aerial photographs</title>
+						<geoform>remote sensing image</geoform>
+						<pubinfo>
+							<pubplace>Salt Lake City, Utah</pubplace>
+							<publish>
+U.S. Department of Agriculture,
+Agricultural Stabilization and Conservation Service
+</publish>
+						</pubinfo>
+					</citeinfo>
+				</srccite>
+				<srcscale>24000</srcscale>
+				<typesrc>paper</typesrc>
+				<srctime>
+					<timeinfo>
+						<rngdates>
+							<begdate>1960</begdate>
+							<enddate>1963</enddate>
+						</rngdates>
+					</timeinfo>
+					<srccurr>publication date</srccurr>
+				</srctime>
+				<srccitea>ASCS1</srccitea>
+				<srccontr>
+base materials for compilation and
+publication of hardcopy maps
+</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>U.S. Geological Survey</origin>
+						<pubdate>1977</pubdate>
+						<title>multiple orthophotographs</title>
+						<geoform>remote sensing image</geoform>
+						<pubinfo>
+							<pubplace>Place: Menlo Park, California</pubplace>
+							<publish>U.S. Geological Survey</publish>
+						</pubinfo>
+					</citeinfo>
+				</srccite>
+				<srcscale>24000</srcscale>
+				<typesrc>stable-base material</typesrc>
+				<srctime>
+					<timeinfo>
+						<sngdate>
+							<caldate>1994</caldate>
+						</sngdate>
+					</timeinfo>
+					<srccurr>publication date</srccurr>
+				</srctime>
+				<srccitea>USGS1</srccitea>
+				<srccontr>
+base materials for re-compilation and
+preparation of digital data
+</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>U.S. Geological Survey</origin>
+						<pubdate>1983</pubdate>
+						<title>digital raster graphics</title>
+						<geoform>digital</geoform>
+						<pubinfo>
+							<pubplace>Place: Reston, Virginia</pubplace>
+							<publish>U.S. Geological Survey</publish>
+						</pubinfo>
+					</citeinfo>
+				</srccite>
+				<srcscale>24000</srcscale>
+				<typesrc>online</typesrc>
+				<srctime>
+					<timeinfo>
+						<sngdate>
+							<caldate>2000</caldate>
+						</sngdate>
+					</timeinfo>
+					<srccurr>publication date</srccurr>
+				</srctime>
+				<srccitea>USGS2</srccitea>
+				<srccontr>
+materials used for revision and verification
+of soil survey digital data
+</srccontr>
+			</srcinfo>
+			<srcinfo>
+				<srccite>
+					<citeinfo>
+						<origin>
+U.S. Department of Agriculture, Natural Resources
+Conservation Service
+</origin>
+						<pubdate>unpublished material</pubdate>
+						<title>annotated overlays</title>
+						<geoform>map</geoform>
+					</citeinfo>
+				</srccite>
+				<srcscale>24000</srcscale>
+				<typesrc>stable-base material</typesrc>
+				<srctime>
+					<timeinfo>
+						<sngdate>
+							<caldate>2000</caldate>
+						</sngdate>
+					</timeinfo>
+					<srccurr>2000</srccurr>
+				</srctime>
+				<srccitea>NRCS1</srccitea>
+				<srccontr>digitizing source</srccontr>
+			</srcinfo>
+			<procstep>
+				<procdesc>
+The Islands of Kauai, Oahu, Maui, Molokai,
+and Lanai Soil Survey was published in 1972 at 1:24,000 scale.
+The classification and map unit names were finalized at the final
+correlation in 1966.  An evaluation was made of the soil survey
+in 1993.  It was determined that the soil map unit delineations
+were accurate.  Two additional map units were added to the soil
+survey.  The changes were made to reflect present day soil survey
+concepts, soil classification, and soil interpretations.
+Amendments to the correlation document reflecting these changes
+are on file at the NRCS Hawaii State Office.  The additional map
+units are as follows:
+
+W-----Water
+QU----Quarry
+</procdesc>
+				<srcused>SCS1</srcused>
+				<procdate>2000</procdate>
+			</procstep>
+			<procstep>
+				<procdesc>
+Field work on the soil survey for the Islands
+of Kauai, Oahu, Maui, Molokai, and Lanai, State of Hawaii were
+completed in 1965.  Three kinds of survey were made on the island.
+A high-intensity survey on cultivated areas; a low-intensity survey
+on grazing and forested lands; and a reconnaissance survey on
+inaccessible areas.  Field procedures for the soil survey included
+plotting of soil boundaries determined by field observation and by
+interpretation of aerial photographs.  Boundaries were verified at
+closely spaced intervals, and the soils in each delineation were
+identified by traversing the landscape. Soil scientists described and
+sampled the soils, and analyzed samples in the laboratory.  The
+classification and map unit names were finalized at the final
+correlation in 1966.  The soil survey for the Islands of Kauai, Oahu,
+Maui, Molokai, and Lanai, State of Hawaii was published in 1972, at
+1:24,000 scale.
+</procdesc>
+				<srcused>ASCS1, SCS1</srcused>
+				<procdate>1972</procdate>
+			</procstep>
+			<procstep>
+				<procdesc>
+Soil map unit delineations and special soil
+features were manually recompiled from 1:24,000 scale multiple
+high altitude aerial photographs onto 7 mil. annotated overlays
+that were registered to multiple orthophotographs.  The soil
+delineation overlays were manually digitized using NRCS GRASS
+Version 4.0 and 4.13.  Four control points corresponding to the
+four corners of the orthophotographs were used for registration
+during digital data collection. The processing, map neatline
+development, labeling, edge matching, and editing, were done in
+NRCS GRASS Version 4.0 and 4.13. The control points were explicitly
+entered, and were determined by converting geographic coordinates
+to UTM coordinates using m.proj. The Old Hawaiian datum was used for
+horizontal accuracy. This datum is based on the Clarke 1866
+spheroid, and is an equivalent standard to the North American
+Datum of 1927. The data were written to Digital Line Graph
+optional format with the v.export command. Compilation,
+digitizing, and quality control were performed by the soil
+scientists and cartographic technicians at the Hawaii Natural
+Resources Conservation Service State Office.
+</procdesc>
+				<srcused>SCS1, ASCS1, USGS1, NRCS1</srcused>
+				<procdate>1994</procdate>
+			</procstep>
+			<procstep>
+				<procdesc>
+The Temple Texas Digitizing and Certification
+Center imported the soil and special soil features DLGs into ARC/INFO
+7.1.2.  The 7.5 minute quadrangles for each coverage were merged
+together into a seamless soil survey area coverage and additional
+editing using the USGS 7.5 minute digital raster graphics as the
+base map was performed.  Mylar plots of digital raster graphics and
+the soil layer at 1:24,000 scale were checked for accuracy and
+completeness.  New DLGs reflecting these changes were written with
+ARC/INFO 7.1.2.
+</procdesc>
+				<srcused>USGS2, NRCS1</srcused>
+				<procdate>1999</procdate>
+			</procstep>
+			<procstep>
+				<procdesc>
+The soil and special soil features were reviewed
+by the Temple Texas Digitizing and Certification Center of the Natural
+Resources Conservation Service for adherence to SSURGO standards.
+</procdesc>
+				<srcused>NRCS1</srcused>
+				<procdate>2000</procdate>
+			</procstep>
+			<procstep>
+				<procdesc>
+The Map Unit Interpretations Record data base was
+developed by the Natural Resources Conservation Service soil scientists
+according to national standards.
+</procdesc>
+				<srcused>SCS1, NRCS1</srcused>
+				<procdate>1999</procdate>
+			</procstep>
+			<procstep>
+				<procdesc>
+The SSURGO soils polygon shapefile was reprojected to NAD83 UTM zone 4N.
+The Soils1K grid was produced using an algorithm contained within the
+advanced soil settings within N-SPECT.  The reprojected shapefile was
+entered as the soils dataset to be converted to raster format.  The file
+dem_30 was entered as the DEM GRID that conveyed the extent and cell size
+parameters used in the conversion.  The hydrologic soil group attribute
+entered was BEVHYDGRP, and the K-factor attribute entered was BEVKFACT.
+</procdesc>
+				<procdate>Unknown</procdate>
+				<proccont>
+					<cntinfo>
+						<cntorgp>
+							<cntorg>NOAA Coastal Services Center</cntorg>
+						</cntorgp>
+						<cntpos>N-SPECT Project Manager</cntpos>
+						<cntaddr>
+							<addrtype>mailing and physical address</addrtype>
+							<address>2234 S Hobson Ave.</address>
+							<city>Charleston</city>
+							<state>SC</state>
+							<postal>29405</postal>
+							<country>USA</country>
+						</cntaddr>
+						<cntvoice>843-740-1200</cntvoice>
+						<cntfax>843-740-1224</cntfax>
+						<cntemail>csc@csc.noaa.gov</cntemail>
+					</cntinfo>
+				</proccont>
+			</procstep>
+			<procstep><procdesc Sync="TRUE">Metadata imported.</procdesc><srcused Sync="TRUE">C:\DOCUME~1\edempsey\LOCALS~1\Temp\xml187.tmp</srcused><date Sync="TRUE">20041220</date><time Sync="TRUE">15443800</time></procstep></lineage>
+	</dataqual>
+	<spdoinfo>
+		<direct Sync="TRUE">Raster</direct>
+		<rastinfo><rasttype Sync="TRUE">Grid Cell</rasttype><rowcount Sync="TRUE">755</rowcount><colcount Sync="TRUE">660</colcount><rastxsz Sync="TRUE">30.000000</rastxsz><rastysz Sync="TRUE">30.000000</rastysz><rastbpp Sync="TRUE">32</rastbpp><vrtcount Sync="TRUE">1</vrtcount><rastorig Sync="TRUE">Upper Left</rastorig><rastcmap Sync="TRUE">FALSE</rastcmap><rastcomp Sync="TRUE">Default</rastcomp><rastband Sync="TRUE">1</rastband><rastdtyp Sync="TRUE">matrix values</rastdtyp><rastplyr Sync="TRUE">FALSE</rastplyr><rastifor Sync="TRUE">ESRI GRID</rastifor></rastinfo></spdoinfo>
+	<spref>
+		<horizsys>
+			<planar>
+				<planci>
+					<plance Sync="TRUE">row and column</plance>
+					<coordrep>
+						<absres Sync="TRUE">30.000000</absres>
+						<ordres Sync="TRUE">30.000000</ordres>
+					</coordrep>
+					<plandu Sync="TRUE">meters</plandu>
+				</planci>
+				<gridsys><gridsysn Sync="TRUE">Universal Transverse Mercator</gridsysn><utm><utmzone Sync="TRUE">4</utmzone><transmer><sfctrmer Sync="TRUE">0.999600</sfctrmer><longcm Sync="TRUE">-159.000000</longcm><latprjo Sync="TRUE">0.000000</latprjo><feast Sync="TRUE">500000.000000</feast><fnorth Sync="TRUE">0.000000</fnorth></transmer></utm></gridsys></planar>
+			<geodetic>
+				<horizdn Sync="TRUE">North American Datum of 1983</horizdn>
+				<ellips Sync="TRUE">Geodetic Reference System 80</ellips>
+				<semiaxis Sync="TRUE">6378137.000000</semiaxis>
+				<denflat Sync="TRUE">298.257222</denflat>
+			</geodetic>
+			<cordsysn><geogcsn Sync="TRUE">GCS_North_American_1983</geogcsn><projcsn Sync="TRUE">NAD_1983_UTM_Zone_4N</projcsn></cordsysn></horizsys>
+	</spref>
+	<eainfo>
+		<detailed>
+			<enttyp>
+				<enttypl>Soil Erodibility Factors by Soil Group</enttypl>
+				<enttypd>
+Soil erodibility is the susceptibility of soil particles to detachment
+and movement by water.
+</enttypd>
+				<enttypds>
+U.S. Department of Agriculture. 1993. Soil Survey Manual.
+Soil Surv. Staff, U.S. Dep. Agric. Handb. 18.
+</enttypds>
+			</enttyp>
+			<attr>
+				<attrlabl>Value</attrlabl>
+				<attrdef>Pixel value (i.e. k-factor)</attrdef>
+				<attrdefs>None</attrdefs>
+				<attrdomv>
+					<rdom>
+						<rdommin>0.02</rdommin>
+						<rdommax>0.64</rdommax>
+					</rdom>
+				</attrdomv>
+			</attr>
+		</detailed>
+	</eainfo>
+	<distinfo>
+		<distrib>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>NOAA Coastal Services Center</cntorg>
+				</cntorgp>
+				<cntpos>N-SPECT Project Manager</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>2234 S Hobson Ave.</address>
+					<city>Charleston</city>
+					<state>SC</state>
+					<postal>29405</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>843-740-1200</cntvoice>
+				<cntfax>843-740-1224</cntfax>
+				<cntemail>csc@csc.noaa.gov</cntemail>
+				<hours>Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.</hours>
+			</cntinfo>
+		</distrib>
+		<distliab>
+Users must assume responsibility to determine the usability of these
+data.
+</distliab>
+		<resdesc Sync="TRUE">Downloadable Data</resdesc><stdorder><digform><digtinfo><transize Sync="TRUE">2.765</transize><dssize Sync="TRUE">2.765</dssize></digtinfo></digform></stdorder></distinfo>
+	<metainfo>
+		<metd Sync="TRUE">20041220</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>NOAA Coastal Services Center</cntorg>
+					<cntper>REQUIRED: The person responsible for the metadata information.</cntper></cntorgp>
+				<cntpos>N-SPECT Metadata Manager</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>2234 S Hobson Ave.</address>
+					<city>Charleston</city>
+					<state>SC</state>
+					<postal>29405</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>843-740-1200</cntvoice>
+				<cntfax>843-740-1224</cntfax>
+				<cntemail>csc@csc.noaa.gov</cntemail>
+				<hours>Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.</hours>
+			</cntinfo>
+		</metc>
+		<metstdn Sync="TRUE">FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+		<metstdv Sync="TRUE">FGDC-STD-001-1998</metstdv>
+		<langmeta Sync="TRUE">en</langmeta><mettc Sync="TRUE">local time</mettc><metextns><onlink Sync="TRUE">http://www.esri.com/metadata/esriprof80.html</onlink><metprof Sync="TRUE">ESRI Metadata Profile</metprof></metextns></metainfo>
+	<Esri><MetaID>{FB4B57F1-E85F-4B63-9313-9E163BB55B8D}</MetaID><CreaDate>20041220</CreaDate><CreaTime>15443800</CreaTime><SyncOnce>FALSE</SyncOnce><SyncDate>20041220</SyncDate><SyncTime>15443900</SyncTime><ModDate>20041220</ModDate><ModTime>15443900</ModTime></Esri><dataIdInfo><envirDesc Sync="TRUE">Microsoft Windows 2000 Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 8.3.0.800</envirDesc><dataLang><languageCode Sync="TRUE" value="en"></languageCode></dataLang><idCitation><resTitle Sync="TRUE">soilsk1</resTitle><presForm><PresFormCd Sync="TRUE" value="005"></PresFormCd></presForm></idCitation><spatRpType><SpatRepTypCd Sync="TRUE" value="002"></SpatRepTypCd></spatRpType><dataExt><geoEle><GeoBndBox esriExtentType="native"><westBL Sync="TRUE">574469.461065</westBL><eastBL Sync="TRUE">594269.461065</eastBL><northBL Sync="TRUE">2385884.375478</northBL><southBL Sync="TRUE">2363234.375478</southBL><exTypeCode Sync="TRUE">1</exTypeCode></GeoBndBox></geoEle></dataExt><geoBox esriExtentType="decdegrees"><westBL Sync="TRUE">-158.281687</westBL><eastBL Sync="TRUE">-158.089447</eastBL><northBL Sync="TRUE">21.57433</northBL><southBL Sync="TRUE">21.368774</southBL><exTypeCode Sync="TRUE">1</exTypeCode></geoBox></dataIdInfo><mdLang><languageCode Sync="TRUE" value="en"></languageCode></mdLang><mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName><mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer><mdChar><CharSetCd Sync="TRUE" value="004"></CharSetCd></mdChar><mdHrLv><ScopeCd Sync="TRUE" value="005"></ScopeCd></mdHrLv><mdHrLvName Sync="TRUE">dataset</mdHrLvName><distInfo><distributor><distorTran><onLineSrc><orDesc Sync="TRUE">002</orDesc><linkage Sync="TRUE">file://\\CSC-W-EDEMPSEY\C$\NSPECT\WaianaeData\soilsk1</linkage><protocol Sync="TRUE">Local Area Network</protocol></onLineSrc><transSize Sync="TRUE">2.765</transSize></distorTran><distorFormat><formatName Sync="TRUE">Raster Dataset</formatName></distorFormat></distributor></distInfo><refSysInfo><RefSystem><refSysID><identCode Sync="TRUE">NAD_1983_UTM_Zone_4N</identCode></refSysID></RefSystem></refSysInfo><spatRepInfo><GridSpatRep><numDims Sync="TRUE">2</numDims><axDimProps><Dimen><dimName><DimNameTypCd Sync="TRUE" value="002"></DimNameTypCd></dimName><dimSize Sync="TRUE">660</dimSize><dimResol Sync="TRUE">30</dimResol></Dimen><Dimen><dimName><DimNameTypCd Sync="TRUE" value="001"></DimNameTypCd></dimName><dimSize Sync="TRUE">755</dimSize><dimResol Sync="TRUE">30</dimResol></Dimen></axDimProps><cellGeo><CellGeoCd Sync="TRUE" value="002"></CellGeoCd></cellGeo><tranParaAv Sync="TRUE">1</tranParaAv></GridSpatRep></spatRepInfo><mdDateSt Sync="TRUE">20041220</mdDateSt></metadata>

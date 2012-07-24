@@ -1,0 +1,5 @@
+<ColoringScheme SchemeType="Grid" GridName="HI_event_prec_1" GroupName="Data Layers">
+  <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="90" LightSourceElevation="45" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
+    <Break Caption="1.500" LowValue="1.5" HighValue="1.5" LowColor="-9864175" HighColor="-9864175" ColoringType="2" GradientModel="1" />
+  </GridColoringScheme>
+</ColoringScheme>

@@ -1,0 +1,426 @@
+Identification_Information:
+  Citation:
+    Citation_Information:
+      Originator: NOAA Coastal Services Center
+      Publication_Date: 20040806
+      Title: wsdelin
+      Geospatial_Data_Presentation_Form: Map
+      Publication_Information:
+        Publication_Place: NOAA Coastal Services Center, Charleston, SC
+        Publisher: NOAA Coastal Services Center
+      Larger_Work_Citation:
+        Citation_Information:
+          Originator: NOAA Coastal Services Center
+          Publication_Date: 20040806
+          Title: N-SPECT
+          Edition: 1
+          Publication_Information:
+            Publication_Place: NOAA Coastal Services Center, Charleston, SC
+            Publisher: NOAA Coastal Services Center
+          Online_Linkage: http://www.csc.noaa.gov/crs
+  Description:
+    Abstract:
+      WSDELIN - Wai'anae
+      The Nonpoint Source Pollution and Erosion Comparison Tool (N-SPECT) 
+      was developed by the National Oceanic and Atmospheric Administration 
+      (NOAA) Coastal Services Center to accompany the Wai'anae Ecological 
+      Characterization being developed by the Hawaii Coastal Zone 
+      Management (CZM) program.  N-SPECT examines the relationship between 
+      land cover, nonpoint source pollution, and erosion.  N-SPECT is an 
+      extension to Environmental Systems Research Institutes (ESRI) ArcGIS 
+      software package, version 8.3 and requires the Spatial Analyst 
+      extension.  N-SPECT is designed to be portable to any watershed, 
+      provided the user has access to the necessary data. Data provided 
+      with N-SPECT are for the Wai'anae ahupua'a, the original study area 
+      located on the western side of Oahu, Hawaii.  The Wai'anae ahupua'a 
+      is the collection of catchments that drain the Wai'anae mountains 
+      westward to the Wai'anae coast (west coast of Oahu, HI), including 
+      Kaluakauila, Makua, Keaau, Makaha, Kaupuni, Kamaileunu, Mailiili, 
+      Ulehawa, and Nanakuli.  The data sets included in this record (see
+      supplemental information) are components of the hydrological
+      analysis incorporated in N-SPECT and are used "behind the scenes" to
+      track the movement and mass of sediment and pollutants.
+    Purpose:
+      These data sets were produced for the purpose of including the
+      necessary topography and surface hydrology data sets with the 
+      N-SPECT package.  These data sets are critical for N-SPECT
+      functionality.
+    Supplemental_Information:
+      This metadata record is relevant for the following data sets:
+      basinpoly.shp     demfill     flowdir     nibble
+      dem2b             flowacc     lsgrid      wshed
+  Time_Period_of_Content:
+    Time_Period_Information:
+      Range_of_Dates/Times:
+        Beginning_Date: Unknown
+        Ending_Date: Unknown
+    Currentness_Reference: publication date
+  Status:
+    Progress: Complete
+    Maintenance_and_Update_Frequency: None planned
+  Spatial_Domain:
+    Bounding_Coordinates:
+      West_Bounding_Coordinate: -158.281681
+      East_Bounding_Coordinate: -158.089438
+      North_Bounding_Coordinate: 21.574541
+      South_Bounding_Coordinate: 21.368444
+  Keywords:
+    Theme:
+      Theme_Keyword_Thesaurus: None
+      Theme_Keyword: hydrologic analysis
+      Theme_Keyword: basinpoly
+      Theme_Keyword: dem2b
+      Theme_Keyword: demfill
+      Theme_Keyword: flowacc
+      Theme_Keyword: flowdir
+      Theme_Keyword: lsgrid
+      Theme_Keyword: nibble
+      Theme_Keyword: wshed
+    Place:
+      Place_Keyword_Thesaurus: None
+      Place_Keyword: USA
+      Place_Keyword: Hawaii
+      Place_Keyword: Coastal Zone
+      Place_Keyword: Oahu
+      Place_Keyword: Wai'anae
+  Access_Constraints: None
+  Use_Constraints:
+    Data set is not for use in litigation. While efforts have been
+    made to ensure that these data are accurate and reliable within
+    the state of the art, NOAA, cannot assume liability for any
+    damages, or misrepresentations, caused by any inaccuracies in the
+    data, or as a result of the data to be used on a particular
+    system. NOAA makes no warranty, expressed or implied, nor does the
+    fact of distribution constitute such a warranty.
+  Point_of_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S. Hobson Ave.
+        City: Charleston
+        State_or_Province: South Carolina
+        Postal_Code: 29405-2413
+        Country: USA
+      Contact_Voice_Telephone: (843) 740-1200
+      Contact_Facsimile_Telephone: (843) 740-1290
+
+Data_Quality_Information:
+  Logical_Consistency_Report:
+    No tests were performed to assess consistency.  However, attributes
+    appear to be consistent and all values appear graphically to be within
+    acceptable ranges.
+  Completeness_Report:
+    The data sets included in this metadata record were developed using
+    standardized hydrological algorithms (ESRI) and are deemed to be as
+    complete as the original DEM from which the were derived.
+  Lineage:
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: USGS
+          Publication_Date: 20010917
+          Title: SDTS DEM - 7.5 X 7.5 minute GRID
+      Type_of_Source_Media: electronic media
+      Source_Time_Period_of_Content: 
+        Time_Period_Information:
+          Single_Date/Time: 
+            Calendar_Date: 1983
+        Source_Currentness_Reference: ground condition
+      Source_Citation_Abbreviation: USGS DEM
+      Source_Contribution:
+        USGS SDTS 10m DEMs provided the source elevation data for the
+        N-SPECT project.  
+    Process_Step:
+      Process_Description:
+        Six 7.5 x 7.5 minute SDTS 10 meter DEMs were mosaiced using the 
+        ArcINFO GRID command "mosaic" to create a single data set that 
+        covered the Wai'anae study region.
+      Process_Date: unknown
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: mailing and physical address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: SC
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        The 10 meter grid was resampled with the ArcINFO GRID command
+        "resample" using bilinear interpolation and an output cell size
+        of 30 meters.
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: mailing and physical address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: SC
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        DEM_30
+        Due to the resampling process, small coastal features such as stream
+        mouths were closed off creating unnatural ponds.  To address this
+        issue, the ArcINFO GRID command "blockmin" was used to run a 3 x 3
+        filter over the DEM to record the lowest elevations within each 30
+        meter cell.  A mask was created by encoding all cells having values
+        greater than zero with ones, and all cells equal to zero with zeros.
+        The mask successfully captured the small coastal features and was
+        subsequently multiplied by the resampled DEM to produce a final 30
+        meter DEM that contained the coastal features.
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        DEMFILL
+        The data set "demfill" was derived from the data set "dem_30" and
+        represents an elevation data set free of sinks, or depressions that
+        would hinder future hydrologic analyses.  This was accomplished using
+        code adapted from the ArcHydro toolset.
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        FLOWDIR
+        The data set "flowdir" was derived from the data set "demfill."  It
+        represents the direction of steepest descent from cell to cell.  This
+        was accomplished using the FLOWDIRECTION command: 
+        flowdir = FlowDirection(demfill)
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        FLOWACC
+        The data set "flowacc" was derived from the data set "flowdir."  It
+        represents the accumulation of uphill cells at each cell.  This
+        was accomplished using the FLOWACCUMULATION command: 
+        flowacc = FlowAccumulation(flowdir)
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        WSHED
+        This process returns a grid called "wshed" that was derived using 
+        flowdir and flowacc.  The maximum value from flowacc was multiplied 
+        by 0.01 to set an accumulation threshold defining small watersheds. 
+        Flowacc was then queried for all values greater than the threshold, 
+        which essentially produced a gridded stream network. The STREAMLINK 
+        command was then used to produce a grid representing the stream 
+        network in the study area where each stream segment was identified 
+        by a unique value.  The WATERSHED command was then used with the 
+        streamlink and flowdir grids to produce "wshed."
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        BASINPOLY.SHP
+        "Basinpoly.shp" was created from flowdir using the BASIN command.
+        The output grid was then converted to a polygon feature class and
+        saved as "basinpoly."
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        DEM2B
+        The data set "dem2b" was derived from the data set "demfill."  It
+        is a replica of demfill but has a two cell buffer added around the
+        periphery of the grid.  This was accomplished using the following
+        procedures:
+        First change the calculation region to be larger by 1 grid cell, then:
+          dem_b = Con(isnull([demfill]), focalmin([demfill]), [demfill])
+        Then change extent to be larger extent by 2 grid cells all directions and:
+          dem_2b = Con(isnull([dem_b]), focalmin([dem_b]), [dem_b])
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        NIBBLE
+        This grid was created directly from the flow direction grid and is 
+        essentially the same grid but contains zeros where NoData values 
+        exist in the flow direction grid.  The NIBBLE command was used to 
+        ensure that all flow direction values beyond the extent of the dem 
+        were set to zero.
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+    Process_Step:
+      Process_Description:
+        LSGRID
+        Slope length was calculated by deriving the downslope angle for 
+        each cell in degrees.  Next, a grid representing relative change in 
+        downslope angle was created.  Areas where downslope angle exceeded 
+        5% and the relative change in downslope angle exceeded 50% were 
+        flagged as breaks in the cumulative slope.  Areas where downslope 
+        angle was less than or equal to 5% and the relative change in 
+        downslope angle exceeded 70% were also flagged as breaks in the 
+        cumulative slope.  A modified flow direction grid was created where 
+        the slope break points were recoded as zeros and all other cells 
+        retained their original flow direction values.  A weight grid was 
+        created where each output cell received a value of 1 if water 
+        flowed through it in a cardinal direction and 1.4142 if water 
+        flowed through it in a diagonal direction (Pythagorean Theorem). 
+        The FLOWLENGTH command was then used to sum these values along the 
+        flow paths until one of the break points, a ridge, or a pour point 
+        was encountered.  This yielded the estimate of slope length lambda 
+        used to calculate the L-Factor.
+        
+        The S-Factor was calculated using the following equations:
+        Where slope < 9%		S = 10.8 * (sin theta) + 0.03
+        Where slope > 9%		S = 16.8 * (sin theta) - 0.50
+        
+        The LSgrid was then produced by multiplying the the L-factor grid
+        by the S-factor grid.
+      Process_Date: 20040806
+      Process_Contact:
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization:  NOAA Coastal Services Center
+            Contact_Person: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: Physical and mailing address
+            Address: 2234 South Hobson Ave.
+            City: Charleston
+            State_or_Province: South Carolina
+            Postal_Code: 29405-2413
+          Contact_Voice_Telephone: 843-740-1200
+
+Distribution_Information:
+  Distributor:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Position: N-SPECT Project Manager
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S Hobson Ave.
+        City: Charleston
+        State_or_Province: SC
+        Postal_Code: 29405
+        Country: USA
+      Contact_Voice_Telephone: 843-740-1200
+      Contact_Facsimile_Telephone: 843-740-1224
+      Contact_Electronic_Mail_Address: csc@csc.noaa.gov
+      Hours_of_Service: Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.
+  Distribution_Liability:
+    Users must assume responsibility to determine the usability of these
+    data.
+    
+Metadata_Reference_Information:
+  Metadata_Date: 20040811
+  Metadata_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Position: N-SPECT Metadata Manager
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S Hobson Ave.
+        City: Charleston
+        State_or_Province: SC
+        Postal_Code: 29405
+        Country: USA
+      Contact_Voice_Telephone: 843-740-1200
+      Contact_Facsimile_Telephone: 843-740-1224
+      Contact_Electronic_Mail_Address: csc@csc.noaa.gov
+      Hours_of_Service: Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.
+  Metadata_Standard_Name: FGDC CSDGM
+  Metadata_Standard_Version: FGDC-STD-001-1998

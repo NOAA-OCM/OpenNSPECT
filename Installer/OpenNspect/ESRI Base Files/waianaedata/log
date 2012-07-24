@@ -1,0 +1,6 @@
+20041104 824   0     0     0edempsey RENAME annual_prec annual_prec1
+20041104 824   0     0     0edempsey RENAME annual_prec1 annual_prec
+20041104 826   0     0     0edempsey RENAME landcover landcover1
+20041104 826   0     0     0edempsey COPY landcover1 landcover
+20041104 826   0     0     0edempsey KILL landcover1 all
+20041104 841  18     0     0edempsey grid

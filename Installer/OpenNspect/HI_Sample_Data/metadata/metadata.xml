@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><!DOCTYPE metadata SYSTEM "http://www.fgdc.gov/metadata/fgdc-std-001-1998.dtd"><metadata>
+<idinfo>
+<citation>
+<citeinfo>
+<origin>NOAA Coastal Services Center</origin>
+<pubdate></pubdate>
+<title></title>
+<geoform>Map</geoform>
+<onlink>http://www.csc.noaa.gov/crs</onlink>
+</citeinfo>
+</citation>
+<descript>
+<abstract>The NOAA Coastal Services Center has developed the Nonpoint-Source 
+      Pollution and Erosion Comparison Tool (N-SPECT) to examine the 
+      relationships between land cover, soil characteristics, topography, and 
+      precipitation regimes in order to assess spatio-temporal patterns of 
+      surface water runoff processes, nonpoint source pollution, and erosion. 
+      N-SPECT is a GIS tool implemented in Environmental Systems Research 
+      Institute's (ESRI®) ArcMap version 8.x / 9.x software package, and requires the 
+      Spatial Analyst extension.  Spatial elevation data are used to calculate 
+      flow direction and flow accumulation throughout a watershed.  Land cover, 
+      soils, and precipitation data sets are processed to estimate runoff volume 
+      at both the local (pixel) and watershed scales.  Coefficients representing 
+      the contribution of each land cover class to the expected pollutant load 
+      are applied to land cover data sets to approximate total pollutant loads. 
+      These coefficients were derived from a combination of relevant studies and 
+      local water quality sampling data.  Sediment loads are also estimated.  An 
+      overall water quality rating is assigned by comparing the total pollutant 
+      and sediment loads calculated by N-SPECT to local water quality standards. 
+      This water quality rating can help resource managers make informed 
+      decisions about water quality and which areas to target for improvement. 
+      N-SPECT also provides functionality to compare current land cover 
+      conditions to proposed changes in both land use and land cover.  Tool 
+      results can be used to help understand and predict the impacts of 
+      management decisions on water quality and, potentially, on nearshore 
+      environmental health.  N-SPECT is designed to be portable to any 
+      watershed, provided the user has access to the necessary data.  Data 
+      provided with N-SPECT are for the Wai'anae ahupua'a, the original study 
+      area located on the western side of Oahu, Hawaii.  The Wai'anae ahupua'a 
+      is the collection of catchments that drain the Wai'anae mountains westward 
+      to the Wai'anae coast (west coast of Oahu, HI), including Kaluakauila, 
+      Makua, Keaau, Makaha, Kaupuni, Kamaileunu, Mailiili, Ulehawa, and 
+      Nanakuli.  The data output covered by this record are listed below in the 
+      Supplemental Information section.</abstract>
+<purpose>These data are the result of an examination of the relationships between 
+      land cover, soil characteristics, topography, and precipitation regimes in 
+      order to assess spatio-temporal patterns of surface water runoff 
+      processes, nonpoint source pollution, and erosion.  These output data are 
+      meant to be used as screening tools for further research.</purpose>
+<supplinf></supplinf>
+</descript>
+<timeperd>
+<timeinfo>
+<sngdate>
+<caldate>unknown</caldate>
+</sngdate>
+</timeinfo>
+<current>publication date</current>
+</timeperd>
+<status>
+<progress>Complete</progress>
+<update>None planned</update>
+</status>
+<spdom>
+<bounding>
+<westbc></westbc>
+<eastbc></eastbc>
+<northbc></northbc>
+<southbc></southbc>
+</bounding>
+</spdom>
+<keywords>
+<theme>
+<themekt>None</themekt>
+<themekey>N-SPECT</themekey>
+<themekey>Nonpoint-Source Pollution</themekey>
+</theme>
+<place>
+<placekt>None</placekt>
+<placekey>USA</placekey>
+<placekey>Hawaii</placekey>
+<placekey>Coastal Zone</placekey>
+<placekey>Oahu</placekey>
+<placekey>Wai'anae</placekey>
+</place>
+</keywords>
+<accconst>None</accconst>
+<useconst>Data set is not for use in litigation.  While efforts have been
+made to ensure that these data are accurate and reliable within
+the state of the art, NOAA, cannot assume liability for any
+damages, or misrepresentations, caused by any inaccuracies in the
+data, or as a result of the data to be used on a particular
+system. NOAA makes no warranty, expressed or implied, nor does the
+fact of distribution constitute such a warranty.</useconst>
+</idinfo>
+<dataqual>
+<logic>None</logic>
+<complete>None</complete>
+<lineage>
+<procstep>
+<procdesc></procdesc>
+<procdate></procdate>
+</procstep>
+</lineage>
+</dataqual>
+<spdoinfo>
+<direct>Raster</direct>
+</spdoinfo>
+<spref>
+<horizsys>
+<planar>
+<gridsys>
+<gridsysn>Universal Transverse Mercator</gridsysn>
+<utm>
+<utmzone>4</utmzone>
+<transmer>
+<sfctrmer>0.999600</sfctrmer>
+<longcm>-159.000000</longcm>
+<latprjo>0.000000</latprjo>
+<feast>500000.000000</feast>
+<fnorth>0.000000</fnorth>
+</transmer>
+</utm>
+</gridsys>
+<planci>
+<plance>Row and column</plance>
+<coordrep>
+<absres>30.000000</absres>
+<ordres>30.000000</ordres>
+</coordrep>
+<plandu>Meters</plandu>
+</planci>
+</planar>
+<geodetic>
+<horizdn>North American Datum of 1983</horizdn>
+<ellips>GRS 80</ellips>
+<semiaxis>6378137.0000000</semiaxis>
+<denflat>298.26</denflat>
+</geodetic>
+</horizsys>
+</spref>
+<metainfo>
+<metd></metd>
+<metc>
+<cntinfo>
+<cntorgp>
+<cntorg>NOAA Coastal Services Center</cntorg>
+</cntorgp>
+<cntpos>N-SPECT Metadata Manager</cntpos>
+<cntaddr>
+<addrtype>mailing and physical address</addrtype>
+<address>2234 S Hobson Ave.</address>
+<city>Charleston</city>
+<state>SC</state>
+<postal>29405</postal>
+<country>USA</country>
+</cntaddr>
+<cntvoice>843-740-1200</cntvoice>
+<cntfax>843-740-1224</cntfax>
+<cntemail>csc@csc.noaa.gov</cntemail>
+<hours>Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.</hours>
+</cntinfo>
+</metc>
+<metstdn>FGDC CSDGM</metstdn>
+<metstdv>FGDC-STD-001-1998</metstdv>
+</metainfo>
+</metadata>

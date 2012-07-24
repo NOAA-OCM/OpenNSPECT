@@ -1,0 +1,444 @@
+Identification_Information:
+  Citation:
+    Citation_Information:
+      Originator: NOAA Coastal Services Center
+      Publication_Date: 20040806
+      Title: soils
+      Geospatial_Data_Presentation_Form: Map
+      Publication_Information:
+        Publication_Place: NOAA Coastal Services Center, Charleston, SC
+        Publisher: NOAA Coastal Services Center
+      Online_Linkage: http://www.csc.noaa.gov/crs
+      Larger_Work_Citation:
+        Citation_Information:
+          Originator: NOAA Coastal Services Center
+          Publication_Date: 20040806
+          Title: N-SPECT
+          Edition: 1
+          Publication_Information:
+            Publication_Place: NOAA Coastal Services Center, Charleston, SC
+            Publisher: NOAA Coastal Services Center
+          Online_Linkage: http://www.csc.noaa.gov/crs
+  Description:
+    Abstract:
+      Wai'anae Soils (from SSURGO database)
+      The Nonpoint Source Pollution and Erosion Comparison Tool (N-SPECT)
+      was developed by the National Oceanic and Atmospheric Administration
+      (NOAA) Coastal Services Center to accompany the Wai'anae Ecological
+      Characterization being developed by the Hawaii Coastal Zone
+      Management (CZM) program.  N-SPECT examines the relationship between
+      land cover, nonpoint source pollution, and erosion.  N-SPECT is an
+      extension to Environmental Systems Research Institutes (ESRI) ArcGIS
+      software package, version 8.3 and requires the Spatial Analyst
+      extension.  N-SPECT is designed to be portable to any watershed, 
+      provided the user has access to the necessary data. Data provided 
+      with N-SPECT are for the Wai'anae ahupua'a, the original study area 
+      located on the western side of Oahu, Hawaii.  The Wai'anae ahupua'a 
+      is the collection of catchments that drain the Wai'anae mountains 
+      westward to the Wai'anae coast (west coast of Oahu, HI), including 
+      Kaluakauila, Makua, Keaau, Makaha, Kaupuni, Kamaileunu, Mailiili, 
+      Ulehawa, and Nanakuli.  The Soils data file is a vector file that
+      delineates major soil types throughout the Wai'anae study region.
+      It originated from the USDA SSURGO database.
+    Purpose:
+      This data set was derived as a precursor to the Soils1 and Soils1K grids
+      used for runoff and erosion modeling in N-SPECT.  It depicts the kinds
+      and distribution of soil types in the Wai'anae region, and contains
+      information extracted from the "comp" and "layer" SSURGO tables.
+  Time_Period_of_Content:
+    Time_Period_Information:
+      Range_of_Dates/Times:
+        Beginning_Date: 20010116   
+        Ending_Date: 20010116
+    Currentness_Reference: 20010116
+  Status:
+    Progress: Complete
+    Maintenance_and_Update_Frequency: As needed
+  Spatial_Domain:
+    Bounding_Coordinates:
+      West_Bounding_Coordinate: -158.281218
+      East_Bounding_Coordinate: -158.089429
+      North_Bounding_Coordinate: 21.574435
+      South_Bounding_Coordinate: 21.368638
+  Keywords:
+    Theme:
+      Theme_Keyword_Thesaurus: None
+      Theme_Keyword: soil survey
+      Theme_Keyword: soils
+      Theme_Keyword: Soil Survey Geographic 
+      Theme_Keyword: SSURGO
+      Theme_Keyword: N-SPECT 
+    Place:
+      Place_Keyword_Thesaurus: None
+      Place_Keyword: USA
+      Place_Keyword: Hawaii
+      Place_Keyword: Oahu
+      Place_Keyword: Waianae
+      Place_Keyword: Coastal zone
+  Access_Constraints: None
+  Use_Constraints:
+    Data set is not for use in litigation. While efforts have been
+    made to ensure that these data are accurate and reliable within
+    the state of the art, NOAA, cannot assume liability for any
+    damages, or misrepresentations, caused by any inaccuracies in the
+    data, or as a result of the data to be used on a particular
+    system. NOAA makes no warranty, expressed or implied, nor does the
+    fact of distribution constitute such a warranty.
+  Point_of_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S. Hobson Ave.
+        City: Charleston
+        State_or_Province: South Carolina
+        Postal_Code: 29405-2413
+        Country: USA
+      Contact_Voice_Telephone: (843) 740-1200
+      Contact_Facsimile_Telephone: (843) 740-1290
+
+Data_Quality_Information:
+  Logical_Consistency_Report:
+    Attribute files appear to be logically consistent.
+  Completeness_Report:
+    This data set contains information about different soil types and their
+    associated attributes from the "comp" and "layer" tables.  The
+    content includes only those areal features that were delineated in the
+    original SSURGO database as polygons.  
+  Positional_Accuracy:
+    Horizontal_Positional_Accuracy:
+      Horizontal_Positional_Accuracy_Report:
+        The accuracy of these digital data is based upon their
+        compilation to base maps that meet National Map Accuracy
+        Standards. The difference in positional accuracy between the
+        soil boundaries and special soil features locations in the
+        field and their digitized map locations is unknown. The
+        locational accuracy of soil delineations on the ground varies
+        with the transition between map units.  
+
+        For example, on long gently sloping landscapes the transition
+        occurs gradually over many feet. Where landscapes change
+        abruptly from steep to level, the transition will be very
+        narrow. Soil delineation boundaries and special soil features
+        generally were digitized within 0.01 inch of their locations on
+        the digitizing source. The digital map elements are edge matched
+        between data sets. The data along each quadrangle edge are
+        matched against the data for the adjacent quadrangle. Edge
+        locations generally do not deviate from centerline to centerline
+        by more than 0.01 inch.
+  Lineage:
+    Source_Information:
+      Source_Citation: 
+        Citation_Information:
+          Originator: U.S. Department of Agriculture, Soil
+            Conservation Service 
+          Publication_Date: 1972
+          Title: Soil Survey of the Islands of Kauai, Oahu, Maui, Molokai,
+            and Lanai, State of Hawaii 
+          Geospatial_Data_Presentation_Form: map 
+          Publication_Information:
+            Publication_Place: Washington, D.C.
+            Publisher: U.S. Government Printing Office
+      Source_Scale_Denominator: 24000
+      Type_of_Source_Media: paper
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Range_of_Dates/Times:
+            Beginning_Date: 1994
+            Ending_Date: 2001 
+        Source_Currentness_Reference: publication date 
+      Source_Citation_Abbreviation: SCS1 
+      Source_Contribution: basic reference about soils and landscapes; 
+        information for soil map unit delineations, special soil feature 
+        locations, and data on soil properties
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: U.S. Department of Agriculture, Agricultural
+              Stabilization and Conservation Service
+          Publication_Date: 1965 
+          Title: multiple high altitude aerial photographs
+          Geospatial_Data_Presentation_Form: remote sensing image 
+          Publication_Information: 
+            Publication_Place: Salt Lake City, Utah 
+            Publisher: U.S. Department of Agriculture,
+              Agricultural Stabilization and Conservation Service 
+      Source_Scale_Denominator: 24000 
+      Type_of_Source_Media: paper 
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Range_of_Dates/Times:
+            Beginning_Date: 1960
+            Ending_Date: 1963
+        Source_Currentness_Reference: publication date
+      Source_Citation_Abbreviation: ASCS1
+      Source_Contribution: base materials for compilation and 
+        publication of hardcopy maps  
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: U.S. Geological Survey
+          Publication_Date: 1977 
+          Title: multiple orthophotographs 
+          Geospatial_Data_Presentation_Form: remote sensing image 
+          Publication_Information:
+            Publication_Place: Place: Menlo Park, California 
+            Publisher: U.S. Geological Survey 
+      Source_Scale_Denominator: 24000 
+      Type_of_Source_Media: stable-base material 
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Single_Date/Time:
+            Calendar_Date: 1994
+        Source_Currentness_Reference: publication date 
+      Source_Citation_Abbreviation: USGS1
+      Source_Contribution: base materials for re-compilation and
+        preparation of digital data 
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: U.S. Geological Survey
+          Publication_Date: 1983
+          Title: digital raster graphics
+          Geospatial_Data_Presentation_Form: digital
+          Publication_Information:
+            Publication_Place: Place: Reston, Virginia 
+            Publisher: U.S. Geological Survey
+      Source_Scale_Denominator: 24000 
+      Type_of_Source_Media: online 
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Single_Date/Time:
+            Calendar_Date: 2000
+        Source_Currentness_Reference: publication date 
+      Source_Citation_Abbreviation: USGS2 
+      Source_Contribution: materials used for revision and verification
+        of soil survey digital data
+    Source_Information:
+      Source_Citation:
+        Citation_Information:
+          Originator: U.S. Department of Agriculture, Natural Resources
+            Conservation Service
+          Publication_Date: unpublished material
+          Title: annotated overlays
+          Geospatial_Data_Presentation_Form: map
+      Source_Scale_Denominator: 24000 
+      Type_of_Source_Media: stable-base material
+      Source_Time_Period_of_Content:
+        Time_Period_Information:
+          Single_Date/Time:
+            Calendar_Date: 2000
+        Source_Currentness_Reference: 2000
+      Source_Citation_Abbreviation: NRCS1 
+      Source_Contribution: digitizing source
+    Process_Step:
+      Process_Description: The Islands of Kauai, Oahu, Maui, Molokai,
+        and Lanai Soil Survey was published in 1972 at 1:24,000 scale.
+        The classification and map unit names were finalized at the final
+        correlation in 1966.  An evaluation was made of the soil survey
+        in 1993.  It was determined that the soil map unit delineations
+        were accurate.  Two additional map units were added to the soil
+        survey.  The changes were made to reflect present day soil survey
+        concepts, soil classification, and soil interpretations.
+        Amendments to the correlation document reflecting these changes
+        are on file at the NRCS Hawaii State Office.  The additional map
+        units are as follows:
+        
+           W-----Water
+           QU----Quarry
+      Source_Used_Citation_Abbreviation: SCS1
+      Process_Date: 2000
+    Process_Step:
+      Process_Description: Field work on the soil survey for the Islands
+        of Kauai, Oahu, Maui, Molokai, and Lanai, State of Hawaii were
+        completed in 1965.  Three kinds of survey were made on the island.
+        A high-intensity survey on cultivated areas; a low-intensity survey
+        on grazing and forested lands; and a reconnaissance survey on
+        inaccessible areas.  Field procedures for the soil survey included
+        plotting of soil boundaries determined by field observation and by
+        interpretation of aerial photographs.  Boundaries were verified at
+        closely spaced intervals, and the soils in each delineation were
+        identified by traversing the landscape. Soil scientists described and
+        sampled the soils, and analyzed samples in the laboratory.  The
+        classification and map unit names were finalized at the final
+        correlation in 1966.  The soil survey for the Islands of Kauai, Oahu,
+        Maui, Molokai, and Lanai, State of Hawaii was published in 1972, at
+        1:24,000 scale.
+      Source_Used_Citation_Abbreviation: ASCS1, SCS1
+      Process_Date: 1972
+    Process_Step:
+      Process_Description: Soil map unit delineations and special soil
+        features were manually recompiled from 1:24,000 scale multiple
+        high altitude aerial photographs onto 7 mil. annotated overlays
+        that were registered to multiple orthophotographs.  The soil
+        delineation overlays were manually digitized using NRCS GRASS
+        Version 4.0 and 4.13.  Four control points corresponding to the
+        four corners of the orthophotographs were used for registration
+        during digital data collection. The processing, map neatline
+        development, labeling, edge matching, and editing, were done in
+        NRCS GRASS Version 4.0 and 4.13. The control points were explicitly
+        entered, and were determined by converting geographic coordinates
+        to UTM coordinates using m.proj. The Old Hawaiian datum was used for
+        horizontal accuracy. This datum is based on the Clarke 1866
+        spheroid, and is an equivalent standard to the North American
+        Datum of 1927. The data were written to Digital Line Graph
+        optional format with the v.export command. Compilation,
+        digitizing, and quality control were performed by the soil 
+        scientists and cartographic technicians at the Hawaii Natural
+        Resources Conservation Service State Office.
+      Source_Used_Citation_Abbreviation: SCS1, ASCS1, USGS1, NRCS1
+      Process_Date: 1994
+    Process_Step:
+      Process_Description: The Temple Texas Digitizing and Certification 
+        Center imported the soil and special soil features DLGs into ARC/INFO
+        7.1.2.  The 7.5 minute quadrangles for each coverage were merged
+        together into a seamless soil survey area coverage and additional
+        editing using the USGS 7.5 minute digital raster graphics as the
+        base map was performed.  Mylar plots of digital raster graphics and
+        the soil layer at 1:24,000 scale were checked for accuracy and
+        completeness.  New DLGs reflecting these changes were written with
+        ARC/INFO 7.1.2.
+      Source_Used_Citation_Abbreviation: USGS2, NRCS1
+      Process_Date: 1999
+    Process_Step:
+      Process_Description: The soil and special soil features were reviewed
+        by the Temple Texas Digitizing and Certification Center of the Natural
+        Resources Conservation Service for adherence to SSURGO standards.
+      Source_Used_Citation_Abbreviation: NRCS1
+      Process_Date: 2000
+    Process_Step:
+      Process_Description: The Map Unit Interpretations Record data base was
+        developed by the Natural Resources Conservation Service soil scientists
+        according to national standards.
+      Source_Used_Citation_Abbreviation: SCS1, NRCS1
+      Process_Date: 1999
+    Process_Step:
+      Process_Description:
+        This shapefile was developed from the original SSURGO shapefile 
+        that covered the island of Oahu.  The "comp" table and the "layer" 
+        table were joined to the shapefile and contained the "hydgrp" 
+        attribute and the "kfact" attribute respectively.  Two new fields 
+        were added to the attribute table to update and complete hydgrp and
+        kfact.  These were BEVHYDGRP and BEVKFACT respectively.  Polygons
+        without a k-factor (urban soils) were assumed to carry a k-value of 0.30.
+      Process_Date: Unknown
+      Process_Contact: 
+        Contact_Information:
+          Contact_Organization_Primary:
+            Contact_Organization: NOAA Coastal Services Center
+          Contact_Position: N-SPECT Project Manager
+          Contact_Address:
+            Address_Type: mailing and physical address
+            Address: 2234 S Hobson Ave.
+            City: Charleston
+            State_or_Province: SC
+            Postal_Code: 29405
+            Country: USA
+          Contact_Voice_Telephone: 843-740-1200
+          Contact_Facsimile_Telephone: 843-740-1224
+          Contact_Electronic_Mail_Address: csc@csc.noaa.gov
+          Hours_of_Service: Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.        
+       
+Spatial_Data_Organization_Information: 
+  Direct_Spatial_Reference_Method: Vector
+  
+Spatial_Reference_Information:
+  Horizontal_Coordinate_System_Definition:
+    Planar:
+      Grid_Coordinate_System:
+        Grid_Coordinate_System_Name: Universal Transverse Mercator
+        Universal_Transverse_Mercator:
+          UTM_Zone_Number: 4
+          Transverse_Mercator:
+            Scale_Factor_at_Central_Meridian: 0.9996
+            Longitude_of_Central_Meridian: -159.000
+            Latitude_of_Projection_Origin: 0.0
+            False_Easting: 500000
+            False_Northing: 0.0
+      Planar_Coordinate_Information:
+        Planar_Coordinate_Encoding_Method: coordinate pair
+        Coordinate_Representation:
+          Abscissa_Resolution: 0.000032
+          Ordinate_Resolution: 0.000032
+        Planar_Distance_Units: meters
+    Geodetic_Model:
+      Horizontal_Datum_Name: Old Hawaiian Datum 
+      Ellipsoid_Name: Clarke 1866  
+      Semi-major_Axis: 6378206.4
+      Denominator_of_Flattening_Ratio: 294.98
+      
+Entity_and_Attribute_Information: 
+  Detailed_Description:
+    Entity_Type: 
+      Entity_Type_Label: Special Soil Features
+      Entity_Type_Definition:
+        Special Soil Features represent soil, nonsoil, or landform
+        features that are too small to be digitized as soil delineations
+        (area features).  
+      Entity_Type_Definition_Source:
+        U.S. Department of Agriculture. 1993. Soil Survey Manual.
+        Soil Surv. Staff, U.S. Dep. Agric. Handb. 18.
+    Attribute: 
+      Attribute_Label: Special Soil Features Codes
+      Attribute_Definition:
+        Special Soil Features Codes represent specific Special Soil
+        Features. These features are identified with a major code,
+        a minor code, and a descriptive label. The codes and label
+        are assigned to the point or line assigned to represent the
+        feature on published maps.
+      Attribute_Definition_Source:
+        U.S. Department of Agriculture. 1993. Soil Survey Manual.
+        Soil Surv. Staff, U.S. Dep. Agric. Handb. 18; U.S. Department
+        of Agriculture. (current issue). National Soil Survey
+        Handbook, title 430-VI, part 647. Soil Conserv. Serv.
+      Attribute_Domain_Values: 
+        Codeset_Domain:
+          Codeset_Name:
+            Classification and Correlation of the Soils of the Island
+              of Oahu, Hawaii
+          Codeset_Source:
+            U.S. Department of Agriculture, Natural Resources
+            Conservation Service
+
+Distribution_Information:
+  Distributor:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Position: N-SPECT Project Manager
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S Hobson Ave.
+        City: Charleston
+        State_or_Province: SC
+        Postal_Code: 29405
+        Country: USA
+      Contact_Voice_Telephone: 843-740-1200
+      Contact_Facsimile_Telephone: 843-740-1224
+      Contact_Electronic_Mail_Address: csc@csc.noaa.gov
+      Hours_of_Service: Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.
+  Distribution_Liability:
+    Users must assume responsibility to determine the usability of these
+    data.
+
+Metadata_Reference_Information:
+  Metadata_Date: 20040809
+  Metadata_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: NOAA Coastal Services Center
+      Contact_Position: N-SPECT Metadata Manager
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 2234 S Hobson Ave.
+        City: Charleston
+        State_or_Province: SC
+        Postal_Code: 29405
+        Country: USA
+      Contact_Voice_Telephone: 843-740-1200
+      Contact_Facsimile_Telephone: 843-740-1224
+      Contact_Electronic_Mail_Address: csc@csc.noaa.gov
+      Hours_of_Service: Monday to Friday, 8 a.m. to 5 p.m., Eastern Standard Time.
+  Metadata_Standard_Name: FGDC CSDGM
+  Metadata_Standard_Version: FGDC-STD-001-1998
