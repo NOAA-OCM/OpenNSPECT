@@ -2,7 +2,7 @@
   <PrjName>HI_Sample</PrjName>
   <PrjRoot>C:\NSPECT</PrjRoot>
   <PrjWorkspace>C:\NSPECT\workspace</PrjWorkspace>
-  <LCGridName>CCAP05</LCGridName>
+  <LCGridName>HI_CCAP05</LCGridName>
   <LCGridFileName>C:\NSPECT\HI_Sample_Data\HI_CCAP05.tif</LCGridFileName>
   <LCGridUnits>0</LCGridUnits>
   <LCGridType>CCAP</LCGridType>
@@ -88,42 +88,42 @@
   </LandUses>
   <OutputFiles>
     <OutputFile>
-      <OutputPath>C:\NSPECT\workspace\runoff11.tif</OutputPath>
+      <OutputPath>C:\NSPECT\workspace\runoff1.tif</OutputPath>
       <OutputName>Accumulated Runoff (L)</OutputName>
       <OutputType>Runoff Accum</OutputType>
       <OutputColor>Blue</OutputColor>
       <OutputUseStretch>True</OutputUseStretch>
     </OutputFile>
     <OutputFile>
-      <OutputPath>C:\NSPECT\workspace\accpoll20.tif</OutputPath>
+      <OutputPath>C:\NSPECT\workspace\accpoll1.tif</OutputPath>
       <OutputName>Accumulated Phosphorus (kg)</OutputName>
       <OutputType>Pollutant Phosphorus Accum</OutputType>
       <OutputColor>81,100,100,81,5,100</OutputColor>
       <OutputUseStretch>True</OutputUseStretch>
     </OutputFile>
     <OutputFile>
-      <OutputPath>C:\NSPECT\workspace\conc20.tif</OutputPath>
+      <OutputPath>C:\NSPECT\workspace\conc1.tif</OutputPath>
       <OutputName>Phosphorus Conc. (mg/L)</OutputName>
       <OutputType>Pollutant Phosphorus Conc</OutputType>
       <OutputColor>81,100,100,81,5,100</OutputColor>
       <OutputUseStretch>True</OutputUseStretch>
     </OutputFile>
     <OutputFile>
-      <OutputPath>C:\NSPECT\workspace\accpoll21.tif</OutputPath>
+      <OutputPath>C:\NSPECT\workspace\accpoll2.tif</OutputPath>
       <OutputName>Accumulated Nitrogen (kg)</OutputName>
       <OutputType>Pollutant Nitrogen Accum</OutputType>
       <OutputColor>45,97,100,45,5,100</OutputColor>
       <OutputUseStretch>True</OutputUseStretch>
     </OutputFile>
     <OutputFile>
-      <OutputPath>C:\NSPECT\workspace\conc21.tif</OutputPath>
+      <OutputPath>C:\NSPECT\workspace\conc2.tif</OutputPath>
       <OutputName>Nitrogen Conc. (mg/L)</OutputName>
       <OutputType>Pollutant Nitrogen Conc</OutputType>
       <OutputColor>45,97,100,45,5,100</OutputColor>
       <OutputUseStretch>True</OutputUseStretch>
     </OutputFile>
     <OutputFile>
-      <OutputPath>C:\NSPECT\workspace\RUSLE7.tif</OutputPath>
+      <OutputPath>C:\NSPECT\workspace\RUSLE1.tif</OutputPath>
       <OutputName>Accumulated Sediment (kg)</OutputName>
       <OutputType>RUSLE Accum</OutputType>
       <OutputColor>Brown</OutputColor>
