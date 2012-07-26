@@ -417,6 +417,7 @@ Module Runoff
         Dim pSCS100Raster As Grid = Nothing
         RasterMath(pInSoilsRaster, pInLandCoverRaster, Nothing, Nothing, Nothing, pSCS100Raster, sc100calc)
         g_pSCS100Raster = pSCS100Raster
+        g_pSCS100Raster.Header.Projection = g_pDEMRaster.Header.Projection 'DLE 7/25/2012: Fix Local Effect runoff not projected issue.
     End Sub
     Private Sub CalculateRunoff(ByRef pInRainRaster As Grid)
         Dim AllRunOffCalc As New RasterMathCellCalcNulls(AddressOf AllRunoffCellCalc)
