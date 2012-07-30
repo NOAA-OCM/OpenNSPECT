@@ -177,8 +177,18 @@ Module Runoff
             'STEP 2: Raster Values ---------------------------------------------------------------------
             'Now Get the RASTER values
 
-            'Get the max value
+            'Get the max value ' 7/30/2012: Doesn't work since header not updated
             dblMaxValue = pLCRaster.Maximum
+            'Manually find Maxvalue
+            For jrow = 0 To pLCRaster.Header.NumberRows - 1
+                For icol = 0 To pLCRaster.Header.NumberCols - 1
+                    If pLCRaster.Value(icol, jrow) > dblMaxValue Then
+                        dblMaxValue = pLCRaster.Value(icol, jrow)
+                    End If
+                Next
+            Next
+
+
             'TODO: it looks like some of this code is almost copied, refactor it.
             Dim tablepath As String = ""
             'Get the raster table

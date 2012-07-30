@@ -451,9 +451,13 @@ Module LandUse
                 'If u.PointInPolygon(shape, pnt) Then
                 If sf.PointInShapefile(x, y) <> -1 Then
                     outputGrid.Value(col, row) = LCValue
+                    'outputGrid.Value(col, row) = 2
+                    'Issue 20914: Set changed area to an existing land cover to see if this produces a result.  IT DOES 7/30/2012.
+                    ' This makes me suspect the problem is a ...Grid.Maximum issue
                 End If
             Next
         Next
+        'MsgBox("New Maximum is" & outputGrid.Maximum.ToString) ' This is not updated correctly
         sf.EndPointInShapefile()
         sf.Close()
         outputGrid.Save()
