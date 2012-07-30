@@ -83,7 +83,7 @@ Module Pollutants
                 Case ""
             End Select
 
-            
+
             If Len(strField) > 0 Then
                 Using cmdPoll As New DataHelper(String.Format("SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", GetCoefficientSetName(Pollutant)))
                     Using dataPoll As OleDbDataReader = cmdPoll.ExecuteReader()

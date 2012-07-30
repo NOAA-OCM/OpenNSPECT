@@ -22,11 +22,11 @@ Friend Class NewCoefficientSetForm
 
 #Region "Events"
 
-    Private Sub frmAddCoeffSet_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmAddCoeffSet_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
-            InitComboBox (cboLCType, "LCTYPE")
+            InitComboBox(cboLCType, "LCTYPE")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -42,25 +42,25 @@ Friend Class NewCoefficientSetForm
         End Try
     End Sub
 
-    Protected Overrides Sub OK_Button_Click (sender As Object, e As EventArgs)
+    Protected Overrides Sub OK_Button_Click(sender As Object, e As EventArgs)
 
         Try
-            If UniqueName ("CoefficientSet", (txtCoeffSetName.Text)) Then
+            If UniqueName("CoefficientSet", (txtCoeffSetName.Text)) Then
                 'uses code in frmPollutants to do the work
                 If g_boolAddCoeff Then
-                    _frmPoll.AddCoefficient (txtCoeffSetName.Text, cboLCType.SelectedItem)
+                    _frmPoll.AddCoefficient(txtCoeffSetName.Text, cboLCType.SelectedItem)
                 Else
-                    _frmNewPoll.AddCoefficient (txtCoeffSetName.Text, cboLCType.SelectedItem)
+                    _frmNewPoll.AddCoefficient(txtCoeffSetName.Text, cboLCType.SelectedItem)
                 End If
                 Close()
             Else
-                MsgBox (Err2, MsgBoxStyle.Critical, "Coefficient set name already in use.  Please enter new name")
+                MsgBox(Err2, MsgBoxStyle.Critical, "Coefficient set name already in use.  Please enter new name")
                 Return
             End If
 
-            MyBase.OK_Button_Click (sender, e)
+            MyBase.OK_Button_Click(sender, e)
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
@@ -68,12 +68,12 @@ Friend Class NewCoefficientSetForm
 
 #Region "Helper Functions"
 
-    Public Sub Init (ByRef frmPoll As PollutantsForm, ByRef frmNewPoll As NewPollutantForm)
+    Public Sub Init(ByRef frmPoll As PollutantsForm, ByRef frmNewPoll As NewPollutantForm)
         Try
             _frmPoll = frmPoll
             _frmNewPoll = frmNewPoll
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
