@@ -341,7 +341,7 @@ Module LandUse
         'Dim landCoverName As String = ""
         Dim landCoverRaster = GetLandCoverRaster(landCoverFileName)
         If landCoverRaster Is Nothing Then
-            Throw New ArgumentException("cannot get landCoverRaseter.")
+            Throw New ArgumentException("cannot get landCoverRaster.")
         End If
 
         Try
@@ -354,10 +354,22 @@ Module LandUse
             If LUScenItems.Count > 0 Then
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
                 landCoverRaster.Save()  'Saving because it seemed necessary.
-                landCoverRaster.Save(strOutLandCover)
-                landCoverRaster.Close()
-                pNewLandCoverRaster.Open(strOutLandCover)
-
+                '_____________________________________________________________________________________
+                ' New way for creating tmp grid to try to fix updating of min/max issue.  DLE 8/29/2012
+                Dim Flg As Boolean
+                 Flg = pNewLandCoverRaster.CreateNew(strOutLandCover, landCoverRaster.Header, GridDataType.DoubleDataType, landCoverRaster.Header.NodataValue, False, GridFileType.GeoTiff)
+                If Flg = False Then
+                    MsgBox("ERROR in tmp LC grid initialization: " & strOutLandCover)
+                End If
+                ' Grid created, now populate it
+                'pNewLandCoverRaster = landCoverRaster 'This method does not work: need to populate values individually.
+                For icol As Integer = 0 To landCoverRaster.Header.NumberCols - 1
+                    For jrow As Integer = 0 To landCoverRaster.Header.NumberRows - 1
+                        pNewLandCoverRaster.Value(icol, jrow) = landCoverRaster.Value(icol, jrow)
+                    Next
+                Next
+                '_________________________________  End new creation method ______________________
+ 
                 Using progress = New SynchronousProgressDialog("Landuse Scenario", CInt(LUScenItems.Count), g_MainForm)
                     Dim i As Short
                     For i = 0 To LUScenItems.Count - 1
@@ -445,6 +457,7 @@ Module LandUse
         Dim x, y As Double
         sf.BeginPointInShapefile()
         'cycle and test cell center, then set the appropriate when found
+        'MsgBox("Before Reclass: Maximum is" & outputGrid.Maximum.ToString & " should become " & LCValue.ToString)
         For row As Integer = startRow To endRow
             For col As Integer = startCol To endCol
                 outputGrid.CellToProj(col, row, x, y)
@@ -457,10 +470,10 @@ Module LandUse
                 End If
             Next
         Next
-        'MsgBox("New Maximum is" & outputGrid.Maximum.ToString) ' This is not updated correctly
         sf.EndPointInShapefile()
         sf.Close()
         outputGrid.Save()
+        'MsgBox("New Maximum is" & outputGrid.Maximum.ToString) ' IS This is updated correctly ?
     End Sub
 
     Public Sub Cleanup(ByRef dictNames As Dictionary(Of String, String), ByRef PollItems As PollutantItems, ByRef strLCTypeName As String)
@@ -479,7 +492,7 @@ Module LandUse
                         cmdDelete.ExecuteNonQuery()
                     End Using
                 End Using
-
+                'TODO: This section throwing errors.  Name not getting populated and items left in the database. DLE 8/30/2012
                 For i = 0 To PollItems.Count - 1
                     Dim name As String = PollItems.Item(i).strCoeffSet
                     If dictNames.ContainsKey(name) Then
