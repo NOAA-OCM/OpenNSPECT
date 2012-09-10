@@ -491,8 +491,12 @@ Module LandUse
                     Using cmdDelete As New DataHelper("Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID"))
                         cmdDelete.ExecuteNonQuery()
                     End Using
+                    'FIXED: This section was throwing errors.  Needed to also DELETE the LCTYPE.  Nutrient delet seems to 
+                    ' have begun working when the .Maximum issue was resolved.
+                    Using cmdDelete3 As New DataHelper("Delete * FROM LCTYPE WHERE NAME LIKE '" & strLCDeleteName & "'")
+                        cmdDelete3.ExecuteNonQuery()
+                    End Using
                 End Using
-                'TODO: This section throwing errors.  Name not getting populated and items left in the database. DLE 8/30/2012
                 For i = 0 To PollItems.Count - 1
                     Dim name As String = PollItems.Item(i).strCoeffSet
                     If dictNames.ContainsKey(name) Then
