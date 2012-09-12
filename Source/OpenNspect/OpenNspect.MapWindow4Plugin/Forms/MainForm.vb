@@ -889,7 +889,9 @@ Friend Class MainForm
             CleanGlobals()
 
             'Save xml to ensure outputs are saved
-            g_Project.SaveFile(_currentFileName)
+            ' DLE 9/11/2012: Is this where the extra Land Use Scenario save is coming in? 
+            ' YES!  Comment out and it seems to work fine.
+            'g_Project.SaveFile(_currentFileName)
 
             Close()
 
