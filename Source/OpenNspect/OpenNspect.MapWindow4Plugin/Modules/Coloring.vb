@@ -11,6 +11,21 @@ Module Coloring
             Dim toColor2 As Integer
 
             Select Case strColor
+                Case "DiffAbsolute"
+                    ' Used to be "blue".  TODO Change it! DLE/ 9/19/2012 Yarr!
+                    fromColor = RGB(240, 240, 0)
+                    toColor = RGB(0, 0, 0)
+
+                    fromColor2 = RGB(0, 0, 0)
+                    toColor2 = RGB(0, 240, 240)
+
+                Case "DiffPercent"
+                    ' Used to be "brown".  TODO Change it! DLE/ 9/19/2012 Yarr!
+                    fromColor = RGB(240, 0, 240)
+                    toColor = RGB(0, 0, 0)
+
+                    fromColor2 = RGB(0, 0, 0)
+                    toColor2 = RGB(120, 240, 120)
                 Case "Blue"
                     fromColor = RGB(242, 245, 255)
                     toColor = RGB(91, 129, 255)
@@ -20,11 +35,19 @@ Module Coloring
                     toColor2 = RGB(18, 73, 255)
 
                 Case "Brown"
-                    fromColor = RGB(255, 242, 217)
-                    toColor = RGB(255, 202, 102)
+                    'fromColor = RGB(255, 242, 217)
+                    'toColor = RGB(255, 202, 102)
 
-                    fromColor2 = RGB(255, 174, 23)
-                    toColor2 = RGB(255, 193, 8)
+                    'fromColor2 = RGB(255, 174, 23)
+                    'toColor2 = RGB(255, 193, 8)
+
+                    ' New "Browner" colors to be visually different from nitrogen colors, i.e., "45, 97, 100, ..." below.
+                    ' DLE 9/17/2012
+                    fromColor = RGB(255, 239, 223)
+                    toColor = RGB(255, 183, 111)
+
+                    fromColor2 = RGB(234, 117, 0)
+                    toColor2 = RGB(64, 24, 10)
 
                 Case "81,100,100,81,5,100"
 
