@@ -378,7 +378,7 @@ Public Class CompareOutputsForm
                                 Else
                                     compout = CopyRaster(gout, outstring)
                                 End If
-                                AddOutputGridLayer(compout, "Blue", True, leftOutItems.Item(i).strType + " Direct Comparison", "", outgrpnum, Nothing)
+                                AddOutputGridLayer(compout, "DiffAbsolute", True, leftOutItems.Item(i).strType + " Direct Comparison", "", outgrpnum, Nothing)
                                 'AddOutputGridLayer(compout, "Red", True, leftOutItems.Item(i).strType + " Direct Comparison", "", outgrpnum, Nothing)
 
                                 Dim percchangecalc As New RasterMathCellCalc(AddressOf PercChangeCellCalc)
@@ -390,7 +390,7 @@ Public Class CompareOutputsForm
                                 Else
                                     comppercout = CopyRaster(gout, outstring)
                                 End If
-                                AddOutputGridLayer(comppercout, "Brown", True, leftOutItems.Item(i).strType + " Percentage Change", "", outgrpnum, Nothing)
+                                AddOutputGridLayer(comppercout, "DiffPercent", True, leftOutItems.Item(i).strType + " Percentage Change", "", outgrpnum, Nothing)
 
                                 Exit For
                             End If

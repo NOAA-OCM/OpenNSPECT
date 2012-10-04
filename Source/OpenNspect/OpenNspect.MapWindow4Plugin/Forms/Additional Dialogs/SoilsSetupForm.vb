@@ -219,25 +219,27 @@ Friend Class SoilsSetupForm
             Next
             lngNewHydFieldIndex = -1
             For i As Integer = 0 To pSoilsFeatClass.NumFields - 1
-                If pSoilsFeatClass.Field(i).Name.ToUpper = "GROUP" Then
+                ' DLE 10/3/2012: Changed "GROUP" to "NSPECTGP" for our exclusive use.  "GROUP" could have existed for another purpose.
+                If pSoilsFeatClass.Field(i).Name.ToUpper = "NSPECTGP" Then
                     lngNewHydFieldIndex = i
                     Exit For
                 End If
             Next
 
-            'If the GROUP field is missing, we have to add it
+            pSoilsFeatClass.StartEditingTable()  ' Make the table editable
+
+            'If the NSPECTGP field is missing, we have to add it
             If lngNewHydFieldIndex = -1 Then
                 Dim fieldedit As New Field
-                fieldedit.Name = "GROUP"
+                fieldedit.Name = "NSPECTGP"  ' Changed to "NSPECTGP" for our exclusive use.
                 fieldedit.Type = FieldType.INTEGER_FIELD
-                fieldedit.Width = 2
+                fieldedit.Width = 5
                 lngNewHydFieldIndex = pSoilsFeatClass.NumFields
                 pSoilsFeatClass.EditInsertField(fieldedit, lngNewHydFieldIndex)
             End If
 
             lngValue = 1
 
-            pSoilsFeatClass.StartEditingTable()
             Using progress = New SynchronousProgressDialog("Calculating soils values...", "Processing Soils", pSoilsFeatClass.NumShapes + 3, Me)
                 'Now calc the Values
                 For i As Integer = 0 To pSoilsFeatClass.NumShapes - 1

@@ -13,19 +13,19 @@ Module Coloring
             Select Case strColor
                 Case "DiffAbsolute"
                     ' Used to be "blue".  TODO Change it! DLE/ 9/19/2012 Yarr!
-                    fromColor = RGB(240, 240, 0)
-                    toColor = RGB(0, 0, 0)
+                    fromColor = RGB(128, 64, 0)
+                    toColor = RGB(255, 183, 111)
 
-                    fromColor2 = RGB(0, 0, 0)
-                    toColor2 = RGB(0, 240, 240)
+                    fromColor2 = RGB(128, 0, 24)
+                    toColor2 = RGB(128, 0, 255)
 
                 Case "DiffPercent"
                     ' Used to be "brown".  TODO Change it! DLE/ 9/19/2012 Yarr!
-                    fromColor = RGB(240, 0, 240)
-                    toColor = RGB(0, 0, 0)
+                    fromColor = RGB(255, 0, 128)
+                    toColor = RGB(255, 187, 221)
 
-                    fromColor2 = RGB(0, 0, 0)
-                    toColor2 = RGB(120, 240, 120)
+                    fromColor2 = RGB(128, 255, 255)
+                    toColor2 = RGB(0, 128, 192)
                 Case "Blue"
                     fromColor = RGB(242, 245, 255)
                     toColor = RGB(91, 129, 255)
