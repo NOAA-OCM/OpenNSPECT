@@ -434,6 +434,8 @@ Module Runoff
                                     False, metRunoffNoNullcalc)
 
         g_pMetRunoffRaster = pMetRunoffNoNullRaster
+        g_pMetRunoffRaster.Header.Projection = g_pDEMRaster.Header.Projection 'DLE 10/5/2012: Make sure grid is projected.
+
         pMetRunoffRaster.Close()
     End Sub
     Private Function CreateDataLayerForLocalEffects(ByRef OutputItems As OutputItems) As String
@@ -525,7 +527,7 @@ Module Runoff
                     pRaster.Save()
                 End If
 
-                If Not progress.Increment("Creating flow accumulation...") Then Return False
+                If Not progress.Increment("Creating flow accumulation...") Then Return False 'already failed at this point
                 Dim pAccumRunoffRaster As Grid = DeriveAccumulatedRunoff()
 
                 If Not progress.Increment("Creating Runoff Layer...") Then Return False
