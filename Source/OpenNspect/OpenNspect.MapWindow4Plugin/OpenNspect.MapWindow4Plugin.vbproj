@@ -365,6 +365,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\NewCoefficientSetForm.resX">
       <DependentUpon>NewCoefficientSetForm.vb</DependentUpon>
@@ -374,9 +375,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\CopyCoefficientSetForm.resX">
       <DependentUpon>CopyCoefficientSetForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\CopyWaterQualityStandardForm.resX">
       <DependentUpon>CopyWaterQualityStandardForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\ImportCoefficientSetForm.resX">
       <DependentUpon>ImportCoefficientSetForm.vb</DependentUpon>
@@ -434,6 +437,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\DefineFromExistingWatershedDelineationForm.resX">
       <DependentUpon>DefineFromExistingWatershedDelineationForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Advanced Settings\WatershedDelineationsForm.resX">
       <DependentUpon>WatershedDelineationsForm.vb</DependentUpon>

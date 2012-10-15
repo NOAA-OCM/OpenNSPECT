@@ -136,6 +136,7 @@ Module ModifiedUniversalSoilLossEquation
         Dim i As Short
 
         Dim maxVal As Integer = pLCRaster.Maximum
+        Dim minVal As Integer = pLCRaster.Minimum
         Dim nodata As Single = pLCRaster.Header.NodataValue
         'TODO: it looks like some of this code is copied, refactor it.
         Dim tablepath = GetRasterTablePath(pLCRaster)
@@ -154,7 +155,10 @@ Module ModifiedUniversalSoilLossEquation
 
             Dim rowidx As Integer = 0
             Dim dataCF As OleDbDataReader
-            For i = 1 To maxVal
+            ' DLE: 109/12: LC rasters may have 0 as min value, but if minval > 1, then start at 1
+            If (minVal > 1) Then minVal = 1
+            For i = minVal To maxVal  ' DLE 10/9/2012: LC values may begin at 0, not 1
+                'For i = 1 To maxVal  ' DLE 10/9/2012: LC values may begin at 0, not 1
                 If (mwTable.CellValue(FieldIndex, rowidx) = i) Then 'And (pRow.Value(FieldIndex) = rsLandClass!Value) Then
                     dataCF = cmdCF.ExecuteReader
 

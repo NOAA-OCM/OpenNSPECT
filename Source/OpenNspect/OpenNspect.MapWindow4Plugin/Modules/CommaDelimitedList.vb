@@ -27,9 +27,14 @@ Module CommaDelimitedList
             Dim valueColumn As Short = GetFieldIndex(attributeTable) ' Determine what column 'value' appears in.
             Dim currentTableRow As Integer = 0
             Dim maxVal As Integer = pLCRaster.Maximum
+            Dim minVal As Integer = pLCRaster.Minimum
 
-            ' Look for each value from 1 to the maximum, assuming values are integers.
-            For i = 1 To maxVal
+
+            ' Look for each value from minVal to the maximum, assuming values are integers.
+            ' DLE: 109/12: LC rasters may have 0 as min value, but if minval > 1, then start at 1
+            If (minVal > 1) Then minVal = 1
+            For i = minVal To maxVal
+                'For i = 1 To maxVal
                 If (attributeTable.CellValue(valueColumn, currentTableRow) = i) Then
                     Using dataType As OleDbDataReader = command.ExecuteReader
 
