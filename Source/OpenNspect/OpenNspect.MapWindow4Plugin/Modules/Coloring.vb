@@ -51,27 +51,41 @@ Module Coloring
 
                 Case "81,100,100,81,5,100"
 
-                    fromColor = RGB(251, 255, 242)
-                    toColor = RGB(187, 255, 100)
+                    'fromColor = RGB(251, 255, 242)
+                    'toColor = RGB(187, 255, 100)
 
-                    fromColor2 = RGB(187, 255, 60)
-                    toColor2 = RGB(166, 255, 0)
+                    'fromColor2 = RGB(187, 255, 60)
+                    'toColor2 = RGB(166, 255, 0)
+
+                    fromColor = RGB(242, 255, 242)
+                    toColor = RGB(0, 255, 0)
+
+                    fromColor2 = RGB(0, 170, 0)
+                    toColor2 = RGB(0, 64, 0)
 
                 Case "45,97,100,45,5,100"
-                    fromColor = RGB(255, 242, 217)
-                    toColor = RGB(255, 221, 157)
+                    'fromColor = RGB(255, 242, 217)
+                    'toColor = RGB(255, 221, 157)
+                    ''255, 202, 102
+
+                    'fromColor2 = RGB(255, 193, 79)
+                    'toColor2 = RGB(255, 193, 8)
+                    fromColor = RGB(255, 247, 232)
+                    toColor = RGB(255, 204, 111)
                     '255, 202, 102
 
-                    fromColor2 = RGB(255, 193, 79)
-                    toColor2 = RGB(255, 193, 8)
+                    fromColor2 = RGB(255, 181, 43)
+                    toColor2 = RGB(164, 115, 0)
                 Case "273,97,100,273,5,100"
                     '144, 8, 255  
                     '249, 242, 255
                     fromColor = RGB(249, 242, 255)
                     toColor = RGB(206, 147, 255)
 
-                    fromColor2 = RGB(174, 74, 255)
-                    toColor2 = RGB(144, 8, 255)
+                    'fromColor2 = RGB(174, 74, 255)
+                    'toColor2 = RGB(144, 8, 255)
+                    fromColor2 = RGB(144, 8, 255)
+                    toColor2 = RGB(66, 0, 119)
 
                 Case "198,97,100,198,5,100"
                     '242, 252, 255

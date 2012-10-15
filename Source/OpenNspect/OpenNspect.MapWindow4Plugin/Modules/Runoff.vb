@@ -157,6 +157,7 @@ Module Runoff
             'Array of strings that hold 'pick' numbers
 
             Dim dblMaxValue As Double
+            Dim dblMinValue As Double
             Dim i As Short
             Dim TableExist As Boolean
             Dim FieldIndex As Short
@@ -180,6 +181,7 @@ Module Runoff
             ' pLCRaster.Maximum not updating correctly when adding land Use scenarios 7/30/2012
             ' FIXED 8/30/2012: Temp LC raster updates .Maximum field correctly.
             dblMaxValue = pLCRaster.Maximum
+            dblMinValue = pLCRaster.Minimum
 
             'TODO: it looks like some of this code is almost copied, refactor it.
             Dim tablepath As String = ""
@@ -228,7 +230,10 @@ Module Runoff
 
                 'STEP 4: Create the strings
                 'Loop through and get all values
-                For i = 1 To dblMaxValue
+                ' DLE: 109/12: LC rasters may have 0 as min value, but if minval > 1, then start at 1
+                If (dblMinValue > 1) Then dblMinValue = 1
+                For i = dblMinValue To dblMaxValue  ' FIXED DLE 10/9/2012 Start at min value, not 1.  Min may be 0.
+                    ' For i = 1 To dblMaxValue  ' FIXED DLE 10/9/2012 Start at min value, not 1.  Min may be 0.
 
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then
                         'MK a new reader was created each time this loop ran, but I couldn't see why as it was passed the same query.
