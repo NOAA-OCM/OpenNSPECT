@@ -541,7 +541,7 @@ Namespace Xml
 
                 'Format
                 node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
-                LUItems.CreateNode(node)
+                LUItems.CreateNode(node) 'Test of this node creation...
 
                 'Format
                 node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))

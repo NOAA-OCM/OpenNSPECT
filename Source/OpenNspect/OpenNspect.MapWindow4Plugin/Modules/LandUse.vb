@@ -457,23 +457,18 @@ Module LandUse
         Dim x, y As Double
         sf.BeginPointInShapefile()
         'cycle and test cell center, then set the appropriate when found
-        'MsgBox("Before Reclass: Maximum is" & outputGrid.Maximum.ToString & " should become " & LCValue.ToString)
         For row As Integer = startRow To endRow
             For col As Integer = startCol To endCol
                 outputGrid.CellToProj(col, row, x, y)
                 'If u.PointInPolygon(shape, pnt) Then
                 If sf.PointInShapefile(x, y) <> -1 Then
                     outputGrid.Value(col, row) = LCValue
-                    'outputGrid.Value(col, row) = 2
-                    'Issue 20914: Set changed area to an existing land cover to see if this produces a result.  IT DOES 7/30/2012.
-                    ' This makes me suspect the problem is a ...Grid.Maximum issue
                 End If
             Next
         Next
         sf.EndPointInShapefile()
         sf.Close()
         outputGrid.Save()
-        'MsgBox("New Maximum is" & outputGrid.Maximum.ToString) ' IS This is updated correctly ?
     End Sub
 
     Public Sub Cleanup(ByRef dictNames As Dictionary(Of String, String), ByRef PollItems As PollutantItems, ByRef strLCTypeName As String)
@@ -491,21 +486,22 @@ Module LandUse
                     Using cmdDelete As New DataHelper("Delete * FROM LCCLASS WHERE LCTYPEID =" & dataDeleteList("LCTypeID"))
                         cmdDelete.ExecuteNonQuery()
                     End Using
-                    'FIXED: This section was throwing errors.  Needed to also DELETE the LCTYPE.  Nutrient delet seems to 
-                    ' have begun working when the .Maximum issue was resolved.
+                    'FIXED: This section was throwing errors.  Needed to also DELETE the LCTYPE.  
                     Using cmdDelete3 As New DataHelper("Delete * FROM LCTYPE WHERE NAME LIKE '" & strLCDeleteName & "'")
                         cmdDelete3.ExecuteNonQuery()
                     End Using
                 End Using
                 For i = 0 To PollItems.Count - 1
                     Dim name As String = PollItems.Item(i).strCoeffSet
-                    If dictNames.ContainsKey(name) Then
-                        Dim strCoeffDeleteName As String
-                        strCoeffDeleteName = dictNames.Item(name)
-                        If Len(strCoeffDeleteName) > 0 Then
-                            Using cmdDelete2 = New OleDbCommand(String.Format("DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", strCoeffDeleteName), g_DBConn)
-                                cmdDelete2.ExecuteNonQuery()
-                            End Using
+                    If name IsNot Nothing Then  ' Only test if there is a name value.  Doing otherwise throws an error
+                        If dictNames.ContainsKey(name) Then
+                            Dim strCoeffDeleteName As String
+                            strCoeffDeleteName = dictNames.Item(name)
+                            If Len(strCoeffDeleteName) > 0 Then
+                                Using cmdDelete2 = New OleDbCommand(String.Format("DELETE * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", strCoeffDeleteName), g_DBConn)
+                                    cmdDelete2.ExecuteNonQuery()
+                                End Using
+                            End If
                         End If
                     End If
 

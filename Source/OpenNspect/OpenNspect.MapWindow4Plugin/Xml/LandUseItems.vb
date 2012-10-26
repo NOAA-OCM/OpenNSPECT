@@ -69,7 +69,7 @@ Namespace Xml
                 Item = m_colItems.Item(Index)
             End Get
             Set(ByVal Value As LandUseItem)
-                m_colItems.Add(Value)
+                'm_colItems.Add(Value) ' Commented for testing, seems to solve double LU scenario save issue. DLE 10/26/12
             End Set
         End Property
 
@@ -106,7 +106,7 @@ Namespace Xml
                 'Save the repeating <OrderItem> elements.
 
                 Dim LandUse As LandUseItem
-
+                ' SHould we create the LanduyUse XML entries here?  Theya re also created later. DLE 10/26/2012
                 For Each LandUse In m_colItems
                     node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
                     LandUse.CreateNode(node)
