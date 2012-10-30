@@ -360,10 +360,20 @@ Public Class CompareOutputsForm
                                 If outgrpnum = -1 Then
                                     outgrpnum = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add("Compare Outputs")
                                 End If
-                                If g_Project.ProjectWorkspace = "" Then
-                                    'If String.IsNullOrEmpty(g_Project.ProjectWorkspace) Then
+                                Try    'Check to make sure a project workspace exists before using it.  If not, make one.
+                                    If g_Project.ProjectWorkspace = "" Then
+                                        g_Project.ProjectWorkspace = g_nspectDocPath & "\workspace"
+                                    End If
+                                Catch ex As Exception
+                                    ' Initialize project parameter workspace.  Typically this occurs in MainForm.vb before running
+                                    ' CompareOutputs, but if it has not happened previously, create & initialize one now.  
+                                    ' Note that this particular project will get overwritten when running MainForm.vb afterwards.
+                                    ' That should have no negative consequence.
+                                    g_Project = New ProjectFile
                                     g_Project.ProjectWorkspace = g_nspectDocPath & "\workspace"
-                                End If
+
+                                End Try
+
 
                                 Dim strSelectedExportPath As String = ExportSelectedFeatures(_SelectLyrPath, _SelectedShapes)
                                 Dim pSelectedPolyClip As Shape = ReturnSelectGeometry(strSelectedExportPath)
@@ -390,7 +400,7 @@ Public Class CompareOutputsForm
                                 Else
                                     comppercout = CopyRaster(gout, outstring)
                                 End If
-                                AddOutputGridLayer(comppercout, "DiffPercent", True, leftOutItems.Item(i).strType + " Percentage Change", "", outgrpnum, Nothing)
+                                AddOutputGridLayer(comppercout, "DiffPercent", False, leftOutItems.Item(i).strType + " Percentage Change", "", outgrpnum, Nothing)
 
                                 Exit For
                             End If

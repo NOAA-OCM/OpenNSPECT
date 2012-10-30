@@ -372,7 +372,8 @@ Module Utilities
         If UseStretch = True Then
             cs = GetRasterStretchColorRampCS(outRast, ColorString)
         Else
-            cs = GetUniqueRasterRenderer()
+            'cs = GetUniqueRasterRenderer()
+            cs = PercentRasterRenderer()
         End If
 
         Dim lyr As Layer = MapWindowPlugin.MapWindowInstance.Layers.Add(outRast, cs, LayerName)
