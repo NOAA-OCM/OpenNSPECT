@@ -361,6 +361,7 @@ Module ModifiedUniversalSoilLossEquation
 
                 'metadata time
                 g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
+                writeMetadata(g_Project.ProjectName, "MUSLE Local Effects (mg)", _strMusleMetadata, pPermMUSLERaster.Filename)
 
                 AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
 
@@ -412,6 +413,7 @@ Module ModifiedUniversalSoilLossEquation
 
                 'Metadata:
                 g_dicMetadata.Add("MUSLE Sediment Mass (kg)", _strMusleMetadata)
+                writeMetadata(g_Project.ProjectName, "MUSLE Sediment Mass (kg)", _strMusleMetadata, pPermTotSedConcHIraster.Filename)
 
                 AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (kg)", "MUSLE Accum", -1, OutputItems)
 

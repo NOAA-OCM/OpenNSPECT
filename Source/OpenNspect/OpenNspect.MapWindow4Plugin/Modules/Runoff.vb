@@ -454,6 +454,7 @@ Module Runoff
         End If
 
         g_dicMetadata.Add("Runoff Local Effects (L)", _strRunoffMetadata)
+        writeMetadata(g_Project.ProjectName, "Runoff Local Effects (L)", _strRunoffMetadata, pPermAccumLocRunoffRaster.Filename)
 
         AddOutputGridLayer(pPermAccumLocRunoffRaster, "Blue", True, "Runoff Local Effects (L)",
                             "Runoff Local", -1, OutputItems)
@@ -498,9 +499,10 @@ Module Runoff
             pPermAccumRunoffRaster = CopyRaster(pAccumRunoffRaster, strOutAccum)
         End If
 
-        AddOutputGridLayer(pPermAccumRunoffRaster, "Blue", True, "Accumulated Runoff (L)", "Runoff Accum", -1, OutputItems)
-
         g_dicMetadata.Add("Accumulated Runoff (L)", _strRunoffMetadata)
+        writeMetadata(g_Project.ProjectName, "Accumulated Runoff (L)", _strRunoffMetadata, pPermAccumRunoffRaster.Filename)
+
+        AddOutputGridLayer(pPermAccumRunoffRaster, "Blue", True, "Accumulated Runoff (L)", "Runoff Accum", -1, OutputItems)
 
         'Global Runoff
         g_pRunoffRaster = pAccumRunoffRaster
