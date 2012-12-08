@@ -230,6 +230,7 @@ Module RevisedUniversalSoilLossEquation
 
                 'Metadata
                 g_dicMetadata.Add("Sediment Local Effects (mg)", _strRusleMetadata)
+                writeMetadata(g_Project.ProjectName, "Sediment Local Effects (mg)", _strRusleMetadata, pPermRUSLELocRaster.Filename)
 
                 AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
 
@@ -282,6 +283,7 @@ Module RevisedUniversalSoilLossEquation
 
                 'Metadata
                 g_dicMetadata.Add("Accumulated Sediment (kg)", _strRusleMetadata)
+                writeMetadata(g_Project.ProjectName, "Accumulated Sediment (kg)", _strRusleMetadata, pPermAccumSedRaster.Filename)
 
                 AddOutputGridLayer(pPermAccumSedRaster, "Brown", True, "Accumulated Sediment (kg)", "RUSLE Accum", -1, OutputItems)
             End If

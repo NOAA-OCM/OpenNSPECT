@@ -160,6 +160,7 @@ Module Pollutants
         End If
 
         g_dicMetadata.Add(_PollutantName & "Local Effects (mg)", _PollutantCoeffMetadata)
+        writeMetadata(g_Project.ProjectName, _PollutantName & "Local Effects (mg)", _PollutantCoeffMetadata, pPermMassVolumeRaster.Filename)
 
         AddOutputGridLayer(pPermMassVolumeRaster, _PollutantColor, True, _PollutantName & " Local Effects (mg)", String.Format("Pollutant {0} Local", _PollutantName), -1, OutputItems)
 
@@ -207,6 +208,7 @@ Module Pollutants
 
         Dim layerName As String = String.Format("Accumulated {0} (kg)", _PollutantName)
         g_dicMetadata.Add(layerName, _PollutantCoeffMetadata)
+        writeMetadata(g_Project.ProjectName, layerName, _PollutantCoeffMetadata, pPermAccPollRaster.Filename)
 
         AddOutputGridLayer(pPermAccPollRaster, _PollutantColor, True, layerName, String.Format("Pollutant {0} Accum", _PollutantName), -1, OutputItems)
     End Sub
@@ -224,6 +226,8 @@ Module Pollutants
         End If
 
         g_dicMetadata.Add(_PollutantName & " Conc. (mg/L)", _PollutantCoeffMetadata)
+        'Dim tmpString As String = _PollutantName & " Conc. (mg/L)"
+        writeMetadata(g_Project.ProjectName, _PollutantName & " Conc. (mg/L)", _PollutantCoeffMetadata, pPermTotalConcRaster.Filename)
 
         AddOutputGridLayer(pPermTotalConcRaster, _PollutantColor, True, _PollutantName & " Conc. (mg/L)", String.Format("Pollutant {0} Conc", _PollutantName), -1, OutputItems)
     End Sub
@@ -263,8 +267,9 @@ Module Pollutants
             If Not progress.Increment("Creating data layer...") Then Return False
             CreateDataLayer(OutputItems, pTotalPollConc0Raster, outputFileNameOutConc)
 
-            If Not progress.Increment("Comparing to water quality standard...") Then Return False
-            If Not CompareWaterQuality(pTotalPollConc0Raster, OutputItems) Then Return False
+            ' We don't do this anymore, so skip teh calcualations entirely
+            'If Not progress.Increment("Comparing to water quality standard...") Then Return False
+            'If Not CompareWaterQuality(pTotalPollConc0Raster, OutputItems) Then Return False
 
             Return True
 
@@ -311,6 +316,7 @@ Module Pollutants
             strMetadata = vbTab & "Water Quality Standard:" & vbNewLine & vbTab & vbTab & "Criteria Name: " & _WaterQualityStandardName & vbNewLine & vbTab & vbTab & "Standard: " & dblConvertValue & " mg/L"
             Dim layerCaption As String = String.Format("{0} Standard: {1} mg/L", _PollutantName, CStr(dblConvertValue))
             g_dicMetadata.Add(layerCaption, _PollutantCoeffMetadata & strMetadata)
+            writeMetadata(g_Project.ProjectName, layerCaption, _PollutantCoeffMetadata, pPermWQRaster.Filename)
 
             ' Hide standard output because we're not sure anyone uses it http://nspect.codeplex.com/workitem/20911
             If False Then

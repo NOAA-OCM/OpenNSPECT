@@ -398,6 +398,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\EditLandUseScenario.resX">
       <DependentUpon>EditLandUseScenario.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Additional Dialogs\NewLandCoverTypeForm.resX">
       <DependentUpon>NewLandCoverTypeForm.vb</DependentUpon>

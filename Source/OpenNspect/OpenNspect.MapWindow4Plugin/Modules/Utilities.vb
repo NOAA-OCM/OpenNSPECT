@@ -404,4 +404,14 @@ Module Utilities
 
         If i < 1000 Then Return nameAttempt Else Throw New InvalidOperationException("Workspace is too large. Could not get Unique Filename.")
     End Function
+
+    ' Write out metadata for each output layer
+    Public Function writeMetadata(ByVal runName As String, ByVal layerLabel As String, ByVal layerMetadata As String, ByVal layerFilename As String) As Boolean
+        Dim metaFilename As String
+        metaFilename = Replace(layerFilename, "tif", "met")
+        My.Computer.FileSystem.WriteAllText(metaFilename, "OpenNSPECT Project file: " & runName & vbNewLine, False)
+        My.Computer.FileSystem.WriteAllText(metaFilename, "Parameter: " & layerLabel & vbNewLine, True)
+        My.Computer.FileSystem.WriteAllText(metaFilename, layerMetadata, True)
+
+    End Function
 End Module
