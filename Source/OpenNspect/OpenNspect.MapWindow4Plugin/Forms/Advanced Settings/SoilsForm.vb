@@ -22,11 +22,11 @@ Friend Class SoilsForm
 
 #Region "Events"
 
-    Private Sub frmSoils_Load (ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmSoils_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
-            InitComboBox (cboSoils, "SOILS")
+            InitComboBox(cboSoils, "SOILS")
         Catch ex As Exception
-            HandleError (ex)
+            HandleError(ex)
         End Try
     End Sub
 
