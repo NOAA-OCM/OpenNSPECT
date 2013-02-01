@@ -297,7 +297,7 @@ Friend Class SoilsSetupForm
                     Dim headK As New GridHeader
                     head.CopyFrom(dem.Header)
                     headK.CopyFrom(dem.Header)
-                    If dem.Header.NodataValue >= 1.0 Then 'DLE 1/8/2013 Change NODATA value to somethign that is not a valid value
+                    If dem.Header.NodataValue >= 1.0 Then 'DLE 1/8/2013 Change NODATA value to something that is not a valid value
                         head.NodataValue = -32768.0
                         headK.NodataValue = -32768.0
                     End If
@@ -311,10 +311,12 @@ Friend Class SoilsSetupForm
                     Dim outSoilsK As New Grid
 
                     outSoils.CreateNew(strOutSoils, head, GridDataType.DoubleDataType, head.NodataValue)
+                    'outSoils.CreateNew(strOutSoils, head, GridDataType.FloatDataType, head.NodataValue)
 
                     If Len(strKFactor) > 0 Then
                         strOutKSoils = GetUniqueFileName("soilsk", Path.GetDirectoryName(strSoilsFileName), OutputGridExt)
                         outSoilsK.CreateNew(strOutKSoils, headK, GridDataType.DoubleDataType, head.NodataValue)
+                        'outSoilsK.CreateNew(strOutKSoils, headK, GridDataType.FloatDataType, head.NodataValue)
                     Else
                         strOutKSoils = ""
                     End If
