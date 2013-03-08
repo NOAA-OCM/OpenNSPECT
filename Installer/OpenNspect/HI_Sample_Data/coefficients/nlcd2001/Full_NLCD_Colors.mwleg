@@ -1,0 +1,24 @@
+<ColoringScheme SchemeType="Grid" GridName="NLCD2001_2006_LC" GroupName="Data Layers">
+  <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="0" LightSourceElevation="1" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
+    <Break Caption="11 Open Water" LowValue="11" HighValue="11" LowColor="-12096608" HighColor="-12096608" ColoringType="1" GradientModel="1" />
+    <Break Caption="12 Perennial Ice/Snow" LowValue="12" HighValue="12" LowColor="-3023367" HighColor="-3023367" ColoringType="1" GradientModel="1" />
+    <Break Caption="21 Developed, Open Space" LowValue="21" HighValue="21" LowColor="-2242103" HighColor="-2242103" ColoringType="1" GradientModel="1" />
+    <Break Caption="22 Developed, Low Intensity" LowValue="22" HighValue="22" LowColor="-2583678" HighColor="-2583678" ColoringType="1" GradientModel="1" />
+    <Break Caption="23 Developed, Medium Intensity" LowValue="23" HighValue="23" LowColor="-1245184" HighColor="-1245184" ColoringType="1" GradientModel="1" />
+    <Break Caption="24 Developed, High Intensity" LowValue="24" HighValue="24" LowColor="-5636096" HighColor="-5636096" ColoringType="1" GradientModel="1" />
+    <Break Caption="31 Barren Land (Rock/Sand/Clay)" LowValue="31" HighValue="31" LowColor="-5067357" HighColor="-5067357" ColoringType="1" GradientModel="1" />
+    <Break Caption="41 Deciduous Forest" LowValue="41" HighValue="41" LowColor="-9917853" HighColor="-9917853" ColoringType="1" GradientModel="1" />
+    <Break Caption="42 Evergreen Forest" LowValue="42" HighValue="42" LowColor="-14916816" HighColor="-14916816" ColoringType="1" GradientModel="1" />
+    <Break Caption="43 Mixed Forest" LowValue="43" HighValue="43" LowColor="-4863602" HighColor="-4863602" ColoringType="1" GradientModel="1" />
+    <Break Caption="51 Dward Scrub (Alaska Only)" LowValue="51" HighValue="51" LowColor="-5073357" HighColor="-5073357" ColoringType="1" GradientModel="1" />
+    <Break Caption="52 Shrub/Scrub" LowValue="52" HighValue="52" LowColor="-3360132" HighColor="-3360132" ColoringType="1" GradientModel="1" />
+    <Break Caption="71 Grassland/Herbaceous" LowValue="71" HighValue="71" LowColor="-1908031" HighColor="-1908031" ColoringType="1" GradientModel="1" />
+    <Break Caption="72 Sedge/Herbaceous (Alaska Only)" LowValue="72" HighValue="72" LowColor="-3092095" HighColor="-3092095" ColoringType="1" GradientModel="1" />
+    <Break Caption="73 Lichens (Alaska Only)" LowValue="73" HighValue="73" LowColor="-5977007" HighColor="-5977007" ColoringType="1" GradientModel="1" />
+    <Break Caption="74 Moss  (Alaska Only)" LowValue="74" HighValue="74" LowColor="-8209763" HighColor="-8209763" ColoringType="1" GradientModel="1" />
+    <Break Caption="81 Pasture/Hay" LowValue="81" HighValue="81" LowColor="-2369475" HighColor="-2369475" ColoringType="1" GradientModel="1" />
+    <Break Caption="82 Cultivated Crops" LowValue="82" HighValue="82" LowColor="-5607384" HighColor="-5607384" ColoringType="1" GradientModel="1" />
+    <Break Caption="90 Woody Wetlands" LowValue="90" HighValue="90" LowColor="-4531990" HighColor="-4531990" ColoringType="1" GradientModel="1" />
+    <Break Caption="95 Emergent Herbaceous Wetlands" LowValue="95" HighValue="95" LowColor="-9395270" HighColor="-9395270" ColoringType="1" GradientModel="1" />
+  </GridColoringScheme>
+</ColoringScheme>

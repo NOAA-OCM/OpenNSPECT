@@ -297,7 +297,7 @@ Friend Class SoilsSetupForm
                     Dim headK As New GridHeader
                     head.CopyFrom(dem.Header)
                     headK.CopyFrom(dem.Header)
-                    If dem.Header.NodataValue >= 1.0 Then 'DLE 1/8/2013 Change NODATA value to something that is not a valid value
+                    If dem.Header.NodataValue >= 0.0 Then 'DLE 1/8/2013 Change NODATA value to something that is not a valid value
                         head.NodataValue = -32768.0
                         headK.NodataValue = -32768.0
                     End If
