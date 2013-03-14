@@ -230,7 +230,7 @@ Module Coloring
 
         Dim cs As New GridColorScheme
         Dim csbrk As New GridColorBreak
-        Dim numBreak As Integer = 7
+        Dim numBreak As Integer = 9
         Dim brkValues(numBreak + 1) As Single
         Dim RGBval(numBreak + 1, 3) As Integer ' This is of size (numbreak+1),3 to hold all rgb color break triplets.
         Dim strLgndCaption(numBreak) As String
@@ -238,22 +238,32 @@ Module Coloring
         'Dim high1 As UInteger = Convert.ToUInt32(RGB(56, 168, 0))
 
         ' Need to define the breaks and labels for all of the arrays
-        brkValues = {-1000, -200.0, -100.0, -0.0001, 0.0001, 100.0, 200.0, 1000.0}
-        RGBval = {{128, 0, 255}, _
+        brkValues = {-5000.0, -1000.0, -200.0, -100.0, -0.0001, 0.0001, 100.0, 200.0, 1000.0, 5000.0}
+        RGBval = {{64, 0, 128}, _
+                  {170, 85, 255}, _
                   {255, 0, 255}, _
-                  {255, 0, 128}, _
-                  {255, 210, 233}, _
-                  {210, 249, 255}, _
-                  {0, 214, 251}, _
-                  {0, 128, 192}, _
+                  {255, 0, 0}, _
+                  {255, 223, 223}, _
+                  {224, 255, 217}, _
+                  {0, 255, 0}, _
+                  {0, 255, 255}, _
+                  {0, 0, 255}, _
                   {0, 41, 91}}
-        strLgndCaption = {"<-1000 - -200", _
+        '{213, 249, 255}, _
+        '{0, 255, 0}, _
+        '{0, 214, 251}, _
+        '{0, 128, 192}, _
+        '{0, 41, 91}}
+        '                  {255, 223, 223}, _ to
+        strLgndCaption = {"<-5000 - -100", _
+                          "-1000 - -200", _
                           "-200 - -100", _
                          "-100 - <0", _
                           "0 not shown", _
                           ">0 - 100", _
                           "100 - 200", _
-                          "200 - 1000"}
+                          "200 - 1000", _
+                          "1000 - >5000"}
 
         For ibrk As Integer = 0 To numBreak - 1
             csbrk = New GridColorBreak
@@ -263,7 +273,7 @@ Module Coloring
             csbrk.ColoringType = ColoringType.Gradient
             csbrk.LowColor = Convert.ToUInt32(RGB(RGBval(ibrk, 0), RGBval(ibrk, 1), RGBval(ibrk, 2)))
             csbrk.HighColor = Convert.ToUInt32(RGB(RGBval(ibrk + 1, 0), RGBval(ibrk + 1, 1), RGBval(ibrk + 1, 2)))
-            If (ibrk = 3) Then
+            If (ibrk = (numBreak - 1) / 2) Then
                 csbrk.LowValue = -999999.0
                 csbrk.HighValue = -999999.0
                 csbrk.HighColor = Convert.ToUInt32(RGB(255, 255, 255))
