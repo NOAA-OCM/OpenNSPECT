@@ -249,16 +249,18 @@ Friend Class SoilsSetupForm
                         strHydValue = pSoilsFeatClass.CellValue(lngHydFieldIndex, i)
                         'Based on current value, change GROUP to appropriate setting
                         Select Case strHydValue
-                            Case "A"
+                            Case "A", "1"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
-                            Case "B"
+                            Case "B", "2"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 2)
-                            Case "C"
+                            Case "C", "3"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
-                            Case "D"
+                            Case "D", "4"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
                             Case "A/B"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 2)
+                            Case "A/C"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
                             Case "B/C"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
                             Case "C/D"
