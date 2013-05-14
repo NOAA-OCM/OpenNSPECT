@@ -257,20 +257,27 @@ Friend Class SoilsSetupForm
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
                             Case "D", "4"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
-                            Case "A/B"
+                            Case "A/B", "1,2"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 2)
-                            Case "A/C"
+                            Case "A/C", "1/3"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
-                            Case "B/C"
-                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
-                            Case "C/D"
-                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
-                            Case "B/D"
-                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
-                            Case "A/D"
+                            Case "A/D", "1/4"
                                 pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 1)
+                            Case "B/C", "2,3"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 3)
+                            Case "B/D", "2/4"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
+                            Case "C/D", "3,4"
+                                pSoilsFeatClass.EditCellValue(lngNewHydFieldIndex, i, 4)
                             Case ""
-                                MsgBox("Your soils dataset contains missing values for Hydrologic Soils Attribute.  Please correct.", MsgBoxStyle.Critical, "Missing Values Detected")
+                                MsgBox("Your soils dataset contains missing values for Hydrologic Soil Group Attribute.  Please correct.", MsgBoxStyle.Critical, "Missing Values Detected")
+                                Return False
+                            Case Else
+                                MsgBox("Your soils dataset contains incorrect values for Hydrologic Soil Group Attribute. " & vbNewLine & vbNewLine & _
+                                       "Values must be a combination of A, B, C or D or, " & _
+                                       "alternately, 1, 2, 3 or 4, respectively. " & vbNewLine & vbNewLine & _
+                                       "Note also that there can be no missing values. " & _
+                                       "Please correct.", MsgBoxStyle.Critical, "Incorrect Hydro Group Values")
                                 Return False
                         End Select
                         lngValue = lngValue + 1
