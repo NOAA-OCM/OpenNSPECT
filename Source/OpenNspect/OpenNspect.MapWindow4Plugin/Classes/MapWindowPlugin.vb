@@ -26,6 +26,7 @@ Public Class MapWindowPlugin
     Private Const mnuNspectAnalysis As String = "mnunspectAnalysis"
     Private Const mnuNspectCompare As String = "mnunspectCompare"
     Private Const mnuNspectAdvSettings As String = "mnunspectAdvancedSettings"
+    Private Const mnuNspectAdvPreProc As String = "mnunspectPreProc"
     Private Const mnuNspectAdvLand As String = "mnunspectLandCover"
     Private Const mnuNspectAdvPolutants As String = "mnunspectPollutants"
     Private Const mnuNspectAdvWQ As String = "mnunspectWaterQuality"
@@ -222,6 +223,8 @@ Public Class MapWindowPlugin
                 ShowAnalysisForm()
             Case mnuNspectCompare
                 ShowCompareOutputsForm()
+            Case mnuNspectAdvPreProc
+                ShowAdvDatePrepForm()
             Case mnuNspectAdvLand
                 ShowAdvLandForm()
             Case mnuNspectAdvPolutants
@@ -267,6 +270,8 @@ Public Class MapWindowPlugin
 
             .AddMenu(mnuNspectAdvSettings, mnuNspectMain, Nothing, "Advanced Settings")
             _MenuItems.Push(mnuNspectAdvSettings)
+            .AddMenu(mnuNspectAdvPreProc, mnuNspectAdvSettings, Nothing, "Clip and Project New Data...")
+            _MenuItems.Push(mnuNspectAdvPreProc)
             .AddMenu(mnuNspectAdvLand, mnuNspectAdvSettings, Nothing, "Land Cover Types...")
             _MenuItems.Push(mnuNspectAdvLand)
             .AddMenu(mnuNspectAdvPolutants, mnuNspectAdvSettings, Nothing, "Pollutants...")
@@ -298,6 +303,12 @@ Public Class MapWindowPlugin
 
     Private Shared Sub ShowCompareOutputsForm()
         Using tmp As New CompareOutputsForm()
+            tmp.ShowDialog()
+        End Using
+    End Sub
+
+    Private Shared Sub ShowAdvDatePrepForm()
+        Using tmp As New DataPrepForm()
             tmp.ShowDialog()
         End Using
     End Sub

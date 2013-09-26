@@ -488,6 +488,7 @@ Friend Class NewWatershedDelineationForm
                 Return False
             Else
                 pBasinFeatClassTmp.Open(strWSSFOut)
+                ' File.Copy(OutPath + "stream.prj", strWSSFOut) 'Copy prj file for watershed  XXXX Here
                 Dim targetValue As Integer = (pBasinFeatClassTmp.NumFields - 1)
 
                 'To Do:
@@ -554,6 +555,7 @@ Friend Class NewWatershedDelineationForm
                  pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
             End If
             pBasinFeatClass.StopEditingTable()
+            'File.Copy(OutPath + "stream.prj", OutPath + pBasinFeatClass.Filename) 'Copy prj file for watershed
 
             _strLSFileName = OutPath + "lsgrid" + OutputGridExt
             Dim g As New Grid
