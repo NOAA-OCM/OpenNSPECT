@@ -49,6 +49,18 @@ Module Utilities
     Public g_ManagementScenarioLUScenFileName As String
     Public g_ManagementScenarioRowNumber As String
 
+    ' Returns units for a given projection
+    Public Function ProjectionUnits(ByVal sProjParams As String, ByVal sGeoProj As MapWinGIS.GeoProjection) As String
+        ProjectionUnits = ""
+        If sGeoProj.IsGeographic Then
+            ProjectionUnits = "degrees"
+        Else
+            Dim tmpStartChar = sProjParams.Substring(sProjParams.IndexOf("+units=") + 7)
+            ProjectionUnits = tmpStartChar.Substring(0, tmpStartChar.IndexOf(" "))
+        End If
+        Return ProjectionUnits
+    End Function
+
     'Returns a filename given for example C:\temp\dataset returns dataset
     Public Function SplitFileName(ByRef sWholeName As String) As String
         SplitFileName = ""
