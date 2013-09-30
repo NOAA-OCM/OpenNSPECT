@@ -15,6 +15,10 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
+'Sept 30, 2013: Dave Eslinger dave.eslinger@noa.gov - 
+'               Added Functions for clipping a raster by polygon extent, and 
+'                 to get the spatial units of a given projection
+
 Imports System.Collections.Generic
 Imports System.Windows.Forms
 Imports System.IO
@@ -60,6 +64,17 @@ Module Utilities
         End If
         Return ProjectionUnits
     End Function
+    ''Deletes all files associated with a shapefile in a target directory
+    'Public Function DelShapefile(ByVal sfFullName As String) As Boolean
+    '    Dim fileInfoSFile As New FileInfo(sfFullName)
+    '    Dim tmpFile As String
+    '    Dim tmpPattern As String
+    '    tmpPattern = Path.GetFileNameWithoutExtension(sfFullName) & ".*"
+    '    For Each tmpFile In Directory.GetFiles(fileInfoSFile.DirectoryName.ToString, tmpPattern)
+    '        MsgBox("Shapefile parts include: " & tmpFile)
+    '        File.Delete(tmpFile)
+    '    Next
+    'End Function
 
     'Returns a filename given for example C:\temp\dataset returns dataset
     Public Function SplitFileName(ByRef sWholeName As String) As String
@@ -266,6 +281,19 @@ Module Utilities
             HandleError(ex)
         End Try
         Return ""
+    End Function
+
+    Public Function ClipBySelectedPolyExtents(ByRef pGridToClip As Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As Grid
+        Dim strtmp1 As String = GetTempFileNameOutputGridExt()
+        pGridToClip.Save()
+        pGridToClip.Save(strtmp1)
+        pGridToClip.Header.Projection = MapWindowPlugin.MapWindowInstance.Project.ProjectProjection
+
+        SpatialOperations.ClipGridWithPolygon(strtmp1, pSelectedPolyClip, outputFileName, True)
+
+        Dim out As New Grid
+        out.Open(outputFileName)
+        Return out
     End Function
 
     Public Function ClipBySelectedPoly(ByRef pGridToClip As Grid, ByVal pSelectedPolyClip As MapWinGIS.Shape, ByVal outputFileName As String) As Grid
