@@ -122,18 +122,22 @@ Public Class DataPrepForm
             End Try
             txtFinalCell.Focus()
             'MsgBox("txtFinalCell.Text = '" & txtFinalCell.Text & "'")
-            If (aoiFName = "" Or demFName = "" Or lcFName = "" Or precipFName = "" _
+            'If (aoiFName = "" Or demFName = "" Or lcFName = "" Or precipFName = "" _
+            '    Or txtFinalCell.Text = "") Then
+            '    If aoiFName = "" Then
+            '        txtAOI.Focus()
+            '    ElseIf demFName = "" Then
+            '        txtDEMName.Focus()
+            '    ElseIf lcFName = "" Then
+            '        txtLCName.Focus()
+            '    ElseIf precipFName = "" Then
+            '        txtPrecipName.Focus()
+            If (aoiFName = "" _
                 Or txtFinalCell.Text = "") Then
                 If aoiFName = "" Then
                     txtAOI.Focus()
-                ElseIf demFName = "" Then
-                    txtDEMName.Focus()
-                ElseIf lcFName = "" Then
-                    txtLCName.Focus()
-                ElseIf precipFName = "" Then
-                    txtPrecipName.Focus()
-                Else
-                     txtFinalCell.Focus()
+                 Else
+                    txtFinalCell.Focus()
                 End If
                 Dim msgResult As MsgBoxResult = MsgBox("Please specify all input items", MsgBoxStyle.RetryCancel)
             Else
@@ -150,27 +154,50 @@ Public Class DataPrepForm
         '  MsgBox("More processing")
         ' Create intermediate subdirectories
         Dim fileInfoDPRoot As New FileInfo(aoiFName)
-        dirDPRoot = fileInfoDPRoot.DirectoryName.ToString
-        dirDataPrep = dirDPRoot & "\ON_DataPrep"
-        dirTarProj = dirDataPrep & "\TargetProj\"
-        dirOtherProj = dirDataPrep & "\OtherProj\"
-        If (Directory.Exists(dirDataPrep)) Then
-            Dim response As MsgBoxResult = MsgBox("Root data directory exists.  Do you want to proceed?", _
-                                                  MsgBoxStyle.AbortRetryIgnore)
-            If response = MsgBoxResult.Abort Then
-                Return
-            ElseIf response = MsgBoxResult.Retry Then
-                Return
+        Dim removeOld As New Boolean
+        removeOld = False
+
+        If cbKeep.Checked = True Then
+            dirDPRoot = fileInfoDPRoot.DirectoryName.ToString
+            dirDataPrep = dirDPRoot & "\ON_DataPrep"
+            dirTarProj = dirDataPrep & "\TargetProj\"
+            dirOtherProj = dirDataPrep & "\OtherProj\"
+            If (Directory.Exists(dirDataPrep)) Then
+                Dim response As MsgBoxResult = MsgBox("Root data directory exists.  Do you want to proceed, deleting any duplicate files?", _
+                                                      MsgBoxStyle.OkCancel)
+                If response = MsgBoxResult.Cancel Then
+                    MsgBox("Canceling.  To rerun, put AOI Shapefile in a new directory.")
+                    Return
+                ElseIf response = MsgBoxResult.Ok Then
+                    removeOld = True
+                    ' Return
+                End If
+                'Else
+                '    Directory.CreateDirectory(dirDataPrep)
+                '    Directory.CreateDirectory(dirTarProj)
+                '    Directory.CreateDirectory(dirOtherProj)
             End If
         Else
-            Directory.CreateDirectory(dirDataPrep)
-            Directory.CreateDirectory(dirTarProj)
-            Directory.CreateDirectory(dirOtherProj)
+            'TODO: Add logic to use a tmp directory to be deleted later.
+            ' Temporary directories here
+            dirDPRoot = fileInfoDPRoot.DirectoryName.ToString
+            dirDataPrep = dirDPRoot & "\ON_DataPrep"
+            dirTarProj = dirDataPrep & "\TargetProj\"
+            dirOtherProj = dirDataPrep & "\OtherProj\"
         End If
+
+        Directory.CreateDirectory(dirDataPrep)
+        Directory.CreateDirectory(dirTarProj)
+        Directory.CreateDirectory(dirOtherProj)
+
 
         ' Buffer AOI Shapefile by 10 cells -> AOIB10
         aoiBuffFName = dirTarProj & Path.GetFileNameWithoutExtension(aoiFName) & "B10.shp"
         MsgBox("aoiBuffName is " & aoiBuffFName)
+        If (File.Exists(aoiBuffFName) And removeOld) Then
+            ' DelShapefile(aoiBuffFName)
+            MapWinGeoProc.DataManagement.DeleteShapefile(aoiBuffFName)
+        End If
         Dim aoi As New Shapefile
         Dim aoiB10 As New Shapefile
         Dim b10Dist As New Double
@@ -179,57 +206,74 @@ Public Class DataPrepForm
         aoiB10.Open(aoiBuffFName)
         aoiB10 = aoi.BufferByDistance(b10Dist, 1, False, True)
         aoiB10.SaveAs(aoiBuffFName)
+        'TODO: DLE 9/30/2013:  All these clip teh same raster!
+        ' Begin with DEM
+        Dim demFinal As New Grid
+        demFinal = PrepOneRaster(demFName, aoiBuffFName, dirDataPrep, "DEM")
 
+        ' Now land Cover
+        Dim lcFinal As New Grid
+        lcFinal = PrepOneRaster(lcFName, aoiBuffFName, dirDataPrep, "LULC")
 
-        ' Clip raw data to AOIB10, reprojecting AOI as needed
-        'Define target Projection
+        ' And Precip
+        Dim precipFinal As New Grid
+        precipFinal = PrepOneRaster(precipFName, aoiBuffFName, dirDataPrep, "Precip")
+
+    End Sub
+    'PrepOneRaster takes a given raster and clips it to the extent of a target shapefile, reprojecting 
+    '   the shapefile if needed.  This makes the reprojection faster.
+    '  Steps are: 1) reproject AOI shapefile, if needed, 2) Clip Raw Raster, 3) Reproject clipped Raster 
+    '    back to original AOI projection
+    Private Function PrepOneRaster(ByVal rawGridName As String, ByVal aoiSFName As String, _
+                                   ByVal dpRoot As String, ByVal rasterSfx As String) As Grid
+        Dim rawGrid As New Grid
+        Dim rawProj4 As String
+        Dim aoiRasterB10 As New Shapefile
+        Dim rawGridB10 As New Grid
+        Dim rawGridB10Fname As String
+        Dim clipPoly As New MapWinGIS.Shape
+        Dim aoiB10 As New Shapefile
         Dim tarGeoProj As New MapWinGIS.GeoProjection
-        tarGeoProj = aoiB10.GeoProjection
         Dim tarProj4 As String
+
+        rawGrid.Open(demFName)
+        rawProj4 = rawGrid.Header.GeoProjection.ExportToProj4
+        aoiB10.Open(aoiSFName)
+        tarGeoProj = aoiB10.GeoProjection
         tarProj4 = tarGeoProj.ExportToProj4
 
-        ' Begin with DEM
-        Dim demRaw As New Grid
-        Dim rawProj4 As String
-        Dim aoiDEMB10 As New Shapefile
-        Dim demRawB10 As New Grid
-        Dim demB10Fname As String
-        Dim clipPoly As New MapWinGIS.Shape
-
-        demRaw.Open(demFName)
-        rawProj4 = demRaw.Header.GeoProjection.ExportToProj4
-
         ' Check projections
-        If (Not demRaw.Header.GeoProjection.IsSame(tarGeoProj)) Then
-            '            If Not String.Equals(rawProj4, tarProj4) Then
-            ' Reprojection is needed
-            MsgBox("Reprojection Needed" & Environment.NewLine _
-                   & "Target Proj4 = " & tarProj4 & Environment.NewLine _
-                   & "Raw Proj4    = " & rawProj4)
+        If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj)) Then
             ' Reproject Buffered AOI shapefile to  DEM Projection
-            aoiDEMB10 = aoiB10.Reproject(demRaw.Header.GeoProjection, 1)
-            'XXXXXXXXXXXXXXXXXXX This didn't work  DLE 9/27/2013
+            aoiRasterB10 = aoiB10.Reproject(rawGrid.Header.GeoProjection, 1)
+            Dim tmpName As String = dirOtherProj & "aoiRasterB10" & rasterSfx & ".shp"
+
+            MsgBox("tmpName = " & tmpName.ToString)
+            ' Now clip by aoiRasterB10 polygon with fast, rectangular clipping
+            rawGridB10Fname = dirOtherProj & Path.GetFileNameWithoutExtension(demFName) & "B10" & rasterSfx & ".tif"
+            MsgBox("Clipped raw file = " & rawGridB10Fname)
+            '        rawGridB10.Open(rawGridB10Fname)
+            rawGridB10 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB10.Shape(0), rawGridB10Fname)
+
+            'raw data are now clipped, so reproject this smaller raster back into the AOI Projection
+
+
+            If (cbKeep.Checked) Then
+                aoiRasterB10.SaveAs(tmpName)
+            End If
         Else
             ' Reprojection not needed so make clipping Aoi same as B10
-            aoiDEMB10 = aoiB10
+            aoiRasterB10 = aoiB10
+            ' Now clip by aoiRasterB10 polygon with fast, rectangular clipping
+            rawGridB10Fname = dirOtherProj & Path.GetFileNameWithoutExtension(demFName) & "B10" & rasterSfx & ".tif"
+            MsgBox("Clipped raw file = " & rawGridB10Fname)
+            '        rawGridB10.Open(rawGridB10Fname)
+            rawGridB10 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB10.Shape(0), rawGridB10Fname)
         End If
-        ' Now clip by aoiDEMB10 polygon with fast, rectangular clipping
-        clipPoly = aoiB10.Shape(0)
-        demB10Fname = dirOtherProj & Path.GetFileNameWithoutExtension(demFName) & "B10.tif"
-        If Not SpatialOperations.ClipGridWithPolygon(demFName, clipPoly, demB10Fname) Then
-            MsgBox("CClip failed")
-        Else
-            MsgBox("ClipBySelectedPoly worked!")
-        End If
-
-        'If (Not demRaw.Header.GeoProjection.IsSame(tarGeoProj)) Then
-        '    MsgBox("Reprojection Needed" & Environment.NewLine _
-        '            & "TarGeoProj Name  = " & tarGeoProj.Name & Environment.NewLine _
-        '            & "RawGeoProj Name    = " & demRaw.Header.GeoProjection.Name)
-        'End If
-
- 
-    End Sub
+        rawGrid.Close()
+        Return rawGridB10
+  
+    End Function
 
     'Private Sub txtFinalCell_TextChanged(sender As Object, e As EventArgs) Handles txtFinalCell.TextChanged
     '    Dim ch(20) As Char
