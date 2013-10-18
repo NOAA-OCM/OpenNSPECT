@@ -16,6 +16,7 @@
 Imports System.IO
 Imports MapWindow.Interfaces
 Imports MapWinGIS
+
 Imports MapWinGeoProc
 
 
@@ -69,6 +70,7 @@ Public Class DataPrepForm
             txtCellSizeDEM.Text = g.Header.dX.ToString
             txtSizeUnitsDEM.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
             txtDEMProj.Text = g.Header.GeoProjection.ProjectionName
+            txtDEMParams.Text = g.Header.Projection.ToString
             g.Close()
         End If
     End Sub
@@ -86,6 +88,7 @@ Public Class DataPrepForm
             txtCellSizeLC.Text = g.Header.dX.ToString
             txtSizeUnitsLC.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
             txtLCProj.Text = g.Header.GeoProjection.ProjectionName
+            txtLCParams.Text = g.Header.Projection.ToString
             g.Close()
         End If
 
@@ -104,6 +107,7 @@ Public Class DataPrepForm
             txtCellSizePrecip.Text = g.Header.dX.ToString
             txtSizeUnitsPrecip.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
             txtPrecipProj.Text = g.Header.GeoProjection.ProjectionName
+            txtPrecipParams.Text = g.Header.Projection.ToString
             g.Close()
         End If
     End Sub
@@ -147,6 +151,8 @@ Public Class DataPrepForm
 
         Catch ex As Exception
             MsgBox("Error: " & ex.ToString, MsgBoxStyle.Critical)
+        Finally
+            Close()
         End Try
     End Sub
 
@@ -206,18 +212,24 @@ Public Class DataPrepForm
         aoiB10.Open(aoiBuffFName)
         aoiB10 = aoi.BufferByDistance(b10Dist, 1, False, True)
         aoiB10.SaveAs(aoiBuffFName)
-        'TODO: DLE 9/30/2013:  All these clip teh same raster!
+
         ' Begin with DEM
         Dim demFinal As New Grid
         demFinal = PrepOneRaster(demFName, aoiBuffFName, dirDataPrep, "DEM")
+        demFinal.Save(demFName)
+        demFinal.Close()
 
         ' Now land Cover
         Dim lcFinal As New Grid
         lcFinal = PrepOneRaster(lcFName, aoiBuffFName, dirDataPrep, "LULC")
+        lcFinal.Save(lcFName)
+        lcFinal.Close()
 
         ' And Precip
         Dim precipFinal As New Grid
         precipFinal = PrepOneRaster(precipFName, aoiBuffFName, dirDataPrep, "Precip")
+        precipFinal.Save(precipFName)
+        precipFinal.Close()
 
     End Sub
     'PrepOneRaster takes a given raster and clips it to the extent of a target shapefile, reprojecting 
@@ -235,8 +247,12 @@ Public Class DataPrepForm
         Dim aoiB10 As New Shapefile
         Dim tarGeoProj As New MapWinGIS.GeoProjection
         Dim tarProj4 As String
+        Dim tarGridB10 As New Grid  ' A buffered grid in final projection, ready for binning nudging and final clipping
+        Dim tarBinned As New Grid   ' Projected raster that has been rebinned (if needed) to target bin size
+        Dim tarNudged As New Grid   ' Nudged grid, ready for final clipping
+        Dim tarFinal As New Grid    ' Final projected, nudged and clipped grid
 
-        rawGrid.Open(demFName)
+        rawGrid.Open(rawGridName)
         rawProj4 = rawGrid.Header.GeoProjection.ExportToProj4
         aoiB10.Open(aoiSFName)
         tarGeoProj = aoiB10.GeoProjection
@@ -247,33 +263,100 @@ Public Class DataPrepForm
             ' Reproject Buffered AOI shapefile to  DEM Projection
             aoiRasterB10 = aoiB10.Reproject(rawGrid.Header.GeoProjection, 1)
             Dim tmpName As String = dirOtherProj & "aoiRasterB10" & rasterSfx & ".shp"
-
-            MsgBox("tmpName = " & tmpName.ToString)
+            '   If (cbKeep.Checked) Then
+            aoiRasterB10.SaveAs(tmpName)
+            'End If
+            'MsgBox("tmpName = " & tmpName.ToString)
             ' Now clip by aoiRasterB10 polygon with fast, rectangular clipping
-            rawGridB10Fname = dirOtherProj & Path.GetFileNameWithoutExtension(demFName) & "B10" & rasterSfx & ".tif"
-            MsgBox("Clipped raw file = " & rawGridB10Fname)
-            '        rawGridB10.Open(rawGridB10Fname)
+            rawGridB10Fname = dirOtherProj & Path.GetFileNameWithoutExtension(rawGridName) & "B10" & rasterSfx & ".tif"
+            'MsgBox("Clipped raw file = " & rawGridB10Fname)
             rawGridB10 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB10.Shape(0), rawGridB10Fname)
 
             'raw data are now clipped, so reproject this smaller raster back into the AOI Projection
+            'Dim reprojectWorked As Boolean
+            'reprojectWorked = SpatialReference.ProjectGrid(rawGridB10.Header.GeoProjection.ExportToProj4, _
+            '                                               tarProj4, rawGridB10, tarGridB10, True)
+            'Test if reproject worked.  Is so, bin to target cell size and nudge, if not, error message
+            'If (reprojectWorked) Then
+            '    If (cbKeep.Checked) Then
+            '        tmpName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB10Fname) & ".tif"
+            '        tarGridB10.Save(tmpName)
+            '    End If
+            '    'Bin
+            '    'Nudge
+            'Else
+            '    MsgBox("Error in reprojecting " & rawGridB10Fname.ToString, MsgBoxStyle.OkCancel)
+            'End If
 
+            'If (cbKeep.Checked) Then
+            '    aoiRasterB10.SaveAs(tmpName)
+            'End If
+            If (SpatialReference.ProjectGrid(rawGridB10.Header.GeoProjection.ExportToProj4, _
+                                                           tarProj4, rawGridB10, tarGridB10, True)) Then
 
-            If (cbKeep.Checked) Then
-                aoiRasterB10.SaveAs(tmpName)
+                'Test if reproject worked and save, if so.  If not, error message
+                ' If (cbKeep.Checked) Then
+                tmpName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB10Fname) & ".tif"
+                MsgBox("Reprojected buffered file is " & tmpName)
+                tarGridB10.Save(tmpName)
+                'End If
+            Else
+                MsgBox("Error in reprojecting " & rawGridB10Fname.ToString, MsgBoxStyle.OkCancel)
             End If
         Else
             ' Reprojection not needed so make clipping Aoi same as B10
-            aoiRasterB10 = aoiB10
-            ' Now clip by aoiRasterB10 polygon with fast, rectangular clipping
-            rawGridB10Fname = dirOtherProj & Path.GetFileNameWithoutExtension(demFName) & "B10" & rasterSfx & ".tif"
-            MsgBox("Clipped raw file = " & rawGridB10Fname)
-            '        rawGridB10.Open(rawGridB10Fname)
-            rawGridB10 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB10.Shape(0), rawGridB10Fname)
+            aoiRasterB10 = aoiB10  ' Clip by aoiRasterB10 polygon with fast, rectangular clipping
+            rawGridB10Fname = dirTarProj & Path.GetFileNameWithoutExtension(rawGridName) & "B10" & rasterSfx & ".tif"
+            ' MsgBox("Clipped raw file = " & rawGridB10Fname)
+            tarGridB10 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB10.Shape(0), rawGridB10Fname)
+            'If (cbKeep.Checked) Then
+            Dim tmpName As String = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB10Fname) & ".tif"
+            tarGridB10.Save(tmpName)
+            'End If
         End If
+        ' Raster is now in correct projection and clipped to buffered size.  Ready for
+        '   1) Binning to specified cell size
+        '   2) Nudging to align grid with DEM and
+        '   3) Clipping to final AOI
+        '
+        '  Internal Grid names are:
+        '    tarGridB10   ' The buffered grid in final projection, ready for binning, nudging and final clipping
+        '    tarBinned    ' Projected raster that has been rebinned (if needed) to target bin size
+        '    tarNudged    ' Nudged grid, ready for final clipping
+        '    tarFinal     ' Final projected, nudged and clipped grid
+
+        'tarBinned = BinRaster(tarGridB10.Filename.ToString, finalCellSize)
+        'tarBinned.Save(dirTarProj & Path.GetFileNameWithoutExtension(tarGridB10.Filename.ToString) & "_b.tif")
+
         rawGrid.Close()
-        Return rawGridB10
-  
+        tarGridB10.Close()
+        tarFinal = tarGridB10
+        Return tarFinal
+
     End Function
+
+    Private Function BinRaster(ByVal unbinRasFName As String, ByVal cellSize As Double) As Grid
+        Dim binnedRas As New Grid
+        Dim unbinRas As New Grid
+        Dim binRasFName = dirTarProj & Path.GetFileNameWithoutExtension(unbinRasFName) & "_bin.tif"
+
+        unbinRas.Open(unbinRasFName)
+        If (unbinRas.Header.dX <> cellSize) Then
+            ' Cell sizes are different so rebin the Raster
+            Dim strTransform As String
+            strTransform = "-overwrite -of GTiff -tr " & txtFinalCell.Text.ToString
+            MsgBox("Transform string is " & strTransform)
+            Dim u = New MapWinGIS.UtilsClass
+            If (Not u.GDALWarp(unbinRasFName, binRasFName, strTransform)) Then
+                MsgBox("Error, transform did not work", MsgBoxStyle.Critical)
+            End If
+            Return binnedRas
+        Else
+            'Cell sizes the same, so just return original raster
+            Return unbinRas
+        End If
+
+     End Function
 
     'Private Sub txtFinalCell_TextChanged(sender As Object, e As EventArgs) Handles txtFinalCell.TextChanged
     '    Dim ch(20) As Char
