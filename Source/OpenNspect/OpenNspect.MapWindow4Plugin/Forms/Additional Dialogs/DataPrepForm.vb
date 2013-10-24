@@ -207,7 +207,7 @@ Public Class DataPrepForm
         Dim aoi As New Shapefile
         Dim aoiB10 As New Shapefile
         Dim b10Dist As New Double
-        b10Dist = 50 * finalCellSize
+        b10Dist = 20 * finalCellSize
         aoi.Open(aoiFName)
         aoiB10.Open(aoiBuffFName)
         aoiB10 = aoi.BufferByDistance(b10Dist, 1, False, True)
