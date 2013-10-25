@@ -138,15 +138,18 @@
     </WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AxInterop.MapWinGIS, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="AxInterop.MapWinGIS">
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\AxInterop.MapWinGIS.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Interop.MapWinGIS, Version=4.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Interop.MapWinGIS, Version=4.8.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\Interop.MapWinGIS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MapWindow.Controls">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\MapWindow.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MapWinGeoProc, Version=4.8.2.84, Culture=neutral, processorArchitecture=x86">
@@ -157,6 +160,10 @@
     <Reference Include="MapWinInterfaces, Version=4.8.2.20932, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\MapWinInterfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MapWinUtility">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\MapWinUtility.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System">
@@ -529,6 +536,17 @@
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
