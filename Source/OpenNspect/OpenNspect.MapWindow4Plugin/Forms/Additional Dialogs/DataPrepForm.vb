@@ -435,16 +435,18 @@ Public Class DataPrepForm
         End If
         ' The grid is now nudged, so clip to final shapefile and return it.
         'TODO Not working here.  CHeck shapefile...
-        tarFinalFName = dirDataPrep & Path.GetFileNameWithoutExtension(rawGridName) & "_DP.tif"
-        tarFinal.Open(tarFinalFName)
-        tarAOI.SelectAll()
-        tarFinal = ClipBySelectedPoly(tarGrid, tarAOI.Shape(0), tarFinalFName)
 
+        tarFinalFName = dirDataPrep & "\" & Path.GetFileNameWithoutExtension(tarNudgedFName) & "_DP.tif"
+        tarFinal.Open(tarFinalFName)
+        tarNudged.Open(tarNudgedFName)
+        tarAOI.Open(aoiFName)
+        tarFinal = ClipBySelectedPoly(tarNudged, tarAOI.Shape(0), tarFinalFName)
+        tarFinal.Save()
 
         rawGrid.Close()
         'tarFinal = tarGridB20
         'tarGridB20.Close()
-        tarFinalFName = clippedFName
+        'tarFinalFName = clippedFName
         Return tarFinalFName
 
     End Function
