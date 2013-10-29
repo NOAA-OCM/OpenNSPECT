@@ -31,6 +31,12 @@ Public Class DataPrepForm
     Public demFName As String
     Public lcFName As String
     Public precipFName As String
+    Public refXll As Double
+    Public refYll As Double
+    Public refdX As Double
+    Public refdY As Double
+    Public tarAOI As New Shapefile
+
 
     Private aoiBuffFName As String
     Private demBuffFname As String
@@ -202,23 +208,23 @@ Public Class DataPrepForm
         Directory.CreateDirectory(dirOtherProj)
 
 
-        ' Buffer AOI Shapefile by 10 cells -> AOIB20
+        ' Buffer AOI Shapefile by 2cells -> AOIB20
         aoiBuffFName = dirTarProj & Path.GetFileNameWithoutExtension(aoiFName) & "B20.shp"
         'MsgBox("aoiBuffName is " & aoiBuffFName)
         If (File.Exists(aoiBuffFName) And removeOld) Then
             ' DelShapefile(aoiBuffFName)
             MapWinGeoProc.DataManagement.DeleteShapefile(aoiBuffFName)
         End If
-        Dim aoi As New Shapefile
+        'Dim aoi As New Shapefile
         Dim aoiB20 As New Shapefile
         Dim B20Dist As New Double
         B20Dist = 20 * finalCellSize
-        aoi.Open(aoiFName)
+        tarAOI.Open(aoiFName)
         aoiB20.Open(aoiBuffFName)
-        aoiB20 = aoi.BufferByDistance(B20Dist, 1, False, True)
+        aoiB20 = tarAOI.BufferByDistance(B20Dist, 1, False, True)
         aoiB20.SaveAs(aoiBuffFName)
 
-        ' Begin with DEM
+        ' Begin with DEM, this will be the reference file for nudging
         Dim demFinal As New Grid
         Dim demFinalFName As String
         demFinalFName = PrepOneRaster(demFName, aoiBuffFName, dirDataPrep, "DEM")
@@ -240,11 +246,14 @@ Public Class DataPrepForm
         'precipFinal.Save(precipFName)
         'precipFinal.Close()
 
+        'If everything ran well, delete temporary files as needed:
+        ' add stuff here...
+
     End Sub
     'PrepOneRaster takes a given raster and clips it to the extent of a target shapefile, reprojecting 
     '   the shapefile if needed.  This makes the reprojection faster.
     '  Steps are: 1) reproject AOI shapefile, if needed, 2) Clip Raw Raster, 3) Reproject clipped Raster 
-    '    back to original AOI projection
+    '    back to original AOI projection, 4) Bin reprojected raster to desired cell size, 5) align 
     Private Function PrepOneRaster(ByVal rawGridName As String, ByVal aoiSFName As String, _
                                    ByVal dpRoot As String, ByVal rasterSfx As String) As String
         Dim rawGrid As New Grid
@@ -257,7 +266,7 @@ Public Class DataPrepForm
         Dim tarGeoProj As New MapWinGIS.GeoProjection
         Dim tarProj4 As String
         Dim tarGridB20 As New Grid  ' A buffered grid in final projection, ready for binning nudging and final clipping
-        'Dim tarBinned As New Grid   ' Projected raster that has been rebinned (if needed) to target bin size
+        Dim tarBinned As New Grid   ' Projected raster that has been rebinned (if needed) to target bin size
         Dim tarNudged As New Grid   ' Nudged grid, ready for final clipping
         Dim tarFinal As New Grid    ' Final projected, nudged and clipped grid
         Dim tarFinalFName As String    ' Final projected, nudged and clipped grid Name
@@ -268,6 +277,12 @@ Public Class DataPrepForm
         Dim onlyGDAL As Boolean = False  'Only use GDAL Warp routine for reprojection and rebinning
         Dim warpNeeded As Boolean
         Dim statusReproject As Boolean = False
+        Dim tarAOI As New Shapefile
+
+        Dim tarXll As Double
+        Dim tarYll As Double
+        Dim tardX As Double
+        Dim tardY As Double
 
         rawGrid.Open(rawGridName)
         rawProj4 = rawGrid.Header.GeoProjection.ExportToProj4
@@ -344,8 +359,90 @@ Public Class DataPrepForm
             MsgBox("DoResample reproject worked on " & tarBinFName)
             'tarBinned.Save(tarBinFName)
         End If
+
+        ' Raster is now Binned.  If it is NOT the DEM/Reference files, nudge it to align properly with that file.
+        ' If it IS the DEM/Ref raster, set the reference coordinates  for subsiequent nudging.
+        ' NOTE BENE: The DEM/Reference Raster must be processed first!
+        Dim tarGrid As New Grid
+        Dim shiftXll, shiftYll, delX, delY As Double
+
+        tarGrid.Open(tarBinFName)
+        tarXll = tarGrid.Header.XllCenter
+        tarYll = tarGrid.Header.YllCenter
+        tardX = tarGrid.Header.dX
+        tardY = tarGrid.Header.dY
+        If (rasterSfx = "DEM") Then ' Set the reference coordinates
+            tarNudged = CopyRaster(tarGrid, tarNudgedFName)
+            refXll = tarXll
+            refYll = tarYll
+            refdX = tardX
+            refdY = tarDy
+        Else
+            If (refdX.Equals(tardX) And refdY.Equals(tardY)) Then
+                delX = refXll - tarXll
+                delY = refYll - tarYll
+                shiftXll = (refXll - tarXll) Mod refdX
+                shiftYll = (refYll - tarYll) Mod refdY
+
+                Try
+                    'Check to see if any needed X shift is less than 1/2 the X cell size
+                    'and correct as needed.
+                    If (Math.Abs(shiftXll) > refdX / 2.0) Then
+                        If (shiftXll < 0) Then
+                            shiftXll = shiftXll + refdX
+                        Else
+                            shiftXll = shiftXll - refdX
+                        End If
+                    End If
+
+                    'Check to see if any needed Y shift is less than 1/2 the Y cell size
+                    'and correct as needed.
+                    If (Math.Abs(shiftYll) > refdY / 2.0) Then
+                        If (shiftYll < 0) Then
+                            shiftYll = shiftYll + refdY
+                        Else
+                            shiftYll = shiftYll - refdY
+                        End If
+                    End If
+
+                Catch ex As Exception
+                    MsgBox("Something broke in calculating the X and Y shifts")
+                End Try
+
+                If (Not shiftXll.Equals(0.0) Or Not shiftYll.Equals(0.0)) Then
+                    Try
+                        'Dim tarNudged As New Grid
+                        tarNudged = CopyRaster(TarGrid, tarNudgedFName)
+                        tarNudged.Header.XllCenter = tarNudged.Header.XllCenter + shiftXll
+                        tarNudged.Header.YllCenter = tarNudged.Header.YllCenter + shiftYll
+                        tarNudged.Save()
+                        tarNudged.Close()
+
+                    Catch ex As Exception
+                        MsgBox("Something in new file " & tarNudgedFName & " failed!")
+                    End Try
+
+                Else
+                    MsgBox("On " & TarGrid.Filename & ", no shift required")
+
+                End If
+
+            Else
+                MsgBox("Cell sizes do not match.  Nudging not possible on grid" & _
+                       ControlChars.CrLf & TarGrid.Filename, MsgBoxStyle.Exclamation)
+            End If
+
+        End If
+        ' The grid is now nudged, so clip to final shapefile and return it.
+        'TODO Not working here.  CHeck shapefile...
+        tarFinalFName = dirDataPrep & Path.GetFileNameWithoutExtension(rawGridName) & "_DP.tif"
+        tarFinal.Open(tarFinalFName)
+        tarAOI.SelectAll()
+        tarFinal = ClipBySelectedPoly(tarGrid, tarAOI.Shape(0), tarFinalFName)
+
+
         rawGrid.Close()
-        tarFinal = tarGridB20
+        'tarFinal = tarGridB20
         'tarGridB20.Close()
         tarFinalFName = clippedFName
         Return tarFinalFName
@@ -453,15 +550,5 @@ Public Class DataPrepForm
         End Try
     End Function
 
-    'Private Sub txtFinalCell_TextChanged(sender As Object, e As EventArgs) Handles txtFinalCell.TextChanged
-    '    Dim ch(20) As Char
-    '    Dim len As Integer = txtFinalCell.Text.Length
-    '    ch = txtFinalCell.Text.ToCharArray
-    '    For i As Integer = 0 To len - 1
-    '        If (Not IsNumeric(ch(i)) Or ch(i) = "." Or ch(i) = "," Or ch(i) = "-" Or ch(i) = "+") Then
-    '            MsgBox("Final Cell Size can only contain numbers.  Please correct.")
-    '        End If
-    '    Next
-
-    'End Sub
+   
 End Class
