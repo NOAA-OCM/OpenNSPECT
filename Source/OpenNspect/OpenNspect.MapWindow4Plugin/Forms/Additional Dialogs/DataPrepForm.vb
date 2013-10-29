@@ -229,15 +229,11 @@ Public Class DataPrepForm
         Dim demFinalFName As String
         demFinalFName = PrepOneRaster(demFName, aoiBuffFName, dirDataPrep, "DEM")
         demFinal.Open(demFinalFName)
-        'demFinal.Save(demFName)
-        'demFinal.Close()
-
+  
         ' Now land Cover
         Dim lcFinal As New Grid
         Dim lcFinalFName As String
         lcFinalFName = PrepOneRaster(lcFName, aoiBuffFName, dirDataPrep, "LULC")
-        'lcFinal.Save(lcFName)
-        'lcFinal.Close()
 
         ' And Precip
         Dim precipFinal As New Grid
@@ -248,6 +244,28 @@ Public Class DataPrepForm
 
         'If everything ran well, delete temporary files as needed:
         ' add stuff here...
+        If (Not cbKeep.Checked) Then
+            'Close all the temporary files:
+            aoiB20.Close()
+            ' And the files to be kept:
+            demFinal.Close()
+            lcFinal.Close()
+            precipFinal.Close()
+
+            ' Then recursively delte teh temprorary directories adn the files they contain:
+            Try
+                Directory.Delete(dirOtherProj, True)
+            Catch ex As Exception
+                MsgBox("Error deleting " & dirOtherProj & ": " & vbCrLf & ex.ToString, MsgBoxStyle.Critical)
+            End Try
+            Try
+                Directory.Delete(dirTarProj, True)
+            Catch ex As Exception
+                MsgBox("Error deleting " & dirTarProj & ": " & vbCrLf & ex.ToString, MsgBoxStyle.Critical)
+            End Try
+        End If
+
+
 
     End Sub
     'PrepOneRaster takes a given raster and clips it to the extent of a target shapefile, reprojecting 
@@ -290,10 +308,17 @@ Public Class DataPrepForm
         tarGeoProj = aoiB20.GeoProjection
         tarProj4 = tarGeoProj.ExportToProj4
 
+        Dim tmpMessage As String
+        tmpMessage = "Begin processing on " & rawGridName
+
+        Dim progress As New SynchronousProgressDialog(tmpMessage, "Data Preparation on " & rawGridName, 6, Me)
+
+
         ' Check projections and cell sizes and change as needed:
         '       If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj) Or rawGrid.Header.dX <> finalCellSize) Then
 
         If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj)) Then
+            progress.Increment("Reprojecting buffered AOI shapefile...")
             ' Mismatch between projections.  
             warpNeeded = True
             ' Reproject Buffered Target AOI shapefile to  Raw Raster Projection and CLIP the RAW Raster
@@ -311,12 +336,13 @@ Public Class DataPrepForm
                 clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
             Else
                 'Test if reproject worked and save, if so.  If not, error message
+                progress.Increment("Clipping to reprojected, buffered AOI")
                 clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
                 statusReproject = SpatialReference.ProjectGrid(rawGridB20.Header.GeoProjection.ExportToProj4, _
                                                                tarProj4, rawGridB20Fname, clippedFName, False)
                 If (statusReproject) Then
                     ' If (cbKeep.Checked) Then
-                    MsgBox("Reprojected buffered file is " & clippedFName)
+                    ' MsgBox("Reprojected buffered file is " & clippedFName)
                     tarGridB20.Open(clippedFName)
                     'End If
                 Else
@@ -328,6 +354,7 @@ Public Class DataPrepForm
             aoiRasterB20 = aoiB20  ' Clip by aoiRasterB20 polygon with fast, rectangular clipping
             rawGridB20Fname = dirTarProj & Path.GetFileNameWithoutExtension(rawGridName) & "B20" & rasterSfx & ".tif"
             ' MsgBox("Clipped raw file = " & rawGridB20Fname)
+            progress.Increment("Reprojection not needed.  Clipping to buffered AOI...")
             clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
             tarGridB20.Open(clippedFName)
             tarGridB20 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB20.Shape(0), rawGridB20Fname)
@@ -354,15 +381,20 @@ Public Class DataPrepForm
 
         tarBinFName = dirTarProj & Path.GetFileNameWithoutExtension(clippedFName) & "_B.tif"
         tarNudgedFName = dirTarProj & Path.GetFileNameWithoutExtension(tarBinFName) & "_N.tif"
+        progress.Increment("Binning to target cell size...")
+
         statusReproject = DoResample_DLE(tarGridB20, tarBinFName, finalCellSize)
         If (statusReproject) Then
-            MsgBox("DoResample reproject worked on " & tarBinFName)
+            MsgBox("DoResample_DLE reproject worked on " & tarBinFName)
             'tarBinned.Save(tarBinFName)
+        Else
+            MsgBox("Binning failed on " & tarBinFName)
         End If
 
         ' Raster is now Binned.  If it is NOT the DEM/Reference files, nudge it to align properly with that file.
         ' If it IS the DEM/Ref raster, set the reference coordinates  for subsiequent nudging.
         ' NOTE BENE: The DEM/Reference Raster must be processed first!
+
         Dim tarGrid As New Grid
         Dim shiftXll, shiftYll, delX, delY As Double
 
@@ -372,6 +404,7 @@ Public Class DataPrepForm
         tardX = tarGrid.Header.dX
         tardY = tarGrid.Header.dY
         If (rasterSfx = "DEM") Then ' Set the reference coordinates
+            progress.Increment("Reference grid, no nudging needed...")
             tarNudged = CopyRaster(tarGrid, tarNudgedFName)
             refXll = tarXll
             refYll = tarYll
@@ -379,6 +412,7 @@ Public Class DataPrepForm
             refdY = tarDy
         Else
             If (refdX.Equals(tardX) And refdY.Equals(tardY)) Then
+                progress.Increment("Nudging to align with reference grid...")
                 delX = refXll - tarXll
                 delY = refYll - tarYll
                 shiftXll = (refXll - tarXll) Mod refdX
@@ -412,7 +446,7 @@ Public Class DataPrepForm
                 If (Not shiftXll.Equals(0.0) Or Not shiftYll.Equals(0.0)) Then
                     Try
                         'Dim tarNudged As New Grid
-                        tarNudged = CopyRaster(TarGrid, tarNudgedFName)
+                        tarNudged = CopyRaster(tarGrid, tarNudgedFName)
                         tarNudged.Header.XllCenter = tarNudged.Header.XllCenter + shiftXll
                         tarNudged.Header.YllCenter = tarNudged.Header.YllCenter + shiftYll
                         tarNudged.Save()
@@ -423,30 +457,40 @@ Public Class DataPrepForm
                     End Try
 
                 Else
-                    MsgBox("On " & TarGrid.Filename & ", no shift required")
+                    MsgBox("On " & tarGrid.Filename & ", no shift required")
 
                 End If
 
             Else
                 MsgBox("Cell sizes do not match.  Nudging not possible on grid" & _
-                       ControlChars.CrLf & TarGrid.Filename, MsgBoxStyle.Exclamation)
+                       ControlChars.CrLf & tarGrid.Filename, MsgBoxStyle.Exclamation)
             End If
 
         End If
         ' The grid is now nudged, so clip to final shapefile and return it.
         'TODO Not working here.  CHeck shapefile...
 
-        tarFinalFName = dirDataPrep & "\" & Path.GetFileNameWithoutExtension(tarNudgedFName) & "_DP.tif"
+        tarFinalFName = dirDataPrep & "\" & Path.GetFileNameWithoutExtension(rawGridName) & "_DP.tif"
         tarFinal.Open(tarFinalFName)
         tarNudged.Open(tarNudgedFName)
         tarAOI.Open(aoiFName)
+        progress.Increment("Clipping to final non-buffered, projected AOI!")
         tarFinal = ClipBySelectedPoly(tarNudged, tarAOI.Shape(0), tarFinalFName)
         tarFinal.Save()
 
+        ' Close all temporary files to keep everything clean and tidy!
+        aoiRasterB20.Close()
+        aoiB20.Close()
         rawGrid.Close()
-        'tarFinal = tarGridB20
-        'tarGridB20.Close()
-        'tarFinalFName = clippedFName
+        rawGridB20.Close()
+        tarGridB20.Close()
+        tarBinned.Close()
+        tarNudged.Close()
+        tarFinal.Close()
+        tarGrid.Close()
+        tarAOI.Close()
+
+
         Return tarFinalFName
 
     End Function
@@ -464,15 +508,6 @@ Public Class DataPrepForm
                 & " -tr " & Convert.ToString(cellSize) & " " & Convert.ToString(cellSize)
             MsgBox("Transform string is " & strTransform)
             Dim u = New MapWinGIS.UtilsClass
-            'Dim ProgressForm As New frm
-            'Dim g_MapWindowForm As System.Windows.Forms.Form
-            'ProgressForm.Owner = g_MapWindowForm
-            'ProgressForm.StartPosition = Windows.Forms.FormStartPosition.CenterScreen
-            'ProgressForm.Show()
-
-            'ProgressForm.Taskname = "Resampling..."
-
-            'ProgressForm.Filename = CType(binnedRas, MapWinGIS.Grid).Filename
  
             If (Not u.GDALWarp(unbinRasFName, BinRasFName, strTransform)) Then
                 MsgBox("Error, transform did not work", MsgBoxStyle.Critical)
@@ -545,10 +580,10 @@ Public Class DataPrepForm
             grd.Close()
             grd = newGrid
             grd.Save(newGridFName)
-
+            Return True
         Catch ex As Exception
             MapWinUtility.Logger.Msg(ex.Message & vbCrLf & ex.StackTrace, MsgBoxStyle.Critical Or MsgBoxStyle.Information, "Grid Wizard 2.0 - Error")
-
+            Return False
         End Try
     End Function
 
