@@ -38,7 +38,8 @@ Public Class DataPrepForm
     Public tarAOI As New Shapefile
 
 
-    Private aoiBuffFName As String
+    Private aoiBuff20FName As String
+    Private aoiBuff05FName As String
     Private demBuffFname As String
     Private lcBuffFname As String
     Private precipBuffFName As String
@@ -60,6 +61,11 @@ Public Class DataPrepForm
             aoiFName = txtAOI.Text
             'MsgBox("Shapefile name is " & aoiFName)
             AOI.Open(aoiFName)
+            If (Not AddFeatureLayerToMapFromFileName(aoiFName.ToString, "Area of Interest")) Then
+                MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
+
+            End If
+
             txtProjParams.Text = AOI.Projection.ToString
             txtProjName.Text = AOI.GeoProjection.ProjectionName
             txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
@@ -209,36 +215,51 @@ Public Class DataPrepForm
 
 
         ' Buffer AOI Shapefile by 2cells -> AOIB20
-        aoiBuffFName = dirTarProj & Path.GetFileNameWithoutExtension(aoiFName) & "B20.shp"
+        aoiBuff20FName = dirTarProj & Path.GetFileNameWithoutExtension(aoiFName) & "B20.shp"
         'MsgBox("aoiBuffName is " & aoiBuffFName)
-        If (File.Exists(aoiBuffFName) And removeOld) Then
+        If (File.Exists(aoiBuff20FName) And removeOld) Then
             ' DelShapefile(aoiBuffFName)
-            MapWinGeoProc.DataManagement.DeleteShapefile(aoiBuffFName)
+            MapWinGeoProc.DataManagement.DeleteShapefile(aoiBuff20FName)
         End If
         'Dim aoi As New Shapefile
         Dim aoiB20 As New Shapefile
         Dim B20Dist As New Double
-        B20Dist = 20 * finalCellSize
+        B20Dist = 50 * finalCellSize
         tarAOI.Open(aoiFName)
-        aoiB20.Open(aoiBuffFName)
+        aoiB20.Open(aoiBuff20FName)
         aoiB20 = tarAOI.BufferByDistance(B20Dist, 1, False, True)
-        aoiB20.SaveAs(aoiBuffFName)
+        aoiB20.SaveAs(aoiBuff20FName)
+
+        ' Buffer AOI Shapefile by 2cells -> AOIB20
+        aoiBuff05FName = dirTarProj & Path.GetFileNameWithoutExtension(aoiFName) & "B05.shp"
+        'MsgBox("aoiBuffName is " & aoiBuffFName)
+        If (File.Exists(aoiBuff05FName) And removeOld) Then
+            ' DelShapefile(aoiBuffFName)
+            MapWinGeoProc.DataManagement.DeleteShapefile(aoiBuff05FName)
+        End If
+        'Dim aoi As New Shapefile
+        Dim aoiB05 As New Shapefile
+        Dim B05Dist As New Double
+        B05Dist = 5 * finalCellSize
+        aoiB05.Open(aoiBuff05FName)
+        aoiB05 = tarAOI.BufferByDistance(B05Dist, 1, False, True)
+        aoiB05.SaveAs(aoiBuff05FName)
 
         ' Begin with DEM, this will be the reference file for nudging
         Dim demFinal As New Grid
         Dim demFinalFName As String
-        demFinalFName = PrepOneRaster(demFName, aoiBuffFName, dirDataPrep, "DEM")
+        demFinalFName = PrepOneRaster(demFName, aoiBuff20FName, aoiBuff05FName, dirDataPrep, "DEM")
         demFinal.Open(demFinalFName)
-  
+
         ' Now land Cover
         Dim lcFinal As New Grid
         Dim lcFinalFName As String
-        lcFinalFName = PrepOneRaster(lcFName, aoiBuffFName, dirDataPrep, "LULC")
+        lcFinalFName = PrepOneRaster(lcFName, aoiBuff20FName, aoiBuff05FName, dirDataPrep, "LULC")
 
         ' And Precip
         Dim precipFinal As New Grid
         Dim precipFinalFName As String
-        precipFinalFName = PrepOneRaster(precipFName, aoiBuffFName, dirDataPrep, "Precip")
+        precipFinalFName = PrepOneRaster(precipFName, aoiBuff20FName, aoiBuff05FName, dirDataPrep, "Precip")
         'precipFinal.Save(precipFName)
         'precipFinal.Close()
 
@@ -272,15 +293,17 @@ Public Class DataPrepForm
     '   the shapefile if needed.  This makes the reprojection faster.
     '  Steps are: 1) reproject AOI shapefile, if needed, 2) Clip Raw Raster, 3) Reproject clipped Raster 
     '    back to original AOI projection, 4) Bin reprojected raster to desired cell size, 5) align 
-    Private Function PrepOneRaster(ByVal rawGridName As String, ByVal aoiSFName As String, _
+    Private Function PrepOneRaster(ByVal rawGridName As String, ByVal aoi20SFName As String, ByVal aoi05SFName As String, _
                                    ByVal dpRoot As String, ByVal rasterSfx As String) As String
         Dim rawGrid As New Grid
         Dim rawProj4 As String
         Dim aoiRasterB20 As New Shapefile
+        'Dim aoiRasterB05 As New Shapefile
         Dim rawGridB20 As New Grid
         Dim rawGridB20Fname As String
         Dim clipPoly As New MapWinGIS.Shape
         Dim aoiB20 As New Shapefile
+        Dim aoiB05 As New Shapefile
         Dim tarGeoProj As New MapWinGIS.GeoProjection
         Dim tarProj4 As String
         Dim tarGridB20 As New Grid  ' A buffered grid in final projection, ready for binning nudging and final clipping
@@ -304,14 +327,15 @@ Public Class DataPrepForm
 
         rawGrid.Open(rawGridName)
         rawProj4 = rawGrid.Header.GeoProjection.ExportToProj4
-        aoiB20.Open(aoiSFName)
+        aoiB20.Open(aoi20SFName)
+        aoiB05.Open(aoi05SFName)
         tarGeoProj = aoiB20.GeoProjection
         tarProj4 = tarGeoProj.ExportToProj4
 
         Dim tmpMessage As String
         tmpMessage = "Begin processing on " & rawGridName
 
-        Dim progress As New SynchronousProgressDialog(tmpMessage, "Data Preparation on " & rawGridName, 6, Me)
+        Dim progress As New SynchronousProgressDialog(tmpMessage, "Data Preparation on " & rawGridName, 7, Me)
 
 
         ' Check projections and cell sizes and change as needed:
@@ -329,6 +353,7 @@ Public Class DataPrepForm
             ' Now clip by aoiRasterB20 polygon with fast, rectangular clipping
             rawGridB20Fname = dirOtherProj & Path.GetFileNameWithoutExtension(rawGridName) & "B20" & rasterSfx & ".tif"
             'MsgBox("Clipped raw file = " & rawGridB20Fname)
+            progress.Increment("Clipping to reprojected, buffered AOI")
             rawGridB20 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB20.Shape(0), rawGridB20Fname)
 
             'raw data are now clipped, so reproject this smaller raster back into the AOI Projection
@@ -336,8 +361,8 @@ Public Class DataPrepForm
                 clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
             Else
                 'Test if reproject worked and save, if so.  If not, error message
-                progress.Increment("Clipping to reprojected, buffered AOI")
                 clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
+                progress.Increment("Reprojecting the clipped, buffered grid to target projection")
                 statusReproject = SpatialReference.ProjectGrid(rawGridB20.Header.GeoProjection.ExportToProj4, _
                                                                tarProj4, rawGridB20Fname, clippedFName, False)
                 If (statusReproject) Then
@@ -385,31 +410,41 @@ Public Class DataPrepForm
 
         statusReproject = DoResample_DLE(tarGridB20, tarBinFName, finalCellSize)
         If (statusReproject) Then
-            MsgBox("DoResample_DLE reproject worked on " & tarBinFName)
+            ' MsgBox("DoResample_DLE reproject worked on " & tarBinFName)
             'tarBinned.Save(tarBinFName)
         Else
             MsgBox("Binning failed on " & tarBinFName)
         End If
 
+        ' Depending on the intial projections and cell sizes, there can still be missalignment with the 20 cell buffer
+        ' on the final clip.  Therefore, do a clip to a 5 cell buffer and then do final alignement.
+        'Dim tarGridB05 As New Grid
+        tarBinned.Open(tarBinFName)
+        clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(tarBinFName) & "B05.tif"
+        Dim tarGridB05 As New Grid
+        tarGridB05.Open(clippedFName)
+        tarGridB05 = ClipBySelectedPoly(tarBinned, aoiB05.Shape(0), clippedFName)
+        tarGridB05.Save(clippedFName)
+
         ' Raster is now Binned.  If it is NOT the DEM/Reference files, nudge it to align properly with that file.
         ' If it IS the DEM/Ref raster, set the reference coordinates  for subsiequent nudging.
         ' NOTE BENE: The DEM/Reference Raster must be processed first!
 
-        Dim tarGrid As New Grid
         Dim shiftXll, shiftYll, delX, delY As Double
 
-        tarGrid.Open(tarBinFName)
-        tarXll = tarGrid.Header.XllCenter
-        tarYll = tarGrid.Header.YllCenter
-        tardX = tarGrid.Header.dX
-        tardY = tarGrid.Header.dY
+
+        'tarGridB05.Open(tarBinFName)
+        tarXll = tarGridB05.Header.XllCenter
+        tarYll = tarGridB05.Header.YllCenter
+        tardX = tarGridB05.Header.dX
+        tardY = tarGridB05.Header.dY
         If (rasterSfx = "DEM") Then ' Set the reference coordinates
             progress.Increment("Reference grid, no nudging needed...")
-            tarNudged = CopyRaster(tarGrid, tarNudgedFName)
+            tarNudged = CopyRaster(tarGridB05, tarNudgedFName)
             refXll = tarXll
             refYll = tarYll
             refdX = tardX
-            refdY = tarDy
+            refdY = tardY
         Else
             If (refdX.Equals(tardX) And refdY.Equals(tardY)) Then
                 progress.Increment("Nudging to align with reference grid...")
@@ -418,35 +453,35 @@ Public Class DataPrepForm
                 shiftXll = (refXll - tarXll) Mod refdX
                 shiftYll = (refYll - tarYll) Mod refdY
 
-                Try
-                    'Check to see if any needed X shift is less than 1/2 the X cell size
-                    'and correct as needed.
-                    If (Math.Abs(shiftXll) > refdX / 2.0) Then
-                        If (shiftXll < 0) Then
-                            shiftXll = shiftXll + refdX
-                        Else
-                            shiftXll = shiftXll - refdX
-                        End If
-                    End If
+                'Try
+                '    'Check to see if any needed X shift is less than 1/2 the X cell size
+                '    'and correct as needed.
+                '    If (Math.Abs(shiftXll) > refdX / 2.0) Then
+                '        If (shiftXll < 0) Then
+                '            shiftXll = shiftXll + refdX
+                '        Else
+                '            shiftXll = shiftXll - refdX
+                '        End If
+                '    End If
 
-                    'Check to see if any needed Y shift is less than 1/2 the Y cell size
-                    'and correct as needed.
-                    If (Math.Abs(shiftYll) > refdY / 2.0) Then
-                        If (shiftYll < 0) Then
-                            shiftYll = shiftYll + refdY
-                        Else
-                            shiftYll = shiftYll - refdY
-                        End If
-                    End If
+                '    'Check to see if any needed Y shift is less than 1/2 the Y cell size
+                '    'and correct as needed.
+                '    If (Math.Abs(shiftYll) > refdY / 2.0) Then
+                '        If (shiftYll < 0) Then
+                '            shiftYll = shiftYll + refdY
+                '        Else
+                '            shiftYll = shiftYll - refdY
+                '        End If
+                '    End If
 
-                Catch ex As Exception
-                    MsgBox("Something broke in calculating the X and Y shifts")
-                End Try
+                'Catch ex As Exception
+                '    MsgBox("Something broke in calculating the X and Y shifts")
+                'End Try
 
                 If (Not shiftXll.Equals(0.0) Or Not shiftYll.Equals(0.0)) Then
                     Try
                         'Dim tarNudged As New Grid
-                        tarNudged = CopyRaster(tarGrid, tarNudgedFName)
+                        tarNudged = CopyRaster(tarGridB05, tarNudgedFName)
                         tarNudged.Header.XllCenter = tarNudged.Header.XllCenter + shiftXll
                         tarNudged.Header.YllCenter = tarNudged.Header.YllCenter + shiftYll
                         tarNudged.Save()
@@ -457,13 +492,13 @@ Public Class DataPrepForm
                     End Try
 
                 Else
-                    MsgBox("On " & tarGrid.Filename & ", no shift required")
+                    MsgBox("On " & tarGridB05.Filename & ", no shift required")
 
                 End If
 
             Else
                 MsgBox("Cell sizes do not match.  Nudging not possible on grid" & _
-                       ControlChars.CrLf & tarGrid.Filename, MsgBoxStyle.Exclamation)
+                       ControlChars.CrLf & tarGridB05.Filename, MsgBoxStyle.Exclamation)
             End If
 
         End If
@@ -475,8 +510,10 @@ Public Class DataPrepForm
         tarNudged.Open(tarNudgedFName)
         tarAOI.Open(aoiFName)
         progress.Increment("Clipping to final non-buffered, projected AOI!")
+        'SpatialOperations.ClipGridWithPolygon(tarNudgedFName, tarAOI.Shape(0), tarFinalFName, False)
         tarFinal = ClipBySelectedPoly(tarNudged, tarAOI.Shape(0), tarFinalFName)
         tarFinal.Save()
+        tarFinal.Save(tarFinalFName)
 
         ' Close all temporary files to keep everything clean and tidy!
         aoiRasterB20.Close()
@@ -487,7 +524,7 @@ Public Class DataPrepForm
         tarBinned.Close()
         tarNudged.Close()
         tarFinal.Close()
-        tarGrid.Close()
+        tarGridB05.Close()
         tarAOI.Close()
 
 
@@ -495,32 +532,83 @@ Public Class DataPrepForm
 
     End Function
 
-    Private Function BinProjRaster(ByVal unbinRasFName As String, ByVal BinRasFName As String, _
-                                   ByVal srcProj4 As String, ByVal tarProj4 As String, _
-                                   ByVal cellSize As Double) As Boolean
-        Dim binnedRas As New Grid
-        Dim unbinRas As New Grid
-        unbinRas.Open(unbinRasFName)
-        Try
-            Dim strTransform As String
-            strTransform = "-overwrite -of GTiff -r near" _
-                & " -s_srs '" & srcProj4 & "' -t_srs '" & tarProj4 & "' " _
-                & " -tr " & Convert.ToString(cellSize) & " " & Convert.ToString(cellSize)
-            MsgBox("Transform string is " & strTransform)
-            Dim u = New MapWinGIS.UtilsClass
- 
-            If (Not u.GDALWarp(unbinRasFName, BinRasFName, strTransform)) Then
-                MsgBox("Error, transform did not work", MsgBoxStyle.Critical)
-                Return False
-            Else
-                Return True
-            End If
-        Catch ex As Exception
-            MsgBox("Error: " & ex.ToString, MsgBoxStyle.Critical)
-            Return False
-        End Try
+    'Private Function NudgeGrid(ByVal tarGridFName As String, ByVal BinRasFName As String, _
+    '                               ByVal srcProj4 As String, ByVal tarProj4 As String, _
+    '                               ByVal cellSize As Double) As Boolean
+    '    Dim tarGrid As New Grid
+    '    Dim shiftXll, shiftYll, delX, delY As Double
 
-    End Function
+    '    tarGrid.Open(tarBinFName)
+    '    tarXll = tarGrid.Header.XllCenter
+    '    tarYll = tarGrid.Header.YllCenter
+    '    tardX = tarGrid.Header.dX
+    '    tardY = tarGrid.Header.dY
+    '    If (rasterSfx = "DEM") Then ' Set the reference coordinates
+    '        progress.Increment("Reference grid, no nudging needed...")
+    '        tarNudged = CopyRaster(tarGrid, tarNudgedFName)
+    '        refXll = tarXll
+    '        refYll = tarYll
+    '        refdX = tardX
+    '        refdY = tarDy
+    '    Else
+    '        If (refdX.Equals(tardX) And refdY.Equals(tardY)) Then
+    '            progress.Increment("Nudging to align with reference grid...")
+    '            delX = refXll - tarXll
+    '            delY = refYll - tarYll
+    '            shiftXll = (refXll - tarXll) Mod refdX
+    '            shiftYll = (refYll - tarYll) Mod refdY
+
+    '            'Try
+    '            '    'Check to see if any needed X shift is less than 1/2 the X cell size
+    '            '    'and correct as needed.
+    '            '    If (Math.Abs(shiftXll) > refdX / 2.0) Then
+    '            '        If (shiftXll < 0) Then
+    '            '            shiftXll = shiftXll + refdX
+    '            '        Else
+    '            '            shiftXll = shiftXll - refdX
+    '            '        End If
+    '            '    End If
+
+    '            '    'Check to see if any needed Y shift is less than 1/2 the Y cell size
+    '            '    'and correct as needed.
+    '            '    If (Math.Abs(shiftYll) > refdY / 2.0) Then
+    '            '        If (shiftYll < 0) Then
+    '            '            shiftYll = shiftYll + refdY
+    '            '        Else
+    '            '            shiftYll = shiftYll - refdY
+    '            '        End If
+    '            '    End If
+
+    '            'Catch ex As Exception
+    '            '    MsgBox("Something broke in calculating the X and Y shifts")
+    '            'End Try
+
+    '            If (Not shiftXll.Equals(0.0) Or Not shiftYll.Equals(0.0)) Then
+    '                Try
+    '                    'Dim tarNudged As New Grid
+    '                    tarNudged = CopyRaster(tarGrid, tarNudgedFName)
+    '                    tarNudged.Header.XllCenter = tarNudged.Header.XllCenter + shiftXll
+    '                    tarNudged.Header.YllCenter = tarNudged.Header.YllCenter + shiftYll
+    '                    tarNudged.Save()
+    '                    tarNudged.Close()
+
+    '                Catch ex As Exception
+    '                    MsgBox("Something in new file " & tarNudgedFName & " failed!")
+    '                End Try
+
+    '            Else
+    '                MsgBox("On " & tarGrid.Filename & ", no shift required")
+
+    '            End If
+
+    '        Else
+    '            MsgBox("Cell sizes do not match.  Nudging not possible on grid" & _
+    '                   ControlChars.CrLf & tarGrid.Filename, MsgBoxStyle.Exclamation)
+    '        End If
+
+    '    End If
+
+    'End Function
     Public Function DoResample_DLE(ByRef grd As MapWinGIS.Grid, ByVal newGridFName As String, ByVal CellSize As Double) As Boolean
         Dim i, j As Integer
         Dim newGrid As New MapWinGIS.Grid
