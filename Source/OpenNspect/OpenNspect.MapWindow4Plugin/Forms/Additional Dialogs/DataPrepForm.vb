@@ -303,7 +303,7 @@ Public Class DataPrepForm
         Dim rawGridB20Fname As String
         Dim clipPoly As New MapWinGIS.Shape
         Dim aoiB20 As New Shapefile
-        Dim aoiB05 As New Shapefile
+        ' Dim aoiB05 As New Shapefile
         Dim tarGeoProj As New MapWinGIS.GeoProjection
         Dim tarProj4 As String
         Dim tarGridB20 As New Grid  ' A buffered grid in final projection, ready for binning nudging and final clipping
@@ -328,7 +328,7 @@ Public Class DataPrepForm
         rawGrid.Open(rawGridName)
         rawProj4 = rawGrid.Header.GeoProjection.ExportToProj4
         aoiB20.Open(aoi20SFName)
-        aoiB05.Open(aoi05SFName)
+        ' aoiB05.Open(aoi05SFName)
         tarGeoProj = aoiB20.GeoProjection
         tarProj4 = tarGeoProj.ExportToProj4
 
@@ -420,11 +420,11 @@ Public Class DataPrepForm
         ' on the final clip.  Therefore, do a clip to a 5 cell buffer and then do final alignement.
         'Dim tarGridB05 As New Grid
         tarBinned.Open(tarBinFName)
-        clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(tarBinFName) & "B05.tif"
-        Dim tarGridB05 As New Grid
-        tarGridB05.Open(clippedFName)
-        tarGridB05 = ClipBySelectedPoly(tarBinned, aoiB05.Shape(0), clippedFName)
-        tarGridB05.Save(clippedFName)
+        'clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(tarBinFName) & "B05.tif"
+        'Dim tarGridB05 As New Grid
+        'tarGridB05.Open(clippedFName)
+        'tarGridB05 = ClipBySelectedPoly(tarBinned, aoiB05.Shape(0), clippedFName)
+        'tarGridB05.Save(clippedFName)
 
         ' Raster is now Binned.  If it is NOT the DEM/Reference files, nudge it to align properly with that file.
         ' If it IS the DEM/Ref raster, set the reference coordinates  for subsiequent nudging.
@@ -434,13 +434,18 @@ Public Class DataPrepForm
 
 
         'tarGridB05.Open(tarBinFName)
-        tarXll = tarGridB05.Header.XllCenter
-        tarYll = tarGridB05.Header.YllCenter
-        tardX = tarGridB05.Header.dX
-        tardY = tarGridB05.Header.dY
+        'tarXll = tarGridB05.Header.XllCenter
+        'tarYll = tarGridB05.Header.YllCenter
+        'tardX = tarGridB05.Header.dX
+        'tardY = tarGridB05.Header.dY
+        tarXll = tarBinned.Header.XllCenter
+        tarYll = tarBinned.Header.YllCenter
+        tardX = tarBinned.Header.dX
+        tardY = tarBinned.Header.dY
         If (rasterSfx = "DEM") Then ' Set the reference coordinates
             progress.Increment("Reference grid, no nudging needed...")
-            tarNudged = CopyRaster(tarGridB05, tarNudgedFName)
+            tarNudged = CopyRaster(tarBinned, tarNudgedFName)
+            tarNudged = CopyRaster(tarBinned, tarNudgedFName)
             refXll = tarXll
             refYll = tarYll
             refdX = tardX
@@ -481,9 +486,10 @@ Public Class DataPrepForm
                 If (Not shiftXll.Equals(0.0) Or Not shiftYll.Equals(0.0)) Then
                     Try
                         'Dim tarNudged As New Grid
-                        tarNudged = CopyRaster(tarGridB05, tarNudgedFName)
+                        tarNudged = CopyRaster(tarBinned, tarNudgedFName)
                         tarNudged.Header.XllCenter = tarNudged.Header.XllCenter + shiftXll
                         tarNudged.Header.YllCenter = tarNudged.Header.YllCenter + shiftYll
+                        'If ( tarNudged.Header.
                         tarNudged.Save()
                         tarNudged.Close()
 
@@ -492,13 +498,13 @@ Public Class DataPrepForm
                     End Try
 
                 Else
-                    MsgBox("On " & tarGridB05.Filename & ", no shift required")
+                    MsgBox("On " & tarBinned.Filename & ", no shift required")
 
                 End If
 
             Else
                 MsgBox("Cell sizes do not match.  Nudging not possible on grid" & _
-                       ControlChars.CrLf & tarGridB05.Filename, MsgBoxStyle.Exclamation)
+                       ControlChars.CrLf & tarBinned.Filename, MsgBoxStyle.Exclamation)
             End If
 
         End If
@@ -524,7 +530,7 @@ Public Class DataPrepForm
         tarBinned.Close()
         tarNudged.Close()
         tarFinal.Close()
-        tarGridB05.Close()
+        'tarGridB05.Close()
         tarAOI.Close()
 
 
