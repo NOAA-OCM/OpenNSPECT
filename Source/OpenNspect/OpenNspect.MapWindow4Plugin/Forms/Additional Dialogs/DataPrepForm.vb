@@ -12,7 +12,9 @@
 '
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Sept. 26, 2013:  Dave Eslinger dave.eslinger@noaa.gov 
-'      Initial commit to repository
+'      Initial commit to repository, not actaully working.
+'Oct. 31, 2013: Working well, still some cleanup and usability tweaks needed.
+
 Imports System.IO
 Imports MapWindow.Interfaces
 Imports MapWinGIS
@@ -21,8 +23,6 @@ Imports MapWindow
 Imports MapWinUtility
 Imports MapWindow.Controls.GisToolbox
 Imports MapWindow.Controls.Data
-
-
 
 Public Class DataPrepForm
     Public Property Filter As String
@@ -39,7 +39,6 @@ Public Class DataPrepForm
 
 
     Private aoiBuff20FName As String
-    Private aoiBuff05FName As String
     Private demBuffFname As String
     Private lcBuffFname As String
     Private precipBuffFName As String
@@ -50,6 +49,7 @@ Public Class DataPrepForm
     Private dirFinal As String
 
     Private finalCellSize As Double
+    Private bufferSize As Double
 
     Private Sub btnAOI_Click(sender As Object, e As EventArgs) Handles btnAOI.Click
         Dim AOI As New MapWinGIS.Shapefile
@@ -61,11 +61,6 @@ Public Class DataPrepForm
             aoiFName = txtAOI.Text
             'MsgBox("Shapefile name is " & aoiFName)
             AOI.Open(aoiFName)
-            If (Not AddFeatureLayerToMapFromFileName(aoiFName.ToString, "Area of Interest")) Then
-                MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
-
-            End If
-
             txtProjParams.Text = AOI.Projection.ToString
             txtProjName.Text = AOI.GeoProjection.ProjectionName
             txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
@@ -129,47 +124,60 @@ Public Class DataPrepForm
     End Sub
 
     Private Sub btnRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRun.Click
+        Dim boolCell As Boolean = False
         Try
-            'If btnRun.DialogResult = Windows.Forms.DialogResult.OK Then
-
-            'End If
+            'Do Until boolCell
             ' Check for valid data and set up main variables
             Try
                 finalCellSize = Convert.ToDouble(txtFinalCell.Text)
+                bufferSize = Convert.ToDouble(txtUserBuffer.Text)
+                boolCell = True
                 'MsgBox("Cell size is " & finalCellSize)
-            Catch ex As Exception
-                MsgBox("Final Cell size invalid.  Please correct.")
-            End Try
-            txtFinalCell.Focus()
-            'MsgBox("txtFinalCell.Text = '" & txtFinalCell.Text & "'")
-            'If (aoiFName = "" Or demFName = "" Or lcFName = "" Or precipFName = "" _
-            '    Or txtFinalCell.Text = "") Then
-            '    If aoiFName = "" Then
-            '        txtAOI.Focus()
-            '    ElseIf demFName = "" Then
-            '        txtDEMName.Focus()
-            '    ElseIf lcFName = "" Then
-            '        txtLCName.Focus()
-            '    ElseIf precipFName = "" Then
-            '        txtPrecipName.Focus()
-            If (aoiFName = "" _
-                Or txtFinalCell.Text = "") Then
-                If aoiFName = "" Then
-                    txtAOI.Focus()
+                ' If it gets to here, the cell size is good, so check the rest of th einput and run the 
+                ' data preparation functions if it all checks out. If it isn't working, prompt user to correct and retry.
+                If (aoiFName = "" Or demFName = "" Or lcFName = "" Or precipFName = "") Then
+                    If aoiFName = "" Then
+                        txtAOI.Focus()
+                    ElseIf demFName = "" Then
+                        txtDEMName.Focus()
+                    ElseIf lcFName = "" Then
+                        txtLCName.Focus()
+                    ElseIf precipFName = "" Then
+                        txtPrecipName.Focus()
+                    End If
+                    Dim msgResult As MsgBoxResult = MsgBox("Please specify all input items", MsgBoxStyle.RetryCancel)
+                    If (msgResult = MsgBoxResult.Cancel) Then
+                        Close()
+                    Else
+                        boolCell = False
+                    End If
                 Else
-                    txtFinalCell.Focus()
+                    '  MsgBox("txtFinalCell.Text = '" & txtFinalCell.Text & "'")
+                    Try
+                        PrepRawData()
+                        boolCell = True
+                    Catch ex As Exception
+                        boolCell = False
+                        MsgBox("Error in PrepRawData:" & ex.ToString, MsgBoxStyle.Critical)
+                    End Try
+                    If (cbLoadFinal.Checked) Then
+                        ' Load AOI into MapWindow
+                        If (Not AddFeatureLayerToMapFromFileName(aoiFName.ToString, "Area of Interest")) Then
+                            MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
+                        End If
+                    End If
                 End If
-                Dim msgResult As MsgBoxResult = MsgBox("Please specify all input items", MsgBoxStyle.RetryCancel)
-            Else
-                '  MsgBox("txtFinalCell.Text = '" & txtFinalCell.Text & "'")
-                PrepRawData()
-            End If
-
+            Catch ex As Exception
+                boolCell = False
+                MsgBox("Final cell or buffer size is invalid.  Please correct." & vbLf & ex.ToString, MsgBoxStyle.Critical)
+            End Try
+ 
         Catch ex As Exception
             MsgBox("Error: " & ex.ToString, MsgBoxStyle.Critical)
         Finally
-            'TODO DLE, 10/23/2013: Fix teh cose section so it only closes when there is not an error.
-            Close()
+            If boolCell Then
+                Close()
+            End If
         End Try
     End Sub
 
@@ -177,6 +185,7 @@ Public Class DataPrepForm
         '  MsgBox("More processing")
         ' Create intermediate subdirectories
         Dim fileInfoDPRoot As New FileInfo(aoiFName)
+        Dim refGridName As String
         Dim removeOld As New Boolean
         removeOld = False
 
@@ -224,7 +233,7 @@ Public Class DataPrepForm
         'Dim aoi As New Shapefile
         Dim aoiB20 As New Shapefile
         Dim B20Dist As New Double
-        B20Dist = 50 * finalCellSize
+        B20Dist = bufferSize * finalCellSize
         tarAOI.Open(aoiFName)
         aoiB20.Open(aoiBuff20FName)
         aoiB20 = tarAOI.BufferByDistance(B20Dist, 1, False, True)
@@ -233,22 +242,41 @@ Public Class DataPrepForm
         ' Begin with DEM, this will be the reference file for nudging
         Dim demFinal As New Grid
         Dim demFinalFName As String
-        demFinalFName = PrepOneRaster(demFName, aoiBuff20FName, aoiBuff05FName, dirDataPrep, "DEM")
-        File.Copy(Path.ChangeExtension(demFName, "mwleg"), Path.ChangeExtension(demFinalFName, "Mwleg"))
+        refGridName = ""
+        demFinalFName = PrepOneRaster(demFName, aoiBuff20FName, refGridName, dirDataPrep, "DEM")
+        File.Copy(Path.ChangeExtension(demFName, "mwleg"), Path.ChangeExtension(demFinalFName, "mwleg"))
+        If (cbLoadFinal.Checked) Then
+            ' Load DEM into MapWindow
+            If (Not AddFeatureLayerToMapFromFileName(demFinalFName)) Then
+                MsgBox("ERROR: Final DEM raster not found: " & vbLf & txtAOI.Text.ToString)
+            End If
+        End If
 
         'demFinal.Open(demFinalFName)
 
         ' Now land Cover
         Dim lcFinal As New Grid
         Dim lcFinalFName As String
-        lcFinalFName = PrepOneRaster(lcFName, aoiBuff20FName, aoiBuff05FName, dirDataPrep, "LULC")
-        File.Copy(Path.ChangeExtension(lcFName, "mwleg"), Path.ChangeExtension(lcFinalFName, "Mwleg"))
+        lcFinalFName = PrepOneRaster(lcFName, aoiBuff20FName, refGridName, dirDataPrep, "LULC")
+        File.Copy(Path.ChangeExtension(lcFName, "mwleg"), Path.ChangeExtension(lcFinalFName, "mwleg"))
+        If (cbLoadFinal.Checked) Then
+            ' Load LULC into MapWindow
+            If (Not AddFeatureLayerToMapFromFileName(lcFinalFName)) Then
+                MsgBox("ERROR: Final LULC raster not found: " & vbLf & txtAOI.Text.ToString)
+            End If
+        End If
 
         ' And Precip
         Dim precipFinal As New Grid
         Dim precipFinalFName As String
-        precipFinalFName = PrepOneRaster(precipFName, aoiBuff20FName, aoiBuff05FName, dirDataPrep, "Precip")
-        File.Copy(Path.ChangeExtension(precipFName, "mwleg"), Path.ChangeExtension(precipFinalFName, "Mwleg"))
+        precipFinalFName = PrepOneRaster(precipFName, aoiBuff20FName, refGridName, dirDataPrep, "Precip")
+        File.Copy(Path.ChangeExtension(precipFName, "mwleg"), Path.ChangeExtension(precipFinalFName, "mwleg"))
+        If (cbLoadFinal.Checked) Then
+            ' Load DEM into MapWindow
+            If (Not AddFeatureLayerToMapFromFileName(precipFinalFName)) Then
+                MsgBox("ERROR: Final Precip raster not found: " & vbLf & txtAOI.Text.ToString)
+            End If
+        End If
 
         'If everything ran well, clean up, delete temporary files as needed, and close elegantly:
 
@@ -280,7 +308,8 @@ Public Class DataPrepForm
     '   the shapefile if needed.  This makes the reprojection faster.
     '  Steps are: 1) reproject AOI shapefile, if needed, 2) Clip Raw Raster, 3) Reproject clipped Raster 
     '    back to original AOI projection, 4) Bin reprojected raster to desired cell size, 5) align 
-    Private Function PrepOneRaster(ByVal rawGridName As String, ByVal aoi20SFName As String, ByVal aoi05SFName As String, _
+    Private Function PrepOneRaster(ByVal rawGridName As String, ByVal aoi20SFName As String, _
+                                   ByRef refGridFName As String, _
                                    ByVal dpRoot As String, ByVal rasterSfx As String) As String
         Dim rawGrid As New Grid
         Dim tarAOI As New Shapefile
@@ -305,16 +334,14 @@ Public Class DataPrepForm
         'Dim warpNeeded As Boolean
         Dim statusReproject As Boolean = False
 
-        'Dim refGridFName As String
-        Dim tarXll As Double
-        Dim tarYll As Double
-        Dim tardX As Double
-        Dim tardY As Double
+        'Dim tarXll As Double
+        'Dim tarYll As Double
+        'Dim tardX As Double
+        'Dim tardY As Double
 
         rawGrid.Open(rawGridName)
         'rawProj4 = rawGrid.Header.GeoProjection.ExportToProj4
         aoiB20.Open(aoi20SFName)
-        ' aoiB05.Open(aoi05SFName)
         tarGeoProj = aoiB20.GeoProjection
         tarProj4 = tarGeoProj.ExportToProj4
 
@@ -400,94 +427,25 @@ Public Class DataPrepForm
         End If
 
         ' Raster is now Binned.  If it is NOT the DEM/Reference files, nudge it to align properly with that file.
-        ' If it IS the DEM/Ref raster, set the reference coordinates  for subsiequent nudging.
         ' NOTE BENE: The DEM/Reference Raster must be processed first!
-        'If (rasterSfx = "DEM") Then ' Set the reference coordinates
-        '    progress.Increment("Reference grid, no nudging needed...")
-        '    refGridFName = tarBinFName
-        'Else
-        '    If (NudgeGrid(tarBinFName, refGridFName, tarNudgedFName)) Then
-        '    Else
-        '    End If
 
-        'End If
-
-
-        Dim shiftXll, shiftYll, delX, delY As Double
-
-        tarXll = tarBinned.Header.XllCenter
-        tarYll = tarBinned.Header.YllCenter
-        tardX = tarBinned.Header.dX
-        tardY = tarBinned.Header.dY
+        ' DLE: This section is for pulling the nudging out as a function
         If (rasterSfx = "DEM") Then ' Set the reference coordinates
-            progress.Increment("Reference grid, no nudging needed...")
+            progress.Increment("Reference grid, no nudging needed, copying original grid...")
+            refGridFName = tarBinFName
             tarNudged = CopyRaster(tarBinned, tarNudgedFName)
-            tarNudged = CopyRaster(tarBinned, tarNudgedFName)
-            refXll = tarXll
-            refYll = tarYll
-            refdX = tardX
-            refdY = tardY
+            tarNudged.Save(tarNudgedFName)
         Else
-            If (refdX.Equals(tardX) And refdY.Equals(tardY)) Then
-                progress.Increment("Nudging to align with reference grid...")
-                delX = refXll - tarXll
-                delY = refYll - tarYll
-                shiftXll = (refXll - tarXll) Mod refdX
-                shiftYll = (refYll - tarYll) Mod refdY
-
-                'Try
-                '    'Check to see if any needed X shift is less than 1/2 the X cell size
-                '    'and correct as needed.
-                '    If (Math.Abs(shiftXll) > refdX / 2.0) Then
-                '        If (shiftXll < 0) Then
-                '            shiftXll = shiftXll + refdX
-                '        Else
-                '            shiftXll = shiftXll - refdX
-                '        End If
-                '    End If
-
-                '    'Check to see if any needed Y shift is less than 1/2 the Y cell size
-                '    'and correct as needed.
-                '    If (Math.Abs(shiftYll) > refdY / 2.0) Then
-                '        If (shiftYll < 0) Then
-                '            shiftYll = shiftYll + refdY
-                '        Else
-                '            shiftYll = shiftYll - refdY
-                '        End If
-                '    End If
-
-                'Catch ex As Exception
-                '    MsgBox("Something broke in calculating the X and Y shifts")
-                'End Try
-
-                If (Not shiftXll.Equals(0.0) Or Not shiftYll.Equals(0.0)) Then
-                    Try
-                        'Dim tarNudged As New Grid
-                        tarNudged = CopyRaster(tarBinned, tarNudgedFName)
-                        tarNudged.Header.XllCenter = tarNudged.Header.XllCenter + shiftXll
-                        tarNudged.Header.YllCenter = tarNudged.Header.YllCenter + shiftYll
-                        'If ( tarNudged.Header.
-                        tarNudged.Save()
-                        tarNudged.Close()
-
-                    Catch ex As Exception
-                        MsgBox("Something in new file " & tarNudgedFName & " failed!")
-                    End Try
-
-                Else
-                    MsgBox("On " & tarBinned.Filename & ", no shift required")
-
-                End If
-
+            progress.Increment("Nudging to reference grid...")
+            If (NudgeGrid(tarBinFName, refGridFName, tarNudgedFName)) Then
             Else
-                MsgBox("Cell sizes do not match.  Nudging not possible on grid" & _
-                       ControlChars.CrLf & tarBinned.Filename, MsgBoxStyle.Exclamation)
             End If
 
         End If
-        ' The grid is now nudged, so clip to final shapefile and return it.
-        'TODO Not working here.  CHeck shapefile...
 
+
+         ' The grid is now nudged, so clip to final shapefile and return it.
+ 
         tarFinalFName = dirDataPrep & "\" & Path.GetFileNameWithoutExtension(rawGridName) & "_DP.tif"
         tarFinal.Open(tarFinalFName)
         tarNudged.Open(tarNudgedFName)
@@ -514,7 +472,7 @@ Public Class DataPrepForm
 
     End Function
 
-    Private Function NudgeGrid(ByVal tarGridFName As String, ByVal refGridName As String, ByRef nudgedGridFName As String) As Boolean
+    Private Function NudgeGrid(ByVal tarGridFName As String, ByVal refGridName As String, ByVal nudgedGridFName As String) As Boolean
         Dim tarGrid As New Grid
         Dim refGrid As New Grid
         Dim nudgedGrid As New Grid
@@ -535,65 +493,70 @@ Public Class DataPrepForm
         tarDX = tarGrid.Header.dX
         tarDY = tarGrid.Header.dY
 
-        If (refdX.Equals(tarDX) And refdY.Equals(tarDY)) Then
+        If (refDX.Equals(tarDX) And refDY.Equals(tarDY)) Then
 
             delX = refXll - tarXll
             delY = refYll - tarYll
-            shiftXll = (refXll - tarXll) Mod refdX
-            shiftYll = (refYll - tarYll) Mod refdY
+            shiftXll = (refXll - tarXll) Mod refDX
+            shiftYll = (refYll - tarYll) Mod refDY
 
             Try
                 'Check to see if any needed X shift is less than 1/2 the X cell size
                 'and correct as needed.
-                If (Math.Abs(shiftXll) > refdX / 2.0) Then
+                If (Math.Abs(shiftXll) > refDX / 2.0) Then
                     If (shiftXll < 0) Then
-                        shiftXll = shiftXll + refdX
+                        shiftXll = shiftXll + refDX
                     Else
-                        shiftXll = shiftXll - refdX
+                        shiftXll = shiftXll - refDX
                     End If
                 End If
 
                 'Check to see if any needed Y shift is less than 1/2 the Y cell size
                 'and correct as needed.
-                If (Math.Abs(shiftYll) > refdY / 2.0) Then
+                If (Math.Abs(shiftYll) > refDY / 2.0) Then
                     If (shiftYll < 0) Then
-                        shiftYll = shiftYll + refdY
+                        shiftYll = shiftYll + refDY
                     Else
-                        shiftYll = shiftYll - refdY
+                        shiftYll = shiftYll - refDY
                     End If
                 End If
 
             Catch ex As Exception
                 MsgBox("Something broke in calculating the X and Y shifts")
+                Return False
             End Try
 
-            If (Not shiftXll.Equals(0.0) Or Not shiftYll.Equals(0.0)) Then
+            '           If (Not shiftXll.Equals(0.0) Or Not shiftYll.Equals(0.0)) Then
+            If (shiftXll <> 0.0 Or shiftYll <> 0.0) Then
                 Try
                     'Dim tarNudged As New Grid
                     nudgedGrid = CopyRaster(tarGrid, nudgedGridFName)
                     nudgedGrid.Header.XllCenter = nudgedGrid.Header.XllCenter + shiftXll
                     nudgedGrid.Header.YllCenter = nudgedGrid.Header.YllCenter + shiftYll
                     nudgedGrid.Save(nudgedGridFName)
-                    nudgedGrid.Close()
-
+                    'nudgedGrid.Close()
                 Catch ex As Exception
-                    MsgBox("Something in new file " & nudgedGridFName & " failed!")
+                    MsgBox("Something failed in saving nudged file " & nudgedGridFName)
+                    Return False
                 End Try
-
             Else
+                ' Cells already line up, so just copy the grid
+                nudgedGrid = CopyRaster(tarGrid, nudgedGridFName)
+                nudgedGrid.Save(nudgedGridFName)
                 MsgBox("On " & tarGrid.Filename & ", no shift required")
-
+                Return True
             End If
-
         Else
             MsgBox("Cell sizes do not match.  Nudging not possible on grid" & _
                    ControlChars.CrLf & tarGrid.Filename, MsgBoxStyle.Exclamation)
+            Return False
         End If
         refGrid.Close()
         tarGrid.Close()
         nudgedGrid.Close()
-
+        Return True
     End Function
+
     Public Function DoResample_DLE(ByRef grd As MapWinGIS.Grid, ByVal newGridFName As String, ByVal CellSize As Double) As Boolean
         Dim i, j As Integer
         Dim newGrid As New MapWinGIS.Grid
