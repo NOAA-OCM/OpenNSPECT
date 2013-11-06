@@ -53,14 +53,38 @@ Public Class DataPrepForm
 
     Private Sub btnAOI_Click(sender As Object, e As EventArgs) Handles btnAOI.Click
         Dim AOI As New MapWinGIS.Shapefile
+        Dim tmpAOI As New MapWinGIS.Shapefile
+        Dim tmpaoiFName As String
         diaOpenPrep.Reset()
         diaOpenPrep.Title = "Open AOI Shapefile"
         diaOpenPrep.Filter = "Shapefiles|*.shp"
         If diaOpenPrep.ShowDialog() = Windows.Forms.DialogResult.OK Then
             txtAOI.Text = diaOpenPrep.FileName
-            aoiFName = txtAOI.Text
+            tmpaoiFName = txtAOI.Text
             'MsgBox("Shapefile name is " & aoiFName)
-            AOI.Open(aoiFName)
+            AOI.Open(tmpaoiFName)
+            If (AOI.NumShapes > 1) Then
+                If (cbSelectedShapes.Checked) Then
+                    If (AOI.NumSelected = 0) Then
+                        AOI.SelectAll()
+                    End If
+                    tmpAOI = AOI.AggregateShapes(True)
+                    AOI.Save()
+                    AOI.Close()
+                    AOI = tmpAOI.Dissolve(0, False)
+                    aoiFName = Path.GetDirectoryName(tmpaoiFName) & "\" _
+                    & Path.GetFileNameWithoutExtension(tmpaoiFName) _
+                    & "_DP.shp"
+                    MsgBox("New Merged AOIFilename is " & aoiFName)
+                    AOI.SaveAs(aoiFName)
+                End If
+                If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Base AOI")) Then
+                    MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
+                End If
+            Else
+                aoiFName = tmpaoiFName
+            End If
+
             txtProjParams.Text = AOI.Projection.ToString
             txtProjName.Text = AOI.GeoProjection.ProjectionName
             txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
@@ -145,6 +169,42 @@ Public Class DataPrepForm
                     ElseIf precipFName = "" Then
                         txtPrecipName.Focus()
                     End If
+                    'Dim AOI As New Shapefile
+                    'Dim tmpAOI As New Shapefile
+                    'Dim tmpaoiFName As String
+                    'tmpaoiFName = txtAOI.Text
+                    'AOI.Open(tmpaoiFName)
+                    'If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Base AOI")) Then
+                    '    MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
+                    '    boolCell = False
+                    'Else
+                    '    If (AOI.NumShapes > 1) Then
+                    '        If (cbSelectedShapes.Checked) Then
+                    '            If (AOI.NumSelected = 0) Then
+                    '                MsgBox("Please select shapes in AOI shapefile.")
+                    '                boolCell = False
+                    '            Else
+                    '                AOI.SelectAll()
+                    '            End If
+                    '            tmpAOI = AOI.AggregateShapes(True)
+                    '            AOI.Save()
+                    '            AOI.Close()
+                    '            AOI = tmpAOI.Dissolve(0, False)
+                    '            aoiFName = Path.GetDirectoryName(tmpaoiFName) & "\" _
+                    '            & Path.GetFileNameWithoutExtension(tmpaoiFName)
+                    '                 & "_DP.shp"
+                    '            MsgBox("New Merged AOIFilename is " & aoiFName)
+                    '            AOI.SaveAs(aoiFName)
+                    '        End If
+                    '        If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Merged")) Then
+                    '            MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
+                    '        End If
+                    '    Else
+                    '        aoiFName = tmpaoiFName
+                    '    End If
+                    'End If
+
+
                     Dim msgResult As MsgBoxResult = MsgBox("Please specify all input items", MsgBoxStyle.RetryCancel)
                     If (msgResult = MsgBoxResult.Cancel) Then
                         Close()
@@ -162,7 +222,7 @@ Public Class DataPrepForm
                     End Try
                     If (cbLoadFinal.Checked) Then
                         ' Load AOI into MapWindow
-                        If (Not AddFeatureLayerToMapFromFileName(aoiFName.ToString, "Area of Interest")) Then
+                        If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Area of Interest")) Then
                             MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
                         End If
                     End If
@@ -624,4 +684,15 @@ Public Class DataPrepForm
     End Function
 
    
+    ''' <summary>
+    ''' Handles opening the shape selection form
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnSelect_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSelect.Click
+        Dim selectfrm As New SelectionModeForm()
+        selectfrm.InitializeAndShow()
+
+    End Sub
 End Class
