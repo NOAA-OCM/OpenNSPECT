@@ -64,10 +64,16 @@ Public Class DataPrepForm
             'MsgBox("Shapefile name is " & aoiFName)
             AOI.Open(tmpaoiFName)
             If (AOI.NumShapes > 1) Then
-                If (cbSelectedShapes.Checked) Then
-                    If (AOI.NumSelected = 0) Then
-                        AOI.SelectAll()
-                    End If
+                Dim msgResponse As New MsgBoxResult
+                msgResponse = MsgBox("Your AOI shapefile contains mulitple polygons, ALL of which will be merged into one polygon for use and saved as a new shapefile.  " & _
+                        "If this is not desired, select 'No' to choose another shapefile, or select 'Cancel' to close the entire Data Prep dialog and create a different AOI shapefile. " & vbCrLf & vbCrLf & _
+                        "Note: If you want to use only some polygons from a shapefile, you must manually select those polygons and use the 'Export Selected' tool on the toolbar " & _
+                        "to create a new shapefile of just the desired area.  Use 'Cancel' in this case", MsgBoxStyle.YesNoCancel, _
+                        "Merge all polygons?")
+                If (msgResponse = MsgBoxResult.Cancel) Then
+                    Close()
+                ElseIf (msgResponse = MsgBoxResult.Yes) Then
+                    AOI.SelectAll()
                     tmpAOI = AOI.AggregateShapes(True)
                     AOI.Save()
                     AOI.Close()
@@ -75,20 +81,26 @@ Public Class DataPrepForm
                     aoiFName = Path.GetDirectoryName(tmpaoiFName) & "\" _
                     & Path.GetFileNameWithoutExtension(tmpaoiFName) _
                     & "_DP.shp"
-                    MsgBox("New Merged AOIFilename is " & aoiFName)
                     AOI.SaveAs(aoiFName)
+                    AOI.Close()
+                    AOI.Open(aoiFName)
+                    txtAOI.Text = aoiFName
+                    MsgBox("New Merged AOIFilename is " & aoiFName)
+                    If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Merged AOI")) Then
+                        MsgBox("ERROR: Merged AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
+                    End If
+                    txtProjParams.Text = AOI.Projection.ToString
+                    txtProjName.Text = AOI.GeoProjection.ProjectionName
+                    txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
                 End If
-                If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Base AOI")) Then
-                    MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
-                End If
-            Else
+             Else
                 aoiFName = tmpaoiFName
+                txtProjParams.Text = AOI.Projection.ToString
+                txtProjName.Text = AOI.GeoProjection.ProjectionName
+                txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
             End If
 
-            txtProjParams.Text = AOI.Projection.ToString
-            txtProjName.Text = AOI.GeoProjection.ProjectionName
-            txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
-        End If
+         End If
         diaOpenPrep.Filter = ""
     End Sub
 
@@ -157,7 +169,7 @@ Public Class DataPrepForm
                 bufferSize = Convert.ToDouble(txtUserBuffer.Text)
                 boolCell = True
                 'MsgBox("Cell size is " & finalCellSize)
-                ' If it gets to here, the cell size is good, so check the rest of th einput and run the 
+                ' If it gets to here, the cell size is good, so check the rest of the input and run the 
                 ' data preparation functions if it all checks out. If it isn't working, prompt user to correct and retry.
                 If (aoiFName = "" Or demFName = "" Or lcFName = "" Or precipFName = "") Then
                     If aoiFName = "" Then
@@ -169,41 +181,6 @@ Public Class DataPrepForm
                     ElseIf precipFName = "" Then
                         txtPrecipName.Focus()
                     End If
-                    'Dim AOI As New Shapefile
-                    'Dim tmpAOI As New Shapefile
-                    'Dim tmpaoiFName As String
-                    'tmpaoiFName = txtAOI.Text
-                    'AOI.Open(tmpaoiFName)
-                    'If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Base AOI")) Then
-                    '    MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
-                    '    boolCell = False
-                    'Else
-                    '    If (AOI.NumShapes > 1) Then
-                    '        If (cbSelectedShapes.Checked) Then
-                    '            If (AOI.NumSelected = 0) Then
-                    '                MsgBox("Please select shapes in AOI shapefile.")
-                    '                boolCell = False
-                    '            Else
-                    '                AOI.SelectAll()
-                    '            End If
-                    '            tmpAOI = AOI.AggregateShapes(True)
-                    '            AOI.Save()
-                    '            AOI.Close()
-                    '            AOI = tmpAOI.Dissolve(0, False)
-                    '            aoiFName = Path.GetDirectoryName(tmpaoiFName) & "\" _
-                    '            & Path.GetFileNameWithoutExtension(tmpaoiFName)
-                    '                 & "_DP.shp"
-                    '            MsgBox("New Merged AOIFilename is " & aoiFName)
-                    '            AOI.SaveAs(aoiFName)
-                    '        End If
-                    '        If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Merged")) Then
-                    '            MsgBox("ERROR: AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
-                    '        End If
-                    '    Else
-                    '        aoiFName = tmpaoiFName
-                    '    End If
-                    'End If
-
 
                     Dim msgResult As MsgBoxResult = MsgBox("Please specify all input items", MsgBoxStyle.RetryCancel)
                     If (msgResult = MsgBoxResult.Cancel) Then
@@ -249,11 +226,11 @@ Public Class DataPrepForm
         Dim removeOld As New Boolean
         removeOld = False
 
+        dirDPRoot = fileInfoDPRoot.DirectoryName.ToString
+        dirDataPrep = dirDPRoot & "\ON_DataPrep"
+        dirTarProj = dirDataPrep & "\TargetProj\"
+        dirOtherProj = dirDataPrep & "\OtherProj\"
         If cbKeep.Checked = True Then
-            dirDPRoot = fileInfoDPRoot.DirectoryName.ToString
-            dirDataPrep = dirDPRoot & "\ON_DataPrep"
-            dirTarProj = dirDataPrep & "\TargetProj\"
-            dirOtherProj = dirDataPrep & "\OtherProj\"
             If (Directory.Exists(dirDataPrep)) Then
                 Dim response As MsgBoxResult = MsgBox("Root data directory exists.  Do you want to proceed, deleting any duplicate files?", _
                                                       MsgBoxStyle.OkCancel)
@@ -264,18 +241,7 @@ Public Class DataPrepForm
                     removeOld = True
                     ' Return
                 End If
-                'Else
-                '    Directory.CreateDirectory(dirDataPrep)
-                '    Directory.CreateDirectory(dirTarProj)
-                '    Directory.CreateDirectory(dirOtherProj)
             End If
-        Else
-            'TODO: Add logic to use a tmp directory to be deleted later.
-            ' Temporary directories here
-            dirDPRoot = fileInfoDPRoot.DirectoryName.ToString
-            dirDataPrep = dirDPRoot & "\ON_DataPrep"
-            dirTarProj = dirDataPrep & "\TargetProj\"
-            dirOtherProj = dirDataPrep & "\OtherProj\"
         End If
 
         Directory.CreateDirectory(dirDataPrep)
@@ -283,7 +249,7 @@ Public Class DataPrepForm
         Directory.CreateDirectory(dirOtherProj)
 
 
-        ' Buffer AOI Shapefile by 2cells -> AOIB20
+        ' Buffer AOI Shapefile by 20cells -> AOIB20
         aoiBuff20FName = dirTarProj & Path.GetFileNameWithoutExtension(aoiFName) & "B20.shp"
         'MsgBox("aoiBuffName is " & aoiBuffFName)
         If (File.Exists(aoiBuff20FName) And removeOld) Then
@@ -364,20 +330,28 @@ Public Class DataPrepForm
 
 
     End Sub
-    'PrepOneRaster takes a given raster and clips it to the extent of a target shapefile, reprojecting 
-    '   the shapefile if needed.  This makes the reprojection faster.
-    '  Steps are: 1) reproject AOI shapefile, if needed, 2) Clip Raw Raster, 3) Reproject clipped Raster 
-    '    back to original AOI projection, 4) Bin reprojected raster to desired cell size, 5) align 
+    ''' <summary>
+    ''' Takes a given raster and clips it to the extent of a target shapefile, reprojecting the shapefile if needed.
+    ''' </summary>
+    ''' <param name="rawGridName"></param>
+    ''' <param name="aoi20SFName"></param>
+    ''' <param name="refGridFName"></param>
+    ''' <param name="dpRoot"></param>
+    ''' <param name="rasterSfx"></param>
+    ''' <remarks>
+    '''  PrepOneRaster takes a given raster and clips it to the extent of a target shapefile, reprojecting 
+    '''   the shapefile if needed.  This makes the reprojection faster.
+    '''  Steps are: 1) reproject AOI shapefile, if needed, 2) Clip Raw Raster, 3) Reproject clipped Raster 
+    '''    back to original AOI projection, 4) Bin reprojected raster to desired cell size, 5) align 
+    '''</remarks>
     Private Function PrepOneRaster(ByVal rawGridName As String, ByVal aoi20SFName As String, _
                                    ByRef refGridFName As String, _
                                    ByVal dpRoot As String, ByVal rasterSfx As String) As String
         Dim rawGrid As New Grid
         Dim tarAOI As New Shapefile
-        'Dim rawProj4 As String
         Dim aoiRasterB20 As New Shapefile
         Dim rawGridB20 As New Grid
         Dim rawGridB20Fname As String
-        'Dim clipPoly As New MapWinGIS.Shape
         Dim aoiB20 As New Shapefile
         Dim tarGeoProj As New MapWinGIS.GeoProjection
         Dim tarProj4 As String
@@ -391,16 +365,9 @@ Public Class DataPrepForm
         Dim tarNudgedFName As String
         Dim tmpFName As String    ' Just a temporary file name variable
         Dim onlyGDAL As Boolean = False  'Only use GDAL Warp routine for reprojection and rebinning
-        'Dim warpNeeded As Boolean
         Dim statusReproject As Boolean = False
 
-        'Dim tarXll As Double
-        'Dim tarYll As Double
-        'Dim tardX As Double
-        'Dim tardY As Double
-
         rawGrid.Open(rawGridName)
-        'rawProj4 = rawGrid.Header.GeoProjection.ExportToProj4
         aoiB20.Open(aoi20SFName)
         tarGeoProj = aoiB20.GeoProjection
         tarProj4 = tarGeoProj.ExportToProj4
@@ -412,7 +379,6 @@ Public Class DataPrepForm
 
 
         ' Check projections and cell sizes and change as needed:
-        '       If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj) Or rawGrid.Header.dX <> finalCellSize) Then
 
         If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj)) Then
             ' Mismatch between projections.  
@@ -531,7 +497,13 @@ Public Class DataPrepForm
         Return tarFinalFName
 
     End Function
-
+    ''' <summary>
+    ''' Copies a target grid while shifting Lower left X and Y coordinates to make the new grid line up with a reference grid
+    ''' </summary>
+    ''' <param name="tarGridFName"></param>
+    ''' <param name="refGridName"></param>
+    ''' <param name="nudgedGridFName"></param>
+    ''' <remarks></remarks>
     Private Function NudgeGrid(ByVal tarGridFName As String, ByVal refGridName As String, ByVal nudgedGridFName As String) As Boolean
         Dim tarGrid As New Grid
         Dim refGrid As New Grid
@@ -617,6 +589,13 @@ Public Class DataPrepForm
         Return True
     End Function
 
+    ''' <summary>
+    ''' Resamples a grid to create a new gird with teh specified cell size
+    ''' </summary>
+    ''' <param name="grd"></param>
+    ''' <param name="newGridFName"></param>
+    ''' <param name="CellSize"></param>
+    ''' <remarks>This code is copied from the MapWindow DoResample function, whic I don't seem to ba able to access.</remarks>
     Public Function DoResample_DLE(ByRef grd As MapWinGIS.Grid, ByVal newGridFName As String, ByVal CellSize As Double) As Boolean
         Dim i, j As Integer
         Dim newGrid As New MapWinGIS.Grid
@@ -625,8 +604,6 @@ Public Class DataPrepForm
         Dim absLeft, absRight, absBottom, absTop As Double
         Dim halfDX, halfDY As Double
         Dim tX, tY, oldX, oldY, nDX, cDX As Double
-
-        ' Dim newFilen As String = System.IO.Path.GetFileName(grd.Filename)
 
         Try
             With newHeader
@@ -658,7 +635,6 @@ Public Class DataPrepForm
 
                 For j = 0 To numRows - 1
                     tY = absTop - (j * newHeader.dY) - halfDY
-                    'Progress.Progress(grd.Filename, j / numRows * 100, "Resampling " & grd.Filename & " row " & j)
 
                     nDX = newHeader.dX
                     cDX = grd.Header.dX
@@ -678,21 +654,9 @@ Public Class DataPrepForm
             grd.Save(newGridFName)
             Return True
         Catch ex As Exception
-            MapWinUtility.Logger.Msg(ex.Message & vbCrLf & ex.StackTrace, MsgBoxStyle.Critical Or MsgBoxStyle.Information, "Grid Wizard 2.0 - Error")
+            MapWinUtility.Logger.Msg(ex.Message & vbCrLf & ex.StackTrace, MsgBoxStyle.Critical Or MsgBoxStyle.Information, "DoResample_DLE - Error")
             Return False
         End Try
     End Function
 
-   
-    ''' <summary>
-    ''' Handles opening the shape selection form
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub btnSelect_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSelect.Click
-        Dim selectfrm As New SelectionModeForm()
-        selectfrm.InitializeAndShow()
-
-    End Sub
 End Class
