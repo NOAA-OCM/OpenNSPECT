@@ -14,6 +14,7 @@
 'Sept. 26, 2013:  Dave Eslinger dave.eslinger@noaa.gov 
 '      Initial commit to repository, not actaully working.
 'Oct. 31, 2013: Working well, still some cleanup and usability tweaks needed.
+'Nov. 11, 2013: Working, errors caught (I think) and should be pretty solid.
 
 Imports System.IO
 Imports MapWindow.Interfaces
@@ -26,7 +27,6 @@ Imports MapWindow.Controls.Data
 
 Public Class DataPrepForm
     Public Property Filter As String
-
     Public aoiFName As String
     Public demFName As String
     Public lcFName As String
@@ -36,8 +36,6 @@ Public Class DataPrepForm
     Public refdX As Double
     Public refdY As Double
     Public tarAOI As New Shapefile
-
-
     Private aoiBuff20FName As String
     Private demBuffFname As String
     Private lcBuffFname As String
@@ -47,7 +45,6 @@ Public Class DataPrepForm
     Private dirDataPrep As String
     Private dirOtherProj As String
     Private dirFinal As String
-
     Private finalCellSize As Double
     Private bufferSize As Double
 
@@ -68,7 +65,7 @@ Public Class DataPrepForm
                 msgResponse = MsgBox("Your AOI shapefile contains mulitple polygons, ALL of which will be merged into one polygon for use and saved as a new shapefile.  " & _
                         "If this is not desired, select 'No' to choose another shapefile, or select 'Cancel' to close the entire Data Prep dialog and create a different AOI shapefile. " & vbCrLf & vbCrLf & _
                         "Note: If you want to use only some polygons from a shapefile, you must manually select those polygons and use the 'Export Selected' tool on the toolbar " & _
-                        "to create a new shapefile of just the desired area.  Use 'Cancel' in this case", MsgBoxStyle.YesNoCancel, _
+                        "to create a new shapefile of just the desired area.  Use 'Cancel' in this case, to close the Data Prep window.", MsgBoxStyle.YesNoCancel, _
                         "Merge all polygons?")
                 If (msgResponse = MsgBoxResult.Cancel) Then
                     Close()
@@ -89,15 +86,21 @@ Public Class DataPrepForm
                     If (Not AddFeatureLayerToMapFromFileName(aoiFName, "Merged AOI")) Then
                         MsgBox("ERROR: Merged AOI Shapfile not found: " & vbLf & txtAOI.Text.ToString)
                     End If
-                    txtProjParams.Text = AOI.Projection.ToString
-                    txtProjName.Text = AOI.GeoProjection.ProjectionName
-                    txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
+                 Else
+                    Exit Sub
                 End If
              Else
                 aoiFName = tmpaoiFName
-                txtProjParams.Text = AOI.Projection.ToString
-                txtProjName.Text = AOI.GeoProjection.ProjectionName
-                txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
+             End If
+            txtProjParams.Text = AOI.Projection.ToString
+            txtProjName.Text = AOI.GeoProjection.ProjectionName
+            txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
+            If (AOI.GeoProjection.ProjectionName = "") Then
+                If (AOI.Projection.Substring(6, 7) = "longlat") Then
+                    txtProjName.Text = "Geographic (unprojected), see parameters below:"
+                    MsgBox("Hmmm... your AOI shapefile is in geographic coordinates.  " & _
+                           "That is almost always a bad idea.  You should probably check the shapefile name and try again.")
+                End If
             End If
 
          End If
@@ -118,6 +121,11 @@ Public Class DataPrepForm
             txtSizeUnitsDEM.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
             txtDEMProj.Text = g.Header.GeoProjection.ProjectionName
             txtDEMParams.Text = g.Header.Projection.ToString
+            If (g.Header.GeoProjection.ProjectionName = "") Then
+                If (g.Header.Projection.Substring(6, 7) = "longlat") Then
+                    txtDEMProj.Text = "Geographic (unprojected), see parameters below:"
+                End If
+            End If
             g.Close()
         End If
     End Sub
@@ -136,6 +144,11 @@ Public Class DataPrepForm
             txtSizeUnitsLC.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
             txtLCProj.Text = g.Header.GeoProjection.ProjectionName
             txtLCParams.Text = g.Header.Projection.ToString
+            If (g.Header.GeoProjection.ProjectionName = "") Then
+                If (g.Header.Projection.Substring(6, 7) = "longlat") Then
+                    txtLCProj.Text = "Geographic (unprojected), see parameters below:"
+                End If
+            End If
             g.Close()
         End If
 
@@ -155,6 +168,11 @@ Public Class DataPrepForm
             txtSizeUnitsPrecip.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
             txtPrecipProj.Text = g.Header.GeoProjection.ProjectionName
             txtPrecipParams.Text = g.Header.Projection.ToString
+            If (g.Header.GeoProjection.ProjectionName = "") Then
+                If (g.Header.Projection.Substring(6, 7) = "longlat") Then
+                    txtPrecipProj.Text = "Geographic (unprojected), see parameters below:"
+                End If
+            End If
             g.Close()
         End If
     End Sub
@@ -191,8 +209,11 @@ Public Class DataPrepForm
                 Else
                     '  MsgBox("txtFinalCell.Text = '" & txtFinalCell.Text & "'")
                     Try
-                        PrepRawData()
-                        boolCell = True
+                        If (PrepRawData()) Then
+                            boolCell = True
+                        Else
+                            boolCell = False
+                        End If
                     Catch ex As Exception
                         boolCell = False
                         MsgBox("Error in PrepRawData:" & ex.ToString, MsgBoxStyle.Critical)
@@ -218,7 +239,7 @@ Public Class DataPrepForm
         End Try
     End Sub
 
-    Private Sub PrepRawData()
+    Private Function PrepRawData() As Boolean
         '  MsgBox("More processing")
         ' Create intermediate subdirectories
         Dim fileInfoDPRoot As New FileInfo(aoiFName)
@@ -236,10 +257,9 @@ Public Class DataPrepForm
                                                       MsgBoxStyle.OkCancel)
                 If response = MsgBoxResult.Cancel Then
                     MsgBox("Canceling.  To rerun, put AOI Shapefile in a new directory.")
-                    Return
+                    Return False
                 ElseIf response = MsgBoxResult.Ok Then
                     removeOld = True
-                    ' Return
                 End If
             End If
         End If
@@ -247,7 +267,6 @@ Public Class DataPrepForm
         Directory.CreateDirectory(dirDataPrep)
         Directory.CreateDirectory(dirTarProj)
         Directory.CreateDirectory(dirOtherProj)
-
 
         ' Buffer AOI Shapefile by 20cells -> AOIB20
         aoiBuff20FName = dirTarProj & Path.GetFileNameWithoutExtension(aoiFName) & "B20.shp"
@@ -270,7 +289,11 @@ Public Class DataPrepForm
         Dim demFinalFName As String
         refGridName = ""
         demFinalFName = PrepOneRaster(demFName, aoiBuff20FName, refGridName, dirDataPrep, "DEM")
-        File.Copy(Path.ChangeExtension(demFName, "mwleg"), Path.ChangeExtension(demFinalFName, "mwleg"))
+        Try
+            File.Copy(Path.ChangeExtension(demFName, "mwleg"), Path.ChangeExtension(demFinalFName, "mwleg"))
+        Catch ex As Exception
+            MsgBox("It looks like there is no MapWindow color file for your original DEM file.  You will get a default set of colors.")
+        End Try
         If (cbLoadFinal.Checked) Then
             ' Load DEM into MapWindow
             If (Not AddFeatureLayerToMapFromFileName(demFinalFName)) Then
@@ -278,13 +301,15 @@ Public Class DataPrepForm
             End If
         End If
 
-        'demFinal.Open(demFinalFName)
-
         ' Now land Cover
         Dim lcFinal As New Grid
         Dim lcFinalFName As String
         lcFinalFName = PrepOneRaster(lcFName, aoiBuff20FName, refGridName, dirDataPrep, "LULC")
-        File.Copy(Path.ChangeExtension(lcFName, "mwleg"), Path.ChangeExtension(lcFinalFName, "mwleg"))
+        Try
+            File.Copy(Path.ChangeExtension(lcFName, "mwleg"), Path.ChangeExtension(lcFinalFName, "mwleg"))
+        Catch ex As Exception
+            MsgBox("It looks like there is no MapWindow color file for your original Land Cover file.  You just get a default set of colors.")
+        End Try
         If (cbLoadFinal.Checked) Then
             ' Load LULC into MapWindow
             If (Not AddFeatureLayerToMapFromFileName(lcFinalFName)) Then
@@ -296,7 +321,11 @@ Public Class DataPrepForm
         Dim precipFinal As New Grid
         Dim precipFinalFName As String
         precipFinalFName = PrepOneRaster(precipFName, aoiBuff20FName, refGridName, dirDataPrep, "Precip")
-        File.Copy(Path.ChangeExtension(precipFName, "mwleg"), Path.ChangeExtension(precipFinalFName, "mwleg"))
+        Try
+            File.Copy(Path.ChangeExtension(precipFName, "mwleg"), Path.ChangeExtension(precipFinalFName, "mwleg"))
+        Catch ex As Exception
+            MsgBox("It looks like there is no MapWindow color file for your original Precip file.  You will get a default set of colors.")
+        End Try
         If (cbLoadFinal.Checked) Then
             ' Load DEM into MapWindow
             If (Not AddFeatureLayerToMapFromFileName(precipFinalFName)) Then
@@ -313,7 +342,6 @@ Public Class DataPrepForm
             demFinal.Close()
             lcFinal.Close()
             precipFinal.Close()
-
             ' Then recursively delete the temprorary directories and the files they contain:
             Try
                 Directory.Delete(dirOtherProj, True)
@@ -326,10 +354,8 @@ Public Class DataPrepForm
                 MsgBox("Error deleting " & dirTarProj & ": " & vbCrLf & ex.ToString, MsgBoxStyle.Critical)
             End Try
         End If
-
-
-
-    End Sub
+        Return True
+    End Function
     ''' <summary>
     ''' Takes a given raster and clips it to the extent of a target shapefile, reprojecting the shapefile if needed.
     ''' </summary>
@@ -377,7 +403,6 @@ Public Class DataPrepForm
 
         Dim progress As New SynchronousProgressDialog("Begin processing...", tmpMessage, 7, Me)
 
-
         ' Check projections and cell sizes and change as needed:
 
         If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj)) Then
@@ -388,11 +413,16 @@ Public Class DataPrepForm
             tmpFName = dirOtherProj & "aoiRasterB20" & rasterSfx & ".shp"
             aoiRasterB20.SaveAs(tmpFName)
             'MsgBox("New Buffered AOI is  = " & tmpFName.ToString)
+
             ' Now clip by aoiRasterB20 polygon with fast, rectangular clipping
             rawGridB20Fname = dirOtherProj & Path.GetFileNameWithoutExtension(rawGridName) & "B20" & rasterSfx & ".tif"
             progress.Increment("Clipping to reprojected, buffered AOI")
-            rawGridB20 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB20.Shape(0), rawGridB20Fname)
-            'MsgBox("Clipped raw file = " & rawGridB20Fname)
+            Try
+                rawGridB20 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB20.Shape(0), rawGridB20Fname)
+                'MsgBox("Clipped raw file = " & rawGridB20Fname)
+            Catch ex As Exception
+                MsgBox("Error on clipping to buffered AOI.  Check that AOI and file overlap:" & rawGridName)
+            End Try
 
             'raw data are now clipped, so reproject this smaller raster back into the AOI Projection
             If (onlyGDAL) Then
@@ -422,12 +452,7 @@ Public Class DataPrepForm
             If (Not tarGridB20.Save(clippedFName)) Then
                 MsgBox("Error trying to save " & clippedFName)
             End If
-            'If (rawGrid.Header.dX <> finalCellSize) Then
-            '    warpNeeded = True
-            'Else
-            '    warpNeeded = False
-            'End If
-        End If
+          End If
 
         ' Raster is now clipped to buffered size.  Ready for
         '   1) Reprojecting and Binning to specified cell size
@@ -455,7 +480,6 @@ Public Class DataPrepForm
         ' Raster is now Binned.  If it is NOT the DEM/Reference files, nudge it to align properly with that file.
         ' NOTE BENE: The DEM/Reference Raster must be processed first!
 
-        ' DLE: This section is for pulling the nudging out as a function
         If (rasterSfx = "DEM") Then ' Set the reference coordinates
             progress.Increment("Reference grid, no nudging needed, copying original grid...")
             refGridFName = tarBinFName
@@ -469,9 +493,7 @@ Public Class DataPrepForm
 
         End If
 
-
          ' The grid is now nudged, so clip to final shapefile and return it.
- 
         tarFinalFName = dirDataPrep & "\" & Path.GetFileNameWithoutExtension(rawGridName) & "_DP.tif"
         tarFinal.Open(tarFinalFName)
         tarNudged.Open(tarNudgedFName)
@@ -491,12 +513,9 @@ Public Class DataPrepForm
         tarBinned.Close()
         tarNudged.Close()
         tarFinal.Close()
-        'tarAOI.Close()
-
-
         Return tarFinalFName
-
     End Function
+
     ''' <summary>
     ''' Copies a target grid while shifting Lower left X and Y coordinates to make the new grid line up with a reference grid
     ''' </summary>
