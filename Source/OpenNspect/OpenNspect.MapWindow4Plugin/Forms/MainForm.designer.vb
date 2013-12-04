@@ -62,12 +62,6 @@
         Me.TabsForGrids = New System.Windows.Forms.TabControl()
         Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage()
         Me.dgvPollutants = New System.Windows.Forms.DataGridView()
-        Me.PollApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
-        Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn()
-        Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn()
-        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.TypeDef = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage()
         Me.lblErodFactor = New System.Windows.Forms.Label()
         Me.lblKFactor = New System.Windows.Forms.Label()
@@ -108,11 +102,17 @@
         Me._chkIgnoreMgmt_0 = New System.Windows.Forms.CheckBox()
         Me._chkIgnoreLU_0 = New System.Windows.Forms.CheckBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.cboWaterQualityCriteriaStd = New System.Windows.Forms.ComboBox()
         Me.cboTargetLayer = New System.Windows.Forms.ComboBox()
         Me._Label1_19 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.cboWaterQualityCriteriaStd = New System.Windows.Forms.ComboBox()
+        Me.PollApply = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.TypeDef = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MainMenu1.SuspendLayout()
         Me.Frame3.SuspendLayout()
         Me.fraLC.SuspendLayout()
@@ -466,52 +466,6 @@
         Me.dgvPollutants.ShowEditingIcon = False
         Me.dgvPollutants.Size = New System.Drawing.Size(610, 209)
         Me.dgvPollutants.TabIndex = 0
-        '
-        'PollApply
-        '
-        Me.PollApply.HeaderText = "Apply"
-        Me.PollApply.Name = "PollApply"
-        Me.PollApply.Width = 53
-        '
-        'PollutantName
-        '
-        Me.PollutantName.HeaderText = "Pollutant Name"
-        Me.PollutantName.Name = "PollutantName"
-        Me.PollutantName.ReadOnly = True
-        Me.PollutantName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.PollutantName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.PollutantName.Width = 180
-        '
-        'CoefSet
-        '
-        Me.CoefSet.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.CoefSet.DisplayStyleForCurrentCellOnly = True
-        Me.CoefSet.HeaderText = "Coefficient Set"
-        Me.CoefSet.Name = "CoefSet"
-        Me.CoefSet.Width = 180
-        '
-        'WhichCoeff
-        '
-        Me.WhichCoeff.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.WhichCoeff.DisplayStyleForCurrentCellOnly = True
-        Me.WhichCoeff.HeaderText = "Which Coefficient"
-        Me.WhichCoeff.Items.AddRange(New Object() {"Type 1", "Type 2", "Type 3", "Type 4"})
-        Me.WhichCoeff.Name = "WhichCoeff"
-        Me.WhichCoeff.Width = 120
-        '
-        'Threshold
-        '
-        Me.Threshold.HeaderText = "Threshold"
-        Me.Threshold.Name = "Threshold"
-        Me.Threshold.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.Threshold.Visible = False
-        '
-        'TypeDef
-        '
-        Me.TypeDef.HeaderText = "TypeDef"
-        Me.TypeDef.Name = "TypeDef"
-        Me.TypeDef.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
-        Me.TypeDef.Visible = False
         '
         '_SSTab1_TabPage1
         '
@@ -891,6 +845,16 @@
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(319, 110)
         Me.TableLayoutPanel1.TabIndex = 61
         '
+        'cboWaterQualityCriteriaStd
+        '
+        Me.cboWaterQualityCriteriaStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboWaterQualityCriteriaStd.Enabled = False
+        Me.cboWaterQualityCriteriaStd.Location = New System.Drawing.Point(162, 84)
+        Me.cboWaterQualityCriteriaStd.Name = "cboWaterQualityCriteriaStd"
+        Me.cboWaterQualityCriteriaStd.Size = New System.Drawing.Size(149, 21)
+        Me.cboWaterQualityCriteriaStd.TabIndex = 61
+        Me.cboWaterQualityCriteriaStd.Visible = False
+        '
         'cboTargetLayer
         '
         Me.cboTargetLayer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -933,15 +897,51 @@
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Target Area"
         '
-        'cboWaterQualityCriteriaStd
+        'PollApply
         '
-        Me.cboWaterQualityCriteriaStd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboWaterQualityCriteriaStd.Enabled = False
-        Me.cboWaterQualityCriteriaStd.Location = New System.Drawing.Point(162, 84)
-        Me.cboWaterQualityCriteriaStd.Name = "cboWaterQualityCriteriaStd"
-        Me.cboWaterQualityCriteriaStd.Size = New System.Drawing.Size(149, 21)
-        Me.cboWaterQualityCriteriaStd.TabIndex = 61
-        Me.cboWaterQualityCriteriaStd.Visible = False
+        Me.PollApply.HeaderText = "Apply"
+        Me.PollApply.Name = "PollApply"
+        Me.PollApply.Width = 53
+        '
+        'PollutantName
+        '
+        Me.PollutantName.HeaderText = "Pollutant Name"
+        Me.PollutantName.Name = "PollutantName"
+        Me.PollutantName.ReadOnly = True
+        Me.PollutantName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.PollutantName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.PollutantName.Width = 180
+        '
+        'CoefSet
+        '
+        Me.CoefSet.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.CoefSet.DisplayStyleForCurrentCellOnly = True
+        Me.CoefSet.HeaderText = "Coefficient Set"
+        Me.CoefSet.Name = "CoefSet"
+        Me.CoefSet.Width = 180
+        '
+        'WhichCoeff
+        '
+        Me.WhichCoeff.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.WhichCoeff.DisplayStyleForCurrentCellOnly = True
+        Me.WhichCoeff.HeaderText = "Which Coefficient"
+        Me.WhichCoeff.Items.AddRange(New Object() {"Type 1", "Type 2", "Type 3", "Type 4", "Use shapefile..."})
+        Me.WhichCoeff.Name = "WhichCoeff"
+        Me.WhichCoeff.Width = 120
+        '
+        'Threshold
+        '
+        Me.Threshold.HeaderText = "Threshold"
+        Me.Threshold.Name = "Threshold"
+        Me.Threshold.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.Threshold.Visible = False
+        '
+        'TypeDef
+        '
+        Me.TypeDef.HeaderText = "TypeDef"
+        Me.TypeDef.Name = "TypeDef"
+        Me.TypeDef.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic
+        Me.TypeDef.Visible = False
         '
         'MainForm
         '
@@ -1069,12 +1069,6 @@
     Friend WithEvents cboWaterShedDelineations As System.Windows.Forms.ComboBox
     Friend WithEvents cboPrecipitationScenarios As System.Windows.Forms.ComboBox
     Private WithEvents btnOpenRainfallFactorGrid As System.Windows.Forms.Button
-    Friend WithEvents PollApply As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents PollutantName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents CoefSet As System.Windows.Forms.DataGridViewComboBoxColumn
-    Friend WithEvents WhichCoeff As System.Windows.Forms.DataGridViewComboBoxColumn
-    Friend WithEvents Threshold As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents TypeDef As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LUApply As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents LUScenario As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LUScenarioXml As System.Windows.Forms.DataGridViewTextBoxColumn
@@ -1086,5 +1080,11 @@
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents cboWaterQualityCriteriaStd As System.Windows.Forms.ComboBox
+    Friend WithEvents PollApply As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents PollutantName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents CoefSet As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents WhichCoeff As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents Threshold As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents TypeDef As System.Windows.Forms.DataGridViewTextBoxColumn
 #End Region
 End Class

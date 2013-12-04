@@ -22,7 +22,7 @@ Module RasterMathematics
     Public Sub RasterMath(ByRef grid1 As Grid, ByRef grid2 As Grid, ByRef grid3 As Grid, ByRef grid4 As Grid, ByRef grid5 As Grid, ByRef outputGrid As Grid, ByRef CellCalc As RasterMathCellCalc, Optional ByVal checkNullFirst As Boolean = True, Optional ByRef CellCalcNull As RasterMathCellCalcNulls = Nothing)
         Const nodataout As Single = -9999.0
         Dim nodata1, nodata2, nodata3, nodata4, nodata5 As Single
-        Dim tmppath As String = GetTempFileNameOutputGridExt()
+        Dim tmppath As String = GetTempFileNameOutputGridExt()  'TODO temp file to be deleted later
         Dim grid1Header As GridHeader = grid1.Header
 
         Dim outputHeader As GridHeader = New GridHeader
@@ -56,7 +56,7 @@ Module RasterMathematics
             If grid4 IsNot Nothing Then grid4.GetRow(row, rowvals4(0)) Else grid1.GetRow(row, rowvals4(0))
             If grid5 IsNot Nothing Then grid5.GetRow(row, rowvals5(0)) Else grid1.GetRow(row, rowvals5(0))
 
-            For col As Integer = 0 To ncol
+            For col As Integer = 0 To ncol 'Actually doing the .cell-by-cell calculations here
                 If checkNullFirst Then
                     If rowvals1(col) = nodata1 OrElse rowvals2(col) = nodata2 OrElse rowvals3(col) = nodata3 OrElse rowvals4(col) = nodata4 OrElse rowvals5(col) = nodata5 Then
                         rowvalsout(col) = nodataout
