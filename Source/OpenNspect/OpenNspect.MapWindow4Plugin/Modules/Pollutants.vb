@@ -63,6 +63,8 @@ Module Pollutants
             Dim strType As String
             Dim strField As String = ""
             Dim concentrationStatement As String = ""
+            Dim coeffTypes() As String = {"Coeff1", "Coeff2", "Coeff3", "Coeff4"}
+            Dim concentrationStateArray() As String = {"", "", "", ""}
             'Again, because of landuse, we have to check for 'temp' coeff sets and their use
             'Get the name of the pollutant
             _PollutantName = Pollutant.strPollName
@@ -80,6 +82,8 @@ Module Pollutants
                     strField = "Coeff3"
                 Case "Type 4"
                     strField = "Coeff4"
+                Case "Use shapefile..."
+                    strField = "Pick"
                 Case ""
             End Select
 
@@ -88,12 +92,28 @@ Module Pollutants
                 Using cmdPoll As New DataHelper(String.Format("SELECT * FROM COEFFICIENTSET WHERE NAME LIKE '{0}'", GetCoefficientSetName(Pollutant)))
                     Using dataPoll As OleDbDataReader = cmdPoll.ExecuteReader()
                         dataPoll.Read()
-                        strType = String.Format("SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.{0} As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID FROM LCCLASS LEFT OUTER JOIN COEFFICIENT ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID WHERE COEFFICIENT.COEFFSETID = {1} ORDER BY LCCLASS.VALUE", strField, dataPoll("CoeffSetID"))
-                        Using cmdType As New DataHelper(strType)
-                            Dim command As OleDbCommand = cmdType.GetCommand()
-                            concentrationStatement = ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType")
-                            _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_Project.IncludeLocalEffects)
-                        End Using
+                        If strField = "Pick" Then
+                             'concentrationStateArray(4) = "foo"
+                            concentrationStatement = ""
+                            For icoeff As Integer = 0 To 3
+                                'For Each coeffType As String In coeffTypes
+                                strType = String.Format("SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.{0} As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID FROM LCCLASS LEFT OUTER JOIN COEFFICIENT ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID WHERE COEFFICIENT.COEFFSETID = {1} ORDER BY LCCLASS.VALUE", coeffTypes(icoeff), dataPoll("CoeffSetID"))
+                                Using cmdType As New DataHelper(strType)
+                                    Dim command As OleDbCommand = cmdType.GetCommand()
+                                    'concentrationStatement = concentrationStatement & ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType") ' Coefficient list picked here: array with 1 coeff/LC class
+                                    concentrationStateArray(icoeff) = concentrationStatement & ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType") ' Coefficient list picked here: array with 1 coeff/LC class
+                                    _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_Project.IncludeLocalEffects)
+                                End Using
+                            Next
+                            '                          _PollutantCoeffMetadata = ConstructMetaData(cmdType.GetCommand(), (Pollutant.strCoeff), g_Project.IncludeLocalEffects)
+                        Else
+                            strType = String.Format("SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.{0} As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID FROM LCCLASS LEFT OUTER JOIN COEFFICIENT ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID WHERE COEFFICIENT.COEFFSETID = {1} ORDER BY LCCLASS.VALUE", strField, dataPoll("CoeffSetID"))
+                            Using cmdType As New DataHelper(strType)
+                                Dim command As OleDbCommand = cmdType.GetCommand()
+                                concentrationStatement = ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType") ' Coefficient list picked here: array with 1 coeff/LC class
+                                _PollutantCoeffMetadata = ConstructMetaData(command, (Pollutant.strCoeff), g_Project.IncludeLocalEffects)
+                            End Using
+                        End If
                     End Using
                 End Using
 
@@ -107,6 +127,17 @@ Module Pollutants
                 End Using
             End Using
 
+            If strField = "Pick" Then
+                'MsgBox("Sorry, this doesn't work at present.  However, coefficients are:" & vbCrLf & _
+                'concentrationStateArray(0) & vbCrLf & _
+                'concentrationStateArray(1) & vbCrLf & _
+                'concentrationStateArray(2) & vbCrLf & _
+                'concentrationStateArray(3))
+                concentrationStatement = "Pick, " & "shapefilenamehere.shp" & "; " & _
+                    concentrationStateArray(0) & "; " & concentrationStateArray(1) & "; " & _
+                    concentrationStateArray(2) & "; " & concentrationStateArray(3)
+                MsgBox("new conc statement = " & concentrationStatement)
+            End If
             PollutantConcentrationSetup = CalcPollutantConcentration(concentrationStatement, OutputItems)
 
         Catch ex As Exception
@@ -235,6 +266,7 @@ Module Pollutants
         If concentrationStatement = Nothing Then
             Throw New ArgumentNullException("concentrationStatement")
         End If
+        _picks = concentrationStatement.Split(";")
 
         Dim massVolumeRaster As Grid = Nothing
         Dim pAccumPollRaster As Grid = Nothing
@@ -245,7 +277,12 @@ Module Pollutants
         Dim progress = New SynchronousProgressDialog(strTitle, 13, g_MainForm)
         Try
             progress.Increment("Calculating Mass Volume...")
-            CalcMassOfPhosperous(concentrationStatement, massVolumeRaster)
+            If _picks(0).Split(",")(0) = "Pick" Then
+                'Polygon Pick call here
+                CalcMassOfPhosperous(_picks(1), massVolumeRaster) 'just testing stuff
+            Else
+                CalcMassOfPhosperous(concentrationStatement, massVolumeRaster) 'Concentrations done here: Change for using polygon to pick
+            End If
 
             'At this point the above grid will satisfy 'local effects only' people so...
             If g_Project.IncludeLocalEffects Then

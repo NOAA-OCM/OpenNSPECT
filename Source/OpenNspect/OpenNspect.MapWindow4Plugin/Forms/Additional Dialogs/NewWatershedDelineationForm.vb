@@ -597,20 +597,22 @@ Friend Class NewWatershedDelineationForm
             Dim dblArea As Double = ((pDEMRaster.Header.NumberCols * pDEMRaster.Header.NumberRows) * 0.004) * _intCellSize * _intCellSize
 
             '#4 Now with the Area of small sheds determined we can remove polygons that are too small.  To do this
+            pFeatureClass.StartEditingTable()
             pFeatureClass.StartEditingShapes()
-            For i As Integer = pFeatureClass.NumShapes - 1 To 0
+            For i As Integer = pFeatureClass.NumShapes - 1 To 0 Step -1
                 If pFeatureClass.Shape(i).Area() < dblArea Then
                     pFeatureClass.EditDeleteShape(i)
                 End If
             Next
-            pFeatureClass.StopEditingShapes()
+            pFeatureClass.StopEditingShapes(True)
+            pFeatureClass.StopEditingTable(True)
 
             'Once we have an outline, union it, but for now just output the base with smalls removed
 
             '#5  Now, time to union the outline of the of the DEM with the newly paired down basin poly
             'Dim outputSf As MapWinGIS.Shapefile = rastersf.GetIntersection(False, pFeatureClass, False, pFeatureClass.ShapefileType, Nothing)
             'outputSf.SaveAs(_strWShedFileName)
-            pFeatureClass.SaveAs(_strWShedFileName)
+            pFeatureClass.SaveAs(_strWShedFileName)  'TODO: WHy does teis blow up on MW 4.8.8?
             pFeatureClass.Close()
             Dim outputSf As New Shapefile
             outputSf.Open(_strWShedFileName)

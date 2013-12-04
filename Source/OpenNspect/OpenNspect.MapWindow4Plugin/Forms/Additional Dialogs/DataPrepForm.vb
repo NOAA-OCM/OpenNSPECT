@@ -99,7 +99,8 @@ Public Class DataPrepForm
                 If (AOI.Projection.Substring(6, 7) = "longlat") Then
                     txtProjName.Text = "Geographic (unprojected), see parameters below:"
                     MsgBox("Hmmm... your AOI shapefile is in geographic coordinates.  " & _
-                           "That is almost always a bad idea.  You should probably check the shapefile name and try again.")
+                           "That is almost always a bad idea for your target shapefile.  " & _
+                           "You should probably check the shapefile name and try again.")
                 End If
             End If
 
