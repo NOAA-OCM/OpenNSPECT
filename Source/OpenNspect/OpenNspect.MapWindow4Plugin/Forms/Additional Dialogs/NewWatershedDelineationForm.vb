@@ -472,16 +472,13 @@ Friend Class NewWatershedDelineationForm
                 Dim file = pFlowDirRaster.Filename
                 pFlowDirRaster.Close()
                 Try
-                    'ret = Hydrology.SubbasinsToShape(file, strWSGridOut, strWSSFOut, Nothing)
-                    MapWinGeoProc.ManhattanShapes.GridToShapeManhattan(strWSGridOut, strWSSFOut, "Value", Nothing) 'DLE 7/13/2012
+                     MapWinGeoProc.ManhattanShapes.GridToShapeManhattan(strWSGridOut, strWSSFOut, "Value", Nothing) 'DLE 7/13/2012
                     'TODO DLE 7/17/2012 need a new shapefile here and then explode the selected shapes into it.tmp()
                 Catch ex As SEHException
                     FatalError(ex)
                     Return False
                 End Try
-                'If ret <> 0 Then Return False 'TODO May need to fix this.  Doesn't do anything since ManhattenShapes was used.  But do we
-                '                              ' need to do any similar test on its return value?  DLE 7/13/2012
-            End If
+             End If
 
             progress.Increment("Removing Small Polygons...")
             If Not SynchronousProgressDialog.KeepRunning Then
@@ -552,7 +549,7 @@ Friend Class NewWatershedDelineationForm
                     ' and reset the Value field to go from 1 through the new number of shapes
                     pBasinFeatClass.EditCellValue(0, i, i)
                 Next
-                 pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
+                pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
             End If
             pBasinFeatClass.StopEditingTable()
             'File.Copy(OutPath + "stream.prj", OutPath + pBasinFeatClass.Filename) 'Copy prj file for watershed
@@ -592,28 +589,41 @@ Friend Class NewWatershedDelineationForm
  
     Private Function RemoveSmallPolys(ByRef pFeatureClass As Shapefile, ByRef pDEMRaster As Grid) As Shapefile
         Try
-            '#3 determine size of 'small' watersheds, this is the area
-            'Number of cells in the DEM area that are not null * a number dave came up with * CellSize Squared
-            Dim dblArea As Double = ((pDEMRaster.Header.NumberCols * pDEMRaster.Header.NumberRows) * 0.004) * _intCellSize * _intCellSize
+            ' New approach: All the "Extra" watersheds are lumped into the last shepe in the ws.shp shapefile
+            ' Just select that shape, explode it into a new shape and merge it back into the rest of the 
+            ' ws.shp original shapefile.  Save as basinpoly.shp
 
-            '#4 Now with the Area of small sheds determined we can remove polygons that are too small.  To do this
-            pFeatureClass.StartEditingTable()
-            pFeatureClass.StartEditingShapes()
-            For i As Integer = pFeatureClass.NumShapes - 1 To 0 Step -1
-                If pFeatureClass.Shape(i).Area() < dblArea Then
-                    pFeatureClass.EditDeleteShape(i)
-                End If
-            Next
-            pFeatureClass.StopEditingShapes(True)
-            pFeatureClass.StopEditingTable(True)
+            Dim needExtnt As Extents = pFeatureClass.Shape(pFeatureClass.NumShapes - 1).Extents
+            Dim isSelected As Boolean = pFeatureClass.SelectShapes(needExtnt, 0.0, SelectMode.INCLUSION)
+            Dim pFeatureClassTmp As Shapefile = pFeatureClass.ExplodeShapes(True)
+            pFeatureClass.InvertSelection()
+            Dim pFeatureClassTmp2 As Shapefile = pFeatureClass.Merge(True, pFeatureClassTmp, False)
+            'pFeatureClassTmp2.SaveAs(_strWShedFileName)
+            pFeatureClass.SaveAs(_strWShedFileName)
 
-            'Once we have an outline, union it, but for now just output the base with smalls removed
 
-            '#5  Now, time to union the outline of the of the DEM with the newly paired down basin poly
-            'Dim outputSf As MapWinGIS.Shapefile = rastersf.GetIntersection(False, pFeatureClass, False, pFeatureClass.ShapefileType, Nothing)
-            'outputSf.SaveAs(_strWShedFileName)
-            pFeatureClass.SaveAs(_strWShedFileName)  'TODO: WHy does teis blow up on MW 4.8.8?
-            pFeatureClass.Close()
+            ''#3 determine size of 'small' watersheds, this is the area
+            ''Number of cells in the DEM area that are not null * a number dave came up with * CellSize Squared
+            'Dim dblArea As Double = ((pDEMRaster.Header.NumberCols * pDEMRaster.Header.NumberRows) * 0.004) * _intCellSize * _intCellSize
+
+            ''#4 Now with the Area of small sheds determined we can remove polygons that are too small.  To do this
+            'pFeatureClass.StartEditingTable()
+            'pFeatureClass.StartEditingShapes()
+            'For i As Integer = pFeatureClass.NumShapes - 1 To 0 Step -1
+            '    If pFeatureClass.Shape(i).Area() < dblArea Then
+            '        pFeatureClass.EditDeleteShape(i)
+            '    End If
+            'Next
+            'pFeatureClass.StopEditingShapes(True)
+            'pFeatureClass.StopEditingTable(True)
+
+            ''Once we have an outline, union it, but for now just output the base with smalls removed
+
+            ''#5  Now, time to union the outline of the of the DEM with the newly paired down basin poly
+            ''Dim outputSf As MapWinGIS.Shapefile = rastersf.GetIntersection(False, pFeatureClass, False, pFeatureClass.ShapefileType, Nothing)
+            ''outputSf.SaveAs(_strWShedFileName)
+            'pFeatureClass.SaveAs(_strWShedFileName)  'TODO: WHy does teis blow up on MW 4.8.8?
+            'pFeatureClass.Close()
             Dim outputSf As New Shapefile
             outputSf.Open(_strWShedFileName)
 
