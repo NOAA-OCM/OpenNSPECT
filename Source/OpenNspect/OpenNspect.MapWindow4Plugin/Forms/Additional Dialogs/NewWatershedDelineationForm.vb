@@ -485,27 +485,28 @@ Friend Class NewWatershedDelineationForm
                 Return False
             Else
                 pBasinFeatClassTmp.Open(strWSSFOut)
-                ' Dim targetValue As Integer = (pBasinFeatClassTmp.NumFields - 1)
+                ' File.Copy(OutPath + "stream.prj", strWSSFOut) 'Copy prj file for watershed  XXXX Here
+                Dim targetValue As Integer = (pBasinFeatClassTmp.NumFields - 1)
 
-                'Clean-up steps:
-                ' 1. Create a new shapefile of the watershed polygons (as defined by TauDEM) and all 
-                ' the INDIVIDUAL non-watershed polygons, which get lumped into one final shape.
-                ' 2. Recalculate area of the new shapes.
-                ' 3. Assign new Values (i.e., indexes) to the exploded areas, 
-                '    since they all have the same ones as the original combined shape.
-                ' 4. Sort the shapefile on value
-                ' 5. Stop editing and save it
+                'To Do:
+                ' 1. Explode only the last shape: do a slect on it then explode only the selected shape.
+                ' 2. Assign new Values (i.e., indexes) to the exploded ares.
+                ' 3. Recaluate area of the new shapes.
+                ' 4. Merge that file with the original file, less the exploded shapes.
+                ' 5. Sort the shapefile on value
+                ' NOTE that order might actually be 1, then 4, then 3-5 in one loop.
+                ' 7/20/13 3-5 done!
                 '
-                ' Done correctly (I hope) on 6 Dec., 2013  DLE
+                ' Some code that might be useful in that:
+                '   MapWinGeoProc.SpatialOperations.SelectByAttribute(strWSSFOut, 0, targetValue, "==", strWSSFOuttmp)
+                '   pBasinFeatClass = pBasinFeatClassTmp.set_selected(0, True)
                 '
-                ' Step 1: Explode only the last shape, which contains all the unconnected non-watersheds
-                '  and merge ti with the actaul watershed shapes defined by TauDEM
-                 pBasinFeatClassTmp.ShapeSelected(pBasinFeatClassTmp.NumShapes - 1) = True  ' Selects last shape
-                Dim pBasinFeatClassTmpTmp As Shapefile = pBasinFeatClassTmp.ExplodeShapes(True) ' Explodes last shape
-                pBasinFeatClassTmp.InvertSelection() 'Select the rest of the shapes, the "good" ones
-                pBasinFeatClass = pBasinFeatClassTmp.Merge(True, pBasinFeatClassTmpTmp, False) 'Merge the "good" and newly expoded shapes
+                'pBasinFeatClass = pBasinFeatClassTmp.ExplodeShapes(False)
+                pBasinFeatClassTmp.ShapeSelected(pBasinFeatClassTmp.NumShapes - 1) = True
+                Dim pBFCRExploded As Shapefile = pBasinFeatClassTmp.ExplodeShapes(True)
+                pBasinFeatClassTmp.InvertSelection()
+                pBasinFeatClass = pBasinFeatClassTmp.Merge(True, pBFCRExploded, False)
 
-                ' Step 2: Recalculate Area field:
                 'Starting on above list: updating area based on code in "Calculate Area" tool.
                 ' DLE 7/20/12
                 ReDim Indices(pBasinFeatClass.NumShapes - 1)
@@ -524,15 +525,12 @@ Friend Class NewWatershedDelineationForm
                     Exit Function
                 End If
 
-                ' Step 3: Assign new values
                 ' Step through and populate the indices and SortValues arrays for use by QuickSort
-                ' NOTE BENE: The Values field is what is sorted on, which is assumed to be the first field, field 0
+                ' NOTE BENE: The Vlaues field is what is sorted on, which is assumed to be the first field, field 0
                 For i As Integer = 0 To pBasinFeatClass.NumShapes - 1
                     Indices(i) = i
                     SortValue(i) = pBasinFeatClass.Table.CellValue(0, i)
                 Next
-
-                'Step 4: Sort the newly assigned fields
                 ' Now sort the Indices array by the SortValues
                 QuickSort(SortValue, Indices, 0, pBasinFeatClass.NumShapes - 1)
 
@@ -555,9 +553,18 @@ Friend Class NewWatershedDelineationForm
                     ' and reset the Value field to go from 1 through the new number of shapes
                     pBasinFeatClass.EditCellValue(0, i, i)
                 Next
+                'pOutputFeatClass = RemoveSmallPolys(pBasinFeatClass, pFillRaster)
+                pBasinFeatClass.SaveAs(_strWShedFileName)
+                ''Dim sfTmp As New Shapefile
+                ''sfTmp.Open(_strWShedFileName)
+                ''pOutputFeatClass = sfTmp
+                'pOutputFeatClass.Open(_strWShedFileName)
+                'pOutputFeatClass.Save()
+
             End If
             pBasinFeatClass.StopEditingTable()
-   
+            'File.Copy(OutPath + "stream.prj", OutPath + pBasinFeatClass.Filename) 'Copy prj file for watershed
+
             _strLSFileName = OutPath + "lsgrid" + OutputGridExt
             Dim g As New Grid
             g.Open(longestupslopeout)
@@ -590,27 +597,20 @@ Friend Class NewWatershedDelineationForm
             DataManagement.DeleteShapefile(strWSSFOuttmp)
         End Try
     End Function
- 
+
     Private Function RemoveSmallPolys(ByRef pFeatureClass As Shapefile, ByRef pDEMRaster As Grid) As Shapefile
-        ' Note that this is no longer needed since spurious small polygons are no longer created.
         Try
             ' New approach: All the "Extra" watersheds are lumped into the last shepe in the ws.shp shapefile
             ' Just select that shape, explode it into a new shape and merge it back into the rest of the 
             ' ws.shp original shapefile.  Save as basinpoly.shp
 
-            ' Dim needExtnt As Extents = pFeatureClass.Shape(pFeatureClass.NumShapes - 1).Extents
-            ' Dim isSelected As Boolean = pFeatureClass.SelectShapes(needExtnt, 0.0, SelectMode.INCLUSION)
-            pFeatureClass.ShapeSelected(pFeatureClass.NumShapes - 1) = True
-            Dim sf_foo As Shapefile = pFeatureClass.ExportSelection()
-            Dim sfFNbase As String = Path.GetDirectoryName(_strWShedFileName)
-            sf_foo.SaveAs(sfFNbase & "\LastShape.shp")
-
-            Dim pFeatureClassTmp As Shapefile = pFeatureClass.ExplodeShapes(True)
-            pFeatureClassTmp.SaveAs(sfFNbase & "\LastShapeExploded.shp")
-            pFeatureClass.InvertSelection()
-            Dim pFeatureClassTmp2 As Shapefile = pFeatureClass.Merge(True, pFeatureClassTmp, False)
-            pFeatureClassTmp2.SaveAs(_strWShedFileName)
-            'pFeatureClass.SaveAs(_strWShedFileName)
+            'Dim needExtnt As Extents = pFeatureClass.Shape(pFeatureClass.NumShapes - 1).Extents
+            'Dim isSelected As Boolean = pFeatureClass.SelectShapes(needExtnt, 0.0, SelectMode.INCLUSION)
+            'Dim pFeatureClassTmp As Shapefile = pFeatureClass.ExplodeShapes(True)
+            'pFeatureClass.InvertSelection()
+            'Dim pFeatureClassTmp2 As Shapefile = pFeatureClass.Merge(True, pFeatureClassTmp, False)
+            ''pFeatureClassTmp2.SaveAs(_strWShedFileName)
+            pFeatureClass.SaveAs(_strWShedFileName)
 
 
             ''#3 determine size of 'small' watersheds, this is the area
