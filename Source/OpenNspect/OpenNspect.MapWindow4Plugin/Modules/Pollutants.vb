@@ -180,6 +180,13 @@ Module Pollutants
         Dim massvolcalc As New RasterMathCellCalc(AddressOf massvolCellCalc)
         RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
     End Sub
+
+    Private Sub CalcVariableMassOfPhosperous(ByRef concentrationStatement As String, ByRef pMassVolumeRaster As Grid)
+        _picks = concentrationStatement.Split(",")
+        Dim massvolvarcalc As New RasterMathCellCalc(AddressOf massvolVariableCellCalc)
+        RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolvarcalc)
+    End Sub
+
     Private Sub CreateLayerForLocalEffect(ByRef OutputItems As OutputItems, ByVal pMassVolumeRaster As Grid, ByVal outputFileNameOutConc As String)
         Dim pPermMassVolumeRaster As Grid
 
@@ -279,7 +286,7 @@ Module Pollutants
             progress.Increment("Calculating Mass Volume...")
             If _picks(0).Split(",")(0) = "Pick" Then
                 'Polygon Pick call here
-                CalcMassOfPhosperous(_picks(1), massVolumeRaster) 'just testing stuff
+                CalcVariableMassOfPhosperous(_picks(1), massVolumeRaster) 'New RasterMath setup for picking conc. from a shapefile.  NOT YET WORKING
             Else
                 CalcMassOfPhosperous(concentrationStatement, massVolumeRaster) 'Concentrations done here: Change for using polygon to pick
             End If
@@ -394,6 +401,20 @@ Module Pollutants
 #Region "Raster Math"
 
     Private Function massvolCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        Dim tmpval As Single
+        'strexpression = pick([pLandSampleRaster], _picks)"
+        For i As Integer = 0 To _picks.Length - 1
+            If Input1 = i + 1 Then
+                tmpval = _picks(i)
+                Exit For
+            End If
+        Next
+
+        'strExpression = "[met_runoff] * [pollmass]"
+        Return Input2 * tmpval
+    End Function
+
+    Private Function massvolVariableCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim tmpval As Single
         'strexpression = pick([pLandSampleRaster], _picks)"
         For i As Integer = 0 To _picks.Length - 1
