@@ -149,6 +149,7 @@
     </Reference>
     <Reference Include="MapWindow.Controls">
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\MapWindow\MapWindow.Controls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MapWinGeoProc, Version=4.8.2.84, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>

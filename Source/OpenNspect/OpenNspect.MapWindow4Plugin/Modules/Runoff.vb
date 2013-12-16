@@ -358,10 +358,12 @@ Module Runoff
             mwTable.EditCellValue(1, rowidx, countlist(i))
         Next
         mwTable.StopEditingTable(True)
-        mwTable.Close()
-        If mwTable.NumRows > 0 Then
+        'mwTable.Close()  ' In 4.8.8 you can't close a table then access a property of that table.  Apprently you could in 4.8.6
+        If mwTable.NumRows > 0 Then '
+            mwTable.Close()
             Return True
         Else
+            mwTable.Close()
             Return False
         End If
     End Function
