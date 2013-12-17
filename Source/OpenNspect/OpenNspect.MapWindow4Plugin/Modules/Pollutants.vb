@@ -136,7 +136,9 @@ Module Pollutants
                 'concentrationStateArray(1) & vbCrLf & _
                 'concentrationStateArray(2) & vbCrLf & _
                 'concentrationStateArray(3))
-                concentrationStatement = "Pick, " & "shapefilenamehere.shp" & "; " & _
+
+                'TODO TO DO: Fix this to read shapefile and field names from xml file
+                concentrationStatement = "Pick, " & "C:\NSPECT\wsdelin\Test2\basinpoly.shp" & ", " & "NitIndex" & "; " & _
                     concentrationStateArray(0) & "; " & concentrationStateArray(1) & "; " & _
                     concentrationStateArray(2) & "; " & concentrationStateArray(3)
                 MsgBox("new conc statement = " & concentrationStatement)
@@ -186,9 +188,9 @@ Module Pollutants
         RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
     End Sub
 
-    Private Sub CalcVariableMassOfPhosperous(ByRef concentrationStatement As String, ByRef indexShapeFile As Shapefile, ByVal indexField As Integer, ByRef pMassVolumeRaster As Grid)
-        _picks = concentrationStatement.Split(";")
-        ' Parse concentrationStatement into 5 subcomponents: Flag and Shapefile/Field names and 4 sets of coefficients.
+    'Private Sub CalcVariableMassOfPhosperous(ByRef concentrationStatement As String, ByRef indexShapeFile As Shapefile, ByVal indexField As Integer, ByRef pMassVolumeRaster As Grid)
+    Private Sub CalcVariableMassOfPhosperous(ByRef concentrationStatement As String, ByRef pMassVolumeRaster As Grid)
+
         Dim idxHead As New GridHeader
         Dim noData As Integer = -9999
         Dim projX, projY As New Double
@@ -198,6 +200,21 @@ Module Pollutants
         Dim ptExtent As New Extents
         Dim intIdx As Integer
         Dim tmpCoeffs() As String
+        Dim indexShapefile As New Shapefile
+        Dim indexField As Integer
+        Dim fieldName As String
+
+        _picks = concentrationStatement.Split(";")
+        ' Parse concentrationStatement into 5 subcomponents: Flag and Shapefile/Field names and 4 sets of coefficients.
+        tmpCoeffs = _picks(0).Split(",")
+        Dim tmpString As String = tmpCoeffs(1)
+        'TO DO TODO Test this may not be working
+
+        indexShapefile.Open(tmpString)
+        fieldName = tmpCoeffs(2).ToString
+        'indexShapefile.Open("C:\NSPECT\wsdelin\Test2\basinpoly.shp")
+        'fieldName = "NitIndex"
+        indexField = indexShapefile.Table.FieldIndexByName(fieldName)
 
         For i As Integer = 0 To 3
             tmpCoeffs = _picks(i + 1).Split(",")
@@ -241,7 +258,7 @@ Module Pollutants
                 '    'Exit Sub
             End If
 
-         Else
+        Else
             MsgBox("Error! Index grid not created properly!")
             Exit Sub
         End If
@@ -348,14 +365,15 @@ Module Pollutants
         Try
             progress.Increment("Calculating Mass Volume...")
             If _picks(0).Split(",")(0) = "Pick" Then
-                Dim pollShape As New Shapefile
-                Dim fieldNum As Integer
-                Dim fieldName As String
-                pollShape.Open("C:\NSPECT\wsdelin\Test2\basinpoly.shp")
-                fieldName = "NitIndex"
-                  fieldNum = pollShape.Table.FieldIndexByName(fieldName)
+                'Dim pollShape As New Shapefile
+                'Dim indexField As Integer
+                'Dim fieldName As String
+                'pollShape.Open("C:\NSPECT\wsdelin\Test2\basinpoly.shp")
+                'fieldName = "NitIndex"
+                'fieldNum = pollShape.Table.FieldIndexByName(fieldName)
                 'Polygon Pick call here
-                CalcVariableMassOfPhosperous(concentrationStatement, pollShape, fieldNum, massVolumeRaster) 'New RasterMath setup for picking conc. from a shapefile.  NOT YET WORKING
+                CalcVariableMassOfPhosperous(concentrationStatement, massVolumeRaster) 'New RasterMath setup for picking conc. from a shapefile.  NOT YET WORKING
+                ' CalcVariableMassOfPhosperous(concentrationStatement, pollShape, indexField, massVolumeRaster) 'New RasterMath setup for picking conc. from a shapefile.  NOT YET WORKING
             Else
                 CalcMassOfPhosperous(concentrationStatement, massVolumeRaster) 'Concentrations done here: Change for using polygon to pick
             End If
