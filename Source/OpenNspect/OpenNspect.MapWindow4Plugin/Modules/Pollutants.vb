@@ -20,6 +20,7 @@ Imports MapWinGeoProc
 Imports MapWinGIS
 Imports OpenNspect.Xml
 
+
 Module Pollutants
     ' *************************************************************************************
     ' *  Perot Systems Government Services
@@ -43,6 +44,8 @@ Module Pollutants
     Private _WQValue As Single
     Private _FlowMax As Single
     Private _picks() As String
+    Private _picksArray(1, 1) As String
+
 
     ''' <summary>
     ''' Gets the name of the coefficient set; could be a temporary one due to landuses
@@ -137,6 +140,8 @@ Module Pollutants
                     concentrationStateArray(0) & "; " & concentrationStateArray(1) & "; " & _
                     concentrationStateArray(2) & "; " & concentrationStateArray(3)
                 MsgBox("new conc statement = " & concentrationStatement)
+            Else
+
             End If
             PollutantConcentrationSetup = CalcPollutantConcentration(concentrationStatement, OutputItems)
 
@@ -181,10 +186,68 @@ Module Pollutants
         RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
     End Sub
 
-    Private Sub CalcVariableMassOfPhosperous(ByRef concentrationStatement As String, ByRef pMassVolumeRaster As Grid)
-        _picks = concentrationStatement.Split(",")
+    Private Sub CalcVariableMassOfPhosperous(ByRef concentrationStatement As String, ByRef indexShapeFile As Shapefile, ByVal indexField As Integer, ByRef pMassVolumeRaster As Grid)
+        _picks = concentrationStatement.Split(";")
+        ' Parse concentrationStatement into 5 subcomponents: Flag and Shapefile/Field names and 4 sets of coefficients.
+        Dim idxHead As New GridHeader
+        Dim noData As Integer = -9999
+        Dim projX, projY As New Double
+        Dim idxSelected As New Object
+        Dim idxName As String
+        Dim idxGrid As New Grid
+        Dim ptExtent As New Extents
+        Dim intIdx As Integer
+        Dim tmpCoeffs() As String
+
+        For i As Integer = 0 To 3
+            tmpCoeffs = _picks(i + 1).Split(",")
+            If i = 0 Then 'Now that we know how many coefficients there are, redimension and fill the new 2-D picks array.
+                ReDim _picksArray(3, tmpCoeffs.Length - 1)
+            End If
+            For j = 0 To tmpCoeffs.Length - 1
+                _picksArray(i, j) = tmpCoeffs(j)
+            Next
+        Next
+        ' Create an index Grid, idxGrid from the shapefile.  This can be used in RasterMath calcs to pick correct coeff from _pickArray
+        idxName = GetTempFileNameOutputGridExt()
+        idxHead.CopyFrom(g_LandCoverRaster.Header)  'Copy the Index Grid header from that of th eLand Cover Grid.  They need to match.
+        idxHead.NodataValue = noData
+        If (idxGrid.CreateNew(idxName, idxHead, GridDataType.ShortDataType, noData, False, GridFileType.GeoTiff)) Then
+            '
+            ' Working!  12/17/2013 DLE
+            Dim nr = idxHead.NumberRows - 1
+            Dim nc = idxHead.NumberCols - 1
+            Dim foundCells As Integer = 0
+            Using progress2 = New SynchronousProgressDialog("Picking Pollutant Coefficients Using Shapefile...", "Processing Soils", nr + 2, g_MainForm)
+                indexShapeFile.BeginPointInShapefile()
+                For row As Integer = 0 To nr
+                    progress2.Increment("Picking Pollutant Coefficients Using Shapefile...")
+                    For col As Integer = 0 To nc
+                        idxGrid.CellToProj(col, row, projX, projY)
+                        intIdx = indexShapeFile.PointInShapefile(projX, projY)
+                        If intIdx <> -1 Then
+                            idxGrid.Value(col, row) = indexShapeFile.CellValue(indexField, intIdx)
+                            foundCells = foundCells + 1
+                        End If
+                    Next
+                Next
+                indexShapeFile.EndPointInShapefile()
+            End Using
+            If foundCells = 0 Then
+                MsgBox("Error! Index grid not populated.  Where am the data?")
+                'Else
+                '    MsgBox("Found " & foundCells.ToString & " cells.")
+                '    idxGrid.Save("c:\NSPECT\idxGrid.tif")
+                '    'Exit Sub
+            End If
+
+         Else
+            MsgBox("Error! Index grid not created properly!")
+            Exit Sub
+        End If
+
         Dim massvolvarcalc As New RasterMathCellCalc(AddressOf massvolVariableCellCalc)
-        RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolvarcalc)
+        RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, idxGrid, Nothing, Nothing, pMassVolumeRaster, massvolvarcalc)
     End Sub
 
     Private Sub CreateLayerForLocalEffect(ByRef OutputItems As OutputItems, ByVal pMassVolumeRaster As Grid, ByVal outputFileNameOutConc As String)
@@ -285,8 +348,14 @@ Module Pollutants
         Try
             progress.Increment("Calculating Mass Volume...")
             If _picks(0).Split(",")(0) = "Pick" Then
+                Dim pollShape As New Shapefile
+                Dim fieldNum As Integer
+                Dim fieldName As String
+                pollShape.Open("C:\NSPECT\wsdelin\Test2\basinpoly.shp")
+                fieldName = "NitIndex"
+                  fieldNum = pollShape.Table.FieldIndexByName(fieldName)
                 'Polygon Pick call here
-                CalcVariableMassOfPhosperous(_picks(1), massVolumeRaster) 'New RasterMath setup for picking conc. from a shapefile.  NOT YET WORKING
+                CalcVariableMassOfPhosperous(concentrationStatement, pollShape, fieldNum, massVolumeRaster) 'New RasterMath setup for picking conc. from a shapefile.  NOT YET WORKING
             Else
                 CalcMassOfPhosperous(concentrationStatement, massVolumeRaster) 'Concentrations done here: Change for using polygon to pick
             End If
@@ -416,10 +485,12 @@ Module Pollutants
 
     Private Function massvolVariableCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         Dim tmpval As Single
+        Dim numCoeff As New Single
+        numCoeff = _picksArray.Length / 4
         'strexpression = pick([pLandSampleRaster], _picks)"
-        For i As Integer = 0 To _picks.Length - 1
+        For i As Integer = 0 To numCoeff - 1
             If Input1 = i + 1 Then
-                tmpval = _picks(i)
+                tmpval = _picksArray(Input3, i)
                 Exit For
             End If
         Next
