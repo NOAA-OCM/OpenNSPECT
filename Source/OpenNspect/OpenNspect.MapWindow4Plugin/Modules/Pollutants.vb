@@ -100,7 +100,9 @@ Module Pollutants
                             concentrationStatement = ""
                             For icoeff As Integer = 0 To 3
                                 'For Each coeffType As String In coeffTypes
-                                strType = String.Format("SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.{0} As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID FROM LCCLASS LEFT OUTER JOIN COEFFICIENT ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID WHERE COEFFICIENT.COEFFSETID = {1} ORDER BY LCCLASS.VALUE", coeffTypes(icoeff), dataPoll("CoeffSetID"))
+                                ' strType = String.Format("SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.{0} As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID FROM LCCLASS LEFT OUTER JOIN COEFFICIENT ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID WHERE COEFFICIENT.COEFFSETID = {1} ORDER BY LCCLASS.VALUE", coeffTypes(icoeff), dataPoll("CoeffSetID"))
+                                strType = String.Format("SELECT LCCLASS.Value, LCCLASS.Name, COEFFICIENT.{0} As CoeffType, COEFFICIENT.CoeffID, COEFFICIENT.LCCLASSID FROM LCCLASS INNER JOIN COEFFICIENT ON LCCLASS.LCCLASSID = COEFFICIENT.LCCLASSID WHERE COEFFICIENT.COEFFSETID = {1} ORDER BY LCCLASS.VALUE", coeffTypes(icoeff), dataPoll("CoeffSetID"))
+                                Debug.WriteLine(strType)
                                 Using cmdType As New DataHelper(strType)
                                     Dim command As OleDbCommand = cmdType.GetCommand()
                                     'concentrationStatement = concentrationStatement & ConstructPickStatmentUsingLandClass(command, g_LandCoverRaster, "CoeffType") ' Coefficient list picked here: array with 1 coeff/LC class
@@ -138,7 +140,9 @@ Module Pollutants
                 'concentrationStateArray(3))
 
                 'TODO TO DO: Fix this to read shapefile and field names from xml file
-                concentrationStatement = "Pick," & "C:\NSPECT\wsdelin\Test2\basinpoly.shp" & "," & "NitIndex" & "; " & _
+                'concentrationStatement = "Pick," & "C:\NSPECT\wsdelin\Test2\basinpoly.shp" & "," & "NitIndex" & "; " & _
+                'concentrationStatement = "Pick," & "C:\NSPECT\TestSpect\TestShape.shp" & "," & "NitTest2" & "; " & _
+                concentrationStatement = "Pick," & "C:\NSPECT\TestSpect\TestShape.shp" & "," & "NitIndex" & "; " & _
                     concentrationStateArray(0) & "; " & concentrationStateArray(1) & "; " & _
                     concentrationStateArray(2) & "; " & concentrationStateArray(3)
                 MsgBox("new conc statement = " & concentrationStatement)
@@ -188,7 +192,6 @@ Module Pollutants
         RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, Nothing, Nothing, Nothing, pMassVolumeRaster, massvolcalc)
     End Sub
 
-    'Private Sub CalcVariableMassOfPhosperous(ByRef concentrationStatement As String, ByRef indexShapeFile As Shapefile, ByVal indexField As Integer, ByRef pMassVolumeRaster As Grid)
     Private Sub CalcVariableMassOfPhosperous(ByRef concentrationStatement As String, ByRef pMassVolumeRaster As Grid)
 
         Dim idxHead As New GridHeader
@@ -204,8 +207,9 @@ Module Pollutants
         Dim indexField As Integer
         Dim fieldName As String
 
-        _picks = concentrationStatement.Split(";")
         ' Parse concentrationStatement into 5 subcomponents: Flag and Shapefile/Field names and 4 sets of coefficients.
+        _picks = concentrationStatement.Split(";")
+        ' Parse first subcomponent into target shapefile and index field names 
         tmpCoeffs = _picks(0).Split(",")
         Dim tmpString As String = tmpCoeffs(1)
         indexShapefile.Open(tmpString)
@@ -232,26 +236,26 @@ Module Pollutants
             Dim nc = idxHead.NumberCols - 1
             Dim foundCells As Integer = 0
             Using progress2 = New SynchronousProgressDialog("Picking Pollutant Coefficients Using Shapefile...", "Processing Soils", nr + 2, g_MainForm)
-                indexShapeFile.BeginPointInShapefile()
+                indexShapefile.BeginPointInShapefile()
                 For row As Integer = 0 To nr
                     progress2.Increment("Picking Pollutant Coefficients Using Shapefile...")
                     For col As Integer = 0 To nc
                         idxGrid.CellToProj(col, row, projX, projY)
-                        intIdx = indexShapeFile.PointInShapefile(projX, projY)
+                        intIdx = indexShapefile.PointInShapefile(projX, projY)
                         If intIdx <> -1 Then
-                            idxGrid.Value(col, row) = indexShapeFile.CellValue(indexField, intIdx)
+                            idxGrid.Value(col, row) = indexShapefile.CellValue(indexField, intIdx) - 1  'Subtract 1 because Index shapefile gives coefficents 1-4, but array is 0-3
                             foundCells = foundCells + 1
                         End If
                     Next
                 Next
-                indexShapeFile.EndPointInShapefile()
+                indexShapefile.EndPointInShapefile()
             End Using
             If foundCells = 0 Then
                 MsgBox("Error! Index grid not populated.  Where am the data?")
                 'Else
-                '    MsgBox("Found " & foundCells.ToString & " cells.")
+                '    '    MsgBox("Found " & foundCells.ToString & " cells.")
                 '    idxGrid.Save("c:\NSPECT\idxGrid.tif")
-                '    'Exit Sub
+                '    '    'Exit Sub
             End If
 
         Else

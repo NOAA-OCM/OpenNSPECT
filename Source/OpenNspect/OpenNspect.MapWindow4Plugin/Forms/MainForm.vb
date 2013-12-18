@@ -1927,8 +1927,23 @@ Friend Class MainForm
                             ValidatePollutants = False
                             Exit Function
                         Else
-                            ValidatePollutants = True
+                            'Add code to get Picks shapefile name and field name here
+                            If row.Cells("WhichCoeff").Value = "Use shapefile..." Then
+                                Using getShapeinfo As New PollCoeffSelectionShapefileForm
+                                    getShapeinfo.ShowDialog()
+                                    'If (getShapeinfo.OK_Button.DialogResult = Windows.Forms.DialogResult.OK) Then
+                                    '    MsgBox("Specify Shapefile for" & row.Cells("PollutantName").Value)
+
+                                    'End If
+
+                                End Using
+
+                                   ValidatePollutants = True
+                            Else
+                                ValidatePollutants = True
+                            End If
                         End If
+
                     End If
                 Else
                     ValidatePollutants = True
