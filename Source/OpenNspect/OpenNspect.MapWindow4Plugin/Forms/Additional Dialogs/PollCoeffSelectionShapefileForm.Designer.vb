@@ -43,6 +43,7 @@ Partial Class PollCoeffSelectionShapefileForm
         Me.cbxSelPollutantPolysOnly.TabIndex = 0
         Me.cbxSelPollutantPolysOnly.Text = "Use selected polygons only"
         Me.cbxSelPollutantPolysOnly.UseVisualStyleBackColor = True
+        Me.cbxSelPollutantPolysOnly.Visible = False
         '
         'OpenFileDialog1
         '
@@ -72,6 +73,7 @@ Partial Class PollCoeffSelectionShapefileForm
         Me.btnSelPollPoly.TabIndex = 3
         Me.btnSelPollPoly.Text = "Select"
         Me.btnSelPollPoly.UseVisualStyleBackColor = True
+        Me.btnSelPollPoly.Visible = False
         '
         'txtNumSelected
         '
@@ -80,6 +82,7 @@ Partial Class PollCoeffSelectionShapefileForm
         Me.txtNumSelected.Name = "txtNumSelected"
         Me.txtNumSelected.Size = New System.Drawing.Size(100, 20)
         Me.txtNumSelected.TabIndex = 5
+        Me.txtNumSelected.Visible = False
         '
         'Label1
         '
@@ -98,16 +101,17 @@ Partial Class PollCoeffSelectionShapefileForm
         Me.Label2.Size = New System.Drawing.Size(93, 13)
         Me.Label2.TabIndex = 7
         Me.Label2.Text = "Polygons selected"
+        Me.Label2.Visible = False
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(9, 137)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(440, 13)
+        Me.Label3.Size = New System.Drawing.Size(430, 13)
         Me.Label3.TabIndex = 8
-        Me.Label3.Text = "* Attribute Field should be an integer field of values 1 - 4, representing coeffi" & _
-    "cient types 1 - 4." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        Me.Label3.Text = "* Attribute Field value should be an integer from 1 to 4, representing coefficien" & _
+    "t types 1 - 4." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'cmboPollAttrib
         '
