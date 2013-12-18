@@ -23,7 +23,7 @@ Partial Class PollCoeffSelectionShapefileForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.cbxSelPollutantPolysOnly = New System.Windows.Forms.CheckBox()
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.diaPollSFOpen = New System.Windows.Forms.OpenFileDialog()
         Me.txtPollSF = New System.Windows.Forms.TextBox()
         Me.txtPollSFBrowse = New System.Windows.Forms.Button()
         Me.btnSelPollPoly = New System.Windows.Forms.Button()
@@ -45,9 +45,9 @@ Partial Class PollCoeffSelectionShapefileForm
         Me.cbxSelPollutantPolysOnly.UseVisualStyleBackColor = True
         Me.cbxSelPollutantPolysOnly.Visible = False
         '
-        'OpenFileDialog1
+        'diaPollSFOpen
         '
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        Me.diaPollSFOpen.FileName = "OpenFileDialog1"
         '
         'txtPollSF
         '
@@ -151,7 +151,7 @@ Partial Class PollCoeffSelectionShapefileForm
 
     End Sub
     Friend WithEvents cbxSelPollutantPolysOnly As System.Windows.Forms.CheckBox
-    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents diaPollSFOpen As System.Windows.Forms.OpenFileDialog
     Friend WithEvents txtPollSF As System.Windows.Forms.TextBox
     Friend WithEvents txtPollSFBrowse As System.Windows.Forms.Button
     Friend WithEvents btnSelPollPoly As System.Windows.Forms.Button

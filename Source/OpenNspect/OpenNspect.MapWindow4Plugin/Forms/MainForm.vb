@@ -1912,6 +1912,24 @@ Friend Class MainForm
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
+    Private Function GetPickShapeInfo(ByVal pollName As String) As Boolean
+        Using getShapeinfo As New PollCoeffSelectionShapefileForm
+            getShapeinfo.ShowDialog()
+            'If (getShapeinfo.OK_Button.DialogResult = Windows.Forms.DialogResult.OK) Then
+            '    MsgBox("Specify Shapefile for" & row.Cells("PollutantName").Value)
+
+            'End If
+
+        End Using
+
+    End Function
+    'Function to validate pollutants
+
+    ''' <summary>
+    ''' Validate the pollutant table values
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function ValidatePollutants() As Boolean
         'Function to validate pollutants
         Try
@@ -1929,16 +1947,9 @@ Friend Class MainForm
                         Else
                             'Add code to get Picks shapefile name and field name here
                             If row.Cells("WhichCoeff").Value = "Use shapefile..." Then
-                                Using getShapeinfo As New PollCoeffSelectionShapefileForm
-                                    getShapeinfo.ShowDialog()
-                                    'If (getShapeinfo.OK_Button.DialogResult = Windows.Forms.DialogResult.OK) Then
-                                    '    MsgBox("Specify Shapefile for" & row.Cells("PollutantName").Value)
-
-                                    'End If
-
-                                End Using
-
-                                   ValidatePollutants = True
+                                GetPickShapeInfo(row.Cells("PollutantName").Value)
+    
+                                ValidatePollutants = True
                             Else
                                 ValidatePollutants = True
                             End If
