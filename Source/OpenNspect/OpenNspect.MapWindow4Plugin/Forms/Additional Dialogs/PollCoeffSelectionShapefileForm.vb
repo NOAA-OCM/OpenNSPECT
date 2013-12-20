@@ -23,8 +23,15 @@ Imports MapWinUtility
 Imports MapWindow.Controls.GisToolbox
 Imports MapWindow.Controls.Data
 
+
 Public Class PollCoeffSelectionShapefileForm
     Inherits BaseDialogForm
+
+    Dim sf As New Shapefile
+    Dim sfName As String
+    Dim tmpField As String
+    Dim indexField As String = ""
+    Dim pollName As String
 
     Private Sub txtPollSFBrowse_Click(sender As Object, e As EventArgs) Handles txtPollSFBrowse.Click
         Dim sf As New Shapefile
@@ -47,14 +54,40 @@ Public Class PollCoeffSelectionShapefileForm
                         Me.cmboPollAttrib.Items.Add(tmpField)
                     Next
 
-                    If (Me.cmboPollAttrib.SelectedIndex > 0) Then
-                        indexField = cmboPollAttrib.Text
-                    End If
-                    MsgBox("The selected attribute is " & indexField)
-               End If
+                    'If (Me.cmboPollAttrib.SelectedIndex > -1) Then
+                    '    indexField = cmboPollAttrib.Text
+                    '    MsgBox("The selected attribute is " & indexField & " with value of " & cmboPollAttrib.SelectedIndex.ToString _
+                    '           & " and indexField is " & indexField)
+                    'End If
+                End If
             Catch ex As Exception
 
             End Try
         End If
+    End Sub
+
+    ' End Sub
+    Protected Overrides Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
+        sfName = Me.txtPollSF.Text
+        MsgBox(sfName & " and " & indexField & " need to be stored for " & pollName)
+    End Sub
+
+    Public Sub New(Optional ByVal pName As String = "Specify shapefile for picking pollutant coefficients")
+        'Call to MyBase.New must be the very first in a constructor.
+        MyBase.New()
+        ' This call is required by the Windows Form Designer.
+        InitializeComponent()
+        ' Add any initialization after the InitializeComponent() call.
+        Me.Text = "Specify shapefile for picking " & pName & " coefficients"
+        pollName = pName
+    End Sub
+
+    Private Sub cmboPollAttrib_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmboPollAttrib.SelectedIndexChanged
+        indexField = cmboPollAttrib.Text
+        MsgBox("The selected attribute is " & indexField & " with value of " & cmboPollAttrib.SelectedIndex.ToString)
+        'Verify range of Attributes
+
+        'Then, if verified, store in XML file
+
     End Sub
 End Class
