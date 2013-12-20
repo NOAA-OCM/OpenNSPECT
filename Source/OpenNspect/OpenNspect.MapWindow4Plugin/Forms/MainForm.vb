@@ -508,16 +508,6 @@ Friend Class MainForm
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub dgvPollutants_DataError(ByVal sender As Object, ByVal e As DataGridViewDataErrorEventArgs) Handles dgvPollutants.DataError
-        MsgBox(String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, e.ColumnIndex + 1))
-    End Sub
-
-    ''' <summary>
-    ''' Handles errors if a value is typed into the table that doesn't match constraints
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
     Private Sub dgvLandUse_DataError(ByVal sender As Object, ByVal e As DataGridViewDataErrorEventArgs) Handles dgvLandUse.DataError
         MsgBox(String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, e.ColumnIndex + 1))
     End Sub
@@ -729,6 +719,8 @@ Friend Class MainForm
             HandleError(ex)
         End Try
     End Sub
+#Region "Pollutants"
+
     ''' <summary>
     ''' Gets a list of the pollutents to apply (name, coeff)
     ''' Go through and find the pollutants, if they're used and what the CoeffSet is
@@ -746,6 +738,30 @@ Friend Class MainForm
         Next i
         Return dictPollutants
     End Function
+
+    Private Sub dgvPollutants_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvPollutants.CellValueChanged
+        'If (dgvPollutants.Col = "WhichCoeff" and ) Then
+        '    If row.Cells("WhichCoeff").Value = "Use shapefile..." Then
+        '        GetPickShapeInfo(row.Cells("PollutantName").Value)
+        'XXXXXXX
+
+        'End If
+    End Sub
+
+    ''' <summary>
+    ''' Handles errors if a value is typed into the table that doesn't match constraints
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub dgvPollutants_DataError(ByVal sender As Object, ByVal e As DataGridViewDataErrorEventArgs) Handles dgvPollutants.DataError
+        MsgBox(String.Format("Please enter a valid value in row {0} and column {1}.", e.RowIndex + 1, e.ColumnIndex + 1))
+    End Sub
+
+
+
+#End Region
+
     Private Function ProcessLandUseScenarioItems() As Boolean
         Dim dictPollutants As Dictionary(Of String, String) = GetPollutants()
 
@@ -1908,12 +1924,15 @@ Friend Class MainForm
     End Function
 
     ''' <summary>
-    ''' Validate the pollutant table values
+    ''' Find and store index shapefile and field names for pollutant
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function GetPickShapeInfo(ByVal pollName As String) As Boolean
-        Using getShapeinfo As New PollCoeffSelectionShapefileForm
+
+        Dim getShapeinfo As New PollCoeffSelectionShapefileForm(pollName)
+        'getShapeinfo = New PollCoeffSelectionShapefileForm(pollName)
+        Using getShapeinfo
             getShapeinfo.ShowDialog()
             'If (getShapeinfo.OK_Button.DialogResult = Windows.Forms.DialogResult.OK) Then
             '    MsgBox("Specify Shapefile for" & row.Cells("PollutantName").Value)
@@ -1923,7 +1942,6 @@ Friend Class MainForm
         End Using
 
     End Function
-    'Function to validate pollutants
 
     ''' <summary>
     ''' Validate the pollutant table values
@@ -1948,7 +1966,6 @@ Friend Class MainForm
                             'Add code to get Picks shapefile name and field name here
                             If row.Cells("WhichCoeff").Value = "Use shapefile..." Then
                                 GetPickShapeInfo(row.Cells("PollutantName").Value)
-    
                                 ValidatePollutants = True
                             Else
                                 ValidatePollutants = True
