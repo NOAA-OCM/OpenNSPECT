@@ -28,16 +28,16 @@ Public Class PollCoeffSelectionShapefileForm
     Inherits BaseDialogForm
 
     Dim sf As New Shapefile
-    Dim sfName As String
+    Public Property indexShapefileName As String
     Dim tmpField As String
-    Dim indexField As String = ""
+    Public Property indexField As String
     Dim pollName As String
 
     Private Sub txtPollSFBrowse_Click(sender As Object, e As EventArgs) Handles txtPollSFBrowse.Click
         Dim sf As New Shapefile
         Dim sfName As String
         Dim tmpField As String
-        Dim indexField As String = ""
+        ' Dim indexField As String = ""
 
         diaPollSFOpen.Reset()
         diaPollSFOpen.Title = "Open Index Shapefile for "
@@ -53,12 +53,6 @@ Public Class PollCoeffSelectionShapefileForm
                         tmpField = sf.Field(field).Name
                         Me.cmboPollAttrib.Items.Add(tmpField)
                     Next
-
-                    'If (Me.cmboPollAttrib.SelectedIndex > -1) Then
-                    '    indexField = cmboPollAttrib.Text
-                    '    MsgBox("The selected attribute is " & indexField & " with value of " & cmboPollAttrib.SelectedIndex.ToString _
-                    '           & " and indexField is " & indexField)
-                    'End If
                 End If
             Catch ex As Exception
 
@@ -68,11 +62,14 @@ Public Class PollCoeffSelectionShapefileForm
 
     ' End Sub
     Protected Overrides Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
-        sfName = Me.txtPollSF.Text
-        MsgBox(sfName & " and " & indexField & " need to be stored for " & pollName)
+        indexShapefileName = Me.txtPollSF.Text
+        'MsgBox(indexShapefileName & " and " & indexField & " need to be stored for " & pollName)
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
     End Sub
 
-    Public Sub New(Optional ByVal pName As String = "Specify shapefile for picking pollutant coefficients")
+    Public Sub New(Optional ByVal pName As String = "Specify shapefile for picking pollutant coefficients", _
+                   Optional ByRef shapeName As String = Nothing, Optional ByRef fieldName As String = Nothing)
         'Call to MyBase.New must be the very first in a constructor.
         MyBase.New()
         ' This call is required by the Windows Form Designer.
@@ -80,6 +77,8 @@ Public Class PollCoeffSelectionShapefileForm
         ' Add any initialization after the InitializeComponent() call.
         Me.Text = "Specify shapefile for picking " & pName & " coefficients"
         pollName = pName
+        shapeName = indexShapefileName
+        fieldName = indexField
     End Sub
 
     Private Sub cmboPollAttrib_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmboPollAttrib.SelectedIndexChanged

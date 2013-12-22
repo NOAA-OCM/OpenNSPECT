@@ -111,6 +111,8 @@
         Me.PollutantName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.CoefSet = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.WhichCoeff = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.IndexShapefile = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.IndexFieldName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TypeDef = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MainMenu1.SuspendLayout()
@@ -458,7 +460,7 @@
         Me.dgvPollutants.AllowUserToDeleteRows = False
         Me.dgvPollutants.AllowUserToResizeColumns = False
         Me.dgvPollutants.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvPollutants.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.PollApply, Me.PollutantName, Me.CoefSet, Me.WhichCoeff, Me.Threshold, Me.TypeDef})
+        Me.dgvPollutants.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.PollApply, Me.PollutantName, Me.CoefSet, Me.WhichCoeff, Me.IndexShapefile, Me.IndexFieldName, Me.Threshold, Me.TypeDef})
         Me.dgvPollutants.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvPollutants.Location = New System.Drawing.Point(0, 0)
         Me.dgvPollutants.MultiSelect = False
@@ -929,6 +931,18 @@
         Me.WhichCoeff.Name = "WhichCoeff"
         Me.WhichCoeff.Width = 120
         '
+        'IndexShapefile
+        '
+        Me.IndexShapefile.HeaderText = "IndexShapefile"
+        Me.IndexShapefile.Name = "IndexShapefile"
+        Me.IndexShapefile.Visible = False
+        '
+        'IndexFieldName
+        '
+        Me.IndexFieldName.HeaderText = "IndexFieldName"
+        Me.IndexFieldName.Name = "IndexFieldName"
+        Me.IndexFieldName.Visible = False
+        '
         'Threshold
         '
         Me.Threshold.HeaderText = "Threshold"
@@ -1084,6 +1098,8 @@
     Friend WithEvents PollutantName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents CoefSet As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents WhichCoeff As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents IndexShapefile As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents IndexFieldName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Threshold As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents TypeDef As System.Windows.Forms.DataGridViewTextBoxColumn
 #End Region
