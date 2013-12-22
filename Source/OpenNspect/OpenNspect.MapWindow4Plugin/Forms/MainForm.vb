@@ -739,14 +739,94 @@ Friend Class MainForm
         Return dictPollutants
     End Function
 
-    Private Sub dgvPollutants_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvPollutants.CellValueChanged
-        'If (dgvPollutants.Col = "WhichCoeff" and ) Then
-        '    If row.Cells("WhichCoeff").Value = "Use shapefile..." Then
-        '        GetPickShapeInfo(row.Cells("PollutantName").Value)
-        'XXXXXXX
+    'Private Sub dgvPollutants_MouseClick(sender As Object, e As MouseEventArgs) Handles dgvPollutants.MouseClick
+    '    Dim sfName As String = ""
+    '    Dim fieldName As String = ""
+    '    With dgvPollutants
+    '        If (.CurrentCellAddress.X = 3) Then
+    '            If .CurrentCell.Value = "Use shapefile..." Then
+    '                Dim row As Integer = .CurrentCellAddress.Y
+    '                Dim pollName As String = .Rows(row).Cells(1).Value.ToString
+    '                Debug.WriteLine("Pollutant is  " & pollName)
+    '                Dim getShapeinfo As New PollCoeffSelectionShapefileForm(pollName, sfName, fieldName)
+    '                'getShapeinfo = New PollCoeffSelectionShapefileForm(pollName)
+    '                'Using getShapeinfo
+    '                getShapeinfo.ShowDialog()
+    '                If (getShapeinfo.DialogResult = Windows.Forms.DialogResult.OK) Then
+    '                    Dim sf As String = getShapeinfo.indexShapefileName
+    '                    ' .Rows(row).Cells(4).Value = sf
+    '                    Dim sfld As String = getShapeinfo.indexField
+    '                    '.Rows(row).Cells(5).Value = sfld
+    '                    MsgBox("On MainForm, " & pollName & " shapefile is " & getShapeinfo.indexShapefileName & " and index field is " & getShapeinfo.indexField)
+    '                End If
 
-        'End If
-    End Sub
+    '                'End Using
+
+    '            End If
+    '        End If
+
+    '    End With
+
+    'End Sub
+    '   Private Sub dgvPollutants_SelectionChanged(sender As Object, e As EventArgs) Handles dgvPollutants.SelectionChanged
+    'Dim sfName As String = ""
+    'Dim fieldName As String = ""
+    'With dgvPollutants
+    '    If (.CurrentCellAddress.X = 3) Then
+    '        If .CurrentCell.Value = "Use shapefile..." Then
+    '            Dim row As Integer = .CurrentCellAddress.Y
+    '            Dim pollName As String = .Rows(row).Cells(1).Value.ToString
+    '            Debug.WriteLine("Pollutant is  " & pollName)
+    '            Dim getShapeinfo As New PollCoeffSelectionShapefileForm(pollName, sfName, fieldName)
+    '            'getShapeinfo = New PollCoeffSelectionShapefileForm(pollName)
+    '            'Using getShapeinfo
+    '            getShapeinfo.ShowDialog()
+    '            If (getShapeinfo.DialogResult = Windows.Forms.DialogResult.OK) Then
+    '                Dim sf As String = getShapeinfo.indexShapefileName
+    '                ' .Rows(row).Cells(4).Value = sf
+    '                Dim sfld As String = getShapeinfo.indexField
+    '                '.Rows(row).Cells(5).Value = sfld
+    '                MsgBox("On MainForm, " & pollName & " shapefile is " & getShapeinfo.indexShapefileName & " and index field is " & getShapeinfo.indexField)
+    '            End If
+
+    '            'End Using
+
+    '        End If
+    '    End If
+
+    'End With
+
+    '  End Sub
+
+    'Private Sub dgvPollutants_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvPollutants.CellValueChanged
+    '    Dim sfName As String = ""
+    '    Dim fieldName As String = ""
+    '    With dgvPollutants
+    '        If (.CurrentCellAddress.X = 3) Then
+    '            If .CurrentCell.Value = "Use shapefile..." Then
+    '                Dim row As Integer = e.RowIndex
+    '                Dim pollName As String = .Rows(e.RowIndex).Cells(1).Value.ToString
+    '                Debug.WriteLine("Pollutant is  " & pollName)
+    '                Dim getShapeinfo As New PollCoeffSelectionShapefileForm(pollName, sfName, fieldName)
+    '                'getShapeinfo = New PollCoeffSelectionShapefileForm(pollName)
+    '                'Using getShapeinfo
+    '                getShapeinfo.ShowDialog()
+    '                If (getShapeinfo.DialogResult = Windows.Forms.DialogResult.OK) Then
+    '                    Dim sf As String = getShapeinfo.indexShapefileName
+    '                    ' .Rows(row).Cells(4).Value = sf
+    '                    Dim sfld As String = getShapeinfo.indexField
+    '                    '.Rows(row).Cells(5).Value = sfld
+    '                    MsgBox("On MainForm, " & pollName & " shapefile is " & getShapeinfo.indexShapefileName & " and index field is " & getShapeinfo.indexField)
+    '                End If
+
+    '                'End Using
+
+    '            End If
+    '        End If
+
+    '    End With
+
+    'End Sub
 
     ''' <summary>
     ''' Handles errors if a value is typed into the table that doesn't match constraints
@@ -1928,18 +2008,32 @@ Friend Class MainForm
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function GetPickShapeInfo(ByVal pollName As String) As Boolean
-
+    Private Function GetPickShapeInfo(ByVal row As Integer) As Boolean
+         Dim pollName As String = Me.dgvPollutants.Rows(row).Cells(1).Value.ToString
+        Debug.WriteLine("Pollutant is  " & pollName)
         Dim getShapeinfo As New PollCoeffSelectionShapefileForm(pollName)
-        'getShapeinfo = New PollCoeffSelectionShapefileForm(pollName)
-        Using getShapeinfo
-            getShapeinfo.ShowDialog()
-            'If (getShapeinfo.OK_Button.DialogResult = Windows.Forms.DialogResult.OK) Then
-            '    MsgBox("Specify Shapefile for" & row.Cells("PollutantName").Value)
+        getShapeinfo.ShowDialog()
+        If (getShapeinfo.DialogResult = Windows.Forms.DialogResult.OK) Then
+            Dim sf As String = getShapeinfo.indexShapefileName
+            Me.dgvPollutants.Rows(row).Cells(4).Value = sf
+            Dim sfld As String = getShapeinfo.indexField
+            Me.dgvPollutants.Rows(row).Cells(5).Value = sfld
+            MsgBox("On MainForm, " & pollName & " shapefile is " & getShapeinfo.indexShapefileName & " and index field is " & getShapeinfo.indexField)
+        End If
 
-            'End If
+        'Dim getShapeinfo As New PollCoeffSelectionShapefileForm(pollName)
+        ''getShapeinfo = New PollCoeffSelectionShapefileForm(pollName)
+        'Using getShapeinfo
+        '    getShapeinfo.ShowDialog()
+        '    'If (getShapeinfo.OK_Button.DialogResult = Windows.Forms.DialogResult.OK) Then
+        '    '    MsgBox("Specify Shapefile for" & row.Cells("PollutantName").Value)
 
-        End Using
+        '    'End If
+        '    '                    ' .Rows(row).Cells(4).Value = sf
+        '    '                    Dim sfld As String = getShapeinfo.indexField
+        '    '                    '.Rows(row).Cells(5).Value = sfld
+
+        'End Using
 
     End Function
 
@@ -1965,7 +2059,7 @@ Friend Class MainForm
                         Else
                             'Add code to get Picks shapefile name and field name here
                             If row.Cells("WhichCoeff").Value = "Use shapefile..." Then
-                                GetPickShapeInfo(row.Cells("PollutantName").Value)
+                                GetPickShapeInfo(dgvPollutants.CurrentCellAddress.Y)
                                 ValidatePollutants = True
                             Else
                                 ValidatePollutants = True
@@ -2173,4 +2267,7 @@ Friend Class MainForm
         Next
 
     End Sub
+
+
+
 End Class
