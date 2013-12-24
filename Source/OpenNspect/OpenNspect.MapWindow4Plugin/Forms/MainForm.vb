@@ -1967,8 +1967,13 @@ Friend Class MainForm
                     pollitem.strPollName = row.Cells("PollutantName").Value
                     pollitem.strCoeffSet = row.Cells("CoefSet").Value
                     pollitem.strCoeff = row.Cells("WhichCoeff").Value
+                    If (pollitem.strCoeff = "Use shapefile...") Then
+                        pollitem.idxShapefile = row.Cells("IndexShapefile").Value
+                        pollitem.idxField = row.Cells("IndexFieldName").Value
+                    End If
                     pollitem.intThreshold = CShort(row.Cells("Threshold").Value)
                     If row.Cells("TypeDef").Value <> "" Then
+
                         pollitem.strTypeDefXmlFile = row.Cells("TypeDef").Value
                     End If
                     ParamsPrj.PollItems.Add(pollitem)
@@ -2019,21 +2024,8 @@ Friend Class MainForm
             Dim sfld As String = getShapeinfo.indexField
             Me.dgvPollutants.Rows(row).Cells(5).Value = sfld
             MsgBox("On MainForm, " & pollName & " shapefile is " & getShapeinfo.indexShapefileName & " and index field is " & getShapeinfo.indexField)
+            GetPickShapeInfo = True
         End If
-
-        'Dim getShapeinfo As New PollCoeffSelectionShapefileForm(pollName)
-        ''getShapeinfo = New PollCoeffSelectionShapefileForm(pollName)
-        'Using getShapeinfo
-        '    getShapeinfo.ShowDialog()
-        '    'If (getShapeinfo.OK_Button.DialogResult = Windows.Forms.DialogResult.OK) Then
-        '    '    MsgBox("Specify Shapefile for" & row.Cells("PollutantName").Value)
-
-        '    'End If
-        '    '                    ' .Rows(row).Cells(4).Value = sf
-        '    '                    Dim sfld As String = getShapeinfo.indexField
-        '    '                    '.Rows(row).Cells(5).Value = sfld
-
-        'End Using
 
     End Function
 
@@ -2045,7 +2037,9 @@ Friend Class MainForm
     Private Function ValidatePollutants() As Boolean
         'Function to validate pollutants
         Try
-            For Each row As DataGridViewRow In dgvPollutants.Rows
+            'For Each row As DataGridViewRow In dgvPollutants.Rows
+            For irow As Integer = 0 To dgvPollutants.Rows.Count - 1
+                Dim row As DataGridViewRow = dgvPollutants.Rows(irow)
                 If row.Cells("PollApply").FormattedValue = True Then
                     If Len(row.Cells("CoefSet").Value) = 0 Then
                         MsgBox("Please select a coefficient set for pollutant: " & row.Cells("PollutantName").Value.ToString, MsgBoxStyle.Critical, "Coefficient Set Missing")
@@ -2059,8 +2053,11 @@ Friend Class MainForm
                         Else
                             'Add code to get Picks shapefile name and field name here
                             If row.Cells("WhichCoeff").Value = "Use shapefile..." Then
-                                GetPickShapeInfo(dgvPollutants.CurrentCellAddress.Y)
-                                ValidatePollutants = True
+                                If (GetPickShapeInfo(irow)) Then
+                                    ValidatePollutants = True
+                                Else
+                                    ValidatePollutants = False
+                                End If
                             Else
                                 ValidatePollutants = True
                             End If
@@ -2086,7 +2083,7 @@ Friend Class MainForm
             Dim strWShed As String
             Dim booUpdate As Boolean
 
-            Dim strDEM As String
+            Dim strDEM As String 
             Dim strFlowDirFileName As String
             Dim strFlowAccumFileName As String
             Dim strFilledDEMFileName As String

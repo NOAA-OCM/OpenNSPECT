@@ -54,8 +54,9 @@ Public Class PollCoeffSelectionShapefileForm
                         Me.cmboPollAttrib.Items.Add(tmpField)
                     Next
                 End If
+                indexShapefileName = sfName
             Catch ex As Exception
-
+                HandleError(ex)
             End Try
         End If
     End Sub
@@ -83,10 +84,35 @@ Public Class PollCoeffSelectionShapefileForm
 
     Private Sub cmboPollAttrib_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmboPollAttrib.SelectedIndexChanged
         indexField = cmboPollAttrib.Text
-        MsgBox("The selected attribute is " & indexField & " with value of " & cmboPollAttrib.SelectedIndex.ToString)
-        'Verify range of Attributes
-
-        'Then, if verified, store in XML file
+        Dim ifld As Integer = cmboPollAttrib.SelectedIndex
+        Dim sf As New Shapefile
+        sf.Open(indexShapefileName)
+        Try
+            Dim foo As Integer = sf.Field(ifld).Type.CompareTo(FieldType.INTEGER_FIELD)
+            If (sf.Field(ifld).Type.CompareTo(FieldType.INTEGER_FIELD) = 0) Then
+                'MsgBox("The selected attribute is " & indexField & " with value of " & cmboPollAttrib.SelectedIndex.ToString)
+                'Verify range of Attributes
+                Dim idxMin As Integer = 999
+                Dim idxMax As Integer = -999
+                For shape As Integer = 0 To sf.NumShapes - 1
+                    If (sf.CellValue(ifld, shape) > idxMax) Then
+                        idxMax = sf.CellValue(ifld, shape)
+                    End If
+                    If (sf.CellValue(ifld, shape) < idxMin) Then
+                        idxMin = sf.CellValue(ifld, shape)
+                    End If
+                Next
+                If (idxMax > 4 Or idxMin < 1) Then
+                    MsgBox("Values in " & indexField & " are out of the range 1 to 4.  Please correct and try again." & vbCrLf & _
+                           "Minimum value found was " & idxMin.ToString & " and" & vbCrLf & _
+                           "Maximum value found was " & idxMax.ToString)
+                End If
+            Else
+                MsgBox(indexField & " is not an integer field. Please pick a field with integer values from 1 to 4.")
+            End If
+        Catch ex As Exception
+            HandleError(ex)
+        End Try
 
     End Sub
 End Class

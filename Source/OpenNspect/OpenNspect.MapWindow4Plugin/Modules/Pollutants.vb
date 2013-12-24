@@ -142,7 +142,7 @@ Module Pollutants
                 'TODO TO DO: Fix this to read shapefile and field names from xml file
                 'concentrationStatement = "Pick," & "C:\NSPECT\wsdelin\Test2\basinpoly.shp" & "," & "NitIndex" & "; " & _
                 'concentrationStatement = "Pick," & "C:\NSPECT\TestSpect\TestShape.shp" & "," & "NitTest2" & "; " & _
-                concentrationStatement = "Pick," & "C:\NSPECT\TestSpect\TestShape.shp" & "," & "NitIndex" & "; " & _
+                concentrationStatement = "Pick," & Pollutant.idxShapefile & "," & Pollutant.idxField & "; " & _
                     concentrationStateArray(0) & "; " & concentrationStateArray(1) & "; " & _
                     concentrationStateArray(2) & "; " & concentrationStateArray(3)
                 MsgBox("new conc statement = " & concentrationStatement)
