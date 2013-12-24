@@ -45,6 +45,8 @@ Namespace Xml
         Private Const ELEMENT_PollName As String = "PollName"
         Private Const ELEMENT_CoeffSet As String = "CoeffSet"
         Private Const ELEMENT_Coeff As String = "Coeff"
+        Private Const ELEMENT_IdxShapefile As String = "IdxShapefile"
+        Private Const ELEMENT_IdxField As String = "IdxField"
         Private Const ELEMENT_Threshold As String = "Threshold"
         Private Const ELEMENT_TypeDefXmlFile As String = "TypeDefXmlFile"
 
@@ -53,6 +55,8 @@ Namespace Xml
         Public strPollName As String
         Public strCoeffSet As String
         Public strCoeff As String
+        Public idxShapefile As String
+        Public idxField As String
         Public intThreshold As Short
         Public strTypeDefXmlFile As String
 
@@ -92,6 +96,8 @@ Namespace Xml
                 NodeAppendChildElement(dom, node, ELEMENT_PollName, strPollName)
                 NodeAppendChildElement(dom, node, ELEMENT_CoeffSet, strCoeffSet)
                 NodeAppendChildElement(dom, node, ELEMENT_Coeff, strCoeff)
+                NodeAppendChildElement(dom, node, ELEMENT_IdxShapefile, idxShapefile)
+                NodeAppendChildElement(dom, node, ELEMENT_IdxField, idxField)
                 NodeAppendChildElement(dom, node, ELEMENT_Threshold, intThreshold)
                 NodeAppendChildElement(dom, node, ELEMENT_TypeDefXmlFile, strTypeDefXmlFile)
                 node.AppendChild(dom.CreateTextNode(vbNewLine & vbTab))
@@ -118,6 +124,8 @@ Namespace Xml
                 strPollName = GetNodeText(node, ELEMENT_PollName)
                 strCoeffSet = GetNodeText(node, ELEMENT_CoeffSet)
                 strCoeff = GetNodeText(node, ELEMENT_Coeff)
+                idxShapefile = GetNodeText(node, ELEMENT_IdxShapefile)
+                idxField = GetNodeText(node, ELEMENT_IdxField)
                 intThreshold = CShort(GetNodeText(node, ELEMENT_Threshold))
                 strTypeDefXmlFile = GetNodeText(node, ELEMENT_TypeDefXmlFile)
 
