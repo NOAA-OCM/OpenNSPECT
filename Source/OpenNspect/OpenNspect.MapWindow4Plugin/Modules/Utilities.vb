@@ -53,16 +53,44 @@ Module Utilities
     Public g_ManagementScenarioLUScenFileName As String
     Public g_ManagementScenarioRowNumber As String
 
+    '' Returns units for a given projection
+    'Public Function ProjectionUnits(ByVal sProjParams As String, ByVal sGeoProj As MapWinGIS.GeoProjection) As String
+    '    ProjectionUnits = ""
+    '    If sGeoProj.IsGeographic Then
+    '        ProjectionUnits = "degrees"
+    '    Else
+    '        Try
+    '            Dim tmpStartChar = sProjParams.Substring(sProjParams.IndexOf("+units=") + 7)
+    '            ProjectionUnits = tmpStartChar.Substring(0, tmpStartChar.IndexOf(" "))
+
+    '        Catch ex As Exception
+    '            MsgBox("The file you have choosen appears to have no spatial reference information.  Please define a projection before continuing.", _
+    '                   MsgBoxStyle.Exclamation, "No Project Information Detected")
+
+    '            Return "ProjectionERROR"
+    '        End Try
+    '    End If
+    '    Return ProjectionUnits
+    'End Function
+
     ' Returns units for a given projection
-    Public Function ProjectionUnits(ByVal sProjParams As String, ByVal sGeoProj As MapWinGIS.GeoProjection) As String
-        ProjectionUnits = ""
+    Public Function ProjectionUnits(ByVal sProjParams As String, ByVal sGeoProj As MapWinGIS.GeoProjection, ByRef prjUnits As String) As Boolean
+        'ProjectionUnits = False
         If sGeoProj.IsGeographic Then
-            ProjectionUnits = "degrees"
+            prjUnits = "degrees"
         Else
-            Dim tmpStartChar = sProjParams.Substring(sProjParams.IndexOf("+units=") + 7)
-            ProjectionUnits = tmpStartChar.Substring(0, tmpStartChar.IndexOf(" "))
+            Try
+                Dim tmpStartChar = sProjParams.Substring(sProjParams.IndexOf("+units=") + 7)
+                prjUnits = tmpStartChar.Substring(0, tmpStartChar.IndexOf(" "))
+
+            Catch ex As Exception
+                MsgBox("The file you have choosen appears to have no spatial reference information.  Please define a projection before continuing.", _
+                       MsgBoxStyle.Exclamation, "No Project Information Detected")
+
+                Return False
+            End Try
         End If
-        Return ProjectionUnits
+        Return True
     End Function
     ''Deletes all files associated with a shapefile in a target directory
     'Public Function DelShapefile(ByVal sfFullName As String) As Boolean

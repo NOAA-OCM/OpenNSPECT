@@ -32,6 +32,7 @@ Public Class DataPrepForm
     Public demFName As String
     Public lcFName As String
     Public precipFName As String
+    Public rfFName As String
     Public refXll As Double
     Public refYll As Double
     Public refdX As Double
@@ -95,18 +96,22 @@ Public Class DataPrepForm
             End If
             txtProjParams.Text = AOI.Projection.ToString
             txtProjName.Text = AOI.GeoProjection.ProjectionName
-            txtFinalCellUnits.Text = ProjectionUnits(txtProjParams.Text, AOI.GeoProjection)
-            If (AOI.GeoProjection.ProjectionName = "") Then
-                If (AOI.Projection.Substring(6, 7) = "longlat") Then
-                    txtProjName.Text = "Geographic (unprojected), see parameters below:"
-                    MsgBox("Hmmm... your AOI shapefile is in geographic coordinates.  " & _
-                           "That is almost always a bad idea for your target shapefile.  " & _
-                           "You should probably check the shapefile name and try again.")
+            If (ProjectionUnits(txtProjParams.Text, AOI.GeoProjection, txtFinalCellUnits.Text)) Then
+                If (AOI.GeoProjection.ProjectionName = "") Then
+                    If (AOI.Projection.Substring(6, 7) = "longlat") Then
+                        txtProjName.Text = "Geographic (unprojected), see parameters below:"
+                        MsgBox("Hmmm... your AOI shapefile is in geographic coordinates.  " & _
+                               "That is almost always a bad idea for your target shapefile.  " & _
+                               "You should probably check the shapefile name and try again.")
+                    End If
                 End If
-            End If
 
+            Else
+                Exit Sub
+            End If
+            diaOpenPrep.Filter = ""
         End If
-        diaOpenPrep.Filter = ""
+
     End Sub
 
     Private Sub btnOpenDEM_Click(sender As Object, e As EventArgs) Handles btnOpenDEM.Click
@@ -120,15 +125,20 @@ Public Class DataPrepForm
             'MsgBox("DEM file is " & txtDEMName.Text)
             g.Open(demFName)
             txtCellSizeDEM.Text = g.Header.dX.ToString
-            txtSizeUnitsDEM.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
-            txtDEMProj.Text = g.Header.GeoProjection.ProjectionName
-            txtDEMParams.Text = g.Header.Projection.ToString
-            If (g.Header.GeoProjection.ProjectionName = "") Then
-                If (g.Header.Projection.Substring(6, 7) = "longlat") Then
-                    txtDEMProj.Text = "Geographic (unprojected), see parameters below:"
+            '            txtSizeUnitsDEM.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
+            If (ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection, txtSizeUnitsDEM.Text)) Then
+                txtDEMProj.Text = g.Header.GeoProjection.ProjectionName
+                txtDEMParams.Text = g.Header.Projection.ToString
+                If (g.Header.GeoProjection.ProjectionName = "") Then
+                    If (g.Header.Projection.Substring(6, 7) = "longlat") Then
+                        txtDEMProj.Text = "Geographic (unprojected), see parameters below:"
+                    End If
                 End If
+                g.Close()
+
+            Else
+                Exit Sub
             End If
-            g.Close()
         End If
     End Sub
 
@@ -143,15 +153,20 @@ Public Class DataPrepForm
             'MsgBox("LC file is " & txtLCName.Text)
             g.Open(lcFName)
             txtCellSizeLC.Text = g.Header.dX.ToString
-            txtSizeUnitsLC.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
-            txtLCProj.Text = g.Header.GeoProjection.ProjectionName
-            txtLCParams.Text = g.Header.Projection.ToString
-            If (g.Header.GeoProjection.ProjectionName = "") Then
-                If (g.Header.Projection.Substring(6, 7) = "longlat") Then
-                    txtLCProj.Text = "Geographic (unprojected), see parameters below:"
+            If (ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection, txtSizeUnitsLC.Text)) Then
+
+                txtLCProj.Text = g.Header.GeoProjection.ProjectionName
+                txtLCParams.Text = g.Header.Projection.ToString
+                If (g.Header.GeoProjection.ProjectionName = "") Then
+                    If (g.Header.Projection.Substring(6, 7) = "longlat") Then
+                        txtLCProj.Text = "Geographic (unprojected), see parameters below:"
+                    End If
                 End If
+                g.Close()
+
+            Else
+                Exit Sub
             End If
-            g.Close()
         End If
 
     End Sub
@@ -167,15 +182,48 @@ Public Class DataPrepForm
             'MsgBox("Precip file is " & txtPrecipName.Text)
             g.Open(precipFName)
             txtCellSizePrecip.Text = g.Header.dX.ToString
-            txtSizeUnitsPrecip.Text = ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection)
-            txtPrecipProj.Text = g.Header.GeoProjection.ProjectionName
-            txtPrecipParams.Text = g.Header.Projection.ToString
-            If (g.Header.GeoProjection.ProjectionName = "") Then
-                If (g.Header.Projection.Substring(6, 7) = "longlat") Then
-                    txtPrecipProj.Text = "Geographic (unprojected), see parameters below:"
+            If (ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection, txtSizeUnitsPrecip.Text)) Then
+
+                txtPrecipProj.Text = g.Header.GeoProjection.ProjectionName
+                txtPrecipParams.Text = g.Header.Projection.ToString
+                If (g.Header.GeoProjection.ProjectionName = "") Then
+                    If (g.Header.Projection.Substring(6, 7) = "longlat") Then
+                        txtPrecipProj.Text = "Geographic (unprojected), see parameters below:"
+                    End If
                 End If
+                g.Close()
+            Else
+                Exit Sub
             End If
-            g.Close()
+
+        End If
+    End Sub
+
+    Private Sub btnOpenRF_Click(sender As Object, e As EventArgs) Handles btnOpenRF.Click
+        Dim g As New MapWinGIS.Grid
+        diaOpenPrep.Reset()
+        diaOpenPrep.Title = "Open R-Factor Raster"
+        diaOpenPrep.Filter = g.CdlgFilter
+        If diaOpenPrep.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            txtRFName.Text = diaOpenPrep.FileName.ToString
+            rfFName = txtRFName.Text
+            'MsgBox("RF file is " & txtRFName.Text)
+            g.Open(rfFName)
+            txtCellSizeRF.Text = g.Header.dX.ToString
+            If (ProjectionUnits(g.Header.Projection.ToString, g.Header.GeoProjection, txtSizeUnitsRF.Text)) Then
+
+                txtRFProj.Text = g.Header.GeoProjection.ProjectionName
+                txtRFParams.Text = g.Header.Projection.ToString
+                If (g.Header.GeoProjection.ProjectionName = "") Then
+                    If (g.Header.Projection.Substring(6, 7) = "longlat") Then
+                        txtRFProj.Text = "Geographic (unprojected), see parameters below:"
+                    End If
+                End If
+                g.Close()
+
+            Else
+                Exit Sub
+            End If
         End If
     End Sub
 
@@ -192,18 +240,23 @@ Public Class DataPrepForm
                 'MsgBox("Cell size is " & finalCellSize)
                 ' If it gets to here, the cell size is good, so check the rest of the input and run the 
                 ' data preparation functions if it all checks out. If it isn't working, prompt user to correct and retry.
-                If (aoiFName = "" Or demFName = "" Or lcFName = "" Or precipFName = "") Then
+                If (aoiFName = "" Or demFName = "" Or _
+                    (lcFName = "" And Not cbSkipLC.Checked) Or _
+                    (precipFName = "" And Not cbSkipPrecip.Checked) Or _
+                    (rfFName = "" And Not cbSkipRF.Checked)) Then
                     If aoiFName = "" Then
                         txtAOI.Focus()
                     ElseIf demFName = "" Then
                         txtDEMName.Focus()
-                    ElseIf lcFName = "" Then
+                    ElseIf (lcFName = "" And Not cbSkipLC.Checked) Then
                         txtLCName.Focus()
-                    ElseIf precipFName = "" Then
+                    ElseIf (precipFName = "" And Not cbSkipPrecip.Checked) Then
                         txtPrecipName.Focus()
+                    ElseIf (rfFName = "" And Not cbSkipRF.Checked) Then
+                        txtRFName.Focus()
                     End If
 
-                    Dim msgResult As MsgBoxResult = MsgBox("Please specify all input items", MsgBoxStyle.RetryCancel)
+                    Dim msgResult As MsgBoxResult = MsgBox("Please specify all input items or check the 'Skip' boxes", MsgBoxStyle.RetryCancel)
                     If (msgResult = MsgBoxResult.Cancel) Then
                         Close()
                     Else
@@ -307,32 +360,55 @@ Public Class DataPrepForm
         ' Now land Cover
         Dim lcFinal As New Grid
         Dim lcFinalFName As String
-        lcFinalFName = PrepOneRaster(lcFName, aoiBuff20FName, refGridName, dirDataPrep, "LULC")
-        Try
-            File.Copy(Path.ChangeExtension(lcFName, "mwleg"), Path.ChangeExtension(lcFinalFName, "mwleg"))
-        Catch ex As Exception
-            MsgBox("It looks like there is no MapWindow color file for your original Land Cover file.  You just get a default set of colors.")
-        End Try
-        If (cbLoadFinal.Checked) Then
-            ' Load LULC into MapWindow
-            If (Not AddFeatureLayerToMapFromFileName(lcFinalFName)) Then
-                MsgBox("ERROR: Final LULC raster not found: " & vbLf & txtAOI.Text.ToString)
+        If (Not cbSkipLC.Checked) Then
+            lcFinalFName = PrepOneRaster(lcFName, aoiBuff20FName, refGridName, dirDataPrep, "LULC")
+            Try
+                File.Copy(Path.ChangeExtension(lcFName, "mwleg"), Path.ChangeExtension(lcFinalFName, "mwleg"))
+            Catch ex As Exception
+                MsgBox("It looks like there is no MapWindow color file for your original Land Cover file.  You just get a default set of colors.")
+            End Try
+            If (cbLoadFinal.Checked) Then
+                ' Load LULC into MapWindow
+                If (Not AddFeatureLayerToMapFromFileName(lcFinalFName)) Then
+                    MsgBox("ERROR: Final LULC raster not found: " & vbLf & txtAOI.Text.ToString)
+                End If
             End If
         End If
+
 
         ' And Precip
         Dim precipFinal As New Grid
         Dim precipFinalFName As String
-        precipFinalFName = PrepOneRaster(precipFName, aoiBuff20FName, refGridName, dirDataPrep, "Precip")
-        Try
-            File.Copy(Path.ChangeExtension(precipFName, "mwleg"), Path.ChangeExtension(precipFinalFName, "mwleg"))
-        Catch ex As Exception
-            MsgBox("It looks like there is no MapWindow color file for your original Precip file.  You will get a default set of colors.")
-        End Try
-        If (cbLoadFinal.Checked) Then
-            ' Load DEM into MapWindow
-            If (Not AddFeatureLayerToMapFromFileName(precipFinalFName)) Then
-                MsgBox("ERROR: Final Precip raster not found: " & vbLf & txtAOI.Text.ToString)
+        If (Not cbSkipPrecip.Checked) Then
+            precipFinalFName = PrepOneRaster(precipFName, aoiBuff20FName, refGridName, dirDataPrep, "Precip")
+            Try
+                File.Copy(Path.ChangeExtension(precipFName, "mwleg"), Path.ChangeExtension(precipFinalFName, "mwleg"))
+            Catch ex As Exception
+                MsgBox("It looks like there is no MapWindow color file for your original Precip file.  You will get a default set of colors.")
+            End Try
+            If (cbLoadFinal.Checked) Then
+                ' Load DEM into MapWindow
+                If (Not AddFeatureLayerToMapFromFileName(precipFinalFName)) Then
+                    MsgBox("ERROR: Final Precip raster not found: " & vbLf & txtAOI.Text.ToString)
+                End If
+            End If
+        End If
+
+        ' And RF
+        Dim rfFinal As New Grid
+        Dim rfFinalFName As String
+        If (Not cbSkipRF.Checked) Then
+            rfFinalFName = PrepOneRaster(rfFName, aoiBuff20FName, refGridName, dirDataPrep, "RF")
+            Try
+                File.Copy(Path.ChangeExtension(rfFName, "mwleg"), Path.ChangeExtension(rfFinalFName, "mwleg"))
+            Catch ex As Exception
+                MsgBox("It looks like there is no MapWindow color file for your original R-Factor file.  You will get a default set of colors.")
+            End Try
+            If (cbLoadFinal.Checked) Then
+                ' Load DEM into MapWindow
+                If (Not AddFeatureLayerToMapFromFileName(rfFinalFName)) Then
+                    MsgBox("ERROR: Final RF raster not found: " & vbLf & txtAOI.Text.ToString)
+                End If
             End If
         End If
 
@@ -345,6 +421,8 @@ Public Class DataPrepForm
             demFinal.Close()
             lcFinal.Close()
             precipFinal.Close()
+            rfFinal.Close()
+
             ' Then recursively delete the temprorary directories and the files they contain:
             Try
                 Directory.Delete(dirOtherProj, True)
@@ -680,5 +758,6 @@ Public Class DataPrepForm
             Return False
         End Try
     End Function
+
 
 End Class
