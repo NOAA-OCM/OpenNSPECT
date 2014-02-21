@@ -39,13 +39,35 @@ Module Rasters
     Public Function GetRasterTablePath(ByRef raster As Grid) As String
         Dim tablepath As String
         Dim lcPath As String = raster.Filename
+        'Dim TableExist As Boolean
         If Path.GetFileName(lcPath) = "sta.adf" Or Path.GetFileName(lcPath) = "sta.bmp" Then
             tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
         Else
             tablepath = Path.ChangeExtension(lcPath, ".dbf")
         End If
+        If Not File.Exists(tablepath) Then
+            '    TableExist = True
+            'Else
+            BuildTable(raster, tablepath)
+            'If File.Exists(tablepath) Then
+            '    TableExist = True
+            'Else
+            '    TableExist = BuildTable(raster, tablepath)
+            'End If
+        End If
         Return tablepath
     End Function
+    'Public Function GetRasterTablePath(ByRef raster As Grid) As String
+    '    Dim tablepath As String
+    '    Dim lcPath As String = raster.Filename
+    '    If Path.GetFileName(lcPath) = "sta.adf" Or Path.GetFileName(lcPath) = "sta.bmp" Then
+    '        tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
+    '    Else
+    '        tablepath = Path.ChangeExtension(lcPath, ".dbf")
+    '    End If
+    '    Return tablepath
+    'End Function
+
     Public Function GetFieldIndex(ByVal mwTable As Table) As Short
         Dim FieldIndex As Short = -1
         For fidx As Integer = 0 To mwTable.NumFields - 1

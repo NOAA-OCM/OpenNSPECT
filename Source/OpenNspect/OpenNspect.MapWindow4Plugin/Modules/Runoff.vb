@@ -159,7 +159,6 @@ Module Runoff
             Dim dblMaxValue As Double
             Dim dblMinValue As Double
             Dim i As Short
-            Dim TableExist As Boolean
             Dim FieldIndex As Short
             Dim booValueFound As Boolean
 
@@ -184,31 +183,33 @@ Module Runoff
             dblMinValue = pLCRaster.Minimum
 
             'TODO: it looks like some of this code is almost copied, refactor it.
-            Dim tablepath As String = ""
-            'Get the raster table
-            Dim lcPath As String = pLCRaster.Filename
-            If Path.GetFileName(lcPath) = "sta.adf" Or Path.GetFileName(lcPath) = "sta.bmp" Then
-                tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
-                If File.Exists(tablepath) Then
+            Dim tablepath = GetRasterTablePath(pLCRaster)
+            Dim TableExist As Boolean = File.Exists(tablepath)
+            ' Refactored!
 
-                    TableExist = True
-                Else
-                    TableExist = BuildTable(pLCRaster, tablepath)
-                End If
-            Else
-                tablepath = Path.ChangeExtension(lcPath, ".dbf")
-                If File.Exists(tablepath) Then
-                    TableExist = True
-                Else
-                    TableExist = BuildTable(pLCRaster, tablepath)
-                End If
-            End If
+            'Dim TableExist As Boolean
+            'Dim tablepath As String = ""
+            ''Get the raster table
+            'Dim lcPath As String = pLCRaster.Filename
+            'If Path.GetFileName(lcPath) = "sta.adf" Or Path.GetFileName(lcPath) = "sta.bmp" Then
+            '    tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
+            '    If File.Exists(tablepath) Then
+            '        TableExist = True
+            '    Else
+            '        TableExist = BuildTable(pLCRaster, tablepath)
+            '    End If
+            'Else
+            '    tablepath = Path.ChangeExtension(lcPath, ".dbf")
+            '    If File.Exists(tablepath) Then
+            '        TableExist = True
+            '    Else
+            '        TableExist = BuildTable(pLCRaster, tablepath)
+            '    End If
+            'End If
 
             Dim mwTable As New Table
             If Not TableExist Then
-                MsgBox(
-                        "No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.",
-                        MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+                MsgBox("No MapWindow-readable raster table was found. (3)", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
                 Exit Function
             Else
@@ -292,7 +293,7 @@ Module Runoff
         End Try
     End Function
 
-    Private Function BuildTable(ByRef pLCRaster As Grid, ByVal tablepath As String) As Boolean
+    Public Function BuildTable(ByRef pLCRaster As Grid, ByVal tablepath As String) As Boolean
         Dim mwTable As New Table
 
         Dim result As Boolean = mwTable.CreateNew(tablepath)

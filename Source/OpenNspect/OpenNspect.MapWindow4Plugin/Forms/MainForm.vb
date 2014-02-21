@@ -885,7 +885,7 @@ Friend Class MainForm
 
             'STEP 4: Get the Management Scenarios: ------------------------------------------------------------------------------------
             'If they're using, we send them over to modMgmtScen to implement
-            If g_Project.MgmtScenHolder.Count > 0 Then
+            If g_Project.MgmtScenHolder.Count > 0 Then  'Return here!
                 MgmtScenSetup(g_Project.MgmtScenHolder, g_Project.LandCoverGridType, g_Project.LandCoverGridDirectory)
             End If
 
@@ -985,11 +985,6 @@ Friend Class MainForm
             CleanGlobals()
 
             'Save xml to ensure outputs are saved
-            ' DLE 9/11/2012: Is this where the extra Land Use Scenario save is coming in? 
-            ' YES!  Comment out and it seems to work fine...   but ARGH!  doing so introduces new error! 10/16/12 
-            ' TODO: Commenting out this line prevents the "Outputfiles" from being recorded in the project XML file, 
-            '   which produces an invalid project file: it won't show in the Compare Outputs (once out of legend) 
-            ' or load to the legend area.
             g_Project.SaveFile(_currentFileName)
 
             Close()

@@ -262,8 +262,12 @@ Module RevisedUniversalSoilLossEquation
                     SynchronousProgressDialog.KeepRunning = False
                 End If
 
-                pTotalAccumSedRaster = New Grid
-                pTotalAccumSedRaster.Open(strtmpout)
+                'pTotalAccumSedRaster = New Grid
+                'pTotalAccumSedRaster.Open(strtmpout)
+                Dim tmpGrid As New Grid
+                tmpGrid.Open(strtmpout)
+                Dim multAccumcalc As New RasterMathCellCalc(AddressOf multAccumCellCalc)
+                RasterMath(tmpGrid, Nothing, Nothing, Nothing, Nothing, pTotalAccumSedRaster, multAccumcalc)
 
                 pTauD8Flow.Close()
                 pSedYieldRaster.Close()
@@ -447,5 +451,9 @@ Module RevisedUniversalSoilLossEquation
         Return soilLossAC * Sdr * 907.18474
     End Function
 
+    Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
+        Return Input1 * 0.000001
+    End Function
 #End Region
 End Module
