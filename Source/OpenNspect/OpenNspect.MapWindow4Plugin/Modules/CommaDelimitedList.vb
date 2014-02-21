@@ -14,7 +14,7 @@ Module CommaDelimitedList
 
         Dim tablepath = GetRasterTablePath(pLCRaster)
         If Not File.Exists(tablepath) Then
-            MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+            MsgBox("No MapWindow-readable raster table was found (1).", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
             Return String.Empty
         End If

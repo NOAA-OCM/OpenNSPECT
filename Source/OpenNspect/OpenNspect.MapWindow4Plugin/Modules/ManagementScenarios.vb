@@ -33,7 +33,7 @@ Module ManagementScenarios
 
         Dim landCoverRaster = GetLandCoverRaster(landCoverFileName)
         If landCoverRaster Is Nothing Then
-            Throw New ArgumentException("cannot get landCoverRaseter.")
+            Throw New ArgumentException("cannot get landCoverRaster.")
         End If
         Dim landCoverName As String
         Try
@@ -50,7 +50,7 @@ Module ManagementScenarios
                 'There's at least one scenario, so copy the input grid to the output as is so that it can be modified
                 landCoverRaster.Save()  'Saving because it seemed necessary.
                 landCoverRaster.Save(strOutLandCover)
-                landCoverRaster.Close()
+                'landCoverRaster.Close()  ' Don't close this, it may be needed below if there are no applied Management scenarios
                 pNewLandCoverRaster.Open(strOutLandCover)
 
                 Using progress = New SynchronousProgressDialog("Creating Management Scenario", MgmtScens.Count, g_MainForm)

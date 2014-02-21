@@ -1,4 +1,4 @@
-<ColoringScheme SchemeType="Grid" GridName="NLCD2001_2006_LC" GroupName="Data Layers">
+<ColoringScheme SchemeType="Grid" >
   <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="0" LightSourceElevation="1" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
     <Break Caption="11 Open Water" LowValue="11" HighValue="11" LowColor="-12096608" HighColor="-12096608" ColoringType="1" GradientModel="1" />
     <Break Caption="12 Perennial Ice/Snow" LowValue="12" HighValue="12" LowColor="-3023367" HighColor="-3023367" ColoringType="1" GradientModel="1" />

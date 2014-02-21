@@ -145,7 +145,7 @@ Module ModifiedUniversalSoilLossEquation
 
         Dim mwTable As New Table
         If Not TableExist Then
-            MsgBox("No MapWindow-readable raster table was found. To create one using ArcMap 9.3+, add the raster to the default project, right click on its layer and select Open Attribute Table. Now click on the options button in the lower right and select Export. In the export path, navigate to the directory of the grid folder and give the export the name of the raster folder with the .dbf extension. i.e. if you are exporting a raster attribute table from a raster named landcover, export landcover.dbf into the same level directory as the folder.", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
+            MsgBox("No MapWindow-readable raster table was found (2).", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
 
             Return ""
         Else
@@ -389,8 +389,13 @@ Module ModifiedUniversalSoilLossEquation
 
                 Hydrology.WeightedAreaD8(flowDir, pHISYMGRasterTmp, "", strtmpout, False, False, Environment.ProcessorCount, False, Nothing)
 
-                pTotSedMassHIRaster = New Grid
-                pTotSedMassHIRaster.Open(strtmpout)
+                'pTotSedMassHIRaster = New Grid
+                'pTotSedMassHIRaster.Open(strtmpout)
+                Dim tmpGrid As New Grid
+                tmpGrid.Open(strtmpout)
+                Dim multAccumcalc As New RasterMathCellCalc(AddressOf multAccumCellCalc)
+                RasterMath(tmpGrid, Nothing, Nothing, Nothing, Nothing, pTotSedMassHIRaster, multAccumcalc)
+
 
                 pTauD8Flow.Close()
                 DataManagement.DeleteGrid(flowDir)
@@ -828,6 +833,9 @@ Module ModifiedUniversalSoilLossEquation
             End If
         End If
     End Function
-
+    Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
+        'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
+        Return Input1 * 0.000001
+    End Function
 #End Region
 End Module

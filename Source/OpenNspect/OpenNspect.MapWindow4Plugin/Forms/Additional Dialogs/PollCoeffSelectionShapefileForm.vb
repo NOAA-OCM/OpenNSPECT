@@ -89,7 +89,7 @@ Public Class PollCoeffSelectionShapefileForm
         sf.Open(indexShapefileName)
         Try
             Dim foo As Integer = sf.Field(ifld).Type.CompareTo(FieldType.INTEGER_FIELD)
-            If (sf.Field(ifld).Type.CompareTo(FieldType.INTEGER_FIELD) = 0) Then
+            If (sf.Field(ifld).Type.CompareTo(FieldType.INTEGER_FIELD) = 1) Then
                 'MsgBox("The selected attribute is " & indexField & " with value of " & cmboPollAttrib.SelectedIndex.ToString)
                 'Verify range of Attributes
                 Dim idxMin As Integer = 999
