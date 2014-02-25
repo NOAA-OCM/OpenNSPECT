@@ -187,26 +187,6 @@ Module Runoff
             Dim TableExist As Boolean = File.Exists(tablepath)
             ' Refactored!
 
-            'Dim TableExist As Boolean
-            'Dim tablepath As String = ""
-            ''Get the raster table
-            'Dim lcPath As String = pLCRaster.Filename
-            'If Path.GetFileName(lcPath) = "sta.adf" Or Path.GetFileName(lcPath) = "sta.bmp" Then
-            '    tablepath = Path.GetDirectoryName(lcPath) + ".dbf"
-            '    If File.Exists(tablepath) Then
-            '        TableExist = True
-            '    Else
-            '        TableExist = BuildTable(pLCRaster, tablepath)
-            '    End If
-            'Else
-            '    tablepath = Path.ChangeExtension(lcPath, ".dbf")
-            '    If File.Exists(tablepath) Then
-            '        TableExist = True
-            '    Else
-            '        TableExist = BuildTable(pLCRaster, tablepath)
-            '    End If
-            'End If
-
             Dim mwTable As New Table
             If Not TableExist Then
                 MsgBox("No MapWindow-readable raster table was found. (3)", MsgBoxStyle.Exclamation, "Raster Attribute Table Not Found")
