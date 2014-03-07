@@ -485,9 +485,13 @@ Public Class DataPrepForm
         Dim progress As New SynchronousProgressDialog("Begin processing...", tmpMessage, 7, Me)
 
         ' Check projections and cell sizes and change as needed:
+        ' N.B.: Had to change this since the GeoProjection.IsSame method can produce a TRUE value
+        '   even when the proj4 strings are not identical.  This can then lead to errors in NSPECT.
+        '        If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj)) Then
 
-        If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj)) Then
-            ' Mismatch between projections.  
+        Dim rawProj4 As String = rawGrid.Header.GeoProjection.ExportToProj4
+        If (Not rawProj4.Equals(tarProj4)) Then
+            ' Mismatch between projections, or at least projection parameters.  
             ' Reproject Buffered Target AOI shapefile to  Raw Raster Projection and CLIP the RAW Raster
             progress.Increment("Reprojecting buffered AOI shapefile...")
             aoiRasterB20 = aoiB20.Reproject(rawGrid.Header.GeoProjection, 1)
@@ -506,6 +510,7 @@ Public Class DataPrepForm
             End Try
 
             'raw data are now clipped, so reproject this smaller raster back into the AOI Projection
+            rawGrid.Close()  ' Close RawGrid, should be done with it
             If (onlyGDAL) Then
                 clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
             Else
@@ -517,6 +522,7 @@ Public Class DataPrepForm
                 If (statusReproject) Then
                     ' MsgBox("Reprojected buffered file is " & clippedFName)
                     tarGridB20.Open(clippedFName)
+                    rawGridB20.Close()  ' Close RawGridB20, should be done with it
                 Else
                     MsgBox("Error in reprojecting " & rawGridB20Fname.ToString, MsgBoxStyle.OkCancel)
                 End If
@@ -533,6 +539,7 @@ Public Class DataPrepForm
             If (Not tarGridB20.Save(clippedFName)) Then
                 MsgBox("Error trying to save " & clippedFName)
             End If
+            rawGrid.Close() 'Done with rawGrid for the no-projection section
         End If
 
         ' Raster is now clipped to buffered size.  Ready for
@@ -552,8 +559,10 @@ Public Class DataPrepForm
 
         statusReproject = DoResample_DLE(tarGridB20, tarBinFName, finalCellSize)
         If (statusReproject) Then
-            ' MsgBox("DoResample_DLE reproject worked on " & tarBinFName)
+            ' MsgBox("DoResample_DLE reproject worked on " & tarBinFName)5
             tarBinned.Open(tarBinFName)
+            ' Binning worked, so close tarGridB20
+            tarGridB20.Close()
         Else
             MsgBox("Binning failed on " & tarBinFName)
         End If
@@ -566,12 +575,14 @@ Public Class DataPrepForm
             refGridFName = tarBinFName
             tarNudged = CopyRaster(tarBinned, tarNudgedFName)
             tarNudged.Save(tarNudgedFName)
+            'Nudging not needed, so close binned grid now that it has been copied
+            tarBinned.Close()
         Else
             progress.Increment("Nudging to reference grid...")
             If (NudgeGrid(tarBinFName, refGridFName, tarNudgedFName)) Then
             Else
+                MsgBox("Nudging failed on " & tarBinFName)
             End If
-
         End If
 
         ' The grid is now nudged, so clip to final shapefile and return it.
@@ -580,7 +591,6 @@ Public Class DataPrepForm
         tarNudged.Open(tarNudgedFName)
         tarAOI.Open(aoiFName)
         progress.Increment("Clipping to final non-buffered, projected AOI!")
-        'SpatialOperations.ClipGridWithPolygon(tarNudgedFName, tarAOI.Shape(0), tarFinalFName, False)
         tarFinal = ClipBySelectedPoly(tarNudged, tarAOI.Shape(0), tarFinalFName)
         tarFinal.Save()
         tarFinal.Save(tarFinalFName)
@@ -588,10 +598,10 @@ Public Class DataPrepForm
         ' Close all temporary files to keep everything clean and tidy!
         aoiRasterB20.Close()
         aoiB20.Close()
-        rawGrid.Close()
-        rawGridB20.Close()
-        tarGridB20.Close()
-        tarBinned.Close()
+        'rawGrid.Close()
+        'rawGridB20.Close()
+        'tarGridB20.Close()
+        'tarBinned.Close()
         tarNudged.Close()
         tarFinal.Close()
         Return tarFinalFName
@@ -690,12 +700,14 @@ Public Class DataPrepForm
     End Function
 
     ''' <summary>
-    ''' Resamples a grid to create a new gird with teh specified cell size
+    ''' Resamples a grid to create a new grid with the specified cell size
+    ''' Also converts BYTE grids to SHORT INT grids: OpenNSPECT doesn't like BYTE grids
     ''' </summary>
     ''' <param name="grd"></param>
     ''' <param name="newGridFName"></param>
     ''' <param name="CellSize"></param>
-    ''' <remarks>This code is copied from the MapWindow DoResample function, whic I don't seem to ba able to access.</remarks>
+    ''' <remarks>Most of this code is copied from the MapWindow DoResample function (nto the byte conversion), 
+    ''' which I don't seem to ba able to access.</remarks>
     Public Function DoResample_DLE(ByRef grd As MapWinGIS.Grid, ByVal newGridFName As String, ByVal CellSize As Double) As Boolean
         Dim i, j As Integer
         Dim newGrid As New MapWinGIS.Grid
@@ -704,8 +716,14 @@ Public Class DataPrepForm
         Dim absLeft, absRight, absBottom, absTop As Double
         Dim halfDX, halfDY As Double
         Dim tX, tY, oldX, oldY, nDX, cDX As Double
+        Dim newDataType As New GridDataType
 
         Try
+            If (grd.DataType = GridDataType.ByteDataType) Then
+                newDataType = GridDataType.ShortDataType
+            Else
+                newDataType = grd.DataType
+            End If
             With newHeader
                 numCols = Int((grd.Header.dX * grd.Header.NumberCols) / CellSize)
                 numRows = Int((grd.Header.dY * grd.Header.NumberRows) / CellSize)
@@ -726,7 +744,7 @@ Public Class DataPrepForm
                 newHeader.Key = grd.Header.Key
                 newHeader.Projection = grd.Header.Projection
 
-                If newGrid.CreateNew(newGridFName, newHeader, grd.DataType, grd.Header.NodataValue, True) = False Then
+                If newGrid.CreateNew(newGridFName, newHeader, newDataType, grd.Header.NodataValue, True) = False Then
                     Return False
                 End If
 
@@ -758,6 +776,5 @@ Public Class DataPrepForm
             Return False
         End Try
     End Function
-
 
 End Class
