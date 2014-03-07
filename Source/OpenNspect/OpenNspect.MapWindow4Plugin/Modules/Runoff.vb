@@ -156,10 +156,10 @@ Module Runoff
             Dim strPick(3) As String
             'Array of strings that hold 'pick' numbers
 
-            Dim dblMaxValue As Double
-            Dim dblMinValue As Double
-            Dim i As Short
-            Dim FieldIndex As Short
+            Dim intMaxValue As Integer 'Double
+            Dim intMinValue As Integer ' Double
+            Dim i As Integer
+            Dim FieldIndex As Integer
             Dim booValueFound As Boolean
 
             'STEP 1:  get the records from the database -----------------------------------------------
@@ -179,8 +179,8 @@ Module Runoff
 
             ' pLCRaster.Maximum not updating correctly when adding land Use scenarios 7/30/2012
             ' FIXED 8/30/2012: Temp LC raster updates .Maximum field correctly.
-            dblMaxValue = pLCRaster.Maximum
-            dblMinValue = pLCRaster.Minimum
+            intMaxValue = Int(pLCRaster.Maximum)
+            intMinValue = Int(pLCRaster.Minimum)
 
             'TODO: it looks like some of this code is almost copied, refactor it.
             Dim tablepath = GetRasterTablePath(pLCRaster)
@@ -212,8 +212,15 @@ Module Runoff
                 'STEP 4: Create the strings
                 'Loop through and get all values
                 ' DLE: 109/12: LC rasters may have 0 as min value, but if minval > 1, then start at 1
-                If (dblMinValue > 1) Then dblMinValue = 1
-                For i = dblMinValue To dblMaxValue  ' FIXED DLE 10/9/2012 Start at min value, not 1.  Min may be 0.
+                If (intMinValue > 1) Then intMinValue = 1
+                If (intMinValue < 0) Then
+                    MsgBox("Error! The minimum value in your land cover data is less than zero.  This is generally an error " _
+                           & "and is not allowed. Please check the data, especially check that the NoData flag is " _
+                           & "set correctly." & vbCrLf & vbCrLf _
+                           & "If you have data with valid negative values, please reclassify that data.", MsgBoxStyle.Exclamation, "Land Cover Value Error")
+                    Exit Function
+                End If
+                For i = intMinValue To intMaxValue  ' FIXED DLE 10/9/2012 Start at min value, not 1.  Min may be 0.
                     ' For i = 1 To dblMaxValue  ' FIXED DLE 10/9/2012 Start at min value, not 1.  Min may be 0.
 
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then
