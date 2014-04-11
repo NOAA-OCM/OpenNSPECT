@@ -904,8 +904,9 @@ Friend Class MainForm
             'account for non-adjacent polygons
             If g_Project.UseSelectedPolygons Then
                 If CheckMultiPartPolygon(g_pSelectedPolyClip) Then
-                    MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
-                    Return
+                    'MsgBox("Warning: Your selected polygons are not adjacent.  Please select only polygons that are adjacent.", MsgBoxStyle.Critical, "Non-adjacent Polygons Detected")
+                    'Return DLE 4/3/2014 THIS SHOULD BE TURNED BACK ON OR TESTED  XXXX
+                    '4/3/2014: Tested and seems to work just fine with multi-part and non-adjacent polygons.
                 End If
             End If
 

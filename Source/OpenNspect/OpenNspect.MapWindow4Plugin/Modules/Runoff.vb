@@ -220,13 +220,19 @@ Module Runoff
                            & "If you have data with valid negative values, please reclassify that data.", MsgBoxStyle.Exclamation, "Land Cover Value Error")
                     Exit Function
                 End If
+                Dim TableValue, LCValue As Integer
+
                 For i = intMinValue To intMaxValue  ' FIXED DLE 10/9/2012 Start at min value, not 1.  Min may be 0.
                     ' For i = 1 To dblMaxValue  ' FIXED DLE 10/9/2012 Start at min value, not 1.  Min may be 0.
-
+                    TableValue = mwTable.CellValue(FieldIndex, rowidx)
+                    If TableValue = g_LandCoverRaster.Header.NodataValue Then  ' If reading nodata value, increment row index
+                        rowidx = rowidx + 1
+                    End If
                     If (mwTable.CellValue(FieldIndex, rowidx) = i) Then
                         'MK a new reader was created each time this loop ran, but I couldn't see why as it was passed the same query.
                         booValueFound = False
                         While dataLandClass.Read()
+                            LCValue = dataLandClass("Value")
                             If mwTable.CellValue(FieldIndex, rowidx) = dataLandClass("Value") Then
                                 booValueFound = True
                                 If strPick(0) = "" Then
