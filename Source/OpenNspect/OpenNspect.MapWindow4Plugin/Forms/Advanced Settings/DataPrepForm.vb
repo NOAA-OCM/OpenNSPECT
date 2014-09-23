@@ -348,13 +348,16 @@ Public Class DataPrepForm
         demFinalFName = PrepOneRaster(demFName, aoiBuff20FName, refGridName, dirDataPrep, "DEM")
         Try
             File.Copy(Path.ChangeExtension(demFName, "mwleg"), Path.ChangeExtension(demFinalFName, "mwleg"))
+            If (Not File.Exists(Path.ChangeExtension(demFinalFName, "prj"))) Then
+                File.Copy(Path.ChangeExtension(aoiBuff20FName, "prj"), Path.ChangeExtension(demFinalFName, "prj"))
+            End If
         Catch ex As Exception
             'MsgBox("It looks like there is no MapWindow color file for your original DEM file.  You will get a default set of colors.")
         End Try
         If (cbLoadFinal.Checked) Then
             ' Load DEM into MapWindow
             If (Not AddFeatureLayerToMapFromFileName(demFinalFName)) Then
-                MsgBox("ERROR: Final DEM raster not found: " & vbLf & txtAOI.Text.ToString)
+                MsgBox("ERROR: Final DEM raster not found: " & vbLf & demFinalFName)
             End If
         End If
 
@@ -504,29 +507,27 @@ Public Class DataPrepForm
             aoiB20.Open(tarAOI.Filename)
             ' Now setup some strings for the needed parameters
             If (Not rawProj4.Equals(tarProj4)) Then
-                warpOptions = warpOptions & " -t_srs '" & tarProj4 & "' -t_srs '" & rawProj4 & "' "
+                warpOptions = warpOptions & "-s_srs """ & rawProj4 & """ -t_srs """ & tarProj4 & """ "
             End If
+
+            warpOptions = warpOptions & "-cutline " & tarAOI.Filename.ToString & " -crop_to_cutline "
+            'warpOptions = warpOptions & "-cutline " & tarAOI.Filename.Replace("\", "/") & " -crop_to_cutline "
+            'warpOptions = warpOptions & "-cutline " & tarAOI.Filename & " -crop_to_cutline "
+
             warpOptions = warpOptions & "-tr " & finalCellSize.ToString & " " & finalCellSize.ToString & " "
 
-            'If (rasterSfx = "LC") Then
-            '    warpOptions = warpOptions & "-r near "
-            'Else
-            '    warpOptions = warpOptions & "-r bilinear "
-            'End If
-            'warpOptions = warpOptions &
+            warpOptions = warpOptions & "-dstnodata " & rawGrid.Header.NodataValue.ToString & " "
 
-            warpOptions = warpOptions & " -crop_to_cutline " & "-cutline " & tarAOI.Filename & " "
-            warpOptions = warpOptions & "-srcnodata " & rawGrid.Header.NodataValue.ToString & _
-            " -dstnodata " & rawGrid.Header.NodataValue.ToString & " "
             If (rasterSfx = "LULC") Then
                 warpOptions = warpOptions & "-ot byte -r near "
             Else
                 warpOptions = warpOptions & "-r bilinear "
             End If
-            statusReproject = thisMWUtils.GDALWarp(rawGridName, tarFinalFName, warpOptions)
-            'tarFinal.Save()
-            'tarFinal.Save(tarFinalFName)
 
+            statusReproject = thisMWUtils.GDALWarp(rawGridName, tarFinalFName, warpOptions)
+            'If (statusReproject) Then
+            '    AddFeatureLayerToMapFromFileName(tarFinalFName)
+            'End If
         Else
             If (Not rawProj4.Equals(tarProj4)) Then
                 ' Mismatch between projections, or at least projection parameters.  
