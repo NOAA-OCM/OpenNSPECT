@@ -171,6 +171,7 @@ Module RevisedUniversalSoilLossEquation
                     RasterMath(g_pLSRaster, g_KFactorRaster, g_LandCoverRaster, _RFactorRaster, Nothing, pSoilLossAcres, AllSoilLossCalc)
                     'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
                 End If
+                'DLE: Results now in US tons/(year)/grid cell
                 'END STEP 2: -------------------------------------------------------------------------------
             End If
 
@@ -211,6 +212,7 @@ Module RevisedUniversalSoilLossEquation
                 RasterMath(pSDRRaster, pSoilLossAcres, Nothing, Nothing, Nothing, pSedYieldRaster, SedYieldcalc)
                 pSDRRaster.Close()
                 pSoilLossAcres.Close()
+                'DLE: Units are now Kilogram/year.  SedYieldCalc converts from US tons to kg.
                 'END STEP 11: --------------------------------------------------------------------------------
             End If
 
@@ -229,10 +231,14 @@ Module RevisedUniversalSoilLossEquation
                 End If
 
                 'Metadata
-                g_dicMetadata.Add("Sediment Local Effects (mg)", _strRusleMetadata)
-                writeMetadata(g_Project.ProjectName, "Sediment Local Effects (mg)", _strRusleMetadata, pPermRUSLELocRaster.Filename)
+                'g_dicMetadata.Add("Sediment Local Effects (mg)", _strRusleMetadata)
+                'writeMetadata(g_Project.ProjectName, "Sediment Local Effects (mg)", _strRusleMetadata, pPermRUSLELocRaster.Filename)
+                'AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
+                ' Correct units (DLE: 09/23/2014)
+                g_dicMetadata.Add("Sediment Local Effects (kg)", _strRusleMetadata)
+                writeMetadata(g_Project.ProjectName, "Sediment Local Effects (kg)", _strRusleMetadata, pPermRUSLELocRaster.Filename)
+                AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (kg)", "RUSLE Local", -1, OutputItems)
 
-                AddOutputGridLayer(pPermRUSLELocRaster, "Brown", True, "Sediment Local Effects (mg)", "RUSLE Local", -1, OutputItems)
 
             Else
                 pSedYieldRaster.Save()
@@ -286,10 +292,13 @@ Module RevisedUniversalSoilLossEquation
                 End If
 
                 'Metadata
-                g_dicMetadata.Add("Accumulated Sediment (kg)", _strRusleMetadata)
-                writeMetadata(g_Project.ProjectName, "Accumulated Sediment (kg)", _strRusleMetadata, pPermAccumSedRaster.Filename)
-
-                AddOutputGridLayer(pPermAccumSedRaster, "Brown", True, "Accumulated Sediment (kg)", "RUSLE Accum", -1, OutputItems)
+                'g_dicMetadata.Add("Accumulated Sediment (kg)", _strRusleMetadata)
+                'writeMetadata(g_Project.ProjectName, "Accumulated Sediment (Mg)", _strRusleMetadata, pPermAccumSedRaster.Filename)
+                'AddOutputGridLayer(pPermAccumSedRaster, "Brown", True, "Accumulated Sediment (kg)", "RUSLE Accum", -1, OutputItems)
+                'Correct units DLE: 09/23/2014
+                g_dicMetadata.Add("Accumulated Sediment (Mg)", _strRusleMetadata)
+                writeMetadata(g_Project.ProjectName, "Accumulated Sediment (Mg)", _strRusleMetadata, pPermAccumSedRaster.Filename)
+                AddOutputGridLayer(pPermAccumSedRaster, "Brown", True, "Accumulated Sediment (Mg)", "RUSLE Accum", -1, OutputItems)
             End If
 
             CalcRUSLE = True
@@ -314,12 +323,12 @@ Module RevisedUniversalSoilLossEquation
                 Exit For
             End If
         Next
-
+        'DLE: Note that 0.00247... converts m^2 into acres, as needed for the calculation 9/22/2014
         If Not _booUsingConstantValue Then 'If not using a constant
-            'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]"
+            'strExpression = "[rfactor] * [kfactor] * [lsfactor] * [cfactor]" * Cellsize in acres <-- DLE
             Return (Math.Pow(g_CellSize, 2) * 0.000247104369) * Input1 * Input2 * tmpval * Input4
         Else 'if using a constant
-            'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]"
+            'strExpression = _dblRFactorConstant & " * [kfactor] * [lsfactor] * [cfactor]" * Cellsize in acres <-- DLE
             Return (Math.Pow(g_CellSize, 2) * 0.000247104369) * _dblRFactorConstant * Input1 * Input2 * tmpval
         End If
 
@@ -327,7 +336,7 @@ Module RevisedUniversalSoilLossEquation
 
     Private Function pZSedCellCalc(ByRef InputBox1(,) As Single, ByVal Input1Null As Single, ByRef InputBox2(,) As Single, ByVal Input2Null As Single, ByRef InputBox3(,) As Single, ByVal Input3Null As Single, ByRef InputBox4(,) As Single, ByVal Input4Null As Single, ByRef InputBox5(,) As Single, ByVal Input5Null As Single, ByVal OutNull As Single) As Single
         'strExpression = "Con(([fdrnib] ge 0.5 and [fdrnib] lt 1.5), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 1.5 and [fdrnib] lt 3.0), (([dem_2b] - [dem_2b](1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 3.0 and [fdrnib] lt 6.0), (([dem_2b] - [dem_2b](0,1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 6.0 and [fdrnib] lt 12.0), (([dem_2b] - [dem_2b](-1,1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 12.0 and [fdrnib] lt 24.0), (([dem_2b] - [dem_2b](-1,0)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 24.0 and [fdrnib] lt 48.0), (([dem_2b] - [dem_2b](-1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 48.0 and [fdrnib] lt 96.0), (([dem_2b] - [dem_2b](0,-1)) / (" & g_dblCellSize & " * 0.001))," & "Con(([fdrnib] ge 96.0 and [fdrnib] lt 192.0), (([dem_2b] - [dem_2b](1,-1)) / (" & g_dblCellSize & " * 0.0014142))," & "Con(([fdrnib] ge 192.0 and [fdrnib] le 255.0), (([dem_2b] - [dem_2b](1,0)) / (" & g_dblCellSize & " * 0.001))," & "0.1)))))))))"
-
+        ' Outputs length in kilometers
         If InputBox1(1, 1) <> Input1Null Then
             If InputBox2(1, 1) <> Input2Null Then
                 If InputBox1(1, 1) >= 0.5 And InputBox1(1, 1) < 1.5 Then
@@ -428,12 +437,12 @@ Module RevisedUniversalSoilLossEquation
 
         'strExpression = "(float(con([DEM] >= 0, " & g_dblCellSize & ", 0))) / 1000"
         If Input1 >= 0 Then
-            kmval = g_CellSize / 1000.0
+            kmval = g_CellSize / 1000.0 'DLE Converts from meters to KM
         Else
             kmval = 0
         End If
 
-        daval = Math.Pow(kmval, 2)
+        daval = Math.Pow(kmval, 2) ' DLE: km^2
         tmp3val = Math.Pow(daval, -0.0998)
         tmp4val = Math.Pow(Input2, 0.3629)
         tmp5val = Math.Pow(Input3, 5.444)
@@ -449,11 +458,13 @@ Module RevisedUniversalSoilLossEquation
     Private Function sedYieldCellCalc(ByVal soilLossAC As Single, ByVal Sdr As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "([soil_loss_ac] * [sdr]) * 907.18474"
         Return soilLossAC * Sdr * 907.18474
+        'DLE: 907.1874 converts US tons (short tons) to kilograms.
     End Function
 
     Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
-        Return Input1 * 0.000001
+        'Return Input1 * 0.000001
+        Return Input1 * 0.001 'DLE: Convert kg to Mg (metric tons) for Accumulated Sed. 9/23/2014
     End Function
 #End Region
 End Module

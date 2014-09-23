@@ -360,10 +360,13 @@ Module ModifiedUniversalSoilLossEquation
                 End If
 
                 'metadata time
-                g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
-                writeMetadata(g_Project.ProjectName, "MUSLE Local Effects (mg)", _strMusleMetadata, pPermMUSLERaster.Filename)
-
-                AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
+                'g_dicMetadata.Add("MUSLE Local Effects (mg)", _strMusleMetadata)
+                'writeMetadata(g_Project.ProjectName, "MUSLE Local Effects (mg)", _strMusleMetadata, pPermMUSLERaster.Filename)
+                'AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (mg)", "MUSLE Local", -1, OutputItems)
+                'Correct units to kg
+                g_dicMetadata.Add("MUSLE Local Effects (kg)", _strMusleMetadata)
+                writeMetadata(g_Project.ProjectName, "MUSLE Local Effects (kg)", _strMusleMetadata, pPermMUSLERaster.Filename)
+                AddOutputGridLayer(pPermMUSLERaster, "Brown", True, "MUSLE Local Effects (kg)", "MUSLE Local", -1, OutputItems)
 
             Else
                 pHISYMGRasterNoNull.Save()
@@ -417,10 +420,14 @@ Module ModifiedUniversalSoilLossEquation
                 End If
 
                 'Metadata:
-                g_dicMetadata.Add("MUSLE Sediment Mass (kg)", _strMusleMetadata)
-                writeMetadata(g_Project.ProjectName, "MUSLE Sediment Mass (kg)", _strMusleMetadata, pPermTotSedConcHIraster.Filename)
+                'g_dicMetadata.Add("MUSLE Sediment Mass (kg)", _strMusleMetadata)
+                'writeMetadata(g_Project.ProjectName, "MUSLE Sediment Mass (kg)", _strMusleMetadata, pPermTotSedConcHIraster.Filename)
 
-                AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (kg)", "MUSLE Accum", -1, OutputItems)
+                'AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (kg)", "MUSLE Accum", -1, OutputItems)
+                g_dicMetadata.Add("MUSLE Sediment Mass (Mg)", _strMusleMetadata)
+                writeMetadata(g_Project.ProjectName, "MUSLE Sediment Mass (Mg)", _strMusleMetadata, pPermTotSedConcHIraster.Filename)
+
+                AddOutputGridLayer(pPermTotSedConcHIraster, "Brown", True, "MUSLE Sediment Mass (Mg)", "MUSLE Accum", -1, OutputItems)
 
             End If
 
@@ -820,7 +827,7 @@ Module ModifiedUniversalSoilLossEquation
         hisyval = _dblMUSLEVal * (cfactval * Input3 * Input4 * Input1)
 
         'strExpression = "[sy] * 907.184740"
-        Return hisyval * 907.18474
+        Return hisyval * 907.18474 'DLE: Converts US tons to kilograms
 
     End Function
 
@@ -835,7 +842,8 @@ Module ModifiedUniversalSoilLossEquation
     End Function
     Private Function multAccumCellCalc(ByVal Input1 As Single, ByVal Input2 As Single, ByVal Input3 As Single, ByVal Input4 As Single, ByVal Input5 As Single, ByVal OutNull As Single) As Single
         'strExpression = "(FlowAccumulation([flowdir], [massvolume], FLOAT)) * 1.0e-6"
-        Return Input1 * 0.000001
+        'Return Input1 * 0.000001
+        Return Input1 * 0.001 'DLE: Convert kg to Mg (metric tons) for Accumulated Sed. 9/23/2014
     End Function
 #End Region
 End Module
