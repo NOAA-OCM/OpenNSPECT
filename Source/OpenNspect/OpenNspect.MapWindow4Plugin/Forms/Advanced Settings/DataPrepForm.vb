@@ -510,7 +510,7 @@ Public Class DataPrepForm
                 warpOptions = warpOptions & "-s_srs """ & rawProj4 & """ -t_srs """ & tarProj4 & """ "
             End If
 
-            warpOptions = warpOptions & "-cutline " & tarAOI.Filename.ToString & " -crop_to_cutline "
+            'warpOptions = warpOptions & "'-cutline " & tarAOI.Filename.ToString & "' -crop_to_cutline "
             'warpOptions = warpOptions & "-cutline " & tarAOI.Filename.Replace("\", "/") & " -crop_to_cutline "
             'warpOptions = warpOptions & "-cutline " & tarAOI.Filename & " -crop_to_cutline "
 
@@ -519,16 +519,14 @@ Public Class DataPrepForm
             warpOptions = warpOptions & "-dstnodata " & rawGrid.Header.NodataValue.ToString & " "
 
             If (rasterSfx = "LULC") Then
-                warpOptions = warpOptions & "-ot byte -r near "
+                warpOptions = warpOptions & "-ot Int16 -r near "
             Else
                 warpOptions = warpOptions & "-r bilinear "
             End If
 
             statusReproject = thisMWUtils.GDALWarp(rawGridName, tarFinalFName, warpOptions)
-            'If (statusReproject) Then
-            '    AddFeatureLayerToMapFromFileName(tarFinalFName)
-            'End If
-        Else
+            'ADD CLIPPING HERE SINCE GDALWARP ISN'T DOING IT.
+         Else
             If (Not rawProj4.Equals(tarProj4)) Then
                 ' Mismatch between projections, or at least projection parameters.  
                 ' Reproject Buffered Target AOI shapefile to  Raw Raster Projection and CLIP the RAW Raster
