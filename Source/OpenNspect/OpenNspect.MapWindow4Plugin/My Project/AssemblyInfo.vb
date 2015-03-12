@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("OpenNSPECT")> 
-<Assembly: AssemblyDescription ("Nonpoint-Source Pollution and Erosion Comparison Tool")>
-<Assembly: AssemblyCompany("NOAA Coastal Services Center and http://nspect.codeplex.com/")> 
-<Assembly: AssemblyProduct("OpenNSPECT")> 
-<Assembly: AssemblyCopyright ("Copyright © 2011")>
+<Assembly: AssemblyDescription("Nonpoint-Source Pollution and Erosion Comparison Tool")> 
+<Assembly: AssemblyCompany("NOAA Office for Coastal Management")> 
+<Assembly: AssemblyProduct("OpenNSPECT (http://nspect.codeplex.com/)")> 
+<Assembly: AssemblyCopyright("Copyright © 2011-2015")> 
 <Assembly: AssemblyTrademark ("OpenNSPECT (tm)")>
 
 <Assembly: ComVisible (False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 
 '
 '<Assembly: AssemblyVersion("1.1.1.0")> 
-<Assembly: AssemblyVersion("1.2.0.*")> 
+<Assembly: AssemblyVersion("1.2.1.*")> 
 <Assembly: AssemblyFileVersion("1.2.0.1")> 
