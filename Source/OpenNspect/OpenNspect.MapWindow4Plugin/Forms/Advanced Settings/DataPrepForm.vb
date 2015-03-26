@@ -369,8 +369,13 @@ Public Class DataPrepForm
             Try
                 File.Copy(Path.ChangeExtension(lcFName, "mwleg"), Path.ChangeExtension(lcFinalFName, "mwleg"))
             Catch ex As Exception
-                MsgBox("It looks like there is no MapWindow color file for your original Land Cover file.  You just get a default set of colors.")
+                MsgBox("No MapWindow color file for your original Land Cover file.  Trying the default CCAP colors.")
+                File.Copy("C:\NSPECT\coefficients\ccap2001\CCAP_2001_Classification.mwleg", _
+                          Path.ChangeExtension(lcFinalFName, "mwleg"))
             End Try
+            If (Not File.Exists(Path.ChangeExtension(lcFinalFName, "prj"))) Then
+                File.Copy(Path.ChangeExtension(aoiBuff20FName, "prj"), Path.ChangeExtension(lcFinalFName, "prj"))
+            End If
             If (cbLoadFinal.Checked) Then
                 ' Load LULC into MapWindow
                 If (Not AddFeatureLayerToMapFromFileName(lcFinalFName)) Then
@@ -388,8 +393,11 @@ Public Class DataPrepForm
             Try
                 File.Copy(Path.ChangeExtension(precipFName, "mwleg"), Path.ChangeExtension(precipFinalFName, "mwleg"))
             Catch ex As Exception
-                MsgBox("It looks like there is no MapWindow color file for your original Precip file.  You will get a default set of colors.")
+                '   MsgBox("It looks like there is no MapWindow color file for your original Precip file.  You will get a default set of colors.")
             End Try
+            If (Not File.Exists(Path.ChangeExtension(precipFinalFName, "prj"))) Then
+                File.Copy(Path.ChangeExtension(aoiBuff20FName, "prj"), Path.ChangeExtension(precipFinalFName, "prj"))
+            End If
             If (cbLoadFinal.Checked) Then
                 ' Load DEM into MapWindow
                 If (Not AddFeatureLayerToMapFromFileName(precipFinalFName)) Then
@@ -408,6 +416,9 @@ Public Class DataPrepForm
             Catch ex As Exception
                 MsgBox("It looks like there is no MapWindow color file for your original R-Factor file.  You will get a default set of colors.")
             End Try
+            If (Not File.Exists(Path.ChangeExtension(rfFinalFName, "prj"))) Then
+                File.Copy(Path.ChangeExtension(aoiBuff20FName, "prj"), Path.ChangeExtension(rfFinalFName, "prj"))
+            End If
             If (cbLoadFinal.Checked) Then
                 ' Load DEM into MapWindow
                 If (Not AddFeatureLayerToMapFromFileName(rfFinalFName)) Then
@@ -471,7 +482,7 @@ Public Class DataPrepForm
         Dim tarNudged As New Grid   ' Nudged grid, ready for final clipping
         Dim tarFinal As New Grid    ' Final projected, nudged and clipped grid
         Dim tarFinalFName As String    ' Final projected, nudged and clipped grid Name
-        Dim clippedFName As String    ' Clipped grid Name, may be in correct projection or may not be
+        Dim clipFName As String    ' Clipped grid Name, may be in correct projection or may not be
         Dim tarBinFName As String
         Dim tarNudgedFName As String
         Dim tmpFName As String    ' Just a temporary file name variable
@@ -486,7 +497,7 @@ Public Class DataPrepForm
         Dim tmpMessage As String
         tmpMessage = "Data Prep on " & Path.GetFileNameWithoutExtension(rawGridName)
 
-        Dim progress As New SynchronousProgressDialog("Begin processing...", tmpMessage, 7, Me)
+        Dim progress As New SynchronousProgressDialog("Begin processing...", tmpMessage, 3, Me)
 
         ' Check projections and cell sizes and change as needed:
         ' N.B.: Had to change this since the GeoProjection.IsSame method can produce a TRUE value
@@ -494,29 +505,45 @@ Public Class DataPrepForm
         '        If (Not rawGrid.Header.GeoProjection.IsSame(tarGeoProj)) Then
 
         Dim rawProj4 As String = rawGrid.Header.GeoProjection.ExportToProj4
+        'moved from within non-GDAL area
+        progress.Increment("Reprojecting buffered AOI shapefile...")
+        aoiRasterB20 = aoiB20.Reproject(rawGrid.Header.GeoProjection, 1)
+        tmpFName = dirOtherProj & "aoiRasterB20" & rasterSfx & ".shp"
+        aoiRasterB20.SaveAs(tmpFName)
+
         If (onlyGDAL) Then
             Dim warpOptions As String = ""
             Dim thisMWUtils As New MapWinGIS.Utils
             ' Set up some file names.  GDALwarp should go right from input data to clipped, reprojected final data... in theory
             ' DLE 8/26/2014
             rawGridB20Fname = dirOtherProj & Path.GetFileNameWithoutExtension(rawGridName) & "B20" & rasterSfx & ".tif"
-            clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
+            tarBinFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & "warped" & ".tif"
             tarFinalFName = dirDataPrep & "\" & Path.GetFileNameWithoutExtension(rawGridName) & "_DP.tif"
-            tarFinal.Open(tarFinalFName)
+            'tarFinal.Open(tarFinalFName)
+            'tarBinned.Open(tarBinFName)
             aoiB20.Close()  ' Hopefully this will close the intial aoiB20 and open a new shapefile with the unbuffered shape.
             aoiB20.Open(tarAOI.Filename)
             ' Now setup some strings for the needed parameters
-            If (Not rawProj4.Equals(tarProj4)) Then
-                warpOptions = warpOptions & "-s_srs """ & rawProj4 & """ -t_srs """ & tarProj4 & """ "
-            End If
+            'If (Not rawProj4.Equals(tarProj4)) Then
+            warpOptions = warpOptions & "-s_srs """ & rawProj4 & """ -t_srs """ & tarProj4 & """ "
+            'End If
 
-            'warpOptions = warpOptions & "'-cutline " & tarAOI.Filename.ToString & "' -crop_to_cutline "
-            'warpOptions = warpOptions & "-cutline " & tarAOI.Filename.Replace("\", "/") & " -crop_to_cutline "
-            'warpOptions = warpOptions & "-cutline " & tarAOI.Filename & " -crop_to_cutline "
-
+            ' Find and define spatial extent based on shapefile.  This should force all rasters to be binned the same.
+            Dim xMin, yMin, zMin, xMax, yMax, zMax As Double
+            aoiB20.Extents.GetBounds(xMin, yMin, zMin, xMax, yMax, zMax)
+            Dim xMtmp As Double = xMax + finalCellSize
+            Dim yMtmp As Double = yMax + finalCellSize
+            warpOptions = warpOptions & "-te " & xMin.ToString & " " & yMin.ToString & " " & xMtmp.ToString & " " & yMtmp.ToString & " "
             warpOptions = warpOptions & "-tr " & finalCellSize.ToString & " " & finalCellSize.ToString & " "
 
+            warpOptions = warpOptions & "-srcnodata " & rawGrid.Header.NodataValue.ToString & " "
             warpOptions = warpOptions & "-dstnodata " & rawGrid.Header.NodataValue.ToString & " "
+
+            'warpOptions = warpOptions & " -cutline " & tarAOI.Filename & " -cl " & tarAOI.Filename & " -crop_to_cutline "
+            'warpOptions = warpOptions & "'-cutline " & tarAOI.Filename.ToString & "' -crop_to_cutline "
+            'warpOptions = warpOptions & "'-cutline " & tmpFName & "' -crop_to_cutline "
+            'warpOptions = warpOptions & "-cutline " & tarAOI.Filename.Replace("\", "/") & " -crop_to_cutline "
+            'warpOptions = warpOptions & "-cutline " & tarAOI.Filename & " -crop_to_cutline "
 
             If (rasterSfx = "LULC") Then
                 warpOptions = warpOptions & "-ot Int16 -r near "
@@ -524,16 +551,39 @@ Public Class DataPrepForm
                 warpOptions = warpOptions & "-r bilinear "
             End If
 
-            statusReproject = thisMWUtils.GDALWarp(rawGridName, tarFinalFName, warpOptions)
+            'statusReproject = thisMWUtils.GDALWarp(rawGridName, tarFinalFName, warpOptions)
+            progress.Increment("Reprojecting to final projection!")
+            statusReproject = thisMWUtils.GDALWarp(rawGridName, tarBinFName, warpOptions)
             'ADD CLIPPING HERE SINCE GDALWARP ISN'T DOING IT.
-         Else
+            Try
+                statusReproject = False
+                warpOptions = ""
+                ' warpOptions = warpOptions & " -cutline " & tarAOI.Filename & " -cl " & tarAOI.Filename & " -crop_to_cutline "
+                'warpOptions = warpOptions & "'-cutline " & tarAOI.Filename.ToString & "' -crop_to_cutline "
+                'warpOptions = warpOptions & "'-cutline " & tmpFName & "' -crop_to_cutline "
+                'warpOptions = warpOptions & "-cutline " & tarAOI.Filename.Replace("\", "/") & " -crop_to_cutline "
+                warpOptions = warpOptions & "-cutline " & tarAOI.Filename & " -crop_to_cutline "
+                statusReproject = thisMWUtils.GDALWarp(tarBinFName, tarFinalFName, warpOptions)
+
+                'tarFinal.Open(tarFinalFName)
+                'tarBinned.Open(tarBinFName)
+                'tarAOI.Open(aoiFName)
+                'progress.Increment("Clipping warped data to final non-buffered, projected AOI!")
+                ''tarFinal = ClipBySelectedPoly(tarNudged, tarAOI.Shape(0), tarFinalFName)
+                ''rawGridB20 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB20.Shape(0), rawGridB20Fname)
+                'tarFinal = ClipBySelectedPoly(tarBinned, tarAOI.Shape(0), tarFinalFName)
+                ''MsgBox("Clipped raw file = " & rawGridB20Fname)
+            Catch ex As Exception
+                MsgBox("Error on clipping GDALWarp to Final AOI.  Check that AOI and file overlap:" & tarBinFName)
+            End Try
+        Else
             If (Not rawProj4.Equals(tarProj4)) Then
                 ' Mismatch between projections, or at least projection parameters.  
                 ' Reproject Buffered Target AOI shapefile to  Raw Raster Projection and CLIP the RAW Raster
                 progress.Increment("Reprojecting buffered AOI shapefile...")
-                aoiRasterB20 = aoiB20.Reproject(rawGrid.Header.GeoProjection, 1)
-                tmpFName = dirOtherProj & "aoiRasterB20" & rasterSfx & ".shp"
-                aoiRasterB20.SaveAs(tmpFName)
+                'aoiRasterB20 = aoiB20.Reproject(rawGrid.Header.GeoProjection, 1)
+                'tmpFName = dirOtherProj & "aoiRasterB20" & rasterSfx & ".shp"
+                'aoiRasterB20.SaveAs(tmpFName)
                 'MsgBox("New Buffered AOI is  = " & tmpFName.ToString)
 
                 ' Now clip by aoiRasterB20 polygon with fast, rectangular clipping
@@ -552,13 +602,13 @@ Public Class DataPrepForm
                 '    clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
                 'Else
                 'Test if reproject worked and save, if so.  If not, error message
-                clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
+                clipFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
                 progress.Increment("Reprojecting the clipped, buffered grid to target projection")
                 statusReproject = SpatialReference.ProjectGrid(rawGridB20.Header.GeoProjection.ExportToProj4, _
-                                                               tarProj4, rawGridB20Fname, clippedFName, False)
+                                                               tarProj4, rawGridB20Fname, clipFName, False)
                 If (statusReproject) Then
                     ' MsgBox("Reprojected buffered file is " & clippedFName)
-                    tarGridB20.Open(clippedFName)
+                    tarGridB20.Open(clipFName)
                     rawGridB20.Close()  ' Close RawGridB20, should be done with it
                 Else
                     MsgBox("Error in reprojecting " & rawGridB20Fname.ToString, MsgBoxStyle.OkCancel)
@@ -570,11 +620,11 @@ Public Class DataPrepForm
                 rawGridB20Fname = dirTarProj & Path.GetFileNameWithoutExtension(rawGridName) & "B20" & rasterSfx & ".tif"
                 ' MsgBox("Clipped raw file = " & rawGridB20Fname)
                 progress.Increment("Reprojection not needed.  Clipping to buffered AOI...")
-                clippedFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
+                clipFName = dirTarProj & Path.GetFileNameWithoutExtension(rawGridB20Fname) & ".tif"
                 ' tarGridB20.Open(clippedFName)
                 tarGridB20 = ClipBySelectedPolyExtents(rawGrid, aoiRasterB20.Shape(0), rawGridB20Fname)
-                If (Not tarGridB20.Save(clippedFName)) Then
-                    MsgBox("Error trying to save " & clippedFName)
+                If (Not tarGridB20.Save(clipFName)) Then
+                    MsgBox("Error trying to save " & clipFName)
                 End If
                 rawGrid.Close() 'Done with rawGrid for the no-projection section
             End If
@@ -590,7 +640,7 @@ Public Class DataPrepForm
             '    tarNudged    ' Nudged grid, ready for final clipping
             '    tarFinal     ' Final projected, nudged and clipped grid
 
-            tarBinFName = dirTarProj & Path.GetFileNameWithoutExtension(clippedFName) & "_B.tif"
+            tarBinFName = dirTarProj & Path.GetFileNameWithoutExtension(clipFName) & "_B.tif"
             tarNudgedFName = dirTarProj & Path.GetFileNameWithoutExtension(tarBinFName) & "_N.tif"
             progress.Increment("Binning to target cell size...")
 

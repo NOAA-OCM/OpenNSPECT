@@ -17,6 +17,10 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports MapWindow.Interfaces
 Imports System.Reflection
+'Imports LegendControl
+Imports MapWinGIS
+Imports OpenNspect.Xml
+
 
 Public Class MapWindowPlugin
     Implements IPlugin
@@ -24,6 +28,7 @@ Public Class MapWindowPlugin
 
     Private Const mnuNspectMain As String = "mnunspectMainMenu"
     Private Const mnuNspectAnalysis As String = "mnunspectAnalysis"
+    Private Const mnuLoadAnalysis As String = "mnuLoadAnalysis"
     Private Const mnuNspectCompare As String = "mnunspectCompare"
     Private Const mnuNspectAdvSettings As String = "mnunspectAdvancedSettings"
     Private Const mnuNspectAdvPreProc As String = "mnunspectPreProc"
@@ -221,6 +226,9 @@ Public Class MapWindowPlugin
         Select Case ItemName
             Case mnuNspectAnalysis
                 ShowAnalysisForm()
+            Case mnuLoadAnalysis
+                'ShowLoadAnalysisForm()
+                LoadPreviousAnalysis()
             Case mnuNspectCompare
                 ShowCompareOutputsForm()
             Case mnuNspectAdvPreProc
@@ -261,6 +269,8 @@ Public Class MapWindowPlugin
             _MenuItems.Push(mnuNspectMain)
             .AddMenu(mnuNspectAnalysis, mnuNspectMain, Nothing, "Run Analysis...")
             _MenuItems.Push(mnuNspectAnalysis)
+            .AddMenu(mnuLoadAnalysis, mnuNspectMain, Nothing, "Load Previous Analysis...")
+            _MenuItems.Push(mnuLoadAnalysis)
             .AddMenu("mnunspectsep0", mnuNspectMain, Nothing, "-")
             _MenuItems.Push("mnunspectsep0")
             .AddMenu(mnuNspectCompare, mnuNspectMain, Nothing, "Compare Outputs...")
@@ -300,6 +310,68 @@ Public Class MapWindowPlugin
         g_MainForm = New MainForm
         g_MainForm.ShowDialog()
     End Sub
+
+
+    Private Sub LoadPreviousAnalysis()
+        ' This is an almost direct copy of AddToLegendFromProj() subroutine from the CompareOutputsForm.  
+        ' There could be some refactoring to only have one copy.
+        ' The difference is there is no RefreshLeft and RefreshRight routines here, since there is no comparison
+        ' DLE 2015 March 26
+        '
+        Try
+            Dim strFolder As String = g_nspectDocPath & "\projects"
+            If Not Directory.Exists(strFolder) Then
+                MkDir(strFolder)
+            End If
+            Dim dlgXmlOpen As New OpenFileDialog
+            With dlgXmlOpen
+                .Filter = MSG8XmlFile
+                .InitialDirectory = strFolder
+                .Title = "Open OpenNSPECT Project File"
+                .FilterIndex = 1
+                .ShowDialog()
+            End With
+
+            Dim prj As ProjectFile
+            Dim filesExist As Boolean
+            Dim tmprast As Grid
+            Dim outitem As OutputItem
+            If Len(dlgXmlOpen.FileName) > 0 Then
+                Try
+                    prj = New ProjectFile
+                    prj.Xml = dlgXmlOpen.FileName
+                    If prj.OutputItems.Count > 0 Then
+                        filesExist = True
+                        For j As Integer = 0 To prj.OutputItems.Count - 1
+                            outitem = prj.OutputItems.Item(j)
+                            If Not File.Exists(outitem.strPath) Then
+                                filesExist = False
+                                Exit For
+                            End If
+                        Next
+                        If filesExist Then
+                            Dim tmpgrp As Integer = MapWindowPlugin.MapWindowInstance.Layers.Groups.Add(prj.ProjectName)
+                            For j As Integer = 0 To prj.OutputItems.Count - 1
+                                outitem = prj.OutputItems.Item(j)
+                                tmprast = New Grid
+                                tmprast.Open(outitem.strPath)
+                                AddOutputGridLayer(tmprast, outitem.strColor, outitem.booUseStretch, outitem.strName, "", tmpgrp, Nothing)
+                            Next
+                        Else
+                            MsgBox("The outputs associated with that project file cannot be found.", MsgBoxStyle.Exclamation, "Missing Output Files")
+                        End If
+                    End If
+                Catch ex As Exception
+                    MsgBox("That project file doesn't seem to be valid. Please make sure you select a valid NSPECT project file.", MsgBoxStyle.Exclamation, "Project File Not Valid")
+                End Try
+            Else
+                Return
+            End If
+        Catch ex As Exception
+            HandleError(ex)
+        End Try
+    End Sub
+
 
     Private Shared Sub ShowCompareOutputsForm()
         Using tmp As New CompareOutputsForm()
