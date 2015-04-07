@@ -211,7 +211,7 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel12.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.36424!))
         Me.TableLayoutPanel12.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.63576!))
         Me.TableLayoutPanel12.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 128.0!))
-        Me.TableLayoutPanel12.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105.0!))
+        Me.TableLayoutPanel12.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 106.0!))
         Me.TableLayoutPanel12.Controls.Add(Me.Label16, 1, 2)
         Me.TableLayoutPanel12.Controls.Add(Me.txtRFParams, 2, 2)
         Me.TableLayoutPanel12.Controls.Add(Me.TableLayoutPanel13, 1, 1)
@@ -264,7 +264,7 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel13.Name = "TableLayoutPanel13"
         Me.TableLayoutPanel13.RowCount = 1
         Me.TableLayoutPanel13.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel13.Size = New System.Drawing.Size(385, 34)
+        Me.TableLayoutPanel13.Size = New System.Drawing.Size(384, 34)
         Me.TableLayoutPanel13.TabIndex = 14
         '
         'Label17
@@ -281,7 +281,7 @@ Partial Class DataPrepForm
         Me.txtRFProj.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.txtRFProj.ForeColor = System.Drawing.SystemColors.GrayText
-        Me.txtRFProj.Location = New System.Drawing.Point(106, 3)
+        Me.txtRFProj.Location = New System.Drawing.Point(105, 3)
         Me.txtRFProj.Name = "txtRFProj"
         Me.txtRFProj.ReadOnly = True
         Me.txtRFProj.Size = New System.Drawing.Size(276, 20)
@@ -292,12 +292,12 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel12.SetColumnSpan(Me.txtRFName, 3)
         Me.txtRFName.Location = New System.Drawing.Point(76, 3)
         Me.txtRFName.Name = "txtRFName"
-        Me.txtRFName.Size = New System.Drawing.Size(513, 20)
+        Me.txtRFName.Size = New System.Drawing.Size(512, 20)
         Me.txtRFName.TabIndex = 9
         '
         'btnOpenRF
         '
-        Me.btnOpenRF.Location = New System.Drawing.Point(595, 3)
+        Me.btnOpenRF.Location = New System.Drawing.Point(594, 3)
         Me.btnOpenRF.Name = "btnOpenRF"
         Me.btnOpenRF.Size = New System.Drawing.Size(73, 23)
         Me.btnOpenRF.TabIndex = 12
@@ -382,7 +382,7 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.36424!))
         Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.63576!))
         Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 128.0!))
-        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105.0!))
+        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 106.0!))
         Me.TableLayoutPanel5.Controls.Add(Me.Label13, 1, 2)
         Me.TableLayoutPanel5.Controls.Add(Me.txtPrecipParams, 2, 2)
         Me.TableLayoutPanel5.Controls.Add(Me.TableLayoutPanel9, 1, 1)
@@ -435,7 +435,7 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel9.Name = "TableLayoutPanel9"
         Me.TableLayoutPanel9.RowCount = 1
         Me.TableLayoutPanel9.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel9.Size = New System.Drawing.Size(384, 34)
+        Me.TableLayoutPanel9.Size = New System.Drawing.Size(383, 34)
         Me.TableLayoutPanel9.TabIndex = 14
         '
         'Label10
@@ -455,7 +455,7 @@ Partial Class DataPrepForm
         Me.txtPrecipProj.Location = New System.Drawing.Point(105, 3)
         Me.txtPrecipProj.Name = "txtPrecipProj"
         Me.txtPrecipProj.ReadOnly = True
-        Me.txtPrecipProj.Size = New System.Drawing.Size(276, 20)
+        Me.txtPrecipProj.Size = New System.Drawing.Size(275, 20)
         Me.txtPrecipProj.TabIndex = 11
         '
         'txtPrecipName
@@ -463,12 +463,12 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel5.SetColumnSpan(Me.txtPrecipName, 3)
         Me.txtPrecipName.Location = New System.Drawing.Point(77, 3)
         Me.txtPrecipName.Name = "txtPrecipName"
-        Me.txtPrecipName.Size = New System.Drawing.Size(512, 20)
+        Me.txtPrecipName.Size = New System.Drawing.Size(511, 20)
         Me.txtPrecipName.TabIndex = 9
         '
         'btnOpenPrecip
         '
-        Me.btnOpenPrecip.Location = New System.Drawing.Point(595, 3)
+        Me.btnOpenPrecip.Location = New System.Drawing.Point(594, 3)
         Me.btnOpenPrecip.Name = "btnOpenPrecip"
         Me.btnOpenPrecip.Size = New System.Drawing.Size(73, 23)
         Me.btnOpenPrecip.TabIndex = 12
@@ -553,7 +553,7 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.36424!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.63576!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 131.0!))
-        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 103.0!))
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 104.0!))
         Me.TableLayoutPanel3.Controls.Add(Me.Label12, 1, 2)
         Me.TableLayoutPanel3.Controls.Add(Me.txtLCParams, 2, 2)
         Me.TableLayoutPanel3.Controls.Add(Me.TableLayoutPanel7, 1, 1)
@@ -607,7 +607,7 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel7.RowCount = 2
         Me.TableLayoutPanel7.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel7.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel7.Size = New System.Drawing.Size(383, 34)
+        Me.TableLayoutPanel7.Size = New System.Drawing.Size(382, 34)
         Me.TableLayoutPanel7.TabIndex = 14
         '
         'Label9
@@ -627,7 +627,7 @@ Partial Class DataPrepForm
         Me.txtLCProj.Location = New System.Drawing.Point(105, 3)
         Me.txtLCProj.Name = "txtLCProj"
         Me.txtLCProj.ReadOnly = True
-        Me.txtLCProj.Size = New System.Drawing.Size(275, 20)
+        Me.txtLCProj.Size = New System.Drawing.Size(274, 20)
         Me.txtLCProj.TabIndex = 11
         '
         'txtLCName
@@ -635,12 +635,12 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel3.SetColumnSpan(Me.txtLCName, 3)
         Me.txtLCName.Location = New System.Drawing.Point(77, 3)
         Me.txtLCName.Name = "txtLCName"
-        Me.txtLCName.Size = New System.Drawing.Size(514, 20)
+        Me.txtLCName.Size = New System.Drawing.Size(513, 20)
         Me.txtLCName.TabIndex = 9
         '
         'btnOpenLC
         '
-        Me.btnOpenLC.Location = New System.Drawing.Point(597, 3)
+        Me.btnOpenLC.Location = New System.Drawing.Point(596, 3)
         Me.btnOpenLC.Name = "btnOpenLC"
         Me.btnOpenLC.Size = New System.Drawing.Size(72, 23)
         Me.btnOpenLC.TabIndex = 12
@@ -724,7 +724,7 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.36424!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.63576!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 234.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 106.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.Label11, 0, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel8, 0, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.txtDEMParams, 1, 2)
@@ -767,7 +767,7 @@ Partial Class DataPrepForm
         Me.TableLayoutPanel8.RowCount = 2
         Me.TableLayoutPanel8.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel8.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel8.Size = New System.Drawing.Size(352, 34)
+        Me.TableLayoutPanel8.Size = New System.Drawing.Size(351, 34)
         Me.TableLayoutPanel8.TabIndex = 13
         '
         'Label8
@@ -787,14 +787,14 @@ Partial Class DataPrepForm
         Me.txtDEMProj.Location = New System.Drawing.Point(97, 3)
         Me.txtDEMProj.Name = "txtDEMProj"
         Me.txtDEMProj.ReadOnly = True
-        Me.txtDEMProj.Size = New System.Drawing.Size(252, 20)
+        Me.txtDEMProj.Size = New System.Drawing.Size(251, 20)
         Me.txtDEMProj.TabIndex = 11
         '
         'txtDEMParams
         '
         Me.TableLayoutPanel1.SetColumnSpan(Me.txtDEMParams, 3)
         Me.txtDEMParams.ForeColor = System.Drawing.SystemColors.WindowFrame
-        Me.txtDEMParams.Location = New System.Drawing.Point(76, 72)
+        Me.txtDEMParams.Location = New System.Drawing.Point(75, 72)
         Me.txtDEMParams.Name = "txtDEMParams"
         Me.txtDEMParams.ReadOnly = True
         Me.txtDEMParams.Size = New System.Drawing.Size(591, 20)
@@ -803,7 +803,7 @@ Partial Class DataPrepForm
         'txtDEMName
         '
         Me.TableLayoutPanel1.SetColumnSpan(Me.txtDEMName, 2)
-        Me.txtDEMName.Location = New System.Drawing.Point(76, 3)
+        Me.txtDEMName.Location = New System.Drawing.Point(75, 3)
         Me.txtDEMName.Name = "txtDEMName"
         Me.txtDEMName.Size = New System.Drawing.Size(513, 20)
         Me.txtDEMName.TabIndex = 9
@@ -872,7 +872,7 @@ Partial Class DataPrepForm
         '
         'btnOpenDEM
         '
-        Me.btnOpenDEM.Location = New System.Drawing.Point(595, 3)
+        Me.btnOpenDEM.Location = New System.Drawing.Point(594, 3)
         Me.btnOpenDEM.Name = "btnOpenDEM"
         Me.btnOpenDEM.Size = New System.Drawing.Size(74, 23)
         Me.btnOpenDEM.TabIndex = 12
@@ -1054,6 +1054,7 @@ Partial Class DataPrepForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(741, 848)
         Me.Controls.Add(Me.Label20)
         Me.Controls.Add(Me.cbLoadFinal)
