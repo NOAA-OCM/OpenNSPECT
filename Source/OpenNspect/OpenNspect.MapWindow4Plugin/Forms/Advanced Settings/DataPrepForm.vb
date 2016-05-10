@@ -227,8 +227,7 @@ Public Class DataPrepForm
         End If
     End Sub
 
-    'Private Sub btnRun_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRun.Click
-    Protected Overrides Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
+     Protected Overrides Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim boolCell As Boolean = False
         Try
             'Do Until boolCell
@@ -414,7 +413,7 @@ Public Class DataPrepForm
             Try
                 File.Copy(Path.ChangeExtension(rfFName, "mwleg"), Path.ChangeExtension(rfFinalFName, "mwleg"))
             Catch ex As Exception
-                MsgBox("It looks like there is no MapWindow color file for your original R-Factor file.  You will get a default set of colors.")
+                'MsgBox("It looks like there is no MapWindow color file for your original R-Factor file.  You will get a default set of colors.")
             End Try
             If (Not File.Exists(Path.ChangeExtension(rfFinalFName, "prj"))) Then
                 File.Copy(Path.ChangeExtension(aoiBuff20FName, "prj"), Path.ChangeExtension(rfFinalFName, "prj"))

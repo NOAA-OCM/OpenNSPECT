@@ -49,7 +49,7 @@ Name: help; Description: "Help Files"; Types: Standard_Installation
 Name: {app}; Permissions: everyone-modify
 Name: {app}\projects; Permissions: everyone-modify
 Name: {app}\workspace; Permissions: everyone-modify
-Name: {app}\metadata; Permissions: everyone-modify
+;Name: {app}\metadata; Permissions: everyone-modify
 
 [Files]
 ;Source: "License.rtf"; DestDir: "{app}"; Flags: ignoreversion
@@ -58,7 +58,7 @@ Name: {app}\metadata; Permissions: everyone-modify
 ;Source: "Base Files\help\*"; Excludes: "*..svnbridge*"; DestDir: "{app}\help"; Flags: ignoreversion; Components: help
 ;Source: "Base Files\bin\OpenNspect.MapWindow4Plugin.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly; Components: main
 Source: "HI_Sample_Data\*"; Excludes: "*..svnbridge*,\help\*,\bin,coefficients\ccap2001 - Copy for import"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs uninsneveruninstall; Components: sample_data
-Source: "HI_Sample_Data\help\*"; Excludes: "*..svnbridge*"; DestDir: "{app}\help"; Flags: ignoreversion; Components: help
+Source: "HI_Sample_Data\help\*"; Excludes: "*..svnbridge*,NSPECT - v1.1OLD.chm,NSPECT_old_v1_1_.chm"; DestDir: "{app}\help"; Flags: ignoreversion; Components: help
 Source: "HI_Sample_Data\bin\OpenNspect.MapWindow4Plugin.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly; Components: main
 
 [Registry]

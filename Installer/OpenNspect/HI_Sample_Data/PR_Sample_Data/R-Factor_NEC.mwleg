@@ -1,0 +1,6 @@
+<ColoringScheme SchemeType="Grid" GridName="R-Factor_NEC" GroupName="Data Layers">
+  <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="90" LightSourceElevation="45" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
+    <Break Caption="" LowValue="554.486389" HighValue="665.576752" LowColor="-6029312" HighColor="-32704" ColoringType="1" GradientModel="1" />
+    <Break Caption="" LowValue="665.576752" HighValue="776.667114" LowColor="-32704" HighColor="-65" ColoringType="1" GradientModel="1" />
+  </GridColoringScheme>
+</ColoringScheme>
