@@ -41,8 +41,6 @@
     Public WithEvents txtCoeffSetDesc As System.Windows.Forms.TextBox
     Public WithEvents txtLCType As System.Windows.Forms.TextBox
     Public WithEvents _SSTab1_TabPage0 As System.Windows.Forms.TabPage
-    Public WithEvents Label2 As System.Windows.Forms.Label
-    Public WithEvents _SSTab1_TabPage1 As System.Windows.Forms.TabPage
     Public WithEvents SSTab1 As System.Windows.Forms.TabControl
     Public WithEvents cboPollName As System.Windows.Forms.ComboBox
     Public WithEvents _Label1_0 As System.Windows.Forms.Label
@@ -85,21 +83,12 @@
         Me.txtCoeffSetDesc = New System.Windows.Forms.TextBox()
         Me.txtLCType = New System.Windows.Forms.TextBox()
         Me._Label1_5 = New System.Windows.Forms.Label()
-        Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage()
-        Me.dgvWaterQuality = New System.Windows.Forms.DataGridView()
-        Me.ColName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Description = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Threshold = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PollID = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.cboPollName = New System.Windows.Forms.ComboBox()
         Me._Label1_0 = New System.Windows.Forms.Label()
         Me.MainMenu1.SuspendLayout()
         Me.SSTab1.SuspendLayout()
         Me._SSTab1_TabPage0.SuspendLayout()
         CType(Me.dgvCoef, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me._SSTab1_TabPage1.SuspendLayout()
-        CType(Me.dgvWaterQuality, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'MainMenu1
@@ -193,7 +182,6 @@
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
-        Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
         Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
         Me.SSTab1.Location = New System.Drawing.Point(13, 58)
         Me.SSTab1.Name = "SSTab1"
@@ -378,66 +366,6 @@
         Me._Label1_5.TabIndex = 8
         Me._Label1_5.Text = "Coefficient Set:"
         '
-        '_SSTab1_TabPage1
-        '
-        Me._SSTab1_TabPage1.Controls.Add(Me.dgvWaterQuality)
-        Me._SSTab1_TabPage1.Controls.Add(Me.Label2)
-        Me._SSTab1_TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me._SSTab1_TabPage1.Name = "_SSTab1_TabPage1"
-        Me._SSTab1_TabPage1.Size = New System.Drawing.Size(558, 591)
-        Me._SSTab1_TabPage1.TabIndex = 1
-        Me._SSTab1_TabPage1.Text = "Water Quality Standards"
-        '
-        'dgvWaterQuality
-        '
-        Me.dgvWaterQuality.AllowUserToAddRows = False
-        Me.dgvWaterQuality.AllowUserToDeleteRows = False
-        Me.dgvWaterQuality.AllowUserToResizeColumns = False
-        Me.dgvWaterQuality.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvWaterQuality.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ColName, Me.Description, Me.Threshold, Me.PollID})
-        Me.dgvWaterQuality.Location = New System.Drawing.Point(22, 27)
-        Me.dgvWaterQuality.Name = "dgvWaterQuality"
-        Me.dgvWaterQuality.Size = New System.Drawing.Size(479, 290)
-        Me.dgvWaterQuality.TabIndex = 19
-        '
-        'ColName
-        '
-        Me.ColName.DataPropertyName = "Name"
-        Me.ColName.HeaderText = "Name"
-        Me.ColName.Name = "ColName"
-        Me.ColName.ReadOnly = True
-        Me.ColName.Width = 133
-        '
-        'Description
-        '
-        Me.Description.DataPropertyName = "Description"
-        Me.Description.HeaderText = "Description"
-        Me.Description.Name = "Description"
-        Me.Description.ReadOnly = True
-        Me.Description.Width = 205
-        '
-        'Threshold
-        '
-        Me.Threshold.DataPropertyName = "Threshold"
-        Me.Threshold.HeaderText = "Threshold"
-        Me.Threshold.Name = "Threshold"
-        Me.Threshold.Width = 95
-        '
-        'PollID
-        '
-        Me.PollID.DataPropertyName = "POLL_WQCRITID"
-        Me.PollID.HeaderText = "PollID"
-        Me.PollID.Name = "PollID"
-        Me.PollID.Visible = False
-        '
-        'Label2
-        '
-        Me.Label2.Location = New System.Drawing.Point(19, 561)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(137, 16)
-        Me.Label2.TabIndex = 18
-        Me.Label2.Text = "Threshold Units: ug/L"
-        '
         'cboPollName
         '
         Me.cboPollName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -477,18 +405,11 @@
         Me._SSTab1_TabPage0.ResumeLayout(False)
         Me._SSTab1_TabPage0.PerformLayout()
         CType(Me.dgvCoef, System.ComponentModel.ISupportInitialize).EndInit()
-        Me._SSTab1_TabPage1.ResumeLayout(False)
-        CType(Me.dgvWaterQuality, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents dgvWaterQuality As System.Windows.Forms.DataGridView
     Friend WithEvents dgvCoef As System.Windows.Forms.DataGridView
-    Friend WithEvents ColName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Description As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Threshold As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents PollID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn3 As System.Windows.Forms.DataGridViewTextBoxColumn

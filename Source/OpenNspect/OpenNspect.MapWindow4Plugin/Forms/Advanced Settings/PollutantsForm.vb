@@ -98,14 +98,14 @@ Friend Class PollutantsForm
             cboCoeffSet.SelectedIndex = 0
             coef.Close()
 
-            'Fill the Water Quality Standards Tab
-            Dim strSQLWQStd As String
-            strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
-            Dim wqCmd As New OleDbCommand(strSQLWQStd, g_DBConn)
-            _wq = New OleDbDataAdapter(wqCmd)
-            _dtWQ = New DataTable
-            _wq.Fill(_dtWQ)
-            dgvWaterQuality.DataSource = _dtWQ
+            ''Fill the Water Quality Standards Tab
+            'Dim strSQLWQStd As String
+            'strSQLWQStd = "SELECT WQCRITERIA.Name, WQCRITERIA.Description," & "POLL_WQCRITERIA.Threshold, POLL_WQCRITERIA.POLL_WQCRITID FROM WQCRITERIA " & "LEFT OUTER JOIN POLL_WQCRITERIA ON WQCRITERIA.WQCRITID = POLL_WQCRITERIA.WQCRITID " & "Where POLL_WQCRITERIA.POLLID = " & poll.Item("POLLID")
+            'Dim wqCmd As New OleDbCommand(strSQLWQStd, g_DBConn)
+            '_wq = New OleDbDataAdapter(wqCmd)
+            '_dtWQ = New DataTable
+            '_wq.Fill(_dtWQ)
+            'dgvWaterQuality.DataSource = _dtWQ
             poll.Close()
 
             IsDirty = False
@@ -315,7 +315,7 @@ Friend Class PollutantsForm
 
     End Sub
 
-    Private Sub dgvCoef_CellValueChanged(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged, dgvWaterQuality.CellValueChanged
+    Private Sub dgvCoef_CellValueChanged(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvCoef.CellValueChanged
         ' The data hasn't been changed by the user if the form hasn't finished loading
         If Not _hasLoaded Then Return
 
@@ -351,7 +351,7 @@ Friend Class PollutantsForm
             Dim val As Double
             Dim i As Short
             Dim j As Short
-            Dim iQstd As Short
+            'Dim iQstd As Short
 
             For i = 0 To dgvCoef.Rows.Count - 1
 
@@ -372,14 +372,14 @@ Friend Class PollutantsForm
                 Next j
             Next i
 
-            For iQstd = 0 To dgvWaterQuality.Rows.Count - 1
-                val = dgvWaterQuality.Rows(iQstd).Cells(2).Value
+            'For iQstd = 0 To dgvWaterQuality.Rows.Count - 1
+            '    val = dgvWaterQuality.Rows(iQstd).Cells(2).Value
 
-                If Not IsNumeric(val) Or (val < 0) Then
-                    DisplayError(Err5, iQstd, 3)
-                    Return False
-                End If
-            Next iQstd
+            '    If Not IsNumeric(val) Or (val < 0) Then
+            '        DisplayError(Err5, iQstd, 3)
+            '        Return False
+            '    End If
+            'Next iQstd
 
             ValidateGridValues = True
 
@@ -420,12 +420,12 @@ Friend Class PollutantsForm
                 Next i
             End If
 
-            For i = 0 To dgvWaterQuality.Rows.Count - 1
-                Dim updateQuery As String = String.Format("Update POLL_WQCRITERIA Set Threshold = {1} WHERE POLL_WQCRITID = {0} ", dgvWaterQuality.Rows(i).Cells(3).Value, dgvWaterQuality.Rows(i).Cells(2).Value)
-                Using cmdNewWQ As New DataHelper(updateQuery)
-                    cmdNewWQ.ExecuteNonQuery()
-                End Using
-            Next i
+            'For i = 0 To dgvWaterQuality.Rows.Count - 1
+            '    Dim updateQuery As String = String.Format("Update POLL_WQCRITERIA Set Threshold = {1} WHERE POLL_WQCRITID = {0} ", dgvWaterQuality.Rows(i).Cells(3).Value, dgvWaterQuality.Rows(i).Cells(2).Value)
+            '    Using cmdNewWQ As New DataHelper(updateQuery)
+            '        cmdNewWQ.ExecuteNonQuery()
+            '    End Using
+            'Next i
 
             IsDirty = False
 

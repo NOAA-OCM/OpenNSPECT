@@ -1,0 +1,6 @@
+<ColoringScheme SchemeType="Grid" GridName="Rainfall_annual_inches_NEC" GroupName="Data Layers">
+  <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="90" LightSourceElevation="45" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
+    <Break Caption="" LowValue="51.53458" HighValue="112.348696" LowColor="-9851936" HighColor="-6100240" ColoringType="1" GradientModel="1" />
+    <Break Caption="" LowValue="112.348696" HighValue="173.162811" LowColor="-6100240" HighColor="-1" ColoringType="1" GradientModel="1" />
+  </GridColoringScheme>
+</ColoringScheme>

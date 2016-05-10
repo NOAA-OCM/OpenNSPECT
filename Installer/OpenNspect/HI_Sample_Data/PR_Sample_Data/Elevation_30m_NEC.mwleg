@@ -1,0 +1,6 @@
+<ColoringScheme SchemeType="Grid" GridName="Elevation_30m_NEC" GroupName="Data Layers">
+  <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="90" LightSourceElevation="45" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
+    <Break Caption="" LowValue="-2.529558" HighValue="524.821342" LowColor="-16096246" HighColor="-6718183" ColoringType="0" GradientModel="1" />
+    <Break Caption="" LowValue="524.821342" HighValue="1052.172241" LowColor="-6718183" HighColor="-1" ColoringType="0" GradientModel="1" />
+  </GridColoringScheme>
+</ColoringScheme>

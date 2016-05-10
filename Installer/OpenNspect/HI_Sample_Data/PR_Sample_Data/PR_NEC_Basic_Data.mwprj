@@ -1,0 +1,164 @@
+<Mapwin name="MapWindow+GIS+*" type="projectfile.2" version="4.8.8">
+  <MapWinGIS OcxVersion="4.8" FileType="MapState" FileVersion="0">
+  <MapState SendMouseMove="1" SendMouseDown="1" SendMouseUp="1" SendSelectBoxFinal="1" TrapRightMouseDown="1" ShowVersionNumber="1" ExtentsLeft="258743.517818" ExtentsRight="288322.798292" ExtentsBottom="245905.213264" ExtentsTop="265741.555383" ExtentsPad="0.020000" />
+  <Layers>
+    <Layer LayerType="Image" LayerName="Elevation_30m_NEC" LayerVisible="1" LayerKey="" Filename="Elevation_30m_NEC.tif" GridFilename="C:\NSPECT\PR_Sample_Data\Elevation_30m_NEC.tif">
+      <ImageClass Key="" SetToGrey="0" TransparencyColor="0" TransparencyColor2="0" UseTransparencyColor="-1" TransparencyPercent="1.000000" DownsamplingMode="5" UpsamplingMode="5">
+        <GridColorSchemeClass Key="" NoDataColor="0" LightSourceIntensity="0.700000" AmbientIntensity="0.700000" LightSourceElevation="45.000000" LightSourceAzimuth="90.000000" LightSourceI="-0.707107" LightSourceJ="-0.707106" LightSourceK="0.000001">
+          <GridColorBreaks>
+            <GridColorBreakClass HighColor="1670553" LowColor="680970" LowValue="-2.529558" HighValue="524.821342" Caption="" ColoringType="0" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="16777215" LowColor="1670553" LowValue="524.821342" HighValue="1052.172241" Caption="" ColoringType="0" GradientModel="1" Key="" />
+          </GridColorBreaks>
+        </GridColorSchemeClass>
+        <LabelsClass Generated="0" AvoidCollisions="0" TextRenderingHint="5" />
+      </ImageClass>
+      <GridColorSchemeClass Key="" NoDataColor="0" LightSourceIntensity="0.700000" AmbientIntensity="0.700000" LightSourceElevation="45.000000" LightSourceAzimuth="90.000000" LightSourceI="-0.707107" LightSourceJ="-0.707106" LightSourceK="0.000001">
+        <GridColorBreaks>
+          <GridColorBreakClass HighColor="1670553" LowColor="680970" LowValue="-2.529558" HighValue="524.821342" Caption="" ColoringType="0" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="16777215" LowColor="1670553" LowValue="524.821342" HighValue="1052.172241" Caption="" ColoringType="0" GradientModel="1" Key="" />
+        </GridColorBreaks>
+      </GridColorSchemeClass>
+    </Layer>
+    <Layer LayerType="Image" LayerName="NLCD_2001_NEC" LayerVisible="1" LayerKey="" Filename="NLCD_2001_NEC.tif" GridFilename="C:\NSPECT\PR_Sample_Data\NLCD_2001_NEC.tif">
+      <ImageClass Key="" SetToGrey="0" TransparencyColor="0" TransparencyColor2="0" UseTransparencyColor="-1" TransparencyPercent="1.000000" DownsamplingMode="5" UpsamplingMode="5">
+        <GridColorSchemeClass Key="" NoDataColor="0" LightSourceIntensity="0.700000" AmbientIntensity="0.700000" LightSourceElevation="1.000000" LightSourceAzimuth="0.000000" LightSourceI="0.000000" LightSourceJ="-0.017452" LightSourceK="0.999848">
+          <GridColorBreaks>
+            <GridColorBreakClass HighColor="10513223" LowColor="10513223" LowValue="11.000000" HighValue="11.000000" Caption="11 Open Water" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="16375249" LowColor="16375249" LowValue="12.000000" HighValue="12.000000" Caption="12 Perennial Ice/Snow" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="13224413" LowColor="13224413" LowValue="21.000000" HighValue="21.000000" Caption="21 Developed, Open Space" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="8557528" LowColor="8557528" LowValue="22.000000" HighValue="22.000000" Caption="22 Developed, Low Intensity" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="237" LowColor="237" LowValue="23.000000" HighValue="23.000000" Caption="23 Developed, Medium Intensity" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="170" LowColor="170" LowValue="24.000000" HighValue="24.000000" Caption="24 Developed, High Intensity" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="10726834" LowColor="10726834" LowValue="31.000000" HighValue="31.000000" Caption="31 Barren Land (Rock/Sand/Clay)" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="6531688" LowColor="6531688" LowValue="41.000000" HighValue="41.000000" Caption="41 Deciduous Forest" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="3171100" LowColor="3171100" LowValue="42.000000" HighValue="42.000000" Caption="42 Evergreen Forest" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="9357749" LowColor="9357749" LowValue="43.000000" HighValue="43.000000" Caption="43 Mixed Forest" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="3380914" LowColor="3380914" LowValue="51.000000" HighValue="51.000000" Caption="51 Dward Scrub (Alaska Only)" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="8174284" LowColor="8174284" LowValue="52.000000" HighValue="52.000000" Caption="52 Shrub/Scrub" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="12706530" LowColor="12706530" LowValue="71.000000" HighValue="71.000000" Caption="71 Grassland/Herbaceous" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="8507856" LowColor="8507856" LowValue="72.000000" HighValue="72.000000" Caption="72 Sedge/Herbaceous (Alaska Only)" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="5360804" LowColor="5360804" LowValue="73.000000" HighValue="73.000000" Caption="73 Lichens (Alaska Only)" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="10336898" LowColor="10336898" LowValue="74.000000" HighValue="74.000000" Caption="74 Moss  (Alaska Only)" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="4053211" LowColor="4053211" LowValue="81.000000" HighValue="81.000000" Caption="81 Pasture/Hay" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="2650282" LowColor="2650282" LowValue="82.000000" HighValue="82.000000" Caption="82 Cultivated Crops" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="15390906" LowColor="15390906" LowValue="90.000000" HighValue="90.000000" Caption="90 Woody Wetlands" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="12231536" LowColor="12231536" LowValue="95.000000" HighValue="95.000000" Caption="95 Emergent Herbaceous Wetlands" ColoringType="1" GradientModel="1" Key="" />
+          </GridColorBreaks>
+        </GridColorSchemeClass>
+        <LabelsClass Generated="0" AvoidCollisions="0" TextRenderingHint="5" />
+      </ImageClass>
+      <GridColorSchemeClass Key="" NoDataColor="0" LightSourceIntensity="0.700000" AmbientIntensity="0.700000" LightSourceElevation="1.000000" LightSourceAzimuth="0.000000" LightSourceI="0.000000" LightSourceJ="-0.017452" LightSourceK="0.999848">
+        <GridColorBreaks>
+          <GridColorBreakClass HighColor="10513223" LowColor="10513223" LowValue="11.000000" HighValue="11.000000" Caption="11 Open Water" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="16375249" LowColor="16375249" LowValue="12.000000" HighValue="12.000000" Caption="12 Perennial Ice/Snow" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="13224413" LowColor="13224413" LowValue="21.000000" HighValue="21.000000" Caption="21 Developed, Open Space" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="8557528" LowColor="8557528" LowValue="22.000000" HighValue="22.000000" Caption="22 Developed, Low Intensity" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="237" LowColor="237" LowValue="23.000000" HighValue="23.000000" Caption="23 Developed, Medium Intensity" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="170" LowColor="170" LowValue="24.000000" HighValue="24.000000" Caption="24 Developed, High Intensity" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="10726834" LowColor="10726834" LowValue="31.000000" HighValue="31.000000" Caption="31 Barren Land (Rock/Sand/Clay)" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="6531688" LowColor="6531688" LowValue="41.000000" HighValue="41.000000" Caption="41 Deciduous Forest" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="3171100" LowColor="3171100" LowValue="42.000000" HighValue="42.000000" Caption="42 Evergreen Forest" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="9357749" LowColor="9357749" LowValue="43.000000" HighValue="43.000000" Caption="43 Mixed Forest" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="3380914" LowColor="3380914" LowValue="51.000000" HighValue="51.000000" Caption="51 Dward Scrub (Alaska Only)" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="8174284" LowColor="8174284" LowValue="52.000000" HighValue="52.000000" Caption="52 Shrub/Scrub" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="12706530" LowColor="12706530" LowValue="71.000000" HighValue="71.000000" Caption="71 Grassland/Herbaceous" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="8507856" LowColor="8507856" LowValue="72.000000" HighValue="72.000000" Caption="72 Sedge/Herbaceous (Alaska Only)" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="5360804" LowColor="5360804" LowValue="73.000000" HighValue="73.000000" Caption="73 Lichens (Alaska Only)" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="10336898" LowColor="10336898" LowValue="74.000000" HighValue="74.000000" Caption="74 Moss  (Alaska Only)" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="4053211" LowColor="4053211" LowValue="81.000000" HighValue="81.000000" Caption="81 Pasture/Hay" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="2650282" LowColor="2650282" LowValue="82.000000" HighValue="82.000000" Caption="82 Cultivated Crops" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="15390906" LowColor="15390906" LowValue="90.000000" HighValue="90.000000" Caption="90 Woody Wetlands" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="12231536" LowColor="12231536" LowValue="95.000000" HighValue="95.000000" Caption="95 Emergent Herbaceous Wetlands" ColoringType="1" GradientModel="1" Key="" />
+        </GridColorBreaks>
+      </GridColorSchemeClass>
+    </Layer>
+    <Layer LayerType="Image" LayerName="Rainfall_annual_inches_NEC" LayerVisible="1" LayerKey="" Filename="Rainfall_annual_inches_NEC.tif" GridFilename="C:\NSPECT\PR_Sample_Data\Rainfall_annual_inches_NEC.tif">
+      <ImageClass Key="" SetToGrey="0" TransparencyColor="0" TransparencyColor2="0" UseTransparencyColor="-1" TransparencyPercent="1.000000" DownsamplingMode="5" UpsamplingMode="5">
+        <GridColorSchemeClass Key="" NoDataColor="0" LightSourceIntensity="0.700000" AmbientIntensity="0.700000" LightSourceElevation="45.000000" LightSourceAzimuth="90.000000" LightSourceI="-0.707107" LightSourceJ="-0.707106" LightSourceK="0.000001">
+          <GridColorBreaks>
+            <GridColorBreakClass HighColor="15788706" LowColor="14723945" LowValue="51.534580" HighValue="112.348696" Caption="" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="16777215" LowColor="15788706" LowValue="112.348696" HighValue="173.162811" Caption="" ColoringType="1" GradientModel="1" Key="" />
+          </GridColorBreaks>
+        </GridColorSchemeClass>
+        <LabelsClass Generated="0" AvoidCollisions="0" TextRenderingHint="5" />
+      </ImageClass>
+      <GridColorSchemeClass Key="" NoDataColor="0" LightSourceIntensity="0.700000" AmbientIntensity="0.700000" LightSourceElevation="45.000000" LightSourceAzimuth="90.000000" LightSourceI="-0.707107" LightSourceJ="-0.707106" LightSourceK="0.000001">
+        <GridColorBreaks>
+          <GridColorBreakClass HighColor="15788706" LowColor="14723945" LowValue="51.534580" HighValue="112.348696" Caption="" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="16777215" LowColor="15788706" LowValue="112.348696" HighValue="173.162811" Caption="" ColoringType="1" GradientModel="1" Key="" />
+        </GridColorBreaks>
+      </GridColorSchemeClass>
+    </Layer>
+    <Layer LayerType="Image" LayerName="R-Factor_NEC" LayerVisible="1" LayerKey="" Filename="R-Factor_NEC.tif" GridFilename="C:\NSPECT\PR_Sample_Data\R-Factor_NEC.tif">
+      <ImageClass Key="" SetToGrey="0" TransparencyColor="0" TransparencyColor2="0" UseTransparencyColor="-1" TransparencyPercent="1.000000" DownsamplingMode="5" UpsamplingMode="5">
+        <GridColorSchemeClass Key="" NoDataColor="0" LightSourceIntensity="0.700000" AmbientIntensity="0.700000" LightSourceElevation="45.000000" LightSourceAzimuth="90.000000" LightSourceI="-0.707107" LightSourceJ="-0.707106" LightSourceK="0.000001">
+          <GridColorBreaks>
+            <GridColorBreakClass HighColor="4227327" LowColor="164" LowValue="554.486389" HighValue="665.576752" Caption="" ColoringType="1" GradientModel="1" Key="" />
+            <GridColorBreakClass HighColor="12582911" LowColor="4227327" LowValue="665.576752" HighValue="776.667114" Caption="" ColoringType="1" GradientModel="1" Key="" />
+          </GridColorBreaks>
+        </GridColorSchemeClass>
+        <LabelsClass Generated="0" AvoidCollisions="0" TextRenderingHint="5" />
+      </ImageClass>
+      <GridColorSchemeClass Key="" NoDataColor="0" LightSourceIntensity="0.700000" AmbientIntensity="0.700000" LightSourceElevation="45.000000" LightSourceAzimuth="90.000000" LightSourceI="-0.707107" LightSourceJ="-0.707106" LightSourceK="0.000001">
+        <GridColorBreaks>
+          <GridColorBreakClass HighColor="4227327" LowColor="164" LowValue="554.486389" HighValue="665.576752" Caption="" ColoringType="1" GradientModel="1" Key="" />
+          <GridColorBreakClass HighColor="12582911" LowColor="4227327" LowValue="665.576752" HighValue="776.667114" Caption="" ColoringType="1" GradientModel="1" Key="" />
+        </GridColorBreaks>
+      </GridColorSchemeClass>
+    </Layer>
+    <Layer LayerType="Shapefile" LayerName="Soils_NEC" LayerVisible="1" LayerKey="" Filename="Soils_NEC.shp">
+      <ShapefileClass>
+        <DefaultDrawingOptions FillColor="12900059" LineColor="9868950" />
+        <ShapefileCategoriesClass />
+        <LabelsClass Generated="0" AvoidCollisions="0" Positioning="1" TextRenderingHint="5" />
+        <ChartsClass />
+      </ShapefileClass>
+    </Layer>
+    <Layer LayerType="Shapefile" LayerName="AOI_NEC" LayerVisible="1" LayerKey="" Filename="AOI_NEC.shp">
+      <ShapefileClass>
+        <DefaultDrawingOptions FillColor="13088735" FillType="1" LineColor="9868950" />
+        <ShapefileCategoriesClass />
+        <LabelsClass Generated="0" AvoidCollisions="0" Positioning="1" TextRenderingHint="5" />
+        <ChartsClass ValuesFontName="" />
+      </ShapefileClass>
+    </Layer>
+  </Layers>
+</MapWinGIS>
+  <MapWindow4 ConfigurationPath="..\..\Users\Dave.Eslinger\AppData\Roaming\MapWindow\mapwindow.mwcfg" ProjectProjection="+proj=lcc +lat_1=18.43333333333333 +lat_2=18.03333333333334 +lat_0=17.83333333333333 +lon_0=-66.43333333333334 +x_0=200000 +y_0=200000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs " MapUnits="Meters" StatusBarAlternateCoordsNumDecimals="3" StatusBarCoordsNumDecimals="3" StatusBarAlternateCoordsUseCommas="True" StatusBarCoordsUseCommas="True" ShowFloatingScaleBar="False" FloatingScaleBarPosition="LowerRight" FloatingScaleBarUnit="" FloatingScaleBarForecolor="-16777216" FloatingScaleBarBackcolor="-1" MapResizeBehavior="0" ShowStatusBarCoords_Projected="True" ShowStatusBarCoords_Alternate="Lat/Long" SaveShapeSettings="False" ViewBackColor_UseDefault="True" ViewBackColor="16777215" ProjectProjectionWKT="PROJCS[&quot;unnamed&quot;,GEOGCS[&quot;GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101],TOWGS84[0,0,0,0,0,0,0]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;standard_parallel_1&quot;,18.43333333333333],PARAMETER[&quot;standard_parallel_2&quot;,18.03333333333334],PARAMETER[&quot;latitude_of_origin&quot;,17.83333333333333],PARAMETER[&quot;central_meridian&quot;,-66.43333333333334],PARAMETER[&quot;false_easting&quot;,200000],PARAMETER[&quot;false_northing&quot;,200000],UNIT[&quot;Meter&quot;,1]]">
+    <Plugins>
+      <Plugin SettingsString="" Key="OpenNspect_MapWindowPlugin" />
+      <Plugin SettingsString="" Key="ArchiveTool_mwArchiveTool" />
+      <Plugin SettingsString="" Key="CreateRaster_CreateTestData" />
+      <Plugin SettingsString="" Key="GridAnalysisTool_MainPlugin" />
+      <Plugin SettingsString="" Key="MeemsTools_DrillDown_Classes_DrillDownIdentifier" />
+    </Plugins>
+    <ApplicationPlugins PluginDir="..\..\..\..\..\Program Files (x86)\MapWindow\ApplicationPlugins">
+      <Plugin SettingsString="Editable=False" Key="mwIdentifier_mwIdentPlugin" />
+      <Plugin SettingsString="" Key="measureProject_measureClass" />
+      <Plugin SettingsString="" Key="mwSymbology_SymbologyPlugin" />
+      <Plugin SettingsString="" Key="ToolboxExtra_Classes_Main" />
+      <Plugin SettingsString="" Key="TableEditorNew_Main" />
+      <Plugin SettingsString="" Key="GISTools_GisToolsPlugin" />
+      <Plugin SettingsString="" Key="mwLayout_LayoutPlugin" />
+    </ApplicationPlugins>
+    <Bookmarks />
+    <PreviewMap dx="0" dy="0" xllcenter="0" yllcenter="0">
+      <Image Type="">
+      </Image>
+    </PreviewMap>
+    <Groups>
+      <Group Name="Data Layers" Expanded="True" Position="0">
+        <Image Type="">
+        </Image>
+      </Group>
+    </Groups>
+    <Layers>
+      <Layer Name="Elevation_30m_NEC" Tag="" Expanded="True" Handle="1" PositionInGroup="0" GroupIndex="0" GroupName="Data Layers" />
+      <Layer Name="NLCD_2001_NEC" Tag="" Expanded="False" Handle="2" PositionInGroup="1" GroupIndex="0" GroupName="Data Layers" />
+      <Layer Name="Rainfall_annual_inches_NEC" Tag="" Expanded="False" Handle="3" PositionInGroup="2" GroupIndex="0" GroupName="Data Layers" />
+      <Layer Name="R-Factor_NEC" Tag="" Expanded="False" Handle="4" PositionInGroup="3" GroupIndex="0" GroupName="Data Layers" />
+      <Layer Name="Soils_NEC" Tag="" Expanded="False" Handle="5" PositionInGroup="4" GroupIndex="0" GroupName="Data Layers" />
+      <Layer Name="AOI_NEC" Tag="" Expanded="True" Handle="0" PositionInGroup="5" GroupIndex="0" GroupName="Data Layers" />
+    </Layers>
+  </MapWindow4>
+</Mapwin>
