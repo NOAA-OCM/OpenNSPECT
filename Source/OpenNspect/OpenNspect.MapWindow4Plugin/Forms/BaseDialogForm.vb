@@ -1,7 +1,7 @@
 ﻿
 
 Public Class BaseDialogForm
-
+    Private _isDirty As Boolean
     ''' <summary>
     ''' Gets or sets a value indicating whether this instance is dirty, i.e. whether it has changes.
     ''' </summary>
@@ -9,6 +9,13 @@ Public Class BaseDialogForm
     '''   <c>true</c> if this instance is dirty; otherwise, <c>false</c>.
     ''' </value>
     Public Property IsDirty() As Boolean
+        Get
+            Return _isDirty
+        End Get
+        Set(ByVal value As Boolean)
+            _isDirty = value
+        End Set
+    End Property
 
     Protected Overridable Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -17,7 +24,7 @@ Public Class BaseDialogForm
 
     Protected Overridable Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
 
-        If IsDirty AndAlso Not ConfirmCancel() Then
+        If _isDirty AndAlso Not ConfirmCancel() Then
             Return
         End If
 
