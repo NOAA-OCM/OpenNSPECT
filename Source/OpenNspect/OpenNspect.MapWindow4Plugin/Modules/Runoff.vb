@@ -483,7 +483,7 @@ Module Runoff
 
         Return pAccumRunoffRaster
     End Function
-    Private Sub CreateRunoffGridFileAndLayer(ByRef OutputItems As OutputItems, ByVal pAccumRunoffRaster As Grid)
+    Private Sub CreateRunoffGridFileAndLayer(ByRef OutputItems As OutputItems, ByRef pAccumRunoffRaster As Grid)
         'Get a unique name for accumulation GRID
         Dim strOutAccum = GetUniqueFileName("runoff", g_Project.ProjectWorkspace, OutputGridExt)
 

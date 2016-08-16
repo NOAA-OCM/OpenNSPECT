@@ -365,7 +365,7 @@ Friend Class PollutantsForm
                         End If
                     End If
 
-                    If Not IsNumeric(val) Or (val < 0) Or (val > 1000) Then
+                    If Not IsNumeric(val) Then ' Or (val < 0) Or (val > 1000) Then 'DLE, 5/11/2016: Removed range check to allow negative poll coeffs.
                         DisplayError(Err6, i, j)
                         Return False
                     End If
