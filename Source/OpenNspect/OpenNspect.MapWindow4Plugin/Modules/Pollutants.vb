@@ -15,6 +15,10 @@
 'Contributor(s): (Open source contributors should list themselves and their modifications here). 
 'Oct 20, 2010:  Allen Anselmo allen.anselmo@gmail.com - 
 '               Added licensing and comments to code
+'
+'May 11, 2016  Dave Eslinger (dave.eslinger@noaa.gov): Changed most of the passing of rasters ByVal to ByRef to
+'               speed up (hopefully) the processing and effeiciency of the pollutant calcs.
+
 Imports System.Data.OleDb
 Imports MapWinGeoProc
 Imports MapWinGIS
@@ -267,7 +271,7 @@ Module Pollutants
         RasterMath(g_LandCoverRaster, g_pMetRunoffRaster, idxGrid, Nothing, Nothing, pMassVolumeRaster, massvolvarcalc)
     End Sub
 
-    Private Sub CreateLayerForLocalEffect(ByRef OutputItems As OutputItems, ByVal pMassVolumeRaster As Grid, ByVal outputFileNameOutConc As String)
+    Private Sub CreateLayerForLocalEffect(ByRef OutputItems As OutputItems, ByRef pMassVolumeRaster As Grid, ByVal outputFileNameOutConc As String)
         Dim pPermMassVolumeRaster As Grid
 
         'Added 7/23/04 to account for clip by selected polys functionality
@@ -283,7 +287,7 @@ Module Pollutants
         AddOutputGridLayer(pPermMassVolumeRaster, _PollutantColor, True, _PollutantName & " Local Effects (mg)", String.Format("Pollutant {0} Local", _PollutantName), -1, OutputItems)
 
     End Sub
-    Private Sub DeriveAccumulatedPollutant(ByVal pMassVolumeRaster As Grid, ByRef pAccumPollRaster As Grid)
+    Private Sub DeriveAccumulatedPollutant(ByRef pMassVolumeRaster As Grid, ByRef pAccumPollRaster As Grid)
         'Use weightedaread8 from geoproc to accum, then rastercalc to multiply this out
         Dim pTauD8Flow As Grid = Nothing
 
@@ -330,11 +334,11 @@ Module Pollutants
 
         AddOutputGridLayer(pPermAccPollRaster, _PollutantColor, True, layerName, String.Format("Pollutant {0} Accum", _PollutantName), -1, OutputItems)
     End Sub
-    Private Sub CalcFinalConcentration(ByVal pMassVolumeRaster As Grid, ByVal pAccumPollRaster As Grid, ByRef pTotalPollConc0Raster As Grid)
+    Private Sub CalcFinalConcentration(ByRef pMassVolumeRaster As Grid, ByRef pAccumPollRaster As Grid, ByRef pTotalPollConc0Raster As Grid)
         Dim AllConCalc As New RasterMathCellCalcNulls(AddressOf AllConCellCalc)
         RasterMath(pMassVolumeRaster, pAccumPollRaster, g_pMetRunoffRaster, g_pRunoffRaster, g_pDEMRaster, pTotalPollConc0Raster, Nothing, False, AllConCalc)
     End Sub
-    Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByVal pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
+    Private Sub CreateDataLayer(ByRef OutputItems As OutputItems, ByRef pTotalPollConc0Raster As Grid, ByVal outputFileNameOutConc As Object)
         outputFileNameOutConc = GetUniqueFileName("conc", g_Project.ProjectWorkspace, OutputGridExt)
         Dim pPermTotalConcRaster As Grid
         If g_Project.UseSelectedPolygons Then
