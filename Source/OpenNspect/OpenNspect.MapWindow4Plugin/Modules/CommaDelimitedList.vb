@@ -33,9 +33,9 @@ Module CommaDelimitedList
             ' Look for each value from minVal to the maximum, assuming values are integers.
             ' DLE: 109/12: LC rasters may have 0 as min value, but if minval > 1, then start at 1
             If (minVal > 1) Then minVal = 1
-            If currentTableRow = pLCRaster.Header.NodataValue Or currentTableRow < minVal Then
-                currentTableRow = minVal
-            End If
+            'If currentTableRow = pLCRaster.Header.NodataValue Or currentTableRow < minVal Then  ' This is giving and error, not picking up first value.
+            '    currentTableRow = minVal
+            'End If
             For i = minVal To maxVal
                 'For i = 1 To maxVal
                 If (attributeTable.CellValue(valueColumn, currentTableRow) = i) Then
