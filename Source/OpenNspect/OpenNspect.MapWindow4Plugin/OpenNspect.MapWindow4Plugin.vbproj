@@ -48,10 +48,14 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\..\..\..\..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
@@ -77,7 +81,7 @@
     </WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>Release\OpenNSPECT\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
     <DocumentationFile>OpenNspect.MapWindow4Plugin.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -132,10 +136,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <WarningsAsErrors>
     </WarningsAsErrors>
+    <OutputPath>..\..\..\..\..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev %28Debug%29|x64'">
     <WarningsAsErrors>
     </WarningsAsErrors>
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>..\..\..\..\..\..\..\..\Program Files %28x86%29\MapWindow\Plugins\OpenNSPECT\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.MapWinGIS">

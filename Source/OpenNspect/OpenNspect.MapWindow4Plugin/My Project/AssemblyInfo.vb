@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Nonpoint-Source Pollution and Erosion Comparison Tool")> 
 <Assembly: AssemblyCompany("NOAA Office for Coastal Management")>
 <Assembly: AssemblyProduct("OpenNSPECT (https://coast.noaa.gov/digitalcoast/tools/opennspect, http://nspect.codeplex.com/)")>
-<Assembly: AssemblyCopyright("Copyright © 2011-2017")>
+<Assembly: AssemblyCopyright("Copyright © 2011-2019")>
 <Assembly: AssemblyTrademark ("OpenNSPECT (tm)")>
 
 <Assembly: ComVisible (False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 
 '
 '<Assembly: AssemblyVersion("1.1.1.0")> 
-<Assembly: AssemblyVersion("1.2.4.*")>
-<Assembly: AssemblyFileVersion("1.2.4.1")>
+<Assembly: AssemblyVersion("1.2.5.*")>
+<Assembly: AssemblyFileVersion("1.2.5.1")>
