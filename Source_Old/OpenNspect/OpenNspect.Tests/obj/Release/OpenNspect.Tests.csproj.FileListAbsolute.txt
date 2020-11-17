@@ -1,8 +1,0 @@
-C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.Tests\bin\Release\OpenNspect.Tests.dll
-C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.Tests\bin\Release\OpenNspect.Tests.pdb
-C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.Tests\bin\Release\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.Tests\obj\Release\OpenNspect.Tests.csprojAssemblyReference.cache
-C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.Tests\obj\Release\OpenNspect.Tests.csproj.CoreCompileInputs.cache
-C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.Tests\obj\Release\OpenNspect.Tests.csproj.CopyComplete
-C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.Tests\obj\Release\OpenNspect.Tests.dll
-C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.Tests\obj\Release\OpenNspect.Tests.pdb

@@ -1,9 +1,0 @@
-<!ELEMENT ProjectFile (ProjectName,LCGridName,LCGridFileName,LCGridUnits,LCGridType)>
-<!ELEMENT ProjectName     (#PCDATA)>
-<!ELEMENT LCGridName      (#PCDATA)>
-<!ELEMENT LCGridFileName  (#PCDATA)>
-<!ELEMENT LCGridUnits     (#PCDATA)>
-<!ELEMENT LCGridType	  (#PCDATA)>
-
-
-
