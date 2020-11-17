@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "OpenNspect.MapWindow4Plugin", "OpenNspect.MapWindow4Plugin.vbproj", "{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Dev (Debug)|Any CPU = Dev (Debug)|Any CPU
+		Dev (Debug)|x64 = Dev (Debug)|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Debug|x64.ActiveCfg = Debug|x64
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Debug|x64.Build.0 = Debug|x64
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Dev (Debug)|Any CPU.ActiveCfg = Dev (Debug)|Any CPU
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Dev (Debug)|Any CPU.Build.0 = Dev (Debug)|Any CPU
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Dev (Debug)|x64.ActiveCfg = Dev (Debug)|x64
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Dev (Debug)|x64.Build.0 = Dev (Debug)|x64
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Release|x64.ActiveCfg = Release|x64
+		{E2EC0A25-9479-4DA0-A39C-F710E1ED7C44}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9EBEE600-ED81-4033-A7AC-EEC212685E39}
+	EndGlobalSection
+EndGlobal

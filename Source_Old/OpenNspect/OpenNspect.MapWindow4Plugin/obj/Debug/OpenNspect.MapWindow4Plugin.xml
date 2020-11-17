@@ -1,0 +1,915 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+OpenNspect.MapWindow4Plugin
+</name>
+</assembly>
+<members>
+<member name="T:OpenNspect.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:OpenNspect.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:OpenNspect.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="M:OpenNspect.InstallationHelper.GetInstallationDirectory">
+ <summary>
+  Detects path to OpenNSPECT's data folder (installation directory) or returns null.
+ </summary><returns></returns>
+</member>
+<member name="M:OpenNspect.SynchronousProgressDialog.Increment(System.String)">
+ <summary>
+ Increments the value by one and displays specified message.
+ </summary>
+ <param name="message">The message.</param><returns>Whether the process should continue to run.</returns>
+</member>
+<member name="M:OpenNspect.DataPrepForm.PrepOneRaster(System.String,System.String,System.String@,System.String,System.String)">
+ <summary>
+ Takes a given raster and clips it to the extent of a target shapefile, reprojecting the shapefile if needed.
+ </summary>
+ <param name="rawGridName"></param>
+ <param name="aoi20SFName"></param>
+ <param name="refGridFName"></param>
+ <param name="dpRoot"></param>
+ <param name="rasterSfx"></param>
+ <remarks>
+  PrepOneRaster takes a given raster and clips it to the extent of a target shapefile, reprojecting 
+   the shapefile if needed.  This makes the reprojection faster.
+  Steps are: 1) reproject AOI shapefile, if needed, 2) Clip Raw Raster, 3) Reproject clipped Raster 
+    back to original AOI projection, 4) Bin reprojected raster to desired cell size, 5) align 
+</remarks>
+</member>
+<member name="M:OpenNspect.DataPrepForm.NudgeGrid(System.String,System.String,System.String)">
+ <summary>
+ Copies a target grid while shifting Lower left X and Y coordinates to make the new grid line up with a reference grid
+ </summary>
+ <param name="tarGridFName"></param>
+ <param name="refGridName"></param>
+ <param name="nudgedGridFName"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.DataPrepForm.DoResample_DLE(MapWinGIS.Grid@,System.String,System.Double)">
+ <summary>
+ Resamples a grid to create a new grid with the specified cell size
+ Also converts BYTE grids to SHORT INT grids: OpenNSPECT doesn't like BYTE grids
+ </summary>
+ <param name="grd"></param>
+ <param name="newGridFName"></param>
+ <param name="CellSize"></param>
+ <remarks>Most of this code is copied from the MapWindow DoResample function (not the byte conversion), 
+ which I don't seem to ba able to access.</remarks>
+</member>
+<member name="M:OpenNspect.Coloring.GetUniqueRasterRenderer">
+ <summary>
+ Generates two color representation of the grid or feature layer to show which flow paths were above the water quality standards for pollutant loads
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:OpenNspect.Coloring.PercentRasterRenderer">
+ <summary>
+ Generates fixed color scheme to show differences between runs as percentages.  DLE 10/29/2012
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:OpenNspect.Coloring.GetRandomHSVColorString">
+ <summary>
+ Returns the HSV color string.
+ </summary><returns>A comma delimited string of 6 values.  1st 3 a 'To Color' - HIGH, 2nd 3 a 'From Color' - LOW</returns>
+</member>
+<member name="M:OpenNspect.ConvertTo.EsriFromTauDem(System.Single,System.Single)">
+ <summary>
+ Converts the tau DEM to ESRI cell. ESRI is clockwise 1-128 from east. TAUDEM is 1-8 counter-clockwise from east
+ </summary>
+ <param name="direction">The direction.</param>
+ <param name="Input1Null"></param><returns></returns>
+</member>
+<member name="M:OpenNspect.Database.CreateUniqueName(System.String@,System.String@)">
+ <summary>
+ Tests name inputs to insure unique values for databases
+ </summary>
+ <param name="tableName">Name of the table.</param>
+ <param name="name">The name.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.Database.InitComboBox(System.Windows.Forms.ComboBox@,System.String@)">
+ <summary>
+ Loads the variety of comboboxes throught the project using combobox and name of table.
+ </summary>
+ <param name="cbo">The dropdown.</param>
+ <param name="name">Name.</param>
+</member>
+<member name="M:OpenNspect.RasterMathematics.RasterMath(MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,OpenNspect.RasterMathematics.RasterMathCellCalc@,System.Boolean,OpenNspect.RasterMathematics.RasterMathCellCalcNulls@)">
+ <summary>
+ performs an operation using a number of lined up input grids on a cell-by-cell comparison.
+ </summary>
+ <param name="grid1">The grid1.</param>
+ <param name="grid2">The grid2.</param>
+ <param name="grid3">The grid3.</param>
+ <param name="grid4">The grid4.</param>
+ <param name="grid5">The grid5.</param>
+ <param name="outputGrid">The output grid.</param>
+ <param name="CellCalc">The cell calc.</param>
+ <param name="checkNullFirst">if set to <c>true</c> [check null first].</param>
+ <param name="CellCalcNull">The cell calc null.</param>
+</member>
+<member name="M:OpenNspect.RasterMathematics.RasterMathWindow(MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,OpenNspect.RasterMathematics.RasterMathCellCalcWindow@,System.Boolean,OpenNspect.RasterMathematics.RasterMathCellCalcWindowNulls@)">
+ <summary>
+ performs an operation using a number of lined up input grids on a cell-by-cell comparison exposing the 8 cell surround the current center cell:
+ 7 0 1
+ 6 C 2
+ 5 4 3
+ </summary>
+ <param name="InputGrid1">The input grid1.</param>
+ <param name="InputGrid2">The input grid2.</param>
+ <param name="Inputgrid3">The inputgrid3.</param>
+ <param name="Inputgrid4">The inputgrid4.</param>
+ <param name="Inputgrid5">The inputgrid5.</param>
+ <param name="Outputgrid">The outputgrid.</param>
+ <param name="CellCalcWindow">The cell calc window.</param>
+ <param name="checkNullFirst">if set to <c>true</c> [check null first].</param>
+ <param name="CellCalcWindowNull">The cell calc window null.</param>
+</member>
+<member name="M:OpenNspect.Rasters.GetRasterFullPath(System.String)">
+ <summary>
+ Gets the raster full path.
+ </summary>
+ <param name="pathOrDirectory">The full path or directory where the raster resides.</param>
+ <returns>The full path with sta.adf</returns>
+</member>
+<member name="M:OpenNspect.Rasters.GetRasterTablePath(MapWinGIS.Grid@)">
+ <summary>
+ Gets the absolute raster table path including ...dbf
+ </summary>
+ <param name="raster">The raster.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.CommaDelimitedList.ConstructPickStatmentUsingLandClass(System.Data.OleDb.OleDbCommand@,MapWinGIS.Grid@,System.String)">
+ <summary>
+ Creates the initial pick statement using the name of the the LandCass [CCAP, for example].
+ </summary>
+ <remarks>Assumes that the Values are sorted in increasing order.</remarks>
+ <param name="pLCRaster">The raster.</param>
+ <param name="nameOfColumn">The name of column.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.Xml.Base.GetNodeText(System.Xml.XmlNode@,System.String@,System.String@)">
+ <summary>
+The GetNodeText function retrieves the value of the given child element
+within the given parent element. If the requested child element is not
+found, then an empty string is returned.
+ </summary>
+ <param name="Parent">The parent.</param>
+ <param name="ChildName">Name of the child.</param>
+ <param name="NodeTextType">Type of the node text.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.Xml.ProjectFile.EncourageValidPath(System.String)">
+ <summary>
+ Tries to find a valid, relative path.
+ </summary>
+ <param name="value">The value.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.DataHelper.ExecuteReader">
+ <summary>
+ Returns the reader associated with this object or creates a new one if needed.
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:OpenNspect.AboutForm">
+ <summary>
+ generic, self-contained About Box dialog
+ </summary>
+ <remarks>
+ Jeff Atwood
+ http://www.codinghorror.com
+ http://www.codeproject.com/KB/vb/aboutbox.aspx
+ Originally called 'AboutBox'
+ </remarks>
+</member>
+<member name="P:OpenNspect.AboutForm.AppEntryAssembly">
+ <summary>
+ Returns the entry assembly for the current application domain
+ </summary>
+ <remarks>
+ This is usually read-only, but in some weird cases (Smart Client apps) 
+ you won't have an entry assembly, so you may want to set this manually.
+ </remarks>
+</member>
+<member name="P:OpenNspect.AboutForm.AppTitle">
+ <summary>
+ single line of text to show in the application title section of the about box dialog
+ </summary>
+ <remarks>
+ defaults to "%title%" 
+ %title% = Assembly: AssemblyTitle
+ </remarks>
+</member>
+<member name="P:OpenNspect.AboutForm.AppDescription">
+ <summary>
+ single line of text to show in the description section of the about box dialog
+ </summary>
+ <remarks>
+ defaults to "%description%"
+ %description% = Assembly: AssemblyDescription
+ </remarks>
+</member>
+<member name="P:OpenNspect.AboutForm.AppVersion">
+ <summary>
+ single line of text to show in the version section of the about dialog
+ </summary>
+ <remarks>
+ defaults to "Version %version%"
+ %version% = Assembly: AssemblyVersion
+ </remarks>
+</member>
+<member name="P:OpenNspect.AboutForm.AppCopyright">
+ <summary>
+ single line of text to show in the copyright section of the about dialog
+ </summary>
+ <remarks>
+ defaults to "Copyright © %year%, %company%"
+ %company% = Assembly: AssemblyCompany
+ %year% = current 4-digit year
+ </remarks>
+</member>
+<member name="P:OpenNspect.AboutForm.AppImage">
+ <summary>
+ intended for the default 32x32 application icon to appear in the upper left of the about dialog
+ </summary>
+ <remarks>
+ if you open this form using .ShowDialog(Owner), the icon can be derived from the owning form
+ </remarks>
+</member>
+<member name="P:OpenNspect.AboutForm.AppMoreInfo">
+ <summary>
+ multiple lines of miscellaneous text to show in rich text box
+ </summary>
+ <remarks>
+ defaults to "%product% is %copyright%, %trademark%"
+ %product% = Assembly: AssemblyProduct
+ %copyright% = Assembly: AssemblyCopyright
+ %trademark% = Assembly: AssemblyTrademark
+ </remarks>
+</member>
+<member name="P:OpenNspect.AboutForm.AppDetailsButton">
+ <summary>
+ determines if the "Details" (advanced assembly details) button is shown
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.AssemblyLastWriteTime(System.Reflection.Assembly)">
+ <summary>
+ exception-safe retrieval of LastWriteTime for this assembly.
+ </summary>
+ <returns>File.GetLastWriteTime, or DateTime.MaxValue if exception was encountered.</returns>
+</member>
+<member name="M:OpenNspect.AboutForm.AssemblyBuildDate(System.Reflection.Assembly,System.Boolean)">
+ <summary>
+ Returns DateTime this Assembly was last built. Will attempt to calculate from build number, if possible. 
+ If not, the actual LastWriteTime on the assembly file will be returned.
+ </summary>
+ <param name="a">Assembly to get build date for</param>
+ <param name="ForceFileDate">Don't attempt to use the build number to calculate the date</param>
+ <returns>DateTime this assembly was last built</returns>
+</member>
+<member name="M:OpenNspect.AboutForm.AssemblyAttribs(System.Reflection.Assembly)">
+ <summary>
+ returns string name / string value pair of all attribs
+ for specified assembly
+ </summary>
+ <remarks>
+ note that Assembly* values are pulled from AssemblyInfo file in project folder
+
+ Trademark       = AssemblyTrademark string
+ Debuggable      = True
+ GUID            = 7FDF68D5-8C6F-44C9-B391-117B5AFB5467
+ CLSCompliant    = True
+ Product         = AssemblyProduct string
+ Copyright       = AssemblyCopyright string
+ Company         = AssemblyCompany string
+ Description     = AssemblyDescription string
+ Title           = AssemblyTitle string
+ </remarks>
+</member>
+<member name="M:OpenNspect.AboutForm.RegistryHklmValue(System.String,System.String)">
+ <summary>
+ reads an HKLM Windows Registry key value
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.ShowSysInfo">
+ <summary>
+ launch the MSInfo "system information" application (works on XP, 2003, and Vista)
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.Populate(System.Windows.Forms.ListView,System.String,System.String)">
+ <summary>
+ populate a listview with the specified key and value strings
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.PopulateAppInfo">
+ <summary>
+ populates the Application Information listview
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.PopulateAssemblies">
+ <summary>
+ populate Assembly Information listview with ALL assemblies
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.PopulateAssemblySummary(System.Reflection.Assembly)">
+ <summary>
+ populate Assembly Information listview with summary view for a specific assembly
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.EntryAssemblyAttrib(System.String)">
+ <summary>
+ retrieves a cached value from the entry assembly attribute lookup collection
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.PopulateLabels">
+ <summary>
+ Populate all the form labels with tokenized text
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.ReplaceTokens(System.String)">
+ <summary>
+ perform assemblyinfo to string replacements on labels
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.PopulateAssemblyDetails(System.Reflection.Assembly,System.Windows.Forms.ListView)">
+ <summary>
+ populate details for a single assembly
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.MatchAssemblyByName(System.String)">
+ <summary>
+ matches assembly by Assembly.GetName.Name; returns nothing if no match
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.AboutBox_Load(System.Object,System.EventArgs)">
+ <summary>
+ things to do when form is loaded
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.AboutBox_Paint(System.Object,System.Windows.Forms.PaintEventArgs)">
+ <summary>
+ things to do when form is FIRST painted
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.DetailsButton_Click(System.Object,System.EventArgs)">
+ <summary>
+ expand about dialog to show additional advanced details
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.SysInfoButton_Click(System.Object,System.EventArgs)">
+ <summary>
+ for detailed system info, launch the external Microsoft system info app
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.AssemblyInfoListView_DoubleClick(System.Object,System.EventArgs)">
+ <summary>
+ if an assembly is double-clicked, go to the detail page for that assembly
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.AssemblyNamesComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ if a new assembly is selected from the combo box, show details for that assembly
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.AssemblyInfoListView_ColumnClick(System.Object,System.Windows.Forms.ColumnClickEventArgs)">
+ <summary>
+ sort the assembly list by column
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.MoreRichTextBox_LinkClicked(System.Object,System.Windows.Forms.LinkClickedEventArgs)">
+ <summary>
+ launch any http:// or mailto: links clicked in the body of the rich text box
+ </summary>
+</member>
+<member name="M:OpenNspect.AboutForm.TabPanelDetails_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ things to do when the selected tab is changed
+ </summary>
+</member>
+<member name="M:OpenNspect.PollutantsForm.CopyCoefficient(System.String@,System.String@)">
+ <summary>
+First we add new record to the Coefficient Set table using strNewCoeffName as
+the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients
+from the set being copied
+ </summary>
+ <param name="strNewCoeffName">Name of the STR new coeff.</param>
+ <param name="strCoeffSet">The STR coeff set.</param>
+</member>
+<member name="P:OpenNspect.BaseDialogForm.IsDirty">
+ <summary>
+ Gets or sets a value indicating whether this instance is dirty, i.e. whether it has changes.
+ </summary>
+ <value>
+   <c>true</c> if this instance is dirty; otherwise, <c>false</c>.
+ </value>
+</member>
+<member name="M:OpenNspect.MainForm.frmProjectSetup_Load(System.Object,System.EventArgs)">
+ <summary>
+ Load form that initializes globals and various form elements
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.frmProjectSetup_Shown(System.Object,System.EventArgs)">
+ <summary>
+ Loads the previous Xml settings file when reshown
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.txtProjectName_TextChanged(System.Object,System.EventArgs)">
+ <summary>
+ Changes the form title with the project name
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.cmdOpenWS_Click(System.Object,System.EventArgs)">
+ <summary>
+ Button press opening a working directory
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.cboLCType_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Fills the LC combo whena type is selected
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.cboSoilsLayer_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ When Soils layer changes, it sets the appropriate soils filenames from the DB
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.cboPrecipScen_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Controlls what happens when the precipitation scenario is changed
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.cboWSDelin_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Controls what happens when the WS delin combo is changed
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.cboWQStd_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Controls what happens when the WQ Std combo is changed
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.mnuNew_Click(System.Object,System.EventArgs)">
+ <summary>
+ New project menu click
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.mnuOpen_Click(System.Object,System.EventArgs)">
+ <summary>
+ Opens a new xml setting file
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.mnuSave_Click(System.Object,System.EventArgs)">
+ <summary>
+ Saves the current Xml settings file
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.mnuSaveAs_Click(System.Object,System.EventArgs)">
+ <summary>
+ Save new xml file as a new file
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.mnuExit_Click(System.Object,System.EventArgs)">
+ <summary>
+ Exit the form
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.mnuGeneralHelp_Click(System.Object,System.EventArgs)">
+ <summary>
+ Call up the generic help window
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.optUseGRID_CheckedChanged(System.Object,System.EventArgs)">
+ <summary>
+ Handles showing the appropriate elements when the use grid checkbox is used
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.optUseValue_CheckedChanged(System.Object,System.EventArgs)">
+ <summary>
+ Handles showing the appropriate elements when the use value checkbox is used
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.chkSDR_CheckStateChanged(System.Object,System.EventArgs)">
+ <summary>
+ Handles showing the appropriate elements when the SDR checkbox is used
+ </summary>
+ <param name="eventSender"></param>
+ <param name="eventArgs"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.cmdOpenSDR_Click(System.Object,System.EventArgs)">
+ <summary>
+ Button to open SDR grid
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.chkCalcErosion_CheckStateChanged(System.Object,System.EventArgs)">
+ <summary>
+ Handles showing the appropriate elements when the calculate erosion checkbox is used
+ </summary>
+ <param name="eventSender"></param>
+ <param name="eventArgs"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.btnOpenRainfallFactorGrid_Click(System.Object,System.EventArgs)">
+ <summary>
+ Button used to open a rainfall grid
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.dgvLandUse_DataError(System.Object,System.Windows.Forms.DataGridViewDataErrorEventArgs)">
+ <summary>
+ Handles errors if a value is typed into the table that doesn't match constraints
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.dgvManagementScen_DataError(System.Object,System.Windows.Forms.DataGridViewDataErrorEventArgs)">
+ <summary>
+ Handles errors if a value is typed into the table that doesn't match constraints
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.dgvLandUse_MouseClick(System.Object,System.Windows.Forms.MouseEventArgs)">
+ <summary>
+ Controls what happens when the land use table is right-clicked
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.AddScenarioToolStripMenuItem_Click(System.Object,System.EventArgs)">
+ <summary>
+ Used to add a scenario to the table
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.EditScenarioToolStripMenuItem_Click(System.Object,System.EventArgs)">
+ <summary>
+ Handles editing a scenario in the table
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.DeleteScenarioToolStripMenuItem_Click(System.Object,System.EventArgs)">
+ <summary>
+ Handles removing a scenario from the table
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.AppendRowToolStripMenuItem_Click(System.Object,System.EventArgs)">
+ <summary>
+ Handles appending a row to the management table
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.InsertRowToolStripMenuItem_Click(System.Object,System.EventArgs)">
+ <summary>
+ Handles inserting a row into the management table
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.DeleteCurrentRowToolStripMenuItem_Click(System.Object,System.EventArgs)">
+ <summary>
+ Handles deleting the currently selected row in the management table
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.btnSelect_Click(System.Object,System.EventArgs)">
+ <summary>
+ Handles opening the shape selection form
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.cmdQuit_Click(System.Object,System.EventArgs)">
+ <summary>
+ Handles the close button click
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.GetPollutants">
+ <summary>
+ Gets a list of the pollutents to apply (name, coeff)
+ Go through and find the pollutants, if they're used and what the CoeffSet is
+ We're creating a dictionary that will hold Pollutant, Coefficient Set for use in the Landuse Scenarios
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.dgvPollutants_DataError(System.Object,System.Windows.Forms.DataGridViewDataErrorEventArgs)">
+ <summary>
+ Handles errors if a value is typed into the table that doesn't match constraints
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.RunAnalysis">
+ <summary>
+ The workhorse of NSPECT. Automates the entire process of the nspect processing
+ </summary>
+</member>
+<member name="M:OpenNspect.MainForm.SetSelectedShape(System.Int32)">
+ <summary>
+ Used by the selection form to set the selected shape
+ </summary>
+ <remarks></remarks>
+ <param name="layerHandle"></param>
+</member>
+<member name="M:OpenNspect.MainForm.ClearForm">
+ <summary>
+ Sets the form to a default state
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.LoadXmlFile">
+ <summary>
+ Prompts for an Xml project file to load
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.LoadPreviousXmlFile">
+ <summary>
+ Loads the previously set Xml file and populates the form from it
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.FillCboLCCLass">
+ <summary>
+ Fill the LC class combo from the DB
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.PopulatePollutants">
+ <summary>
+ Populates the pollutants table
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.PopulateCoefType(System.String,System.Int32)">
+ <summary>
+ Populate the coefficients table
+ </summary>
+ <param name="strPollutantName"></param>
+ <param name="rowidx"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.PopulateManagement(System.Int32)">
+ <summary>
+ Populate the Management table
+ </summary>
+ <param name="rowidx"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.FillForm">
+ <summary>
+ Populates the form from the currently loaded xml project
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.SaveXmlFile">
+ <summary>
+ Validates the present form settings and saves them to an Xml file
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.ValidateData">
+ <summary>
+ Validates the form data
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.GetPickShapeInfo(System.Int32)">
+ <summary>
+ Find and store index shapefile and field names for pollutant
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.ValidatePollutants">
+ <summary>
+ Validate the pollutant table values
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.ValidateWaterShed">
+ <summary>
+ Validate the Watershed data
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.ValidateMgmtScenario">
+ <summary>
+ Validate the management scenario table
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.SetLURow(System.Int32,System.String,System.String)">
+ <summary>
+ used to set the Land use row values
+ </summary>
+ <param name="row"></param>
+ <param name="name"></param>
+ <param name="strXml"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.UpdatePrecip(System.String)">
+ <summary>
+ updates the preciptiation combo after changes from outside forms
+ </summary>
+ <param name="strPrecName"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.MainForm.UpdateWQ(System.String)">
+ <summary>
+ Updates the WQ combo after changes from outside forms
+ </summary>
+ <param name="strWQName"></param>
+ <remarks></remarks>
+</member>
+<member name="M:OpenNspect.LandUse.Begin(System.String@,OpenNspect.Xml.LandUseItems@,System.Collections.Generic.Dictionary{System.String,System.String}@,System.String@)">
+ <summary>
+ Begins working.
+ </summary>
+ <param name="strLCClassName">str of current land cover class.</param>
+ <param name="LUScenItems">Xml class that holds the params of the user's Land Use Scenario.</param>
+ <param name="dictPollutants">dictionary created to hold the pollutants of this particular project.</param>
+ <param name="strLCFileName">FileName of land cover grid.</param>
+</member>
+<member name="M:OpenNspect.LandUse.CopyCoefficient(System.String@,System.String@)">
+ <summary>
+ Copies the coefficient. First we add new record to the Coefficient Set table using strNewCoeffName as the name, PollID, LCTYPEID.  Once that's done, we'll add the coefficients from the set being copied
+ </summary>
+ <param name="newCoeffName">Name of the new coeff.</param>
+ <param name="coeffSet">The coeff set.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.LandUse.ReclassLanduse(OpenNspect.Xml.LandUseItems@,System.String@)">
+ <summary>
+ Reclasses the landuse.
+ </summary>
+ <param name="LUScenItems">which is a collection of the landuse entered.</param>
+ <param name="landCoverFileName">path to which the landcover grid exists.</param>
+</member>
+<member name="M:OpenNspect.MainRun.SetGlobalEnvironment(System.Data.OleDb.OleDbCommand@,System.String,System.Collections.Generic.List{System.Int32}@)">
+ <summary>
+Set the analysis environment based on the properties of the DEM, and establish
+the other contributing datasets: Watersheds, flow direction, flow accumulation, length/slope
+ </summary>
+ <param name="cmdWShed">the recordset of the selected ws delineation...used to get paths to datasets.</param>
+ <param name="SelectedPath">selection layer, usually a watershed selection.</param>
+ <param name="SelectedShapes">The selected shapes.</param>
+</member>
+<member name="M:OpenNspect.MainRun.ReturnAnalysisMask(System.String,System.Collections.Generic.List{System.Int32}@)">
+ <summary>
+ Returns the analysis mask.
+ </summary>
+ <param name="SelectedPath">The selected path.</param>
+ <param name="SelectedShapes">The selected shapes.</param>
+ <returns></returns>
+</member>
+<member name="M:OpenNspect.ManagementScenarios.MgmtScenSetup(OpenNspect.Xml.ManagementScenarioItems@,System.String@,System.String@)">
+ <summary>
+ setting everything up
+ </summary>
+ <param name="MgmtScens">Xml wrapper for the management scenarios created by the user.</param>
+ <param name="strLCClass">Name of the LandCover being used, CCAP.</param>
+ <param name="landCoverFileName">filename of location of LandCover file.</param>
+</member>
+<member name="M:OpenNspect.ModifiedUniversalSoilLossEquation.CalcMUSLE(System.String@,System.String@,OpenNspect.Xml.OutputItems@)">
+ <summary>
+ Calculates the MUSLE erosion model
+ </summary>
+ <param name="concentrationStatement">The concentration statement.</param>
+ <param name="strConPondStatement">The STR con pond statement.</param>
+ <param name="OutputItems">The output items.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.Pollutants.GetCoefficientSetName(OpenNspect.Xml.PollutantItem@)">
+ <summary>
+ Gets the name of the coefficient set; could be a temporary one due to landuses
+ </summary>
+ <param name="Pollutant">The pollutant.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.Runoff.CreateRunoffGrid(System.String@,System.String@,System.Data.OleDb.OleDbCommand@,System.String@,OpenNspect.Xml.OutputItems@)">
+ <summary>
+ Creates the runoff grid.
+ This sub serves as a link between frmPrj and the actual calculation of Runoff
+ It establishes the Rasters being used
+ </summary>
+ <param name="strLCFileName">Path to land class file.</param>
+ <param name="strLCCLassType">type of landclass.</param>
+ <param name="cmdPrecip">ADO recordset of precip scenario being used.</param>
+ <param name="strSoilsFileName">Name of the STR soils file.</param>
+ <param name="OutputItems">The output items.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.Runoff.RunoffCalculation(System.String[]@,MapWinGIS.Grid@,MapWinGIS.Grid@,MapWinGIS.Grid@,OpenNspect.Xml.OutputItems@)">
+ <summary>
+ Runoffs the calculation.
+ </summary>
+ <param name="picks">our friend the dynamic pick statemnt.</param>
+ <param name="pInRainRaster">the precip grid.</param>
+ <param name="pInLandCoverRaster">landcover grid.</param>
+ <param name="pInSoilsRaster">soils grid.</param>
+ <param name="OutputItems">The output items.</param><returns></returns>
+</member>
+<member name="M:OpenNspect.RevisedUniversalSoilLossEquation.RUSLESetup(System.String@,System.String@,System.String@,System.String@,OpenNspect.Xml.OutputItems@,System.Double@)">
+ <summary>
+ 
+ </summary>
+ <param name="strRFactorFileName">FileName of the R Factor GRID.</param>
+ <param name="strKfactorFileName">.</param>
+ <param name="strSDRFileName">.</param>
+ <param name="strLandClass">Name of the Landclass we're using.</param>
+ <param name="OutputItems">The output items.</param>
+ <param name="dblRFactorConstant">The R factor constant.</param>
+ <returns></returns>
+</member>
+</members>
+</doc>

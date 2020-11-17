@@ -1,0 +1,39 @@
+C:\Program Files (x86)\MapWindow\Plugins\OpenNSPECT\OpenNspect.MapWindow4Plugin.dll
+C:\Program Files (x86)\MapWindow\Plugins\OpenNSPECT\OpenNspect.MapWindow4Plugin.pdb
+C:\Program Files (x86)\MapWindow\Plugins\OpenNSPECT\OpenNspect.MapWindow4Plugin.xml
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.MapWindow4Plugin.vbprojAssemblyReference.cache
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.AboutForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.DataPrepForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.NewCoefficientSetForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.NewWaterQualityStandardForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.CopyCoefficientSetForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.CopyWaterQualityStandardForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.ImportCoefficientSetForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.ImportLandCoverTypeForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.ImportWaterQualityStandardForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.PollCoeffSelectionShapefileForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.ProgressForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.LandCoverTypesForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.EditLandUseScenario.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.NewLandCoverTypeForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.NewPollutantForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.NewPrecipitationScenarioForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.NewWatershedDelineationForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.PollutantsForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.PrecipitationScenariosForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.CompareOutputsForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.BaseDialogForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.ErrorForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.SelectionModeForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.MainForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.SoilsSetupForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.DefineFromExistingWatershedDelineationForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.WatershedDelineationsForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.SoilsForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.WaterQualityStandardsForm.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.Resources.resources
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.MapWindow4Plugin.vbproj.GenerateResource.cache
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.MapWindow4Plugin.vbproj.CoreCompileInputs.cache
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.MapWindow4Plugin.dll
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.MapWindow4Plugin.xml
+C:\Users\Dave.Eslinger\Documents\GitHub\OpenNSPECT\Source\OpenNspect\OpenNspect.MapWindow4Plugin\obj\Release\OpenNspect.MapWindow4Plugin.pdb
