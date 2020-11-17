@@ -1,4 +1,4 @@
-<ColoringScheme SchemeType="Grid" GridName="HI_CCAP05" GroupName="Waianae_Baseline_LE">
+<ColoringScheme SchemeType="Grid" GridName="HI_CCAP05" GroupName="Data Layers">
   <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="90" LightSourceElevation="45" LightSourceIntensity="0.7" NoDataColor="-16776961" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
     <Break Caption="Unclassified" LowValue="1" HighValue="1" LowColor="-16777216" HighColor="-16777216" ColoringType="1" GradientModel="1" />
     <Break Caption="Developed, High Intensity" LowValue="2" HighValue="2" LowColor="-855310" HighColor="-855310" ColoringType="1" GradientModel="1" />

@@ -59,7 +59,7 @@ Name: {app}\workspace; Permissions: everyone-modify
 ;Source: "Base Files\bin\OpenNspect.MapWindow4Plugin.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly; Components: main
 Source: "HI_Sample_Data\*"; Excludes: "*..svnbridge*,\help\*,\bin,coefficients\ccap2001 - Copy for import"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs uninsneveruninstall; Components: sample_data
 Source: "HI_Sample_Data\help\*"; Excludes: "*..svnbridge*,NSPECT - v1.1OLD.chm,NSPECT_old_v1_1_.chm"; DestDir: "{app}\help"; Flags: ignoreversion; Components: help
-Source: "HI_Sample_Data\bin\OpenNspect.MapWindow4Plugin.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly; Components: main
+Source: "Base files\bin\OpenNspect.MapWindow4Plugin.dll";  Check: GetMWPluginDestination; DestDir: "{code:PluginDestination}"; Flags: ignoreversion overwritereadonly; Components: main
 
 [Registry]
 ;Installation Path

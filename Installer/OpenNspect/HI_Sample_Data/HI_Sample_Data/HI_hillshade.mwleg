@@ -1,0 +1,9 @@
+<ColoringScheme SchemeType="Grid" GridName="HI_hillshade" GroupName="Data Layers">
+  <GridColoringScheme AmbientIntensity="0.7" Key="" LightSourceAzimuth="90" LightSourceElevation="45" LightSourceIntensity="0.7" NoDataColor="-16777216" ImageLayerFillTransparency="1" ImageUpsamplingMethod="None" ImageDownsamplingMethod="None">
+    <Break Caption="245" LowValue="0" HighValue="245.2" LowColor="-8355712" HighColor="-7500403" ColoringType="0" GradientModel="1" />
+    <Break Caption="490" LowValue="245.2" HighValue="490.4" LowColor="-7500403" HighColor="-6645094" ColoringType="0" GradientModel="1" />
+    <Break Caption="736" LowValue="490.4" HighValue="735.6" LowColor="-6645094" HighColor="-5855578" ColoringType="0" GradientModel="1" />
+    <Break Caption="981" LowValue="735.6" HighValue="980.8" LowColor="-5855578" HighColor="-5000269" ColoringType="0" GradientModel="1" />
+    <Break Caption="981" LowValue="980.8" HighValue="1226" LowColor="-5000269" HighColor="-4144960" ColoringType="0" GradientModel="1" />
+  </GridColoringScheme>
+</ColoringScheme>
